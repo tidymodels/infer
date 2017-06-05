@@ -17,57 +17,57 @@ The objective of this package is to perform statistical inference using a gramma
 One categorical (2 level) variable
 
     mtcars %>%
-    select(am) %>%
-    hypothesis(null = “p = 25”) %>% # would require string parsing
-    generate(repeat = 100) %>% # here it’d be doing simulation
-    calculate(stat = “prop”) #
+      select(am) %>%
+      hypothesis(null = "p = 25") %>% # would require string parsing
+      generate(repeat = 100) %>% # here it’d be doing simulation
+      calculate(stat = "prop") #
 
 Two categorical (2 level) variables
 
     mtcars %>%
-    select(am, vs) %>%
-    hypothesis(null = “independence”) %>% # 
-    generate(repeat = 100) %>%
-    calculate(stat = “diff in prop”) #
+      select(am, vs) %>%
+      hypothesis(null = "independence") %>% # 
+      generate(repeat = 100) %>%
+      calculate(stat = "diff in prop") #
 
 One categorical (&gt;2 level) - GoF
 
     mtcars %>%
-    select(cyl) %>%
-    hypothesis(null = “p1 = .33, p2 = .33, p3 = .33”) %>%
-    generate(repeat = 100) %>%
-    calculate(stat = “chisq”)
+      select(cyl) %>%
+      hypothesis(null = "p1 = .33, p2 = .33, p3 = .33") %>%
+      generate(repeat = 100) %>%
+      calculate(stat = "chisq")
 
 Two categorical (&gt;2 level) variables
 
     mtcars %>%
-    select(cyl, am) %>%
-    hypothesis(null = “independence”) %>%
-    generate(repeat = 100) %>%
-    calculate(stat = “chisq”)
+      select(cyl, am) %>%
+      hypothesis(null = "independence") %>%
+      generate(repeat = 100) %>%
+      calculate(stat = "chisq")
 
 One numerical variable one categorical (2 levels) (diff in means)
 
     mtcars %>%
-    select(mpg, am) %>%
-    hypothesis(null = “equal means”) %>%
-    generate(repeat = 100) %>%
-    calculate(stat = “diff in means”)
+      select(mpg, am) %>%
+      hypothesis(null = "equal means") %>%
+      generate(repeat = 100) %>%
+      calculate(stat = "diff in means")
 
 One numerical one categorical (&gt;2 levels) - ANOVA
 
     mtcars %>%
-    select(mpg, cyl) %>%
-    hypothesis(null = “equal means”) %>%
-    generate(repeat = 100) %>%
-    calculate(stat = “F”)
+      select(mpg, cyl) %>%
+      hypothesis(null = "equal means") %>%
+      generate(repeat = 100) %>%
+      calculate(stat = "F")
 
 Two numerical vars - SLR
 
     mtcars %>%
-    select(mpg, hp) %>%
-    hypothesis(null = “independence”) %>% # or “slope = 0”
-    generate(repeat = 100) %>%
-    calculate(stat = “lm(mpg ~ hp)”)
+      select(mpg, hp) %>%
+      hypothesis(null = "independence") %>% # or "slope = 0"
+      generate(repeat = 100) %>%
+      calculate(stat = "lm(mpg ~ hp)")
 
 ### Confidence intervals
