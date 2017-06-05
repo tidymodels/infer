@@ -8,7 +8,7 @@ output:
 Infer: a grammar for statistical inference
 ---
 
-The objective of this package is to perform statistical inference using a grammar that illustrates the underlying concepts and a format that coheres with the `tidyverse`.
+The objective of this package is to perform statistical inference using a grammar that illustrates the underlying concepts and a format that coheres with the `tidyverse`. To participate in the discussion surrounding the development of this package, please see the issues.
 
 ### Hypothesis tests
 ![h-test diagram](figs/ht-diagram.png)
