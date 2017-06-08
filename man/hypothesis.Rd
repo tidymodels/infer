@@ -18,10 +18,27 @@ Specify a null hypothesis
 }
 \examples{
 if (require(dplyr)) {
+
+# One binary variable
   mtcars \%>\%
     select(am) \%>\%
     hypothesis(null = "p = 25") \%>\%
     generate(reps = 100) \%>\%
     calculate(stat = "prop")
+    
+# Permutation test
+  mtcars \%>\%
+    select(mpg, cyl) \%>\%
+    hypothesis(null = "rho = 0") \%>\%
+    generate(reps = 100, type = "permute") \%>\%
+    calculate(stat = "cor")
+}
+
+# Compare with
+if (require(dplyr) && require(broom)) {
+  cars <- mtcars \%>\%
+    summarize(N = n(), num_manual = sum(am))
+  with(cars, prop.test(num_manual, N, correct = FALSE)) \%>\%
+    tidy()  
 }
 }

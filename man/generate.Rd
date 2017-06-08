@@ -4,12 +4,14 @@
 \alias{generate}
 \title{Generate resamples}
 \usage{
-generate(x, reps = 1, ...)
+generate(x, reps = 1, type = "bootstrap", ...)
 }
 \arguments{
 \item{x}{a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}}
 
 \item{reps}{the number of resamples to generate}
+
+\item{type}{currently either \code{bootstrap} or \code{permute}}
 
 \item{...}{currently ignored}
 }
