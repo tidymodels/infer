@@ -1,11 +1,24 @@
 Package: infer
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
+Title: Pipeable statistical inference
+Version: 0.0.0.9002
+Authors@R: c(
+    person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
+    person("Ben", "Baumer", email = "ben.baumer@gmail.com",
+      role = c("aut")))
+Maintainer: Andrew Bray <abray@reed.edu>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: CC0
 Encoding: UTF-8
 LazyData: true
+Imports:
+    dplyr,
+    lazyeval
+Depends:
+    R (>= 2.10)
+Suggests:
+    broom
+URL: http://github.com/andrewpbray/infer
+BugReports: https://github.com/andrewpbray/infer/issues
+RoxygenNote: 6.0.1
