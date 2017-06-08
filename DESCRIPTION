@@ -1,7 +1,7 @@
 Package: infer
 Type: Package
 Title: Pipeable statistical inference
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
     person("Ben", "Baumer", email = "ben.baumer@gmail.com",
@@ -12,3 +12,11 @@ Description: More about what it does (maybe more than one line)
 License: CC0
 Encoding: UTF-8
 LazyData: true
+Imports:
+    dplyr,
+    lazyeval
+Depends:
+    R (>= 2.10),
+URL: http://github.com/andrewpbray/infer
+BugReports: https://github.com/andrewpbray/infer/issues
+RoxygenNote: 6.0.1
