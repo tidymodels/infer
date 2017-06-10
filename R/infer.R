@@ -68,12 +68,21 @@ permute <- function(x, reps = 1, ...) {
 
 permute_once <- function(x, ...) {
   dots <- list(...)
-  # need to look for name of variable to permute...ugh
-  # by default, use the first column
-  y <- x[, 1]
-  y_prime <- y[ sample.int(length(y)) ]
-  x[, 1] <- y_prime
-  return(x)
+  
+#  if(attr(x, "null") == "equal means"){
+    ## need to look for name of variable to permute...ugh
+    ## by default, use the first column
+    # y <- x[, 1]
+    ## Hopefully this fixes that
+    num_cols <- sapply(x, is.numeric)
+    num_name <- names(num_cols[num_cols == TRUE])
+    y <- x[[num_name]]
+    
+    y_prime <- y[ sample.int(length(y)) ]
+    x[, 1] <- y_prime
+    return(x)
+#  }
+  
 }
 
 
@@ -85,12 +94,20 @@ permute_once <- function(x, ...) {
 #' @export
 
 calculate <- function(x, ...) {
-  col <- setdiff(names(x), "replicate")
-  x %>%
-    dplyr::group_by(replicate) %>%
-    dplyr::summarize_(N = ~n(), 
-                      mean = lazyeval::interp(~mean(var), var = as.name(col)))
-}
+  
+#  if(attr(x, "null") == "equal means"){
+    num_cols <- sapply(x, is.numeric)
+    non_num_name <- names(num_cols[num_cols != TRUE])
+    col <- setdiff(names(x), "replicate")
+    col <- setdiff(col, non_num_name)
+    x %>%
+      dplyr::group_by_("replicate", .dots = non_num_name) %>%
+      dplyr::summarize_(N = ~n(), 
+                        mean = lazyeval::interp(~mean(var), var = as.name(col))) %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize(diffmean = diff(mean))
+#    }
+  }
 
 #' Calculate a p-value
 #' @param x the output from \code{\link{calculate}}

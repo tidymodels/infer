@@ -5,7 +5,8 @@ Version: 0.0.0.9002
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
     person("Ben", "Baumer", email = "ben.baumer@gmail.com",
-      role = c("aut")))
+      role = c("aut")),
+    person("Chester", "Ismay", email = "chester.ismay@gmail.com", role = "aut"))
 Maintainer: Andrew Bray <abray@reed.edu>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
