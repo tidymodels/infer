@@ -79,11 +79,13 @@ permute_once <- function(x, ...) {
     y <- x[[num_name]]
     
     y_prime <- y[ sample.int(length(y)) ]
-    x[, 1] <- y_prime
+    x[[num_name]] <- y_prime
     return(x)
 #  }
   
 }
+
+
 
 
 #' Calculate summary statistics
