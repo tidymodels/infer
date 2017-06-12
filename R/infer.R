@@ -140,6 +140,15 @@ calculate <- function(x, stat, ...) {
       dplyr::summarize(diffprop = diff(prop))
     return(df_out)
   }
+  
+  if(stat == "mean"){
+    col <- setdiff(names(x), "replicate")
+    x %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize_(mean = lazyeval::interp(~mean(var), 
+                                                var = as.name(col)))
+  }
+  
 }
 
 #' Calculate a p-value
@@ -151,13 +160,16 @@ pvalue <- function(x, ...) {
   x
 }
 
-# Same as oilabs::rep_sample_n() with attr added
+# Modified oilabs::rep_sample_n() with attr added
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1) {
+ # attr(tbl, "ci") <- TRUE
   n <- nrow(tbl)
   i <- unlist(replicate(reps, sample.int(n, size, replace = replace), 
                         simplify = FALSE))
   rep_tbl <- cbind(replicate = rep(1:reps, rep(size, reps)), 
                    tbl[i, ])
+  rep_tbl <- as_tibble(rep_tbl)
+  names(rep_tbl)[-1] <- names(tbl)
+#  attr(rep_tbl, "ci") <- attr(tbl, "ci")
   dplyr::group_by(rep_tbl, replicate)
-  attr(rep_tbl, "null") <- attr(tbl, "null")
 }

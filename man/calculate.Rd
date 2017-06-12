@@ -7,7 +7,7 @@
 calculate(x, stat, ...)
 }
 \arguments{
-\item{x}{the output from \code{\link{hypothesis}} or \code{\link{generate}}}
+\item{x}{the output from \code{\link{hypothesize}} or \code{\link{generate}}}
 
 \item{stat}{a string giving the type of the statistic to create, i.e. "diff in means", "diff in props", etc.
 or an equation in quotes}
