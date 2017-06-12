@@ -93,6 +93,10 @@ Two numerical vars - SLR
 
 One numerical (one mean)
 
+-   Implemented
+
+<!-- -->
+
     mtcars %>%
       select(mpg) %>%
       generate(reps = 100, type = "bootstrap") %>%

@@ -102,6 +102,9 @@ mtcars %>%
 ### Confidence intervals
 
 One numerical (one mean)
+
+- Implemented
+
 ```
 mtcars %>%
   select(mpg) %>%
