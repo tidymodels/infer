@@ -23,27 +23,33 @@ These examples assume that `mtcars` has been overwritten so that the variables `
              gear = factor(gear),
              carb = factor(carb))
 
+------------------------------------------------------------------------
+
 One categorical (2 level) variable
 
     mtcars %>%
       select(am) %>%
-      hypothesis(null = "p = 25") %>% # would require string parsing
+      hypothesize(null = "p = 25") %>% # would require string parsing
       generate(reps = 100, type = "permute") %>% # here it’d be doing simulation
       calculate(stat = "prop") #
 
 Two categorical (2 level) variables
 
+-   Implemented
+
+<!-- -->
+
     mtcars %>%
       select(am, vs) %>%
-      hypothesis(null = "independence") %>% # 
+      hypothesize(null = "independence") %>% # 
       generate(reps = 100, type = "permute") %>%
-      calculate(stat = "diff in prop") #
+      calculate(stat = "diff in props") #
 
 One categorical (&gt;2 level) - GoF
 
     mtcars %>%
       select(cyl) %>%
-      hypothesis(null = "p1 = .33, p2 = .33, p3 = .33") %>%
+      hypothesize(null = "p1 = .33, p2 = .33, p3 = .33") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "chisq")
 
@@ -51,15 +57,19 @@ Two categorical (&gt;2 level) variables
 
     mtcars %>%
       select(cyl, am) %>%
-      hypothesis(null = "independence") %>%
+      hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "chisq")
 
 One numerical variable one categorical (2 levels) (diff in means)
 
+-   Implemented
+
+<!-- -->
+
     mtcars %>%
       select(mpg, am) %>%
-      hypothesis(null = "equal means") %>%
+      hypothesize(null = "equal means") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "diff in means")
 
@@ -67,7 +77,7 @@ One numerical one categorical (&gt;2 levels) - ANOVA
 
     mtcars %>%
       select(mpg, cyl) %>%
-      hypothesis(null = "equal means") %>%
+      hypothesize(null = "equal means") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "F")
 
@@ -75,7 +85,7 @@ Two numerical vars - SLR
 
     mtcars %>%
       select(mpg, hp) %>%
-      hypothesis(null = "independence") %>% # or "slope = 0"
+      hypothesize(null = "independence") %>% # or "slope = 0"
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "lm(mpg ~ hp)")
 
