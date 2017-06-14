@@ -10,14 +10,14 @@
 #' # One binary variable
 #'   mtcars %>%
 #'     select(am) %>%
-#'     hypothesis(null = "p = 25") %>%
+#'     hypothesize(null = "p = 25") %>%
 #'     generate(reps = 100) %>%
 #'     calculate(stat = "prop")
 #'     
 #' # Permutation test
 #'   mtcars %>%
 #'     select(mpg, cyl) %>%
-#'     hypothesis(null = "rho = 0") %>%
+#'     hypothesize(null = "rho = 0") %>%
 #'     generate(reps = 100, type = "permute") %>%
 #'     calculate(stat = "cor")
 #' }
@@ -30,7 +30,7 @@
 #'     tidy()  
 #' }
 
-hypothesis <- function(x, null, ...) {
+hypothesize <- function(x, null, ...) {
   attr(x, "null") <- null
   return(as.tbl(x))
 }
@@ -60,36 +60,95 @@ bootstrap <- function(x, reps = 1, ...) {
 #' @importFrom dplyr bind_rows mutate_ group_by
 
 permute <- function(x, reps = 1, ...) {
-  replicate(reps, permute_once(x), simplify = FALSE) %>%
+  df_out <- replicate(reps, permute_once(x), simplify = FALSE) %>%
     dplyr::bind_rows() %>%
     dplyr::mutate_(replicate = ~rep(1:reps, each = nrow(x))) %>%
     dplyr::group_by(replicate)
+  attr(df_out, "null") <- attr(x, "null")
+  return(df_out)
 }
 
 permute_once <- function(x, ...) {
   dots <- list(...)
-  # need to look for name of variable to permute...ugh
-  # by default, use the first column
-  y <- x[, 1]
-  y_prime <- y[ sample.int(length(y)) ]
-  x[, 1] <- y_prime
-  return(x)
+  
+  if(attr(x, "null") == "equal means"){
+    ## need to look for name of variable to permute...ugh
+    ## by default, use the first column
+    # y <- x[, 1]
+    ## Hopefully this fixes that
+    num_cols <- sapply(x, is.numeric)
+    num_name <- names(num_cols[num_cols == TRUE])
+    y <- x[[num_name]]
+    
+    y_prime <- y[ sample.int(length(y)) ]
+    x[[num_name]] <- y_prime
+    return(x)
+  }
+ 
+  if(attr(x, "null") == "independence"){
+    ## by default, permute the first column of the two selected
+    # Since dealing with tibble potentially, we need to force a
+    # vector here
+    y <- x[[1]]
+    
+    y_prime <- y[ sample.int(length(y)) ]
+    x[[1]] <- y_prime
+    return(x)
+  }  
+   
 }
 
 
 #' Calculate summary statistics
-#' @param x the output from \code{\link{hypothesis}} or \code{\link{generate}}
+#' @param x the output from \code{\link{hypothesize}} or \code{\link{generate}}
+#' @param stat a string giving the type of the statistic to create, i.e. "diff in means", "diff in props", etc.
+#' or an equation in quotes
 #' @param ... currently ignored
-#' @importFrom dplyr %>% group_by summarize_
+#' @importFrom dplyr %>% group_by group_by_ summarize_ summarize
 #' @importFrom lazyeval interp
 #' @export
 
-calculate <- function(x, ...) {
-  col <- setdiff(names(x), "replicate")
-  x %>%
-    dplyr::group_by(replicate) %>%
-    dplyr::summarize_(N = ~n(), 
-                      mean = lazyeval::interp(~mean(var), var = as.name(col)))
+calculate <- function(x, stat, ...) {
+  
+  if(stat == "diff in means"){
+    num_cols <- sapply(x, is.numeric)
+    non_num_name <- names(num_cols[num_cols != TRUE])
+    col <- setdiff(names(x), "replicate")
+    col <- setdiff(col, non_num_name)
+    df_out <- x %>%
+      dplyr::group_by_("replicate", .dots = non_num_name) %>%
+      dplyr::summarize_(N = ~n(), 
+                        mean = lazyeval::interp(~mean(var), var = as.name(col))) %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize(diffmean = diff(mean))
+    return(df_out)
+  }
+  
+  if(stat == "diff in props"){
+    # Assume the first column is to be permuted and
+    # the second column are the groups
+    # Assumes the variables are factors and NOT chars here!
+    permute_col <- names(x)[1]
+    group_col <- names(x)[2]
+
+    df_out <- x %>%
+      dplyr::group_by_("replicate", .dots = group_col) %>%
+      dplyr::summarize_(N = ~n(),
+                        prop = lazyeval::interp(~mean(var == levels(var)[1]),
+                                                var = as.name(permute_col))) %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize(diffprop = diff(prop))
+    return(df_out)
+  }
+  
+  if(stat == "mean"){
+    col <- setdiff(names(x), "replicate")
+    x %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize_(mean = lazyeval::interp(~mean(var), 
+                                                var = as.name(col)))
+  }
+  
 }
 
 #' Calculate a p-value
@@ -101,12 +160,16 @@ pvalue <- function(x, ...) {
   x
 }
 
-# stolen from oilabs::rep_sample_n()
+# Modified oilabs::rep_sample_n() with attr added
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1) {
+ # attr(tbl, "ci") <- TRUE
   n <- nrow(tbl)
   i <- unlist(replicate(reps, sample.int(n, size, replace = replace), 
                         simplify = FALSE))
   rep_tbl <- cbind(replicate = rep(1:reps, rep(size, reps)), 
                    tbl[i, ])
+  rep_tbl <- as_tibble(rep_tbl)
+  names(rep_tbl)[-1] <- names(tbl)
+#  attr(rep_tbl, "ci") <- attr(tbl, "ci")
   dplyr::group_by(rep_tbl, replicate)
 }
