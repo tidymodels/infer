@@ -58,7 +58,10 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
   dots <- list(...)
   params <- parse_params(dots)
 
-  # error:
+  # error: number of parameters exceeds number of columns
+  if(length(params) > ncol(x)) {
+    stop("The number of parameters exceeds the number of columns.")
+  }
 
   attr(x, "params") <- params
 
@@ -66,19 +69,18 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
 }
 
 parse_params <- function(x) {
-  # proportions
   ## find props
-  prop_ind <- grep("p\\d+", names(x))
+  p_ind <- grep("p\\d+", names(x))
   ## check that props are between 0 and 1 and sum to 1 if there are > 1
 
   # means
-  ## find props
-  mean_ind <- grep("mu\\d+", names(x))
+  ## find means
+  mu_ind <- grep("mu\\d+", names(x))
 
   # error: cannot specify both props and means
-  if (length(prop_ind) * length(mu_ind) != 0) {
+  if (length(p_ind) * length(mu_ind) != 0) {
     stop("Parameter values should be either proportions or means but not both.")
   }
 
-  return(x[c(prop_ind, mean_ind)])
+  return(x[c(p_ind, mu_ind)])
 }
