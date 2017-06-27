@@ -3,7 +3,6 @@
 export(calculate)
 export(generate)
 export(hypothesize)
-export(pvalue)
 importFrom(dplyr,"%>%")
 importFrom(dplyr,as.tbl)
 importFrom(dplyr,bind_rows)
