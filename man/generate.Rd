@@ -18,3 +18,36 @@ generate(x, reps = 1, type = "bootstrap", ...)
 \description{
 Generate resamples
 }
+\examples{
+
+# bootstrap for one numerical variable
+if (require(dplyr)) {
+  mtcars \%>\%
+    select(mpg) \%>\%
+    generate(reps = 100, type = "bootstrap") \%>\%
+    calculate(stat = "mean")
+    
+ # permutation test for equal means
+  mtcars \%>\% 
+    select(mpg, am) \%>\%
+    hypothesize(null = "equal means") \%>\%
+    generate(reps = 100, type = "permute") \%>\%
+    calculate(stat = "diff in means")
+ 
+ # simulate draws from a single categorical variable
+ mtcars \%>\% 
+   select(am) \%>\%
+   mutate(am = factor(am)) \%>\%
+   hypothesize(null = "point", p1 = 0.25, p2 = 0.75) \%>\%
+   generate(reps = 100, type = "simulate") \%>\%
+   calculate(stat = "prop")
+   
+ # goodness-of-fit for one categorical variable
+ mtcars \%>\%
+   select(cyl) \%>\%
+   hypothesize(null = "point", p1 = .25, p2 = .25, p3 = .50) \%>\%
+   generate(reps = 100, type = "simulate") \%>\%
+   calculate(stat = "chisq")
+}
+
+}

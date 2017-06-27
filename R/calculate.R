@@ -31,7 +31,7 @@
 
 calculate <- function(x, stat, ...) {
 
-  if(stat == "diff in means"){
+  if (stat == "diff in means") {
     num_cols <- sapply(x, is.numeric)
     non_num_name <- names(num_cols[num_cols != TRUE])
     col <- setdiff(names(x), "replicate")
@@ -45,7 +45,7 @@ calculate <- function(x, stat, ...) {
     return(df_out)
   }
 
-  if(stat == "diff in props"){
+  if (stat == "diff in props") {
     # Assume the first column is to be permuted and
     # the second column are the groups
     # Assumes the variables are factors and NOT chars here!
@@ -62,11 +62,20 @@ calculate <- function(x, stat, ...) {
     return(df_out)
   }
 
-  if(stat == "mean"){
+  if (stat == "mean") {
     col <- setdiff(names(x), "replicate")
     x %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize_(mean = lazyeval::interp(~mean(var),
+                                                var = as.name(col)))
+  }
+  
+  if (stat == "prop") {
+    col <- setdiff(names(x), "replicate")
+    x %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize_(N = ~n(),
+                        prop = lazyeval::interp(~mean(var == levels(var)[1]),
                                                 var = as.name(col)))
   }
 

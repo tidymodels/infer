@@ -30,7 +30,7 @@ One categorical (2 level) variable
     mtcars %>%
       select(am) %>%
       hypothesize(null = "point", p = .25) %>% 
-      generate(reps = 100, type = "simulation") %>% 
+      generate(reps = 100, type = "simulate") %>% 
       calculate(stat = "prop") #
 
 Two categorical (2 level) variables

@@ -23,7 +23,7 @@ if (require(dplyr)) {
   mtcars \%>\%
     select(am) \%>\%
     hypothesize(null = "point", p = 0.25) \%>\%
-    generate(reps = 100) \%>\%
+    generate(reps = 100, type = "simulate") \%>\%
     calculate(stat = "prop")
 
 # Permutation test
