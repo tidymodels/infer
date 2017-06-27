@@ -65,7 +65,13 @@ permute_once <- function(x, ...) {
 }
 
 simulate <- function(x, reps = 1, ...) {
-# to be filled in
+  # error
+  if (nrow(x) > 1 | class(x[1]) != "factor") {
+    stop("Simulation can only be performed for a single categorical variable.")
+  }
+
+  sample(levels(x[1]), length(x[1]), prob = unlist(attr(x, params)))
+  # INCOMPLETE
 }
 
 # Modified oilabs::rep_sample_n() with attr added
