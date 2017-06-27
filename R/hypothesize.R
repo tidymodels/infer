@@ -31,13 +31,35 @@
 #' }
 
 hypothesize <- function(x, null = c("independence", "point"), ...) {
-  attr(x, "null") <- null
+  classes <- sapply(x, class)
 
-  # functions to check if null makes sense given classes of variables
+  # error: x is not a dataframe
+  if (!sum(class(x) %in% c("data.frame", "tbl", "tbl_df", "grouped_df"))) {
+    stop("x must be a data.frame or tibble")
+  }
+
+  # error: too many columns
+  if (ncol(x) > 2) {
+    stop("Too many columns. Use select() to narrow down your data.frame.")
+  }
+
+  # error: null not found
+  if (!(null %in% c("independence", "point"))) {
+    stop("Choice of null is not supported.")
+  }
+
+  # error: independence requires factors
+  if (null == "independence" & !("factor" %in% classes)) {
+    stop("A null of independence requires at least one factor variable.")
+  }
+
+  attr(x, "null") <- null
 
   dots <- list(...)
   params <- parse_params(dots)
-  # functions to check if parameters make sense given classes of variables
+
+  # error:
+
   attr(x, "params") <- params
 
   return(as.tbl(x))
@@ -52,6 +74,11 @@ parse_params <- function(x) {
   # means
   ## find props
   mean_ind <- grep("mu\\d+", names(x))
+
+  # error: cannot specify both props and means
+  if (length(prop_ind) * length(mu_ind) != 0) {
+    stop("Parameter values should be either proportions or means but not both.")
+  }
 
   return(x[c(prop_ind, mean_ind)])
 }
