@@ -29,8 +29,8 @@ One categorical (2 level) variable
 
     mtcars %>%
       select(am) %>%
-      hypothesize(null = "p = 25") %>% # would require string parsing
-      generate(reps = 100, type = "permute") %>% # here it’d be doing simulation
+      hypothesize(null = "point", p = .25) %>% 
+      generate(reps = 100, type = "simulation") %>% 
       calculate(stat = "prop") #
 
 Two categorical (2 level) variables
@@ -49,8 +49,8 @@ One categorical (&gt;2 level) - GoF
 
     mtcars %>%
       select(cyl) %>%
-      hypothesize(null = "p1 = .33, p2 = .33, p3 = .33") %>%
-      generate(reps = 100, type = "permute") %>%
+      hypothesize(null = "point", p1 = .25, p2 = .25, p3 = .50) %>% # call levels() to find order of p's
+      generate(reps = 100, type = "simulate") %>%
       calculate(stat = "chisq")
 
 Two categorical (&gt;2 level) variables
@@ -69,7 +69,7 @@ One numerical variable one categorical (2 levels) (diff in means)
 
     mtcars %>%
       select(mpg, am) %>%
-      hypothesize(null = "equal means") %>%
+      hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "diff in means")
 
@@ -77,7 +77,7 @@ One numerical one categorical (&gt;2 levels) - ANOVA
 
     mtcars %>%
       select(mpg, cyl) %>%
-      hypothesize(null = "equal means") %>%
+      hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "F")
 
