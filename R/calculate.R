@@ -1,6 +1,6 @@
 #' Calculate summary statistics
 #' @param x the output from \code{\link{hypothesize}} or \code{\link{generate}}
-#' @param stat a string giving the type of the statistic to create, i.e. "diff in means", "diff in props", etc.
+#' @param stat a string giving the type of the statistic to calculate. Current options include "mean", "prop", "diff in means", "diff in props", "chisq", and "F".
 #' or an equation in quotes
 #' @param ... currently ignored
 #' @importFrom dplyr %>% group_by group_by_ summarize_ summarize
@@ -30,6 +30,23 @@
 #' }
 
 calculate <- function(x, stat, ...) {
+
+
+  if (stat == "mean") {
+    col <- setdiff(names(x), "replicate")
+    x %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize_(mean = lazyeval::interp(~mean(var),
+                                                var = as.name(col)))
+  }
+
+  if (stat == "prop") {
+    col <- setdiff(names(x), "replicate")
+    x %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize_(prop = lazyeval::interp(~mean(var == levels(var)[1]),
+                                                var = as.name(col)))
+  }
 
   if (stat == "diff in means") {
     num_cols <- sapply(x, is.numeric)
@@ -62,12 +79,8 @@ calculate <- function(x, stat, ...) {
     return(df_out)
   }
 
-  if (stat == "mean") {
-    col <- setdiff(names(x), "replicate")
-    x %>%
-      dplyr::group_by(replicate) %>%
-      dplyr::summarize_(mean = lazyeval::interp(~mean(var),
-                                                var = as.name(col)))
+  if (stat == "Chisq") {
+
   }
   
   if (stat == "prop") {
@@ -78,5 +91,10 @@ calculate <- function(x, stat, ...) {
                         prop = lazyeval::interp(~mean(var == levels(var)[1]),
                                                 var = as.name(col)))
   }
+
+  if (stat == "F") {
+
+  }
+
 
 }
