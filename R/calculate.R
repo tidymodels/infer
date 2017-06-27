@@ -1,6 +1,6 @@
 #' Calculate summary statistics
 #' @param x the output from \code{\link{hypothesize}} or \code{\link{generate}}
-#' @param stat a string giving the type of the statistic to create, i.e. "diff in means", "diff in props", etc.
+#' @param stat a string giving the type of the statistic to calculate. Current options include "mean", "prop", "diff in means", "diff in props", "chisq", and "F".
 #' or an equation in quotes
 #' @param ... currently ignored
 #' @importFrom dplyr %>% group_by group_by_ summarize_ summarize
@@ -9,7 +9,23 @@
 
 calculate <- function(x, stat, ...) {
 
-  if(stat == "diff in means"){
+  if (stat == "mean") {
+    col <- setdiff(names(x), "replicate")
+    x %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize_(mean = lazyeval::interp(~mean(var),
+                                                var = as.name(col)))
+  }
+
+  if (stat == "prop") {
+    col <- setdiff(names(x), "replicate")
+    x %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize_(prop = lazyeval::interp(~mean(var == levels(var)[1]),
+                                                var = as.name(col)))
+  }
+
+  if (stat == "diff in means") {
     num_cols <- sapply(x, is.numeric)
     non_num_name <- names(num_cols[num_cols != TRUE])
     col <- setdiff(names(x), "replicate")
@@ -23,7 +39,7 @@ calculate <- function(x, stat, ...) {
     return(df_out)
   }
 
-  if(stat == "diff in props"){
+  if (stat == "diff in props") {
     # Assume the first column is to be permuted and
     # the second column are the groups
     # Assumes the variables are factors and NOT chars here!
@@ -40,12 +56,13 @@ calculate <- function(x, stat, ...) {
     return(df_out)
   }
 
-  if(stat == "mean"){
-    col <- setdiff(names(x), "replicate")
-    x %>%
-      dplyr::group_by(replicate) %>%
-      dplyr::summarize_(mean = lazyeval::interp(~mean(var),
-                                                var = as.name(col)))
+  if (stat == "Chisq") {
+
   }
+
+  if (stat == "F") {
+
+  }
+
 
 }
