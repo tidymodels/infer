@@ -13,6 +13,9 @@ generate <- function(x, reps = 1, type = "bootstrap", ...) {
   if (type == "permute") {
     return(permute(x, reps, ...))
   }
+  if (type == "simulate") {
+    return(simulate(x, reps, ...))
+  }
   x
 }
 
@@ -61,6 +64,9 @@ permute_once <- function(x, ...) {
 
 }
 
+simulate <- function(x, reps = 1, ...) {
+# to be filled in
+}
 
 # Modified oilabs::rep_sample_n() with attr added
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1) {
