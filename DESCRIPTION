@@ -1,7 +1,7 @@
 Package: infer
 Type: Package
 Title: Pipeable statistical inference
-Version: 0.0.0.9002
+Version: 0.0.0.9004
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
     person("Ben", "Baumer", email = "ben.baumer@gmail.com",
@@ -19,7 +19,8 @@ Imports:
 Depends:
     R (>= 2.10)
 Suggests:
-    broom
+    broom,
+    ggplot2
 URL: http://github.com/andrewpbray/infer
 BugReports: https://github.com/andrewpbray/infer/issues
 RoxygenNote: 6.0.1

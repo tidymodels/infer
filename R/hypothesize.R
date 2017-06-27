@@ -10,16 +10,17 @@
 #' # One binary variable
 #'   mtcars %>%
 #'     select(am) %>%
-#'     hypothesize(null = "p = 25") %>%
-#'     generate(reps = 100) %>%
+#'     hypothesize(null = "point", p = 0.25) %>%
+#'     generate(reps = 100, type = "simulate") %>%
 #'     calculate(stat = "prop")
 #'
 #' # Permutation test
 #'   mtcars %>%
+#'     mutate(cyl = factor(cyl)) %>%
 #'     select(mpg, cyl) %>%
-#'     hypothesize(null = "rho = 0") %>%
+#'     hypothesize(null = "independence") %>%
 #'     generate(reps = 100, type = "permute") %>%
-#'     calculate(stat = "cor")
+#'     calculate(stat = "F")
 #' }
 #'
 #' # Compare with
@@ -40,7 +41,7 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
 
   # error: too many columns
   if (ncol(x) > 2) {
-    stop("Too many columns. Use select() to narrow down your data.frame.")
+    stop("Too many columns. Use select() to narrow your data.frame.")
   }
 
   # error: null not found
@@ -57,10 +58,10 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
 
   dots <- list(...)
   params <- parse_params(dots)
-
-  # error: number of parameters exceeds number of columns
-  if(length(params) > ncol(x)) {
-    stop("The number of parameters exceeds the number of columns.")
+  
+  # error: number of parameters exceeds number of factor levels
+  if (length(params) != length(levels(x[,1]))) {
+    stop("The number of parameters must match the number of factor levels.")
   }
 
   attr(x, "params") <- params

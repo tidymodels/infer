@@ -5,6 +5,38 @@
 #' @param ... currently ignored
 #' @importFrom dplyr group_by
 #' @export
+#' @examples 
+#' 
+#' # bootstrap for one numerical variable
+#' if (require(dplyr)) {
+#'   mtcars %>%
+#'     select(mpg) %>%
+#'     generate(reps = 100, type = "bootstrap") %>%
+#'     calculate(stat = "mean")
+#'     
+#'  # permutation test for equal means
+#'   mtcars %>% 
+#'     select(mpg, am) %>%
+#'     hypothesize(null = "equal means") %>%
+#'     generate(reps = 100, type = "permute") %>%
+#'     calculate(stat = "diff in means")
+#'  
+#'  # simulate draws from a single categorical variable
+#'  mtcars %>% 
+#'    select(am) %>%
+#'    mutate(am = factor(am)) %>%
+#'    hypothesize(null = "point", p1 = 0.25, p2 = 0.75) %>%
+#'    generate(reps = 100, type = "simulate") %>%
+#'    calculate(stat = "prop")
+#'    
+#'  # goodness-of-fit for one categorical variable
+#'  mtcars %>%
+#'    select(cyl) %>%
+#'    hypothesize(null = "point", p1 = .25, p2 = .25, p3 = .50) %>%
+#'    generate(reps = 100, type = "simulate") %>%
+#'    calculate(stat = "chisq")
+#' }
+#' 
 
 generate <- function(x, reps = 1, type = "bootstrap", ...) {
   if (type == "bootstrap") {
@@ -37,7 +69,7 @@ permute <- function(x, reps = 1, ...) {
 permute_once <- function(x, ...) {
   dots <- list(...)
 
-  if(attr(x, "null") == "equal means"){
+  if (attr(x, "null") == "equal means") {
     ## need to look for name of variable to permute...ugh
     ## by default, use the first column
     # y <- x[, 1]
@@ -51,7 +83,7 @@ permute_once <- function(x, ...) {
     return(x)
   }
 
-  if(attr(x, "null") == "independence"){
+  if (attr(x, "null") == "independence") {
     ## by default, permute the first column of the two selected
     # Since dealing with tibble potentially, we need to force a
     # vector here
@@ -64,25 +96,40 @@ permute_once <- function(x, ...) {
 
 }
 
+#' @importFrom dplyr pull
+
 simulate <- function(x, reps = 1, ...) {
   # error
-  if (nrow(x) > 1 | class(x[1]) != "factor") {
+  if (ncol(x) > 1 | class(dplyr::pull(x, 1)) != "factor") {
     stop("Simulation can only be performed for a single categorical variable.")
   }
-
-  sample(levels(x[1]), length(x[1]), prob = unlist(attr(x, params)))
-  # INCOMPLETE
+  
+  rep_sample_n(x, size = nrow(x), reps = reps, replace = TRUE, prob = unlist(attr(x, "params")))
 }
 
+#' @importFrom dplyr as_tibble pull
+
 # Modified oilabs::rep_sample_n() with attr added
-rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1) {
+rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   # attr(tbl, "ci") <- TRUE
   n <- nrow(tbl)
-  i <- unlist(replicate(reps, sample.int(n, size, replace = replace),
+  
+  # assign non-uniform probabilities
+  # there should be a better way!!
+  # prob needs to be nrow(tbl) -- not just number of factor levels
+  if (!is.null(prob)) {
+    df_lkup <- data_frame(vals = levels(dplyr::pull(tbl, 1)))
+    names(df_lkup) <- names(tbl)
+    df_lkup$probs = prob
+    tbl_wgt <- inner_join(tbl, df_lkup)
+    prob <- tbl_wgt$probs
+  }
+  
+  i <- unlist(replicate(reps, sample.int(n, size, replace = replace, prob = prob),
                         simplify = FALSE))
   rep_tbl <- cbind(replicate = rep(1:reps, rep(size, reps)),
                    tbl[i, ])
-  rep_tbl <- as_tibble(rep_tbl)
+  rep_tbl <- dplyr::as_tibble(rep_tbl)
   names(rep_tbl)[-1] <- names(tbl)
   #  attr(rep_tbl, "ci") <- attr(tbl, "ci")
   dplyr::group_by(rep_tbl, replicate)
