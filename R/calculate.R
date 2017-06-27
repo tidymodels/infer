@@ -6,6 +6,28 @@
 #' @importFrom dplyr %>% group_by group_by_ summarize_ summarize
 #' @importFrom lazyeval interp
 #' @export
+#' @examples 
+#' 
+#' # Permutation test for two binary variables
+#' if (require(dplyr)) {
+#'   diffs <- mtcars %>%
+#'     mutate(am = factor(am), vs = factor(vs)) %>%
+#'     select(am, vs) %>% 
+#'     hypothesize(null = "independence") %>% 
+#'     generate(reps = 100, type = "permute") %>%
+#'     calculate(stat = "diff in props")
+#'   test_stat <- mtcars %>%
+#'     group_by(vs) %>%
+#'     summarize(N = n(), manuals = sum(am)) %>%
+#'     mutate(prop = manuals / N) %>%
+#'     summarize(diff_prop = diff(prop))
+#'   if (require(ggplot2)) {
+#'     ggplot(data = diffs, aes(x = diffprop)) +
+#'       geom_density() + 
+#'       geom_vline(xintercept = 0, linetype = 3) + 
+#'       geom_vline(data = test_stat, aes(xintercept = diff_prop), color = "red")
+#'   }
+#' }
 
 calculate <- function(x, stat, ...) {
 
