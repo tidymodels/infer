@@ -74,6 +74,8 @@ simulate <- function(x, reps = 1, ...) {
   # INCOMPLETE
 }
 
+#' @importFrom dplyr as_tibble
+
 # Modified oilabs::rep_sample_n() with attr added
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1) {
   # attr(tbl, "ci") <- TRUE
@@ -82,7 +84,7 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1) {
                         simplify = FALSE))
   rep_tbl <- cbind(replicate = rep(1:reps, rep(size, reps)),
                    tbl[i, ])
-  rep_tbl <- as_tibble(rep_tbl)
+  rep_tbl <- dplyr::as_tibble(rep_tbl)
   names(rep_tbl)[-1] <- names(tbl)
   #  attr(rep_tbl, "ci") <- attr(tbl, "ci")
   dplyr::group_by(rep_tbl, replicate)

@@ -10,16 +10,17 @@
 #' # One binary variable
 #'   mtcars %>%
 #'     select(am) %>%
-#'     hypothesize(null = "p = 25") %>%
+#'     hypothesize(null = "point", p = 0.25) %>%
 #'     generate(reps = 100) %>%
 #'     calculate(stat = "prop")
 #'
 #' # Permutation test
 #'   mtcars %>%
+#'     mutate(cyl = factor(cyl)) %>%
 #'     select(mpg, cyl) %>%
-#'     hypothesize(null = "rho = 0") %>%
+#'     hypothesize(null = "independence") %>%
 #'     generate(reps = 100, type = "permute") %>%
-#'     calculate(stat = "cor")
+#'     calculate(stat = "F")
 #' }
 #'
 #' # Compare with

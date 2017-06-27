@@ -58,7 +58,7 @@ calculate <- function(x, stat, ...) {
                         prop = lazyeval::interp(~mean(var == levels(var)[1]),
                                                 var = as.name(permute_col))) %>%
       dplyr::group_by(replicate) %>%
-      dplyr::summarize(diffprop = diff(prop))
+      dplyr::summarize_(diffprop = ~diff(prop))
     return(df_out)
   }
 
