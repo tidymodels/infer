@@ -34,7 +34,7 @@ calculate <- function(x, stat, ...) {
 
   if (stat == "mean") {
     col <- setdiff(names(x), "replicate")
-    x %>%
+    df_out <- x %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize_(mean = lazyeval::interp(~mean(var),
                                                 var = as.name(col)))
@@ -42,7 +42,7 @@ calculate <- function(x, stat, ...) {
 
   if (stat == "prop") {
     col <- setdiff(names(x), "replicate")
-    x %>%
+    df_out <- x %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize_(prop = lazyeval::interp(~mean(var == levels(var)[1]),
                                                 var = as.name(col)))
@@ -59,7 +59,6 @@ calculate <- function(x, stat, ...) {
                         mean = lazyeval::interp(~mean(var), var = as.name(col))) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(diffmean = diff(mean))
-    return(df_out)
   }
 
   if (stat == "diff in props") {
@@ -76,7 +75,6 @@ calculate <- function(x, stat, ...) {
                                                 var = as.name(permute_col))) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize_(diffprop = ~diff(prop))
-    return(df_out)
   }
 
   if (stat == "Chisq") {
@@ -88,5 +86,5 @@ calculate <- function(x, stat, ...) {
 
   }
 
-
+  return(df_out)
 }
