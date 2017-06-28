@@ -58,11 +58,12 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
 
   dots <- list(...)
   params <- parse_params(dots)
-  
+
+  # REVISIT after decision is made on vector vs list
   # error: number of parameters exceeds number of factor levels
-  if (length(params) != length(levels(x[,1]))) {
-    stop("The number of parameters must match the number of factor levels.")
-  }
+#  if (length(params) != length(levels(x[,1]))) {
+#    stop("The number of parameters must match the number of factor levels.")
+#  }
 
   attr(x, "params") <- params
 
