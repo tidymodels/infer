@@ -114,7 +114,9 @@ simulate <- function(x, reps = 1, ...) {
   rep_tbl <- cbind(replicate = rep(1:reps, rep(size, reps)),
                    col_simmed)
   rep_tbl <- dplyr::as_tibble(rep_tbl)
-  names(rep_tbl)[-1] <- names(tbl)
+  names(rep_tbl)[-1] <- names(x)
+  attr(rep_tbl, "null") <- attr(x, "null")
+  attr(rep_tbl, "params") <- attr(x, "params")
   #  attr(rep_tbl, "ci") <- attr(tbl, "ci")
   return(dplyr::group_by(rep_tbl, replicate))
 }
