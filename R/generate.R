@@ -111,10 +111,10 @@ simulate <- function(x, reps = 1, ...) {
                                               replace = TRUE,
                                               prob = params_to_prob(x)),
                                  simplify = FALSE))
-  rep_tbl <- cbind(replicate = rep(1:reps, rep(size, reps)),
-                   col_simmed)
+  rep_tbl <- cbind(col_simmed,
+                   replicate = rep(1:reps, rep(size, reps)))
   rep_tbl <- dplyr::as_tibble(rep_tbl)
-  names(rep_tbl)[-1] <- names(x)
+  names(rep_tbl)[1] <- names(x)
   attr(rep_tbl, "null") <- attr(x, "null")
   attr(rep_tbl, "params") <- attr(x, "params")
   #  attr(rep_tbl, "ci") <- attr(tbl, "ci")
