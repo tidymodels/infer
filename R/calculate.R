@@ -35,7 +35,7 @@ calculate <- function(x, stat, ...) {
   if (stat == "mean") {
     col <- setdiff(names(x), "replicate")
     df_out <- x %>%
-      dplyr::group_by(replicate) %>%
+      #dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = mean(!!sym(col)))
   }
 
@@ -52,7 +52,7 @@ calculate <- function(x, stat, ...) {
     success <- get_par_levels(x)
     x %>%
       dplyr::group_by(replicate) %>%
-      dplyr::summarize(stat = mean(!!quo(col) == success))
+      dplyr::summarize(stat = mean(!!sym(col) == success))
   }
 
   if (stat == "diff in means") {
