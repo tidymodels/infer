@@ -59,11 +59,15 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
   dots <- list(...)
   params <- parse_params(dots)
 
-  # REVISIT after decision is made on vector vs list
-  # error: number of parameters exceeds number of factor levels
-#  if (length(params) != length(levels(x[,1]))) {
-#    stop("The number of parameters must match the number of factor levels.")
-#  }
+  # error: number of proportions in inappropriate given the number of factor levels
+  if (!is.null(names(params))) {
+    if (length(levels(x[, 1])) == 2 && length(params) != 1) {
+      stop("A single two-level categorical variable requires only one proportion.")
+    }
+    if (length(levels(x[, 1])) > 2 && length(params) != length(levels(x[, 1]))) {
+      stop("The number of proportions must equal the number of levels.")
+    }
+  }
 
   attr(x, "params") <- params
 
@@ -72,17 +76,17 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
 
 parse_params <- function(x) {
   ## find props
-  p_ind <- grep("p\\d+", names(x))
+  p_ind <- grep("p", names(x))
   ## check that props are between 0 and 1 and sum to 1 if there are > 1
 
   # means
   ## find means
-  mu_ind <- grep("mu\\d+", names(x))
+  mu_ind <- grep("mu", names(x))
 
   # error: cannot specify both props and means
   if (length(p_ind) * length(mu_ind) != 0) {
     stop("Parameter values should be either proportions or means but not both.")
   }
 
-  return(x[c(p_ind, mu_ind)])
+  return(unlist(x[c(p_ind, mu_ind)]))
 }

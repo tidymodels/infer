@@ -31,13 +31,11 @@
 
 calculate <- function(x, stat, ...) {
 
-
   if (stat == "mean") {
     col <- setdiff(names(x), "replicate")
     df_out <- x %>%
       dplyr::group_by(replicate) %>%
-      dplyr::summarize_(mean = lazyeval::interp(~mean(var),
-                                                var = as.name(col)))
+      dplyr::summarize(stat = mean(!!sym(col)))
   }
 
   if (stat == "prop") {
@@ -46,6 +44,13 @@ calculate <- function(x, stat, ...) {
       dplyr::group_by(replicate) %>%
       dplyr::summarize_(prop = lazyeval::interp(~mean(var == levels(var)[1]),
                                                 var = as.name(col)))
+  }
+
+  if (stat == "mean") {
+    col <- setdiff(names(x), "replicate")
+    x %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize(stat = mean(!!sym(col)))
   }
 
   if (stat == "diff in means") {
