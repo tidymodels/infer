@@ -5,6 +5,7 @@
 #' @param ... currently ignored
 #' @importFrom dplyr %>% group_by group_by_ summarize_ summarize
 #' @importFrom lazyeval interp
+#' @importFrom rlang !! sym quo enquo
 #' @export
 #' @examples
 #'
@@ -46,11 +47,12 @@ calculate <- function(x, stat, ...) {
                                                 var = as.name(col)))
   }
 
-  if (stat == "mean") {
+  if (stat == "prop2") {
     col <- setdiff(names(x), "replicate")
+    success <- get_par_levels(x)
     x %>%
       dplyr::group_by(replicate) %>%
-      dplyr::summarize(stat = mean(!!sym(col)))
+      dplyr::summarize(stat = mean(!!quo(col) == success))
   }
 
   if (stat == "diff in means") {
