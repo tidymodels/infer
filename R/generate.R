@@ -5,30 +5,30 @@
 #' @param ... currently ignored
 #' @importFrom dplyr group_by
 #' @export
-#' @examples 
-#' 
+#' @examples
+#'
 #' # bootstrap for one numerical variable
 #' if (require(dplyr)) {
 #'   mtcars %>%
 #'     select(mpg) %>%
 #'     generate(reps = 100, type = "bootstrap") %>%
 #'     calculate(stat = "mean")
-#'     
+#'
 #'  # permutation test for equal means
-#'   mtcars %>% 
+#'   mtcars %>%
 #'     select(mpg, am) %>%
 #'     hypothesize(null = "equal means") %>%
 #'     generate(reps = 100, type = "permute") %>%
 #'     calculate(stat = "diff in means")
-#'  
+#'
 #'  # simulate draws from a single categorical variable
-#'  mtcars %>% 
+#'  mtcars %>%
 #'    select(am) %>%
 #'    mutate(am = factor(am)) %>%
 #'    hypothesize(null = "point", p1 = 0.25, p2 = 0.75) %>%
 #'    generate(reps = 100, type = "simulate") %>%
 #'    calculate(stat = "prop")
-#'    
+#'
 #'  # goodness-of-fit for one categorical variable
 #'  mtcars %>%
 #'    select(cyl) %>%
@@ -36,7 +36,7 @@
 #'    generate(reps = 100, type = "simulate") %>%
 #'    calculate(stat = "chisq")
 #' }
-#' 
+#'
 
 generate <- function(x, reps = 1, type = "bootstrap", ...) {
   if (type == "bootstrap") {
@@ -100,11 +100,34 @@ permute_once <- function(x, ...) {
 
 simulate <- function(x, reps = 1, ...) {
   # error
-  if (ncol(x) > 1 | class(dplyr::pull(x, 1)) != "factor") {
+  if (ncol(x) > 1 || class(dplyr::pull(x, 1)) != "factor") {
     stop("Simulation can only be performed for a single categorical variable.")
   }
-  
-  rep_sample_n(x, size = nrow(x), reps = reps, replace = TRUE, prob = unlist(attr(x, "params")))
+
+  rep_sample_n(x,
+               size = nrow(x),
+               reps = reps,
+               replace = TRUE,
+               prob = params_to_prob(x))
+}
+
+#' @importFrom dplyr pull
+
+params_to_prob <- function(x) {
+  par_names <- names(attr(x, "params"))
+  par_levels <- gsub("^.\\.", "", par_names)
+  fct_levels <- levels(dplyr::pull(x, 1))
+
+  if (length(fct_levels) > 2) {
+    return(attr(x, "params")[match(fct_levels, par_levels)])
+  }
+  if (length(fct_levels) == 2) {
+    prob <- c(attr(x, "params"), 1 - attr(x, "params"))
+    if (!identical(par_levels[1], fct_levels[1])) {
+      prob <- rev(prob)
+    }
+    return(prob)
+  }
 }
 
 #' @importFrom dplyr as_tibble pull
@@ -113,7 +136,7 @@ simulate <- function(x, reps = 1, ...) {
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   # attr(tbl, "ci") <- TRUE
   n <- nrow(tbl)
-  
+
   # assign non-uniform probabilities
   # there should be a better way!!
   # prob needs to be nrow(tbl) -- not just number of factor levels
@@ -124,7 +147,7 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
     tbl_wgt <- inner_join(tbl, df_lkup)
     prob <- tbl_wgt$probs
   }
-  
+
   i <- unlist(replicate(reps, sample.int(n, size, replace = replace, prob = prob),
                         simplify = FALSE))
   rep_tbl <- cbind(replicate = rep(1:reps, rep(size, reps)),
