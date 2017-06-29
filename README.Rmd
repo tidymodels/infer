@@ -34,7 +34,7 @@ One categorical (2 level) variable
 ```
 mtcars %>%
   select(am) %>%
-  hypothesize(null = "point", p = .25) %>% 
+  hypothesize(null = "point", p = c("manual" = .25)) %>% 
   generate(reps = 100, type = "simulate") %>% 
   calculate(stat = "prop") #
 ```
@@ -55,7 +55,7 @@ One categorical (>2 level) - GoF
 ```
 mtcars %>%
   select(cyl) %>%
-  hypothesize(null = "point", p1 = .25, p2 = .25, p3 = .50) %>% # call levels() to find order of p's
+  hypothesize(null = "point", p = c("4" = .5, "6" = .25, "8" = .25)) %>% # call levels() to find order of p's
   generate(reps = 100, type = "simulate") %>%
   calculate(stat = "chisq")
 ```
