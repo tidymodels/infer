@@ -124,8 +124,7 @@ simulate <- function(x, reps = 1, ...) {
 #' @importFrom dplyr pull
 
 params_to_prob <- function(x) {
-  par_names <- names(attr(x, "params"))
-  par_levels <- gsub("^.\\.", "", par_names)
+  par_levels <- get_par_levels(x)
   fct_levels <- levels(dplyr::pull(x, 1))
 
   if (length(fct_levels) > 2) {
@@ -138,6 +137,11 @@ params_to_prob <- function(x) {
     }
     return(prob)
   }
+}
+
+get_par_levels <- function(x) {
+  par_names <- names(attr(x, "params"))
+  return(gsub("^.\\.", "", par_names))
 }
 
 #' @importFrom dplyr as_tibble pull
