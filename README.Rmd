@@ -34,7 +34,7 @@ One categorical (2 level) variable
 ```
 mtcars %>%
   select(am) %>%
-  hypothesize(null = "point", p = c("manual" = .25)) %>% 
+  hypothesize(null = "point", p = c("1" = .25)) %>% 
   generate(reps = 100, type = "simulate") %>% 
   calculate(stat = "prop") #
 ```
