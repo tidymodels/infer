@@ -69,6 +69,8 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
     }
   }
 
+  # ADD error: invalid factor levels
+
   attr(x, "params") <- params
 
   return(as.tbl(x))
