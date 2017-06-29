@@ -104,11 +104,19 @@ simulate <- function(x, reps = 1, ...) {
     stop("Simulation can only be performed for a single categorical variable.")
   }
 
-  rep_sample_n(x,
-               size = nrow(x),
-               reps = reps,
-               replace = TRUE,
-               prob = params_to_prob(x))
+  fct_levels <- levels(dplyr::pull(x, 1))
+
+  col_simmed <- unlist(replicate(reps, sample(fct_levels,
+                                              size = nrow(x),
+                                              replace = TRUE,
+                                              prob = params_to_prob(x)),
+                                 simplify = FALSE))
+  rep_tbl <- cbind(replicate = rep(1:reps, rep(size, reps)),
+                   col_simmed)
+  rep_tbl <- dplyr::as_tibble(rep_tbl)
+  names(rep_tbl)[-1] <- names(tbl)
+  #  attr(rep_tbl, "ci") <- attr(tbl, "ci")
+  return(dplyr::group_by(rep_tbl, replicate))
 }
 
 #' @importFrom dplyr pull
