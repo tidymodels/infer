@@ -113,7 +113,7 @@ simulate <- function(x, reps = 1, ...) {
                                  simplify = FALSE))
 
   rep_tbl <- tibble(col = as.factor(col_simmed),
-                   replicate = as.factor(rep(1:reps, rep(size, reps))))
+                   replicate = as.factor(rep(1:reps, rep(nrow(x), reps))))
   names(rep_tbl)[1] <- names(x)
   attr(rep_tbl, "null") <- attr(x, "null")
   attr(rep_tbl, "params") <- attr(x, "params")
