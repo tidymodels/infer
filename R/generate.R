@@ -109,7 +109,7 @@ simulate <- function(x, reps = 1, ...) {
   col_simmed <- unlist(replicate(reps, sample(fct_levels,
                                               size = nrow(x),
                                               replace = TRUE,
-                                              prob = params_to_prob(x)),
+                                              prob = format_params(x)),
                                  simplify = FALSE))
 
   rep_tbl <- tibble(col = as.factor(col_simmed),
@@ -123,20 +123,10 @@ simulate <- function(x, reps = 1, ...) {
 
 #' @importFrom dplyr pull
 
-params_to_prob <- function(x) {
+format_params <- function(x) {
   par_levels <- get_par_levels(x)
   fct_levels <- levels(dplyr::pull(x, 1))
-
-  if (length(fct_levels) > 2) {
-    return(attr(x, "params")[match(fct_levels, par_levels)])
-  }
-  if (length(fct_levels) == 2) {
-    prob <- c(attr(x, "params"), 1 - attr(x, "params"))
-    if (!identical(par_levels[1], fct_levels[1])) {
-      prob <- rev(prob)
-    }
-    return(prob)
-  }
+  return(attr(x, "params")[match(fct_levels, par_levels)])
 }
 
 get_par_levels <- function(x) {
