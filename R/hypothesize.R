@@ -57,13 +57,10 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
   attr(x, "null") <- null
 
   dots <- list(...)
-  params <- parse_params(dots)
+  params <- parse_params(dots, x)
 
   # error: number of proportions in inappropriate given the number of factor levels
   if (!is.null(names(params))) {
-    if (length(levels(x[, 1])) == 2 && length(params) != 1) {
-      stop("A single two-level categorical variable requires only one proportion.")
-    }
     if (length(levels(x[, 1])) > 2 && length(params) != length(levels(x[, 1]))) {
       stop("The number of proportions must equal the number of levels.")
     }
@@ -76,19 +73,25 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
   return(as.tbl(x))
 }
 
-parse_params <- function(x) {
+parse_params <- function(dots, x) {
   ## find props
-  p_ind <- grep("p", names(x))
-  ## check that props are between 0 and 1 and sum to 1 if there are > 1
+  p_ind <- grep("p", names(dots))
+  ## ADD: check that props are between 0 and 1 and sum to 1 if there are > 1
 
-  # means
   ## find means
-  mu_ind <- grep("mu", names(x))
+  mu_ind <- grep("mu", names(dots))
 
   # error: cannot specify both props and means
   if (length(p_ind) * length(mu_ind) != 0) {
     stop("Parameter values should be either proportions or means but not both.")
   }
 
-  return(unlist(x[c(p_ind, mu_ind)]))
+  # add in 1 - p if it's missing
+  if (length(p_ind == 1)) {
+    missing_lev <- setdiff(levels(pull(x, 1)), names(dots$p))
+    dots$p <- append(dots$p, 1 - dots$p)
+    names(dots$p)[2] <- missing_lev
+  }
+
+  return(unlist(dots))
 }
