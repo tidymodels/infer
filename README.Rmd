@@ -31,6 +31,7 @@ mtcars <- as.data.frame(mtcars) %>%
 ***
 
 One categorical (2 level) variable
+
 ```
 mtcars %>%
   select(am) %>%
@@ -39,9 +40,7 @@ mtcars %>%
   calculate(stat = "prop") #
 ```
 
-Two categorical (2 level) variables
-
-- Implemented
+Two categorical (2 level) variables (not yet implemented)
 
 ```
 mtcars %>%
@@ -51,7 +50,7 @@ mtcars %>%
   calculate(stat = "diff in props") #
 ```
 
-One categorical (>2 level) - GoF
+One categorical (>2 level) - GoF  (not yet implemented)
 ```
 mtcars %>%
   select(cyl) %>%
@@ -60,7 +59,7 @@ mtcars %>%
   calculate(stat = "chisq")
 ```
 
-Two categorical (>2 level) variables
+Two categorical (>2 level) variables  (not yet implemented)
 ```
 mtcars %>%
   select(cyl, am) %>%
@@ -71,8 +70,6 @@ mtcars %>%
 
 One numerical variable one categorical (2 levels) (diff in means)
 
-- Implemented
-
 ```
 mtcars %>%
   select(mpg, am) %>%
@@ -81,7 +78,8 @@ mtcars %>%
   calculate(stat = "diff in means")
 ```
 
-One numerical one categorical (>2 levels) -  ANOVA
+One numerical one categorical (>2 levels) -  ANOVA  (not yet implemented)
+
 ```
 mtcars %>%
   select(mpg, cyl) %>%
@@ -90,7 +88,7 @@ mtcars %>%
   calculate(stat = "F")
 ```
 
-Two numerical vars - SLR
+Two numerical vars - SLR  (not yet implemented)
 ```
 mtcars %>%
   select(mpg, hp) %>%
@@ -102,8 +100,6 @@ mtcars %>%
 ### Confidence intervals
 
 One numerical (one mean)
-
-- Implemented
 
 ```
 mtcars %>%
