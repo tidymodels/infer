@@ -35,7 +35,6 @@ calculate <- function(x, stat, ...) {
   if (stat == "mean") {
     col <- setdiff(names(x), "replicate")
     df_out <- x %>%
-      #dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = mean(!!sym(col)))
   }
 
