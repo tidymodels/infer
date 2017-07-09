@@ -40,19 +40,10 @@ calculate <- function(x, stat, ...) {
   }
 
   if (stat == "prop") {
-    col <- setdiff(names(x), "replicate")
+    col <- sym(setdiff(names(x), "replicate"))
+    success <- quo(get_par_levels(x)[1])
     df_out <- x %>%
-      dplyr::group_by(replicate) %>%
-      dplyr::summarize_(prop = lazyeval::interp(~mean(var == levels(var)[1]),
-                                                var = as.name(col)))
-  }
-
-  if (stat == "prop2") {
-    col <- setdiff(names(x), "replicate")
-    success <- get_par_levels(x)
-    x %>%
-      dplyr::group_by(replicate) %>%
-      dplyr::summarize(stat = mean(!!sym(col) == success))
+      dplyr::summarize(stat = mean((!! col) == eval_tidy(success)))
   }
 
   if (stat == "diff in means") {
