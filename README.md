@@ -6,7 +6,7 @@ Infer: a grammar for statistical inference
 
 ------------------------------------------------------------------------
 
-The objective of this package is to perform statistical inference using a grammar that illustrates the underlying concepts and a format that coheres with the `tidyverse`. To participate in the discussion surrounding the development of this package, please see the issues.
+The objective of this package is to perform statistical inference using a grammar that illustrates the underlying concepts and a format that coheres with the `tidyverse`.
 
 ### Hypothesis tests
 
@@ -28,7 +28,7 @@ These examples assume that `mtcars` has been overwritten so that the variables `
 One categorical (2 level) variable
 
     mtcars %>%
-      select(am) %>%
+      specify(response = am) %>% # alt: am ~ 1
       hypothesize(null = "point", p = c("1" = .25)) %>% 
       generate(reps = 100, type = "simulate") %>% 
       calculate(stat = "prop")
@@ -36,7 +36,7 @@ One categorical (2 level) variable
 Two categorical (2 level) variables
 
     mtcars %>%
-      select(am, vs) %>%
+      specify(am ~ vs) %>% # alt: response = am, explanatory = vs
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "diff in props")
@@ -44,15 +44,15 @@ Two categorical (2 level) variables
 One categorical (&gt;2 level) - GoF (not yet implemented)
 
     mtcars %>%
-      select(cyl) %>%
-      hypothesize(null = "point", p = c("4" = .5, "6" = .25, "8" = .25)) %>% # call levels() to find order of p's
+      specify(response = cyl) %>% # alt: cyl ~ 1
+      hypothesize(null = "point", p = c("4" = .5, "6" = .25, "8" = .25)) %>%
       generate(reps = 100, type = "simulate") %>%
       calculate(stat = "chisq")
 
 Two categorical (&gt;2 level) variables (not yet implemented)
 
     mtcars %>%
-      select(cyl, am) %>%
+      specify(cyl ~ am) %>% # alt: response = cyl, explanatory = am
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "chisq")
@@ -60,7 +60,7 @@ Two categorical (&gt;2 level) variables (not yet implemented)
 One numerical variable one categorical (2 levels) (diff in means)
 
     mtcars %>%
-      select(mpg, am) %>%
+      specify(mpg ~ am) %>% alt: response = mpg, explanatory = am
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "diff in means")
@@ -68,7 +68,7 @@ One numerical variable one categorical (2 levels) (diff in means)
 One numerical one categorical (&gt;2 levels) - ANOVA (not yet implemented)
 
     mtcars %>%
-      select(mpg, cyl) %>%
+      specify(mpg ~ cyl) %>% # alt: response = mpg, explanatory = cyl
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "F")
@@ -76,7 +76,7 @@ One numerical one categorical (&gt;2 levels) - ANOVA (not yet implemented)
 Two numerical vars - SLR (not yet implemented)
 
     mtcars %>%
-      select(mpg, hp) %>%
+      specify(mpg ~ hp) %>% alt: response = mpg, explanatory = cyl
       hypothesize(null = "independence") %>% # or "slope = 0"
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "lm(mpg ~ hp)")
@@ -86,6 +86,13 @@ Two numerical vars - SLR (not yet implemented)
 One numerical (one mean)
 
     mtcars %>%
-      select(mpg) %>%
+      specify(response = mpg) %>%
+      generate(reps = 100, type = "bootstrap") %>%
+      calculate(stat = "mean")
+
+One numerical (one proportion)
+
+    mtcars %>%
+      specify(response = mpg) %>%
       generate(reps = 100, type = "bootstrap") %>%
       calculate(stat = "mean")
