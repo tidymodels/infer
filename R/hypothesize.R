@@ -39,19 +39,9 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
     stop("x must be a data.frame or tibble")
   }
 
-  # error: too many columns
-  if (ncol(x) > 2) {
-    stop("Too many columns. Use select() to narrow your data.frame.")
-  }
-
   # error: null not found
   if (!(null %in% c("independence", "point"))) {
     stop("Choice of null is not supported.")
-  }
-
-  # error: independence requires factors
-  if (null == "independence" & !("factor" %in% classes)) {
-    stop("A null of independence requires at least one factor variable.")
   }
 
   attr(x, "null") <- null
@@ -74,11 +64,9 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
 }
 
 parse_params <- function(dots, x) {
-  ## find props
   p_ind <- grep("p", names(dots))
   ## ADD: check that props are between 0 and 1 and sum to 1 if there are > 1
 
-  ## find means
   mu_ind <- grep("mu", names(dots))
 
   # error: cannot specify both props and means
@@ -88,7 +76,7 @@ parse_params <- function(dots, x) {
 
   # add in 1 - p if it's missing
   if (length(dots[[p_ind]]) == 1) {
-    missing_lev <- setdiff(levels(pull(x, 1)), names(dots$p))
+    missing_lev <- setdiff(levels(pull(x, attr(x, "response"))), names(dots$p))
     dots$p <- append(dots$p, 1 - dots$p)
     names(dots$p)[2] <- missing_lev
   }

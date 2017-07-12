@@ -4,17 +4,19 @@
 #' @param response the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument.
 #' @param explanatory the variable name in \code{x} that will serve as the explanatory variable
 #' @importFrom rlang f_lhs
-#' @importFrom rlang r_lhs
+#' @importFrom rlang f_lhs
 #' @export
 
 specify <- function(x, formula, response = NULL, explanatory = NULL) {
-  attr(x, "response") <- response
-  attr(x, "explanatory") <- explanatory
+  attr(x, "response")    <- substitute(response)
+  attr(x, "explanatory") <- substitute(explanatory)
 
-  if (exists("formula")) {
-    attr(x, "response") <- f_lhs(formula)
+  if (hasArg(formula)) {
+    attr(x, "response")    <- f_lhs(formula)
     attr(x, "explanatory") <- f_rhs(formula)
   }
+
+  # TODO: coerce char to factor
 
   return(x)
 }
