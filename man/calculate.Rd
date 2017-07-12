@@ -9,7 +9,7 @@ calculate(x, stat, ...)
 \arguments{
 \item{x}{the output from \code{\link{hypothesize}} or \code{\link{generate}}}
 
-\item{stat}{a string giving the type of the statistic to create, i.e. "diff in means", "diff in props", etc.
+\item{stat}{a string giving the type of the statistic to calculate. Current options include "mean", "prop", "diff in means", "diff in props", "chisq", and "F".
 or an equation in quotes}
 
 \item{...}{currently ignored}
@@ -23,8 +23,8 @@ Calculate summary statistics
 if (require(dplyr)) {
   diffs <- mtcars \%>\%
     mutate(am = factor(am), vs = factor(vs)) \%>\%
-    select(am, vs) \%>\% 
-    hypothesize(null = "independence") \%>\% 
+    select(am, vs) \%>\%
+    hypothesize(null = "independence") \%>\%
     generate(reps = 100, type = "permute") \%>\%
     calculate(stat = "diff in props")
   test_stat <- mtcars \%>\%
@@ -34,8 +34,8 @@ if (require(dplyr)) {
     summarize(diff_prop = diff(prop))
   if (require(ggplot2)) {
     ggplot(data = diffs, aes(x = diffprop)) +
-      geom_density() + 
-      geom_vline(xintercept = 0, linetype = 3) + 
+      geom_density() +
+      geom_vline(xintercept = 0, linetype = 3) +
       geom_vline(data = test_stat, aes(xintercept = diff_prop), color = "red")
   }
 }

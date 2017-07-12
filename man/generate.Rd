@@ -26,22 +26,22 @@ if (require(dplyr)) {
     select(mpg) \%>\%
     generate(reps = 100, type = "bootstrap") \%>\%
     calculate(stat = "mean")
-    
+
  # permutation test for equal means
-  mtcars \%>\% 
+  mtcars \%>\%
     select(mpg, am) \%>\%
     hypothesize(null = "equal means") \%>\%
     generate(reps = 100, type = "permute") \%>\%
     calculate(stat = "diff in means")
- 
+
  # simulate draws from a single categorical variable
- mtcars \%>\% 
+ mtcars \%>\%
    select(am) \%>\%
    mutate(am = factor(am)) \%>\%
    hypothesize(null = "point", p1 = 0.25, p2 = 0.75) \%>\%
    generate(reps = 100, type = "simulate") \%>\%
    calculate(stat = "prop")
-   
+
  # goodness-of-fit for one categorical variable
  mtcars \%>\%
    select(cyl) \%>\%

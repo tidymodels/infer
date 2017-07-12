@@ -2,7 +2,7 @@
 % Please edit documentation in R/hypothesize.R
 \name{hypothesize}
 \alias{hypothesize}
-\title{Specify a null hypothesis}
+\title{Declare a null hypothesis}
 \usage{
 hypothesize(x, null = c("independence", "point"), ...)
 }
@@ -14,7 +14,7 @@ hypothesize(x, null = c("independence", "point"), ...)
 \item{...}{arguments passed to downstream functions}
 }
 \description{
-Specify a null hypothesis
+Declare a null hypothesis
 }
 \examples{
 if (require(dplyr)) {
