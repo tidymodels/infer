@@ -73,7 +73,9 @@ calculate <- function(x, stat, ...) {
   }
 
   if (stat == "Chisq") {
-
+    col <- sym(setdiff(names(x), "replicate"))
+    df_out <- x %>%
+      dplyr::summarize(stat = chisq.test(table(!! col), attr(x, "params"))$stat)
   }
 
 
