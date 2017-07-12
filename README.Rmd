@@ -37,17 +37,17 @@ mtcars %>%
   select(am) %>%
   hypothesize(null = "point", p = c("1" = .25)) %>% 
   generate(reps = 100, type = "simulate") %>% 
-  calculate(stat = "prop") #
+  calculate(stat = "prop")
 ```
 
-Two categorical (2 level) variables (not yet implemented)
+Two categorical (2 level) variables
 
 ```
 mtcars %>%
   select(am, vs) %>%
-  hypothesize(null = "independence") %>% # 
+  hypothesize(null = "independence") %>%
   generate(reps = 100, type = "permute") %>%
-  calculate(stat = "diff in props") #
+  calculate(stat = "diff in props")
 ```
 
 One categorical (>2 level) - GoF  (not yet implemented)

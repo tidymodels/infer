@@ -29,31 +29,27 @@ One categorical (2 level) variable
 
     mtcars %>%
       select(am) %>%
-      hypothesize(null = "point", p = .25) %>% 
+      hypothesize(null = "point", p = c("1" = .25)) %>% 
       generate(reps = 100, type = "simulate") %>% 
-      calculate(stat = "prop") #
+      calculate(stat = "prop")
 
 Two categorical (2 level) variables
 
--   Implemented
-
-<!-- -->
-
     mtcars %>%
       select(am, vs) %>%
-      hypothesize(null = "independence") %>% # 
+      hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
-      calculate(stat = "diff in props") #
+      calculate(stat = "diff in props")
 
-One categorical (&gt;2 level) - GoF
+One categorical (&gt;2 level) - GoF (not yet implemented)
 
     mtcars %>%
       select(cyl) %>%
-      hypothesize(null = "point", p1 = .25, p2 = .25, p3 = .50) %>% # call levels() to find order of p's
+      hypothesize(null = "point", p = c("4" = .5, "6" = .25, "8" = .25)) %>% # call levels() to find order of p's
       generate(reps = 100, type = "simulate") %>%
       calculate(stat = "chisq")
 
-Two categorical (&gt;2 level) variables
+Two categorical (&gt;2 level) variables (not yet implemented)
 
     mtcars %>%
       select(cyl, am) %>%
@@ -63,17 +59,13 @@ Two categorical (&gt;2 level) variables
 
 One numerical variable one categorical (2 levels) (diff in means)
 
--   Implemented
-
-<!-- -->
-
     mtcars %>%
       select(mpg, am) %>%
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "diff in means")
 
-One numerical one categorical (&gt;2 levels) - ANOVA
+One numerical one categorical (&gt;2 levels) - ANOVA (not yet implemented)
 
     mtcars %>%
       select(mpg, cyl) %>%
@@ -81,7 +73,7 @@ One numerical one categorical (&gt;2 levels) - ANOVA
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "F")
 
-Two numerical vars - SLR
+Two numerical vars - SLR (not yet implemented)
 
     mtcars %>%
       select(mpg, hp) %>%
@@ -92,10 +84,6 @@ Two numerical vars - SLR
 ### Confidence intervals
 
 One numerical (one mean)
-
--   Implemented
-
-<!-- -->
 
     mtcars %>%
       select(mpg) %>%

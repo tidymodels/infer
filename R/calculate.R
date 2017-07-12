@@ -62,16 +62,14 @@ calculate <- function(x, stat, ...) {
     # Assume the first column is to be permuted and
     # the second column are the groups
     # Assumes the variables are factors and NOT chars here!
-    permute_col <- names(x)[1]
-    group_col <- names(x)[2]
+    # My be replaced with formulas to specify which is grouping var
+    permute_col <- sym(names(x)[1])
+    group_col <- sym(names(x)[2])
 
     df_out <- x %>%
-      dplyr::group_by_("replicate", .dots = group_col) %>%
-      dplyr::summarize_(N = ~n(),
-                        prop = lazyeval::interp(~mean(var == levels(var)[1]),
-                                                var = as.name(permute_col))) %>%
-      dplyr::group_by(replicate) %>%
-      dplyr::summarize_(diffprop = ~diff(prop))
+      dplyr::group_by(replicate, !! group_col) %>%
+      dplyr::summarize(prop = mean((!! permute_col) == levels(!! permute_col)[1])) %>%
+      dplyr::summarize(stat = diff(prop))
   }
 
   if (stat == "Chisq") {
