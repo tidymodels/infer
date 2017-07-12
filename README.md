@@ -60,7 +60,7 @@ Two categorical (&gt;2 level) variables (not yet implemented)
 One numerical variable one categorical (2 levels) (diff in means)
 
     mtcars %>%
-      specify(mpg ~ am) %>% alt: response = mpg, explanatory = am
+      specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "diff in means")
@@ -76,17 +76,17 @@ One numerical one categorical (&gt;2 levels) - ANOVA (not yet implemented)
 Two numerical vars - SLR (not yet implemented)
 
     mtcars %>%
-      specify(mpg ~ hp) %>% alt: response = mpg, explanatory = cyl
+      specify(mpg ~ hp) %>% # alt: response = mpg, explanatory = cyl
       hypothesize(null = "independence") %>% # or "slope = 0"
       generate(reps = 100, type = "permute") %>%
-      calculate(stat = "lm(mpg ~ hp)")
+      calculate(stat = "slope")
 
 ### Confidence intervals
 
 One numerical (one mean)
 
     mtcars %>%
-      specify(response = mpg) %>%
+      specify(response = mpg) %>% # alt: mpg ~ 1
       generate(reps = 100, type = "bootstrap") %>%
       calculate(stat = "mean")
 
