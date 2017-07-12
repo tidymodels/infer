@@ -90,9 +90,23 @@ One numerical (one mean)
       generate(reps = 100, type = "bootstrap") %>%
       calculate(stat = "mean")
 
-One numerical (one proportion)
+One categorical (one proportion) (not yet implemented)
 
     mtcars %>%
-      specify(response = mpg) %>%
+      specify(response = am) %>%
       generate(reps = 100, type = "bootstrap") %>%
-      calculate(stat = "mean")
+      calculate(stat = "prop")
+
+One numerical variable one categorical (2 levels) (diff in means)
+
+    mtcars %>%
+      specify(mpg ~ am) %>%
+      generate(reps = 100, type = "bootstrap") %>%
+      calculate(stat = "diff in means")
+
+Two categorical variables (diff in proportions) (not yet implemented)
+
+    mtcars %>%
+      specify(am ~ vs) %>%
+      generate(reps = 100, type = "bootstrap") %>%
+      calculate(stat = "diff in prop")
