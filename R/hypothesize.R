@@ -87,7 +87,7 @@ parse_params <- function(dots, x) {
   }
 
   # add in 1 - p if it's missing
-  if (length(p_ind == 1)) {
+  if (length(dots[[p_ind]]) == 1) {
     missing_lev <- setdiff(levels(pull(x, 1)), names(dots$p))
     dots$p <- append(dots$p, 1 - dots$p)
     names(dots$p)[2] <- missing_lev
