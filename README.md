@@ -25,7 +25,7 @@ These examples assume that `mtcars` has been overwritten so that the variables `
 
 ------------------------------------------------------------------------
 
-One categorical (2 level) variable
+One categorical (2 level) variable (implemented up to calculate())
 
     mtcars %>%
       specify(response = am) %>% # alt: am ~ 1
@@ -33,7 +33,7 @@ One categorical (2 level) variable
       generate(reps = 100, type = "simulate") %>% 
       calculate(stat = "prop")
 
-Two categorical (2 level) variables
+Two categorical (2 level) variables (implemented)
 
     mtcars %>%
       specify(am ~ vs) %>% # alt: response = am, explanatory = vs
