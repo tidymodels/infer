@@ -47,18 +47,10 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
   attr(x, "null") <- null
 
   dots <- list(...)
-  params <- parse_params(dots, x)
-
-  # error: number of proportions in inappropriate given the number of factor levels
-  if (!is.null(names(params))) {
-    if (length(levels(x[, 1])) > 2 && length(params) != length(levels(x[, 1]))) {
-      stop("The number of proportions must equal the number of levels.")
-    }
+  if(length(dots) > 0) {
+    params <- parse_params(dots, x)
+    attr(x, "params") <- params
   }
-
-  # ADD error: invalid factor levels
-
-  attr(x, "params") <- params
 
   return(as.tbl(x))
 }
@@ -76,7 +68,7 @@ parse_params <- function(dots, x) {
 
   # add in 1 - p if it's missing
   if (length(dots[[p_ind]]) == 1) {
-    missing_lev <- setdiff(levels(pull(x, attr(x, "response"))), names(dots$p))
+    missing_lev <- setdiff(levels(pull(x, !! attr(x, "response"))), names(dots$p))
     dots$p <- append(dots$p, 1 - dots$p)
     names(dots$p)[2] <- missing_lev
   }
