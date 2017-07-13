@@ -59,12 +59,8 @@ calculate <- function(x, stat, ...) {
   }
 
   if (stat == "diff in props") {
-    # Assume the first column is to be permuted and
-    # the second column are the groups
-    # Assumes the variables are factors and NOT chars here!
-    # My be replaced with formulas to specify which is grouping var
-    permute_col <- sym(names(x)[1])
-    group_col <- sym(names(x)[2])
+    permute_col <- attr(x, "response")
+    group_col <- attr(x, "explanatory")
 
     df_out <- x %>%
       dplyr::group_by(replicate, !! group_col) %>%
@@ -74,6 +70,7 @@ calculate <- function(x, stat, ...) {
 
   if (stat == "Chisq") {
     col <- sym(setdiff(names(x), "replicate"))
+    n   <-
     df_out <- x %>%
       dplyr::summarize(stat = chisq.test(table(!! col), attr(x, "params"))$stat)
   }
