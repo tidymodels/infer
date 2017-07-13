@@ -60,9 +60,11 @@ bootstrap <- function(x, reps = 1, ...) {
 permute <- function(x, reps = 1, ...) {
   df_out <- replicate(reps, permute_once(x), simplify = FALSE) %>%
     dplyr::bind_rows() %>%
-    dplyr::mutate_(replicate = ~rep(1:reps, each = nrow(x))) %>%
+    dplyr::mutate(replicate = rep(1:reps, each = nrow(x))) %>%
     dplyr::group_by(replicate)
   attr(df_out, "null") <- attr(x, "null")
+  attr(df_out, "response") <- attr(x, "response")
+  attr(df_out, "explanatory") <- attr(x, "explanatory")
   return(df_out)
 }
 
@@ -87,10 +89,10 @@ permute_once <- function(x, ...) {
     ## by default, permute the first column of the two selected
     # Since dealing with tibble potentially, we need to force a
     # vector here
-    y <- x[[1]]
+    y <- pull(x, !! attr(x, "response"))
 
-    y_prime <- y[ sample.int(length(y)) ]
-    x[[1]] <- y_prime
+    y_prime <- sample(y, size = length(y), replace = TRUE)
+    x[as.character(attr(x, "response"))] <- y_prime
     return(x)
   }
 
@@ -99,12 +101,7 @@ permute_once <- function(x, ...) {
 #' @importFrom dplyr pull
 
 simulate <- function(x, reps = 1, ...) {
-  # error
-  if (ncol(x) > 1 || class(dplyr::pull(x, 1)) != "factor") {
-    stop("Simulation can only be performed for a single categorical variable.")
-  }
-
-  fct_levels <- levels(dplyr::pull(x, 1))
+  fct_levels <- levels(dplyr::pull(x, !! attr(x, "response")))
 
   col_simmed <- unlist(replicate(reps, sample(fct_levels,
                                               size = nrow(x),
@@ -112,9 +109,9 @@ simulate <- function(x, reps = 1, ...) {
                                               prob = format_params(x)),
                                  simplify = FALSE))
 
-  rep_tbl <- tibble(col = as.factor(col_simmed),
+  rep_tbl <- tibble(!! attr(x, "response") := as.factor(col_simmed),
                    replicate = as.factor(rep(1:reps, rep(nrow(x), reps))))
-  names(rep_tbl)[1] <- names(x)
+
   attr(rep_tbl, "null") <- attr(x, "null")
   attr(rep_tbl, "params") <- attr(x, "params")
   #  attr(rep_tbl, "ci") <- attr(tbl, "ci")
@@ -125,7 +122,7 @@ simulate <- function(x, reps = 1, ...) {
 
 format_params <- function(x) {
   par_levels <- get_par_levels(x)
-  fct_levels <- levels(dplyr::pull(x, 1))
+  fct_levels <- levels(dplyr::pull(x, !! attr(x, "response")))
   return(attr(x, "params")[match(fct_levels, par_levels)])
 }
 
