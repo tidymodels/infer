@@ -17,6 +17,7 @@ specify <- function(x, formula, response = NULL, explanatory = NULL) {
   }
 
   # TODO: coerce char to factor
+  # TODO: select down cols
 
   return(x)
 }
