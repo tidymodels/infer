@@ -4,7 +4,8 @@
 #' @param response the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument.
 #' @param explanatory the variable name in \code{x} that will serve as the explanatory variable
 #' @importFrom rlang f_lhs
-#' @importFrom rlang f_lhs
+#' @importFrom rlang f_rhs
+#' @importFrom tibble as_tibble
 #' @export
 
 specify <- function(x, formula, response = NULL, explanatory = NULL) {
@@ -17,7 +18,13 @@ specify <- function(x, formula, response = NULL, explanatory = NULL) {
   }
 
   # TODO: coerce char to factor
-  # TODO: select down cols
+
+  x <- x %>%
+    select(which(names(x) %in%
+                   as.character(c(
+                     attr(x, "response"),
+                     attr(x, "explanatory"))))) %>%
+    as_tibble()
 
   return(x)
 }
