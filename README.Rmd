@@ -30,7 +30,7 @@ mtcars <- as.data.frame(mtcars) %>%
 
 ***
 
-One categorical (2 level) variable
+One categorical (2 level) variable (implemented up to calculate())
 
 ```
 mtcars %>%
@@ -40,7 +40,7 @@ mtcars %>%
   calculate(stat = "prop")
 ```
 
-Two categorical (2 level) variables
+Two categorical (2 level) variables (implemented)
 
 ```
 mtcars %>%
