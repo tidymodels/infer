@@ -86,7 +86,7 @@ Two numerical vars - SLR (not yet implemented)
 One numerical (one mean)
 
     mtcars %>%
-      specify(response = mpg) %>% # alt: mpg ~ 1
+      specify(response = mpg) %>%
       generate(reps = 100, type = "bootstrap") %>%
       calculate(stat = "mean")
 
@@ -110,3 +110,10 @@ Two categorical variables (diff in proportions) (not yet implemented)
       specify(am ~ vs) %>%
       generate(reps = 100, type = "bootstrap") %>%
       calculate(stat = "diff in prop")
+
+Two numerical vars - SLR (not yet implemented)
+
+    mtcars %>%
+      specify(mpg ~ hp) %>% 
+      generate(reps = 100, type = "bootstrap") %>%
+      calculate(stat = "slope")
