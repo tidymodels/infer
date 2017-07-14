@@ -41,23 +41,23 @@ Two categorical (2 level) variables (implemented)
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "diff in props")
 
-One categorical (&gt;2 level) - GoF (not yet implemented)
+One categorical (&gt;2 level) - GoF (implemented)
 
     mtcars %>%
-      specify(response = cyl) %>% # alt: cyl ~ 1
+      specify(cyl ~ NULL) %>% # alt: response = cyl
       hypothesize(null = "point", p = c("4" = .5, "6" = .25, "8" = .25)) %>%
       generate(reps = 100, type = "simulate") %>%
-      calculate(stat = "chisq")
+      calculate(stat = "Chisq")
 
-Two categorical (&gt;2 level) variables (not yet implemented)
+Two categorical (&gt;2 level) variables (implemented)
 
     mtcars %>%
       specify(cyl ~ am) %>% # alt: response = cyl, explanatory = am
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
-      calculate(stat = "chisq")
+      calculate(stat = "Chisq")
 
-One numerical variable one categorical (2 levels) (diff in means)
+One numerical variable one categorical (2 levels) (diff in means) (implemented)
 
     mtcars %>%
       specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
