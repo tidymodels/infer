@@ -115,6 +115,8 @@ simulate <- function(x, reps = 1, ...) {
   attr(rep_tbl, "null") <- attr(x, "null")
   attr(rep_tbl, "params") <- attr(x, "params")
   #  attr(rep_tbl, "ci") <- attr(tbl, "ci")
+  # TODO: we may want to clean up this object before sending it out - do we
+  # really need all of the attributes() that it spits out?
   return(dplyr::group_by(rep_tbl, replicate))
 }
 
