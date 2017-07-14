@@ -19,12 +19,11 @@ specify <- function(x, formula, response = NULL, explanatory = NULL) {
 
   # TODO: coerce char to factor
 
-  x <- x %>%
-    select(which(names(x) %in%
-                   as.character(c(
-                     attr(x, "response"),
-                     attr(x, "explanatory"))))) %>%
-    as_tibble()
+  x <- as_tibble(x) %>%
+    select(one_of(c(
+      as.character((attr(x, "response"))),
+      as.character(attr(x, "explanatory"))
+    )))
 
   return(x)
 }
