@@ -45,25 +45,17 @@ calculate <- function(x, stat, ...) {
   }
 
   if (stat == "diff in means") {
-    num_cols <- sapply(x, is.numeric)
-    non_num_name <- names(num_cols[num_cols != TRUE])
-    col <- setdiff(names(x), "replicate")
-    col <- setdiff(col, non_num_name)
     df_out <- x %>%
-      dplyr::group_by_("replicate", .dots = non_num_name) %>%
-      dplyr::summarize_(N = ~n(),
-                        mean = lazyeval::interp(~mean(var), var = as.name(col))) %>%
+      dplyr::group_by_("replicate", attr(x, "explanatory")) %>%
+      dplyr::summarize(xbar = mean(!! attr(x, "response"))) %>%
       dplyr::group_by(replicate) %>%
-      dplyr::summarize(diffmean = diff(mean))
+      dplyr::summarize(stat = diff(xbar))
   }
 
   if (stat == "diff in props") {
-    permute_col <- attr(x, "response")
-    group_col <- attr(x, "explanatory")
-
     df_out <- x %>%
-      dplyr::group_by(replicate, !! group_col) %>%
-      dplyr::summarize(prop = mean((!! permute_col) == levels(!! permute_col)[1])) %>%
+      dplyr::group_by(replicate, attr(x, "explanatory")) %>%
+      dplyr::summarize(prop = mean((!! attr(x, "response")) == levels(!! attr(x, "response"))[1])) %>%
       dplyr::summarize(stat = diff(prop))
   }
 
@@ -74,11 +66,25 @@ calculate <- function(x, stat, ...) {
   }
 
   if (stat == "Chisq") {
-    col <- sym(setdiff(names(x), "replicate"))
+    ## The following could stand to be cleaned up
     n   <- attr(x, "biggest_group_size")
-    expected <- n * attr(x, "params")
-    df_out <- x %>%
-      dplyr::summarize(stat = sum((table(!! col) - expected)^2 / expected))
+
+    if (is.null(attr(x, "explanatory"))) {
+      expected <- n * attr(x, "params")
+      df_out <- x %>%
+        dplyr::summarize(stat = sum((table(!! attr(x, "response")) - expected)^2 / expected))
+    } else {
+      obs_tab <- x %>%
+        filter(replicate == 1) %>%
+        ungroup() %>%
+        select(!! attr(x, "response"), !! attr(x, "explanatory")) %>%
+        table()
+      expected <- outer(rowSums(obs_tab), colSums(obs_tab)) / n
+      df_out <- x %>%
+        dplyr::summarize(stat = sum((table(!! attr(x, "response"), !! attr(x, "explanatory"))
+                                     - expected)^2 / expected))
+
+    }
   }
 
 
