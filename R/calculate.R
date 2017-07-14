@@ -3,8 +3,7 @@
 #' @param stat a string giving the type of the statistic to calculate. Current options include "mean", "prop", "diff in means", "diff in props", "chisq", and "F".
 #' or an equation in quotes
 #' @param ... currently ignored
-#' @importFrom dplyr %>% group_by group_by_ summarize_ summarize
-#' @importFrom lazyeval interp
+#' @importFrom dplyr %>% group_by summarize
 #' @importFrom rlang !! sym quo enquo
 #' @export
 #' @examples
@@ -68,11 +67,18 @@ calculate <- function(x, stat, ...) {
       dplyr::summarize(stat = diff(prop))
   }
 
+  if (stat == "slope") {
+    model <- as.formula(paste0(attr(x, "response"), "~", attr(x, "explanatory")))
+    df_out <- x %>%
+      dplyr::summarize(stat = coef(lm(eval_tidy(model)), data = )[2])
+  }
+
   if (stat == "Chisq") {
     col <- sym(setdiff(names(x), "replicate"))
-    n   <-
+    n   <- attr(x, "biggest_group_size")
+    expected <- n * attr(x, "params")
     df_out <- x %>%
-      dplyr::summarize(stat = chisq.test(table(!! col), attr(x, "params"))$stat)
+      dplyr::summarize(stat = sum((table(!! col) - expected)^2 / expected))
   }
 
 
