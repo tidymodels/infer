@@ -4,7 +4,7 @@
 #' or an equation in quotes
 #' @param ... currently ignored
 #' @importFrom dplyr %>% group_by summarize
-#' @importFrom rlang !! sym quo enquo
+#' @importFrom rlang !! sym quo enquo eval_tidy
 #' @export
 #' @examples
 #'
@@ -41,12 +41,12 @@ calculate <- function(x, stat, ...) {
     col <- attr(x, "response")
     success <- quo(get_par_levels(x)[1])
     df_out <- x %>%
-      dplyr::summarize(stat = mean(!! col == eval_tidy(success))) # This doesn't appear to be working
+      dplyr::summarize(stat = mean(!! col == rlang::eval_tidy(success))) # This doesn't appear to be working
   }
 
   if (stat == "diff in means") {
     df_out <- x %>%
-      dplyr::group_by_("replicate", attr(x, "explanatory")) %>%
+      dplyr::group_by("replicate", !! attr(x, "explanatory")) %>%
       dplyr::summarize(xbar = mean(!! attr(x, "response"))) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = diff(xbar))
