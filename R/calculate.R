@@ -89,7 +89,8 @@ calculate <- function(x, stat, ...) {
 
 
   if (stat == "F") {
-
+    df_out <- x %>%
+      dplyr::summarize(stat = anova(lm(!! attr(x, "response") ~ !! attr(x, "explanatory")))$`F value`[1])
   }
 
   return(df_out)
