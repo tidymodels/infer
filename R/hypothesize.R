@@ -57,7 +57,6 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
 
 parse_params <- function(dots, x) {
   p_ind <- grep("p", names(dots))
-  ## ADD: check that props are between 0 and 1 and sum to 1 if there are > 1
 
   mu_ind <- grep("mu", names(dots))
 
@@ -68,9 +67,15 @@ parse_params <- function(dots, x) {
 
   # add in 1 - p if it's missing
   if (length(dots[[p_ind]]) == 1) {
+    warning(paste0("Missing level, assuming proportion is 1 - ", dots$p, "."))    
     missing_lev <- setdiff(levels(pull(x, !! attr(x, "response"))), names(dots$p))
     dots$p <- append(dots$p, 1 - dots$p)
     names(dots$p)[2] <- missing_lev
+  }
+  
+  if (sum(dots[[p_ind]]) != 1){
+    dots[[p_ind]] <- dots[[p_ind]]/sum(dots[[p_ind]])
+    warning("Proportions do not sum to 1, normalizing automatically.")
   }
 
   return(unlist(dots))
