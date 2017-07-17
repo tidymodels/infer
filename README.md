@@ -25,10 +25,10 @@ These examples assume that `mtcars` has been overwritten so that the variables `
 
 ------------------------------------------------------------------------
 
-One categorical (2 level) variable (implemented up to calculate())
+One categorical (2 level) variable
 
     mtcars %>%
-      specify(response = am) %>% # alt: am ~ 1
+      specify(response = am) %>% # alt: am ~ NULL (or am ~ 1)
       hypothesize(null = "point", p = c("1" = .25)) %>% 
       generate(reps = 100, type = "simulate") %>% 
       calculate(stat = "prop")
@@ -64,6 +64,14 @@ One numerical variable one categorical (2 levels) (diff in means)
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "diff in means")
+
+One numerical variable one categorical (2 levels) (diff in medians)
+
+    mtcars %>%
+      specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
+      hypothesize(null = "independence") %>%
+      generate(reps = 100, type = "permute") %>%
+      calculate(stat = "diff in medians")
 
 One numerical one categorical (&gt;2 levels) - ANOVA
 
