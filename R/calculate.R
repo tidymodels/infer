@@ -38,10 +38,10 @@ calculate <- function(x, stat, ...) {
   }
 
   if (stat == "prop") {
-    col <- sym(setdiff(names(x), "replicate"))
+    col <- attr(x, "response")
     success <- quo(get_par_levels(x)[1])
     df_out <- x %>%
-      dplyr::summarize(stat = mean((!! col) == eval_tidy(success)))
+      dplyr::summarize(stat = mean(!! col == eval_tidy(success))) # This doesn't appear to be working
   }
 
   if (stat == "diff in means") {
