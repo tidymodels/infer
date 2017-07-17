@@ -129,6 +129,7 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   # there should be a better way!!
   # prob needs to be nrow(tbl) -- not just number of factor levels
   if (!is.null(prob)) {
+    if (length(prob) != n) stop("The argument prob must have length nrow(tbl).")
     df_lkup <- data_frame(vals = levels(dplyr::pull(tbl, 1)))
     names(df_lkup) <- names(tbl)
     df_lkup$probs = prob
