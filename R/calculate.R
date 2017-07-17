@@ -59,12 +59,6 @@ calculate <- function(x, stat, ...) {
       dplyr::summarize(stat = diff(prop))
   }
 
-  if (stat == "slope") {
-    model <- as.formula(paste0(attr(x, "response"), "~", attr(x, "explanatory")))
-    df_out <- x %>%
-      dplyr::summarize(stat = coef(lm(eval_tidy(model)), data = )[2])
-  }
-
   if (stat == "Chisq") {
     ## The following could stand to be cleaned up
     n   <- attr(x, "biggest_group_size")
@@ -87,10 +81,14 @@ calculate <- function(x, stat, ...) {
     }
   }
 
-
   if (stat == "F") {
     df_out <- x %>%
       dplyr::summarize(stat = anova(lm(!! attr(x, "response") ~ !! attr(x, "explanatory")))$`F value`[1])
+  }
+
+  if (stat == "slope") {
+    df_out <- x %>%
+      dplyr::summarize(stat = coef(lm(!! attr(x, "response") ~ !! attr(x, "explanatory")))[2])
   }
 
   return(df_out)
