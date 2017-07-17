@@ -71,24 +71,7 @@ permute <- function(x, reps = 1, ...) {
 permute_once <- function(x, ...) {
   dots <- list(...)
 
-  if (attr(x, "null") == "equal means") {
-    ## need to look for name of variable to permute...ugh
-    ## by default, use the first column
-    # y <- x[, 1]
-    ## Hopefully this fixes that
-    num_cols <- sapply(x, is.numeric)
-    num_name <- names(num_cols[num_cols == TRUE])
-    y <- x[[num_name]]
-
-    y_prime <- y[ sample.int(length(y)) ]
-    x[[num_name]] <- y_prime
-    return(x)
-  }
-
   if (attr(x, "null") == "independence") {
-    ## by default, permute the first column of the two selected
-    # Since dealing with tibble potentially, we need to force a
-    # vector here
     y <- pull(x, !! attr(x, "response"))
 
     y_prime <- sample(y, size = length(y), replace = TRUE)
