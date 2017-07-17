@@ -73,10 +73,10 @@ parse_params <- function(dots, x) {
     names(dots$p)[2] <- missing_lev
   }
   
-  if (sum(dots[[p_ind]]) != 1){
-    dots[[p_ind]] <- dots[[p_ind]]/sum(dots[[p_ind]])
-    warning("Proportions do not sum to 1, normalizing automatically.")
-  }
+  # if (sum(dots[[p_ind]]) != 1){
+  #   dots[[p_ind]] <- dots[[p_ind]]/sum(dots[[p_ind]])
+  #   warning("Proportions do not sum to 1, normalizing automatically.")
+  # }
 
   return(unlist(dots))
 }
