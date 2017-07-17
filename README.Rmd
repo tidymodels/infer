@@ -40,7 +40,7 @@ mtcars %>%
   calculate(stat = "prop")
 ```
 
-Two categorical (2 level) variables (implemented)
+Two categorical (2 level) variables
 
 ```
 mtcars %>%
@@ -50,7 +50,7 @@ mtcars %>%
   calculate(stat = "diff in props")
 ```
 
-One categorical (>2 level) - GoF  (implemented)
+One categorical (>2 level) - GoF
 
 ```
 mtcars %>%
@@ -60,7 +60,7 @@ mtcars %>%
   calculate(stat = "Chisq")
 ```
 
-Two categorical (>2 level) variables  (implemented)
+Two categorical (>2 level) variables
 
 ```
 mtcars %>%
@@ -70,7 +70,7 @@ mtcars %>%
   calculate(stat = "Chisq")
 ```
 
-One numerical variable one categorical (2 levels) (diff in means) (implemented)
+One numerical variable one categorical (2 levels) (diff in means)
 
 ```
 mtcars %>%
@@ -80,7 +80,7 @@ mtcars %>%
   calculate(stat = "diff in means")
 ```
 
-One numerical one categorical (>2 levels) -  ANOVA  (not yet implemented)
+One numerical one categorical (>2 levels) -  ANOVA
 
 ```
 mtcars %>%
@@ -90,7 +90,7 @@ mtcars %>%
   calculate(stat = "F")
 ```
 
-Two numerical vars - SLR  (not yet implemented)
+Two numerical vars - SLR 
 
 ```
 mtcars %>%

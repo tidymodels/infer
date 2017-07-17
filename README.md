@@ -33,7 +33,7 @@ One categorical (2 level) variable (implemented up to calculate())
       generate(reps = 100, type = "simulate") %>% 
       calculate(stat = "prop")
 
-Two categorical (2 level) variables (implemented)
+Two categorical (2 level) variables
 
     mtcars %>%
       specify(am ~ vs) %>% # alt: response = am, explanatory = vs
@@ -41,7 +41,7 @@ Two categorical (2 level) variables (implemented)
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "diff in props")
 
-One categorical (&gt;2 level) - GoF (implemented)
+One categorical (&gt;2 level) - GoF
 
     mtcars %>%
       specify(cyl ~ NULL) %>% # alt: response = cyl
@@ -49,7 +49,7 @@ One categorical (&gt;2 level) - GoF (implemented)
       generate(reps = 100, type = "simulate") %>%
       calculate(stat = "Chisq")
 
-Two categorical (&gt;2 level) variables (implemented)
+Two categorical (&gt;2 level) variables
 
     mtcars %>%
       specify(cyl ~ am) %>% # alt: response = cyl, explanatory = am
@@ -57,7 +57,7 @@ Two categorical (&gt;2 level) variables (implemented)
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "Chisq")
 
-One numerical variable one categorical (2 levels) (diff in means) (implemented)
+One numerical variable one categorical (2 levels) (diff in means)
 
     mtcars %>%
       specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
@@ -65,7 +65,7 @@ One numerical variable one categorical (2 levels) (diff in means) (implemented)
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "diff in means")
 
-One numerical one categorical (&gt;2 levels) - ANOVA (not yet implemented)
+One numerical one categorical (&gt;2 levels) - ANOVA
 
     mtcars %>%
       specify(mpg ~ cyl) %>% # alt: response = mpg, explanatory = cyl
@@ -73,7 +73,7 @@ One numerical one categorical (&gt;2 levels) - ANOVA (not yet implemented)
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "F")
 
-Two numerical vars - SLR (not yet implemented)
+Two numerical vars - SLR
 
     mtcars %>%
       specify(mpg ~ hp) %>% # alt: response = mpg, explanatory = cyl
