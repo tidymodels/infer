@@ -16,9 +16,16 @@ specify <- function(x, formula, response = NULL, explanatory = NULL) {
     attr(x, "response")    <- f_lhs(formula)
     attr(x, "explanatory") <- f_rhs(formula)
   }
-
+  
+  if (!all(
+    as.character(
+      c(attr(x, "response"),
+        attr(x,"explanatory")
+        )
+    ) %in% names(x)
+  )) stop("The columns you specified could not be found.")
   # TODO: coerce char to factor
-
+  
   x <- as_tibble(x) %>%
     select(one_of(c(
       as.character((attr(x, "response"))),

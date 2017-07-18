@@ -4,7 +4,7 @@
 #' or an equation in quotes
 #' @param ... currently ignored
 #' @importFrom dplyr %>% group_by summarize
-#' @importFrom rlang !! sym quo enquo
+#' @importFrom rlang !! sym quo enquo eval_tidy
 #' @export
 #' @examples
 #'
@@ -34,6 +34,7 @@ calculate <- function(x, stat, ...) {
   if (stat == "mean") {
     col <- setdiff(names(x), "replicate")
     df_out <- x %>%
+      dplyr::group_by(replicate) %>% 
       dplyr::summarize(stat = mean(!!sym(col)))
   }
 
@@ -41,20 +42,33 @@ calculate <- function(x, stat, ...) {
     col <- attr(x, "response")
     success <- quo(get_par_levels(x)[1])
     df_out <- x %>%
-      dplyr::summarize(stat = mean(!! col == eval_tidy(success))) # This doesn't appear to be working
+     # dplyr::summarize(stat = mean(!! col == rlang::eval_tidy(success))) # This doesn't appear to be working
+      dplyr::group_by(replicate) %>% 
+      # The following works but not sure why when looking at the diff in means code?
+      dplyr::summarize(stat = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success)))
   }
 
   if (stat == "diff in means") {
     df_out <- x %>%
-      dplyr::group_by_("replicate", attr(x, "explanatory")) %>%
+      dplyr::group_by(replicate, !! attr(x, "explanatory")) %>%
       dplyr::summarize(xbar = mean(!! attr(x, "response"))) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = diff(xbar))
   }
 
+  if (stat == "diff in medians") {
+    df_out <- x %>%
+      dplyr::group_by(replicate, !! attr(x, "explanatory")) %>%
+      dplyr::summarize(xtilde = median(!! attr(x, "response"))) %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize(stat = diff(xtilde))
+  }
+  
+  # Assumes that the first level of the response variable is a success
+  # May still need a `success` argument here or in `hypothesize` to further enforce this?
   if (stat == "diff in props") {
     df_out <- x %>%
-      dplyr::group_by(replicate, attr(x, "explanatory")) %>%
+      dplyr::group_by(replicate, !! attr(x, "explanatory")) %>%
       dplyr::summarize(prop = mean((!! attr(x, "response")) == levels(!! attr(x, "response"))[1])) %>%
       dplyr::summarize(stat = diff(prop))
   }
