@@ -65,7 +65,7 @@ calculate <- function(x, stat, ...) {
   }
   
   # Assumes that the first level of the response variable is a success
-  # May still need a `success` argument to further enforce this?
+  # May still need a `success` argument here or in `hypothesize` to further enforce this?
   if (stat == "diff in props") {
     df_out <- x %>%
       dplyr::group_by(replicate, !! attr(x, "explanatory")) %>%

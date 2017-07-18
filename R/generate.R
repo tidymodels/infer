@@ -1,45 +1,16 @@
 #' Generate resamples
 #' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
 #' @param reps the number of resamples to generate
-#' @param type currently either \code{bootstrap} or \code{permute}
+#' @param type currently either \code{bootstrap}, \code{permute}, or \code{simulate}
 #' @param ... currently ignored
 #' @importFrom dplyr group_by
 #' @export
 #' @examples
 #'
-#' # bootstrap for one numerical variable
-#' if (require(dplyr)) {
-#'   mtcars %>%
-#'     select(mpg) %>%
-#'     generate(reps = 100, type = "bootstrap") %>%
-#'     calculate(stat = "mean")
-#'
-#'  # permutation test for equal means
-#'   mtcars %>%
-#'     select(mpg, am) %>%
-#'     hypothesize(null = "equal means") %>%
-#'     generate(reps = 100, type = "permute") %>%
-#'     calculate(stat = "diff in means")
-#'
-#'  # simulate draws from a single categorical variable
-#'  mtcars %>%
-#'    select(am) %>%
-#'    mutate(am = factor(am)) %>%
-#'    hypothesize(null = "point", p1 = 0.25, p2 = 0.75) %>%
-#'    generate(reps = 100, type = "simulate") %>%
-#'    calculate(stat = "prop")
-#'
-#'  # goodness-of-fit for one categorical variable
-#'  mtcars %>%
-#'    select(cyl) %>%
-#'    hypothesize(null = "point", p1 = .25, p2 = .25, p3 = .50) %>%
-#'    generate(reps = 100, type = "simulate") %>%
-#'    calculate(stat = "chisq")
-#' }
 #'
 
 generate <- function(x, reps = 1, type = "bootstrap", ...) {
-  if (type == "bootstrap") {
+  if (type == "bootstrap"){
     return(bootstrap(x, reps, ...))
   }
   if (type == "permute") {
@@ -52,6 +23,14 @@ generate <- function(x, reps = 1, type = "bootstrap", ...) {
 }
 
 bootstrap <- function(x, reps = 1, ...) {
+  # Check if hypothesis test chosen
+  # If so, shift the variable chosen to have a mean corresponding
+  # to that specified in `hypothesize`
+  if(attr(attr(x, "params"), "names") == "mu"){
+    col <- as.character(attr(x, "response"))
+    x[[col]] <- x[[col]] - mean(x[[col]]) + attr(x, "params")
+  }
+  
   rep_sample_n(x, size = nrow(x), replace = TRUE, reps = reps)
 }
 

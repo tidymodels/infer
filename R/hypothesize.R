@@ -66,11 +66,13 @@ parse_params <- function(dots, x) {
   }
 
   # add in 1 - p if it's missing
-  if (length(dots[[p_ind]]) == 1) {
-    warning(paste0("Missing level, assuming proportion is 1 - ", dots$p, "."))    
+  if(length(p_ind)){
+    if(length(dots[[p_ind]]) == 1){
+    warning(paste0("Missing level, assuming proportion is 1 - ", dots$p, "."))
     missing_lev <- setdiff(levels(pull(x, !! attr(x, "response"))), names(dots$p))
     dots$p <- append(dots$p, 1 - dots$p)
     names(dots$p)[2] <- missing_lev
+    }
   }
   
   # if (sum(dots[[p_ind]]) != 1){

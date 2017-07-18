@@ -30,6 +30,16 @@ mtcars <- as.data.frame(mtcars) %>%
 
 ***
 
+One numerical variable
+
+```
+mtcars %>%
+  specify(response = mpg) %>% # alt: mpg ~ NULL (or mpg ~ 1)
+  hypothesize(null = "point", mu = 25) %>% 
+  generate(reps = 100, type = "bootstrap") %>% 
+  calculate(stat = "mean")
+```
+
 One categorical (2 level) variable
 
 ```
