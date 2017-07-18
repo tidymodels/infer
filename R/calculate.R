@@ -31,6 +31,9 @@
 
 calculate <- function(x, stat, ...) {
 
+  # TODO: Check to see if dplyr::group_by(replicate) is needed since
+  # generate() does a grouping of replicate
+  
   if (stat == "mean") {
     col <- setdiff(names(x), "replicate")
     df_out <- x %>%

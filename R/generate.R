@@ -24,9 +24,9 @@ generate <- function(x, reps = 1, type = "bootstrap", ...) {
 
 bootstrap <- function(x, reps = 1, ...) {
   # Check if hypothesis test chosen
-  # If so, shift the variable chosen to have a mean corresponding
-  # to that specified in `hypothesize`
   if(!is.null(attr(x, "null"))){
+    # If so, shift the variable chosen to have a mean corresponding
+    # to that specified in `hypothesize`
     if(attr(attr(x, "params"), "names") == "mu"){
       col <- as.character(attr(x, "response"))
       x[[col]] <- x[[col]] - mean(x[[col]]) + attr(x, "params")
@@ -39,7 +39,12 @@ bootstrap <- function(x, reps = 1, ...) {
     }
   }
   
-  rep_sample_n(x, size = nrow(x), replace = TRUE, reps = reps)
+  # Set variables for use in calculate()
+  result <- rep_sample_n(x, size = nrow(x), replace = TRUE, reps = reps)
+  attr(result, "response") <- attr(x, "response")
+  attr(result, "explanatory") <- attr(x, "explanatory")
+  
+  return(result)
 }
 
 #' @importFrom dplyr bind_rows mutate_ group_by
@@ -109,7 +114,6 @@ get_par_levels <- function(x) {
 
 # Modified oilabs::rep_sample_n() with attr added
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
-  # attr(tbl, "ci") <- TRUE
   n <- nrow(tbl)
 
   # assign non-uniform probabilities

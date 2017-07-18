@@ -177,7 +177,7 @@ mtcars %>%
   calculate(stat = "diff in prop")
 ```
 
-Two numerical vars - SLR  (not yet implemented)
+Two numerical vars - SLR
 
 ```
 mtcars %>%
