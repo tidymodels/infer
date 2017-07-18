@@ -26,9 +26,17 @@ bootstrap <- function(x, reps = 1, ...) {
   # Check if hypothesis test chosen
   # If so, shift the variable chosen to have a mean corresponding
   # to that specified in `hypothesize`
-  if(attr(attr(x, "params"), "names") == "mu"){
-    col <- as.character(attr(x, "response"))
-    x[[col]] <- x[[col]] - mean(x[[col]]) + attr(x, "params")
+  if(!is.null(attr(x, "null"))){
+    if(attr(attr(x, "params"), "names") == "mu"){
+      col <- as.character(attr(x, "response"))
+      x[[col]] <- x[[col]] - mean(x[[col]]) + attr(x, "params")
+    }
+    
+    # Similarly for median
+    if(attr(attr(x, "params"), "names") == "Med"){
+      col <- as.character(attr(x, "response"))
+      x[[col]] <- x[[col]] - median(x[[col]]) + attr(x, "params")
+    }
   }
   
   rep_sample_n(x, size = nrow(x), replace = TRUE, reps = reps)

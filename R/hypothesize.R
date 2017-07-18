@@ -57,21 +57,25 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
 
 parse_params <- function(dots, x) {
   p_ind <- grep("p", names(dots))
-
   mu_ind <- grep("mu", names(dots))
+  med_ind <- grep("Med", names(dots))
 
-  # error: cannot specify both props and means
-  if (length(p_ind) * length(mu_ind) != 0) {
-    stop("Parameter values should be either proportions or means but not both.")
+  # error: cannot specify more than one of props, means, medians
+  # Boolean logic fails me.  There has to be a more efficient way to do this, right?
+  if ( (length(p_ind) * length(mu_ind) != 0) | (length(p_ind) * length(med_ind) != 0) | 
+       length(mu_ind) * length(med_ind) != 0) {
+    stop("Parameter values should be only one of proportions, means, or medians.")
   }
 
   # add in 1 - p if it's missing
+  # Outside if() is needed to ensure an error does not occur in referencing the
+  # 0 index of dots
   if(length(p_ind)){
     if(length(dots[[p_ind]]) == 1){
-    warning(paste0("Missing level, assuming proportion is 1 - ", dots$p, "."))
-    missing_lev <- setdiff(levels(pull(x, !! attr(x, "response"))), names(dots$p))
-    dots$p <- append(dots$p, 1 - dots$p)
-    names(dots$p)[2] <- missing_lev
+      warning(paste0("Missing level, assuming proportion is 1 - ", dots$p, "."))
+      missing_lev <- setdiff(levels(pull(x, !! attr(x, "response"))), names(dots$p))
+      dots$p <- append(dots$p, 1 - dots$p)
+      names(dots$p)[2] <- missing_lev
     }
   }
   
