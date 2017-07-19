@@ -1,16 +1,14 @@
----
-output:
-  github_document:
-    toc: true 
-    toc_depth: 3
----
+
+-   [Hypothesis tests](#hypothesis-tests)
+-   [Confidence intervals](#confidence-intervals)
 
 ### Hypothesis tests
-![h-test diagram](figs/ht-diagram.png)
+
+![h-test diagram](../figs/ht-diagram.png)
 
 #### Examples
 
-```{r message=FALSE, warning=FALSE}
+``` r
 library(okcupiddata)
 library(stringr)
 library(infer)
@@ -24,17 +22,17 @@ prof_small <- profiles %>%
   dplyr::select(age, sex, frisco, drugs, height, status)
 ```
 
-- `height` and `age` are numerical variables.
-- `sex` has two categories (`"m"`, `"f"`)
-- `frisco` has two categories (`"san fran"`, `"not san fran"`)
-- `drugs` has three categories (`"never"`, `"sometimes"`, `"often"`) - Also has missing values
-- `status` has three categories (`"single"`, `"available"`, `"seeing someone"`)
+-   `height` and `age` are numerical variables.
+-   `sex` has two categories (`"m"`, `"f"`)
+-   `frisco` has two categories (`"san fran"`, `"not san fran"`)
+-   `drugs` has three categories (`"never"`, `"sometimes"`, `"often"`) - Also has missing values
+-   `status` has three categories (`"single"`, `"available"`, `"seeing someone"`)
 
-***
+------------------------------------------------------------------------
 
 One numerical variable (mean)
 
-```{r}
+``` r
 prof_small %>%
   specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
   hypothesize(null = "point", mu = 50) %>% 
@@ -43,9 +41,11 @@ prof_small %>%
   visualize()
 ```
 
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-2-1.png)
+
 One numerical variable (median)
 
-```{r}
+``` r
 prof_small %>%
   specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
   hypothesize(null = "point", Med = 55) %>% 
@@ -54,9 +54,11 @@ prof_small %>%
   visualize()
 ```
 
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-3-1.png)
+
 One categorical (2 level) variable
 
-```{r}
+``` r
 prof_small %>%
   specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
   hypothesize(null = "point", p = c("m" = .65)) %>% 
@@ -65,9 +67,14 @@ prof_small %>%
   visualize()
 ```
 
+    ## Warning in parse_params(dots, x): Missing level, assuming proportion is 1 -
+    ## 0.65.
+
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-4-1.png)
+
 Two categorical (2 level) variables
 
-```{r}
+``` r
 prof_small %>%
   specify(sex ~ frisco) %>% # alt: response = sex, explanatory = vs
   hypothesize(null = "independence") %>%
@@ -76,9 +83,11 @@ prof_small %>%
   visualize()
 ```
 
-One categorical (>2 level) - GoF
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-5-1.png)
 
-```{r}
+One categorical (&gt;2 level) - GoF
+
+``` r
 prof_small %>%
   specify(drugs ~ NULL) %>% # alt: response = frisco
   hypothesize(null = "point", 
@@ -88,9 +97,11 @@ prof_small %>%
   visualize()
 ```
 
-Two categorical (>2 level) variables
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-6-1.png)
 
-```{r}
+Two categorical (&gt;2 level) variables
+
+``` r
 prof_small %>%
   specify(drugs ~ status) %>% # alt: response = drugs, explanatory = status
   hypothesize(null = "independence") %>%
@@ -99,9 +110,11 @@ prof_small %>%
   visualize()
 ```
 
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-7-1.png)
+
 One numerical variable one categorical (2 levels) (diff in means)
 
-```{r}
+``` r
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
@@ -110,9 +123,11 @@ prof_small %>%
   visualize()
 ```
 
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-8-1.png)
+
 One numerical variable one categorical (2 levels) (diff in medians)
 
-```{r}
+``` r
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
@@ -121,9 +136,11 @@ prof_small %>%
   visualize()
 ```
 
-One numerical one categorical (>2 levels) -  ANOVA
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-9-1.png)
 
-```{r}
+One numerical one categorical (&gt;2 levels) - ANOVA
+
+``` r
 prof_small %>%
   specify(age ~ status) %>% # alt: response = age, explanatory = frisco
   hypothesize(null = "independence") %>%
@@ -132,22 +149,26 @@ prof_small %>%
   visualize()
 ```
 
-Two numerical vars - SLR 
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-10-1.png)
 
-```{r}
+Two numerical vars - SLR
+
+``` r
 prof_small %>%
   specify(age ~ height) %>% # alt: response = age, explanatory = height
-  hypothesize(null = "independence") %>% # or "slope = 0"
+  hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "slope") %>% 
   visualize()
 ```
 
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-11-1.png)
+
 ### Confidence intervals
 
 One numerical (one mean)
 
-```{r}
+``` r
 prof_small %>%
   specify(response = age) %>%
   generate(reps = 1000, type = "bootstrap") %>%
@@ -155,9 +176,11 @@ prof_small %>%
   visualize()
 ```
 
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-12-1.png)
+
 One numerical (one median)
 
-```{r}
+``` r
 prof_small %>%
   specify(response = age) %>%
   generate(reps = 1000, type = "bootstrap") %>%
@@ -165,9 +188,11 @@ prof_small %>%
   visualize()
 ```
 
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-13-1.png)
+
 One categorical (one proportion)
 
-```{r}
+``` r
 prof_small %>%
   specify(response = sex) %>%
   generate(reps = 1000, type = "bootstrap") %>%
@@ -175,9 +200,11 @@ prof_small %>%
   visualize()
 ```
 
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-14-1.png)
+
 One numerical variable one categorical (2 levels) (diff in means)
 
-```{r}
+``` r
 prof_small %>%
   specify(age ~ sex) %>%
   generate(reps = 1000, type = "bootstrap") %>%
@@ -185,9 +212,11 @@ prof_small %>%
   visualize()
 ```
 
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-15-1.png)
+
 Two categorical variables (diff in proportions)
 
-```{r}
+``` r
 prof_small %>%
   specify(sex ~ frisco) %>%
   generate(reps = 1000, type = "bootstrap") %>%
@@ -195,12 +224,16 @@ prof_small %>%
   visualize()
 ```
 
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-16-1.png)
+
 Two numerical vars - SLR
 
-```{r}
+``` r
 prof_small %>%
   specify(age ~ height) %>% 
   generate(reps = 1000, type = "bootstrap") %>%
   calculate(stat = "slope") %>% 
   visualize()
 ```
+
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-17-1.png)

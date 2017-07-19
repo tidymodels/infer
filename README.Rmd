@@ -126,7 +126,7 @@ Two numerical vars - SLR
 ```
 mtcars %>%
   specify(mpg ~ hp) %>% # alt: response = mpg, explanatory = cyl
-  hypothesize(null = "independence") %>% # or "slope = 0"
+  hypothesize(null = "independence") %>%
   generate(reps = 100, type = "permute") %>%
   calculate(stat = "slope")
 ```
