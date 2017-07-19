@@ -18,7 +18,3 @@ generate(x, reps = 1, type = "bootstrap", ...)
 \description{
 Generate resamples
 }
-\examples{
-
-
-}

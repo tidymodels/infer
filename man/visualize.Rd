@@ -18,6 +18,3 @@ visualize(df, num_bins = 30, ...)
 (Currently) Visualize the resampling distribution 
 (To be updated to include theory-based distributions)
 }
-\examples{
-
-}

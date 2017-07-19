@@ -7,6 +7,7 @@
 #' @importFrom rlang f_rhs
 #' @importFrom tibble as_tibble
 #' @importFrom dplyr mutate_if select one_of
+#' @importFrom methods hasArg
 #' @export
 
 specify <- function(x, formula, response = NULL, explanatory = NULL) {
