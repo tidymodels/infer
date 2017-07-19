@@ -44,7 +44,7 @@ One numerical variable (mean)
 prof_small %>%
   specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
   hypothesize(null = "point", mu = 50) %>% 
-  generate(reps = 100, type = "bootstrap") %>% 
+  generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "mean") %>% 
   visualize()
 ```
@@ -57,7 +57,7 @@ One numerical variable (median)
 prof_small %>%
   specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
   hypothesize(null = "point", Med = 55) %>% 
-  generate(reps = 100, type = "bootstrap") %>% 
+  generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "median") %>% 
   visualize()
 ```
@@ -70,7 +70,7 @@ One categorical (2 level) variable
 prof_small %>%
   specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
   hypothesize(null = "point", p = c("m" = .65)) %>% 
-  generate(reps = 100, type = "simulate") %>% 
+  generate(reps = 1000, type = "simulate") %>% 
   calculate(stat = "prop") %>% 
   visualize()
 ```
@@ -86,7 +86,7 @@ Two categorical (2 level) variables
 prof_small %>%
   specify(sex ~ frisco) %>% # alt: response = sex, explanatory = vs
   hypothesize(null = "independence") %>%
-  generate(reps = 100, type = "permute") %>%
+  generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in props") %>% 
   visualize()
 ```
@@ -99,7 +99,7 @@ One categorical (&gt;2 level) - GoF
 prof_small %>%
   specify(drugs ~ NULL) %>% # alt: response = frisco
   hypothesize(null = "point", p = c("never" = .7, "sometimes" = .25, "often" = .05)) %>%
-  generate(reps = 100, type = "simulate") %>%
+  generate(reps = 1000, type = "simulate") %>%
   calculate(stat = "Chisq") %>% 
   visualize()
 ```
@@ -112,7 +112,7 @@ Two categorical (&gt;2 level) variables
 prof_small %>%
   specify(drugs ~ status) %>% # alt: response = drugs, explanatory = status
   hypothesize(null = "independence") %>%
-  generate(reps = 100, type = "permute") %>%
+  generate(reps = 1000, type = "permute") %>%
   calculate(stat = "Chisq") %>% 
   visualize()
 ```
@@ -125,7 +125,7 @@ One numerical variable one categorical (2 levels) (diff in means)
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
-  generate(reps = 100, type = "permute") %>%
+  generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in means") %>% 
   visualize()
 ```
@@ -138,7 +138,7 @@ One numerical variable one categorical (2 levels) (diff in medians)
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
-  generate(reps = 100, type = "permute") %>%
+  generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in medians") %>% 
   visualize()
 ```
@@ -151,7 +151,7 @@ One numerical one categorical (&gt;2 levels) - ANOVA
 prof_small %>%
   specify(age ~ status) %>% # alt: response = age, explanatory = frisco
   hypothesize(null = "independence") %>%
-  generate(reps = 100, type = "permute") %>%
+  generate(reps = 1000, type = "permute") %>%
   calculate(stat = "F") %>% 
   visualize()
 ```
@@ -164,7 +164,7 @@ Two numerical vars - SLR
 prof_small %>%
   specify(age ~ height) %>% # alt: response = age, explanatory = height
   hypothesize(null = "independence") %>% # or "slope = 0"
-  generate(reps = 100, type = "permute") %>%
+  generate(reps = 1000, type = "permute") %>%
   calculate(stat = "slope") %>% 
   visualize()
 ```
@@ -178,7 +178,7 @@ One numerical (one mean)
 ``` r
 prof_small %>%
   specify(response = age) %>%
-  generate(reps = 100, type = "bootstrap") %>%
+  generate(reps = 1000, type = "bootstrap") %>%
   calculate(stat = "mean") %>% 
   visualize()
 ```
@@ -190,7 +190,7 @@ One numerical (one median)
 ``` r
 prof_small %>%
   specify(response = age) %>%
-  generate(reps = 100, type = "bootstrap") %>%
+  generate(reps = 1000, type = "bootstrap") %>%
   calculate(stat = "median") %>% 
   visualize()
 ```
@@ -199,35 +199,28 @@ prof_small %>%
 
 One categorical (one proportion) (not yet implemented)
 
-``` r
-prof_small %>%
-  specify(response = sex) %>%
-  generate(reps = 100, type = "bootstrap") %>%
-  calculate(stat = "prop") %>% 
-  visualize()
-```
-
-    ## Warning: Removed 100 rows containing non-finite values (stat_bin).
-
-![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-14-1.png)
+    prof_small %>%
+      specify(response = sex) %>%
+      generate(reps = 1000, type = "bootstrap") %>%
+      calculate(stat = "prop")
 
 One numerical variable one categorical (2 levels) (diff in means)
 
 ``` r
 prof_small %>%
   specify(age ~ sex) %>%
-  generate(reps = 100, type = "bootstrap") %>%
+  generate(reps = 1000, type = "bootstrap") %>%
   calculate(stat = "diff in means") %>% 
   visualize()
 ```
 
-![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-15-1.png)
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-14-1.png)
 
 Two categorical variables (diff in proportions) (not yet implemented)
 
     prof_small %>%
       specify(sex ~ frisco) %>%
-      generate(reps = 100, type = "bootstrap") %>%
+      generate(reps = 1000, type = "bootstrap") %>%
       calculate(stat = "diff in prop")
 
 Two numerical vars - SLR
@@ -235,9 +228,9 @@ Two numerical vars - SLR
 ``` r
 prof_small %>%
   specify(age ~ height) %>% 
-  generate(reps = 100, type = "bootstrap") %>%
+  generate(reps = 1000, type = "bootstrap") %>%
   calculate(stat = "slope") %>% 
   visualize()
 ```
 
-![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-16-1.png)
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-15-1.png)
