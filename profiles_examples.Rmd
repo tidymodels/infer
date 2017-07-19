@@ -23,7 +23,8 @@ library(okcupiddata)
 library(stringr)
 library(infer)
 set.seed(2017)
-prof_small <- profiles %>% dplyr::sample_n(size = 500) %>% 
+prof_small <- profiles %>% 
+  dplyr::sample_n(size = 500) %>% 
   dplyr::mutate(frisco = dplyr::case_when(
     str_detect(location, "san fran") ~ "san fran",
     !str_detect(location, "san fran") ~ "not san fran"

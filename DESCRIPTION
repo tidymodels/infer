@@ -1,7 +1,7 @@
 Package: infer
 Type: Package
 Title: Pipeable statistical inference
-Version: 0.0.0.9005
+Version: 0.0.0.9006
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
     person("Ben", "Baumer", email = "ben.baumer@gmail.com",

@@ -37,5 +37,8 @@ specify <- function(x, formula, response = NULL, explanatory = NULL) {
       as.character(attr(x, "explanatory"))
     )))
 
+  # add "infer" class
+  class(x) <- append("infer", class(x))
+  
   return(x)
 }
