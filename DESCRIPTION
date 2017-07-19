@@ -15,7 +15,6 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     dplyr,
-    lazyeval,
     methods,
     tibble,
     rlang,

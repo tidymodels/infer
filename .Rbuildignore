@@ -3,3 +3,4 @@
 ^README\.Rmd$
 ^figs$
 ^profiles*
+^\.travis\.yml$
