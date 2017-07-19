@@ -25,6 +25,22 @@ These examples assume that `mtcars` has been overwritten so that the variables `
 
 ------------------------------------------------------------------------
 
+One numerical variable (mean)
+
+    mtcars %>%
+      specify(response = mpg) %>% # alt: mpg ~ NULL (or mpg ~ 1)
+      hypothesize(null = "point", mu = 25) %>% 
+      generate(reps = 100, type = "bootstrap") %>% 
+      calculate(stat = "mean")
+
+One numerical variable (median)
+
+    mtcars %>%
+      specify(response = mpg) %>% # alt: mpg ~ NULL (or mpg ~ 1)
+      hypothesize(null = "point", Med = 26) %>% 
+      generate(reps = 100, type = "bootstrap") %>% 
+      calculate(stat = "median")
+
 One categorical (2 level) variable
 
     mtcars %>%
@@ -98,6 +114,13 @@ One numerical (one mean)
       generate(reps = 100, type = "bootstrap") %>%
       calculate(stat = "mean")
 
+One numerical (one median)
+
+    mtcars %>%
+      specify(response = mpg) %>%
+      generate(reps = 100, type = "bootstrap") %>%
+      calculate(stat = "median")
+
 One categorical (one proportion) (not yet implemented)
 
     mtcars %>%
@@ -119,7 +142,7 @@ Two categorical variables (diff in proportions) (not yet implemented)
       generate(reps = 100, type = "bootstrap") %>%
       calculate(stat = "diff in prop")
 
-Two numerical vars - SLR (not yet implemented)
+Two numerical vars - SLR
 
     mtcars %>%
       specify(mpg ~ hp) %>% 

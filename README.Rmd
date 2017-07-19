@@ -30,7 +30,7 @@ mtcars <- as.data.frame(mtcars) %>%
 
 ***
 
-One numerical variable
+One numerical variable (mean)
 
 ```
 mtcars %>%
@@ -38,6 +38,16 @@ mtcars %>%
   hypothesize(null = "point", mu = 25) %>% 
   generate(reps = 100, type = "bootstrap") %>% 
   calculate(stat = "mean")
+```
+
+One numerical variable (median)
+
+```
+mtcars %>%
+  specify(response = mpg) %>% # alt: mpg ~ NULL (or mpg ~ 1)
+  hypothesize(null = "point", Med = 26) %>% 
+  generate(reps = 100, type = "bootstrap") %>% 
+  calculate(stat = "median")
 ```
 
 One categorical (2 level) variable
@@ -131,6 +141,15 @@ mtcars %>%
   calculate(stat = "mean")
 ```
 
+One numerical (one median)
+
+```
+mtcars %>%
+  specify(response = mpg) %>%
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "median")
+```
+
 One categorical (one proportion) (not yet implemented)
 
 ```
@@ -158,7 +177,7 @@ mtcars %>%
   calculate(stat = "diff in prop")
 ```
 
-Two numerical vars - SLR  (not yet implemented)
+Two numerical vars - SLR
 
 ```
 mtcars %>%

@@ -3,7 +3,7 @@
 #' @param stat a string giving the type of the statistic to calculate. Current options include "mean", "prop", "diff in means", "diff in props", "chisq", and "F".
 #' or an equation in quotes
 #' @param ... currently ignored
-#' @importFrom dplyr %>% group_by summarize
+#' @importFrom dplyr group_by summarize
 #' @importFrom rlang !! sym quo enquo eval_tidy
 #' @export
 #' @examples
@@ -31,11 +31,21 @@
 
 calculate <- function(x, stat, ...) {
 
+  # TODO: Check to see if dplyr::group_by(replicate) is needed since
+  # generate() does a grouping of replicate
+  
   if (stat == "mean") {
     col <- setdiff(names(x), "replicate")
     df_out <- x %>%
       dplyr::group_by(replicate) %>% 
       dplyr::summarize(stat = mean(!!sym(col)))
+  }
+  
+  if (stat == "median") {
+    col <- setdiff(names(x), "replicate")
+    df_out <- x %>%
+      dplyr::group_by(replicate) %>% 
+      dplyr::summarize(stat = stats::median(!!sym(col)))
   }
 
   if (stat == "prop") {
@@ -59,7 +69,7 @@ calculate <- function(x, stat, ...) {
   if (stat == "diff in medians") {
     df_out <- x %>%
       dplyr::group_by(replicate, !! attr(x, "explanatory")) %>%
-      dplyr::summarize(xtilde = median(!! attr(x, "response"))) %>%
+      dplyr::summarize(xtilde = stats::median(!! attr(x, "response"))) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = diff(xtilde))
   }
@@ -83,9 +93,9 @@ calculate <- function(x, stat, ...) {
         dplyr::summarize(stat = sum((table(!! attr(x, "response")) - expected)^2 / expected))
     } else {
       obs_tab <- x %>%
-        filter(replicate == 1) %>%
-        ungroup() %>%
-        select(!! attr(x, "response"), !! attr(x, "explanatory")) %>%
+        dplyr::filter(replicate == 1) %>%
+        dplyr::ungroup() %>%
+        dplyr::select(!! attr(x, "response"), !! attr(x, "explanatory")) %>%
         table()
       expected <- outer(rowSums(obs_tab), colSums(obs_tab)) / n
       df_out <- x %>%
@@ -97,12 +107,14 @@ calculate <- function(x, stat, ...) {
 
   if (stat == "F") {
     df_out <- x %>%
-      dplyr::summarize(stat = anova(lm(!! attr(x, "response") ~ !! attr(x, "explanatory")))$`F value`[1])
+      dplyr::summarize(stat = stats::anova(
+          stats::lm(!! attr(x, "response") ~ !! attr(x, "explanatory"))
+        )$`F value`[1])
   }
 
   if (stat == "slope") {
     df_out <- x %>%
-      dplyr::summarize(stat = coef(lm(!! attr(x, "response") ~ !! attr(x, "explanatory")))[2])
+      dplyr::summarize(stat = stats::coef(stats::lm(!! attr(x, "response") ~ !! attr(x, "explanatory")))[2])
   }
 
   return(df_out)
