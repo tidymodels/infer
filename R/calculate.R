@@ -59,7 +59,7 @@ calculate <- function(x, stat, ...) {
   if (stat == "diff in medians") {
     df_out <- x %>%
       dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
-      dplyr::summarize(xtilde = stats::median(!!tr(x, "response"))) %>%
+      dplyr::summarize(xtilde = stats::median(!!attr(x, "response"))) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = diff(xtilde))
   }
