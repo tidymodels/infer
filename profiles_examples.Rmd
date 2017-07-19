@@ -20,16 +20,15 @@ The objective of this package is to perform statistical inference using a gramma
 
 ```{r message=FALSE, warning=FALSE}
 library(okcupiddata)
-library(tidyverse)
 library(stringr)
 library(infer)
 set.seed(2017)
-prof_small <- profiles %>% sample_n(size = 500) %>% 
-  mutate(frisco = case_when(
+prof_small <- profiles %>% dplyr::sample_n(size = 500) %>% 
+  dplyr::mutate(frisco = dplyr::case_when(
     str_detect(location, "san fran") ~ "san fran",
     !str_detect(location, "san fran") ~ "not san fran"
   )) %>% 
-  select(age, sex, frisco, drugs, height, status)
+  dplyr::select(age, sex, frisco, drugs, height, status)
 ```
 
 - `height` and `age` are numerical variables.

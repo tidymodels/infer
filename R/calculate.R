@@ -3,7 +3,7 @@
 #' @param stat a string giving the type of the statistic to calculate. Current options include "mean", "prop", "diff in means", "diff in props", "chisq", and "F".
 #' or an equation in quotes
 #' @param ... currently ignored
-#' @importFrom dplyr %>% group_by summarize
+#' @importFrom dplyr group_by summarize
 #' @importFrom rlang !! sym quo enquo eval_tidy
 #' @export
 #' @examples
