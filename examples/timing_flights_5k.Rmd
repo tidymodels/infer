@@ -1,8 +1,5 @@
 ---
-output:
-  github_document:
-    toc: true 
-    toc_depth: 3
+output: github_document
 params:
   num_rows: 5000
   rep_times: 5000
@@ -10,7 +7,7 @@ params:
 
 # Timing analysis
 
-This analysis is for `r params$num_rows` flights with `reps =```r params$rep_times``.
+This analysis is for `r params$num_rows` flights with `reps =` ``r params$rep_times``.
 
 ```{r}
 devtools::session_info()
@@ -24,6 +21,7 @@ library(stringr)
 library(infer)
 set.seed(2017)
 fli_small <- flights %>% 
+  na.omit() %>% 
   sample_n(size = params$num_rows) %>% 
   mutate(half_year = case_when(
     between(month, 1, 6) ~ "h1",

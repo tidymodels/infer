@@ -1,7 +1,7 @@
 Timing analysis
 ===============
 
-This analysis is for 5000 flights with `reps = 5000`.
+This analysis is for 5000 flights with `reps =` `5000`.
 
 ``` r
 devtools::session_info()
@@ -53,6 +53,7 @@ library(stringr)
 library(infer)
 set.seed(2017)
 fli_small <- flights %>% 
+  na.omit() %>% 
   sample_n(size = params$num_rows) %>% 
   mutate(half_year = case_when(
     between(month, 1, 6) ~ "h1",
@@ -93,7 +94,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   7.416
+    ## 1   3.595
 
 One numerical variable (median)
 
@@ -109,7 +110,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   3.327
+    ## 1   3.992
 
 One categorical (2 level) variable
 
@@ -131,7 +132,7 @@ replications = 1, columns = "elapsed"
     ## 0.45.
 
     ##   elapsed
-    ## 1  38.169
+    ## 1  40.564
 
 Two categorical (2 level) variables
 
@@ -147,7 +148,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  25.778
+    ## 1  25.607
 
 One categorical (&gt;2 level) - GoF
 
@@ -164,7 +165,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  24.898
+    ## 1  25.362
 
 Two categorical (&gt;2 level) variables
 
@@ -180,7 +181,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   24.82
+    ## 1   25.56
 
 One numerical variable one categorical (2 levels) (diff in means)
 
@@ -196,7 +197,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  27.677
+    ## 1  22.473
 
 One numerical variable one categorical (2 levels) (diff in medians)
 
@@ -212,7 +213,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  23.805
+    ## 1  24.317
 
 One numerical one categorical (&gt;2 levels) - ANOVA
 
@@ -228,7 +229,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  58.726
+    ## 1  60.015
 
 Two numerical vars - SLR
 
@@ -244,7 +245,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  45.805
+    ## 1  68.033
 
 ### Confidence intervals
 
@@ -261,7 +262,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   8.554
+    ## 1   4.299
 
 One numerical (one median)
 
@@ -276,7 +277,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   3.448
+    ## 1   6.499
 
 One categorical (one proportion)
 
@@ -291,7 +292,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  24.757
+    ## 1  52.125
 
 One numerical variable one categorical (2 levels) (diff in means)
 
@@ -306,7 +307,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   7.817
+    ## 1   7.479
 
 Two categorical variables (diff in proportions)
 
@@ -321,7 +322,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   4.869
+    ## 1  13.747
 
 Two numerical vars - SLR
 
@@ -336,4 +337,4 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  25.407
+    ## 1  27.044

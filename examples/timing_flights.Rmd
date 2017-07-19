@@ -1,6 +1,5 @@
 ---
-output:
-  github_document
+output: github_document
 params:
   num_rows: 10000
   rep_times: 1000
@@ -22,6 +21,7 @@ library(stringr)
 library(infer)
 set.seed(2017)
 fli_small <- flights %>% 
+  na.omit() %>% 
   sample_n(size = params$num_rows) %>% 
   mutate(half_year = case_when(
     between(month, 1, 6) ~ "h1",
