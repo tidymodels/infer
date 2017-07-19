@@ -35,7 +35,7 @@ bootstrap <- function(x, reps = 1, ...) {
     # Similarly for median
     if(attr(attr(x, "params"), "names") == "Med"){
       col <- as.character(attr(x, "response"))
-      x[[col]] <- x[[col]] - median(x[[col]]) + attr(x, "params")
+      x[[col]] <- x[[col]] - stats::median(x[[col]]) + attr(x, "params")
     }
   }
   
@@ -47,7 +47,7 @@ bootstrap <- function(x, reps = 1, ...) {
   return(result)
 }
 
-#' @importFrom dplyr bind_rows mutate_ group_by
+#' @importFrom dplyr bind_rows group_by
 
 permute <- function(x, reps = 1, ...) {
   df_out <- replicate(reps, permute_once(x), simplify = FALSE) %>%
@@ -74,6 +74,8 @@ permute_once <- function(x, ...) {
 }
 
 #' @importFrom dplyr pull
+#' @importFrom tibble tibble
+#' @importFrom rlang :=
 
 simulate <- function(x, reps = 1, ...) {
   fct_levels <- levels(dplyr::pull(x, !! attr(x, "response")))
@@ -110,7 +112,7 @@ get_par_levels <- function(x) {
   return(gsub("^.\\.", "", par_names))
 }
 
-#' @importFrom dplyr as_tibble pull
+#' @importFrom dplyr as_tibble pull data_frame inner_join
 
 # Modified oilabs::rep_sample_n() with attr added
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
@@ -121,10 +123,10 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   # prob needs to be nrow(tbl) -- not just number of factor levels
   if (!is.null(prob)) {
     if (length(prob) != n) stop("The argument prob must have length nrow(tbl).")
-    df_lkup <- data_frame(vals = levels(dplyr::pull(tbl, 1)))
+    df_lkup <- dplyr::data_frame(vals = levels(dplyr::pull(tbl, 1)))
     names(df_lkup) <- names(tbl)
     df_lkup$probs = prob
-    tbl_wgt <- inner_join(tbl, df_lkup)
+    tbl_wgt <- dplyr::inner_join(tbl, df_lkup)
     prob <- tbl_wgt$probs
   }
 
