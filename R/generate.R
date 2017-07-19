@@ -107,7 +107,7 @@ simulate <- function(x, reps = 1, ...) {
   rep_sample_n(x, size = nrow(x), reps = reps, replace = TRUE, prob = unlist(attr(x, "params")))
 }
 
-#' @importFrom dplyr as_tibble pull
+#' @importFrom dplyr as_tibble pull data_frame inner_join
 
 # Modified oilabs::rep_sample_n() with attr added
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
@@ -118,10 +118,10 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   # there should be a better way!!
   # prob needs to be nrow(tbl) -- not just number of factor levels
   if (!is.null(prob)) {
-    df_lkup <- data_frame(vals = levels(dplyr::pull(tbl, 1)))
+    df_lkup <- dplyr::data_frame(vals = levels(dplyr::pull(tbl, 1)))
     names(df_lkup) <- names(tbl)
     df_lkup$probs = prob
-    tbl_wgt <- inner_join(tbl, df_lkup)
+    tbl_wgt <- dplyr::inner_join(tbl, df_lkup)
     prob <- tbl_wgt$probs
   }
   
