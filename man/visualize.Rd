@@ -2,17 +2,21 @@
 % Please edit documentation in R/visualize.R
 \name{visualize}
 \alias{visualize}
-\title{(Currently) Visualize the resampling distribution (To be updated to include theory-based distributions)}
+\title{(Currently) Visualize the resampling distribution 
+(To be updated to include theory-based distributions)}
 \usage{
-visualize(df, ...)
+visualize(df, num_bins = 30, ...)
 }
 \arguments{
 \item{df}{the output from \code{\link{calculate}}}
 
+\item{num_bins}{the number of bins in the histogram}
+
 \item{...}{currently ignored}
 }
 \description{
-(Currently) Visualize the resampling distribution (To be updated to include theory-based distributions)
+(Currently) Visualize the resampling distribution 
+(To be updated to include theory-based distributions)
 }
 \examples{
 

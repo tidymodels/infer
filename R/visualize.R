@@ -3,7 +3,7 @@
 #' @param df the output from \code{\link{calculate}}
 #' @param num_bins the number of bins in the histogram
 #' @param ... currently ignored
-#' @importFrom ggplot2 ggplot geom_histogram
+#' @importFrom ggplot2 ggplot geom_histogram aes
 #' @export
 #' @examples
 #'
