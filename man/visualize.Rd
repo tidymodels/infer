@@ -5,12 +5,12 @@
 \title{(Currently) Visualize the resampling distribution 
 (To be updated to include theory-based distributions)}
 \usage{
-visualize(df, num_bins = 30, ...)
+visualize(df, bins = 30, ...)
 }
 \arguments{
 \item{df}{the output from \code{\link{calculate}}}
 
-\item{num_bins}{the number of bins in the histogram}
+\item{bins}{the number of bins in the histogram}
 
 \item{...}{currently ignored}
 }

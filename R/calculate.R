@@ -1,7 +1,10 @@
 #' Calculate summary statistics
 #' @param x the output from \code{\link{hypothesize}} or \code{\link{generate}}
-#' @param stat a string giving the type of the statistic to calculate. Current options include "mean", "prop", "diff in means", "diff in props", "chisq", and "F".
-#' or an equation in quotes
+#' @param stat a string giving the type of the statistic to calculate. Current 
+#' options include "mean", "median", "prop", "diff in means", "diff in medians",
+#' "diff in props", "Chisq", "F", and "slope".
+#' @param success a string specifying which level of the response variable should be
+#' used as a success in bootstrapping a one proportion confidence interval
 #' @param ... currently ignored
 #' @importFrom dplyr group_by summarize
 #' @importFrom rlang !! sym quo enquo eval_tidy
@@ -19,7 +22,7 @@
 #'     visualize()
 #' }
 
-calculate <- function(x, stat, ...) {
+calculate <- function(x, stat, success = NULL, ...) {
 
   # TODO: Check to see if dplyr::group_by(replicate) is needed since
   # generate() does a grouping of replicate
@@ -40,7 +43,8 @@ calculate <- function(x, stat, ...) {
 
   if (stat == "prop") {
     col <- attr(x, "response")
-    success <- quo(get_par_levels(x)[1])
+    if(is.null(success))
+      success <- quo(get_par_levels(x)[1])
     df_out <- x %>%
      # dplyr::summarize(stat = mean(!! col == rlang::eval_tidy(success))) # This doesn't appear to be working
       dplyr::group_by(replicate) %>% 
@@ -59,7 +63,7 @@ calculate <- function(x, stat, ...) {
   if (stat == "diff in medians") {
     df_out <- x %>%
       dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
-      dplyr::summarize(xtilde = stats::median(!!tr(x, "response"))) %>%
+      dplyr::summarize(xtilde = stats::median(!!attr(x, "response"))) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = diff(xtilde))
   }

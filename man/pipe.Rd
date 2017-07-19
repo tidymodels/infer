@@ -2,7 +2,7 @@
 % Please edit documentation in R/pipe.R
 \name{\%>\%}
 \alias{\%>\%}
-\title{Pipe graphics}
+\title{Pipe}
 \arguments{
 \item{lhs, rhs}{Inference functions}
 }

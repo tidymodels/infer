@@ -2,14 +2,6 @@
 -   [Hypothesis tests](#hypothesis-tests)
 -   [Confidence intervals](#confidence-intervals)
 
-Infer: a grammar for statistical inference
-
-Using a sample of profiles from the `okcupiddata` package
-
-------------------------------------------------------------------------
-
-The objective of this package is to perform statistical inference using a grammar that illustrates the underlying concepts and a format that coheres with the `tidyverse`.
-
 ### Hypothesis tests
 
 ![h-test diagram](figs/ht-diagram.png)
@@ -21,7 +13,8 @@ library(okcupiddata)
 library(stringr)
 library(infer)
 set.seed(2017)
-prof_small <- profiles %>% dplyr::sample_n(size = 500) %>% 
+prof_small <- profiles %>% 
+  dplyr::sample_n(size = 500) %>% 
   dplyr::mutate(frisco = dplyr::case_when(
     str_detect(location, "san fran") ~ "san fran",
     !str_detect(location, "san fran") ~ "not san fran"
@@ -97,7 +90,8 @@ One categorical (&gt;2 level) - GoF
 ``` r
 prof_small %>%
   specify(drugs ~ NULL) %>% # alt: response = frisco
-  hypothesize(null = "point", p = c("never" = .7, "sometimes" = .25, "often" = .05)) %>%
+  hypothesize(null = "point", 
+              p = c("never" = .7, "sometimes" = .25, "often" = .05)) %>%
   generate(reps = 1000, type = "simulate") %>%
   calculate(stat = "Chisq") %>% 
   visualize()
@@ -196,12 +190,17 @@ prof_small %>%
 
 ![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-13-1.png)
 
-One categorical (one proportion) (not yet implemented)
+One categorical (one proportion)
 
-    prof_small %>%
-      specify(response = sex) %>%
-      generate(reps = 1000, type = "bootstrap") %>%
-      calculate(stat = "prop")
+``` r
+prof_small %>%
+  specify(response = sex) %>%
+  generate(reps = 1000, type = "bootstrap") %>%
+  calculate(stat = "prop", success = "f") %>% 
+  visualize()
+```
+
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-14-1.png)
 
 One numerical variable one categorical (2 levels) (diff in means)
 
@@ -213,14 +212,19 @@ prof_small %>%
   visualize()
 ```
 
-![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-14-1.png)
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-15-1.png)
 
-Two categorical variables (diff in proportions) (not yet implemented)
+Two categorical variables (diff in proportions)
 
-    prof_small %>%
-      specify(sex ~ frisco) %>%
-      generate(reps = 1000, type = "bootstrap") %>%
-      calculate(stat = "diff in prop")
+``` r
+prof_small %>%
+  specify(sex ~ frisco) %>%
+  generate(reps = 1000, type = "bootstrap") %>%
+  calculate(stat = "diff in props") %>% 
+  visualize()
+```
+
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-16-1.png)
 
 Two numerical vars - SLR
 
@@ -232,4 +236,4 @@ prof_small %>%
   visualize()
 ```
 
-![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-15-1.png)
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-17-1.png)
