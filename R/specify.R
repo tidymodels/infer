@@ -6,13 +6,18 @@
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
 #' @importFrom tibble as_tibble
+#' @importFrom dplyr mutate_if select one_of
 #' @export
 
 specify <- function(x, formula, response = NULL, explanatory = NULL) {
+  
+  # Convert all character variables to be factor variables instead
+  x <- as_tibble(x) %>% mutate_if(is.character, as.factor)
+  
   attr(x, "response")    <- substitute(response)
   attr(x, "explanatory") <- substitute(explanatory)
 
-  if (hasArg(formula)) {
+  if (methods::hasArg(formula)) {
     attr(x, "response")    <- f_lhs(formula)
     attr(x, "explanatory") <- f_rhs(formula)
   }
