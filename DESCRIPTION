@@ -1,7 +1,7 @@
 Package: infer
 Type: Package
 Title: Pipeable statistical inference
-Version: 0.0.0.9004
+Version: 0.0.0.9005
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
     person("Ben", "Baumer", email = "ben.baumer@gmail.com",
@@ -15,12 +15,14 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     dplyr,
-    lazyeval
+    lazyeval,
+    tibble,
+    rlang,
+    ggplot2
 Depends:
     R (>= 2.10)
 Suggests:
-    broom,
-    ggplot2
+    broom
 URL: http://github.com/andrewpbray/infer
 BugReports: https://github.com/andrewpbray/infer/issues
 RoxygenNote: 6.0.1
