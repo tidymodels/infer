@@ -137,12 +137,12 @@ One numerical variable one categorical (2 levels) (diff in means)
       generate(reps = 100, type = "bootstrap") %>%
       calculate(stat = "diff in means")
 
-Two categorical variables (diff in proportions) (not yet implemented)
+Two categorical variables (diff in proportions)
 
     mtcars %>%
       specify(am ~ vs) %>%
       generate(reps = 100, type = "bootstrap") %>%
-      calculate(stat = "diff in prop")
+      calculate(stat = "diff in props")
 
 Two numerical vars - SLR
 
