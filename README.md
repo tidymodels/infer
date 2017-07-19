@@ -123,12 +123,12 @@ One numerical (one median)
       generate(reps = 100, type = "bootstrap") %>%
       calculate(stat = "median")
 
-One categorical (one proportion) (not yet implemented)
+One categorical (one proportion)
 
     mtcars %>%
       specify(response = am) %>%
       generate(reps = 100, type = "bootstrap") %>%
-      calculate(stat = "prop")
+      calculate(stat = "prop", success = "1")
 
 One numerical variable one categorical (2 levels) (diff in means)
 
