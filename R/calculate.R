@@ -10,23 +10,13 @@
 #'
 #' # Permutation test for two binary variables
 #' if (require(dplyr)) {
-#'   diffs <- mtcars %>%
+#'   mtcars %>%
 #'     mutate(am = factor(am), vs = factor(vs)) %>%
-#'     select(am, vs) %>%
+#'     specify(am ~ vs) %>%
 #'     hypothesize(null = "independence") %>%
 #'     generate(reps = 100, type = "permute") %>%
-#'     calculate(stat = "diff in props")
-#'   test_stat <- mtcars %>%
-#'     group_by(vs) %>%
-#'     summarize(N = n(), manuals = sum(am)) %>%
-#'     mutate(prop = manuals / N) %>%
-#'     summarize(diff_prop = diff(prop))
-#'   if (require(ggplot2)) {
-#'     ggplot(data = diffs, aes(x = diffprop)) +
-#'       geom_density() +
-#'       geom_vline(xintercept = 0, linetype = 3) +
-#'       geom_vline(data = test_stat, aes(xintercept = diff_prop), color = "red")
-#'   }
+#'     calculate(stat = "diff in props") %>%
+#'     visualize()
 #' }
 
 calculate <- function(x, stat, ...) {
@@ -60,16 +50,16 @@ calculate <- function(x, stat, ...) {
 
   if (stat == "diff in means") {
     df_out <- x %>%
-      dplyr::group_by(replicate, !! attr(x, "explanatory")) %>%
-      dplyr::summarize(xbar = mean(!! attr(x, "response"))) %>%
+      dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
+      dplyr::summarize(xbar = mean(!!attr(x, "response"))) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = diff(xbar))
   }
 
   if (stat == "diff in medians") {
     df_out <- x %>%
-      dplyr::group_by(replicate, !! attr(x, "explanatory")) %>%
-      dplyr::summarize(xtilde = stats::median(!! attr(x, "response"))) %>%
+      dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
+      dplyr::summarize(xtilde = stats::median(!!tr(x, "response"))) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = diff(xtilde))
   }
@@ -78,8 +68,8 @@ calculate <- function(x, stat, ...) {
   # May still need a `success` argument here or in `hypothesize` to further enforce this?
   if (stat == "diff in props") {
     df_out <- x %>%
-      dplyr::group_by(replicate, !! attr(x, "explanatory")) %>%
-      dplyr::summarize(prop = mean((!! attr(x, "response")) == levels(!! attr(x, "response"))[1])) %>%
+      dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
+      dplyr::summarize(prop = mean((!!attr(x, "response")) == levels(!!attr(x, "response"))[1])) %>%
       dplyr::summarize(stat = diff(prop))
   }
 
@@ -90,16 +80,16 @@ calculate <- function(x, stat, ...) {
     if (is.null(attr(x, "explanatory"))) {
       expected <- n * attr(x, "params")
       df_out <- x %>%
-        dplyr::summarize(stat = sum((table(!! attr(x, "response")) - expected)^2 / expected))
+        dplyr::summarize(stat = sum((table(!!attr(x, "response")) - expected)^2 / expected))
     } else {
       obs_tab <- x %>%
         dplyr::filter(replicate == 1) %>%
         dplyr::ungroup() %>%
-        dplyr::select(!! attr(x, "response"), !! attr(x, "explanatory")) %>%
+        dplyr::select(!!attr(x, "response"), !!attr(x, "explanatory")) %>%
         table()
       expected <- outer(rowSums(obs_tab), colSums(obs_tab)) / n
       df_out <- x %>%
-        dplyr::summarize(stat = sum((table(!! attr(x, "response"), !! attr(x, "explanatory"))
+        dplyr::summarize(stat = sum((table(!!attr(x, "response"), !!attr(x, "explanatory"))
                                      - expected)^2 / expected))
 
     }

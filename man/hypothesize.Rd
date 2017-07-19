@@ -21,15 +21,16 @@ if (require(dplyr)) {
 
 # One binary variable
   mtcars \%>\%
-    select(am) \%>\%
-    hypothesize(null = "point", p = 0.25) \%>\%
+    mutate(am = factor(am)) \%>\%
+    specify(response = am) \%>\%
+    hypothesize(null = "point", p = c("0" = 0.25, "1" = 0.75)) \%>\%
     generate(reps = 100, type = "simulate") \%>\%
     calculate(stat = "prop")
 
 # Permutation test
   mtcars \%>\%
     mutate(cyl = factor(cyl)) \%>\%
-    select(mpg, cyl) \%>\%
+    specify(mpg ~ cyl) \%>\%
     hypothesize(null = "independence") \%>\%
     generate(reps = 100, type = "permute") \%>\%
     calculate(stat = "F")

@@ -5,8 +5,6 @@
 #' @param ... currently ignored
 #' @importFrom ggplot2 ggplot geom_histogram aes
 #' @export
-#' @examples
-#'
 
 visualize <- function(df, num_bins = 30, ...) {
   ggplot(data = df, mapping = aes(x = stat)) +

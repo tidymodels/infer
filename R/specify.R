@@ -5,14 +5,14 @@
 #' @param explanatory the variable name in \code{x} that will serve as the explanatory variable
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
-#' @importFrom tibble as_tibble
-#' @importFrom dplyr mutate_if select one_of
+#' @importFrom dplyr mutate_if select one_of as_tibble
+#' @importFrom methods hasArg
 #' @export
 
 specify <- function(x, formula, response = NULL, explanatory = NULL) {
   
   # Convert all character variables to be factor variables instead
-  x <- as_tibble(x) %>% mutate_if(is.character, as.factor)
+  x <- dplyr::as_tibble(x) %>% mutate_if(is.character, as.factor)
   
   attr(x, "response")    <- substitute(response)
   attr(x, "explanatory") <- substitute(explanatory)
@@ -37,5 +37,8 @@ specify <- function(x, formula, response = NULL, explanatory = NULL) {
       as.character(attr(x, "explanatory"))
     )))
 
+  # add "infer" class
+  class(x) <- append("infer", class(x))
+  
   return(x)
 }

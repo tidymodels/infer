@@ -5,12 +5,9 @@
 #' @param ... currently ignored
 #' @importFrom dplyr group_by
 #' @export
-#' @examples
-#'
-#'
 
 generate <- function(x, reps = 1, type = "bootstrap", ...) {
-  if (type == "bootstrap"){
+  if (type == "bootstrap") {
     return(bootstrap(x, reps, ...))
   }
   if (type == "permute") {

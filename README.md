@@ -6,6 +6,8 @@ Infer: a grammar for statistical inference
 
 ------------------------------------------------------------------------
 
+[![Travis-CI Build Status](https://travis-ci.org/andrewpbray/infer.svg?branch=master)](https://travis-ci.org/andrewpbray/infer)
+
 The objective of this package is to perform statistical inference using a grammar that illustrates the underlying concepts and a format that coheres with the `tidyverse`.
 
 ### Hypothesis tests
