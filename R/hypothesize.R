@@ -1,4 +1,4 @@
-#' Specify a null hypothesis
+#' Declare a null hypothesis
 #' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
 #' @param null the null hypothesis. Options include "independence" and "point".
 #' @param ... arguments passed to downstream functions
@@ -39,49 +39,50 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
     stop("x must be a data.frame or tibble")
   }
 
-  # error: too many columns
-  if (ncol(x) > 2) {
-    stop("Too many columns. Use select() to narrow your data.frame.")
-  }
-
   # error: null not found
   if (!(null %in% c("independence", "point"))) {
     stop("Choice of null is not supported.")
   }
 
-  # error: independence requires factors
-  if (null == "independence" & !("factor" %in% classes)) {
-    stop("A null of independence requires at least one factor variable.")
-  }
-
   attr(x, "null") <- null
 
   dots <- list(...)
-  params <- parse_params(dots)
-  
-  # error: number of parameters exceeds number of factor levels
-  if (length(params) != length(levels(x[,1]))) {
-    stop("The number of parameters must match the number of factor levels.")
+  if(length(dots) > 0) {
+    params <- parse_params(dots, x)
+    attr(x, "params") <- params
   }
-
-  attr(x, "params") <- params
 
   return(as.tbl(x))
 }
 
-parse_params <- function(x) {
-  ## find props
-  p_ind <- grep("p\\d+", names(x))
-  ## check that props are between 0 and 1 and sum to 1 if there are > 1
+parse_params <- function(dots, x) {
+  p_ind <- grep("p", names(dots))
+  mu_ind <- grep("mu", names(dots))
+  med_ind <- grep("Med", names(dots))
 
-  # means
-  ## find means
-  mu_ind <- grep("mu\\d+", names(x))
-
-  # error: cannot specify both props and means
-  if (length(p_ind) * length(mu_ind) != 0) {
-    stop("Parameter values should be either proportions or means but not both.")
+  # error: cannot specify more than one of props, means, medians
+  # Boolean logic fails me.  There has to be a more efficient way to do this, right?
+  if ( (length(p_ind) * length(mu_ind) != 0) | (length(p_ind) * length(med_ind) != 0) | 
+       length(mu_ind) * length(med_ind) != 0) {
+    stop("Parameter values should be only one of proportions, means, or medians.")
   }
 
-  return(x[c(p_ind, mu_ind)])
+  # add in 1 - p if it's missing
+  # Outside if() is needed to ensure an error does not occur in referencing the
+  # 0 index of dots
+  if(length(p_ind)){
+    if(length(dots[[p_ind]]) == 1){
+      warning(paste0("Missing level, assuming proportion is 1 - ", dots$p, "."))
+      missing_lev <- setdiff(levels(pull(x, !! attr(x, "response"))), names(dots$p))
+      dots$p <- append(dots$p, 1 - dots$p)
+      names(dots$p)[2] <- missing_lev
+    }
+  }
+  
+  # if (sum(dots[[p_ind]]) != 1){
+  #   dots[[p_ind]] <- dots[[p_ind]]/sum(dots[[p_ind]])
+  #   warning("Proportions do not sum to 1, normalizing automatically.")
+  # }
+
+  return(unlist(dots))
 }

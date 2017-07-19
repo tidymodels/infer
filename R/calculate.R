@@ -3,17 +3,17 @@
 #' @param stat a string giving the type of the statistic to calculate. Current options include "mean", "prop", "diff in means", "diff in props", "chisq", and "F".
 #' or an equation in quotes
 #' @param ... currently ignored
-#' @importFrom dplyr %>% group_by group_by_ summarize_ summarize
-#' @importFrom lazyeval interp
+#' @importFrom dplyr group_by summarize
+#' @importFrom rlang !! sym quo enquo eval_tidy
 #' @export
-#' @examples 
-#' 
+#' @examples
+#'
 #' # Permutation test for two binary variables
 #' if (require(dplyr)) {
 #'   diffs <- mtcars %>%
 #'     mutate(am = factor(am), vs = factor(vs)) %>%
-#'     select(am, vs) %>% 
-#'     hypothesize(null = "independence") %>% 
+#'     select(am, vs) %>%
+#'     hypothesize(null = "independence") %>%
 #'     generate(reps = 100, type = "permute") %>%
 #'     calculate(stat = "diff in props")
 #'   test_stat <- mtcars %>%
@@ -23,78 +23,99 @@
 #'     summarize(diff_prop = diff(prop))
 #'   if (require(ggplot2)) {
 #'     ggplot(data = diffs, aes(x = diffprop)) +
-#'       geom_density() + 
-#'       geom_vline(xintercept = 0, linetype = 3) + 
+#'       geom_density() +
+#'       geom_vline(xintercept = 0, linetype = 3) +
 #'       geom_vline(data = test_stat, aes(xintercept = diff_prop), color = "red")
 #'   }
 #' }
 
 calculate <- function(x, stat, ...) {
 
-
+  # TODO: Check to see if dplyr::group_by(replicate) is needed since
+  # generate() does a grouping of replicate
+  
   if (stat == "mean") {
     col <- setdiff(names(x), "replicate")
-    x %>%
-      dplyr::group_by(replicate) %>%
-      dplyr::summarize_(mean = lazyeval::interp(~mean(var),
-                                                var = as.name(col)))
+    df_out <- x %>%
+      dplyr::group_by(replicate) %>% 
+      dplyr::summarize(stat = mean(!!sym(col)))
+  }
+  
+  if (stat == "median") {
+    col <- setdiff(names(x), "replicate")
+    df_out <- x %>%
+      dplyr::group_by(replicate) %>% 
+      dplyr::summarize(stat = stats::median(!!sym(col)))
   }
 
   if (stat == "prop") {
-    col <- setdiff(names(x), "replicate")
-    x %>%
-      dplyr::group_by(replicate) %>%
-      dplyr::summarize_(prop = lazyeval::interp(~mean(var == levels(var)[1]),
-                                                var = as.name(col)))
+    col <- attr(x, "response")
+    success <- quo(get_par_levels(x)[1])
+    df_out <- x %>%
+     # dplyr::summarize(stat = mean(!! col == rlang::eval_tidy(success))) # This doesn't appear to be working
+      dplyr::group_by(replicate) %>% 
+      # The following works but not sure why when looking at the diff in means code?
+      dplyr::summarize(stat = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success)))
   }
 
   if (stat == "diff in means") {
-    num_cols <- sapply(x, is.numeric)
-    non_num_name <- names(num_cols[num_cols != TRUE])
-    col <- setdiff(names(x), "replicate")
-    col <- setdiff(col, non_num_name)
     df_out <- x %>%
-      dplyr::group_by_("replicate", .dots = non_num_name) %>%
-      dplyr::summarize_(N = ~n(),
-                        mean = lazyeval::interp(~mean(var), var = as.name(col))) %>%
+      dplyr::group_by(replicate, !! attr(x, "explanatory")) %>%
+      dplyr::summarize(xbar = mean(!! attr(x, "response"))) %>%
       dplyr::group_by(replicate) %>%
-      dplyr::summarize(diffmean = diff(mean))
-    return(df_out)
+      dplyr::summarize(stat = diff(xbar))
   }
 
-  if (stat == "diff in props") {
-    # Assume the first column is to be permuted and
-    # the second column are the groups
-    # Assumes the variables are factors and NOT chars here!
-    permute_col <- names(x)[1]
-    group_col <- names(x)[2]
-
+  if (stat == "diff in medians") {
     df_out <- x %>%
-      dplyr::group_by_("replicate", .dots = group_col) %>%
-      dplyr::summarize_(N = ~n(),
-                        prop = lazyeval::interp(~mean(var == levels(var)[1]),
-                                                var = as.name(permute_col))) %>%
+      dplyr::group_by(replicate, !! attr(x, "explanatory")) %>%
+      dplyr::summarize(xtilde = stats::median(!! attr(x, "response"))) %>%
       dplyr::group_by(replicate) %>%
-      dplyr::summarize_(diffprop = ~diff(prop))
-    return(df_out)
+      dplyr::summarize(stat = diff(xtilde))
+  }
+  
+  # Assumes that the first level of the response variable is a success
+  # May still need a `success` argument here or in `hypothesize` to further enforce this?
+  if (stat == "diff in props") {
+    df_out <- x %>%
+      dplyr::group_by(replicate, !! attr(x, "explanatory")) %>%
+      dplyr::summarize(prop = mean((!! attr(x, "response")) == levels(!! attr(x, "response"))[1])) %>%
+      dplyr::summarize(stat = diff(prop))
   }
 
   if (stat == "Chisq") {
+    ## The following could stand to be cleaned up
+    n   <- attr(x, "biggest_group_size")
 
-  }
-  
-  if (stat == "prop") {
-    col <- setdiff(names(x), "replicate")
-    x %>%
-      dplyr::group_by(replicate) %>%
-      dplyr::summarize_(N = ~n(),
-                        prop = lazyeval::interp(~mean(var == levels(var)[1]),
-                                                var = as.name(col)))
+    if (is.null(attr(x, "explanatory"))) {
+      expected <- n * attr(x, "params")
+      df_out <- x %>%
+        dplyr::summarize(stat = sum((table(!! attr(x, "response")) - expected)^2 / expected))
+    } else {
+      obs_tab <- x %>%
+        dplyr::filter(replicate == 1) %>%
+        dplyr::ungroup() %>%
+        dplyr::select(!! attr(x, "response"), !! attr(x, "explanatory")) %>%
+        table()
+      expected <- outer(rowSums(obs_tab), colSums(obs_tab)) / n
+      df_out <- x %>%
+        dplyr::summarize(stat = sum((table(!! attr(x, "response"), !! attr(x, "explanatory"))
+                                     - expected)^2 / expected))
+
+    }
   }
 
   if (stat == "F") {
-
+    df_out <- x %>%
+      dplyr::summarize(stat = stats::anova(
+          stats::lm(!! attr(x, "response") ~ !! attr(x, "explanatory"))
+        )$`F value`[1])
   }
 
+  if (stat == "slope") {
+    df_out <- x %>%
+      dplyr::summarize(stat = stats::coef(stats::lm(!! attr(x, "response") ~ !! attr(x, "explanatory")))[2])
+  }
 
+  return(df_out)
 }

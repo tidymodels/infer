@@ -1,7 +1,7 @@
 #' Generate resamples
 #' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
 #' @param reps the number of resamples to generate
-#' @param type currently either \code{bootstrap} or \code{permute}
+#' @param type currently either \code{bootstrap}, \code{permute}, or \code{simulate}
 #' @param ... currently ignored
 #' @importFrom dplyr group_by
 #' @export
@@ -52,79 +52,113 @@ generate <- function(x, reps = 1, type = "bootstrap", ...) {
 }
 
 bootstrap <- function(x, reps = 1, ...) {
-  rep_sample_n(x, size = nrow(x), replace = TRUE, reps = reps)
+  # Check if hypothesis test chosen
+  if(!is.null(attr(x, "null"))){
+    # If so, shift the variable chosen to have a mean corresponding
+    # to that specified in `hypothesize`
+    if(attr(attr(x, "params"), "names") == "mu"){
+      col <- as.character(attr(x, "response"))
+      x[[col]] <- x[[col]] - mean(x[[col]]) + attr(x, "params")
+    }
+    
+    # Similarly for median
+    if(attr(attr(x, "params"), "names") == "Med"){
+      col <- as.character(attr(x, "response"))
+      x[[col]] <- x[[col]] - stats::median(x[[col]]) + attr(x, "params")
+    }
+  }
+  
+  # Set variables for use in calculate()
+  result <- rep_sample_n(x, size = nrow(x), replace = TRUE, reps = reps)
+  attr(result, "response") <- attr(x, "response")
+  attr(result, "explanatory") <- attr(x, "explanatory")
+  
+  return(result)
 }
 
-#' @importFrom dplyr bind_rows mutate_ group_by
+#' @importFrom dplyr bind_rows group_by
 
 permute <- function(x, reps = 1, ...) {
   df_out <- replicate(reps, permute_once(x), simplify = FALSE) %>%
     dplyr::bind_rows() %>%
-    dplyr::mutate_(replicate = ~rep(1:reps, each = nrow(x))) %>%
+    dplyr::mutate(replicate = rep(1:reps, each = nrow(x))) %>%
     dplyr::group_by(replicate)
   attr(df_out, "null") <- attr(x, "null")
+  attr(df_out, "response") <- attr(x, "response")
+  attr(df_out, "explanatory") <- attr(x, "explanatory")
   return(df_out)
 }
 
 permute_once <- function(x, ...) {
   dots <- list(...)
 
-  if (attr(x, "null") == "equal means") {
-    ## need to look for name of variable to permute...ugh
-    ## by default, use the first column
-    # y <- x[, 1]
-    ## Hopefully this fixes that
-    num_cols <- sapply(x, is.numeric)
-    num_name <- names(num_cols[num_cols == TRUE])
-    y <- x[[num_name]]
-
-    y_prime <- y[ sample.int(length(y)) ]
-    x[[num_name]] <- y_prime
-    return(x)
-  }
-
   if (attr(x, "null") == "independence") {
-    ## by default, permute the first column of the two selected
-    # Since dealing with tibble potentially, we need to force a
-    # vector here
-    y <- x[[1]]
+    y <- pull(x, !! attr(x, "response"))
 
-    y_prime <- y[ sample.int(length(y)) ]
-    x[[1]] <- y_prime
+    y_prime <- sample(y, size = length(y), replace = TRUE)
+    x[as.character(attr(x, "response"))] <- y_prime
     return(x)
   }
 
 }
 
 #' @importFrom dplyr pull
+#' @importFrom tibble tibble
+#' @importFrom rlang :=
 
 simulate <- function(x, reps = 1, ...) {
-  # error
-  if (ncol(x) > 1 | class(dplyr::pull(x, 1)) != "factor") {
-    stop("Simulation can only be performed for a single categorical variable.")
-  }
-  
-  rep_sample_n(x, size = nrow(x), reps = reps, replace = TRUE, prob = unlist(attr(x, "params")))
+  fct_levels <- levels(dplyr::pull(x, !! attr(x, "response")))
+
+  col_simmed <- unlist(replicate(reps, sample(fct_levels,
+                                              size = nrow(x),
+                                              replace = TRUE,
+                                              prob = format_params(x)),
+                                 simplify = FALSE))
+
+  rep_tbl <- tibble(!! attr(x, "response") := as.factor(col_simmed),
+                   replicate = as.factor(rep(1:reps, rep(nrow(x), reps))))
+
+  attr(rep_tbl, "null") <- attr(x, "null")
+  attr(rep_tbl, "params") <- attr(x, "params")
+  attr(rep_tbl, "response") <- attr(x, "response")
+  attr(rep_tbl, "explanatory") <- attr(x, "explanatory")
+  #  attr(rep_tbl, "ci") <- attr(tbl, "ci")
+  # TODO: we may want to clean up this object before sending it out - do we
+  # really need all of the attributes() that it spits out?
+  return(dplyr::group_by(rep_tbl, replicate))
+}
+
+#' @importFrom dplyr pull
+
+format_params <- function(x) {
+  par_levels <- get_par_levels(x)
+  fct_levels <- levels(dplyr::pull(x, !! attr(x, "response")))
+  return(attr(x, "params")[match(fct_levels, par_levels)])
+}
+
+get_par_levels <- function(x) {
+  par_names <- names(attr(x, "params"))
+  return(gsub("^.\\.", "", par_names))
 }
 
 #' @importFrom dplyr as_tibble pull data_frame inner_join
 
 # Modified oilabs::rep_sample_n() with attr added
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
-  # attr(tbl, "ci") <- TRUE
   n <- nrow(tbl)
-  
+
   # assign non-uniform probabilities
   # there should be a better way!!
   # prob needs to be nrow(tbl) -- not just number of factor levels
   if (!is.null(prob)) {
+    if (length(prob) != n) stop("The argument prob must have length nrow(tbl).")
     df_lkup <- dplyr::data_frame(vals = levels(dplyr::pull(tbl, 1)))
     names(df_lkup) <- names(tbl)
     df_lkup$probs = prob
     tbl_wgt <- dplyr::inner_join(tbl, df_lkup)
     prob <- tbl_wgt$probs
   }
-  
+
   i <- unlist(replicate(reps, sample.int(n, size, replace = replace, prob = prob),
                         simplify = FALSE))
   rep_tbl <- cbind(replicate = rep(1:reps, rep(size, reps)),

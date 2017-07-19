@@ -6,7 +6,7 @@ Infer: a grammar for statistical inference
 
 ------------------------------------------------------------------------
 
-The objective of this package is to perform statistical inference using a grammar that illustrates the underlying concepts and a format that coheres with the `tidyverse`. To participate in the discussion surrounding the development of this package, please see the issues.
+The objective of this package is to perform statistical inference using a grammar that illustrates the underlying concepts and a format that coheres with the `tidyverse`.
 
 ### Hypothesis tests
 
@@ -25,58 +25,74 @@ These examples assume that `mtcars` has been overwritten so that the variables `
 
 ------------------------------------------------------------------------
 
+One numerical variable (mean)
+
+    mtcars %>%
+      specify(response = mpg) %>% # alt: mpg ~ NULL (or mpg ~ 1)
+      hypothesize(null = "point", mu = 25) %>% 
+      generate(reps = 100, type = "bootstrap") %>% 
+      calculate(stat = "mean")
+
+One numerical variable (median)
+
+    mtcars %>%
+      specify(response = mpg) %>% # alt: mpg ~ NULL (or mpg ~ 1)
+      hypothesize(null = "point", Med = 26) %>% 
+      generate(reps = 100, type = "bootstrap") %>% 
+      calculate(stat = "median")
+
 One categorical (2 level) variable
 
     mtcars %>%
-      select(am) %>%
-      hypothesize(null = "point", p = .25) %>% 
+      specify(response = am) %>% # alt: am ~ NULL (or am ~ 1)
+      hypothesize(null = "point", p = c("1" = .25)) %>% 
       generate(reps = 100, type = "simulate") %>% 
-      calculate(stat = "prop") #
+      calculate(stat = "prop")
 
 Two categorical (2 level) variables
 
--   Implemented
-
-<!-- -->
-
     mtcars %>%
-      select(am, vs) %>%
-      hypothesize(null = "independence") %>% # 
+      specify(am ~ vs) %>% # alt: response = am, explanatory = vs
+      hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
-      calculate(stat = "diff in props") #
+      calculate(stat = "diff in props")
 
 One categorical (&gt;2 level) - GoF
 
     mtcars %>%
-      select(cyl) %>%
-      hypothesize(null = "point", p1 = .25, p2 = .25, p3 = .50) %>% # call levels() to find order of p's
+      specify(cyl ~ NULL) %>% # alt: response = cyl
+      hypothesize(null = "point", p = c("4" = .5, "6" = .25, "8" = .25)) %>%
       generate(reps = 100, type = "simulate") %>%
-      calculate(stat = "chisq")
+      calculate(stat = "Chisq")
 
 Two categorical (&gt;2 level) variables
 
     mtcars %>%
-      select(cyl, am) %>%
+      specify(cyl ~ am) %>% # alt: response = cyl, explanatory = am
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
-      calculate(stat = "chisq")
+      calculate(stat = "Chisq")
 
 One numerical variable one categorical (2 levels) (diff in means)
 
--   Implemented
-
-<!-- -->
-
     mtcars %>%
-      select(mpg, am) %>%
+      specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "diff in means")
 
+One numerical variable one categorical (2 levels) (diff in medians)
+
+    mtcars %>%
+      specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
+      hypothesize(null = "independence") %>%
+      generate(reps = 100, type = "permute") %>%
+      calculate(stat = "diff in medians")
+
 One numerical one categorical (&gt;2 levels) - ANOVA
 
     mtcars %>%
-      select(mpg, cyl) %>%
+      specify(mpg ~ cyl) %>% # alt: response = mpg, explanatory = cyl
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "F")
@@ -84,20 +100,51 @@ One numerical one categorical (&gt;2 levels) - ANOVA
 Two numerical vars - SLR
 
     mtcars %>%
-      select(mpg, hp) %>%
+      specify(mpg ~ hp) %>% # alt: response = mpg, explanatory = cyl
       hypothesize(null = "independence") %>% # or "slope = 0"
       generate(reps = 100, type = "permute") %>%
-      calculate(stat = "lm(mpg ~ hp)")
+      calculate(stat = "slope")
 
 ### Confidence intervals
 
 One numerical (one mean)
 
--   Implemented
-
-<!-- -->
-
     mtcars %>%
-      select(mpg) %>%
+      specify(response = mpg) %>%
       generate(reps = 100, type = "bootstrap") %>%
       calculate(stat = "mean")
+
+One numerical (one median)
+
+    mtcars %>%
+      specify(response = mpg) %>%
+      generate(reps = 100, type = "bootstrap") %>%
+      calculate(stat = "median")
+
+One categorical (one proportion) (not yet implemented)
+
+    mtcars %>%
+      specify(response = am) %>%
+      generate(reps = 100, type = "bootstrap") %>%
+      calculate(stat = "prop")
+
+One numerical variable one categorical (2 levels) (diff in means)
+
+    mtcars %>%
+      specify(mpg ~ am) %>%
+      generate(reps = 100, type = "bootstrap") %>%
+      calculate(stat = "diff in means")
+
+Two categorical variables (diff in proportions) (not yet implemented)
+
+    mtcars %>%
+      specify(am ~ vs) %>%
+      generate(reps = 100, type = "bootstrap") %>%
+      calculate(stat = "diff in prop")
+
+Two numerical vars - SLR
+
+    mtcars %>%
+      specify(mpg ~ hp) %>% 
+      generate(reps = 100, type = "bootstrap") %>%
+      calculate(stat = "slope")
