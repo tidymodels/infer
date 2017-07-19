@@ -198,12 +198,17 @@ prof_small %>%
 
 ![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-13-1.png)
 
-One categorical (one proportion) (not yet implemented)
+One categorical (one proportion)
 
-    prof_small %>%
-      specify(response = sex) %>%
-      generate(reps = 1000, type = "bootstrap") %>%
-      calculate(stat = "prop")
+``` r
+prof_small %>%
+  specify(response = sex) %>%
+  generate(reps = 1000, type = "bootstrap") %>%
+  calculate(stat = "prop", success = "f") %>% 
+  visualize()
+```
+
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-14-1.png)
 
 One numerical variable one categorical (2 levels) (diff in means)
 
@@ -215,7 +220,7 @@ prof_small %>%
   visualize()
 ```
 
-![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-14-1.png)
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-15-1.png)
 
 Two categorical variables (diff in proportions) (not yet implemented)
 
@@ -234,4 +239,4 @@ prof_small %>%
   visualize()
 ```
 
-![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-15-1.png)
+![](profiles_examples_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-16-1.png)
