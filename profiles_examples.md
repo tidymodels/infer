@@ -21,7 +21,8 @@ library(okcupiddata)
 library(stringr)
 library(infer)
 set.seed(2017)
-prof_small <- profiles %>% dplyr::sample_n(size = 500) %>% 
+prof_small <- profiles %>% 
+  dplyr::sample_n(size = 500) %>% 
   dplyr::mutate(frisco = dplyr::case_when(
     str_detect(location, "san fran") ~ "san fran",
     !str_detect(location, "san fran") ~ "not san fran"
@@ -97,7 +98,8 @@ One categorical (&gt;2 level) - GoF
 ``` r
 prof_small %>%
   specify(drugs ~ NULL) %>% # alt: response = frisco
-  hypothesize(null = "point", p = c("never" = .7, "sometimes" = .25, "often" = .05)) %>%
+  hypothesize(null = "point", 
+              p = c("never" = .7, "sometimes" = .25, "often" = .05)) %>%
   generate(reps = 1000, type = "simulate") %>%
   calculate(stat = "Chisq") %>% 
   visualize()
