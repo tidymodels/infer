@@ -50,16 +50,16 @@ calculate <- function(x, stat, ...) {
 
   if (stat == "diff in means") {
     df_out <- x %>%
-      dplyr::group_by(replicate, !! attr(x, "explanatory")) %>%
-      dplyr::summarize(xbar = mean(!! attr(x, "response"))) %>%
+      dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
+      dplyr::summarize(xbar = mean(!!attr(x, "response"))) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = diff(xbar))
   }
 
   if (stat == "diff in medians") {
     df_out <- x %>%
-      dplyr::group_by(replicate, !! attr(x, "explanatory")) %>%
-      dplyr::summarize(xtilde = stats::median(!! attr(x, "response"))) %>%
+      dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
+      dplyr::summarize(xtilde = stats::median(!!tr(x, "response"))) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = diff(xtilde))
   }
@@ -68,8 +68,8 @@ calculate <- function(x, stat, ...) {
   # May still need a `success` argument here or in `hypothesize` to further enforce this?
   if (stat == "diff in props") {
     df_out <- x %>%
-      dplyr::group_by(replicate, !! attr(x, "explanatory")) %>%
-      dplyr::summarize(prop = mean((!! attr(x, "response")) == levels(!! attr(x, "response"))[1])) %>%
+      dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
+      dplyr::summarize(prop = mean((!!attr(x, "response")) == levels(!!attr(x, "response"))[1])) %>%
       dplyr::summarize(stat = diff(prop))
   }
 
@@ -80,16 +80,16 @@ calculate <- function(x, stat, ...) {
     if (is.null(attr(x, "explanatory"))) {
       expected <- n * attr(x, "params")
       df_out <- x %>%
-        dplyr::summarize(stat = sum((table(!! attr(x, "response")) - expected)^2 / expected))
+        dplyr::summarize(stat = sum((table(!!attr(x, "response")) - expected)^2 / expected))
     } else {
       obs_tab <- x %>%
         dplyr::filter(replicate == 1) %>%
         dplyr::ungroup() %>%
-        dplyr::select(!! attr(x, "response"), !! attr(x, "explanatory")) %>%
+        dplyr::select(!!attr(x, "response"), !!attr(x, "explanatory")) %>%
         table()
       expected <- outer(rowSums(obs_tab), colSums(obs_tab)) / n
       df_out <- x %>%
-        dplyr::summarize(stat = sum((table(!! attr(x, "response"), !! attr(x, "explanatory"))
+        dplyr::summarize(stat = sum((table(!!attr(x, "response"), !!attr(x, "explanatory"))
                                      - expected)^2 / expected))
 
     }

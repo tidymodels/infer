@@ -48,7 +48,7 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
   attr(x, "null") <- null
 
   dots <- list(...)
-  if(length(dots) > 0) {
+  if (length(dots) > 0) {
     params <- parse_params(dots, x)
     attr(x, "params") <- params
   }
@@ -71,10 +71,10 @@ parse_params <- function(dots, x) {
   # add in 1 - p if it's missing
   # Outside if() is needed to ensure an error does not occur in referencing the
   # 0 index of dots
-  if(length(p_ind)){
-    if(length(dots[[p_ind]]) == 1){
+  if (length(p_ind)) {
+    if (length(dots[[p_ind]]) == 1) {
       warning(paste0("Missing level, assuming proportion is 1 - ", dots$p, "."))
-      missing_lev <- setdiff(levels(pull(x, !! attr(x, "response"))), names(dots$p))
+      missing_lev <- setdiff(levels(pull(x, !!attr(x, "response"))), names(dots$p))
       dots$p <- append(dots$p, 1 - dots$p)
       names(dots$p)[2] <- missing_lev
     }
