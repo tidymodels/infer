@@ -1,0 +1,26 @@
+# Sample .travis.yml for R projects
+
+language: r
+r:
+  - oldrel
+  - release
+  - devel
+warnings_are_errors: true
+sudo: required
+
+env:
+ global:
+   - CRAN: http://cran.rstudio.com
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
+# System dependencies for HTTP calling
+#r_binary_packages:
+# - dplyr
+
+# Install the bleeding edge version of a package from github (eg to pick
+# up a not-yet-released bugfix)
+#r_github_packages:
