@@ -35,24 +35,24 @@ One numerical variable (mean)
 ``` r
 fli_small %>%
   specify(response = arr_delay) %>% # alt: arr_delay ~ NULL (or arr_delay ~ 1)
-  hypothesize(null = "point", mu = 50) %>% 
+  hypothesize(null = "point", mu = 0) %>% 
   generate(reps = params$rep_times, type = "bootstrap") %>% 
   calculate(stat = "mean", na.rm = TRUE)
 ```
 
     ## # A tibble: 5,000 x 2
-    ##    replicate     stat
-    ##        <int>    <dbl>
-    ##  1         1 50.59023
-    ##  2         2 53.56099
-    ##  3         3 52.81026
-    ##  4         4 49.60776
-    ##  5         5 48.84880
-    ##  6         6 50.67989
-    ##  7         7 47.18644
-    ##  8         8 51.01514
-    ##  9         9 51.50696
-    ## 10        10 53.04615
+    ##    replicate       stat
+    ##        <int>      <dbl>
+    ##  1         1  0.5902332
+    ##  2         2  3.5609938
+    ##  3         3  2.8102564
+    ##  4         4 -0.3922426
+    ##  5         5 -1.1512036
+    ##  6         6  0.6798920
+    ##  7         7 -2.8135624
+    ##  8         8  1.0151442
+    ##  9         9  1.5069597
+    ## 10        10  3.0461538
     ## # ... with 4,990 more rows
 
 One numerical variable (median)
@@ -60,7 +60,7 @@ One numerical variable (median)
 ``` r
 fli_small %>%
   specify(response = arr_delay) %>% # alt: arr_delay ~ NULL (or arr_delay ~ 1)
-  hypothesize(null = "point", med = 55) %>%
+  hypothesize(null = "point", med = 0) %>%
   generate(reps = params$rep_times, type = "bootstrap") %>%
   calculate(stat = "median", na.rm = TRUE)
 ```
@@ -118,18 +118,18 @@ fli_small %>%
 ```
 
     ## # A tibble: 5,000 x 2
-    ##    replicate   stat
-    ##        <int>  <dbl>
-    ##  1         1     NA
-    ##  2         2     NA
-    ##  3         3 36.871
-    ##  4         4     NA
-    ##  5         5     NA
-    ##  6         6     NA
-    ##  7         7     NA
-    ##  8         8     NA
-    ##  9         9     NA
-    ## 10        10     NA
+    ##    replicate     stat
+    ##        <int>    <dbl>
+    ##  1         1 38.82159
+    ##  2         2 37.75836
+    ##  3         3 36.87100
+    ##  4         4 43.16722
+    ##  5         5 35.60416
+    ##  6         6 29.51281
+    ##  7         7 38.17352
+    ##  8         8 37.11360
+    ##  9         9 27.87567
+    ## 10        10 36.05444
     ## # ... with 4,990 more rows
 
 One categorical (2 level) variable

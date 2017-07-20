@@ -41,7 +41,7 @@ One numerical variable (mean)
 ```{r}
 fli_small %>%
   specify(response = arr_delay) %>% # alt: arr_delay ~ NULL (or arr_delay ~ 1)
-  hypothesize(null = "point", mu = 50) %>% 
+  hypothesize(null = "point", mu = 0) %>% 
   generate(reps = params$rep_times, type = "bootstrap") %>% 
   calculate(stat = "mean", na.rm = TRUE)
 ```
@@ -52,7 +52,7 @@ One numerical variable (median)
 ```{r}
 fli_small %>%
   specify(response = arr_delay) %>% # alt: arr_delay ~ NULL (or arr_delay ~ 1)
-  hypothesize(null = "point", med = 55) %>%
+  hypothesize(null = "point", med = 0) %>%
   generate(reps = params$rep_times, type = "bootstrap") %>%
   calculate(stat = "median", na.rm = TRUE)
 ```
