@@ -4,3 +4,4 @@
 ^figs$
 ^profiles*
 ^\.travis\.yml$
+^examples*
