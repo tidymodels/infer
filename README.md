@@ -43,6 +43,14 @@ One numerical variable (median)
       generate(reps = 100, type = "bootstrap") %>% 
       calculate(stat = "median")
 
+One numerical variable (standard deviation)
+
+    mtcars %>%
+      specify(response = mpg) %>% # alt: mpg ~ NULL (or mpg ~ 1)
+      hypothesize(null = "point", sigma = 5) %>% 
+      generate(reps = 100, type = "bootstrap") %>% 
+      calculate(stat = "sd")
+
 One categorical (2 level) variable
 
     mtcars %>%
@@ -122,6 +130,13 @@ One numerical (one median)
       specify(response = mpg) %>%
       generate(reps = 100, type = "bootstrap") %>%
       calculate(stat = "median")
+
+One numerical (standard deviation)
+
+    mtcars %>%
+      specify(response = mpg) %>%
+      generate(reps = 100, type = "bootstrap") %>%
+      calculate(stat = "sd")
 
 One categorical (one proportion)
 
