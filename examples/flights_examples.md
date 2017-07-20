@@ -60,7 +60,7 @@ One numerical variable (median)
 ``` r
 fli_small %>%
   specify(response = arr_delay) %>% # alt: arr_delay ~ NULL (or arr_delay ~ 1)
-  hypothesize(null = "point", Med = 55) %>%
+  hypothesize(null = "point", med = 55) %>%
   generate(reps = params$rep_times, type = "bootstrap") %>%
   calculate(stat = "median", na.rm = TRUE)
 ```
@@ -68,16 +68,16 @@ fli_small %>%
     ## # A tibble: 5,000 x 2
     ##    replicate  stat
     ##        <int> <dbl>
-    ##  1         1  54.0
-    ##  2         2  54.0
-    ##  3         3  54.0
-    ##  4         4  55.0
-    ##  5         5  56.5
-    ##  6         6  55.0
-    ##  7         7  55.0
-    ##  8         8  55.5
-    ##  9         9  57.0
-    ## 10        10  57.0
+    ##  1         1  -9.0
+    ##  2         2  -9.0
+    ##  3         3  -9.0
+    ##  4         4  -8.0
+    ##  5         5  -6.5
+    ##  6         6  -8.0
+    ##  7         7  -8.0
+    ##  8         8  -7.5
+    ##  9         9  -6.0
+    ## 10        10  -6.0
     ## # ... with 4,990 more rows
 
 One numerical variable (standard deviation)
@@ -87,7 +87,7 @@ One numerical variable (standard deviation)
 ``` r
 fli_small %>%
   specify(response = arr_delay) %>% # alt: arr_delay ~ NULL (or arr_delay ~ 1)
-  hypothesize(null = "point", sd = 40) %>%
+  hypothesize(null = "point", sigma = 40) %>%
   generate(reps = params$rep_times, type = "bootstrap") %>%
   calculate(stat = "sd")
 ```
@@ -112,24 +112,24 @@ fli_small %>%
 ``` r
 fli_small %>%
   specify(response = arr_delay) %>% # alt: arr_delay ~ NULL (or arr_delay ~ 1)
-  hypothesize(null = "point", sd = 40) %>%
+  hypothesize(null = "point", sigma = 40) %>%
   generate(reps = params$rep_times, type = "bootstrap") %>%
   calculate(stat = "sd", na.rm = TRUE)
 ```
 
     ## # A tibble: 5,000 x 2
-    ##    replicate     stat
-    ##        <int>    <dbl>
-    ##  1         1 38.82159
-    ##  2         2 37.75836
-    ##  3         3 36.87100
-    ##  4         4 43.16722
-    ##  5         5 35.60416
-    ##  6         6 29.51281
-    ##  7         7 38.17352
-    ##  8         8 37.11360
-    ##  9         9 27.87567
-    ## 10        10 36.05444
+    ##    replicate   stat
+    ##        <int>  <dbl>
+    ##  1         1     NA
+    ##  2         2     NA
+    ##  3         3 36.871
+    ##  4         4     NA
+    ##  5         5     NA
+    ##  6         6     NA
+    ##  7         7     NA
+    ##  8         8     NA
+    ##  9         9     NA
+    ## 10        10     NA
     ## # ... with 4,990 more rows
 
 One categorical (2 level) variable
