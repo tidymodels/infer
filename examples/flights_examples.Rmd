@@ -5,6 +5,8 @@ params:
   rep_times: 5000
 ---
 
+These examples use `r params$num_rows` flights from `nycflights13::flights` and `r params$rep_times` replicates.
+
 ```{r message=FALSE, warning=FALSE}
 library(nycflights13)
 library(tidyverse)

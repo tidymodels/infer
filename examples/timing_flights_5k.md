@@ -1,3 +1,4 @@
+
 Timing analysis
 ===============
 
@@ -16,7 +17,7 @@ devtools::session_info()
     ##  language (EN)                        
     ##  collate  en_US.UTF-8                 
     ##  tz       America/Los_Angeles         
-    ##  date     2017-07-19
+    ##  date     2017-07-20
 
     ## Packages -----------------------------------------------------------------
 
@@ -35,7 +36,7 @@ devtools::session_info()
     ##  magrittr    1.5     2014-11-22 CRAN (R 3.4.0)
     ##  memoise     1.1.0   2017-04-21 CRAN (R 3.4.0)
     ##  methods   * 3.4.1   2017-07-07 local         
-    ##  Rcpp        0.12.11 2017-05-22 CRAN (R 3.4.0)
+    ##  Rcpp        0.12.12 2017-07-15 CRAN (R 3.4.1)
     ##  rmarkdown   1.6     2017-06-15 CRAN (R 3.4.0)
     ##  rprojroot   1.2     2017-01-16 CRAN (R 3.4.0)
     ##  stats     * 3.4.1   2017-07-07 local         
@@ -94,7 +95,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   3.595
+    ## 1   3.467
 
 One numerical variable (median)
 
@@ -110,7 +111,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   3.992
+    ## 1   6.364
 
 One categorical (2 level) variable
 
@@ -132,7 +133,7 @@ replications = 1, columns = "elapsed"
     ## 0.45.
 
     ##   elapsed
-    ## 1  40.564
+    ## 1  36.368
 
 Two categorical (2 level) variables
 
@@ -148,14 +149,14 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  25.607
+    ## 1  21.768
 
 One categorical (&gt;2 level) - GoF
 
 ``` r
 benchmark(
 fli_small %>%
-  specify(origin ~ NULL) %>% # alt: response = day_hour
+  specify(origin ~ NULL) %>% # alt: response = origin
   hypothesize(null = "point", 
               p = c("EWR" = .3, "JFK" = .4, "LGA" = .3)) %>%
   generate(reps = params$rep_times, type = "simulate") %>%
@@ -165,7 +166,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  25.362
+    ## 1  22.121
 
 Two categorical (&gt;2 level) variables
 
@@ -181,7 +182,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   25.56
+    ## 1  21.381
 
 One numerical variable one categorical (2 levels) (diff in means)
 
@@ -197,7 +198,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  22.473
+    ## 1  19.833
 
 One numerical variable one categorical (2 levels) (diff in medians)
 
@@ -213,7 +214,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  24.317
+    ## 1   20.66
 
 One numerical one categorical (&gt;2 levels) - ANOVA
 
@@ -229,7 +230,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  60.015
+    ## 1  59.414
 
 Two numerical vars - SLR
 
@@ -245,7 +246,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  68.033
+    ## 1  51.482
 
 ### Confidence intervals
 
@@ -262,7 +263,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   4.299
+    ## 1   3.082
 
 One numerical (one median)
 
@@ -277,7 +278,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   6.499
+    ## 1   4.131
 
 One categorical (one proportion)
 
@@ -286,13 +287,13 @@ benchmark(
 fli_small %>%
   specify(response = half_year) %>%
   generate(reps = params$rep_times, type = "bootstrap") %>%
-  calculate(stat = "prop", success = "f"),
+  calculate(stat = "prop", success = "h2"),
 replications = 1, columns = "elapsed"
 )
 ```
 
     ##   elapsed
-    ## 1  52.125
+    ## 1  20.501
 
 One numerical variable one categorical (2 levels) (diff in means)
 
@@ -307,7 +308,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   7.479
+    ## 1    4.05
 
 Two categorical variables (diff in proportions)
 
@@ -322,7 +323,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  13.747
+    ## 1   4.946
 
 Two numerical vars - SLR
 
@@ -337,4 +338,4 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  27.044
+    ## 1  24.836

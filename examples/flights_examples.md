@@ -1,4 +1,6 @@
 
+These examples use 200 flights from `nycflights13::flights` and 5000 replicates.
+
 ``` r
 library(nycflights13)
 library(tidyverse)

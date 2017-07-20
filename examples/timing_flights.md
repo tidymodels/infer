@@ -17,7 +17,7 @@ devtools::session_info()
     ##  language (EN)                        
     ##  collate  en_US.UTF-8                 
     ##  tz       America/Los_Angeles         
-    ##  date     2017-07-19
+    ##  date     2017-07-20
 
     ## Packages -----------------------------------------------------------------
 
@@ -95,7 +95,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   1.492
+    ## 1   1.585
 
 One numerical variable (median)
 
@@ -111,7 +111,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   1.503
+    ## 1    1.47
 
 One categorical (2 level) variable
 
@@ -133,7 +133,7 @@ replications = 1, columns = "elapsed"
     ## 0.45.
 
     ##   elapsed
-    ## 1   9.088
+    ## 1   10.63
 
 Two categorical (2 level) variables
 
@@ -149,7 +149,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   5.671
+    ## 1   6.226
 
 One categorical (&gt;2 level) - GoF
 
@@ -166,7 +166,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   5.994
+    ## 1    7.79
 
 Two categorical (&gt;2 level) variables
 
@@ -182,7 +182,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   5.982
+    ## 1   6.133
 
 One numerical variable one categorical (2 levels) (diff in means)
 
@@ -198,7 +198,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   5.209
+    ## 1   5.687
 
 One numerical variable one categorical (2 levels) (diff in medians)
 
@@ -214,7 +214,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   5.876
+    ## 1   6.197
 
 One numerical one categorical (&gt;2 levels) - ANOVA
 
@@ -230,7 +230,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  15.816
+    ## 1  17.624
 
 Two numerical vars - SLR
 
@@ -246,7 +246,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  12.976
+    ## 1  17.406
 
 ### Confidence intervals
 
@@ -263,7 +263,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1    1.19
+    ## 1   1.241
 
 One numerical (one median)
 
@@ -278,7 +278,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   1.557
+    ## 1   1.649
 
 One categorical (one proportion)
 
@@ -287,13 +287,13 @@ benchmark(
 fli_small %>%
   specify(response = half_year) %>%
   generate(reps = params$rep_times, type = "bootstrap") %>%
-  calculate(stat = "prop", success = "f"),
+  calculate(stat = "prop", success = "h2"),
 replications = 1, columns = "elapsed"
 )
 ```
 
     ##   elapsed
-    ## 1    4.82
+    ## 1    5.01
 
 One numerical variable one categorical (2 levels) (diff in means)
 
@@ -308,7 +308,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1   1.443
+    ## 1   1.541
 
 Two categorical variables (diff in proportions)
 
@@ -323,7 +323,7 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1     1.9
+    ## 1   2.023
 
 Two numerical vars - SLR
 
@@ -338,4 +338,4 @@ replications = 1, columns = "elapsed"
 ```
 
     ##   elapsed
-    ## 1  10.064
+    ## 1  11.295

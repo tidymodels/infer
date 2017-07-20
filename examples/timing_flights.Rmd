@@ -107,7 +107,7 @@ One categorical (>2 level) - GoF
 ```{r}
 benchmark(
 fli_small %>%
-  specify(origin ~ NULL) %>% # alt: response = day_hour
+  specify(origin ~ NULL) %>% # alt: response = origin
   hypothesize(null = "point", 
               p = c("EWR" = .3, "JFK" = .4, "LGA" = .3)) %>%
   generate(reps = params$rep_times, type = "simulate") %>%
@@ -214,7 +214,7 @@ benchmark(
 fli_small %>%
   specify(response = half_year) %>%
   generate(reps = params$rep_times, type = "bootstrap") %>%
-  calculate(stat = "prop", success = "f"),
+  calculate(stat = "prop", success = "h2"),
 replications = 1, columns = "elapsed"
 )
 ```
