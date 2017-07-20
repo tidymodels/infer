@@ -26,19 +26,19 @@ bootstrap <- function(x, reps = 1, ...) {
     # to that specified in `hypothesize`
     if(attr(attr(x, "params"), "names") == "mu"){
       col <- as.character(attr(x, "response"))
-      x[[col]] <- x[[col]] - mean(x[[col]]) + attr(x, "params")
+      x[[col]] <- x[[col]] - mean(x[[col]], na.rm = TRUE) + attr(x, "params")
     }
     
     # Similarly for median
     if(attr(attr(x, "params"), "names") == "Med"){
       col <- as.character(attr(x, "response"))
-      x[[col]] <- x[[col]] - stats::median(x[[col]]) + attr(x, "params")
+      x[[col]] <- x[[col]] - stats::median(x[[col]], na.rm = TRUE) + attr(x, "params")
     }
 
     # Similarly for sd
     if(attr(attr(x, "params"), "names") == "sd"){
       col <- as.character(attr(x, "response"))
-      x[[col]] <- x[[col]] - stats::sd(x[[col]]) + attr(x, "params")
+      x[[col]] <- x[[col]] - stats::sd(x[[col]], na.rm = TRUE) + attr(x, "params")
     }
   }
   
