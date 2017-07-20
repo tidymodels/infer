@@ -34,6 +34,12 @@ bootstrap <- function(x, reps = 1, ...) {
       col <- as.character(attr(x, "response"))
       x[[col]] <- x[[col]] - stats::median(x[[col]]) + attr(x, "params")
     }
+
+    # Similarly for sd
+    if(attr(attr(x, "params"), "names") == "sd"){
+      col <- as.character(attr(x, "response"))
+      x[[col]] <- x[[col]] - stats::sd(x[[col]]) + attr(x, "params")
+    }
   }
   
   # Set variables for use in calculate()

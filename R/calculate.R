@@ -41,6 +41,13 @@ calculate <- function(x, stat, success = NULL, ...) {
       dplyr::summarize(stat = stats::median(!!sym(col)))
   }
 
+    if (stat == "sd") {
+    col <- setdiff(names(x), "replicate")
+    df_out <- x %>%
+      dplyr::group_by(replicate) %>% 
+      dplyr::summarize(stat = stats::sd(!!sym(col)))
+  }
+
   if (stat == "prop") {
     col <- attr(x, "response")
     if(is.null(success))
