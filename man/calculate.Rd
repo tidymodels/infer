@@ -10,13 +10,13 @@ calculate(x, stat, success = NULL, ...)
 \item{x}{the output from \code{\link{hypothesize}} or \code{\link{generate}}}
 
 \item{stat}{a string giving the type of the statistic to calculate. Current 
-options include "mean", "median", "prop", "diff in means", "diff in medians",
-"diff in props", "Chisq", "F", and "slope".}
+options include "mean", "median", "sd", "prop", "diff in means", 
+"diff in medians", "diff in props", "Chisq", "F", and "slope".}
 
 \item{success}{a string specifying which level of the response variable should be
 used as a success in bootstrapping a one proportion confidence interval}
 
-\item{...}{currently ignored}
+\item{...}{to pass options like \code{na.rm = TRUE} into functions like mean, sd, etc.}
 }
 \description{
 Calculate summary statistics

@@ -1,11 +1,11 @@
 #' Calculate summary statistics
 #' @param x the output from \code{\link{hypothesize}} or \code{\link{generate}}
 #' @param stat a string giving the type of the statistic to calculate. Current 
-#' options include "mean", "median", "prop", "diff in means", "diff in medians",
-#' "diff in props", "Chisq", "F", and "slope".
+#' options include "mean", "median", "sd", "prop", "diff in means", 
+#' "diff in medians", "diff in props", "Chisq", "F", and "slope".
 #' @param success a string specifying which level of the response variable should be
 #' used as a success in bootstrapping a one proportion confidence interval
-#' @param ... currently ignored
+#' @param ... to pass options like \code{na.rm = TRUE} into functions like mean, sd, etc.
 #' @importFrom dplyr group_by summarize
 #' @importFrom rlang !! sym quo enquo eval_tidy
 #' @export
@@ -31,14 +31,21 @@ calculate <- function(x, stat, success = NULL, ...) {
     col <- setdiff(names(x), "replicate")
     df_out <- x %>%
       dplyr::group_by(replicate) %>% 
-      dplyr::summarize(stat = mean(!!sym(col)))
+      dplyr::summarize(stat = mean(!!sym(col), ...))
   }
   
   if (stat == "median") {
     col <- setdiff(names(x), "replicate")
     df_out <- x %>%
       dplyr::group_by(replicate) %>% 
-      dplyr::summarize(stat = stats::median(!!sym(col)))
+      dplyr::summarize(stat = stats::median(!!sym(col), ...))
+  }
+
+    if (stat == "sd") {
+    col <- setdiff(names(x), "replicate")
+    df_out <- x %>%
+      dplyr::group_by(replicate) %>% 
+      dplyr::summarize(stat = stats::sd(!!sym(col), ...))
   }
 
     if (stat == "sd") {
@@ -56,13 +63,13 @@ calculate <- function(x, stat, success = NULL, ...) {
      # dplyr::summarize(stat = mean(!! col == rlang::eval_tidy(success))) # This doesn't appear to be working
       dplyr::group_by(replicate) %>% 
       # The following works but not sure why when looking at the diff in means code?
-      dplyr::summarize(stat = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success)))
+      dplyr::summarize(stat = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...))
   }
 
   if (stat == "diff in means") {
     df_out <- x %>%
       dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
-      dplyr::summarize(xbar = mean(!!attr(x, "response"))) %>%
+      dplyr::summarize(xbar = mean(!!attr(x, "response"), ...)) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = diff(xbar))
   }
@@ -70,17 +77,15 @@ calculate <- function(x, stat, success = NULL, ...) {
   if (stat == "diff in medians") {
     df_out <- x %>%
       dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
-      dplyr::summarize(xtilde = stats::median(!!attr(x, "response"))) %>%
+      dplyr::summarize(xtilde = stats::median(!!attr(x, "response"), ...)) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = diff(xtilde))
   }
   
-  # Assumes that the first level of the response variable is a success
-  # May still need a `success` argument here or in `hypothesize` to further enforce this?
   if (stat == "diff in props") {
     df_out <- x %>%
       dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
-      dplyr::summarize(prop = mean((!!attr(x, "response")) == levels(!!attr(x, "response"))[1])) %>%
+      dplyr::summarize(prop = mean((!!attr(x, "response")) == levels(!!attr(x, "response"))[1], ...)) %>%
       dplyr::summarize(stat = diff(prop))
   }
 
@@ -91,7 +96,7 @@ calculate <- function(x, stat, success = NULL, ...) {
     if (is.null(attr(x, "explanatory"))) {
       expected <- n * attr(x, "params")
       df_out <- x %>%
-        dplyr::summarize(stat = sum((table(!!attr(x, "response")) - expected)^2 / expected))
+        dplyr::summarize(stat = sum((table(!!attr(x, "response")) - expected)^2 / expected, ...))
     } else {
       obs_tab <- x %>%
         dplyr::filter(replicate == 1) %>%
@@ -101,7 +106,7 @@ calculate <- function(x, stat, success = NULL, ...) {
       expected <- outer(rowSums(obs_tab), colSums(obs_tab)) / n
       df_out <- x %>%
         dplyr::summarize(stat = sum((table(!!attr(x, "response"), !!attr(x, "explanatory"))
-                                     - expected)^2 / expected))
+                                     - expected)^2 / expected, ...))
 
     }
   }
