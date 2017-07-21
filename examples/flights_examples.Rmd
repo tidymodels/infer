@@ -5,6 +5,8 @@ params:
   rep_times: 5000
 ---
 
+These examples use `r params$num_rows` flights from `nycflights13::flights` and `r params$rep_times` replicates.
+
 ```{r message=FALSE, warning=FALSE}
 library(nycflights13)
 library(tidyverse)
@@ -39,7 +41,7 @@ One numerical variable (mean)
 ```{r}
 fli_small %>%
   specify(response = arr_delay) %>% # alt: arr_delay ~ NULL (or arr_delay ~ 1)
-  hypothesize(null = "point", mu = 50) %>% 
+  hypothesize(null = "point", mu = 0) %>% 
   generate(reps = params$rep_times, type = "bootstrap") %>% 
   calculate(stat = "mean", na.rm = TRUE)
 ```
@@ -50,7 +52,7 @@ One numerical variable (median)
 ```{r}
 fli_small %>%
   specify(response = arr_delay) %>% # alt: arr_delay ~ NULL (or arr_delay ~ 1)
-  hypothesize(null = "point", Med = 55) %>%
+  hypothesize(null = "point", med = 0) %>%
   generate(reps = params$rep_times, type = "bootstrap") %>%
   calculate(stat = "median", na.rm = TRUE)
 ```
@@ -62,7 +64,7 @@ One numerical variable (standard deviation)
 ```{r}
 fli_small %>%
   specify(response = arr_delay) %>% # alt: arr_delay ~ NULL (or arr_delay ~ 1)
-  hypothesize(null = "point", sd = 40) %>%
+  hypothesize(null = "point", sigma = 40) %>%
   generate(reps = params$rep_times, type = "bootstrap") %>%
   calculate(stat = "sd")
 ```
@@ -72,7 +74,7 @@ fli_small %>%
 ```{r}
 fli_small %>%
   specify(response = arr_delay) %>% # alt: arr_delay ~ NULL (or arr_delay ~ 1)
-  hypothesize(null = "point", sd = 40) %>%
+  hypothesize(null = "point", sigma = 40) %>%
   generate(reps = params$rep_times, type = "bootstrap") %>%
   calculate(stat = "sd", na.rm = TRUE)
 ```

@@ -48,7 +48,7 @@ One numerical variable (median)
 ```{r}
 prof_small %>%
   specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
-  hypothesize(null = "point", Med = 55) %>% 
+  hypothesize(null = "point", med = 55) %>% 
   generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "median") %>% 
   visualize()

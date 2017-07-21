@@ -59,11 +59,11 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
 parse_params <- function(dots, x) {
   p_ind <- grep("p", names(dots))
   mu_ind <- grep("mu", names(dots))
-  med_ind <- grep("Med", names(dots))
-  sd_ind <- grep("sd", names(dots))
+  med_ind <- grep("med", names(dots))
+  sig_ind <- grep("sigma", names(dots))
 
   # error: cannot specify more than one of props, means, medians, or sds
-  if ( length(p_ind) + length(mu_ind) + length(med_ind) + length(sd_ind) != 1 ){
+  if ( length(p_ind) + length(mu_ind) + length(med_ind) + length(sig_ind) != 1 ){
     stop("Parameter values should be only one of proportions, means, medians, or standard deviations.")  
   }
 

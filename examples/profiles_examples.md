@@ -15,16 +15,16 @@ library(infer)
 set.seed(2017)
 prof_small <- profiles %>% 
   dplyr::sample_n(size = 500) %>% 
-  dplyr::mutate(frisco = dplyr::case_when(
+  dplyr::mutate(city = dplyr::case_when(
     str_detect(location, "san fran") ~ "san fran",
     !str_detect(location, "san fran") ~ "not san fran"
   )) %>% 
-  dplyr::select(age, sex, frisco, drugs, height, status)
+  dplyr::select(age, sex, city, drugs, height, status)
 ```
 
 -   `height` and `age` are numerical variables.
 -   `sex` has two categories (`"m"`, `"f"`)
--   `frisco` has two categories (`"san fran"`, `"not san fran"`)
+-   `city` has two categories (`"san fran"`, `"not san fran"`)
 -   `drugs` has three categories (`"never"`, `"sometimes"`, `"often"`) - Also has missing values
 -   `status` has three categories (`"single"`, `"available"`, `"seeing someone"`)
 
@@ -48,7 +48,7 @@ One numerical variable (median)
 ``` r
 prof_small %>%
   specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
-  hypothesize(null = "point", Med = 55) %>% 
+  hypothesize(null = "point", med = 55) %>% 
   generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "median") %>% 
   visualize()
@@ -76,7 +76,7 @@ Two categorical (2 level) variables
 
 ``` r
 prof_small %>%
-  specify(sex ~ frisco) %>% # alt: response = sex, explanatory = vs
+  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in props") %>% 
@@ -89,7 +89,7 @@ One categorical (&gt;2 level) - GoF
 
 ``` r
 prof_small %>%
-  specify(drugs ~ NULL) %>% # alt: response = frisco
+  specify(drugs ~ NULL) %>% # alt: response = drugs
   hypothesize(null = "point", 
               p = c("never" = .7, "sometimes" = .25, "often" = .05)) %>%
   generate(reps = 1000, type = "simulate") %>%
@@ -142,7 +142,7 @@ One numerical one categorical (&gt;2 levels) - ANOVA
 
 ``` r
 prof_small %>%
-  specify(age ~ status) %>% # alt: response = age, explanatory = frisco
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "F") %>% 
@@ -218,7 +218,7 @@ Two categorical variables (diff in proportions)
 
 ``` r
 prof_small %>%
-  specify(sex ~ frisco) %>%
+  specify(sex ~ city) %>%
   generate(reps = 1000, type = "bootstrap") %>%
   calculate(stat = "diff in props") %>% 
   visualize()

@@ -1,4 +1,6 @@
 
+These examples use 200 flights from `nycflights13::flights` and 5000 replicates.
+
 ``` r
 library(nycflights13)
 library(tidyverse)
@@ -33,24 +35,24 @@ One numerical variable (mean)
 ``` r
 fli_small %>%
   specify(response = arr_delay) %>% # alt: arr_delay ~ NULL (or arr_delay ~ 1)
-  hypothesize(null = "point", mu = 50) %>% 
+  hypothesize(null = "point", mu = 0) %>% 
   generate(reps = params$rep_times, type = "bootstrap") %>% 
   calculate(stat = "mean", na.rm = TRUE)
 ```
 
     ## # A tibble: 5,000 x 2
-    ##    replicate     stat
-    ##        <int>    <dbl>
-    ##  1         1 50.59023
-    ##  2         2 53.56099
-    ##  3         3 52.81026
-    ##  4         4 49.60776
-    ##  5         5 48.84880
-    ##  6         6 50.67989
-    ##  7         7 47.18644
-    ##  8         8 51.01514
-    ##  9         9 51.50696
-    ## 10        10 53.04615
+    ##    replicate       stat
+    ##        <int>      <dbl>
+    ##  1         1  0.5902332
+    ##  2         2  3.5609938
+    ##  3         3  2.8102564
+    ##  4         4 -0.3922426
+    ##  5         5 -1.1512036
+    ##  6         6  0.6798920
+    ##  7         7 -2.8135624
+    ##  8         8  1.0151442
+    ##  9         9  1.5069597
+    ## 10        10  3.0461538
     ## # ... with 4,990 more rows
 
 One numerical variable (median)
@@ -58,7 +60,7 @@ One numerical variable (median)
 ``` r
 fli_small %>%
   specify(response = arr_delay) %>% # alt: arr_delay ~ NULL (or arr_delay ~ 1)
-  hypothesize(null = "point", Med = 55) %>%
+  hypothesize(null = "point", med = 0) %>%
   generate(reps = params$rep_times, type = "bootstrap") %>%
   calculate(stat = "median", na.rm = TRUE)
 ```
@@ -66,16 +68,16 @@ fli_small %>%
     ## # A tibble: 5,000 x 2
     ##    replicate  stat
     ##        <int> <dbl>
-    ##  1         1  54.0
-    ##  2         2  54.0
-    ##  3         3  54.0
-    ##  4         4  55.0
-    ##  5         5  56.5
-    ##  6         6  55.0
-    ##  7         7  55.0
-    ##  8         8  55.5
-    ##  9         9  57.0
-    ## 10        10  57.0
+    ##  1         1  -9.0
+    ##  2         2  -9.0
+    ##  3         3  -9.0
+    ##  4         4  -8.0
+    ##  5         5  -6.5
+    ##  6         6  -8.0
+    ##  7         7  -8.0
+    ##  8         8  -7.5
+    ##  9         9  -6.0
+    ## 10        10  -6.0
     ## # ... with 4,990 more rows
 
 One numerical variable (standard deviation)
@@ -85,7 +87,7 @@ One numerical variable (standard deviation)
 ``` r
 fli_small %>%
   specify(response = arr_delay) %>% # alt: arr_delay ~ NULL (or arr_delay ~ 1)
-  hypothesize(null = "point", sd = 40) %>%
+  hypothesize(null = "point", sigma = 40) %>%
   generate(reps = params$rep_times, type = "bootstrap") %>%
   calculate(stat = "sd")
 ```
@@ -110,7 +112,7 @@ fli_small %>%
 ``` r
 fli_small %>%
   specify(response = arr_delay) %>% # alt: arr_delay ~ NULL (or arr_delay ~ 1)
-  hypothesize(null = "point", sd = 40) %>%
+  hypothesize(null = "point", sigma = 40) %>%
   generate(reps = params$rep_times, type = "bootstrap") %>%
   calculate(stat = "sd", na.rm = TRUE)
 ```

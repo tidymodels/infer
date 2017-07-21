@@ -39,7 +39,7 @@ One numerical variable (median)
 
     mtcars %>%
       specify(response = mpg) %>% # alt: mpg ~ NULL (or mpg ~ 1)
-      hypothesize(null = "point", Med = 26) %>% 
+      hypothesize(null = "point", med = 26) %>% 
       generate(reps = 100, type = "bootstrap") %>% 
       calculate(stat = "median")
 
