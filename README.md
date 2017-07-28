@@ -16,7 +16,7 @@ The objective of this package is to perform statistical inference using a gramma
 
 #### Examples
 
-These examples assume that `mtcars` has been overwritten so that the variables `cyl`, `vs`, `am`, `gear`, and `carb` are `factor`s:
+These examples assume that `mtcars` has been overwritten so that the variables `cyl`, `vs`, `am`, `gear`, and `carb` are `factor`s.
 
     mtcars <- as.data.frame(mtcars) %>%
       mutate(cyl = factor(cyl),
