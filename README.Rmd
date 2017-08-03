@@ -5,7 +5,7 @@ output:
     toc_depth: 3
 ---
 
-Infer: An R package for tidyverse-friendly statistical inference
+Infer: an R package for tidyverse-friendly statistical inference
 
 ---
 [![Travis-CI Build Status](https://travis-ci.org/andrewpbray/infer.svg?branch=master)](https://travis-ci.org/andrewpbray/infer)

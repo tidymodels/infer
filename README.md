@@ -2,7 +2,7 @@
 -   [Hypothesis tests](#hypothesis-tests)
 -   [Confidence intervals](#confidence-intervals)
 
-Infer: An R package for tidyverse-friendly statistical inference
+Infer: an R package for tidyverse-friendly statistical inference
 
 ------------------------------------------------------------------------
 
