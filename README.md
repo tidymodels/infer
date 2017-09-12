@@ -2,13 +2,13 @@
 -   [Hypothesis tests](#hypothesis-tests)
 -   [Confidence intervals](#confidence-intervals)
 
-Infer: a grammar for statistical inference
+Infer: an R package for tidyverse-friendly statistical inference.
 
 ------------------------------------------------------------------------
 
 [![Travis-CI Build Status](https://travis-ci.org/andrewpbray/infer.svg?branch=master)](https://travis-ci.org/andrewpbray/infer)
 
-The objective of this package is to perform statistical inference using a grammar that illustrates the underlying concepts and a format that coheres with the `tidyverse`.
+The objective of this package is to perform inference using an expressive statistical grammar that coheres with the `tidyverse` design framework.
 
 ### Hypothesis tests
 
@@ -16,7 +16,7 @@ The objective of this package is to perform statistical inference using a gramma
 
 #### Examples
 
-These examples assume that `mtcars` has been overwritten so that the variables `cyl`, `vs`, `am`, `gear`, and `carb` are `factor`s:
+These examples assume that `mtcars` has been overwritten so that the variables `cyl`, `vs`, `am`, `gear`, and `carb` are `factor`s.
 
     mtcars <- as.data.frame(mtcars) %>%
       mutate(cyl = factor(cyl),
