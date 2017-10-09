@@ -4,9 +4,9 @@
 \alias{\%>\%}
 \title{Pipe}
 \arguments{
-\item{lhs, rhs}{Inference functions}
+\item{lhs, rhs}{Inference functions and the initial data frame}
 }
 \description{
-Like dplyr, infer also uses the pipe function, \code{\%>\%} to turn
+Like \code{dplyr}, \code{infer} also uses the pipe function, \code{\%>\%} to turn
 function composition into a series of imperative statements.
 }
