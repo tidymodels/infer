@@ -22,7 +22,12 @@ Imports:
 Depends:
     R (>= 2.10)
 Suggests:
-    broom
+    broom,
+    okcupiddata,
+    stringr,
+    knitr
 URL: http://github.com/andrewpbray/infer
 BugReports: https://github.com/andrewpbray/infer/issues
 RoxygenNote: 6.0.1
+VignetteBuilder: knitr
+

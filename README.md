@@ -12,7 +12,7 @@ The objective of this package is to perform inference using an expressive statis
 
 ### Hypothesis tests
 
-![h-test diagram](figs/ht-diagram.png)
+![](figs/ht-diagram.png)
 
 #### Examples
 
