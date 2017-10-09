@@ -22,8 +22,9 @@ used as a success in bootstrapping a one proportion confidence interval}
 Calculate summary statistics
 }
 \examples{
+set.seed(2017)
 # Permutation test for two binary variables
-if (require(dplyr)) {
+if(require(dplyr)) {
   mtcars \%>\%
     mutate(am = factor(am), vs = factor(vs)) \%>\%
     specify(am ~ vs) \%>\%
@@ -34,8 +35,11 @@ if (require(dplyr)) {
 }
 
 # Confidence interval using bootstrapping for one proportion
-mtcars \%>\%
-    specify(response = am) \%>\%
-    generate(reps = 100, type = "bootstrap") \%>\%
-    calculate(stat = "prop", success = "1")
+if(require(dplyr)) {
+    mtcars \%>\%
+        mutate(am = factor(am)) \%>\%
+        specify(response = am) \%>\%
+        generate(reps = 100, type = "bootstrap") \%>\%
+        calculate(stat = "prop", success = "1")
+}
 }

@@ -10,8 +10,9 @@
 #' @importFrom rlang !! sym quo enquo eval_tidy
 #' @export
 #' @examples
+#' set.seed(2017)
 #' # Permutation test for two binary variables
-#' if (require(dplyr)) {
+#' if(require(dplyr)) {
 #'   mtcars %>%
 #'     mutate(am = factor(am), vs = factor(vs)) %>%
 #'     specify(am ~ vs) %>%
@@ -22,10 +23,13 @@
 #' }
 #' 
 #' # Confidence interval using bootstrapping for one proportion
-#' mtcars %>%
-#'     specify(response = am) %>%
-#'     generate(reps = 100, type = "bootstrap") %>%
-#'     calculate(stat = "prop", success = "1")
+#' if(require(dplyr)) {
+#'     mtcars %>%
+#'         mutate(am = factor(am)) %>%
+#'         specify(response = am) %>%
+#'         generate(reps = 100, type = "bootstrap") %>%
+#'         calculate(stat = "prop", success = "1")
+#' }
 
 calculate <- function(x, stat, success = NULL, ...) {
 
