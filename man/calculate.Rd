@@ -22,7 +22,6 @@ used as a success in bootstrapping a one proportion confidence interval}
 Calculate summary statistics
 }
 \examples{
-
 # Permutation test for two binary variables
 if (require(dplyr)) {
   mtcars \%>\%
@@ -33,4 +32,10 @@ if (require(dplyr)) {
     calculate(stat = "diff in props") \%>\%
     visualize()
 }
+
+# Confidence interval using bootstrapping for one proportion
+mtcars \%>\%
+    specify(response = am) \%>\%
+    generate(reps = 100, type = "bootstrap") \%>\%
+    calculate(stat = "prop", success = "1")
 }

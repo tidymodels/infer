@@ -10,7 +10,6 @@
 #' @importFrom rlang !! sym quo enquo eval_tidy
 #' @export
 #' @examples
-#'
 #' # Permutation test for two binary variables
 #' if (require(dplyr)) {
 #'   mtcars %>%
@@ -21,6 +20,12 @@
 #'     calculate(stat = "diff in props") %>%
 #'     visualize()
 #' }
+#' 
+#' # Confidence interval using bootstrapping for one proportion
+#' mtcars %>%
+#'     specify(response = am) %>%
+#'     generate(reps = 100, type = "bootstrap") %>%
+#'     calculate(stat = "prop", success = "1")
 
 calculate <- function(x, stat, success = NULL, ...) {
 
