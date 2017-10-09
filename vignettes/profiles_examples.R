@@ -1,5 +1,5 @@
 ## ----include=FALSE-------------------------------------------------------
-knitr::opts_chunk$set(fig.width = 8, fig.height = 6) 
+knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
 
 ## ----message=FALSE, warning=FALSE----------------------------------------
 library(okcupiddata)
