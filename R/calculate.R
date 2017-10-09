@@ -131,5 +131,17 @@ calculate <- function(x, stat, success = NULL, ...) {
       dplyr::summarize(stat = stats::coef(stats::lm(!! attr(x, "response") ~ !! attr(x, "explanatory")))[2])
   }
 
+  if (stat == "t"){
+    # Two sample means
+    if (!is.null(attr(x, "response")) & 
+        !is.null(attr(x, "explanatory")) & 
+        class(x[[as.character(attr(x, "explanatory"))]]) == "factor"){
+      df_out <- x %>%
+        dplyr::summarize(stat = stats::t.test(!! attr(x, "response") ~ !! attr(x, "explanatory"))[["statistic"]])
+    } else {
+      print("Not implemented")
+    }
+  }
+  
   return(df_out)
 }
