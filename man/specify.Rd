@@ -7,7 +7,7 @@
 specify(x, formula, response = NULL, explanatory = NULL)
 }
 \arguments{
-\item{x}{a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}}
+\item{x}{a data frame that can be coerced into a \code{\link[tibble]{tbl_df}}}
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
 
