@@ -1,10 +1,38 @@
-#' Generate resamples
+#' Generate resamples of a type provided via \code{type} parameter
 #' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
 #' @param reps the number of resamples to generate
 #' @param type currently either \code{bootstrap}, \code{permute}, or \code{simulate}
 #' @param ... currently ignored
 #' @importFrom dplyr group_by
 #' @export
+#' @examples
+#' # Generate 100 bootstrap means
+#' # resulting in 100 * 32 = 3200 rows
+#' set.seed(2017)
+#' mtcars %>%
+#'    specify(response = mpg) %>%
+#'    generate(reps = 100, type = "bootstrap")
+#'    
+#' # Generate 200 permutations of two proportions example
+#' # resulting in 200 * 32 = 6400 rows
+#' if(require(dplyr)) {
+#'     mtcars %>%
+#'         mutate(am = factor(am), vs = factor(vs)) %>%
+#'         specify(am ~ vs) %>% # alt: response = am, explanatory = vs
+#'         hypothesize(null = "independence") %>%
+#'         generate(reps = 200, type = "permute")
+#'  }
+#'  
+#' # Generate 150 simulations assuming true probability
+#' # of success (a "1") is 0.25,
+#' # resulting in 150 * 32 = 4800 rows
+#' if(require(dplyr)) {
+#'     mtcars %>%
+#'         mutate(am = factor(am)) %>%
+#'         specify(response = am) %>% # alt: am ~ NULL (or am ~ 1)
+#'         hypothesize(null = "point", p = c("1" = .25)) %>% 
+#'         generate(reps = 150, type = "simulate") 
+#' }
 
 generate <- function(x, reps = 1, type = "bootstrap", ...) {
   if (type == "bootstrap") {

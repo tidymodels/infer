@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate.R
 \name{generate}
 \alias{generate}
-\title{Generate resamples}
+\title{Generate resamples of a type provided via \code{type} parameter}
 \usage{
 generate(x, reps = 1, type = "bootstrap", ...)
 }
@@ -16,5 +16,34 @@ generate(x, reps = 1, type = "bootstrap", ...)
 \item{...}{currently ignored}
 }
 \description{
-Generate resamples
+Generate resamples of a type provided via \code{type} parameter
+}
+\examples{
+# Generate 100 bootstrap means
+# resulting in 100 * 32 = 3200 rows
+set.seed(2017)
+mtcars \%>\%
+   specify(response = mpg) \%>\%
+   generate(reps = 100, type = "bootstrap")
+   
+# Generate 200 permutations of two proportions example
+# resulting in 200 * 32 = 6400 rows
+if(require(dplyr)) {
+    mtcars \%>\%
+        mutate(am = factor(am), vs = factor(vs)) \%>\%
+        specify(am ~ vs) \%>\% # alt: response = am, explanatory = vs
+        hypothesize(null = "independence") \%>\%
+        generate(reps = 200, type = "permute")
+ }
+ 
+# Generate 150 simulations assuming true probability
+# of success (a "1") is 0.25,
+# resulting in 150 * 32 = 4800 rows
+if(require(dplyr)) {
+    mtcars \%>\%
+        mutate(am = factor(am)) \%>\%
+        specify(response = am) \%>\% # alt: am ~ NULL (or am ~ 1)
+        hypothesize(null = "point", p = c("1" = .25)) \%>\% 
+        generate(reps = 150, type = "simulate") 
+}
 }
