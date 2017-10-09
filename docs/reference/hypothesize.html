@@ -120,8 +120,39 @@
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
-
+    <pre class="examples"><div class='input'><span class='co'># To see the output of \code{hypothesize} function provided</span>
+<span class='co'># in the `infer` class</span>
+<span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)){
+  <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>am</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'>hypothesize</span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"0"</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='st'>"1"</span> <span class='kw'>=</span> <span class='fl'>0.75</span>))
+}</div><div class='output co'>#&gt; Response:  am 
+#&gt; Null Hypothesis:  point 
+#&gt; # A tibble: 32 x 1
+#&gt;        am
+#&gt;    &lt;fctr&gt;
+#&gt;  1      1
+#&gt;  2      1
+#&gt;  3      1
+#&gt;  4      0
+#&gt;  5      0
+#&gt;  6      0
+#&gt;  7      0
+#&gt;  8      0
+#&gt;  9      0
+#&gt; 10      0
+#&gt; # ... with 22 more rows</div><div class='input'>
+<span class='co'>#\code{hypothesize} assigns attributes to an \code{infer} class</span>
+<span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)){
+  <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>am</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'>hypothesize</span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"0"</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='st'>"1"</span> <span class='kw'>=</span> <span class='fl'>0.75</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'>class</span>()
+}</div><div class='output co'>#&gt; [1] "infer"      "tbl_df"     "tbl"        "data.frame"</div><div class='input'>
+<span class='co'># To view where \code{hypothesize} falls in the \code{infer} pipeline</span>
+<span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
 <span class='co'># One binary variable</span>
   <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
@@ -151,7 +182,7 @@
 #&gt;  9         9 0.27912358
 #&gt; 10        10 0.20625131
 #&gt; # ... with 90 more rows</div><div class='input'>
-<span class='co'># Compare with</span>
+<span class='co'># Compare with traditional "tidy" hypothesis test results</span>
 <span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>dplyr</span>) <span class='kw'>&amp;&amp;</span> <span class='fu'>require</span>(<span class='no'>broom</span>)) {
   <span class='no'>cars</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='http://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/n.html'>n</a></span>(), <span class='kw'>num_manual</span> <span class='kw'>=</span> <span class='fu'>sum</span>(<span class='no'>am</span>))

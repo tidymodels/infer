@@ -17,8 +17,26 @@ hypothesize(x, null = c("independence", "point"), ...)
 Declare a null hypothesis
 }
 \examples{
-if (require(dplyr)) {
+# To see the output of \\code{hypothesize} function provided
+# in the `infer` class
+if(require(dplyr)){
+  mtcars \%>\%
+    mutate(am = factor(am)) \%>\%
+    specify(response = am) \%>\%
+    hypothesize(null = "point", p = c("0" = 0.25, "1" = 0.75)) 
+}
 
+#\\code{hypothesize} assigns attributes to an \\code{infer} class
+if(require(dplyr)){
+  mtcars \%>\%
+    mutate(am = factor(am)) \%>\%
+    specify(response = am) \%>\%
+    hypothesize(null = "point", p = c("0" = 0.25, "1" = 0.75)) \%>\%
+    class()
+}
+
+# To view where \\code{hypothesize} falls in the \\code{infer} pipeline
+if(require(dplyr)) {
 # One binary variable
   mtcars \%>\%
     mutate(am = factor(am)) \%>\%
@@ -36,7 +54,7 @@ if (require(dplyr)) {
     calculate(stat = "F")
 }
 
-# Compare with
+# Compare with traditional "tidy" hypothesis test results
 if (require(dplyr) && require(broom)) {
   cars <- mtcars \%>\%
     summarize(N = n(), num_manual = sum(am))
