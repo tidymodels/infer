@@ -12,7 +12,7 @@ vignette: |
 ---
 
 ```{r include=FALSE}
-knitr::opts_chunk$set(comment = NA, fig.width = 8, fig.height = 6) 
+knitr::opts_chunk$set(fig.width = 8, fig.height = 6) 
 ```
 
 ## Data preparation
