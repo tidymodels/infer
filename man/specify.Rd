@@ -2,7 +2,8 @@
 % Please edit documentation in R/specify.R
 \name{specify}
 \alias{specify}
-\title{Specify the response and explanatory variables}
+\title{Specify the response and explanatory variables
+\code{specify} also converts character variables chosen to be \code{factor}s}
 \usage{
 specify(x, formula, response = NULL, explanatory = NULL)
 }
@@ -17,6 +18,7 @@ specify(x, formula, response = NULL, explanatory = NULL)
 }
 \description{
 Specify the response and explanatory variables
+\code{specify} also converts character variables chosen to be \code{factor}s
 }
 \examples{
 # Response attribute set corresponding to
