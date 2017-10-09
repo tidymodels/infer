@@ -1,4 +1,5 @@
 #' Specify the response and explanatory variables
+#' \code{specify} also converts character variables chosen to be \code{factor}s
 #' @param x a data frame that can be coerced into a \code{\link[tibble]{tibble}}
 #' @param formula a formula with the response variable on the left and the explanatory on the right
 #' @param response the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument.
@@ -52,8 +53,7 @@ specify <- function(x, formula, response = NULL, explanatory = NULL) {
         )
     ) %in% names(x)
   )) stop("The columns you specified could not be found.")
-  # TODO: coerce char to factor
-  
+
   x <- as_tibble(x) %>%
     select(one_of(c(
       as.character((attr(x, "response"))),
