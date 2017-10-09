@@ -17,8 +17,8 @@ hypothesize(x, null = c("independence", "point"), ...)
 Declare a null hypothesis
 }
 \examples{
-# To see the output of \\code{hypothesize} function provided
-# in the `infer` class
+# To see the output of hypothesize() function provided
+# in the infer class
 if(require(dplyr)){
   mtcars \%>\%
     mutate(am = factor(am)) \%>\%
@@ -26,7 +26,7 @@ if(require(dplyr)){
     hypothesize(null = "point", p = c("0" = 0.25, "1" = 0.75)) 
 }
 
-#\\code{hypothesize} assigns attributes to an \\code{infer} class
+# hypothesize() assigns attributes to an infer class
 if(require(dplyr)){
   mtcars \%>\%
     mutate(am = factor(am)) \%>\%
@@ -35,7 +35,7 @@ if(require(dplyr)){
     class()
 }
 
-# To view where \\code{hypothesize} falls in the \\code{infer} pipeline
+# To view where hypothesize() falls in the infer package pipeline
 if(require(dplyr)) {
 # One binary variable
   mtcars \%>\%
@@ -44,7 +44,9 @@ if(require(dplyr)) {
     hypothesize(null = "point", p = c("0" = 0.25, "1" = 0.75)) \%>\%
     generate(reps = 100, type = "simulate") \%>\%
     calculate(stat = "prop")
+}
 
+if(require(dplyr)) {
 # Permutation test
   mtcars \%>\%
     mutate(cyl = factor(cyl)) \%>\%
