@@ -22,7 +22,6 @@ used as a success in bootstrapping a one proportion confidence interval}
 Calculate summary statistics
 }
 \examples{
-set.seed(2017)
 # Permutation test for two binary variables
 if(require(dplyr)) {
   mtcars \%>\%

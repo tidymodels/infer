@@ -21,7 +21,6 @@ Generate resamples of a type provided via \code{type} parameter
 \examples{
 # Generate 100 bootstrap means
 # resulting in 100 * 32 = 3200 rows
-set.seed(2017)
 mtcars \%>\%
    specify(response = mpg) \%>\%
    generate(reps = 100, type = "bootstrap")

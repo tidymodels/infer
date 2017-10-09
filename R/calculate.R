@@ -10,7 +10,6 @@
 #' @importFrom rlang !! sym quo enquo eval_tidy
 #' @export
 #' @examples
-#' set.seed(2017)
 #' # Permutation test for two binary variables
 #' if(require(dplyr)) {
 #'   mtcars %>%

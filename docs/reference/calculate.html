@@ -127,8 +127,7 @@ used as a success in bootstrapping a one proportion confidence interval</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>set.seed</span>(<span class='fl'>2017</span>)
-<span class='co'># Permutation test for two binary variables</span>
+    <pre class="examples"><div class='input'><span class='co'># Permutation test for two binary variables</span>
 <span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
   <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
@@ -148,16 +147,16 @@ used as a success in bootstrapping a one proportion confidence interval</p></td>
 }</div><div class='output co'>#&gt; # A tibble: 100 x 2
 #&gt;    replicate    stat
 #&gt;        &lt;int&gt;   &lt;dbl&gt;
-#&gt;  1         1 0.40625
-#&gt;  2         2 0.40625
-#&gt;  3         3 0.43750
-#&gt;  4         4 0.37500
-#&gt;  5         5 0.59375
-#&gt;  6         6 0.43750
-#&gt;  7         7 0.43750
-#&gt;  8         8 0.37500
-#&gt;  9         9 0.43750
-#&gt; 10        10 0.43750
+#&gt;  1         1 0.53125
+#&gt;  2         2 0.31250
+#&gt;  3         3 0.46875
+#&gt;  4         4 0.43750
+#&gt;  5         5 0.40625
+#&gt;  6         6 0.34375
+#&gt;  7         7 0.40625
+#&gt;  8         8 0.34375
+#&gt;  9         9 0.37500
+#&gt; 10        10 0.50000
 #&gt; # ... with 90 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

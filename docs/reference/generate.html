@@ -126,23 +126,22 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Generate 100 bootstrap means</span>
 <span class='co'># resulting in 100 * 32 = 3200 rows</span>
-<span class='fu'>set.seed</span>(<span class='fl'>2017</span>)
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
    <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>mpg</span>) <span class='kw'>%&gt;%</span>
    <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>)</div><div class='output co'>#&gt; # A tibble: 3,200 x 2
 #&gt; # Groups:   replicate [100]
 #&gt;    replicate   mpg
 #&gt;        &lt;int&gt; &lt;dbl&gt;
-#&gt;  1         1  19.7
-#&gt;  2         1  32.4
-#&gt;  3         1  10.4
-#&gt;  4         1  19.2
-#&gt;  5         1  19.2
+#&gt;  1         1  30.4
+#&gt;  2         1  15.2
+#&gt;  3         1  21.0
+#&gt;  4         1  32.4
+#&gt;  5         1  32.4
 #&gt;  6         1  19.2
-#&gt;  7         1  21.0
-#&gt;  8         1  15.2
+#&gt;  7         1  15.8
+#&gt;  8         1  21.4
 #&gt;  9         1  10.4
-#&gt; 10         1  22.8
+#&gt; 10         1  30.4
 #&gt; # ... with 3,190 more rows</div><div class='input'>
 <span class='co'># Generate 200 permutations of two proportions example</span>
 <span class='co'># resulting in 200 * 32 = 6400 rows</span>
@@ -157,14 +156,14 @@
 #&gt;        am     vs replicate
 #&gt;    &lt;fctr&gt; &lt;fctr&gt;     &lt;int&gt;
 #&gt;  1      0      0         1
-#&gt;  2      1      0         1
+#&gt;  2      0      0         1
 #&gt;  3      0      1         1
 #&gt;  4      0      1         1
 #&gt;  5      0      0         1
 #&gt;  6      0      1         1
-#&gt;  7      1      0         1
+#&gt;  7      0      0         1
 #&gt;  8      0      1         1
-#&gt;  9      0      1         1
+#&gt;  9      1      1         1
 #&gt; 10      1      1         1
 #&gt; # ... with 6,390 more rows</div><div class='input'>
 <span class='co'># Generate 150 simulations assuming true probability</span>
@@ -181,13 +180,13 @@
 #&gt;        am replicate
 #&gt;    &lt;fctr&gt;    &lt;fctr&gt;
 #&gt;  1      0         1
-#&gt;  2      0         1
+#&gt;  2      1         1
 #&gt;  3      1         1
-#&gt;  4      0         1
+#&gt;  4      1         1
 #&gt;  5      0         1
-#&gt;  6      0         1
-#&gt;  7      0         1
-#&gt;  8      1         1
+#&gt;  6      1         1
+#&gt;  7      1         1
+#&gt;  8      0         1
 #&gt;  9      0         1
 #&gt; 10      0         1
 #&gt; # ... with 4,790 more rows</div></pre>
