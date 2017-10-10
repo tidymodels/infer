@@ -56,13 +56,6 @@ calculate <- function(x, stat, success = NULL, ...) {
       dplyr::summarize(stat = stats::sd(!!sym(col), ...))
   }
 
-    if (stat == "sd") {
-    col <- setdiff(names(x), "replicate")
-    df_out <- x %>%
-      dplyr::group_by(replicate) %>% 
-      dplyr::summarize(stat = stats::sd(!!sym(col)))
-  }
-
   if (stat == "prop") {
     col <- attr(x, "response")
     if(is.null(success))
@@ -138,6 +131,7 @@ calculate <- function(x, stat, success = NULL, ...) {
         class(x[[as.character(attr(x, "explanatory"))]]) == "factor"){
       df_out <- x %>%
         dplyr::summarize(stat = stats::t.test(!! attr(x, "response") ~ !! attr(x, "explanatory"))[["statistic"]])
+      
     } else {
       print("Not implemented")
     }
