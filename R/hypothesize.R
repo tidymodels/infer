@@ -5,8 +5,26 @@
 #' @importFrom dplyr as.tbl
 #' @export
 #' @examples
-#' if (require(dplyr)) {
-#'
+#' # To see the output of hypothesize() function provided
+#' # in the infer class
+#' if(require(dplyr)){
+#'   mtcars %>%
+#'     mutate(am = factor(am)) %>%
+#'     specify(response = am) %>%
+#'     hypothesize(null = "point", p = c("0" = 0.25, "1" = 0.75)) 
+#' }
+#' 
+#' # hypothesize() assigns attributes to an infer class
+#' if(require(dplyr)){
+#'   mtcars %>%
+#'     mutate(am = factor(am)) %>%
+#'     specify(response = am) %>%
+#'     hypothesize(null = "point", p = c("0" = 0.25, "1" = 0.75)) %>%
+#'     class()
+#' }
+#' 
+#' # To view where hypothesize() falls in the infer package pipeline
+#' if(require(dplyr)) {
 #' # One binary variable
 #'   mtcars %>%
 #'     mutate(am = factor(am)) %>%
@@ -14,7 +32,9 @@
 #'     hypothesize(null = "point", p = c("0" = 0.25, "1" = 0.75)) %>%
 #'     generate(reps = 100, type = "simulate") %>%
 #'     calculate(stat = "prop")
-#'
+#' }
+#' 
+#' if(require(dplyr)) {
 #' # Permutation test
 #'   mtcars %>%
 #'     mutate(cyl = factor(cyl)) %>%
@@ -24,7 +44,7 @@
 #'     calculate(stat = "F")
 #' }
 #'
-#' # Compare with
+#' # Compare with traditional "tidy" hypothesis test results
 #' if (require(dplyr) && require(broom)) {
 #'   cars <- mtcars %>%
 #'     summarize(N = n(), num_manual = sum(am))

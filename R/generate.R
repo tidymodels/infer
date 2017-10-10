@@ -1,10 +1,37 @@
-#' Generate resamples
+#' Generate resamples of a type provided via \code{type} parameter
 #' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
 #' @param reps the number of resamples to generate
 #' @param type currently either \code{bootstrap}, \code{permute}, or \code{simulate}
 #' @param ... currently ignored
 #' @importFrom dplyr group_by
 #' @export
+#' @examples
+#' # Generate 100 bootstrap means
+#' # resulting in 100 * 32 = 3200 rows
+#' mtcars %>%
+#'    specify(response = mpg) %>%
+#'    generate(reps = 100, type = "bootstrap")
+#'    
+#' # Generate 200 permutations of two proportions example
+#' # resulting in 200 * 32 = 6400 rows
+#' if(require(dplyr)) {
+#'     mtcars %>%
+#'         mutate(am = factor(am), vs = factor(vs)) %>%
+#'         specify(am ~ vs) %>% # alt: response = am, explanatory = vs
+#'         hypothesize(null = "independence") %>%
+#'         generate(reps = 200, type = "permute")
+#'  }
+#'  
+#' # Generate 150 simulations assuming true probability
+#' # of success (a "1") is 0.25,
+#' # resulting in 150 * 32 = 4800 rows
+#' if(require(dplyr)) {
+#'     mtcars %>%
+#'         mutate(am = factor(am)) %>%
+#'         specify(response = am) %>% # alt: am ~ NULL (or am ~ 1)
+#'         hypothesize(null = "point", p = c("1" = .25)) %>% 
+#'         generate(reps = 150, type = "simulate") 
+#' }
 
 generate <- function(x, reps = 1, type = "bootstrap", ...) {
   if (type == "bootstrap") {
@@ -41,17 +68,18 @@ bootstrap <- function(x, reps = 1, ...) {
       x[[col]] <- x[[col]] - stats::sd(x[[col]], na.rm = TRUE) + attr(x, "params")
     }
 
-    # Similarly for sd
-    if(attr(attr(x, "params"), "names") == "sd"){
-      col <- as.character(attr(x, "response"))
-      x[[col]] <- x[[col]] - stats::sd(x[[col]]) + attr(x, "params")
-    }
+    # TODO: Similarly for t
+
+    # TODO: Similarly for z  
   }
   
   # Set variables for use in calculate()
   result <- rep_sample_n(x, size = nrow(x), replace = TRUE, reps = reps)
   attr(result, "response") <- attr(x, "response")
   attr(result, "explanatory") <- attr(x, "explanatory")
+  attr(result, "response_type") <- attr(x, "response_type")
+  attr(result, "explanatory_type") <- attr(x, "explanatory_type")
+  attr(result, "distr_param") <- attr(x, "distr_param")
   
   return(result)
 }
@@ -66,6 +94,9 @@ permute <- function(x, reps = 1, ...) {
   attr(df_out, "null") <- attr(x, "null")
   attr(df_out, "response") <- attr(x, "response")
   attr(df_out, "explanatory") <- attr(x, "explanatory")
+  attr(df_out, "response_type") <- attr(x, "response_type")
+  attr(df_out, "explanatory_type") <- attr(x, "explanatory_type")
+  attr(df_out, "distr_param") <- attr(x, "distr_param")  
   return(df_out)
 }
 
@@ -102,9 +133,15 @@ simulate <- function(x, reps = 1, ...) {
   attr(rep_tbl, "params") <- attr(x, "params")
   attr(rep_tbl, "response") <- attr(x, "response")
   attr(rep_tbl, "explanatory") <- attr(x, "explanatory")
-  #  attr(rep_tbl, "ci") <- attr(tbl, "ci")
+  attr(rep_tbl, "response_type") <- attr(x, "response_type")
+  attr(rep_tbl, "explanatory_type") <- attr(x, "explanatory_type")
+  attr(rep_tbl, "distr_param") <- attr(x, "distr_param")
+  
   # TODO: we may want to clean up this object before sending it out - do we
   # really need all of the attributes() that it spits out?
+  
+  ## From Chester: Upon further inspection, I think we'll need a bunch of these to 
+  ## appropriately determine the theoretical distributions when they exist
   return(dplyr::group_by(rep_tbl, replicate))
 }
 

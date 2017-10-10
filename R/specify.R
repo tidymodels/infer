@@ -1,5 +1,6 @@
 #' Specify the response and explanatory variables
-#' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
+#' \code{specify} also converts character variables chosen to be \code{factor}s
+#' @param x a data frame that can be coerced into a \code{\link[tibble]{tibble}}
 #' @param formula a formula with the response variable on the left and the explanatory on the right
 #' @param response the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument.
 #' @param explanatory the variable name in \code{x} that will serve as the explanatory variable
@@ -8,6 +9,29 @@
 #' @importFrom dplyr mutate_if select one_of as_tibble
 #' @importFrom methods hasArg
 #' @export
+#' @examples
+#' # Response attribute set corresponding to
+#' # response argument and specified variable selected
+#' if(require(dplyr)){
+#'   mtcars %>%
+#'     mutate(am = factor(am)) %>%
+#'     specify(response = am)
+#' }
+#' # Response and explanatory attributes set corresponding to
+#' # response and explanatory arguments
+#' if(require(dplyr)){
+#'   mtcars %>%
+#'     mutate(am = factor(am), vs = factor(vs)) %>%
+#'     specify(response = am, explanatory = vs)
+#' }
+#' 
+#' # Response and explanatory attributes set corresponding to
+#' # formula argument expecting response ~ explanatory
+#' if(require(dplyr)){
+#'   mtcars %>%
+#'     mutate(am = factor(am), vs = factor(vs)) %>%
+#'     specify(formula = am ~ vs)
+#' }
 
 specify <- function(x, formula, response = NULL, explanatory = NULL) {
   
@@ -25,18 +49,45 @@ specify <- function(x, formula, response = NULL, explanatory = NULL) {
   if (!all(
     as.character(
       c(attr(x, "response"),
-        attr(x,"explanatory")
+        attr(x, "explanatory")
         )
     ) %in% names(x)
   )) stop("The columns you specified could not be found.")
-  # TODO: coerce char to factor
-  
+
   x <- as_tibble(x) %>%
     select(one_of(c(
       as.character((attr(x, "response"))),
       as.character(attr(x, "explanatory"))
     )))
 
+  # To help determine theoretical distribution to plot
+  if(is.null(attr(x, "response")))
+    attr(x, "response_type") <- NULL
+  else
+    attr(x, "response_type") <- class(x[[as.character(attr(x, "response"))]])
+  
+  if(is.null(attr(x, "explanatory")))
+    attr(x, "explanatory_type") <- NULL
+  else
+    attr(x, "explanatory_type") <- class(x[[as.character(attr(x, "explanatory"))]])
+  
+  # NOT SURE if this is the best place for this?
+  # Keep track of Satterthwaite degrees of freedom since lost when in aggregation w/
+  # calculate()/generate()
+  if (!is.null(attr(x, "response")) & 
+      !is.null(attr(x, "explanatory")) & 
+      !is.null(attr(x, "response_type")) & 
+      !is.null(attr(x, "explanatory_type"))){
+    if(attr(x, "response_type") %in% c("integer", "numeric") &
+       attr(x, "explanatory_type") == "factor"){
+      if(length(levels(x[[as.character(attr(x, "explanatory"))]])) == 2) {
+        attr(x, "distr_param") <- x %>% 
+          dplyr::summarize(stats::t.test(!! attr(x, "response") ~ !! attr(x, "explanatory"))[["parameter"]]) %>% 
+          dplyr::pull()
+      }
+    }
+  }
+  
   # add "infer" class
   class(x) <- append("infer", class(x))
   

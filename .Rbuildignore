@@ -5,3 +5,4 @@
 ^profiles*
 ^\.travis\.yml$
 ^examples*
+^docs$

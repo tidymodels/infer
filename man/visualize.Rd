@@ -5,16 +5,55 @@
 \title{(Currently) Visualize the resampling distribution 
 (To be updated to include theory-based distributions)}
 \usage{
-visualize(df, bins = 30, ...)
+visualize(data, bins = 30, method = "randomization", ...)
 }
 \arguments{
-\item{df}{the output from \code{\link{calculate}}}
+\item{data}{the output from \code{\link{calculate}}}
 
 \item{bins}{the number of bins in the histogram}
+
+\item{method}{a string giving the method to display. Options are "randomization", "theoretical", or "both"}
 
 \item{...}{currently ignored}
 }
 \description{
 (Currently) Visualize the resampling distribution 
 (To be updated to include theory-based distributions)
+}
+\examples{
+# Permutations to create randomization null distribution for 
+# one numerical response and one categorical predictor
+# using t statistic
+if(require(dplyr)) {
+mtcars \%>\%
+    mutate(am = factor(am)) \%>\%
+    specify(mpg ~ am) \%>\% # alt: response = mpg, explanatory = am
+    hypothesize(null = "independence") \%>\%
+    generate(reps = 100, type = "permute") \%>\%
+    calculate(stat = "t") \%>\%
+    visualize(method = "randomization") #default method
+}
+
+# Theoretical t distribution for 
+# one numerical response and one categorical predictor
+# using t statistic
+if(require(dplyr)) {
+mtcars \%>\%
+    mutate(am = factor(am)) \%>\%
+    specify(mpg ~ am) \%>\% # alt: response = mpg, explanatory = am
+    hypothesize(null = "independence") \%>\%
+    calculate(stat = "t") \%>\%
+    visualize(method = "theoretical") #default method
+}
+
+# Overlay theoretical distribution on top of randomized t-statistics
+if(require(dplyr)) {
+mtcars \%>\%
+    mutate(am = factor(am)) \%>\%
+    specify(mpg ~ am) \%>\% # alt: response = mpg, explanatory = am
+    hypothesize(null = "independence") \%>\%
+    generate(reps = 100, type = "permute") \%>\%
+    calculate(stat = "t") \%>\%
+    visualize(method = "both")
+}
 }

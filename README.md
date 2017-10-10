@@ -12,7 +12,7 @@ The objective of this package is to perform inference using an expressive statis
 
 ### Hypothesis tests
 
-![h-test diagram](figs/ht-diagram.png)
+![](figs/ht-diagram.png)
 
 #### Examples
 
@@ -83,7 +83,7 @@ Two categorical (&gt;2 level) variables
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "Chisq")
 
-One numerical variable one categorical (2 levels) (diff in means)
+One numerical variable, one categorical (2 levels) (diff in means)
 
     mtcars %>%
       specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am

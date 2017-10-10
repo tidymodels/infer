@@ -13,7 +13,7 @@ Infer: an R package for tidyverse-friendly statistical inference
 The objective of this package is to perform inference using an expressive statistical grammar that coheres with the `tidyverse` design framework. 
 
 ### Hypothesis tests
-![h-test diagram](figs/ht-diagram.png)
+![](figs/ht-diagram.png)
 
 #### Examples
 
@@ -101,7 +101,7 @@ mtcars %>%
   calculate(stat = "Chisq")
 ```
 
-One numerical variable one categorical (2 levels) (diff in means)
+One numerical variable, one categorical (2 levels) (diff in means)
 
 ```
 mtcars %>%

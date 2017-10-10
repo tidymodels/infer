@@ -10,9 +10,8 @@
 #' @importFrom rlang !! sym quo enquo eval_tidy
 #' @export
 #' @examples
-#'
 #' # Permutation test for two binary variables
-#' if (require(dplyr)) {
+#' if(require(dplyr)) {
 #'   mtcars %>%
 #'     mutate(am = factor(am), vs = factor(vs)) %>%
 #'     specify(am ~ vs) %>%
@@ -20,6 +19,15 @@
 #'     generate(reps = 100, type = "permute") %>%
 #'     calculate(stat = "diff in props") %>%
 #'     visualize()
+#' }
+#' 
+#' # Confidence interval using bootstrapping for one proportion
+#' if(require(dplyr)) {
+#'     mtcars %>%
+#'         mutate(am = factor(am)) %>%
+#'         specify(response = am) %>%
+#'         generate(reps = 100, type = "bootstrap") %>%
+#'         calculate(stat = "prop", success = "1")
 #' }
 
 calculate <- function(x, stat, success = NULL, ...) {
@@ -46,13 +54,6 @@ calculate <- function(x, stat, success = NULL, ...) {
     df_out <- x %>%
       dplyr::group_by(replicate) %>% 
       dplyr::summarize(stat = stats::sd(!!sym(col), ...))
-  }
-
-    if (stat == "sd") {
-    col <- setdiff(names(x), "replicate")
-    df_out <- x %>%
-      dplyr::group_by(replicate) %>% 
-      dplyr::summarize(stat = stats::sd(!!sym(col)))
   }
 
   if (stat == "prop") {
@@ -123,5 +124,18 @@ calculate <- function(x, stat, success = NULL, ...) {
       dplyr::summarize(stat = stats::coef(stats::lm(!! attr(x, "response") ~ !! attr(x, "explanatory")))[2])
   }
 
+  if (stat == "t"){
+    # Two sample means
+    if (!is.null(attr(x, "response")) & 
+        !is.null(attr(x, "explanatory")) & 
+        class(x[[as.character(attr(x, "explanatory"))]]) == "factor"){
+      df_out <- x %>%
+        dplyr::summarize(stat = stats::t.test(!! attr(x, "response") ~ !! attr(x, "explanatory"))[["statistic"]])
+      
+    } else {
+      print("Not implemented")
+    }
+  }
+  
   return(df_out)
 }
