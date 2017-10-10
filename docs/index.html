@@ -139,7 +139,7 @@
   hypothesize(null = "independence") %&gt;%
   generate(reps = 100, type = "permute") %&gt;%
   calculate(stat = "Chisq")</code></pre>
-<p>One numerical variable one categorical (2 levels) (diff in means)</p>
+<p>One numerical variable, one categorical (2 levels) (diff in means)</p>
 <pre><code>mtcars %&gt;%
   specify(mpg ~ am) %&gt;% # alt: response = mpg, explanatory = am
   hypothesize(null = "independence") %&gt;%

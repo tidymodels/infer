@@ -130,22 +130,7 @@
     <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>am</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>hypothesize</span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"0"</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='st'>"1"</span> <span class='kw'>=</span> <span class='fl'>0.75</span>))
-}</div><div class='output co'>#&gt; Response:  am 
-#&gt; Null Hypothesis:  point 
-#&gt; # A tibble: 32 x 1
-#&gt;        am
-#&gt;    &lt;fctr&gt;
-#&gt;  1      1
-#&gt;  2      1
-#&gt;  3      1
-#&gt;  4      0
-#&gt;  5      0
-#&gt;  6      0
-#&gt;  7      0
-#&gt;  8      0
-#&gt;  9      0
-#&gt; 10      0
-#&gt; # ... with 22 more rows</div><div class='input'>
+}</div><div class='output co'>#&gt; <span class='error'>Error in if (!is.null(attr(x, "response")) &amp; !is.null(attr(x, "explanatory")) &amp;     attr(x, "response_type") %in% c("integer", "numeric") &amp; attr(x,     "explanatory_type") == "factor") {    attr(x, "distr_param") &lt;- x %&gt;% dplyr::summarize(stats::t.test(!(!attr(x,         "response")) ~ !(!attr(x, "explanatory")))[["parameter"]]) %&gt;%         dplyr::pull()}: argument is of length zero</span></div><div class='input'>
 <span class='co'># hypothesize() assigns attributes to an infer class</span>
 <span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)){
   <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
@@ -153,7 +138,7 @@
     <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>am</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>hypothesize</span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"0"</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='st'>"1"</span> <span class='kw'>=</span> <span class='fl'>0.75</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'>class</span>()
-}</div><div class='output co'>#&gt; [1] "infer"      "tbl_df"     "tbl"        "data.frame"</div><div class='input'>
+}</div><div class='output co'>#&gt; <span class='error'>Error in if (!is.null(attr(x, "response")) &amp; !is.null(attr(x, "explanatory")) &amp;     attr(x, "response_type") %in% c("integer", "numeric") &amp; attr(x,     "explanatory_type") == "factor") {    attr(x, "distr_param") &lt;- x %&gt;% dplyr::summarize(stats::t.test(!(!attr(x,         "response")) ~ !(!attr(x, "explanatory")))[["parameter"]]) %&gt;%         dplyr::pull()}: argument is of length zero</span></div><div class='input'>
 <span class='co'># To view where hypothesize() falls in the infer package pipeline</span>
 <span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
 <span class='co'># One binary variable</span>
@@ -163,20 +148,7 @@
     <span class='fu'>hypothesize</span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"0"</span> <span class='kw'>=</span> <span class='fl'>0.25</span>, <span class='st'>"1"</span> <span class='kw'>=</span> <span class='fl'>0.75</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"simulate"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)
-}</div><div class='output co'>#&gt; # A tibble: 100 x 2
-#&gt;    replicate    stat
-#&gt;       &lt;fctr&gt;   &lt;dbl&gt;
-#&gt;  1         1 0.28125
-#&gt;  2         2 0.31250
-#&gt;  3         3 0.28125
-#&gt;  4         4 0.25000
-#&gt;  5         5 0.28125
-#&gt;  6         6 0.28125
-#&gt;  7         7 0.31250
-#&gt;  8         8 0.34375
-#&gt;  9         9 0.34375
-#&gt; 10        10 0.28125
-#&gt; # ... with 90 more rows</div><div class='input'>
+}</div><div class='output co'>#&gt; <span class='error'>Error in if (!is.null(attr(x, "response")) &amp; !is.null(attr(x, "explanatory")) &amp;     attr(x, "response_type") %in% c("integer", "numeric") &amp; attr(x,     "explanatory_type") == "factor") {    attr(x, "distr_param") &lt;- x %&gt;% dplyr::summarize(stats::t.test(!(!attr(x,         "response")) ~ !(!attr(x, "explanatory")))[["parameter"]]) %&gt;%         dplyr::pull()}: argument is of length zero</span></div><div class='input'>
 <span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
 <span class='co'># Permutation test</span>
   <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
@@ -185,20 +157,7 @@
     <span class='fu'>hypothesize</span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"F"</span>)
-}</div><div class='output co'>#&gt; # A tibble: 100 x 2
-#&gt;    replicate       stat
-#&gt;        &lt;int&gt;      &lt;dbl&gt;
-#&gt;  1         1 1.84995910
-#&gt;  2         2 0.01710104
-#&gt;  3         3 0.22888575
-#&gt;  4         4 0.22850762
-#&gt;  5         5 0.24310376
-#&gt;  6         6 0.35972701
-#&gt;  7         7 0.26288023
-#&gt;  8         8 1.17124179
-#&gt;  9         9 0.27912358
-#&gt; 10        10 0.20625131
-#&gt; # ... with 90 more rows</div><div class='input'>
+}</div><div class='output co'>#&gt; <span class='error'>Error in summarise_impl(.data, dots): Evaluation error: grouping factor must have exactly 2 levels.</span></div><div class='input'>
 <span class='co'># Compare with traditional "tidy" hypothesis test results</span>
 <span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>dplyr</span>) <span class='kw'>&amp;&amp;</span> <span class='fu'>require</span>(<span class='no'>broom</span>)) {
   <span class='no'>cars</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>

@@ -136,28 +136,16 @@
   <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'>specify</span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>am</span>)
-}</div><div class='output co'>#&gt; Response:  am 
-#&gt; # A tibble: 32 x 1
-#&gt;        am
-#&gt;    &lt;fctr&gt;
-#&gt;  1      1
-#&gt;  2      1
-#&gt;  3      1
-#&gt;  4      0
-#&gt;  5      0
-#&gt;  6      0
-#&gt;  7      0
-#&gt;  8      0
-#&gt;  9      0
-#&gt; 10      0
-#&gt; # ... with 22 more rows</div><div class='input'><span class='co'># Response and explanatory attributes set corresponding to</span>
+}</div><div class='output co'>#&gt; <span class='error'>Error in if (!is.null(attr(x, "response")) &amp; !is.null(attr(x, "explanatory")) &amp;     attr(x, "response_type") %in% c("integer", "numeric") &amp; attr(x,     "explanatory_type") == "factor") {    attr(x, "distr_param") &lt;- x %&gt;% dplyr::summarize(stats::t.test(!(!attr(x,         "response")) ~ !(!attr(x, "explanatory")))[["parameter"]]) %&gt;%         dplyr::pull()}: argument is of length zero</span></div><div class='input'><span class='co'># Response and explanatory attributes set corresponding to</span>
 <span class='co'># response and explanatory arguments</span>
 <span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)){
   <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'>specify</span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>am</span>, <span class='kw'>explanatory</span> <span class='kw'>=</span> <span class='no'>vs</span>)
 }</div><div class='output co'>#&gt; Response:  am 
+#&gt;  Response Type:  factor 
 #&gt; Explanatory:  vs 
+#&gt;  Explanatory Type:  factor 
 #&gt; # A tibble: 32 x 2
 #&gt;        am     vs
 #&gt;    &lt;fctr&gt; &lt;fctr&gt;
@@ -179,7 +167,9 @@
     <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'>specify</span>(<span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>am</span> ~ <span class='no'>vs</span>)
 }</div><div class='output co'>#&gt; Response:  am 
+#&gt;  Response Type:  factor 
 #&gt; Explanatory:  vs 
+#&gt;  Explanatory Type:  factor 
 #&gt; # A tibble: 32 x 2
 #&gt;        am     vs
 #&gt;    &lt;fctr&gt; &lt;fctr&gt;
