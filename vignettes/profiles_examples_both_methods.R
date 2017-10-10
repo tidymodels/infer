@@ -14,13 +14,35 @@ prof_small <- profiles %>%
   )) %>% 
   dplyr::select(age, sex, city, drugs, height, status)
 
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "t") %>% 
+  visualize()
+
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+  hypothesize(null = "independence") %>%
+  calculate(stat = "t") %>% 
+  visualize(method = "theoretical")
+
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "t") %>% 
+  visualize(method = "both")
+
 ## ----eval=FALSE, include=FALSE-------------------------------------------
 #  prof_small %>%
 #    specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
 #    hypothesize(null = "point", mu = 50) %>%
 #    generate(reps = 1000, type = "bootstrap") %>%
-#    calculate(stat = "t") %>%
-#    visualize()
+#    calculate(stat = "t")
 
 ## ----eval=FALSE, include=FALSE-------------------------------------------
 #  prof_small %>%
@@ -54,14 +76,6 @@ prof_small <- profiles %>%
 #    generate(reps = 1000, type = "permute") %>%
 #    calculate(stat = "Chisq") %>%
 #    visualize()
-
-## ------------------------------------------------------------------------
-prof_small %>%
-  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "t") %>% 
-  visualize()
 
 ## ----eval=FALSE, include=FALSE-------------------------------------------
 #  prof_small %>%

@@ -12,7 +12,7 @@ vignette: |
 ---
 
 ```{r include=FALSE}
-knitr::opts_chunk$set(fig.width = 8, fig.height = 5, cache = TRUE) 
+knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
 ```
 
 ## Data preparation
@@ -108,7 +108,7 @@ prof_small %>%
   visualize()
 ```
 
-One numerical variable one categorical (2 levels) (diff in means)
+One numerical variable, one categorical (2 levels) (diff in means)
 
 ```{r}
 prof_small %>%
@@ -119,7 +119,7 @@ prof_small %>%
   visualize()
 ```
 
-One numerical variable one categorical (2 levels) (diff in medians)
+One numerical variable, one categorical (2 levels) (diff in medians)
 
 ```{r}
 prof_small %>%

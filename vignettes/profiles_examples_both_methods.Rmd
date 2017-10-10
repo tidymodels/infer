@@ -41,12 +41,52 @@ prof_small <- profiles %>%
 
 ## Hypothesis tests
 
+## Implemented
+
+One numerical variable, one categorical (2 levels)
+
+### Randomization approach to t-statistic
+
+```{r}
+prof_small %>%
+  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "t") %>% 
+  visualize()
+```
+
+### Theoretical distribution
+
+```{r }
+prof_small %>%
+  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+  hypothesize(null = "independence") %>%
+  calculate(stat = "t") %>% 
+  visualize(method = "theoretical")
+```
+
+### Overlay appropriate t distribution on top of permuted t-statistic
+
+```{r }
+prof_small %>%
+  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "t") %>% 
+  visualize(method = "both")
+```
+
+***
+
+## TO DO
+
 ### To Do (one mean $t$ stat)
 ### To Do (Also overlay appropriate t distn)
 
 One numerical variable (mean)
 
-```{r}
+```{r eval=FALSE, include=FALSE}
 prof_small %>%
   specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
   hypothesize(null = "point", mu = 50) %>% 
@@ -112,19 +152,7 @@ prof_small %>%
   visualize()
 ```
 
-One numerical variable one categorical (2 levels)
 
-### Currently testing t-stat
-### To Do (Also overlay appropriate t distn)
-
-```{r}
-prof_small %>%
-  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "t") %>% 
-  visualize()
-```
 
 ### To Do (Also overlay appropriate F distn)
 
