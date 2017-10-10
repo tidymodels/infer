@@ -77,6 +77,9 @@ bootstrap <- function(x, reps = 1, ...) {
   result <- rep_sample_n(x, size = nrow(x), replace = TRUE, reps = reps)
   attr(result, "response") <- attr(x, "response")
   attr(result, "explanatory") <- attr(x, "explanatory")
+  attr(result, "response_type") <- attr(x, "response_type")
+  attr(result, "explanatory_type") <- attr(x, "explanatory_type")
+  attr(result, "distr_param") <- attr(x, "distr_param")
   
   return(result)
 }
@@ -91,6 +94,9 @@ permute <- function(x, reps = 1, ...) {
   attr(df_out, "null") <- attr(x, "null")
   attr(df_out, "response") <- attr(x, "response")
   attr(df_out, "explanatory") <- attr(x, "explanatory")
+  attr(df_out, "response_type") <- attr(x, "response_type")
+  attr(df_out, "explanatory_type") <- attr(x, "explanatory_type")
+  attr(df_out, "distr_param") <- attr(x, "distr_param")  
   return(df_out)
 }
 
@@ -127,9 +133,15 @@ simulate <- function(x, reps = 1, ...) {
   attr(rep_tbl, "params") <- attr(x, "params")
   attr(rep_tbl, "response") <- attr(x, "response")
   attr(rep_tbl, "explanatory") <- attr(x, "explanatory")
-  #  attr(rep_tbl, "ci") <- attr(tbl, "ci")
+  attr(rep_tbl, "response_type") <- attr(x, "response_type")
+  attr(rep_tbl, "explanatory_type") <- attr(x, "explanatory_type")
+  attr(rep_tbl, "distr_param") <- attr(x, "distr_param")
+  
   # TODO: we may want to clean up this object before sending it out - do we
   # really need all of the attributes() that it spits out?
+  
+  ## From Chester: Upon further inspection, I think we'll need a bunch of these to 
+  ## appropriately determine the theoretical distributions when they exist
   return(dplyr::group_by(rep_tbl, replicate))
 }
 
