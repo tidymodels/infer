@@ -67,6 +67,11 @@ hypothesize <- function(x, null = c("independence", "point"), ...) {
 
   attr(x, "null") <- null
 
+  # error: Didn't specify an explanatory variable with test of independence
+  if(is.null(attr(x, "explanatory")) & null == "independence"){
+    stop('specify() requires an explanatory variable for null = "independence"')
+  }
+  
   dots <- list(...)
   if (length(dots) > 0) {
     params <- parse_params(dots, x)
@@ -91,11 +96,19 @@ parse_params <- function(dots, x) {
   # Outside if() is needed to ensure an error does not occur in referencing the
   # 0 index of dots
   if (length(p_ind)) {
-    if (length(dots[[p_ind]]) == 1) {
+    if (length(dots[[p_ind]]) == 1 & 
+        length(levels(x[[as.character(attr(x, "response"))]])) == 2) {
       warning(paste0("Missing level, assuming proportion is 1 - ", dots$p, "."))
       missing_lev <- setdiff(levels(pull(x, !!attr(x, "response"))), names(dots$p))
       dots$p <- append(dots$p, 1 - dots$p)
       names(dots$p)[2] <- missing_lev
+    }
+    else if (length(dots[[p_ind]]) != length(levels(x[[as.character(attr(x, "response"))]]))){
+      stop(paste("The factor variable that you have specified has",
+                 length(levels(x[[as.character(attr(x, "response"))]])),
+                 "levels and you've only assigned null probabilities to",
+                length(dots[[p_ind]]), 
+                "levels."))
     }
   }
   
