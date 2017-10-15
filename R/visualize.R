@@ -4,6 +4,8 @@
 #' @param bins the number of bins in the histogram
 #' @param method a string giving the method to display. Options are "randomization", "theoretical", or "both"
 #' with "both" corresponding to "randomization" and "theoretical"
+#' @param obs_stat a numeric value corresponding to what the observed statistic is
+#' @param direction a string specifying in which direction the shading should occur. Options are "left", "right", or "both"
 #' @param ... currently ignored
 #' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle xlab ylab
 #' @importFrom stats dt qt df qf

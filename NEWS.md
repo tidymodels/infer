@@ -1,7 +1,7 @@
-# 0.1.0
+# infer 0.1.0
 - Updated documentation with examples
 - Created `pkgdown` site materials
 - Adding theoretical distributions to `visualize()`
 
-# 0.0.1
-- Implemented the "intro stats" examples for randomization methods
+# infer 0.0.1
+- Implemented the "intro stats" examples for randomization methods as shown on the README
