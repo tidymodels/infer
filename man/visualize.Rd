@@ -12,7 +12,8 @@ visualize(data, bins = 30, method = "randomization", ...)
 
 \item{bins}{the number of bins in the histogram}
 
-\item{method}{a string giving the method to display. Options are "randomization", "theoretical", or "both"}
+\item{method}{a string giving the method to display. Options are "randomization", "theoretical", or "both"
+with "both" corresponding to "randomization" and "theoretical"}
 
 \item{...}{currently ignored}
 }

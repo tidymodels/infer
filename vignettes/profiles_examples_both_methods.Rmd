@@ -12,7 +12,7 @@ vignette: |
 ---
 
 ```{r include=FALSE}
-knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
+knitr::opts_chunk$set(fig.width = 7, fig.height = 3) 
 ```
 
 ## Data preparation
@@ -43,9 +43,9 @@ prof_small <- profiles %>%
 
 ## Implemented
 
-One numerical variable, one categorical (2 levels)
+### One numerical variable, one categorical (2 levels)
 
-### Randomization approach to t-statistic
+- Randomization approach to t-statistic
 
 ```{r}
 prof_small %>%
@@ -56,17 +56,17 @@ prof_small %>%
   visualize()
 ```
 
-### Theoretical distribution
+- Theoretical distribution
 
 ```{r }
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
-  calculate(stat = "t") %>% 
+  # calculate(stat = "t") ## Not needed since t is implied based on variable types
   visualize(method = "theoretical")
 ```
 
-### Overlay appropriate t distribution on top of permuted t-statistic
+- Overlay appropriate t distribution on top of permuted t-statistics
 
 ```{r }
 prof_small %>%
@@ -76,6 +76,41 @@ prof_small %>%
   calculate(stat = "t") %>% 
   visualize(method = "both")
 ```
+
+### One numerical, one categorical (>2 levels) -  ANOVA
+
+- Randomization approach to t-statistic
+
+```{r}
+prof_small %>%
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "F") %>% 
+  visualize()
+```
+
+- Theoretical distribution
+
+```{r}
+prof_small %>%
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
+  hypothesize(null = "independence") %>%
+  visualize(method = "theoretical")
+```
+
+
+-  Overlay appropriate F distribution on top of permuted F-statistics
+
+```{r}
+prof_small %>%
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "F") %>% 
+  visualize(method = "both")
+```
+
 
 ***
 
@@ -152,21 +187,6 @@ prof_small %>%
   visualize()
 ```
 
-
-
-### To Do (Also overlay appropriate F distn)
-
-One numerical one categorical (>2 levels) -  ANOVA
-
-
-```{r eval=FALSE, include=FALSE}
-prof_small %>%
-  specify(age ~ status) %>% # alt: response = age, explanatory = status
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "F") %>% 
-  visualize()
-```
 
 ### To Do (slope $t$ stat)
 ### To Do (Also overlay appropriate t distn)

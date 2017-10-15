@@ -1,5 +1,5 @@
 ## ----include=FALSE-------------------------------------------------------
-knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
+knitr::opts_chunk$set(fig.width = 7, fig.height = 3) 
 
 ## ----message=FALSE, warning=FALSE----------------------------------------
 library(okcupiddata)
@@ -26,7 +26,7 @@ prof_small %>%
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
-  calculate(stat = "t") %>% 
+  # calculate(stat = "t") ## Not needed since t is implied based on variable types
   visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------
@@ -35,6 +35,28 @@ prof_small %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t") %>% 
+  visualize(method = "both")
+
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "F") %>% 
+  visualize()
+
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
+  hypothesize(null = "independence") %>%
+  visualize(method = "theoretical")
+
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "F") %>% 
   visualize(method = "both")
 
 ## ----eval=FALSE, include=FALSE-------------------------------------------
@@ -75,14 +97,6 @@ prof_small %>%
 #    hypothesize(null = "independence") %>%
 #    generate(reps = 1000, type = "permute") %>%
 #    calculate(stat = "Chisq") %>%
-#    visualize()
-
-## ----eval=FALSE, include=FALSE-------------------------------------------
-#  prof_small %>%
-#    specify(age ~ status) %>% # alt: response = age, explanatory = status
-#    hypothesize(null = "independence") %>%
-#    generate(reps = 1000, type = "permute") %>%
-#    calculate(stat = "F") %>%
 #    visualize()
 
 ## ----eval=FALSE, include=FALSE-------------------------------------------
