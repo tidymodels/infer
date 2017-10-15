@@ -4,10 +4,8 @@ set_params <- function(x){
   # Two sample means (t distribution)
   # Keep track of Satterthwaite degrees of freedom since lost when in aggregation w/
   # calculate()/generate()
-  if (!is.null(attr(x, "response")) & 
-      !is.null(attr(x, "explanatory")) & 
-      !is.null(attr(x, "response_type")) & 
-      !is.null(attr(x, "explanatory_type"))){
+  if (!is.null(attr(x, "response")) & !is.null(attr(x, "explanatory")) & 
+      !is.null(attr(x, "response_type")) & !is.null(attr(x, "explanatory_type"))){
     if(attr(x, "response_type") %in% c("integer", "numeric") &
        attr(x, "explanatory_type") == "factor"){
       if(length(levels(x[[as.character(attr(x, "explanatory"))]])) == 2) {
