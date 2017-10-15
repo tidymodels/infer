@@ -12,7 +12,7 @@ Infer: an R package for tidyverse-friendly statistical inference
 
 The objective of this package is to perform inference using an expressive statistical grammar that coheres with the `tidyverse` design framework. 
 
-### Hypothesis tests
+## Hypothesis tests
 ![](figs/ht-diagram.png)
 
 #### Examples
@@ -31,7 +31,7 @@ mtcars <- as.data.frame(mtcars) %>%
 
 ***
 
-One numerical variable (mean)
+### One numerical variable (mean)
 
 ```
 mtcars %>%
@@ -41,7 +41,7 @@ mtcars %>%
   calculate(stat = "mean")
 ```
 
-One numerical variable (median)
+### One numerical variable (median)
 
 ```
 mtcars %>%
@@ -51,7 +51,7 @@ mtcars %>%
   calculate(stat = "median")
 ```
 
-One numerical variable (standard deviation)
+### One numerical variable (standard deviation)
 
 ```
 mtcars %>%
@@ -61,7 +61,7 @@ mtcars %>%
   calculate(stat = "sd")
 ```
 
-One categorical (2 level) variable
+### One categorical (2 level) variable
 
 ```
 mtcars %>%
@@ -71,7 +71,7 @@ mtcars %>%
   calculate(stat = "prop")
 ```
 
-Two categorical (2 level) variables
+### Two categorical (2 level) variables
 
 ```
 mtcars %>%
@@ -81,7 +81,7 @@ mtcars %>%
   calculate(stat = "diff in props")
 ```
 
-One categorical (>2 level) - GoF
+### One categorical (>2 level) - GoF
 
 ```
 mtcars %>%
@@ -91,7 +91,7 @@ mtcars %>%
   calculate(stat = "Chisq")
 ```
 
-Two categorical (>2 level) variables
+### Two categorical (>2 level) variables
 
 ```
 mtcars %>%
@@ -101,7 +101,7 @@ mtcars %>%
   calculate(stat = "Chisq")
 ```
 
-One numerical variable, one categorical (2 levels) (diff in means)
+### One numerical variable, one categorical (2 levels) (diff in means)
 
 ```
 mtcars %>%
@@ -111,7 +111,7 @@ mtcars %>%
   calculate(stat = "diff in means")
 ```
 
-One numerical variable one categorical (2 levels) (diff in medians)
+### One numerical variable one categorical (2 levels) (diff in medians)
 
 ```
 mtcars %>%
@@ -121,7 +121,7 @@ mtcars %>%
   calculate(stat = "diff in medians")
 ```
 
-One numerical one categorical (>2 levels) -  ANOVA
+### One numerical one categorical (>2 levels) -  ANOVA
 
 ```
 mtcars %>%
@@ -131,7 +131,7 @@ mtcars %>%
   calculate(stat = "F")
 ```
 
-Two numerical vars - SLR 
+### Two numerical vars - SLR 
 
 ```
 mtcars %>%
@@ -141,9 +141,9 @@ mtcars %>%
   calculate(stat = "slope")
 ```
 
-### Confidence intervals
+## Confidence intervals
 
-One numerical (one mean)
+### One numerical (one mean)
 
 ```
 mtcars %>%
@@ -152,7 +152,7 @@ mtcars %>%
   calculate(stat = "mean")
 ```
 
-One numerical (one median)
+### One numerical (one median)
 
 ```
 mtcars %>%
@@ -161,7 +161,7 @@ mtcars %>%
   calculate(stat = "median")
 ```
 
-One numerical (standard deviation)
+### One numerical (standard deviation)
 
 ```
 mtcars %>%
@@ -170,7 +170,7 @@ mtcars %>%
   calculate(stat = "sd")
 ```
 
-One categorical (one proportion)
+### One categorical (one proportion)
 
 ```
 mtcars %>%
@@ -179,7 +179,7 @@ mtcars %>%
   calculate(stat = "prop", success = "1")
 ```
 
-One numerical variable one categorical (2 levels) (diff in means)
+### One numerical variable one categorical (2 levels) (diff in means)
 
 ```
 mtcars %>%
@@ -188,7 +188,7 @@ mtcars %>%
   calculate(stat = "diff in means")
 ```
 
-Two categorical variables (diff in proportions)
+### Two categorical variables (diff in proportions)
 
 ```
 mtcars %>%
@@ -197,7 +197,7 @@ mtcars %>%
   calculate(stat = "diff in props")
 ```
 
-Two numerical vars - SLR
+### Two numerical vars - SLR
 
 ```
 mtcars %>%
