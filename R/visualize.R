@@ -11,7 +11,7 @@
 #' @param ... currently ignored
 #' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle xlab ylab 
 #' @importFrom ggplot2 geom_vline
-#' @importFrom stats dt qt df qf
+#' @importFrom stats dt qt df qf dnorm qnorm
 #' @export
 #' @examples 
 #' # Permutations to create randomization null distribution for 
@@ -102,6 +102,10 @@ visualize <- function(data, bins = 30, method = "randomization",
                                       statistic_text = "F")
     }
     
+    if(attr(data, "theory_type") == "One sample prop z"){
+      infer_plot <- theory_z_plot(statistic_text = "z")
+    }
+    
   } else { #method == "both"
     
     if(attr(data, "theory_type") == "Two sample t"){
@@ -120,6 +124,14 @@ visualize <- function(data, bins = 30, method = "randomization",
                                     direction = direction,
                                     obs_stat = obs_stat) 
     }
+    
+    if(attr(data, "theory_type") == "One sample prop z"){
+      infer_plot <- both_z_plot(data = data, 
+                                    statistic_text = "z", bins = bins,
+                                    direction = direction,
+                                    obs_stat = obs_stat) 
+    }
+    
   }
   
   if(!is.null(obs_stat) & !is.null(direction)){
@@ -192,7 +204,33 @@ both_anova_plot <- function(data, deg_freedom_top,
     ylab("")  
 }
 
-# Not working since fill makes TRUE values on different scale
+theory_z_plot <- function(statistic_text = "z", ...){
+  ggplot(data.frame(x = c(qnorm(0.001), qnorm(0.999))), aes(x)) + 
+    stat_function(fun = dnorm, color = "blue") +
+    ggtitle(paste("Theoretical", statistic_text, "Null Distribution")) +
+    xlab("") +
+    ylab("")
+}
+
+both_z_plot <- function(data, statistic_text = "z",
+                        obs_stat = NULL,
+                        direction = NULL, bins = 30,...){
+  infer_z_plot <- ggplot(data = data, mapping = aes(x = stat))
+  
+  infer_z_plot <- shade_density_check(gg_plot = infer_z_plot,
+                                      obs_stat = obs_stat,
+                                      direction = direction,
+                                      bins = bins)
+  
+  infer_z_plot +
+    stat_function(fun = dnorm, color = "blue") +
+    ggtitle(paste("Randomization-Based and Theoretical", 
+                  statistic_text, "Null Distributions")) +
+    xlab("zstat") +
+    ylab("")
+}
+
+# Commented out not working since fill makes TRUE values on different scale
  shade_density_check <- function(gg_plot, obs_stat, direction, bins, ...){ 
 #   if(is.null(direction) | is.null(obs_stat)){
      gg_plot <- gg_plot +

@@ -2,6 +2,26 @@
 #' @param x a data frame that can be coerced into a \code{\link[tibble]{tibble}}
 set_params <- function(x){
 
+  # One variable
+  if (!is.null(attr(x, "response")) & is.null(attr(x, "explanatory")) & 
+      !is.null(attr(x, "response_type")) & is.null(attr(x, "explanatory_type"))){
+    
+    # One mean
+    if(attr(x, "response_type") %in% c("integer", "numeric")){
+      attr(x, "theory_type") <- "One sample t"
+      attr(x, "distr_param") <- x %>% 
+        dplyr::summarize(df = stats::t.test(x[[as.character(attr(x, "response"))]])[["parameter"]]) %>% 
+        dplyr::pull()
+    }
+    
+    # One prop
+    if(attr(x, "response_type") == "factor"){
+      attr(x, "theory_type") <- "One sample prop z"
+      # No parameters since standard normal
+    }
+    
+  }
+  
   # Two variables
   if (!is.null(attr(x, "response")) & !is.null(attr(x, "explanatory")) & 
       !is.null(attr(x, "response_type")) & !is.null(attr(x, "explanatory_type"))){
@@ -27,6 +47,22 @@ set_params <- function(x){
         attr(x, "distr_param2") <- x %>% 
           dplyr::summarize(df2 = stats::anova(stats::aov(!! attr(x, "response") ~ !! attr(x, "explanatory")))$Df[2]) %>% 
           dplyr::pull()
+      }
+    }
+    
+    # Response is categorical, explanatory is categorical
+    if(attr(x, "response_type") == "factor" &
+       attr(x, "explanatory_type") == "factor"){
+      
+      # Two sample proportions (z distribution) 
+      # Parameter(s) not needed since standard normal
+      if(length(levels(x[[as.character(attr(x, "explanatory"))]])) == 2){
+        attr(x, "theory_type") <- "Two sample props z"
+      }
+      # >2 sample proportions (chi-square test of indep)
+      if(length(levels(x[[as.character(attr(x, "explanatory"))]])) > 2){
+        
+        attr(x, "theory_type") <- "Chi-square test of indep"
       }
     }
   }

@@ -31,7 +31,7 @@
 #' }
 
 calculate <- function(x, stat, success = NULL, ...) {
-
+  
   # TODO: Check to see if dplyr::group_by(replicate) is needed since
   # generate() does a grouping of replicate
   
@@ -48,25 +48,25 @@ calculate <- function(x, stat, success = NULL, ...) {
       dplyr::group_by(replicate) %>% 
       dplyr::summarize(stat = stats::median(!!sym(col), ...))
   }
-
-    if (stat == "sd") {
+  
+  if (stat == "sd") {
     col <- setdiff(names(x), "replicate")
     df_out <- x %>%
       dplyr::group_by(replicate) %>% 
       dplyr::summarize(stat = stats::sd(!!sym(col), ...))
   }
-
+  
   if (stat == "prop") {
     col <- attr(x, "response")
     if(is.null(success))
       success <- quo(get_par_levels(x)[1])
     df_out <- x %>%
-     # dplyr::summarize(stat = mean(!! col == rlang::eval_tidy(success))) # This doesn't appear to be working
-      dplyr::group_by(replicate) %>% 
+      # dplyr::summarize(stat = mean(!! col == rlang::eval_tidy(success))) # This doesn't appear to be working
+    # dplyr::group_by(replicate) %>% 
       # The following works but not sure why when looking at the diff in means code?
       dplyr::summarize(stat = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...))
   }
-
+  
   if (stat == "diff in means") {
     df_out <- x %>%
       dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
@@ -74,7 +74,7 @@ calculate <- function(x, stat, success = NULL, ...) {
       dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = diff(xbar))
   }
-
+  
   if (stat == "diff in medians") {
     df_out <- x %>%
       dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
@@ -89,11 +89,11 @@ calculate <- function(x, stat, success = NULL, ...) {
       dplyr::summarize(prop = mean((!!attr(x, "response")) == levels(!!attr(x, "response"))[1], ...)) %>%
       dplyr::summarize(stat = diff(prop))
   }
-
+  
   if (stat == "Chisq") {
     ## The following could stand to be cleaned up
     n   <- attr(x, "biggest_group_size")
-
+    
     if (is.null(attr(x, "explanatory"))) {
       expected <- n * attr(x, "params")
       df_out <- x %>%
@@ -108,33 +108,61 @@ calculate <- function(x, stat, success = NULL, ...) {
       df_out <- x %>%
         dplyr::summarize(stat = sum((table(!!attr(x, "response"), !!attr(x, "explanatory"))
                                      - expected)^2 / expected, ...))
-
+      
     }
   }
-
+  
   if (stat == "F") {
     df_out <- x %>%
       dplyr::summarize(stat = stats::anova(
-          stats::lm(!! attr(x, "response") ~ !! attr(x, "explanatory"))
-        )$`F value`[1])
+        stats::lm(!! attr(x, "response") ~ !! attr(x, "explanatory"))
+      )$`F value`[1])
   }
-
+  
   if (stat == "slope") {
     df_out <- x %>%
       dplyr::summarize(stat = stats::coef(stats::lm(!! attr(x, "response") ~ !! attr(x, "explanatory")))[2])
   }
-
+  
   if (stat == "t"){
     # Two sample means
-    if (!is.null(attr(x, "response")) & 
-        !is.null(attr(x, "explanatory")) & 
-        class(x[[as.character(attr(x, "explanatory"))]]) == "factor"){
+    if (attr(x, "theory_type") == "Two sample t"){
       df_out <- x %>%
         dplyr::summarize(stat = stats::t.test(!! attr(x, "response") ~ !! attr(x, "explanatory"))[["statistic"]])
       
-    } else {
-      print("Not implemented")
+      # One sample mean (TESTING - not currently working)  
+    } else if (attr(x, "theory_type") == "One sample t"){
+      df_out <- x %>% 
+        dplyr::summarize(stat = stats::t.test(x[[as.character(attr(x, "response"))]])[["statistic"]]) 
     }
+  }
+  
+  if (stat == "z"){
+    # Two sample proportions
+    if (attr(x, "theory_type") == "Two sample props z"){
+      #      df_out <- x %>%
+      
+    } else 
+      # One sample proportion
+      if (attr(x, "theory_type") == "One sample prop z"){
+        
+        p0 <- attr(x, "params")[1]
+        num_rows <- nrow(x) / length(unique(x$replicate))
+        
+        col <- attr(x, "response")
+        if(is.null(success))
+          success <- quo(get_par_levels(x)[1])
+        
+#        df_out <- x
+#        attributes(df_out) <- attributes(x)
+        
+        df_out <- x %>%
+          dplyr::summarize(stat = 
+                             (mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...) - p0) /
+                              sqrt( (p0 * (1 - p0)) / num_rows))
+#          dplyr::summarize(p_hat = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...)) %>% 
+#          dplyr::mutate(stat = (p_hat - p0) / sqrt( (p0 * (1 - p0)) / num_rows))
+      }
   }
   
   return(df_out)
