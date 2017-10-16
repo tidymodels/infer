@@ -5,9 +5,12 @@
 #' @param method a string giving the method to display. Options are "randomization", "theoretical", or "both"
 #' with "both" corresponding to "randomization" and "theoretical"
 #' @param obs_stat a numeric value corresponding to what the observed statistic is
-#' @param direction a string specifying in which direction the shading should occur. Options are "left", "right", or "both"
+#' @param obs_stat_color a character or hex string specifying the color of the observed statistic
+#' @param direction a string specifying in which direction the shading should occur. Options are "less", "greater", or "two_sided".
+#' Can also specify "left", "right", or "both".
 #' @param ... currently ignored
-#' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle xlab ylab
+#' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle xlab ylab 
+#' @importFrom ggplot2 geom_vline
 #' @importFrom stats dt qt df qf
 #' @export
 #' @examples 
@@ -47,45 +50,94 @@
 #'     visualize(method = "both")
 #' }
 
-visualize <- function(data, bins = 30, method = "randomization", ...) {
+visualize <- function(data, bins = 30, method = "randomization", 
+                      obs_stat = NULL, 
+                      obs_stat_color = "#00BFC4",
+                      direction = NULL, ...) {
+  
+  if(!is.null(direction) & is.null(obs_stat))
+    stop("Shading requires observed statistic value to be given.")
+  
   if(method == "randomization"){
     # TODO:  determine whether a bar graph or a histogram is
     # more appropriate
-    ggplot(data = data, mapping = aes(x = stat)) +
-      geom_histogram(bins = bins, color = "white")
+    if(is.null(direction)){
+      infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
+        geom_histogram(bins = bins, color = "white")
+    }
+    
+    if(!is.null(direction)){
+      if(direction %in% c("less", "left")){
+        infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
+          geom_histogram(bins = bins, color = "white", 
+                         mapping = aes(fill = (stat <= obs_stat)))
+      }
+      if(direction %in% c("greater", "right")){
+        infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
+          geom_histogram(bins = bins, color = "white", 
+                         mapping = aes(fill = (stat >= obs_stat)))
+      }
+      if(direction %in% c("two_sided", "both") & obs_stat >= 0){
+        infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
+          geom_histogram(bins = bins, color = "white", 
+                         mapping = aes(fill = (abs(stat) >= obs_stat)))
+      }
+      if(direction %in% c("two_sided", "both") & obs_stat < 0){
+        infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
+          geom_histogram(bins = bins, color = "white", 
+                         mapping = aes(fill = (abs(stat) <= obs_stat)))
+      }
+    }
+    
   } else if(method == "theoretical"){
     
-#    if (!is.null(attr(data, "response")) & 
-#         !is.null(attr(data, "explanatory")) & 
-#        attr(data, "response_type") %in% c("integer", "numeric") &
-#        attr(data, "explanatory_type") == "factor") {
-     if(attr(data, "theory_type") == "Two sample t"){    
-      theory_t_plot(deg_freedom = attr(data, "distr_param"),
-                    statistic_text = "t")
-     }
+    if(attr(data, "theory_type") == "Two sample t"){    
+      infer_plot <- theory_t_plot(deg_freedom = attr(data, "distr_param"),
+                                  statistic_text = "t")
+    }
     
     if(attr(data, "theory_type") == "ANOVA"){
-      theory_anova_plot(deg_freedom_top = attr(data, "distr_param"), 
-                        deg_freedom_bottom = attr(data, "distr_param2"), 
-                        statistic_text = "F")
+      infer_plot <- theory_anova_plot(deg_freedom_top = attr(data, "distr_param"), 
+                                      deg_freedom_bottom = attr(data, "distr_param2"), 
+                                      statistic_text = "F")
     }
     
   } else { #method == "both"
-#    if (!is.null(attr(data, "response")) & 
-#        !is.null(attr(data, "explanatory")) & 
-#        attr(data, "response_type") %in% c("integer", "numeric") &
-#        attr(data, "explanatory_type") == "factor") {
+    
     if(attr(data, "theory_type") == "Two sample t"){
-      both_t_plot(data = data, deg_freedom = attr(data, "distr_param"),
-                    statistic_text = "t", bins = bins)
+      infer_plot <- both_t_plot(data = data, 
+                                deg_freedom = attr(data, "distr_param"),
+                                statistic_text = "t", bins = bins,
+                                direction = direction,
+                                obs_stat = obs_stat)
     }
     
     if(attr(data, "theory_type") == "ANOVA"){
-      both_anova_plot(data = data, deg_freedom_top = attr(data, "distr_param"), 
-                      deg_freedom_bottom = attr(data, "distr_param2"), 
-                      statistic_text = "F", bins = bins) 
+      infer_plot <- both_anova_plot(data = data, 
+                                    deg_freedom_top = attr(data, "distr_param"), 
+                                    deg_freedom_bottom = attr(data, "distr_param2"), 
+                                    statistic_text = "F", bins = bins,
+                                    direction = direction,
+                                    obs_stat = obs_stat) 
     }
   }
+  
+  if(!is.null(obs_stat) & !is.null(direction)){
+    if(!(direction %in% c("both", "two_sided"))){
+      infer_plot <- infer_plot +
+        geom_vline(xintercept = obs_stat, color = obs_stat_color)
+    }
+  }
+  
+  if(!is.null(obs_stat) & !is.null(direction)){
+    if(direction %in% c("both", "two_sided")){
+      infer_plot <- infer_plot +
+        geom_vline(xintercept = obs_stat, color = obs_stat_color) +
+        geom_vline(xintercept = -obs_stat, color = obs_stat_color)
+    }
+  }
+  
+  infer_plot
 }
 
 theory_t_plot <- function(deg_freedom, statistic_text = "t", ...){
@@ -96,16 +148,26 @@ theory_t_plot <- function(deg_freedom, statistic_text = "t", ...){
     ylab("")
 }
 
-both_t_plot <- function(data, deg_freedom, statistic_text = "t", bins = 30,...){
-  ggplot(data = data, mapping = aes(x = stat)) +
-    geom_histogram(aes(y = ..density..), color = "white", bins = bins) +
+both_t_plot <- function(data, deg_freedom, statistic_text = "t",
+                        obs_stat = NULL,
+                        direction = NULL, bins = 30,...){
+  infer_t_plot <- ggplot(data = data, mapping = aes(x = stat))
+  
+  # infer_t_plot <- shade_density_check(gg_plot = infer_t_plot,
+  #                                     obs_stat = obs_stat,
+  #                                     direction = direction,
+  #                                     bins = bins)
+  
+  infer_t_plot +
     stat_function(fun = dt, args = list(df = deg_freedom), color = "blue") +
-    ggtitle(paste("Randomization-Based and Theoretical", statistic_text, "Null Distributions")) +
-    xlab(paste0("tstat")) +
+    ggtitle(paste("Randomization-Based and Theoretical", 
+                  statistic_text, "Null Distributions")) +
+    xlab("tstat") +
     ylab("")
 }
 
-theory_anova_plot <- function(deg_freedom_top, deg_freedom_bottom, statistic_text = "F", ...){
+theory_anova_plot <- function(deg_freedom_top, deg_freedom_bottom, 
+                              statistic_text = "F", ...){
   ggplot(data.frame(x = c(qf(0.001, deg_freedom_top, deg_freedom_bottom), 
                           qf(0.999, deg_freedom_top, deg_freedom_bottom))), aes(x)) + 
     stat_function(fun = df, 
@@ -116,14 +178,55 @@ theory_anova_plot <- function(deg_freedom_top, deg_freedom_bottom, statistic_tex
     ylab("")
 }
 
-both_anova_plot <- function(data, deg_freedom_top, deg_freedom_bottom, statistic_text = "F",
+both_anova_plot <- function(data, deg_freedom_top, 
+                            deg_freedom_bottom, statistic_text = "F",
                             bins = 30, ...){
   ggplot(data = data, mapping = aes(x = stat)) +
     geom_histogram(aes(y = ..density..), color = "white", bins = bins) +
     stat_function(fun = df, 
                   args = list(df1 = deg_freedom_top, df2 = deg_freedom_bottom),
                   color = "blue") +
-    ggtitle(paste("Randomization-Based and Theoretical", statistic_text, "Null Distributions")) +
-    xlab(paste0("Fstat")) +
+    ggtitle(paste("Randomization-Based and Theoretical", 
+                  statistic_text, "Null Distributions")) +
+    xlab("Fstat") +
     ylab("")  
 }
+
+# Not working since fill makes TRUE values on different scale
+# shade_density_check <- function(gg_plot, obs_stat, direction, bins, ...){ 
+#   if(is.null(direction) | is.null(obs_stat)){
+#     gg_plot <- gg_plot +
+#       geom_histogram(bins = bins, color = "white",
+#                      mapping = aes(y = ..density..))
+#   }
+#   
+#   if(!is.null(obs_stat)){
+#     if(!is.null(direction)){
+#       if(direction %in% c("less", "left")){
+#         gg_plot <- gg_plot +
+#           geom_histogram(bins = bins, color = "white", 
+#                          mapping = aes(y = ..density..,
+#                                        fill = (stat <= obs_stat)))
+#       }
+#       if(direction %in% c("greater", "right")){
+#         gg_plot <- gg_plot +
+#           geom_histogram(bins = bins, color = "white", 
+#                          mapping = aes(y = ..density.., 
+#                                        fill = (stat >= obs_stat)))
+#       }
+#       if(direction %in% c("two_sided", "both") & obs_stat >= 0){
+#         gg_plot <- ggplot(data = data, mapping = aes(x = stat)) +
+#           geom_histogram(bins = bins, color = "white", 
+#                          mapping = aes(y = ..density..,
+#                                        fill = (abs(stat) >= obs_stat)))
+#       }
+#       if(direction %in% c("two_sided", "both") & obs_stat < 0){
+#         gg_plot <- ggplot(data = data, mapping = aes(x = stat)) +
+#           geom_histogram(bins = bins, color = "white", 
+#                          mapping = aes(y = ..density..,
+#                                        fill = (abs(stat) <= obs_stat)))
+#       }
+#     }
+#   }
+#   gg_plot
+# }

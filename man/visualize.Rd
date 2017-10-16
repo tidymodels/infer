@@ -5,7 +5,8 @@
 \title{(Currently) Visualize the resampling distribution 
 (To be updated to include theory-based distributions)}
 \usage{
-visualize(data, bins = 30, method = "randomization", ...)
+visualize(data, bins = 30, method = "randomization", obs_stat = NULL,
+  obs_stat_color = "#00BFC4", direction = NULL, ...)
 }
 \arguments{
 \item{data}{the output from \code{\link{calculate}}}
@@ -14,6 +15,13 @@ visualize(data, bins = 30, method = "randomization", ...)
 
 \item{method}{a string giving the method to display. Options are "randomization", "theoretical", or "both"
 with "both" corresponding to "randomization" and "theoretical"}
+
+\item{obs_stat}{a numeric value corresponding to what the observed statistic is}
+
+\item{obs_stat_color}{a character or hex string specifying the color of the observed statistic}
+
+\item{direction}{a string specifying in which direction the shading should occur. Options are "less", "greater", or "two_sided".
+Can also specify "left", "right", or "both".}
 
 \item{...}{currently ignored}
 }
