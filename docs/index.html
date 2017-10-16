@@ -50,7 +50,13 @@
     <li>
       <a href="articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
     </li>
+    <li>
+      <a href="articles/two_sample_t.html">Two sample  test example using `okcupiddata` `profiles` data</a>
+    </li>
   </ul>
+</li>
+<li>
+  <a href="news/index.html">News</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -80,15 +86,15 @@
 <hr>
 <p><a href="https://travis-ci.org/andrewpbray/infer"><img src="https://travis-ci.org/andrewpbray/infer.svg?branch=master" alt="Travis-CI Build Status"></a></p>
 <p>The objective of this package is to perform inference using an expressive statistical grammar that coheres with the <code>tidyverse</code> design framework.</p>
-<div id="hypothesis-tests" class="section level3">
-<h3 class="hasAnchor">
-<a href="#hypothesis-tests" class="anchor"></a>Hypothesis tests</h3>
+<div id="hypothesis-tests" class="section level2">
+<h2 class="hasAnchor">
+<a href="#hypothesis-tests" class="anchor"></a>Hypothesis tests</h2>
 <div class="figure">
 <img src="figs/ht-diagram.png">
 </div>
-<div id="examples" class="section level4">
+<div id="randomization-based-examples" class="section level4">
 <h4 class="hasAnchor">
-<a href="#examples" class="anchor"></a>Examples</h4>
+<a href="#randomization-based-examples" class="anchor"></a>Randomization-based Examples</h4>
 <p>These examples assume that <code>mtcars</code> has been overwritten so that the variables <code>cyl</code>, <code>vs</code>, <code>am</code>, <code>gear</code>, and <code>carb</code> are <code>factor</code>s.</p>
 <pre><code>mtcars &lt;- as.data.frame(mtcars) %&gt;%
   mutate(cyl = factor(cyl),
@@ -96,68 +102,102 @@
          am = factor(am),
          gear = factor(gear),
          carb = factor(carb))</code></pre>
+<p>Check the package vignettes for further examples using theory-based methods in combination with randomization-based methods.</p>
 <hr>
-<p>One numerical variable (mean)</p>
+</div>
+<div id="one-numerical-variable-mean" class="section level3">
+<h3 class="hasAnchor">
+<a href="#one-numerical-variable-mean" class="anchor"></a>One numerical variable (mean)</h3>
 <pre><code>mtcars %&gt;%
   specify(response = mpg) %&gt;% # alt: mpg ~ NULL (or mpg ~ 1)
   hypothesize(null = "point", mu = 25) %&gt;% 
   generate(reps = 100, type = "bootstrap") %&gt;% 
   calculate(stat = "mean")</code></pre>
-<p>One numerical variable (median)</p>
+</div>
+<div id="one-numerical-variable-median" class="section level3">
+<h3 class="hasAnchor">
+<a href="#one-numerical-variable-median" class="anchor"></a>One numerical variable (median)</h3>
 <pre><code>mtcars %&gt;%
   specify(response = mpg) %&gt;% # alt: mpg ~ NULL (or mpg ~ 1)
   hypothesize(null = "point", med = 26) %&gt;% 
   generate(reps = 100, type = "bootstrap") %&gt;% 
   calculate(stat = "median")</code></pre>
-<p>One numerical variable (standard deviation)</p>
+</div>
+<div id="one-numerical-variable-standard-deviation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#one-numerical-variable-standard-deviation" class="anchor"></a>One numerical variable (standard deviation)</h3>
 <pre><code>mtcars %&gt;%
   specify(response = mpg) %&gt;% # alt: mpg ~ NULL (or mpg ~ 1)
   hypothesize(null = "point", sigma = 5) %&gt;% 
   generate(reps = 100, type = "bootstrap") %&gt;% 
   calculate(stat = "sd")</code></pre>
-<p>One categorical (2 level) variable</p>
+</div>
+<div id="one-categorical-2-level-variable" class="section level3">
+<h3 class="hasAnchor">
+<a href="#one-categorical-2-level-variable" class="anchor"></a>One categorical (2 level) variable</h3>
 <pre><code>mtcars %&gt;%
   specify(response = am) %&gt;% # alt: am ~ NULL (or am ~ 1)
   hypothesize(null = "point", p = c("1" = .25)) %&gt;% 
   generate(reps = 100, type = "simulate") %&gt;% 
   calculate(stat = "prop")</code></pre>
-<p>Two categorical (2 level) variables</p>
+</div>
+<div id="two-categorical-2-level-variables" class="section level3">
+<h3 class="hasAnchor">
+<a href="#two-categorical-2-level-variables" class="anchor"></a>Two categorical (2 level) variables</h3>
 <pre><code>mtcars %&gt;%
   specify(am ~ vs) %&gt;% # alt: response = am, explanatory = vs
   hypothesize(null = "independence") %&gt;%
   generate(reps = 100, type = "permute") %&gt;%
   calculate(stat = "diff in props")</code></pre>
-<p>One categorical (&gt;2 level) - GoF</p>
+</div>
+<div id="one-categorical-2-level---gof" class="section level3">
+<h3 class="hasAnchor">
+<a href="#one-categorical-2-level---gof" class="anchor"></a>One categorical (&gt;2 level) - GoF</h3>
 <pre><code>mtcars %&gt;%
   specify(cyl ~ NULL) %&gt;% # alt: response = cyl
   hypothesize(null = "point", p = c("4" = .5, "6" = .25, "8" = .25)) %&gt;%
   generate(reps = 100, type = "simulate") %&gt;%
   calculate(stat = "Chisq")</code></pre>
-<p>Two categorical (&gt;2 level) variables</p>
+</div>
+<div id="two-categorical-2-level-variables-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#two-categorical-2-level-variables-1" class="anchor"></a>Two categorical (&gt;2 level) variables</h3>
 <pre><code>mtcars %&gt;%
   specify(cyl ~ am) %&gt;% # alt: response = cyl, explanatory = am
   hypothesize(null = "independence") %&gt;%
   generate(reps = 100, type = "permute") %&gt;%
   calculate(stat = "Chisq")</code></pre>
-<p>One numerical variable, one categorical (2 levels) (diff in means)</p>
+</div>
+<div id="one-numerical-variable-one-categorical-2-levels-diff-in-means" class="section level3">
+<h3 class="hasAnchor">
+<a href="#one-numerical-variable-one-categorical-2-levels-diff-in-means" class="anchor"></a>One numerical variable, one categorical (2 levels) (diff in means)</h3>
 <pre><code>mtcars %&gt;%
   specify(mpg ~ am) %&gt;% # alt: response = mpg, explanatory = am
   hypothesize(null = "independence") %&gt;%
   generate(reps = 100, type = "permute") %&gt;%
   calculate(stat = "diff in means")</code></pre>
-<p>One numerical variable one categorical (2 levels) (diff in medians)</p>
+</div>
+<div id="one-numerical-variable-one-categorical-2-levels-diff-in-medians" class="section level3">
+<h3 class="hasAnchor">
+<a href="#one-numerical-variable-one-categorical-2-levels-diff-in-medians" class="anchor"></a>One numerical variable one categorical (2 levels) (diff in medians)</h3>
 <pre><code>mtcars %&gt;%
   specify(mpg ~ am) %&gt;% # alt: response = mpg, explanatory = am
   hypothesize(null = "independence") %&gt;%
   generate(reps = 100, type = "permute") %&gt;%
   calculate(stat = "diff in medians")</code></pre>
-<p>One numerical one categorical (&gt;2 levels) - ANOVA</p>
+</div>
+<div id="one-numerical-one-categorical-2-levels---anova" class="section level3">
+<h3 class="hasAnchor">
+<a href="#one-numerical-one-categorical-2-levels---anova" class="anchor"></a>One numerical one categorical (&gt;2 levels) - ANOVA</h3>
 <pre><code>mtcars %&gt;%
   specify(mpg ~ cyl) %&gt;% # alt: response = mpg, explanatory = cyl
   hypothesize(null = "independence") %&gt;%
   generate(reps = 100, type = "permute") %&gt;%
   calculate(stat = "F")</code></pre>
-<p>Two numerical vars - SLR</p>
+</div>
+<div id="two-numerical-vars---slr" class="section level3">
+<h3 class="hasAnchor">
+<a href="#two-numerical-vars---slr" class="anchor"></a>Two numerical vars - SLR</h3>
 <pre><code>mtcars %&gt;%
   specify(mpg ~ hp) %&gt;% # alt: response = mpg, explanatory = cyl
   hypothesize(null = "independence") %&gt;%
@@ -165,44 +205,65 @@
   calculate(stat = "slope")</code></pre>
 </div>
 </div>
-<div id="confidence-intervals" class="section level3">
+<div id="confidence-intervals" class="section level2">
+<h2 class="hasAnchor">
+<a href="#confidence-intervals" class="anchor"></a>Confidence intervals</h2>
+<div id="one-numerical-one-mean" class="section level3">
 <h3 class="hasAnchor">
-<a href="#confidence-intervals" class="anchor"></a>Confidence intervals</h3>
-<p>One numerical (one mean)</p>
+<a href="#one-numerical-one-mean" class="anchor"></a>One numerical (one mean)</h3>
 <pre><code>mtcars %&gt;%
   specify(response = mpg) %&gt;%
   generate(reps = 100, type = "bootstrap") %&gt;%
   calculate(stat = "mean")</code></pre>
-<p>One numerical (one median)</p>
+</div>
+<div id="one-numerical-one-median" class="section level3">
+<h3 class="hasAnchor">
+<a href="#one-numerical-one-median" class="anchor"></a>One numerical (one median)</h3>
 <pre><code>mtcars %&gt;%
   specify(response = mpg) %&gt;%
   generate(reps = 100, type = "bootstrap") %&gt;%
   calculate(stat = "median")</code></pre>
-<p>One numerical (standard deviation)</p>
+</div>
+<div id="one-numerical-standard-deviation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#one-numerical-standard-deviation" class="anchor"></a>One numerical (standard deviation)</h3>
 <pre><code>mtcars %&gt;%
   specify(response = mpg) %&gt;%
   generate(reps = 100, type = "bootstrap") %&gt;%
   calculate(stat = "sd")</code></pre>
-<p>One categorical (one proportion)</p>
+</div>
+<div id="one-categorical-one-proportion" class="section level3">
+<h3 class="hasAnchor">
+<a href="#one-categorical-one-proportion" class="anchor"></a>One categorical (one proportion)</h3>
 <pre><code>mtcars %&gt;%
   specify(response = am) %&gt;%
   generate(reps = 100, type = "bootstrap") %&gt;%
   calculate(stat = "prop", success = "1")</code></pre>
-<p>One numerical variable one categorical (2 levels) (diff in means)</p>
+</div>
+<div id="one-numerical-variable-one-categorical-2-levels-diff-in-means-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#one-numerical-variable-one-categorical-2-levels-diff-in-means-1" class="anchor"></a>One numerical variable one categorical (2 levels) (diff in means)</h3>
 <pre><code>mtcars %&gt;%
   specify(mpg ~ am) %&gt;%
   generate(reps = 100, type = "bootstrap") %&gt;%
   calculate(stat = "diff in means")</code></pre>
-<p>Two categorical variables (diff in proportions)</p>
+</div>
+<div id="two-categorical-variables-diff-in-proportions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#two-categorical-variables-diff-in-proportions" class="anchor"></a>Two categorical variables (diff in proportions)</h3>
 <pre><code>mtcars %&gt;%
   specify(am ~ vs) %&gt;%
   generate(reps = 100, type = "bootstrap") %&gt;%
   calculate(stat = "diff in props")</code></pre>
-<p>Two numerical vars - SLR</p>
+</div>
+<div id="two-numerical-vars---slr-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#two-numerical-vars---slr-1" class="anchor"></a>Two numerical vars - SLR</h3>
 <pre><code>mtcars %&gt;%
   specify(mpg ~ hp) %&gt;% 
   generate(reps = 100, type = "bootstrap") %&gt;%
   calculate(stat = "slope")</code></pre>
+</div>
 </div>
 </div>
   </div>

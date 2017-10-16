@@ -6,8 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Specify the response and explanatory variables
-<code>specify</code> also converts character variables chosen to be <code>factor</code>s — specify • infer</title>
+<title>Specify the response and explanatory variables with
+<code>specify</code> also converting character variables chosen to be <code>factor</code>s — specify • infer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -74,7 +74,13 @@
     <li>
       <a href="../articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
     </li>
+    <li>
+      <a href="../articles/two_sample_t.html">Two sample $t$ test example using `okcupiddata` `profiles` data</a>
+    </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">News</a>
 </li>
       </ul>
       
@@ -96,13 +102,13 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Specify the response and explanatory variables
-<code>specify</code> also converts character variables chosen to be <code>factor</code>s</h1>
+    <h1>Specify the response and explanatory variables with
+<code>specify</code> also converting character variables chosen to be <code>factor</code>s</h1>
     </div>
 
     
-    <p>Specify the response and explanatory variables
-<code>specify</code> also converts character variables chosen to be <code>factor</code>s</p>
+    <p>Specify the response and explanatory variables with
+<code>specify</code> also converting character variables chosen to be <code>factor</code>s</p>
     
 
     <pre class="usage"><span class='fu'>specify</span>(<span class='no'>x</span>, <span class='no'>formula</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>explanatory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
@@ -136,7 +142,22 @@
   <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'>specify</span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>am</span>)
-}</div><div class='output co'>#&gt; <span class='error'>Error in if (!is.null(attr(x, "response")) &amp; !is.null(attr(x, "explanatory")) &amp;     attr(x, "response_type") %in% c("integer", "numeric") &amp; attr(x,     "explanatory_type") == "factor") {    attr(x, "distr_param") &lt;- x %&gt;% dplyr::summarize(stats::t.test(!(!attr(x,         "response")) ~ !(!attr(x, "explanatory")))[["parameter"]]) %&gt;%         dplyr::pull()}: argument is of length zero</span></div><div class='input'><span class='co'># Response and explanatory attributes set corresponding to</span>
+}</div><div class='output co'>#&gt; Response:  am 
+#&gt;  Response Type:  factor 
+#&gt; # A tibble: 32 x 1
+#&gt;        am
+#&gt;    &lt;fctr&gt;
+#&gt;  1      1
+#&gt;  2      1
+#&gt;  3      1
+#&gt;  4      0
+#&gt;  5      0
+#&gt;  6      0
+#&gt;  7      0
+#&gt;  8      0
+#&gt;  9      0
+#&gt; 10      0
+#&gt; # ... with 22 more rows</div><div class='input'><span class='co'># Response and explanatory attributes set corresponding to</span>
 <span class='co'># response and explanatory arguments</span>
 <span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)){
   <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>

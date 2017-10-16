@@ -1,7 +1,7 @@
 Package: infer
 Type: Package
 Title: An R package for tidyverse-friendly statistical inference
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
     person("Ben", "Baumer", email = "ben.baumer@gmail.com", role = c("aut")),

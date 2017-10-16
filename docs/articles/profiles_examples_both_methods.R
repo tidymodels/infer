@@ -1,5 +1,5 @@
 ## ----include=FALSE-------------------------------------------------------
-knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
+knitr::opts_chunk$set(fig.width = 7, fig.height = 3) 
 
 ## ----message=FALSE, warning=FALSE----------------------------------------
 library(okcupiddata)
@@ -26,7 +26,7 @@ prof_small %>%
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
-  calculate(stat = "t") %>% 
+  # calculate(stat = "t") ## Not needed since t is implied based on variable types
   visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------
@@ -37,20 +37,49 @@ prof_small %>%
   calculate(stat = "t") %>% 
   visualize(method = "both")
 
-## ----eval=FALSE, include=FALSE-------------------------------------------
-#  prof_small %>%
-#    specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
-#    hypothesize(null = "point", mu = 50) %>%
-#    generate(reps = 1000, type = "bootstrap") %>%
-#    calculate(stat = "t")
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "F") %>% 
+  visualize()
 
-## ----eval=FALSE, include=FALSE-------------------------------------------
-#  prof_small %>%
-#    specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
-#    hypothesize(null = "point", p = c("m" = .65)) %>%
-#    generate(reps = 1000, type = "simulate") %>%
-#    calculate(stat = "z") %>%
-#    visualize()
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
+  hypothesize(null = "independence") %>%
+  visualize(method = "theoretical")
+
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "F") %>% 
+  visualize(method = "both")
+
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
+  hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
+  generate(reps = 1000, type = "simulate") %>% 
+  calculate(stat = "z") %>% 
+  visualize()
+
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
+  hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
+  visualize(method = "theoretical")
+
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
+  hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
+  generate(reps = 1000, type = "simulate") %>% 
+  calculate(stat = "z") %>% 
+  visualize(method = "both")
 
 ## ----eval=FALSE, include=FALSE-------------------------------------------
 #  prof_small %>%
@@ -79,18 +108,18 @@ prof_small %>%
 
 ## ----eval=FALSE, include=FALSE-------------------------------------------
 #  prof_small %>%
-#    specify(age ~ status) %>% # alt: response = age, explanatory = status
-#    hypothesize(null = "independence") %>%
-#    generate(reps = 1000, type = "permute") %>%
-#    calculate(stat = "F") %>%
-#    visualize()
-
-## ----eval=FALSE, include=FALSE-------------------------------------------
-#  prof_small %>%
 #    specify(age ~ height) %>% # alt: response = age, explanatory = height
 #    hypothesize(null = "independence") %>%
 #    generate(reps = 1000, type = "permute") %>%
 #    calculate(stat = "slope") %>%
+#    visualize()
+
+## ----eval=FALSE, include=FALSE-------------------------------------------
+#  prof_small %>%
+#    specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
+#    hypothesize(null = "point", mu = 50) %>%
+#    generate(reps = 1000, type = "bootstrap") %>%
+#    calculate(stat = "t") %>%
 #    visualize()
 
 ## ----eval=FALSE, include=FALSE-------------------------------------------

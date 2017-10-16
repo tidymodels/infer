@@ -12,7 +12,7 @@ vignette: |
 ---
 
 ```{r include=FALSE}
-knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
+knitr::opts_chunk$set(fig.width = 7, fig.height = 3) 
 ```
 
 ## Data preparation
@@ -43,9 +43,9 @@ prof_small <- profiles %>%
 
 ## Implemented
 
-One numerical variable, one categorical (2 levels)
+### One numerical variable, one categorical (2 levels)
 
-### Randomization approach to t-statistic
+Randomization approach to t-statistic
 
 ```{r}
 prof_small %>%
@@ -56,17 +56,17 @@ prof_small %>%
   visualize()
 ```
 
-### Theoretical distribution
+Theoretical distribution
 
 ```{r }
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
-  calculate(stat = "t") %>% 
+  # calculate(stat = "t") ## Not needed since t is implied based on variable types
   visualize(method = "theoretical")
 ```
 
-### Overlay appropriate t distribution on top of permuted t-statistic
+Overlay appropriate $t$ distribution on top of permuted t-statistics
 
 ```{r }
 prof_small %>%
@@ -77,37 +77,77 @@ prof_small %>%
   visualize(method = "both")
 ```
 
-***
+### One numerical, one categorical (>2 levels) -  ANOVA
 
-## TO DO
+Randomization approach to F-statistic
 
-### To Do (one mean $t$ stat)
-### To Do (Also overlay appropriate t distn)
-
-One numerical variable (mean)
-
-```{r eval=FALSE, include=FALSE}
+```{r}
 prof_small %>%
-  specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
-  hypothesize(null = "point", mu = 50) %>% 
-  generate(reps = 1000, type = "bootstrap") %>% 
-  calculate(stat = "t")
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "F") %>% 
+  visualize()
 ```
 
-### To Do (one prop $z$ stat)
-### To Do (Also overlay std normal distn)
+Theoretical distribution
 
-One categorical (2 level) variable
+```{r}
+prof_small %>%
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
+  hypothesize(null = "independence") %>%
+  visualize(method = "theoretical")
+```
+
+Overlay appropriate $F$ distribution on top of permuted F-statistics
+
+```{r}
+prof_small %>%
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "F") %>% 
+  visualize(method = "both")
+```
 
 
-```{r eval=FALSE, include=FALSE}
+## One categorical (2 level) variable
+
+Randomization approach to z-statistic
+
+```{r}
 prof_small %>%
   specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
-  hypothesize(null = "point", p = c("m" = .65)) %>% 
+  hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
   generate(reps = 1000, type = "simulate") %>% 
   calculate(stat = "z") %>% 
   visualize()
 ```
+
+Theoretical distribution
+
+```{r}
+prof_small %>%
+  specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
+  hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
+  visualize(method = "theoretical")
+```
+
+Overlay standard normal distribution on top of permuted z-statistics
+
+```{r}
+prof_small %>%
+  specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
+  hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
+  generate(reps = 1000, type = "simulate") %>% 
+  calculate(stat = "z") %>% 
+  visualize(method = "both")
+```
+
+
+***
+
+## TO DO
 
 ### To Do (two prop $z$ stat)
 ### To Do (Also overlay appropriate std normal distn)
@@ -153,21 +193,6 @@ prof_small %>%
 ```
 
 
-
-### To Do (Also overlay appropriate F distn)
-
-One numerical one categorical (>2 levels) -  ANOVA
-
-
-```{r eval=FALSE, include=FALSE}
-prof_small %>%
-  specify(age ~ status) %>% # alt: response = age, explanatory = status
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "F") %>% 
-  visualize()
-```
-
 ### To Do (slope $t$ stat)
 ### To Do (Also overlay appropriate t distn)
 
@@ -182,6 +207,23 @@ prof_small %>%
   calculate(stat = "slope") %>% 
   visualize()
 ```
+
+### To Do (one mean $t$ stat)
+### To Do (Also overlay appropriate t distn)
+
+One numerical variable (mean)
+
+**Testing but not working yet**
+
+```{r eval=FALSE, include=FALSE}
+prof_small %>%
+  specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
+  hypothesize(null = "point", mu = 50) %>% 
+  generate(reps = 1000, type = "bootstrap") %>% 
+  calculate(stat = "t") %>% 
+  visualize()
+```
+
 
 ## Confidence intervals
 
