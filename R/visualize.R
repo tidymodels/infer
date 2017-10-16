@@ -153,10 +153,10 @@ both_t_plot <- function(data, deg_freedom, statistic_text = "t",
                         direction = NULL, bins = 30,...){
   infer_t_plot <- ggplot(data = data, mapping = aes(x = stat))
   
-  # infer_t_plot <- shade_density_check(gg_plot = infer_t_plot,
-  #                                     obs_stat = obs_stat,
-  #                                     direction = direction,
-  #                                     bins = bins)
+  infer_t_plot <- shade_density_check(gg_plot = infer_t_plot,
+                                      obs_stat = obs_stat,
+                                      direction = direction,
+                                      bins = bins)
   
   infer_t_plot +
     stat_function(fun = dt, args = list(df = deg_freedom), color = "blue") +
@@ -193,11 +193,11 @@ both_anova_plot <- function(data, deg_freedom_top,
 }
 
 # Not working since fill makes TRUE values on different scale
-# shade_density_check <- function(gg_plot, obs_stat, direction, bins, ...){ 
+ shade_density_check <- function(gg_plot, obs_stat, direction, bins, ...){ 
 #   if(is.null(direction) | is.null(obs_stat)){
-#     gg_plot <- gg_plot +
-#       geom_histogram(bins = bins, color = "white",
-#                      mapping = aes(y = ..density..))
+     gg_plot <- gg_plot +
+       geom_histogram(bins = bins, color = "white",
+                      mapping = aes(y = ..density..))
 #   }
 #   
 #   if(!is.null(obs_stat)){
@@ -229,4 +229,4 @@ both_anova_plot <- function(data, deg_freedom_top,
 #     }
 #   }
 #   gg_plot
-# }
+}
