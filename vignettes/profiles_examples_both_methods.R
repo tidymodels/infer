@@ -15,29 +15,19 @@ prof_small <- profiles %>%
   dplyr::select(age, sex, city, drugs, height, status)
 
 ## ------------------------------------------------------------------------
-obs_t <- prof_small %>% 
-  t_test(formula = age ~ sex) %>% 
-  dplyr::select(statistic) %>% 
-  dplyr::pull()
-
-## ------------------------------------------------------------------------
-obs_t <- prof_small %>% 
-  t_stat(formula = age ~ sex)
-
-## ------------------------------------------------------------------------
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t") %>% 
-  visualize(obs_stat = obs_t, direction = "two_sided")
+  visualize()
 
 ## ------------------------------------------------------------------------
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
   # calculate(stat = "t") ## Not needed since t is implied based on variable types
-  visualize(method = "theoretical", obs_stat = obs_t, direction = "two_sided")
+  visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------
 prof_small %>%
@@ -45,7 +35,7 @@ prof_small %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t") %>% 
-  visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
+  visualize(method = "both")
 
 ## ------------------------------------------------------------------------
 prof_small %>%

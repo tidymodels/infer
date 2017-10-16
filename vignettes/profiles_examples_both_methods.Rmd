@@ -45,26 +45,6 @@ prof_small <- profiles %>%
 
 ### One numerical variable, one categorical (2 levels)
 
-Calculate observed statistic
-
-```{r}
-obs_t <- prof_small %>% 
-  t_test(formula = age ~ sex) %>% 
-  dplyr::select(statistic) %>% 
-  dplyr::pull()
-```
-
-The observed $t$ statistic is `r obs_t`.
-
-Or using another shortcut:
-
-```{r}
-obs_t <- prof_small %>% 
-  t_stat(formula = age ~ sex)
-```
-
-The observed $t$ statistic is `r obs_t`.
-
 Randomization approach to t-statistic
 
 ```{r}
@@ -73,7 +53,7 @@ prof_small %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t") %>% 
-  visualize(obs_stat = obs_t, direction = "two_sided")
+  visualize()
 ```
 
 Theoretical distribution
@@ -83,10 +63,10 @@ prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
   # calculate(stat = "t") ## Not needed since t is implied based on variable types
-  visualize(method = "theoretical", obs_stat = obs_t, direction = "two_sided")
+  visualize(method = "theoretical")
 ```
 
-Overlay appropriate t distribution on top of permuted t-statistics
+Overlay appropriate $t$ distribution on top of permuted t-statistics
 
 ```{r }
 prof_small %>%
@@ -94,7 +74,7 @@ prof_small %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t") %>% 
-  visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
+  visualize(method = "both")
 ```
 
 ### One numerical, one categorical (>2 levels) -  ANOVA
@@ -120,7 +100,7 @@ prof_small %>%
 ```
 
 
--  Overlay appropriate F distribution on top of permuted F-statistics
+-  Overlay appropriate $F$ distribution on top of permuted F-statistics
 
 ```{r}
 prof_small %>%

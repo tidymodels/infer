@@ -37,7 +37,7 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
 #  }
 }
 
-#' t_test
+#' t_stat
 #' 
 #' @param data a data frame that can be coerced into a \code{\link[tibble]{tibble}}
 #' @param formula a formula with the response variable on the left and the explanatory on the right
