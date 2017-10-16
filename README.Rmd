@@ -15,7 +15,7 @@ The objective of this package is to perform inference using an expressive statis
 ## Hypothesis tests
 ![](figs/ht-diagram.png)
 
-#### Examples
+#### Randomization-based Examples
 
 These examples assume that `mtcars` has been overwritten so that the variables
 `cyl`, `vs`, `am`, `gear`, and `carb` are `factor`s.
@@ -28,6 +28,9 @@ mtcars <- as.data.frame(mtcars) %>%
          gear = factor(gear),
          carb = factor(carb))
 ```
+
+Check the package vignettes for further examples using theory-based methods
+in combination with randomization-based methods.
 
 ***
 

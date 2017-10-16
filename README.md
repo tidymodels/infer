@@ -1,6 +1,6 @@
 
 -   [Hypothesis tests](#hypothesis-tests)
-    -   [Examples](#examples)
+    -   [Randomization-based Examples](#randomization-based-examples)
     -   [One numerical variable (mean)](#one-numerical-variable-mean)
     -   [One numerical variable (median)](#one-numerical-variable-median)
     -   [One numerical variable (standard deviation)](#one-numerical-variable-standard-deviation)
@@ -34,7 +34,7 @@ Hypothesis tests
 
 ![](figs/ht-diagram.png)
 
-#### Examples
+#### Randomization-based Examples
 
 These examples assume that `mtcars` has been overwritten so that the variables `cyl`, `vs`, `am`, `gear`, and `carb` are `factor`s.
 
@@ -44,6 +44,8 @@ These examples assume that `mtcars` has been overwritten so that the variables `
              am = factor(am),
              gear = factor(gear),
              carb = factor(carb))
+
+Check the package vignettes for further examples using theory-based methods in combination with randomization-based methods.
 
 ------------------------------------------------------------------------
 

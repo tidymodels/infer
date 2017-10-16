@@ -125,95 +125,87 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <div id="one-numerical-variable-one-categorical-2-levels" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-numerical-variable-one-categorical-2-levels" class="anchor"></a>One numerical variable, one categorical (2 levels)</h3>
-<p>Calculate observed statistic</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_t &lt;-<span class="st"> </span>prof_small <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> age <span class="op">~</span><span class="st"> </span>sex) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(statistic) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<p>The observed <span class="math inline">\(t\)</span> statistic is 2.4901818.</p>
-<p>Or using another shortcut:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_t &lt;-<span class="st"> </span>prof_small <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/t_stat.html">t_stat</a></span>(<span class="dt">formula =</span> age <span class="op">~</span><span class="st"> </span>sex)</code></pre></div>
-<p>The observed <span class="math inline">\(t\)</span> statistic is 2.4901818.</p>
 <p>Randomization approach to t-statistic</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>sex) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = sex</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
-<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>()</code></pre></div>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 <p>Theoretical distribution</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>sex) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = sex</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># calculate(stat = "t") ## Not needed since t is implied based on variable types</span>
-<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>, <span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
-<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
-<p>Overlay appropriate t distribution on top of permuted t-statistics</p>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
+<p>Overlay appropriate <span class="math inline">\(t\)</span> distribution on top of permuted t-statistics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>sex) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = sex</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>, <span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
-<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
 </div>
 <div id="one-numerical-one-categorical-2-levels---anova" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-numerical-one-categorical-2-levels---anova" class="anchor"></a>One numerical, one categorical (&gt;2 levels) - ANOVA</h3>
-<ul>
-<li>Randomization approach to F-statistic</li>
-</ul>
+<p>Randomization approach to F-statistic</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>status) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = status</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>()</code></pre></div>
-<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
-<ul>
-<li>Theoretical distribution</li>
-</ul>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
+<p>Theoretical distribution</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>status) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = status</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
-<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
-<ul>
-<li>Overlay appropriate F distribution on top of permuted F-statistics</li>
-</ul>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
+<p>Overlay appropriate <span class="math inline">\(F\)</span> distribution on top of permuted F-statistics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>status) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = status</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
-<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
-<hr>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 </div>
+</div>
+<div id="one-categorical-2-level-variable" class="section level2">
+<h2 class="hasAnchor">
+<a href="#one-categorical-2-level-variable" class="anchor"></a>One categorical (2 level) variable</h2>
+<p>Randomization approach to z-statistic</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> sex) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: sex ~ NULL (or sex ~ 1)</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"m"</span> =<span class="st"> </span>.<span class="dv">65</span>, <span class="st">"f"</span> =<span class="st"> </span>.<span class="dv">35</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>()</code></pre></div>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
+<p>Theoretical distribution</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> sex) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: sex ~ NULL (or sex ~ 1)</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"m"</span> =<span class="st"> </span>.<span class="dv">65</span>, <span class="st">"f"</span> =<span class="st"> </span>.<span class="dv">35</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
+<p>Overlay standard normal distribution on top of permuted z-statistics</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> sex) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: sex ~ NULL (or sex ~ 1)</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"m"</span> =<span class="st"> </span>.<span class="dv">65</span>, <span class="st">"f"</span> =<span class="st"> </span>.<span class="dv">35</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
+<hr>
 </div>
 <div id="to-do" class="section level2">
 <h2 class="hasAnchor">
 <a href="#to-do" class="anchor"></a>TO DO</h2>
-<div id="to-do-one-mean-t-stat" class="section level3">
-<h3 class="hasAnchor">
-<a href="#to-do-one-mean-t-stat" class="anchor"></a>To Do (one mean <span class="math inline">\(t\)</span> stat)</h3>
-</div>
-<div id="to-do-also-overlay-appropriate-t-distn" class="section level3">
-<h3 class="hasAnchor">
-<a href="#to-do-also-overlay-appropriate-t-distn" class="anchor"></a>To Do (Also overlay appropriate t distn)</h3>
-<p>One numerical variable (mean)</p>
-</div>
-<div id="to-do-one-prop-z-stat" class="section level3">
-<h3 class="hasAnchor">
-<a href="#to-do-one-prop-z-stat" class="anchor"></a>To Do (one prop <span class="math inline">\(z\)</span> stat)</h3>
-</div>
-<div id="to-do-also-overlay-std-normal-distn" class="section level3">
-<h3 class="hasAnchor">
-<a href="#to-do-also-overlay-std-normal-distn" class="anchor"></a>To Do (Also overlay std normal distn)</h3>
-<p>One categorical (2 level) variable</p>
-</div>
 <div id="to-do-two-prop-z-stat" class="section level3">
 <h3 class="hasAnchor">
 <a href="#to-do-two-prop-z-stat" class="anchor"></a>To Do (two prop <span class="math inline">\(z\)</span> stat)</h3>
@@ -237,10 +229,20 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <h3 class="hasAnchor">
 <a href="#to-do-slope-t-stat" class="anchor"></a>To Do (slope <span class="math inline">\(t\)</span> stat)</h3>
 </div>
+<div id="to-do-also-overlay-appropriate-t-distn" class="section level3">
+<h3 class="hasAnchor">
+<a href="#to-do-also-overlay-appropriate-t-distn" class="anchor"></a>To Do (Also overlay appropriate t distn)</h3>
+<p>Two numerical vars - SLR</p>
+</div>
+<div id="to-do-one-mean-t-stat" class="section level3">
+<h3 class="hasAnchor">
+<a href="#to-do-one-mean-t-stat" class="anchor"></a>To Do (one mean <span class="math inline">\(t\)</span> stat)</h3>
+</div>
 <div id="to-do-also-overlay-appropriate-t-distn-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#to-do-also-overlay-appropriate-t-distn-1" class="anchor"></a>To Do (Also overlay appropriate t distn)</h3>
-<p>Two numerical vars - SLR</p>
+<p>One numerical variable (mean)</p>
+<p><strong>Testing but not working yet</strong></p>
 </div>
 </div>
 <div id="confidence-intervals" class="section level2">
@@ -255,13 +257,13 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <a href="#to-do-also-overlay-appropriate-t-distn-2" class="anchor"></a>To Do (Also overlay appropriate t distn)</h3>
 <p>One numerical (one mean)</p>
 </div>
-<div id="to-do-one-prop-z-stat-1" class="section level3">
+<div id="to-do-one-prop-z-stat" class="section level3">
 <h3 class="hasAnchor">
-<a href="#to-do-one-prop-z-stat-1" class="anchor"></a>To Do (one prop <span class="math inline">\(z\)</span> stat)</h3>
+<a href="#to-do-one-prop-z-stat" class="anchor"></a>To Do (one prop <span class="math inline">\(z\)</span> stat)</h3>
 </div>
-<div id="to-do-also-overlay-std-normal-distn-1" class="section level3">
+<div id="to-do-also-overlay-std-normal-distn" class="section level3">
 <h3 class="hasAnchor">
-<a href="#to-do-also-overlay-std-normal-distn-1" class="anchor"></a>To Do (Also overlay std normal distn)</h3>
+<a href="#to-do-also-overlay-std-normal-distn" class="anchor"></a>To Do (Also overlay std normal distn)</h3>
 <p>One categorical (one proportion)</p>
 </div>
 <div id="currently-testing-t-stat" class="section level3">
@@ -315,6 +317,7 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <li><a href="#data-preparation">Data preparation</a></li>
       <li><a href="#hypothesis-tests">Hypothesis tests</a></li>
       <li><a href="#implemented">Implemented</a></li>
+      <li><a href="#one-categorical-2-level-variable">One categorical (2 level) variable</a></li>
       <li><a href="#to-do">TO DO</a></li>
       <li><a href="#confidence-intervals">Confidence intervals</a></li>
       </ul>

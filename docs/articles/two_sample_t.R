@@ -49,5 +49,5 @@ prof_small %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t") %>% 
-  visualize(method = "both")
+  visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
 
