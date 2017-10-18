@@ -1,5 +1,5 @@
 ## ----include=FALSE-------------------------------------------------------
-knitr::opts_chunk$set(fig.width = 7, fig.height = 3) 
+knitr::opts_chunk$set(fig.width = 8, fig.height = 3) 
 
 ## ----message=FALSE, warning=FALSE----------------------------------------
 library(okcupiddata)
@@ -34,7 +34,8 @@ t_null_distn %>% visualize(obs_stat = obs_t, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 t_null_distn %>% 
-  dplyr::summarize(p_value = mean(abs(stat) >= obs_t))
+  dplyr::summarize(p_value = mean(abs(stat) >= obs_t)) %>% 
+  dplyr::pull()
 
 ## ------------------------------------------------------------------------
 prof_small %>%
@@ -50,4 +51,10 @@ prof_small %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t") %>% 
   visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
+
+## ------------------------------------------------------------------------
+prof_small %>% 
+  t_test(formula = age ~ sex) %>% 
+  dplyr::select(p_value) %>% 
+  dplyr::pull()
 

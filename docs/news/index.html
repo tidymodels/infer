@@ -114,10 +114,18 @@
 <li>Created <code>pkgdown</code> site materials</li>
 <li>Added <code>obs_stat</code> and <code>shade_direction</code> arguments to <code><a href="../reference/visualize.html">visualize()</a></code>
 </li>
-<li>Not currently shading for <code>method = "both"</code>
+<li>Used internal <code>ggplot2</code> package functions suggested by @jimhester to shade density histogram appropriately</li>
+<li>
+<code>bin.R</code> copied from <code>ggplot2</code> for use here</li>
+<li>Shading not currently available for <code>method = "theoretical"</code><br>
 </li>
-<li>Adding theoretical distributions to <code><a href="../reference/visualize.html">visualize()</a></code> alone and as overlay</li>
-<li>Current implementations - Two sample $t$ - ANOVA $F$ - One proportion $z$</li>
+<li>Adding theoretical distributions to <code><a href="../reference/visualize.html">visualize()</a></code> alone and as overlay with current implementations being
+<ul>
+<li>Two sample t</li>
+<li>ANOVA F</li>
+<li>One proportion z</li>
+</ul>
+</li>
 </ul>
 </div>
     <div id="infer-0-0-1" class="section level1">

@@ -81,7 +81,7 @@
       <h1>Two sample <span class="math inline">\(t\)</span> test example using <code>okcupiddata</code> <code>profiles</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2017-10-15</h4>
+            <h4 class="date">2017-10-17</h4>
           </div>
 
     
@@ -141,17 +141,15 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>)
 t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
-<p><img src="two_sample_t_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
+<p><img src="two_sample_t_files/figure-html/unnamed-chunk-5-1.png" width="768"></p>
 </div>
-<div id="calculate-the-p-value" class="section level2">
+<div id="calculate-the-randomization-based-p-value" class="section level2">
 <h2 class="hasAnchor">
-<a href="#calculate-the-p-value" class="anchor"></a>Calculate the <span class="math inline">\(p\)</span>-value</h2>
+<a href="#calculate-the-randomization-based-p-value" class="anchor"></a>Calculate the randomization-based <span class="math inline">\(p\)</span>-value</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_null_distn <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(<span class="kw">abs</span>(stat) <span class="op">&gt;=</span><span class="st"> </span>obs_t))</code></pre></div>
-<pre><code>## # A tibble: 1 x 1
-##   p_value
-##     &lt;dbl&gt;
-## 1   0.011</code></pre>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(<span class="kw">abs</span>(stat) <span class="op">&gt;=</span><span class="st"> </span>obs_t)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
+<pre><code>## [1] 0.011</code></pre>
 </div>
 <div id="theoretical-distribution" class="section level2">
 <h2 class="hasAnchor">
@@ -161,7 +159,7 @@ t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class=
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># calculate(stat = "t") ## Not needed since t is implied based on variable types</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>, <span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
-<p><img src="two_sample_t_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
+<p><img src="two_sample_t_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
 </div>
 <div id="overlay-appropriate-t-distribution-on-top-of-permuted-t-statistics" class="section level2">
 <h2 class="hasAnchor">
@@ -172,7 +170,16 @@ t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class=
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>, <span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
-<p><img src="two_sample_t_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
+<p><img src="two_sample_t_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
+</div>
+<div id="compute-theoretical-p-value" class="section level2">
+<h2 class="hasAnchor">
+<a href="#compute-theoretical-p-value" class="anchor"></a>Compute theoretical p-value</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> age <span class="op">~</span><span class="st"> </span>sex) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(p_value) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
+<pre><code>## [1] 0.0131864</code></pre>
 </div>
 </div>
 </div>
@@ -188,9 +195,10 @@ t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class=
 <a href="#one-numerical-variable-one-categorical-2-levels">One numerical variable, one categorical (2 levels)</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#calculate-observed-statistic">Calculate observed statistic</a></li>
       <li><a href="#randomization-approach-to-t-statistic">Randomization approach to t-statistic</a></li>
-      <li><a href="#calculate-the-p-value">Calculate the <span class="math inline">\(p\)</span>-value</a></li>
+      <li><a href="#calculate-the-randomization-based-p-value">Calculate the randomization-based <span class="math inline">\(p\)</span>-value</a></li>
       <li><a href="#theoretical-distribution">Theoretical distribution</a></li>
       <li><a href="#overlay-appropriate-t-distribution-on-top-of-permuted-t-statistics">Overlay appropriate <span class="math inline">\(t\)</span> distribution on top of permuted t-statistics</a></li>
+      <li><a href="#compute-theoretical-p-value">Compute theoretical p-value</a></li>
       </ul>
 </li>
       </ul>
