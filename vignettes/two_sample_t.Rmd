@@ -6,13 +6,13 @@ output:
   rmarkdown::html_vignette:
     df_print: kable
 vignette: |
-  %\VignetteIndexEntry{OKCupid profiles example with resampling & theory-based methods}
+  %\VignetteIndexEntry{Two sample t test example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r include=FALSE}
-knitr::opts_chunk$set(fig.width = 7, fig.height = 3) 
+knitr::opts_chunk$set(fig.width = 8, fig.height = 3) 
 ```
 
 ## Data preparation
@@ -74,11 +74,12 @@ t_null_distn <- prof_small %>%
 t_null_distn %>% visualize(obs_stat = obs_t, direction = "two_sided")
 ```
 
-## Calculate the $p$-value
+## Calculate the randomization-based $p$-value
 
 ```{r}
 t_null_distn %>% 
-  dplyr::summarize(p_value = mean(abs(stat) >= obs_t))
+  dplyr::summarize(p_value = mean(abs(stat) >= obs_t)) %>% 
+  dplyr::pull()
 ```
 
 
@@ -102,3 +103,13 @@ prof_small %>%
   calculate(stat = "t") %>% 
   visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
 ```
+
+## Compute theoretical p-value
+
+```{r}
+prof_small %>% 
+  t_test(formula = age ~ sex) %>% 
+  dplyr::select(p_value) %>% 
+  dplyr::pull()
+```
+
