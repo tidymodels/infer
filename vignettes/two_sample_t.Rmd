@@ -102,7 +102,7 @@ fli_small %>%
 
 ## Overlay appropriate $t$ distribution on top of permuted t-statistics
 
-```{r }
+```{r eval=FALSE}
 fli_small %>%
   specify(arr_delay ~ half_year) %>% # alt: response = arr_delay, explanatory = half_year
   hypothesize(null = "independence") %>%
@@ -110,6 +110,13 @@ fli_small %>%
   calculate(stat = "t") %>% 
   visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
 ```
+
+```{r echo=FALSE}
+# To use same distribution calculated above
+t_null_distn %>% 
+  visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
+```
+
 
 ## Compute theoretical p-value
 

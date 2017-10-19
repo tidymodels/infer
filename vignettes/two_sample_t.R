@@ -2,31 +2,37 @@
 knitr::opts_chunk$set(fig.width = 8, fig.height = 3) 
 
 ## ----message=FALSE, warning=FALSE----------------------------------------
-library(okcupiddata)
+library(nycflights13)
+library(dplyr)
 library(stringr)
 library(infer)
 set.seed(2017)
-prof_small <- profiles %>% 
-  dplyr::sample_n(size = 500) %>% 
-  dplyr::mutate(city = dplyr::case_when(
-    str_detect(location, "san fran") ~ "san fran",
-    !str_detect(location, "san fran") ~ "not san fran"
+fli_small <- flights %>% 
+  sample_n(size = 500) %>% 
+  mutate(half_year = case_when(
+    between(month, 1, 6) ~ "h1",
+    between(month, 7, 12) ~ "h2"
   )) %>% 
-  dplyr::select(age, sex, city, drugs, height, status)
+  mutate(day_hour = case_when(
+    between(hour, 1, 12) ~ "morning",
+    between(hour, 13, 24) ~ "not morning"
+  )) %>% 
+  select(arr_delay, dep_delay, half_year, 
+         day_hour, origin, carrier)
 
 ## ------------------------------------------------------------------------
-obs_t <- prof_small %>% 
-  t_test(formula = age ~ sex) %>% 
+obs_t <- fli_small %>% 
+  t_test(formula = arr_delay ~ half_year) %>% 
   dplyr::select(statistic) %>% 
   dplyr::pull()
 
 ## ------------------------------------------------------------------------
-obs_t <- prof_small %>% 
-  t_stat(formula = age ~ sex)
+obs_t <- fli_small %>% 
+  t_stat(formula = arr_delay ~ half_year)
 
 ## ------------------------------------------------------------------------
-t_null_distn <- prof_small %>%
-  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+t_null_distn <- fli_small %>%
+  specify(arr_delay ~ half_year) %>% # alt: response = arr_delay, explanatory = half_year
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t")
@@ -38,23 +44,28 @@ t_null_distn %>%
   dplyr::pull()
 
 ## ------------------------------------------------------------------------
-prof_small %>%
-  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+fli_small %>%
+  specify(arr_delay ~ half_year) %>% # alt: response = arr_delay, explanatory = half_year
   hypothesize(null = "independence") %>%
   # calculate(stat = "t") ## Not needed since t is implied based on variable types
   visualize(method = "theoretical", obs_stat = obs_t, direction = "two_sided")
 
-## ------------------------------------------------------------------------
-prof_small %>%
-  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "t") %>% 
+## ----eval=FALSE----------------------------------------------------------
+#  fli_small %>%
+#    specify(arr_delay ~ half_year) %>% # alt: response = arr_delay, explanatory = half_year
+#    hypothesize(null = "independence") %>%
+#    generate(reps = 1000, type = "permute") %>%
+#    calculate(stat = "t") %>%
+#    visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
+
+## ----echo=FALSE----------------------------------------------------------
+# To use same distribution calculated above
+t_null_distn %>% 
   visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
-prof_small %>% 
-  t_test(formula = age ~ sex) %>% 
+fli_small %>% 
+  t_test(formula = arr_delay ~ half_year) %>% 
   dplyr::select(p_value) %>% 
   dplyr::pull()
 
