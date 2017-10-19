@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Two sample <span class="math inline">\(t\)</span> test example using <code>okcupiddata</code> <code>profiles</code> data • infer</title>
+<title>Two sample <span class="math inline">\(t\)</span> test example using <code>nycflights13</code> <code>flights</code> data • infer</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
@@ -51,7 +51,7 @@
       <a href="../articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
-      <a href="../articles/two_sample_t.html">Two sample  test example using `okcupiddata` `profiles` data</a>
+      <a href="../articles/two_sample_t.html">Two sample  test example using `nycflights13` `flights` data</a>
     </li>
   </ul>
 </li>
@@ -78,10 +78,10 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>Two sample <span class="math inline">\(t\)</span> test example using <code>okcupiddata</code> <code>profiles</code> data</h1>
+      <h1>Two sample <span class="math inline">\(t\)</span> test example using <code>nycflights13</code> <code>flights</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2017-10-17</h4>
+            <h4 class="date">2017-10-19</h4>
           </div>
 
     
@@ -90,28 +90,37 @@
 <div id="data-preparation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-preparation" class="anchor"></a>Data preparation</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(okcupiddata)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(nycflights13)
+<span class="kw">library</span>(dplyr)
 <span class="kw">library</span>(stringr)
 <span class="kw">library</span>(infer)
 <span class="kw">set.seed</span>(<span class="dv">2017</span>)
-prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(<span class="dt">size =</span> <span class="dv">500</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">city =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span>(
-    <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_detect">str_detect</a></span>(location, <span class="st">"san fran"</span>) <span class="op">~</span><span class="st"> "san fran"</span>,
-    <span class="op">!</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_detect">str_detect</a></span>(location, <span class="st">"san fran"</span>) <span class="op">~</span><span class="st"> "not san fran"</span>
+fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/sample">sample_n</a></span>(<span class="dt">size =</span> <span class="dv">500</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/mutate">mutate</a></span>(<span class="dt">half_year =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/case_when">case_when</a></span>(
+    <span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/between">between</a></span>(month, <span class="dv">1</span>, <span class="dv">6</span>) <span class="op">~</span><span class="st"> "h1"</span>,
+    <span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/between">between</a></span>(month, <span class="dv">7</span>, <span class="dv">12</span>) <span class="op">~</span><span class="st"> "h2"</span>
   )) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(age, sex, city, drugs, height, status)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/mutate">mutate</a></span>(<span class="dt">day_hour =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/case_when">case_when</a></span>(
+    <span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/between">between</a></span>(hour, <span class="dv">1</span>, <span class="dv">12</span>) <span class="op">~</span><span class="st"> "morning"</span>,
+    <span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/between">between</a></span>(hour, <span class="dv">13</span>, <span class="dv">24</span>) <span class="op">~</span><span class="st"> "not morning"</span>
+  )) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(arr_delay, dep_delay, half_year, 
+         day_hour, origin, carrier)</code></pre></div>
+<ul>
+<li>Two numeric - <code>arr_delay</code>, <code>dep_delay</code>
+</li>
+<li>Two categories
 <ul>
 <li>
-<code>height</code> and <code>age</code> are numerical variables.</li>
+<code>half_year</code> (<code>"h1"</code>, <code>"h2"</code>),</li>
 <li>
-<code>sex</code> has two categories (<code>"m"</code>, <code>"f"</code>)</li>
-<li>
-<code>city</code> has two categories (<code>"san fran"</code>, <code>"not san fran"</code>)</li>
-<li>
-<code>drugs</code> has three categories (<code>"never"</code>, <code>"sometimes"</code>, <code>"often"</code>) - Also has missing values</li>
-<li>
-<code>status</code> has three categories (<code>"single"</code>, <code>"available"</code>, <code>"seeing someone"</code>)</li>
+<code>day_hour</code> (<code>"morning"</code>, <code>"not morning"</code>)</li>
+</ul>
+</li>
+<li>Three categories - <code>origin</code> (<code>"EWR"</code>, <code>"JFK"</code>, <code>"LGA"</code>)</li>
+<li>Sixteen categories - <code>carrier</code>
+</li>
 </ul>
 <hr>
 </div>
@@ -122,21 +131,21 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <h2 class="hasAnchor">
 <a href="#calculate-observed-statistic" class="anchor"></a>Calculate observed statistic</h2>
 <p>Using <code>t_test</code> in <code>infer</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_t &lt;-<span class="st"> </span>prof_small <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> age <span class="op">~</span><span class="st"> </span>sex) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(statistic) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<p>The observed <span class="math inline">\(t\)</span> statistic is 2.4901818.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_t &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(statistic) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/pull">pull</a></span>()</code></pre></div>
+<p>The observed <span class="math inline">\(t\)</span> statistic is 0.8685463.</p>
 <p>Or using another shortcut function in <code>infer</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_t &lt;-<span class="st"> </span>prof_small <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/t_stat.html">t_stat</a></span>(<span class="dt">formula =</span> age <span class="op">~</span><span class="st"> </span>sex)</code></pre></div>
-<p>The observed <span class="math inline">\(t\)</span> statistic is 2.4901818.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_t &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/t_stat.html">t_stat</a></span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>half_year)</code></pre></div>
+<p>The observed <span class="math inline">\(t\)</span> statistic is 0.8685463.</p>
 </div>
 <div id="randomization-approach-to-t-statistic" class="section level2">
 <h2 class="hasAnchor">
 <a href="#randomization-approach-to-t-statistic" class="anchor"></a>Randomization approach to t-statistic</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_null_distn &lt;-<span class="st"> </span>prof_small <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>sex) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = sex</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>)
@@ -147,15 +156,15 @@ t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class=
 <h2 class="hasAnchor">
 <a href="#calculate-the-randomization-based-p-value" class="anchor"></a>Calculate the randomization-based <span class="math inline">\(p\)</span>-value</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_null_distn <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(<span class="kw">abs</span>(stat) <span class="op">&gt;=</span><span class="st"> </span>obs_t)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.011</code></pre>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/summarise">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(<span class="kw">abs</span>(stat) <span class="op">&gt;=</span><span class="st"> </span>obs_t)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/pull">pull</a></span>()</code></pre></div>
+<pre><code>## [1] 0.394</code></pre>
 </div>
 <div id="theoretical-distribution" class="section level2">
 <h2 class="hasAnchor">
 <a href="#theoretical-distribution" class="anchor"></a>Theoretical distribution</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>sex) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = sex</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fli_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># calculate(stat = "t") ## Not needed since t is implied based on variable types</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>, <span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
@@ -164,8 +173,8 @@ t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class=
 <div id="overlay-appropriate-t-distribution-on-top-of-permuted-t-statistics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overlay-appropriate-t-distribution-on-top-of-permuted-t-statistics" class="anchor"></a>Overlay appropriate <span class="math inline">\(t\)</span> distribution on top of permuted t-statistics</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>sex) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = sex</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fli_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -175,11 +184,11 @@ t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class=
 <div id="compute-theoretical-p-value" class="section level2">
 <h2 class="hasAnchor">
 <a href="#compute-theoretical-p-value" class="anchor"></a>Compute theoretical p-value</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> age <span class="op">~</span><span class="st"> </span>sex) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(p_value) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.0131864</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fli_small <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(p_value) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/pull">pull</a></span>()</code></pre></div>
+<pre><code>## [1] 0.3855325</code></pre>
 </div>
 </div>
 </div>

@@ -75,7 +75,7 @@
       <a href="../articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
-      <a href="../articles/two_sample_t.html">Two sample $t$ test example using `okcupiddata` `profiles` data</a>
+      <a href="../articles/two_sample_t.html">Two sample $t$ test example using `nycflights13` `flights` data</a>
     </li>
   </ul>
 </li>
@@ -140,7 +140,7 @@
 <span class='co'># response argument and specified variable selected</span>
 <span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)){
   <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/mutate'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'>specify</span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>am</span>)
 }</div><div class='output co'>#&gt; Response:  am 
 #&gt;  Response Type:  factor 
@@ -161,7 +161,7 @@
 <span class='co'># response and explanatory arguments</span>
 <span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)){
   <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/mutate'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'>specify</span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>am</span>, <span class='kw'>explanatory</span> <span class='kw'>=</span> <span class='no'>vs</span>)
 }</div><div class='output co'>#&gt; Response:  am 
 #&gt;  Response Type:  factor 
@@ -185,7 +185,7 @@
 <span class='co'># formula argument expecting response ~ explanatory</span>
 <span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)){
   <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/mutate'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'>specify</span>(<span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>am</span> ~ <span class='no'>vs</span>)
 }</div><div class='output co'>#&gt; Response:  am 
 #&gt;  Response Type:  factor 
