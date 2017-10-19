@@ -4,7 +4,7 @@
 # following a pipe-able framework
 
 #' 
-#' t_test
+#' A tidier version of t.test
 #' 
 #' @param data a data frame that can be coerced into a \code{\link[tibble]{tibble}}
 #' @param formula a formula with the response variable on the left and the explanatory on the right
@@ -37,7 +37,7 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
 #  }
 }
 
-#' t_stat
+#' A shortcut wrapper function to get the observed test statistic for a t test
 #' 
 #' @param data a data frame that can be coerced into a \code{\link[tibble]{tibble}}
 #' @param formula a formula with the response variable on the left and the explanatory on the right
