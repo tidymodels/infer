@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrappers.R
 \name{t_test}
 \alias{t_test}
-\title{t_test}
+\title{A tidier version of t.test}
 \usage{
 t_test(data, formula, alternative = "two_sided", ...)
 }
@@ -17,5 +17,5 @@ t_test(data, formula, alternative = "two_sided", ...)
 \item{...}{currently ignored}
 }
 \description{
-t_test
+A tidier version of t.test
 }
