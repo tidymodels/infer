@@ -2,7 +2,8 @@
 #' @param x the output from \code{\link{hypothesize}} or \code{\link{generate}}
 #' @param stat a string giving the type of the statistic to calculate. Current 
 #' options include "mean", "median", "sd", "prop", "diff in means", 
-#' "diff in medians", "diff in props", "Chisq", "F", and "slope".
+#' "diff in medians", "diff in props", "Chisq", "F", and "slope". (Testing implementations
+#' of "z" and "t".)
 #' @param success a string specifying which level of the response variable should be
 #' used as a success in bootstrapping a one proportion confidence interval
 #' @param ... to pass options like \code{na.rm = TRUE} into functions like mean, sd, etc.
@@ -62,7 +63,7 @@ calculate <- function(x, stat, success = NULL, ...) {
       success <- quo(get_par_levels(x)[1])
     df_out <- x %>%
       # dplyr::summarize(stat = mean(!! col == rlang::eval_tidy(success))) # This doesn't appear to be working
-    # dplyr::group_by(replicate) %>% 
+      # dplyr::group_by(replicate) %>% 
       # The following works but not sure why when looking at the diff in means code?
       dplyr::summarize(stat = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...))
   }
@@ -140,7 +141,20 @@ calculate <- function(x, stat, success = NULL, ...) {
   if (stat == "z"){
     # Two sample proportions
     if (attr(x, "theory_type") == "Two sample props z"){
-      #      df_out <- x %>%
+      
+      df_out <- x %>%
+        dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
+        dplyr::summarize(prop = mean((!!attr(x, "response")) == levels(!!attr(x, "response"))[1], ...),
+                         num_suc = sum((!!attr(x, "response")) == levels(!!attr(x, "response"))[1], ...),
+                         group_num = n()) %>% 
+        dplyr::summarize(diff_prop = diff(prop),
+                         total_suc = sum(num_suc),
+                         n1 = group_num[1],
+                         n2 = group_num[2],
+                         p_hat = total_suc / (n1 + n2),
+                         denom = sqrt(p_hat * (1 - p_hat) / n1 + p_hat * (1 - p_hat) / n2),
+                         stat = diff_prop / denom) %>% 
+        dplyr::select(-total_suc, -n1, -n2)
       
     } else 
       # One sample proportion
@@ -153,15 +167,10 @@ calculate <- function(x, stat, success = NULL, ...) {
         if(is.null(success))
           success <- quo(get_par_levels(x)[1])
         
-#        df_out <- x
-#        attributes(df_out) <- attributes(x)
-        
         df_out <- x %>%
           dplyr::summarize(stat = 
                              (mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...) - p0) /
-                              sqrt( (p0 * (1 - p0)) / num_rows))
-#          dplyr::summarize(p_hat = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...)) %>% 
-#          dplyr::mutate(stat = (p_hat - p0) / sqrt( (p0 * (1 - p0)) / num_rows))
+                             sqrt( (p0 * (1 - p0)) / num_rows))
       }
   }
   

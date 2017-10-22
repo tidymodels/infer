@@ -11,7 +11,8 @@ calculate(x, stat, success = NULL, ...)
 
 \item{stat}{a string giving the type of the statistic to calculate. Current 
 options include "mean", "median", "sd", "prop", "diff in means", 
-"diff in medians", "diff in props", "Chisq", "F", and "slope".}
+"diff in medians", "diff in props", "Chisq", "F", and "slope". (Testing implementations
+of "z" and "t".)}
 
 \item{success}{a string specifying which level of the response variable should be
 used as a success in bootstrapping a one proportion confidence interval}

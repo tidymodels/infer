@@ -144,25 +144,47 @@ prof_small %>%
   visualize(method = "both")
 ```
 
+## Testing
+
+
+## Two categorical (2 level) variables
+
+Randomization approach to z-statistic
+
+```{r}
+prof_small %>%
+  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
+  hypothesize(null = "independence") %>%
+  generate(reps = 5000, type = "permute") %>%
+  calculate(stat = "z") %>% 
+  visualize()
+```
+
+Theoretical distribution
+
+```{r}
+prof_small %>%
+  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
+  hypothesize(null = "independence") %>% 
+  visualize(method = "theoretical")
+```
+
+Overlay standard normal distribution on top of permuted z-statistics
+
+```{r}
+prof_small %>%
+  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "z") %>% 
+  visualize(method = "both")
+```
 
 ***
 
 ## TO DO
 
-### To Do (two prop $z$ stat)
-### To Do (Also overlay appropriate std normal distn)
 
-Two categorical (2 level) variables
-
-
-```{r eval=FALSE, include=FALSE}
-prof_small %>%
-  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in props") %>% 
-  visualize()
-```
 
 ### To Do (Also overlay appropriate chi-sq distn)
 

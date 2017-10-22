@@ -102,7 +102,7 @@ visualize <- function(data, bins = 30, method = "randomization",
                                       statistic_text = "F")
     }
     
-    if(attr(data, "theory_type") == "One sample prop z"){
+    if(attr(data, "theory_type") %in% c("One sample prop z", "Two sample props z")){
       infer_plot <- theory_z_plot(statistic_text = "z")
     }
     
@@ -125,7 +125,7 @@ visualize <- function(data, bins = 30, method = "randomization",
                                     obs_stat = obs_stat) 
     }
     
-    if(attr(data, "theory_type") == "One sample prop z"){
+    if(attr(data, "theory_type") %in% c("One sample prop z", "Two sample props z")){
       infer_plot <- both_z_plot(data = data, 
                                 statistic_text = "z", bins = bins,
                                 direction = direction,
