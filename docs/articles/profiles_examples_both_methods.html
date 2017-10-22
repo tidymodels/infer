@@ -81,7 +81,7 @@
       <h1>Randomization and Traditional Examples using <code>okcupiddata</code> <code>profiles</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2017-10-19</h4>
+            <h4 class="date">2017-10-21</h4>
           </div>
 
     
@@ -95,12 +95,12 @@
 <span class="kw">library</span>(infer)
 <span class="kw">set.seed</span>(<span class="dv">2017</span>)
 prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(<span class="dt">size =</span> <span class="dv">500</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">city =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span>(
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/sample">sample_n</a></span>(<span class="dt">size =</span> <span class="dv">500</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/mutate">mutate</a></span>(<span class="dt">city =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/case_when">case_when</a></span>(
     <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_detect">str_detect</a></span>(location, <span class="st">"san fran"</span>) <span class="op">~</span><span class="st"> "san fran"</span>,
     <span class="op">!</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_detect">str_detect</a></span>(location, <span class="st">"san fran"</span>) <span class="op">~</span><span class="st"> "not san fran"</span>
   )) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(age, sex, city, drugs, height, status)</code></pre></div>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(age, sex, city, drugs, height, status)</code></pre></div>
 <ul>
 <li>
 <code>height</code> and <code>age</code> are numerical variables.</li>
@@ -201,20 +201,41 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
+</div>
+<div id="testing" class="section level2">
+<h2 class="hasAnchor">
+<a href="#testing" class="anchor"></a>Testing</h2>
+</div>
+<div id="two-categorical-2-level-variables" class="section level2">
+<h2 class="hasAnchor">
+<a href="#two-categorical-2-level-variables" class="anchor"></a>Two categorical (2 level) variables</h2>
+<p>Randomization approach to z-statistic</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(sex <span class="op">~</span><span class="st"> </span>city) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = sex, explanatory = vs</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">5000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>()</code></pre></div>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
+<p>Theoretical distribution</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(sex <span class="op">~</span><span class="st"> </span>city) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = sex, explanatory = vs</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
+<p>Overlay standard normal distribution on top of permuted z-statistics</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(sex <span class="op">~</span><span class="st"> </span>city) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = sex, explanatory = vs</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 <hr>
 </div>
 <div id="to-do" class="section level2">
 <h2 class="hasAnchor">
 <a href="#to-do" class="anchor"></a>TO DO</h2>
-<div id="to-do-two-prop-z-stat" class="section level3">
-<h3 class="hasAnchor">
-<a href="#to-do-two-prop-z-stat" class="anchor"></a>To Do (two prop <span class="math inline">\(z\)</span> stat)</h3>
-</div>
-<div id="to-do-also-overlay-appropriate-std-normal-distn" class="section level3">
-<h3 class="hasAnchor">
-<a href="#to-do-also-overlay-appropriate-std-normal-distn" class="anchor"></a>To Do (Also overlay appropriate std normal distn)</h3>
-<p>Two categorical (2 level) variables</p>
-</div>
 <div id="to-do-also-overlay-appropriate-chi-sq-distn" class="section level3">
 <h3 class="hasAnchor">
 <a href="#to-do-also-overlay-appropriate-chi-sq-distn" class="anchor"></a>To Do (Also overlay appropriate chi-sq distn)</h3>
@@ -279,13 +300,13 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <a href="#to-do-shift-t-stats-to-be-centered-at-0-for-bootstrapping" class="anchor"></a>To Do (Shift t stats to be centered at 0 for bootstrapping)</h3>
 <p>One numerical variable one categorical (2 levels) (diff in means)</p>
 </div>
-<div id="to-do-two-prop-z-stat-1" class="section level3">
+<div id="to-do-two-prop-z-stat" class="section level3">
 <h3 class="hasAnchor">
-<a href="#to-do-two-prop-z-stat-1" class="anchor"></a>To Do (two prop <span class="math inline">\(z\)</span> stat)</h3>
+<a href="#to-do-two-prop-z-stat" class="anchor"></a>To Do (two prop <span class="math inline">\(z\)</span> stat)</h3>
 </div>
-<div id="to-do-also-overlay-appropriate-std-normal-distn-1" class="section level3">
+<div id="to-do-also-overlay-appropriate-std-normal-distn" class="section level3">
 <h3 class="hasAnchor">
-<a href="#to-do-also-overlay-appropriate-std-normal-distn-1" class="anchor"></a>To Do (Also overlay appropriate std normal distn)</h3>
+<a href="#to-do-also-overlay-appropriate-std-normal-distn" class="anchor"></a>To Do (Also overlay appropriate std normal distn)</h3>
 </div>
 <div id="to-do-shift-z-stats-to-be-centered-at-0-for-bootstrapping" class="section level3">
 <h3 class="hasAnchor">
@@ -318,6 +339,8 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
       <li><a href="#hypothesis-tests">Hypothesis tests</a></li>
       <li><a href="#implemented">Implemented</a></li>
       <li><a href="#one-categorical-2-level-variable">One categorical (2 level) variable</a></li>
+      <li><a href="#testing">Testing</a></li>
+      <li><a href="#two-categorical-2-level-variables">Two categorical (2 level) variables</a></li>
       <li><a href="#to-do">TO DO</a></li>
       <li><a href="#confidence-intervals">Confidence intervals</a></li>
       </ul>

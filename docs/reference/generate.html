@@ -115,7 +115,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>a data frame that can be coerced into a <code><a href='http://dplyr.tidyverse.org/reference/tbl_df.html'>tbl_df</a></code></p></td>
+      <td><p>a data frame that can be coerced into a <code><a href='http://www.rdocumentation.org/packages/dplyr/topics/tbl_df'>tbl_df</a></code></p></td>
     </tr>
     <tr>
       <th>reps</th>
@@ -156,7 +156,7 @@
 <span class='co'># resulting in 200 * 32 = 6400 rows</span>
 <span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
     <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-        <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
+        <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/mutate'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
         <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>am</span> ~ <span class='no'>vs</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = am, explanatory = vs</span>
         <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
         <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>)
@@ -180,7 +180,7 @@
 <span class='co'># resulting in 150 * 32 = 4800 rows</span>
 <span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
     <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-        <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
+        <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/mutate'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
         <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: am ~ NULL (or am ~ 1)</span>
         <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span> <span class='kw'>=</span> <span class='fl'>.25</span>)) <span class='kw'>%&gt;%</span>
         <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"simulate"</span>)
