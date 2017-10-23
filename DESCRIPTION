@@ -23,6 +23,7 @@ Depends:
 Suggests:
     broom,
     okcupiddata,
+    nycflights13,
     stringr,
     knitr
 URL: http://github.com/andrewpbray/infer

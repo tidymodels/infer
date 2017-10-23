@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrappers.R
 \name{t_stat}
 \alias{t_stat}
-\title{t_stat}
+\title{A shortcut wrapper function to get the observed test statistic for a t test}
 \usage{
 t_stat(data, formula, ...)
 }
@@ -14,5 +14,5 @@ t_stat(data, formula, ...)
 \item{...}{currently ignored}
 }
 \description{
-t_stat
+A shortcut wrapper function to get the observed test statistic for a t test
 }

@@ -61,7 +61,6 @@ set_params <- function(x){
       }
       # >2 sample proportions (chi-square test of indep)
       if(length(levels(x[[as.character(attr(x, "explanatory"))]])) > 2){
-        
         attr(x, "theory_type") <- "Chi-square test of indep"
       }
     }

@@ -9,7 +9,7 @@ These examples use `r params$num_rows` flights from `nycflights13::flights` and 
 
 ```{r message=FALSE, warning=FALSE}
 library(nycflights13)
-library(tidyverse)
+library(dplyr)
 library(stringr)
 library(infer)
 set.seed(2017)
