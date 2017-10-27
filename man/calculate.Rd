@@ -9,8 +9,8 @@ calculate(x, stat, success = NULL, ...)
 \arguments{
 \item{x}{the output from \code{\link{hypothesize}} or \code{\link{generate}}}
 
-\item{stat}{a string giving the type of the statistic to calculate. Current 
-options include "mean", "median", "sd", "prop", "diff in means", 
+\item{stat}{a string giving the type of the statistic to calculate. Current
+options include "mean", "median", "sd", "prop", "diff in means",
 "diff in medians", "diff in props", "Chisq", "F", and "slope". (Testing implementations
 of "z" and "t".)}
 
