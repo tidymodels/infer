@@ -81,7 +81,7 @@
       <h1>Two sample <span class="math inline">\(t\)</span> test example using <code>nycflights13</code> <code>flights</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2017-10-21</h4>
+            <h4 class="date">2017-11-07</h4>
           </div>
 
     
@@ -96,16 +96,16 @@
 <span class="kw">library</span>(infer)
 <span class="kw">set.seed</span>(<span class="dv">2017</span>)
 fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/sample">sample_n</a></span>(<span class="dt">size =</span> <span class="dv">500</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/mutate">mutate</a></span>(<span class="dt">half_year =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/case_when">case_when</a></span>(
-    <span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/between">between</a></span>(month, <span class="dv">1</span>, <span class="dv">6</span>) <span class="op">~</span><span class="st"> "h1"</span>,
-    <span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/between">between</a></span>(month, <span class="dv">7</span>, <span class="dv">12</span>) <span class="op">~</span><span class="st"> "h2"</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(<span class="dt">size =</span> <span class="dv">500</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">half_year =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span>(
+    <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(month, <span class="dv">1</span>, <span class="dv">6</span>) <span class="op">~</span><span class="st"> "h1"</span>,
+    <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(month, <span class="dv">7</span>, <span class="dv">12</span>) <span class="op">~</span><span class="st"> "h2"</span>
   )) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/mutate">mutate</a></span>(<span class="dt">day_hour =</span> <span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/case_when">case_when</a></span>(
-    <span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/between">between</a></span>(hour, <span class="dv">1</span>, <span class="dv">12</span>) <span class="op">~</span><span class="st"> "morning"</span>,
-    <span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/between">between</a></span>(hour, <span class="dv">13</span>, <span class="dv">24</span>) <span class="op">~</span><span class="st"> "not morning"</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">day_hour =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span>(
+    <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(hour, <span class="dv">1</span>, <span class="dv">12</span>) <span class="op">~</span><span class="st"> "morning"</span>,
+    <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(hour, <span class="dv">13</span>, <span class="dv">24</span>) <span class="op">~</span><span class="st"> "not morning"</span>
   )) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(arr_delay, dep_delay, half_year, 
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(arr_delay, dep_delay, half_year, 
          day_hour, origin, carrier)</code></pre></div>
 <ul>
 <li>Two numeric - <code>arr_delay</code>, <code>dep_delay</code>
@@ -133,8 +133,8 @@ fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><s
 <p>Using <code>t_test</code> in <code>infer</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_t &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(statistic) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/pull">pull</a></span>()</code></pre></div>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(statistic) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
 <p>The observed <span class="math inline">\(t\)</span> statistic is 0.8685463.</p>
 <p>Or using another shortcut function in <code>infer</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_t &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
@@ -156,8 +156,8 @@ t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class=
 <h2 class="hasAnchor">
 <a href="#calculate-the-randomization-based-p-value" class="anchor"></a>Calculate the randomization-based <span class="math inline">\(p\)</span>-value</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_null_distn <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/summarise">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(<span class="kw">abs</span>(stat) <span class="op">&gt;=</span><span class="st"> </span>obs_t)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/pull">pull</a></span>()</code></pre></div>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(<span class="kw">abs</span>(stat) <span class="op">&gt;=</span><span class="st"> </span>obs_t)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
 <pre><code>## [1] 0.394</code></pre>
 </div>
 <div id="theoretical-distribution" class="section level2">
@@ -186,8 +186,8 @@ t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class=
 <a href="#compute-theoretical-p-value" class="anchor"></a>Compute theoretical p-value</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(p_value) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/pull">pull</a></span>()</code></pre></div>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(p_value) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
 <pre><code>## [1] 0.3855325</code></pre>
 </div>
 </div>

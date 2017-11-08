@@ -81,13 +81,27 @@ prof_small %>%
   calculate(stat = "z") %>% 
   visualize(method = "both")
 
-## ----eval=FALSE, include=FALSE-------------------------------------------
-#  prof_small %>%
-#    specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
-#    hypothesize(null = "independence") %>%
-#    generate(reps = 1000, type = "permute") %>%
-#    calculate(stat = "diff in props") %>%
-#    visualize()
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
+  hypothesize(null = "independence") %>%
+  generate(reps = 5000, type = "permute") %>%
+  calculate(stat = "z") %>% 
+  visualize()
+
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
+  hypothesize(null = "independence") %>% 
+  visualize(method = "theoretical")
+
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "z") %>% 
+  visualize(method = "both")
 
 ## ----eval=FALSE, include=FALSE-------------------------------------------
 #  prof_small %>%

@@ -81,7 +81,7 @@
       <h1>Randomization and Traditional Examples using <code>okcupiddata</code> <code>profiles</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2017-10-21</h4>
+            <h4 class="date">2017-11-07</h4>
           </div>
 
     
@@ -95,12 +95,12 @@
 <span class="kw">library</span>(infer)
 <span class="kw">set.seed</span>(<span class="dv">2017</span>)
 prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/sample">sample_n</a></span>(<span class="dt">size =</span> <span class="dv">500</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/mutate">mutate</a></span>(<span class="dt">city =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/case_when">case_when</a></span>(
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(<span class="dt">size =</span> <span class="dv">500</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">city =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span>(
     <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_detect">str_detect</a></span>(location, <span class="st">"san fran"</span>) <span class="op">~</span><span class="st"> "san fran"</span>,
     <span class="op">!</span><span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_detect">str_detect</a></span>(location, <span class="st">"san fran"</span>) <span class="op">~</span><span class="st"> "not san fran"</span>
   )) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/dplyr/topics/select">select</a></span>(age, sex, city, drugs, height, status)</code></pre></div>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(age, sex, city, drugs, height, status)</code></pre></div>
 <ul>
 <li>
 <code>height</code> and <code>age</code> are numerical variables.</li>

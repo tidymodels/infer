@@ -111,8 +111,8 @@
 (To be updated to include theory-based distributions)</p>
     
 
-    <pre class="usage"><span class='fu'>visualize</span>(<span class='no'>data</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"randomization"</span>, <span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>obs_stat_color</span> <span class='kw'>=</span> <span class='st'>"#00BFC4"</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>visualize</span>(<span class='no'>data</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"randomization"</span>, <span class='kw'>dens_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>obs_stat_color</span> <span class='kw'>=</span> <span class='st'>"#00BFC4"</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -129,6 +129,10 @@
       <th>method</th>
       <td><p>a string giving the method to display. Options are "randomization", "theoretical", or "both"
 with "both" corresponding to "randomization" and "theoretical"</p></td>
+    </tr>
+    <tr>
+      <th>dens_color</th>
+      <td><p>a character or hex string specifying the color of the theoretical density curve</p></td>
     </tr>
     <tr>
       <th>obs_stat</th>
@@ -156,7 +160,7 @@ Can also specify "left", "right", or "both".</p></td>
 <span class='co'># using t statistic</span>
 <span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/mutate'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
     <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
@@ -168,7 +172,7 @@ Can also specify "left", "right", or "both".</p></td>
 <span class='co'># using t statistic</span>
 <span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/mutate'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
     <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>) <span class='kw'>%&gt;%</span>
@@ -177,7 +181,7 @@ Can also specify "left", "right", or "both".</p></td>
 <span class='co'># Overlay theoretical distribution on top of randomized t-statistics</span>
 <span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/mutate'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
     <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
