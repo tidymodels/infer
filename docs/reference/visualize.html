@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>(Currently) Visualize the resampling distribution 
-(To be updated to include theory-based distributions) — visualize • infer</title>
+<title>Visualize the resampling distribution and/or theory-based distributions with shading — visualize • infer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -102,13 +101,11 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>(Currently) Visualize the resampling distribution 
-(To be updated to include theory-based distributions)</h1>
+    <h1>Visualize the resampling distribution and/or theory-based distributions with shading</h1>
     </div>
 
     
-    <p>(Currently) Visualize the resampling distribution 
-(To be updated to include theory-based distributions)</p>
+    <p>Visualize the resampling distribution and/or theory-based distributions with shading</p>
     
 
     <pre class="usage"><span class='fu'>visualize</span>(<span class='no'>data</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"randomization"</span>, <span class='kw'>dens_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
@@ -166,7 +163,7 @@ Can also specify "left", "right", or "both".</p></td>
     <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"randomization"</span>) <span class='co'>#default method</span>
-}</div><div class='img'><img src='visualize-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+}</div><div class='img'><img src='visualize-7.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># Theoretical t distribution for </span>
 <span class='co'># one numerical response and one categorical predictor</span>
 <span class='co'># using t statistic</span>
@@ -177,7 +174,7 @@ Can also specify "left", "right", or "both".</p></td>
     <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"theoretical"</span>) <span class='co'>#default method</span>
-}</div><div class='img'><img src='visualize-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+}</div><div class='img'><img src='visualize-8.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># Overlay theoretical distribution on top of randomized t-statistics</span>
 <span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
@@ -187,7 +184,7 @@ Can also specify "left", "right", or "both".</p></td>
     <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"both"</span>)
-}</div><div class='img'><img src='visualize-3.png' alt='' width='700' height='432.632880098887' /></div></pre>
+}</div><div class='img'><img src='visualize-9.png' alt='' width='700' height='432.632880098887' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

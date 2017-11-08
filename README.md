@@ -36,7 +36,7 @@ Installation
 To install the current stable version of `infer`, make sure to install `devtools` first:
 
     install.packages("devtools")
-    devtools::install_github("andrewbpray/infer")
+    devtools::install_github("andrewpbray/infer")
 
 To install the development version of `infer` (with `devtools` installed already):
 
@@ -45,7 +45,7 @@ To install the development version of `infer` (with `devtools` installed already
 Hypothesis tests
 ----------------
 
-![](figs/ht-diagram.png)
+![](https://github.com/andrewpbray/infer/blob/master/figs/ht-diagram.png)
 
 #### Randomization-based Examples
 
@@ -58,7 +58,7 @@ These examples assume that `mtcars` has been overwritten so that the variables `
              gear = factor(gear),
              carb = factor(carb))
 
-Check the package vignettes for further examples using theory-based methods in combination with randomization-based methods.
+Check the package vignettes for further examples using theory-based methods in combination with randomization-based methods. The examples below only show the calculation of randomization-based statistics. Check the vignettes for ways to `visualize()` these statistics.
 
 ------------------------------------------------------------------------
 
