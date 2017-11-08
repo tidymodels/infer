@@ -86,6 +86,14 @@
 <hr>
 <p><a href="https://travis-ci.org/andrewpbray/infer"><img src="https://travis-ci.org/andrewpbray/infer.svg?branch=master" alt="Travis-CI Build Status"></a></p>
 <p>The objective of this package is to perform inference using an expressive statistical grammar that coheres with the <code>tidyverse</code> design framework.</p>
+<div id="installation" class="section level1">
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h1></div>
+<p>To install the current stable version of <code>infer</code>, make sure to install <code>devtools</code> first:</p>
+<pre><code>install.packages("devtools")
+devtools::install_github("andrewbpray/infer")</code></pre>
+<p>To install the development version of <code>infer</code> (with <code>devtools</code> installed already):</p>
+<pre><code><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">devtools::install_github("ismayc/infer", ref = "dev")</a></code></pre>
 <div id="hypothesis-tests" class="section level2">
 <h2 class="hasAnchor">
 <a href="#hypothesis-tests" class="anchor"></a>Hypothesis tests</h2>
@@ -263,6 +271,7 @@
   specify(mpg ~ hp) %&gt;% 
   generate(reps = 100, type = "bootstrap") %&gt;%
   calculate(stat = "slope")</code></pre>
+</div>
 </div>
 </div>
 </div>

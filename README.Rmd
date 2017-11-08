@@ -12,6 +12,21 @@ Infer: an R package for tidyverse-friendly statistical inference
 
 The objective of this package is to perform inference using an expressive statistical grammar that coheres with the `tidyverse` design framework. 
 
+# Installation
+
+To install the current stable version of `infer`, make sure to install `devtools` first:
+
+```
+install.packages("devtools")
+devtools::install_github("andrewbpray/infer")
+```
+
+To install the development version of `infer` (with `devtools` installed already):
+  
+```
+devtools::install_github("ismayc/infer", ref = "dev")
+```
+
 ## Hypothesis tests
 ![](figs/ht-diagram.png)
 
