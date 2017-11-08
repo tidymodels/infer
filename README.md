@@ -45,11 +45,11 @@ To install the development version of `infer` (with `devtools` installed already
 Hypothesis tests
 ----------------
 
-![](https://github.com/andrewpbray/infer/blob/master/figs/ht-diagram.png)
+General framework diagram for hypothesis tests in `infer` is [here](https://github.com/andrewpbray/infer/raw/master/figs/ht-diagram.png).
 
 #### Randomization-based Examples
 
-These examples assume that `mtcars` has been overwritten so that the variables `cyl`, `vs`, `am`, `gear`, and `carb` are `factor`s.
+The examples below only show the calculation of randomization-based statistics and assume that `mtcars` has been overwritten so that the variables `cyl`, `vs`, `am`, `gear`, and `carb` are `factor`s.
 
     mtcars <- as.data.frame(mtcars) %>%
       mutate(cyl = factor(cyl),
@@ -58,7 +58,7 @@ These examples assume that `mtcars` has been overwritten so that the variables `
              gear = factor(gear),
              carb = factor(carb))
 
-Check the package vignettes for further examples using theory-based methods in combination with randomization-based methods. The examples below only show the calculation of randomization-based statistics. Check the vignettes for ways to `visualize()` these statistics.
+Check the package vignettes for further examples using theory-based methods in combination with randomization-based methods.
 
 ------------------------------------------------------------------------
 

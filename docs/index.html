@@ -97,20 +97,18 @@ devtools::install_github("andrewpbray/infer")</code></pre>
 <div id="hypothesis-tests" class="section level2">
 <h2 class="hasAnchor">
 <a href="#hypothesis-tests" class="anchor"></a>Hypothesis tests</h2>
-<div class="figure">
-<img src="https://github.com/andrewpbray/infer/blob/master/figs/ht-diagram.png">
-</div>
+<p>General framework diagram for hypothesis tests in <code>infer</code> is <a href="https://github.com/andrewpbray/infer/raw/master/figs/ht-diagram.png">here</a>.</p>
 <div id="randomization-based-examples" class="section level4">
 <h4 class="hasAnchor">
 <a href="#randomization-based-examples" class="anchor"></a>Randomization-based Examples</h4>
-<p>These examples assume that <code>mtcars</code> has been overwritten so that the variables <code>cyl</code>, <code>vs</code>, <code>am</code>, <code>gear</code>, and <code>carb</code> are <code>factor</code>s.</p>
+<p>The examples below only show the calculation of randomization-based statistics and assume that <code>mtcars</code> has been overwritten so that the variables <code>cyl</code>, <code>vs</code>, <code>am</code>, <code>gear</code>, and <code>carb</code> are <code>factor</code>s.</p>
 <pre><code>mtcars &lt;- as.data.frame(mtcars) %&gt;%
   mutate(cyl = factor(cyl),
          vs = factor(vs),
          am = factor(am),
          gear = factor(gear),
          carb = factor(carb))</code></pre>
-<p>Check the package vignettes for further examples using theory-based methods in combination with randomization-based methods. The examples below only show the calculation of randomization-based statistics. Check the vignettes for ways to <code><a href="reference/visualize.html">visualize()</a></code> these statistics.</p>
+<p>Check the package vignettes for further examples using theory-based methods in combination with randomization-based methods.</p>
 <hr>
 </div>
 <div id="one-numerical-variable-mean" class="section level3">
