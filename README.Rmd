@@ -12,12 +12,28 @@ Infer: an R package for tidyverse-friendly statistical inference
 
 The objective of this package is to perform inference using an expressive statistical grammar that coheres with the `tidyverse` design framework. 
 
+# Installation
+
+To install the current stable version of `infer`, make sure to install `devtools` first:
+
+```
+install.packages("devtools")
+devtools::install_github("andrewpbray/infer")
+```
+
+To install the development version of `infer` (with `devtools` installed already):
+  
+```
+devtools::install_github("ismayc/infer", ref = "dev")
+```
+
 ## Hypothesis tests
-![](figs/ht-diagram.png)
+
+General framework diagram for hypothesis tests in `infer` is [here](https://github.com/andrewpbray/infer/raw/master/figs/ht-diagram.png).
 
 #### Randomization-based Examples
 
-These examples assume that `mtcars` has been overwritten so that the variables
+The examples below only show the calculation of randomization-based statistics and assume that `mtcars` has been overwritten so that the variables
 `cyl`, `vs`, `am`, `gear`, and `carb` are `factor`s.
 
 ```
