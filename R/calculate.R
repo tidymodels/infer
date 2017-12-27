@@ -4,8 +4,6 @@
 #' options include "mean", "median", "sd", "prop", "diff in means",
 #' "diff in medians", "diff in props", "Chisq", "F", and "slope". (Testing implementations
 #' of "z" and "t".)
-#' @param success a string specifying which level of the response variable should be
-#' used as a success in bootstrapping a one proportion confidence interval
 #' @param ... to pass options like \code{na.rm = TRUE} into functions like mean, sd, etc.
 #' @importFrom dplyr group_by summarize
 #' @importFrom rlang !! sym quo enquo eval_tidy
@@ -31,7 +29,7 @@
 #'         calculate(stat = "prop", success = "1")
 #' }
 
-calculate <- function(x, stat, success = NULL, ...) {
+calculate <- function(x, stat, ...) {
 
   # TODO: Check to see if dplyr::group_by(replicate) is needed since
   # generate() does a grouping of replicate
@@ -56,8 +54,7 @@ calculate <- function(x, stat, success = NULL, ...) {
 
   if (stat == "prop") {
     col <- attr(x, "response")
-    if(is.null(success))
-      success <- quo(get_par_levels(x)[1])
+    success <- attr(x, "success")
     df_out <- x %>%
       # dplyr::summarize(stat = mean(!! col == rlang::eval_tidy(success))) # This doesn't appear to be working
       # dplyr::group_by(replicate) %>%
@@ -82,9 +79,11 @@ calculate <- function(x, stat, success = NULL, ...) {
   }
 
   if (stat == "diff in props") {
+    col <- attr(x, "response")
+    success <- attr(x, "success")
     df_out <- x %>%
       dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
-      dplyr::summarize(prop = mean((!!attr(x, "response")) == levels(!!attr(x, "response"))[1], ...)) %>%
+      dplyr::summarize(prop = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...)) %>%
       dplyr::summarize(stat = diff(prop))
   }
 
