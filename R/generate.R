@@ -11,7 +11,7 @@
 #' mtcars %>%
 #'    specify(response = mpg) %>%
 #'    generate(reps = 100, type = "bootstrap")
-#'    
+#'
 #' # Generate 200 permutations of two proportions example
 #' # resulting in 200 * 32 = 6400 rows
 #' if(require(dplyr)) {
@@ -21,7 +21,7 @@
 #'         hypothesize(null = "independence") %>%
 #'         generate(reps = 200, type = "permute")
 #'  }
-#'  
+#'
 #' # Generate 150 simulations assuming true probability
 #' # of success (a "1") is 0.25,
 #' # resulting in 150 * 32 = 4800 rows
@@ -29,8 +29,8 @@
 #'     mtcars %>%
 #'         mutate(am = factor(am)) %>%
 #'         specify(response = am) %>% # alt: am ~ NULL (or am ~ 1)
-#'         hypothesize(null = "point", p = c("1" = .25)) %>% 
-#'         generate(reps = 150, type = "simulate") 
+#'         hypothesize(null = "point", p = c("1" = .25)) %>%
+#'         generate(reps = 150, type = "simulate")
 #' }
 
 generate <- function(x, reps = 1, type = "bootstrap", ...) {
@@ -55,7 +55,7 @@ bootstrap <- function(x, reps = 1, ...) {
       col <- as.character(attr(x, "response"))
       x[[col]] <- x[[col]] - mean(x[[col]], na.rm = TRUE) + attr(x, "params")
     }
-    
+
     # Similarly for median
     if(attr(attr(x, "params"), "names") == "Med"){
       col <- as.character(attr(x, "response"))
@@ -70,23 +70,24 @@ bootstrap <- function(x, reps = 1, ...) {
 
     # TODO: Similarly for t
 
-    # TODO: Similarly for z  
+    # TODO: Similarly for z
   }
-  
+
   # Set variables for use in calculate()
   result <- rep_sample_n(x, size = nrow(x), replace = TRUE, reps = reps)
   attr(result, "response") <- attr(x, "response")
+  attr(result, "success") <- attr(x, "success")
   attr(result, "explanatory") <- attr(x, "explanatory")
   attr(result, "response_type") <- attr(x, "response_type")
   attr(result, "explanatory_type") <- attr(x, "explanatory_type")
   attr(result, "distr_param") <- attr(x, "distr_param")
   attr(result, "distr_param2") <- attr(x, "distr_param2")
   attr(result, "theory_type") <- attr(x, "theory_type")
-  
+
   # Copy over all attr except for row names
   # attributes(result)[which(names(attributes(result)) == "row.names")] <-
   #   attributes(x)[which(names(attributes(x)) == "row.names")]
-  
+
   return(result)
 }
 
@@ -97,20 +98,21 @@ permute <- function(x, reps = 1, ...) {
     dplyr::bind_rows() %>%
     dplyr::mutate(replicate = rep(1:reps, each = nrow(x))) %>%
     dplyr::group_by(replicate)
-  
+
   attr(df_out, "null") <- attr(x, "null")
   attr(df_out, "response") <- attr(x, "response")
+  attr(df_out, "success") <- attr(x, "success")
   attr(df_out, "explanatory") <- attr(x, "explanatory")
   attr(df_out, "response_type") <- attr(x, "response_type")
   attr(df_out, "explanatory_type") <- attr(x, "explanatory_type")
   attr(df_out, "distr_param") <- attr(x, "distr_param")
   attr(df_out, "distr_param2") <- attr(x, "distr_param2")
   attr(df_out, "theory_type") <- attr(x, "theory_type")
-  
+
   # Copy over all attr except for row names
   # attributes(df_out)[which(names(attributes(df_out)) == "row.names")] <-
   #   attributes(x)[which(names(attributes(x)) == "row.names")]
-  
+
   return(df_out)
 }
 
@@ -146,22 +148,23 @@ simulate <- function(x, reps = 1, ...) {
   attr(rep_tbl, "null") <- attr(x, "null")
   attr(rep_tbl, "params") <- attr(x, "params")
   attr(rep_tbl, "response") <- attr(x, "response")
+  attr(rep_tbl, "success") <- attr(x, "success")
   attr(rep_tbl, "explanatory") <- attr(x, "explanatory")
   attr(rep_tbl, "response_type") <- attr(x, "response_type")
   attr(rep_tbl, "explanatory_type") <- attr(x, "explanatory_type")
   attr(rep_tbl, "distr_param") <- attr(x, "distr_param")
   attr(rep_tbl, "distr_param2") <- attr(x, "distr_param2")
   attr(rep_tbl, "theory_type") <- attr(x, "theory_type")
-  
+
   # Copy over all attr except for row names
   #attributes(rep_tbl)[which(names(attributes(rep_tbl)) == "row.names")] <-
   #  attributes(x)[which(names(attributes(x)) == "row.names")]
-  
-  
+
+
   # TODO: we may want to clean up this object before sending it out - do we
   # really need all of the attributes() that it spits out?
-  
-  ## From Chester: Upon further inspection, I think we'll need a bunch of these to 
+
+  ## From Chester: Upon further inspection, I think we'll need a bunch of these to
   ## appropriately determine the theoretical distributions when they exist
   return(dplyr::group_by(rep_tbl, replicate))
 }
