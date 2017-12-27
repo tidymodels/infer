@@ -9,9 +9,10 @@ calculate(x, stat, success = NULL, ...)
 \arguments{
 \item{x}{the output from \code{\link{hypothesize}} or \code{\link{generate}}}
 
-\item{stat}{a string giving the type of the statistic to calculate. Current 
-options include "mean", "median", "sd", "prop", "diff in means", 
-"diff in medians", "diff in props", "Chisq", "F", and "slope".}
+\item{stat}{a string giving the type of the statistic to calculate. Current
+options include "mean", "median", "sd", "prop", "diff in means",
+"diff in medians", "diff in props", "Chisq", "F", and "slope". (Testing implementations
+of "z" and "t".)}
 
 \item{success}{a string specifying which level of the response variable should be
 used as a success in bootstrapping a one proportion confidence interval}
@@ -22,9 +23,8 @@ used as a success in bootstrapping a one proportion confidence interval}
 Calculate summary statistics
 }
 \examples{
-
 # Permutation test for two binary variables
-if (require(dplyr)) {
+if(require(dplyr)) {
   mtcars \%>\%
     mutate(am = factor(am), vs = factor(vs)) \%>\%
     specify(am ~ vs) \%>\%
@@ -32,5 +32,14 @@ if (require(dplyr)) {
     generate(reps = 100, type = "permute") \%>\%
     calculate(stat = "diff in props") \%>\%
     visualize()
+}
+
+# Confidence interval using bootstrapping for one proportion
+if(require(dplyr)) {
+    mtcars \%>\%
+        mutate(am = factor(am)) \%>\%
+        specify(response = am) \%>\%
+        generate(reps = 100, type = "bootstrap") \%>\%
+        calculate(stat = "prop", success = "1")
 }
 }

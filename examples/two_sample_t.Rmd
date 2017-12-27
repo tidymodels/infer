@@ -1,0 +1,115 @@
+---
+title: "Two sample $t$ test example using `okcupiddata` `profiles` data"
+author: "Chester Ismay"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    df_print: kable
+vignette: |
+  %\VignetteIndexEntry{Two sample t test example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(fig.width = 8, fig.height = 3) 
+```
+
+## Data preparation
+
+```{r message=FALSE, warning=FALSE}
+library(okcupiddata)
+library(stringr)
+library(infer)
+set.seed(2017)
+prof_small <- profiles %>% 
+  dplyr::sample_n(size = 500) %>% 
+  dplyr::mutate(city = dplyr::case_when(
+    str_detect(location, "san fran") ~ "san fran",
+    !str_detect(location, "san fran") ~ "not san fran"
+  )) %>% 
+  dplyr::select(age, sex, city, drugs, height, status)
+```
+
+- `height` and `age` are numerical variables.
+- `sex` has two categories (`"m"`, `"f"`)
+- `city` has two categories (`"san fran"`, `"not san fran"`)
+- `drugs` has three categories (`"never"`, `"sometimes"`, `"often"`) - Also has missing values
+- `status` has three categories (`"single"`, `"available"`, `"seeing someone"`)
+
+***
+
+# One numerical variable, one categorical (2 levels)
+
+## Calculate observed statistic 
+
+Using `t_test` in `infer`
+
+```{r}
+obs_t <- prof_small %>% 
+  t_test(formula = age ~ sex) %>% 
+  dplyr::select(statistic) %>% 
+  dplyr::pull()
+```
+
+The observed $t$ statistic is `r obs_t`.
+
+Or using another shortcut function in `infer`:
+
+```{r}
+obs_t <- prof_small %>% 
+  t_stat(formula = age ~ sex)
+```
+
+The observed $t$ statistic is `r obs_t`.
+
+## Randomization approach to t-statistic
+
+```{r}
+t_null_distn <- prof_small %>%
+  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "t")
+t_null_distn %>% visualize(obs_stat = obs_t, direction = "two_sided")
+```
+
+## Calculate the randomization-based $p$-value
+
+```{r}
+t_null_distn %>% 
+  dplyr::summarize(p_value = mean(abs(stat) >= obs_t)) %>% 
+  dplyr::pull()
+```
+
+
+## Theoretical distribution
+
+```{r }
+prof_small %>%
+  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+  hypothesize(null = "independence") %>%
+  # calculate(stat = "t") ## Not needed since t is implied based on variable types
+  visualize(method = "theoretical", obs_stat = obs_t, direction = "two_sided")
+```
+
+## Overlay appropriate $t$ distribution on top of permuted t-statistics
+
+```{r }
+prof_small %>%
+  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "t") %>% 
+  visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
+```
+
+## Compute theoretical p-value
+
+```{r}
+prof_small %>% 
+  t_test(formula = age ~ sex) %>% 
+  dplyr::select(p_value) %>% 
+  dplyr::pull()
+```
+

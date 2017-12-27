@@ -2,12 +2,13 @@
 % Please edit documentation in R/specify.R
 \name{specify}
 \alias{specify}
-\title{Specify the response and explanatory variables}
+\title{Specify the response and explanatory variables with
+\code{specify} also converting character variables chosen to be \code{factor}s}
 \usage{
 specify(x, formula, response = NULL, explanatory = NULL)
 }
 \arguments{
-\item{x}{a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}}
+\item{x}{a data frame that can be coerced into a \code{\link[tibble]{tibble}}}
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
 
@@ -16,5 +17,30 @@ specify(x, formula, response = NULL, explanatory = NULL)
 \item{explanatory}{the variable name in \code{x} that will serve as the explanatory variable}
 }
 \description{
-Specify the response and explanatory variables
+Specify the response and explanatory variables with
+\code{specify} also converting character variables chosen to be \code{factor}s
+}
+\examples{
+# Response attribute set corresponding to
+# response argument and specified variable selected
+if(require(dplyr)){
+  mtcars \%>\%
+    mutate(am = factor(am)) \%>\%
+    specify(response = am)
+}
+# Response and explanatory attributes set corresponding to
+# response and explanatory arguments
+if(require(dplyr)){
+  mtcars \%>\%
+    mutate(am = factor(am), vs = factor(vs)) \%>\%
+    specify(response = am, explanatory = vs)
+}
+
+# Response and explanatory attributes set corresponding to
+# formula argument expecting response ~ explanatory
+if(require(dplyr)){
+  mtcars \%>\%
+    mutate(am = factor(am), vs = factor(vs)) \%>\%
+    specify(formula = am ~ vs)
+}
 }

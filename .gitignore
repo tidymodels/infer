@@ -2,4 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
-infer.Rproj
+*.Rproj
+.DS_Store

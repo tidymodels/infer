@@ -5,19 +5,35 @@ output:
     toc_depth: 3
 ---
 
-Infer: an R package for tidyverse-friendly statistical inference.
+Infer: an R package for tidyverse-friendly statistical inference
 
 ---
 [![Travis-CI Build Status](https://travis-ci.org/andrewpbray/infer.svg?branch=master)](https://travis-ci.org/andrewpbray/infer)
 
 The objective of this package is to perform inference using an expressive statistical grammar that coheres with the `tidyverse` design framework. 
 
-### Hypothesis tests
-![h-test diagram](figs/ht-diagram.png)
+# Installation
 
-#### Examples
+To install the current stable version of `infer`, make sure to install `devtools` first:
 
-These examples assume that `mtcars` has been overwritten so that the variables
+```
+install.packages("devtools")
+devtools::install_github("andrewpbray/infer")
+```
+
+To install the development version of `infer` (with `devtools` installed already):
+  
+```
+devtools::install_github("ismayc/infer", ref = "dev")
+```
+
+## Hypothesis tests
+
+General framework diagram for hypothesis tests in `infer` is [here](https://github.com/andrewpbray/infer/raw/master/figs/ht-diagram.png).
+
+#### Randomization-based Examples
+
+The examples below only show the calculation of randomization-based statistics and assume that `mtcars` has been overwritten so that the variables
 `cyl`, `vs`, `am`, `gear`, and `carb` are `factor`s.
 
 ```
@@ -29,9 +45,12 @@ mtcars <- as.data.frame(mtcars) %>%
          carb = factor(carb))
 ```
 
+Check the package vignettes for further examples using theory-based methods
+in combination with randomization-based methods.
+
 ***
 
-One numerical variable (mean)
+### One numerical variable (mean)
 
 ```
 mtcars %>%
@@ -41,7 +60,7 @@ mtcars %>%
   calculate(stat = "mean")
 ```
 
-One numerical variable (median)
+### One numerical variable (median)
 
 ```
 mtcars %>%
@@ -51,7 +70,7 @@ mtcars %>%
   calculate(stat = "median")
 ```
 
-One numerical variable (standard deviation)
+### One numerical variable (standard deviation)
 
 ```
 mtcars %>%
@@ -61,7 +80,7 @@ mtcars %>%
   calculate(stat = "sd")
 ```
 
-One categorical (2 level) variable
+### One categorical (2 level) variable
 
 ```
 mtcars %>%
@@ -71,7 +90,7 @@ mtcars %>%
   calculate(stat = "prop")
 ```
 
-Two categorical (2 level) variables
+### Two categorical (2 level) variables
 
 ```
 mtcars %>%
@@ -81,7 +100,7 @@ mtcars %>%
   calculate(stat = "diff in props")
 ```
 
-One categorical (>2 level) - GoF
+### One categorical (>2 level) - GoF
 
 ```
 mtcars %>%
@@ -91,7 +110,7 @@ mtcars %>%
   calculate(stat = "Chisq")
 ```
 
-Two categorical (>2 level) variables
+### Two categorical (>2 level) variables
 
 ```
 mtcars %>%
@@ -101,7 +120,7 @@ mtcars %>%
   calculate(stat = "Chisq")
 ```
 
-One numerical variable one categorical (2 levels) (diff in means)
+### One numerical variable, one categorical (2 levels) (diff in means)
 
 ```
 mtcars %>%
@@ -111,7 +130,7 @@ mtcars %>%
   calculate(stat = "diff in means")
 ```
 
-One numerical variable one categorical (2 levels) (diff in medians)
+### One numerical variable one categorical (2 levels) (diff in medians)
 
 ```
 mtcars %>%
@@ -121,7 +140,7 @@ mtcars %>%
   calculate(stat = "diff in medians")
 ```
 
-One numerical one categorical (>2 levels) -  ANOVA
+### One numerical one categorical (>2 levels) -  ANOVA
 
 ```
 mtcars %>%
@@ -131,7 +150,7 @@ mtcars %>%
   calculate(stat = "F")
 ```
 
-Two numerical vars - SLR 
+### Two numerical vars - SLR 
 
 ```
 mtcars %>%
@@ -141,9 +160,9 @@ mtcars %>%
   calculate(stat = "slope")
 ```
 
-### Confidence intervals
+## Confidence intervals
 
-One numerical (one mean)
+### One numerical (one mean)
 
 ```
 mtcars %>%
@@ -152,7 +171,7 @@ mtcars %>%
   calculate(stat = "mean")
 ```
 
-One numerical (one median)
+### One numerical (one median)
 
 ```
 mtcars %>%
@@ -161,7 +180,7 @@ mtcars %>%
   calculate(stat = "median")
 ```
 
-One numerical (standard deviation)
+### One numerical (standard deviation)
 
 ```
 mtcars %>%
@@ -170,7 +189,7 @@ mtcars %>%
   calculate(stat = "sd")
 ```
 
-One categorical (one proportion)
+### One categorical (one proportion)
 
 ```
 mtcars %>%
@@ -179,7 +198,7 @@ mtcars %>%
   calculate(stat = "prop", success = "1")
 ```
 
-One numerical variable one categorical (2 levels) (diff in means)
+### One numerical variable one categorical (2 levels) (diff in means)
 
 ```
 mtcars %>%
@@ -188,7 +207,7 @@ mtcars %>%
   calculate(stat = "diff in means")
 ```
 
-Two categorical variables (diff in proportions)
+### Two categorical variables (diff in proportions)
 
 ```
 mtcars %>%
@@ -197,7 +216,7 @@ mtcars %>%
   calculate(stat = "diff in props")
 ```
 
-Two numerical vars - SLR
+### Two numerical vars - SLR
 
 ```
 mtcars %>%
