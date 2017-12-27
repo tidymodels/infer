@@ -78,7 +78,7 @@ p_hat <- fli_small %>%
   summarize(mean(day_hour == "morning")) %>%
   pull()
 null <- fli_small %>%
-  specify(response = dep_delay, success = "morning") %>%
+  specify(response = day_hour, success = "morning") %>%
   hypothesize(null = "point", p = .5) %>% 
   generate(reps = 1000, type = "simulate") %>% 
   calculate(stat = "prop")
@@ -86,18 +86,27 @@ ggplot(null, aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = p_hat, col = "red")
 null %>%
-  summarize(mean(stat > p_hat)) * 2
+  summarize(mean(stat < p_hat)) * 2
 ```
 
 Two categorical (2 level) variables
 
 ```{r}
-prof_small %>%
-  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in props") %>% 
-  visualize()
+d_hat <- fli_small %>%
+  group_by(season) %>%
+  summarize(prop = mean(day_hour == "morning")) %>%
+  summarize(diff(prop)) %>%
+  pull()
+null <- fli_small %>%
+  specify(day_hour ~ season, success = "morning") %>%
+  hypothesize(null = "independence") %>% 
+  generate(reps = 1000, type = "permute") %>% 
+  calculate(stat = "diff in props")
+ggplot(null, aes(x = stat)) +
+  geom_density() +
+  geom_vline(xintercept = d_hat, col = "red")
+null %>%
+  summarize(mean(stat < d_hat)) * 2
 ```
 
 One categorical (>2 level) - GoF
