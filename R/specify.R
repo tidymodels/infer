@@ -3,17 +3,18 @@
 #' @param formula a formula with the response variable on the left and the explanatory on the right
 #' @param response the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument.
 #' @param explanatory the variable name in \code{x} that will serve as the explanatory variable
+#' @param success the name of the level of \code{response} that will be considered a success. Needed for inference on one proportion or a difference in proportions.
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
 #' @importFrom dplyr mutate_if select one_of as_tibble
 #' @importFrom methods hasArg
 #' @export
 
-specify <- function(x, formula, response = NULL, explanatory = NULL) {
-  
+specify <- function(x, formula, response = NULL, explanatory = NULL, success = NULL) {
+
   # Convert all character variables to be factor variables instead
   x <- dplyr::as_tibble(x) %>% mutate_if(is.character, as.factor)
-  
+
   attr(x, "response")    <- substitute(response)
   attr(x, "explanatory") <- substitute(explanatory)
 
@@ -21,7 +22,9 @@ specify <- function(x, formula, response = NULL, explanatory = NULL) {
     attr(x, "response")    <- f_lhs(formula)
     attr(x, "explanatory") <- f_rhs(formula)
   }
-  
+
+  attr(x, "success") <- substitute(success)
+
   if (!all(
     as.character(
       c(attr(x, "response"),
@@ -30,7 +33,7 @@ specify <- function(x, formula, response = NULL, explanatory = NULL) {
     ) %in% names(x)
   )) stop("The columns you specified could not be found.")
   # TODO: coerce char to factor
-  
+
   x <- as_tibble(x) %>%
     select(one_of(c(
       as.character((attr(x, "response"))),
@@ -39,6 +42,6 @@ specify <- function(x, formula, response = NULL, explanatory = NULL) {
 
   # add "infer" class
   class(x) <- append("infer", class(x))
-  
+
   return(x)
 }
