@@ -1,10 +1,8 @@
 #' Calculate summary statistics
 #' @param x the output from \code{\link{hypothesize}} or \code{\link{generate}}
-#' @param stat a string giving the type of the statistic to calculate. Current 
-#' options include "mean", "median", "sd", "prop", "diff in means", 
+#' @param stat a string giving the type of the statistic to calculate. Current
+#' options include "mean", "median", "sd", "prop", "diff in means",
 #' "diff in medians", "diff in props", "Chisq", "F", and "slope".
-#' @param success a string specifying which level of the response variable should be
-#' used as a success in bootstrapping a one proportion confidence interval
 #' @param ... to pass options like \code{na.rm = TRUE} into functions like mean, sd, etc.
 #' @importFrom dplyr group_by summarize
 #' @importFrom rlang !! sym quo enquo eval_tidy
@@ -22,46 +20,45 @@
 #'     visualize()
 #' }
 
-calculate <- function(x, stat, success = NULL, ...) {
+calculate <- function(x, stat, ...) {
 
   # TODO: Check to see if dplyr::group_by(replicate) is needed since
   # generate() does a grouping of replicate
-  
+
   if (stat == "mean") {
     col <- setdiff(names(x), "replicate")
     df_out <- x %>%
-      dplyr::group_by(replicate) %>% 
+      dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = mean(!!sym(col), ...))
   }
-  
+
   if (stat == "median") {
     col <- setdiff(names(x), "replicate")
     df_out <- x %>%
-      dplyr::group_by(replicate) %>% 
+      dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = stats::median(!!sym(col), ...))
   }
 
     if (stat == "sd") {
     col <- setdiff(names(x), "replicate")
     df_out <- x %>%
-      dplyr::group_by(replicate) %>% 
+      dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = stats::sd(!!sym(col), ...))
   }
 
     if (stat == "sd") {
     col <- setdiff(names(x), "replicate")
     df_out <- x %>%
-      dplyr::group_by(replicate) %>% 
+      dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = stats::sd(!!sym(col)))
   }
 
   if (stat == "prop") {
     col <- attr(x, "response")
-    if(is.null(success))
-      success <- quo(get_par_levels(x)[1])
+    success <- attr(x, "success")
     df_out <- x %>%
      # dplyr::summarize(stat = mean(!! col == rlang::eval_tidy(success))) # This doesn't appear to be working
-      dplyr::group_by(replicate) %>% 
+      dplyr::group_by(replicate) %>%
       # The following works but not sure why when looking at the diff in means code?
       dplyr::summarize(stat = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...))
   }
@@ -81,11 +78,13 @@ calculate <- function(x, stat, success = NULL, ...) {
       dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = diff(xtilde))
   }
-  
+
   if (stat == "diff in props") {
+    col <- attr(x, "response")
+    success <- attr(x, "success")
     df_out <- x %>%
       dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
-      dplyr::summarize(prop = mean((!!attr(x, "response")) == levels(!!attr(x, "response"))[1], ...)) %>%
+      dplyr::summarize(prop = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...)) %>%
       dplyr::summarize(stat = diff(prop))
   }
 
