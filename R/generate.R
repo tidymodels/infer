@@ -28,7 +28,7 @@ bootstrap <- function(x, reps = 1, ...) {
       col <- as.character(attr(x, "response"))
       x[[col]] <- x[[col]] - mean(x[[col]], na.rm = TRUE) + attr(x, "params")
     }
-    
+
     # Similarly for median
     if(attr(attr(x, "params"), "names") == "Med"){
       col <- as.character(attr(x, "response"))
@@ -47,12 +47,13 @@ bootstrap <- function(x, reps = 1, ...) {
       x[[col]] <- x[[col]] - stats::sd(x[[col]]) + attr(x, "params")
     }
   }
-  
+
   # Set variables for use in calculate()
   result <- rep_sample_n(x, size = nrow(x), replace = TRUE, reps = reps)
   attr(result, "response") <- attr(x, "response")
+  attr(result, "success") <- attr(x, "success")
   attr(result, "explanatory") <- attr(x, "explanatory")
-  
+
   return(result)
 }
 
@@ -65,6 +66,7 @@ permute <- function(x, reps = 1, ...) {
     dplyr::group_by(replicate)
   attr(df_out, "null") <- attr(x, "null")
   attr(df_out, "response") <- attr(x, "response")
+  attr(df_out, "success") <- attr(x, "success")
   attr(df_out, "explanatory") <- attr(x, "explanatory")
   return(df_out)
 }
@@ -101,6 +103,7 @@ simulate <- function(x, reps = 1, ...) {
   attr(rep_tbl, "null") <- attr(x, "null")
   attr(rep_tbl, "params") <- attr(x, "params")
   attr(rep_tbl, "response") <- attr(x, "response")
+  attr(rep_tbl, "success") <- attr(x, "success")
   attr(rep_tbl, "explanatory") <- attr(x, "explanatory")
   #  attr(rep_tbl, "ci") <- attr(tbl, "ci")
   # TODO: we may want to clean up this object before sending it out - do we
