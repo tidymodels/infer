@@ -4,17 +4,14 @@
 \alias{calculate}
 \title{Calculate summary statistics}
 \usage{
-calculate(x, stat, success = NULL, ...)
+calculate(x, stat, ...)
 }
 \arguments{
 \item{x}{the output from \code{\link{hypothesize}} or \code{\link{generate}}}
 
-\item{stat}{a string giving the type of the statistic to calculate. Current 
-options include "mean", "median", "sd", "prop", "diff in means", 
+\item{stat}{a string giving the type of the statistic to calculate. Current
+options include "mean", "median", "sd", "prop", "diff in means",
 "diff in medians", "diff in props", "Chisq", "F", and "slope".}
-
-\item{success}{a string specifying which level of the response variable should be
-used as a success in bootstrapping a one proportion confidence interval}
 
 \item{...}{to pass options like \code{na.rm = TRUE} into functions like mean, sd, etc.}
 }
