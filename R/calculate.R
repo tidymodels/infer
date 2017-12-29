@@ -13,11 +13,10 @@
 #' if (require(dplyr)) {
 #'   mtcars %>%
 #'     mutate(am = factor(am), vs = factor(vs)) %>%
-#'     specify(am ~ vs) %>%
+#'     specify(am ~ vs, success = "1") %>%
 #'     hypothesize(null = "independence") %>%
 #'     generate(reps = 100, type = "permute") %>%
-#'     calculate(stat = "diff in props") %>%
-#'     visualize()
+#'     calculate(stat = "diff in props")
 #' }
 
 calculate <- function(x, stat, ...) {

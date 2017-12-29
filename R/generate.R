@@ -5,6 +5,16 @@
 #' @param ... currently ignored
 #' @importFrom dplyr group_by
 #' @export
+#' @examples
+#'
+#' #' # Permutation test for two binary variables
+#' if (require(dplyr)) {
+#'   mtcars %>%
+#'     mutate(am = factor(am), vs = factor(vs)) %>%
+#'     specify(am ~ vs, success = "1") %>%
+#'     hypothesize(null = "independence") %>%
+#'     generate(reps = 100, type = "permute")
+#' }
 
 generate <- function(x, reps = 1, type = "bootstrap", ...) {
   if (type == "bootstrap") {

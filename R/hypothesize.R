@@ -10,8 +10,8 @@
 #' # One binary variable
 #'   mtcars %>%
 #'     mutate(am = factor(am)) %>%
-#'     specify(response = am) %>%
-#'     hypothesize(null = "point", p = c("0" = 0.25, "1" = 0.75)) %>%
+#'     specify(response = am, success = "1") %>%
+#'     hypothesize(null = "point", p = 0.75) %>%
 #'     generate(reps = 100, type = "simulate") %>%
 #'     calculate(stat = "prop")
 #'
