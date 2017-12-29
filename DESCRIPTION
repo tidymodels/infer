@@ -27,7 +27,9 @@ Suggests:
     knitr,
     rmarkdown,
     nycflights13,
-    stringr
+    stringr,
+    testthat,
+    assertive
 URL: http://github.com/andrewpbray/infer
 BugReports: https://github.com/andrewpbray/infer/issues
 RoxygenNote: 6.0.1
