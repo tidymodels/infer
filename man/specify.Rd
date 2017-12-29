@@ -4,7 +4,7 @@
 \alias{specify}
 \title{Specify the response and explanatory variables}
 \usage{
-specify(x, formula, response = NULL, explanatory = NULL)
+specify(x, formula, response = NULL, explanatory = NULL, success = NULL)
 }
 \arguments{
 \item{x}{a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}}
@@ -14,6 +14,8 @@ specify(x, formula, response = NULL, explanatory = NULL)
 \item{response}{the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument.}
 
 \item{explanatory}{the variable name in \code{x} that will serve as the explanatory variable}
+
+\item{success}{the name of the level of \code{response} that will be considered a success. Needed for inference on one proportion or a difference in proportions.}
 }
 \description{
 Specify the response and explanatory variables
