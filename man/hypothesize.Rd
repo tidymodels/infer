@@ -35,12 +35,4 @@ if (require(dplyr)) {
     generate(reps = 100, type = "permute") \%>\%
     calculate(stat = "F")
 }
-
-# Compare with
-if (require(dplyr) && require(broom)) {
-  cars <- mtcars \%>\%
-    summarize(N = n(), num_manual = sum(am))
-  with(cars, prop.test(num_manual, N, correct = FALSE)) \%>\%
-    tidy()
-}
 }
