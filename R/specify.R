@@ -12,8 +12,25 @@
 
 specify <- function(x, formula, response = NULL, explanatory = NULL, success = NULL) {
 
-  # Convert all character variables to be factor variables instead
-  x <- dplyr::as_tibble(x) %>% mutate_if(is.character, as.factor)
+  # assertive::assert_is_data.frame(x)
+  # if(methods::hasArg(formula)) {
+  #   assertive::assert_is_formula(formula)
+  #   assertive::assert_is_subset(f_lhs(formula), colnames(x))
+  #   assertive::assert_is_subset(f_rhs(formula), colnames(x))
+  # } else {
+  #   response_arg <- as.character(substitute(response))
+  #   assertive::assert_is_subset(response_arg, colnames(x))
+  #   explanatory_arg <- as.character(substitute(explanatory))
+  #   assertive::assert_is_subset(explanatory_arg, colnames(x))
+  # }
+  #
+ # Convert all character variables to be factor variables instead
+ x <- dplyr::as_tibble(x) %>% mutate_if(is.character, as.factor)
+  #
+  # response_col <- rlang::eval_tidy(enquo(response), x)
+  # if(is.factor(response_col)) {
+  #   assertive::assert_is_subset(success, levels(response_col))
+  # }
 
   attr(x, "response")    <- substitute(response)
   attr(x, "explanatory") <- substitute(explanatory)
@@ -23,7 +40,7 @@ specify <- function(x, formula, response = NULL, explanatory = NULL, success = N
     attr(x, "explanatory") <- f_rhs(formula)
   }
 
-  attr(x, "success") <- substitute(success)
+  attr(x, "success") <- success
 
   if (!all(
     as.character(
