@@ -3,8 +3,7 @@ title: "Examples using `mtcars` data"
 author: "Chester Ismay and Andrew bray"
 date: "`r Sys.Date()`"
 output: 
-  rmarkdown::html_vignette:
-    df_print: kable
+  rmarkdown::html_vignette
 vignette: |
   %\VignetteIndexEntry{flights example}
   %\VignetteEngine{knitr::rmarkdown}
@@ -38,7 +37,7 @@ One numerical variable (mean)
 
 ```{r}
 mtcars %>%
-  specify(response = mpg) %>% # alt: mpg ~ NULL (or mpg ~ 1)
+  specify(response = mpg) %>% # formula alt: mpg ~ NULL
   hypothesize(null = "point", mu = 25) %>% 
   generate(reps = 100, type = "bootstrap") %>% 
   calculate(stat = "mean")
@@ -48,7 +47,7 @@ One numerical variable (median)
 
 ```{r}
 mtcars %>%
-  specify(response = mpg) %>% # alt: mpg ~ NULL (or mpg ~ 1)
+  specify(response = mpg) %>% # formula alt: mpg ~ NULL
   hypothesize(null = "point", med = 26) %>% 
   generate(reps = 100, type = "bootstrap") %>% 
   calculate(stat = "median")
@@ -58,7 +57,7 @@ One numerical variable (standard deviation)
 
 ```{r}
 mtcars %>%
-  specify(response = mpg) %>% # alt: mpg ~ NULL (or mpg ~ 1)
+  specify(response = mpg) %>% # formula alt: mpg ~ NULL
   hypothesize(null = "point", sigma = 5) %>% 
   generate(reps = 100, type = "bootstrap") %>% 
   calculate(stat = "sd")
@@ -68,8 +67,8 @@ One categorical (2 level) variable
 
 ```{r}
 mtcars %>%
-  specify(response = am) %>% # alt: am ~ NULL (or am ~ 1)
-  hypothesize(null = "point", p = c("1" = .25)) %>% 
+  specify(response = am, success = "1") %>% # formula alt: am ~ NULL
+  hypothesize(null = "point", p = .25) %>% 
   generate(reps = 100, type = "simulate") %>% 
   calculate(stat = "prop")
 ```
@@ -78,7 +77,7 @@ Two categorical (2 level) variables
 
 ```{r}
 mtcars %>%
-  specify(am ~ vs) %>% # alt: response = am, explanatory = vs
+  specify(am ~ vs, success = "1") %>% # alt: response = am, explanatory = vs
   hypothesize(null = "independence") %>%
   generate(reps = 100, type = "permute") %>%
   calculate(stat = "diff in props")
@@ -177,9 +176,9 @@ One categorical (one proportion)
 
 ```{r}
 mtcars %>%
-  specify(response = am) %>%
+  specify(response = am, success = "1") %>%
   generate(reps = 100, type = "bootstrap") %>%
-  calculate(stat = "prop", success = "1")
+  calculate(stat = "prop")
 ```
 
 One numerical variable one categorical (2 levels) (diff in means)
@@ -195,7 +194,7 @@ Two categorical variables (diff in proportions)
 
 ```{r}
 mtcars %>%
-  specify(am ~ vs) %>%
+  specify(am ~ vs, success = "1") %>%
   generate(reps = 100, type = "bootstrap") %>%
   calculate(stat = "diff in props")
 ```
