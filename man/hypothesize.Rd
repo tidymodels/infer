@@ -22,8 +22,8 @@ if (require(dplyr)) {
 # One binary variable
   mtcars \%>\%
     mutate(am = factor(am)) \%>\%
-    specify(response = am) \%>\%
-    hypothesize(null = "point", p = c("0" = 0.25, "1" = 0.75)) \%>\%
+    specify(response = am, success = "1") \%>\%
+    hypothesize(null = "point", p = 0.75) \%>\%
     generate(reps = 100, type = "simulate") \%>\%
     calculate(stat = "prop")
 
@@ -34,13 +34,5 @@ if (require(dplyr)) {
     hypothesize(null = "independence") \%>\%
     generate(reps = 100, type = "permute") \%>\%
     calculate(stat = "F")
-}
-
-# Compare with
-if (require(dplyr) && require(broom)) {
-  cars <- mtcars \%>\%
-    summarize(N = n(), num_manual = sum(am))
-  with(cars, prop.test(num_manual, N, correct = FALSE)) \%>\%
-    tidy()
 }
 }

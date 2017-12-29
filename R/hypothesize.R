@@ -10,8 +10,8 @@
 #' # One binary variable
 #'   mtcars %>%
 #'     mutate(am = factor(am)) %>%
-#'     specify(response = am) %>%
-#'     hypothesize(null = "point", p = c("0" = 0.25, "1" = 0.75)) %>%
+#'     specify(response = am, success = "1") %>%
+#'     hypothesize(null = "point", p = 0.75) %>%
 #'     generate(reps = 100, type = "simulate") %>%
 #'     calculate(stat = "prop")
 #'
@@ -22,14 +22,6 @@
 #'     hypothesize(null = "independence") %>%
 #'     generate(reps = 100, type = "permute") %>%
 #'     calculate(stat = "F")
-#' }
-#'
-#' # Compare with
-#' if (require(dplyr) && require(broom)) {
-#'   cars <- mtcars %>%
-#'     summarize(N = n(), num_manual = sum(am))
-#'   with(cars, prop.test(num_manual, N, correct = FALSE)) %>%
-#'     tidy()
 #' }
 
 hypothesize <- function(x, null = c("independence", "point"), ...) {
@@ -64,7 +56,7 @@ parse_params <- function(dots, x) {
 
   # error: cannot specify more than one of props, means, medians, or sds
   if ( length(p_ind) + length(mu_ind) + length(med_ind) + length(sig_ind) != 1 ){
-    stop("Parameter values should be only one of proportions, means, medians, or standard deviations.")  
+    stop("Parameter values should be only one of proportions, means, medians, or standard deviations.")
   }
 
   # add in 1 - p if it's missing
@@ -72,13 +64,12 @@ parse_params <- function(dots, x) {
   # 0 index of dots
   if (length(p_ind)) {
     if (length(dots[[p_ind]]) == 1) {
-      warning(paste0("Missing level, assuming proportion is 1 - ", dots$p, "."))
-      missing_lev <- setdiff(levels(pull(x, !!attr(x, "response"))), names(dots$p))
+      missing_lev <- setdiff(levels(pull(x, !!attr(x, "response"))), attr(x, "success"))
       dots$p <- append(dots$p, 1 - dots$p)
-      names(dots$p)[2] <- missing_lev
+      names(dots$p) <- c(attr(x, "success"), missing_lev)
     }
   }
-  
+
   # if (sum(dots[[p_ind]]) != 1){
   #   dots[[p_ind]] <- dots[[p_ind]]/sum(dots[[p_ind]])
   #   warning("Proportions do not sum to 1, normalizing automatically.")

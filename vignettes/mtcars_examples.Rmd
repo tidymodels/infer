@@ -1,0 +1,210 @@
+---
+title: "Examples using `mtcars` data"
+author: "Chester Ismay and Andrew bray"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette
+vignette: |
+  %\VignetteIndexEntry{flights example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
+```
+
+## Data preparation
+
+```{r message=FALSE, warning=FALSE}
+library(nycflights13)
+library(dplyr)
+library(ggplot2)
+library(stringr)
+library(infer)
+mtcars <- as.data.frame(mtcars) %>%
+  mutate(cyl = factor(cyl),
+         vs = factor(vs),
+         am = factor(am),
+         gear = factor(gear),
+         carb = factor(carb))
+```
+
+
+***
+
+One numerical variable (mean)
+
+```{r}
+mtcars %>%
+  specify(response = mpg) %>% # formula alt: mpg ~ NULL
+  hypothesize(null = "point", mu = 25) %>% 
+  generate(reps = 100, type = "bootstrap") %>% 
+  calculate(stat = "mean")
+```
+
+One numerical variable (median)
+
+```{r}
+mtcars %>%
+  specify(response = mpg) %>% # formula alt: mpg ~ NULL
+  hypothesize(null = "point", med = 26) %>% 
+  generate(reps = 100, type = "bootstrap") %>% 
+  calculate(stat = "median")
+```
+
+One numerical variable (standard deviation)
+
+```{r}
+mtcars %>%
+  specify(response = mpg) %>% # formula alt: mpg ~ NULL
+  hypothesize(null = "point", sigma = 5) %>% 
+  generate(reps = 100, type = "bootstrap") %>% 
+  calculate(stat = "sd")
+```
+
+One categorical (2 level) variable
+
+```{r}
+mtcars %>%
+  specify(response = am, success = "1") %>% # formula alt: am ~ NULL
+  hypothesize(null = "point", p = .25) %>% 
+  generate(reps = 100, type = "simulate") %>% 
+  calculate(stat = "prop")
+```
+
+Two categorical (2 level) variables
+
+```{r}
+mtcars %>%
+  specify(am ~ vs, success = "1") %>% # alt: response = am, explanatory = vs
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute") %>%
+  calculate(stat = "diff in props")
+```
+
+One categorical (>2 level) - GoF
+
+```{r}
+mtcars %>%
+  specify(cyl ~ NULL) %>% # alt: response = cyl
+  hypothesize(null = "point", p = c("4" = .5, "6" = .25, "8" = .25)) %>%
+  generate(reps = 100, type = "simulate") %>%
+  calculate(stat = "Chisq")
+```
+
+Two categorical (>2 level) variables
+
+```{r}
+mtcars %>%
+  specify(cyl ~ am) %>% # alt: response = cyl, explanatory = am
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute") %>%
+  calculate(stat = "Chisq")
+```
+
+One numerical variable one categorical (2 levels) (diff in means)
+
+```{r}
+mtcars %>%
+  specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute") %>%
+  calculate(stat = "diff in means")
+```
+
+One numerical variable one categorical (2 levels) (diff in medians)
+
+```{r}
+mtcars %>%
+  specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute") %>%
+  calculate(stat = "diff in medians")
+```
+
+One numerical one categorical (>2 levels) -  ANOVA
+
+```{r}
+mtcars %>%
+  specify(mpg ~ cyl) %>% # alt: response = mpg, explanatory = cyl
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute") %>%
+  calculate(stat = "F")
+```
+
+Two numerical vars - SLR 
+
+```{r}
+mtcars %>%
+  specify(mpg ~ hp) %>% # alt: response = mpg, explanatory = cyl
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute") %>%
+  calculate(stat = "slope")
+```
+
+### Confidence intervals
+
+One numerical (one mean)
+
+```{r}
+mtcars %>%
+  specify(response = mpg) %>%
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "mean")
+```
+
+One numerical (one median)
+
+```{r}
+mtcars %>%
+  specify(response = mpg) %>%
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "median")
+```
+
+One numerical (standard deviation)
+
+```{r}
+mtcars %>%
+  specify(response = mpg) %>%
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "sd")
+```
+
+One categorical (one proportion)
+
+```{r}
+mtcars %>%
+  specify(response = am, success = "1") %>%
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "prop")
+```
+
+One numerical variable one categorical (2 levels) (diff in means)
+
+```{r}
+mtcars %>%
+  specify(mpg ~ am) %>%
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "diff in means")
+```
+
+Two categorical variables (diff in proportions)
+
+```{r}
+mtcars %>%
+  specify(am ~ vs, success = "1") %>%
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "diff in props")
+```
+
+Two numerical vars - SLR
+
+```{r}
+mtcars %>%
+  specify(mpg ~ hp) %>% 
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "slope")
+```
+
