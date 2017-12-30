@@ -4,10 +4,10 @@ Title: Pipeable statistical inference
 Version: 0.1.0
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
-    person("Ben", "Baumer", email = "ben.baumer@gmail.com",
-      role = c("aut")),
+    person("Ben", "Baumer", email = "ben.baumer@gmail.com", role = "aut"),
     person("Chester", "Ismay", email = "chester.ismay@gmail.com", role = "aut"),
-    person("Mine", "Cetinkaya-Rundel", email = "mine@stat.duke.edu", role = "aut"))
+    person("Mine", "Cetinkaya-Rundel", email = "mine@stat.duke.edu", role = "aut"),
+    person("Ted", "Laderas", email = "tedladeras@gmail.com", role = "ctb"))
 Maintainer: Andrew Bray <abray@reed.edu>
 Description: The objective of this package is to perform inference using an expressive statistical grammar that coheres with the `tidyverse` design framework. 
 License: CC0
@@ -22,14 +22,15 @@ Imports:
     magrittr
 Depends:
     R (>= 2.10)
-Suggests:
+Suggests: 
     broom,
     knitr,
     rmarkdown,
     nycflights13,
     stringr,
     testthat,
-    assertive
+    assertive,
+    covr
 URL: http://github.com/andrewpbray/infer
 BugReports: https://github.com/andrewpbray/infer/issues
 RoxygenNote: 6.0.1
