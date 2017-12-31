@@ -7,7 +7,8 @@ Authors@R: c(
     person("Ben", "Baumer", email = "ben.baumer@gmail.com", role = "aut"),
     person("Chester", "Ismay", email = "chester.ismay@gmail.com", role = "aut"),
     person("Mine", "Cetinkaya-Rundel", email = "mine@stat.duke.edu", role = "aut"),
-    person("Ted", "Laderas", email = "tedladeras@gmail.com", role = "ctb"))
+    person("Ted", "Laderas", email = "tedladeras@gmail.com", role = "ctb"),
+    person("Nick", "Solomon", email = "nick.solomon@datacamp.com", role = "ctb"))
 Maintainer: Andrew Bray <abray@reed.edu>
 Description: The objective of this package is to perform inference using an expressive statistical grammar that coheres with the `tidyverse` design framework. 
 License: CC0
