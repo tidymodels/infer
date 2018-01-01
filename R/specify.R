@@ -32,6 +32,9 @@ specify <- function(x, formula, response = NULL, explanatory = NULL, success = N
   #   assertive::assert_is_subset(success, levels(response_col))
   # }
 
+ # Check if Andrew didn't do already:
+ # Ensure that response and explanatory aren't set to the same variable
+ 
   attr(x, "response")    <- substitute(response)
   attr(x, "explanatory") <- substitute(explanatory)
 
