@@ -4,7 +4,7 @@
 \alias{hypothesize}
 \title{Declare a null hypothesis}
 \usage{
-hypothesize(x, null = c("independence", "point"), ...)
+hypothesize(x, null = "independence", ...)
 }
 \arguments{
 \item{x}{a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}}
