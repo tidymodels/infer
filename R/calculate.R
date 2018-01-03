@@ -174,7 +174,8 @@ calculate <- function(x, stat, ...) {
           dplyr::group_by(replicate) %>% 
           dplyr::do(broom::tidy(stats::chisq.test(table(.[[as.character(attr(x, "response"))]], 
                                           .[[as.character(attr(x, "explanatory"))]])))) %>% 
-          dplyr::select(replicate, stat = statistic)
+          dplyr::ungroup() %>% 
+          dplyr::transmute(replicate = as.factor(replicate), stat = statistic)
       }
     }
     

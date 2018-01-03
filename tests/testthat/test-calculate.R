@@ -121,7 +121,9 @@ test_that("chi-square matches chisq.test value", {
   trad_way <- gen_iris8 %>%
     dplyr::group_by(replicate) %>%
     dplyr::do(broom::tidy(stats::chisq.test(table(.$Petal.Length.Group, .$Species)))) %>%
-    dplyr::select(replicate, stat = statistic)
+    dplyr::select(replicate, stat = statistic) %>% 
+    dplyr::ungroup() %>% 
+    dplyr::mutate(replicate = as.factor(replicate))
   expect_equal(infer_way, trad_way)
   
   gen_iris9 <- iris %>% 
