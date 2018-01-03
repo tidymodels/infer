@@ -11,8 +11,8 @@
 #' @export
 
 specify <- function(x, formula, response = NULL, explanatory = NULL, success = NULL) {
+  assertive::assert_is_data.frame(x)
 
-  # assertive::assert_is_data.frame(x)
   # if(methods::hasArg(formula)) {
   #   assertive::assert_is_formula(formula)
   #   assertive::assert_is_subset(f_lhs(formula), colnames(x))
@@ -24,13 +24,22 @@ specify <- function(x, formula, response = NULL, explanatory = NULL, success = N
   #   assertive::assert_is_subset(explanatory_arg, colnames(x))
   # }
   #
- # Convert all character variables to be factor variables instead
- x <- dplyr::as_tibble(x) %>% mutate_if(is.character, as.factor)
+  # Convert all character variables to be factor variables instead
+  x <- dplyr::as_tibble(x) %>% mutate_if(is.character, as.factor)
   #
   # response_col <- rlang::eval_tidy(enquo(response), x)
   # if(is.factor(response_col)) {
   #   assertive::assert_is_subset(success, levels(response_col))
   # }
+
+  if(!methods::hasArg(formula) && !methods::hasArg(response)) {
+    stop("Please specify the response variable.")
+  }
+  if(methods::hasArg(formula)) {
+    if(!rlang::is_formula(formula)) {
+      stop("The `formula` argument is not recognized as a formula.")
+    }
+  }
 
   attr(x, "response")    <- substitute(response)
   attr(x, "explanatory") <- substitute(explanatory)
@@ -39,6 +48,19 @@ specify <- function(x, formula, response = NULL, explanatory = NULL, success = N
     attr(x, "response")    <- f_lhs(formula)
     attr(x, "explanatory") <- f_rhs(formula)
   }
+
+  if(!as.character(attr(x, "response")) %in% names(x)) {
+    stop(paste0("The response variable `", attr(x, "response"), "` cannot be found in this dataframe."))
+  }
+
+  if(!is.null(attr(x, "explanatory")) || as.character(attr(x, "explanatory")) == "1") {
+    if(!as.character(attr(x, "explanatory")) %in% names(x)) {
+      stop(paste0("The explanatory variable `", attr(x, "explanatory"), "` cannot be found in this dataframe."))
+    }
+    if(identical(as.character(attr(x, "response")), as.character(attr(x, "explanatory")))) {
+
+    }
+
 
   attr(x, "success") <- success
 
