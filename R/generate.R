@@ -17,10 +17,17 @@
 #' }
 
 generate <- function(x, reps = 1, type = "bootstrap", ...) {
-  
-  ## Need assertion here that `type = "permute"` requires 
-  ## that both the `explanatory` and `response` attributes to be set
-  
+
+  if (type == "permute" &&
+      any(is.null(attr(x, "response")), is.null(attr(x, "explanatory")))) {
+    stop("Please `specify()` an explantory and a response variable when permuting.")
+  }
+  if (type == "simulate" &&
+      attr(x, "null") != "point" &&
+      !(length(grep("p", names(attr(x, "params")))) >= 1)) {
+    stop("Simulation requires a `point` null hypothesis on proportions.")
+  }
+
   if (type == "bootstrap") {
     return(bootstrap(x, reps, ...))
   }
