@@ -16,8 +16,6 @@ test_that("data argument", {
 
 test_that("response and explanatory arguments", {
 
-  expect_error(specify(mtcars, am ~ NULL, explanatory = vs, success = "1"))
-  expect_error(specify(mtcars, NULL ~ vs, response = am, success = "1"))
   expect_error(specify(mtcars, response = blah))
   expect_error(specify(mtcars, formula = mpg ~ blah))
   expect_error(specify(blah ~ cyl))
@@ -28,7 +26,6 @@ test_that("response and explanatory arguments", {
 
 test_that("success argument", {
 
-  expect_error(specify(mtcars, response = vs))
   expect_error(specify(mtcars, response = vs, success = 1))
   expect_error(specify(mtcars, response = vs, success = "bogus"))
 
