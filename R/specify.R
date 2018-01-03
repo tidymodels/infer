@@ -16,11 +16,11 @@ specify <- function(x, formula, response = NULL, explanatory = NULL, success = N
   # Convert all character variables to be factor variables
   x <- dplyr::as_tibble(x) %>% mutate_if(is.character, as.factor)
 
-  if(!methods::hasArg(formula) && !methods::hasArg(response)) {
+  if (!methods::hasArg(formula) && !methods::hasArg(response)) {
     stop("Please specify the response variable.")
   }
-  if(methods::hasArg(formula)) {
-    if(!rlang::is_formula(formula)) {
+  if (methods::hasArg(formula)) {
+    if (!rlang::is_formula(formula)) {
       stop("The `formula` argument is not recognized as a formula.")
     }
   }
@@ -34,38 +34,34 @@ specify <- function(x, formula, response = NULL, explanatory = NULL, success = N
   }
   response_col <- rlang::eval_tidy(attr(x, "response"), x)
 
-  if(!as.character(attr(x, "response")) %in% names(x)) {
+  if (!as.character(attr(x, "response")) %in% names(x)) {
     stop(paste0("The response variable `", attr(x, "response"), "` cannot be found in this dataframe."))
   }
 
-  if(is.factor(response_col) && is.null(success)) {
-    stop(paste0(attr(x, "response"), " is a categorical variable and requires the addition of the `success` argument."))
-  }
-
   # if there's an explanatory var
-  if(!(is.null(attr(x, "explanatory")) || as.character(attr(x, "explanatory")) == "1")) {
-    if(!as.character(attr(x, "explanatory")) %in% names(x)) {
+  if (!(is.null(attr(x, "explanatory")) || as.character(attr(x, "explanatory")) == "1")) {
+    if (!as.character(attr(x, "explanatory")) %in% names(x)) {
       stop(paste0("The explanatory variable `", attr(x, "explanatory"), "` cannot be found in this dataframe."))
     }
-    if(identical(as.character(attr(x, "response")), as.character(attr(x, "explanatory")))) {
+    if (identical(as.character(attr(x, "response")), as.character(attr(x, "explanatory")))) {
       stop("The response and explanatory variables must be different from one another.")
     }
     explanatory_col <- rlang::eval_tidy(attr(x, "explanatory"), x)
-    if(is.character(explanatory_col)) {
+    if (is.character(explanatory_col)) {
       rlang::eval_tidy(attr(x, "explanatory"), x) <- as.factor(explanatory_col)
     }
   }
 
   attr(x, "success") <- success
 
-  if(!is.null(success)) {
-    if(!is.character(success)) {
+  if (!is.null(success)) {
+    if (!is.character(success)) {
       stop("`success` must be a string.")
     }
-    if(!is.factor(response_col)) {
+    if (!is.factor(response_col)) {
       stop("`success` should only be specified if the response is a categorical variable.")
     }
-    if(!(success %in% levels(response_col))) {
+    if (!(success %in% levels(response_col))) {
       stop(paste0(success, " is not a valid level of ", attr(x, "response"), "."))
     }
   }
