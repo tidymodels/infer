@@ -101,10 +101,10 @@ parse_params <- function(dots, x) {
   # Outside if() is needed to ensure an error does not occur in referencing the
   # 0 index of dots
   if (length(p_ind)) {
-    if (is.null(attr(x, "success"))) {
-      stop("A point null with proportions requires that `success` be indicated in `specify()`.")
-    }
     if (length(dots[[p_ind]]) == 1) {
+      if (attr(x, "null") == "point" && is.null(attr(x, "success"))) {
+        stop("A point null regarding a proportion requires that `success` be indicated in `specify()`.")
+      }
       if(dots$p < 0 | dots$p > 1)
         stop("The value suggested for `p` is not between 0 and 1, inclusive.")
       missing_lev <- setdiff(levels(pull(x, !!attr(x, "response"))), attr(x, "success"))
