@@ -4,9 +4,9 @@ Infer
 
 ------------------------------------------------------------------------
 
-[![Travis-CI Build Status](https://travis-ci.org/andrewpbray/infer.svg?branch=master)](https://travis-ci.org/andrewpbray/infer)
+[![Travis-CI Build Status](https://travis-ci.org/andrewpbray/infer.svg?branch=master)](https://travis-ci.org/andrewpbray/infer) [![Coverage Status](https://img.shields.io/codecov/c/github/andrewpbray/infer//master.svg)](https://codecov.io/github/andrewpbray/infer/?branch=master)
 
-The objective of this package is to perform inference using an expressive statistical grammar that coheres with the `tidyverse` design framework.
+The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the `tidyverse` design framework.
 
 ![](https://raw.githubusercontent.com/andrewpbray/infer/master/figs/ht-diagram.png)
 

@@ -17,6 +17,10 @@
 #' }
 
 generate <- function(x, reps = 1, type = "bootstrap", ...) {
+  
+  ## Need assertion here that `type = "permute"` requires 
+  ## that both the `explanatory` and `response` attributes to be set
+  
   if (type == "bootstrap") {
     return(bootstrap(x, reps, ...))
   }
