@@ -27,6 +27,11 @@ generate <- function(x, reps = 1, type = "bootstrap", ...) {
       !(length(grep("p", names(attr(x, "params")))) >= 1)) {
     stop("Simulation requires a `point` null hypothesis on proportions.")
   }
+  if (type == "bootstrap" &&
+      names(attr(x, "params")) != "mu" &&
+      !is.null(attr(x, "null"))) {
+    stop("Bootstrapping is inappropriate in this setting. Consider using `type = permute` or `type = simulate`.")
+  }
 
   if (type == "bootstrap") {
     return(bootstrap(x, reps, ...))
