@@ -159,16 +159,23 @@ calculate <- function(x, stat, ...) {
         df_out <- x %>%
           dplyr::summarize(stat = sum((table(UQ(attr(x, "response"))) - expected)^2 / expected, ...))
       } else {
-        obs_tab <- x %>%
-          dplyr::filter(replicate == 1) %>%
-          dplyr::ungroup() %>%
-          dplyr::select(!!attr(x, "response"), UQ(attr(x, "explanatory"))) %>%
-          table()
-        expected <- outer(rowSums(obs_tab), colSums(obs_tab)) / n
-        df_out <- x %>%
-          dplyr::summarize(stat = sum((table(UQ(attr(x, "response")), UQ(attr(x, "explanatory")))
-                                       - expected)^2 / expected, ...))
+        # This is not matching with chisq.test
+        # obs_tab <- x %>%
+        #   dplyr::filter(replicate == 1) %>%
+        #   dplyr::ungroup() %>%
+        #   dplyr::select(!!attr(x, "response"), UQ(attr(x, "explanatory"))) %>%
+        #   table()
+        # expected <- outer(rowSums(obs_tab), colSums(obs_tab)) / n
+        # df_out <- x %>%
+        #   dplyr::summarize(stat = sum((table(UQ(attr(x, "response")), UQ(attr(x, "explanatory")))
+        #                                - expected)^2 / expected, ...))
         
+        df_out <- x %>% 
+          dplyr::group_by(replicate) %>% 
+          dplyr::do(broom::tidy(stats::chisq.test(table(.[[as.character(attr(x, "response"))]], 
+                                          .[[as.character(attr(x, "explanatory"))]])))) %>% 
+          dplyr::ungroup() %>% 
+          dplyr::transmute(replicate = as.factor(replicate), stat = statistic)
       }
     }
     
