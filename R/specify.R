@@ -40,8 +40,8 @@ specify <- function(x, formula, response = NULL, explanatory = NULL, success = N
   }
 
   # if there's an explanatory var
-  if (!(is.null(attr(x, "explanatory")) || as.character(attr(x, "explanatory")) != "1")) {
-    if (!as.character(attr(x, "explanatory")) %in% names(x)) {
+  if (!(is.null(attr(x, "explanatory"))) || as.character(attr(x, "explanatory")) != "1") {
+    if (!(as.character(attr(x, "explanatory")) %in% names(x))) {
       stop(paste0("The explanatory variable `", attr(x, "explanatory"), "` cannot be found in this dataframe."))
     }
     if (identical(as.character(attr(x, "response")), as.character(attr(x, "explanatory")))) {
@@ -64,9 +64,6 @@ specify <- function(x, formula, response = NULL, explanatory = NULL, success = N
     }
     if (!(success %in% levels(response_col))) {
       stop(paste0(success, " is not a valid level of ", attr(x, "response"), "."))
-    }
-    if (!is.null(attr(x, "explanatory"))) {
-      stop("`success` should not be included if both a response and explanatory variable have been specified.")
     }
     if (sum(table(response_col) > 0) > 2) {
       stop("`success` can only be used if the response has two levels. `filter()` can reduce a variable to two levels.")
