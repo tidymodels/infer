@@ -9,7 +9,7 @@ hypothesize(x, null, ...)
 \arguments{
 \item{x}{a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}}
 
-\item{null}{the null hypothesis. Options include "independence" and "point".}
+\item{null}{the null hypothesis. Options include "independence" and "point"}
 
 \item{...}{arguments passed to downstream functions}
 }
@@ -21,11 +21,9 @@ parameter information stored as well
 Declare a null hypothesis
 }
 \examples{
-if (require(dplyr)) {
-
 # One binary variable
   mtcars \%>\%
-    mutate(am = factor(am)) \%>\%
+    dplyr::mutate(am = factor(am)) \%>\%
     specify(response = am, success = "1") \%>\%
     hypothesize(null = "point", p = 0.75) \%>\%
     generate(reps = 100, type = "simulate") \%>\%
@@ -33,10 +31,9 @@ if (require(dplyr)) {
 
 # Permutation test
   mtcars \%>\%
-    mutate(cyl = factor(cyl)) \%>\%
+    dplyr::mutate(cyl = factor(cyl)) \%>\%
     specify(mpg ~ cyl) \%>\%
     hypothesize(null = "independence") \%>\%
     generate(reps = 100, type = "permute") \%>\%
     calculate(stat = "F")
-}
 }
