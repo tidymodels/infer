@@ -46,10 +46,10 @@ Hypothesis test for a difference in proportions:
 
 ```{r}
 mtcars %>%
-  specify(am ~ vs) %>% # alt: response = am, explanatory = vs
+  specify(am ~ vs, success = "1") %>%
   hypothesize(null = "independence") %>%
   generate(reps = 100, type = "permute") %>%
-  calculate(stat = "diff in props")
+  calculate(stat = "diff in props", order = c("1", "0"))
 ```
 
 Confidence interval for a difference in means:
@@ -58,5 +58,5 @@ Confidence interval for a difference in means:
 mtcars %>%
   specify(mpg ~ am) %>%
   generate(reps = 100, type = "bootstrap") %>%
-  calculate(stat = "diff in means")
+  calculate(stat = "diff in means", order = c("1", "0"))
 ```
