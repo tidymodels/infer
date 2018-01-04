@@ -4,7 +4,7 @@
 \alias{hypothesize}
 \title{Declare a null hypothesis}
 \usage{
-hypothesize(x, null = c("independence", "point"), ...)
+hypothesize(x, null, ...)
 }
 \arguments{
 \item{x}{a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}}
@@ -12,6 +12,10 @@ hypothesize(x, null = c("independence", "point"), ...)
 \item{null}{the null hypothesis. Options include "independence" and "point".}
 
 \item{...}{arguments passed to downstream functions}
+}
+\value{
+A tibble containing the response (and explanatory, if specified) variable data with
+parameter information stored as well
 }
 \description{
 Declare a null hypothesis

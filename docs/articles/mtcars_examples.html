@@ -29,7 +29,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
+  <a href="..//index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -78,7 +78,7 @@
       <h1>Examples using <code>mtcars</code> data</h1>
                         <h4 class="author">Chester Ismay and Andrew bray</h4>
             
-            <h4 class="date">2017-12-29</h4>
+            <h4 class="date">2018-01-04</h4>
           </div>
 
     
@@ -108,16 +108,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate     stat
 ##        &lt;int&gt;    &lt;dbl&gt;
-##  1         1 24.67188
-##  2         2 25.09688
-##  3         3 26.48125
-##  4         4 26.10938
-##  5         5 24.94375
-##  6         6 22.55937
-##  7         7 22.55313
-##  8         8 26.00000
-##  9         9 24.31563
-## 10        10 24.49063
+##  1         1 24.48750
+##  2         2 25.85000
+##  3         3 24.89062
+##  4         4 24.94375
+##  5         5 23.91250
+##  6         6 25.20312
+##  7         7 24.84375
+##  8         8 23.67188
+##  9         9 27.67500
+## 10        10 25.07500
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable (median)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -128,16 +128,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
-##  1         1 19.20
-##  2         2 16.55
-##  3         3 19.70
-##  4         4 19.20
-##  5         5 17.70
-##  6         6 19.20
-##  7         7 20.35
-##  8         8 19.45
-##  9         9 18.40
-## 10        10 17.70
+##  1         1 25.75
+##  2         2 26.00
+##  3         3 23.65
+##  4         4 25.50
+##  5         5 27.80
+##  6         6 23.65
+##  7         7 26.90
+##  8         8 28.25
+##  9         9 26.90
+## 10        10 26.25
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable (standard deviation)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -148,16 +148,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate     stat
 ##        &lt;int&gt;    &lt;dbl&gt;
-##  1         1 5.925393
-##  2         2 6.801127
-##  3         3 6.868605
-##  4         4 6.661396
-##  5         5 6.728328
-##  6         6 6.286666
-##  7         7 6.450456
-##  8         8 5.450103
-##  9         9 6.594328
-## 10        10 5.078297
+##  1         1 5.318477
+##  2         2 5.968128
+##  3         3 4.754335
+##  4         4 5.847015
+##  5         5 6.887363
+##  6         6 6.377897
+##  7         7 5.174572
+##  8         8 6.636865
+##  9         9 4.411856
+## 10        10 5.335698
 ## # ... with 90 more rows</code></pre>
 <p>One categorical (2 level) variable</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -168,36 +168,36 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate    stat
 ##       &lt;fctr&gt;   &lt;dbl&gt;
-##  1         1 0.18750
-##  2         2 0.25000
-##  3         3 0.21875
-##  4         4 0.34375
-##  5         5 0.43750
+##  1         1 0.25000
+##  2         2 0.18750
+##  3         3 0.28125
+##  4         4 0.37500
+##  5         5 0.31250
 ##  6         6 0.28125
-##  7         7 0.12500
-##  8         8 0.31250
-##  9         9 0.37500
-## 10        10 0.28125
+##  7         7 0.25000
+##  8         8 0.28125
+##  9         9 0.15625
+## 10        10 0.18750
 ## # ... with 90 more rows</code></pre>
 <p>Two categorical (2 level) variables</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(am <span class="op">~</span><span class="st"> </span>vs, <span class="dt">success =</span> <span class="st">"1"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = am, explanatory = vs</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</code></pre></div>
 <pre><code>## # A tibble: 100 x 2
 ##    replicate        stat
 ##        &lt;int&gt;       &lt;dbl&gt;
-##  1         1  0.02380952
-##  2         2 -0.12698413
-##  3         3  0.18253968
-##  4         4 -0.10317460
-##  5         5  0.07142857
-##  6         6  0.12698413
-##  7         7 -0.04761905
-##  8         8 -0.17460317
-##  9         9  0.18253968
-## 10        10  0.32539683
+##  1         1 -0.29365079
+##  2         2  0.11111111
+##  3         3 -0.29365079
+##  4         4  0.07142857
+##  5         5  0.12698413
+##  6         6  0.26984127
+##  7         7 -0.22222222
+##  8         8 -0.05555556
+##  9         9 -0.23809524
+## 10        10  0.15873016
 ## # ... with 90 more rows</code></pre>
 <p>One categorical (&gt;2 level) - GoF</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -208,16 +208,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate   stat
 ##       &lt;fctr&gt;  &lt;dbl&gt;
-##  1         1 3.1875
-##  2         2 4.5000
-##  3         3 0.7500
-##  4         4 0.1875
-##  5         5 1.6875
-##  6         6 1.6875
-##  7         7 3.1875
-##  8         8 0.7500
-##  9         9 0.1875
-## 10        10 1.5000
+##  1         1 4.7500
+##  2         2 2.0000
+##  3         3 1.0000
+##  4         4 2.6875
+##  5         5 2.2500
+##  6         6 0.7500
+##  7         7 0.5000
+##  8         8 1.5000
+##  9         9 1.6875
+## 10        10 2.2500
 ## # ... with 90 more rows</code></pre>
 <p>Two categorical (&gt;2 level) variables</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -225,59 +225,358 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)</code></pre></div>
+<pre><code>## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect
+
+## Warning in stats::chisq.test(table(.[[as.character(attr(x,
+## "response"))]], : Chi-squared approximation may be incorrect</code></pre>
 <pre><code>## # A tibble: 100 x 2
 ##    replicate      stat
-##        &lt;int&gt;     &lt;dbl&gt;
-##  1         1 1.3214575
-##  2         2 5.2603817
-##  3         3 1.7818392
-##  4         4 9.6573742
-##  5         5 5.3112782
-##  6         6 1.7022556
-##  7         7 0.4751880
-##  8         8 0.8661654
-##  9         9 1.9322152
-## 10        10 3.3517640
+##       &lt;fctr&gt;     &lt;dbl&gt;
+##  1         1 2.2089613
+##  2         2 0.6502410
+##  3         3 1.3465832
+##  4         4 0.1336675
+##  5         5 1.8302540
+##  6         6 0.5917753
+##  7         7 0.2735043
+##  8         8 3.9115037
+##  9         9 2.5714636
+## 10        10 3.0343064
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable one categorical (2 levels) (diff in means)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = mpg, explanatory = am</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</code></pre></div>
 <pre><code>## # A tibble: 100 x 2
 ##    replicate       stat
 ##        &lt;int&gt;      &lt;dbl&gt;
-##  1         1  3.7497976
-##  2         2 -2.9603239
-##  3         3  1.9433198
-##  4         4  1.1603239
-##  5         5 -2.9550607
-##  6         6 -0.6902834
-##  7         7 -7.0388664
-##  8         8 -1.7291498
-##  9         9 -3.0931174
-## 10        10  1.9967611
+##  1         1  3.3380567
+##  2         2  1.7688259
+##  3         3  0.6923077
+##  4         4  2.6522267
+##  5         5  1.0182186
+##  6         6 -2.2368421
+##  7         7 -3.2380567
+##  8         8  2.5761134
+##  9         9 -2.7481781
+## 10        10 -0.7647773
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable one categorical (2 levels) (diff in medians)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = mpg, explanatory = am</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in medians"</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in medians"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</code></pre></div>
 <pre><code>## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
-##  1         1   1.7
-##  2         2   1.8
-##  3         3  -1.9
-##  4         4   2.3
-##  5         5   1.9
-##  6         6  -2.2
-##  7         7   2.3
-##  8         8  -3.3
-##  9         9  -2.2
-## 10        10  -1.4
+##  1         1  -1.1
+##  2         2   0.5
+##  3         3   0.6
+##  4         4  -1.4
+##  5         5   1.1
+##  6         6   2.7
+##  7         7   0.0
+##  8         8  -1.9
+##  9         9   3.9
+## 10        10  -1.3
 ## # ... with 90 more rows</code></pre>
 <p>One numerical one categorical (&gt;2 levels) - ANOVA</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -286,18 +585,18 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>)</code></pre></div>
 <pre><code>## # A tibble: 100 x 2
-##    replicate      stat
-##        &lt;int&gt;     &lt;dbl&gt;
-##  1         1 0.5440301
-##  2         2 0.2084452
-##  3         3 0.3110074
-##  4         4 0.3858263
-##  5         5 1.1966978
-##  6         6 1.4157062
-##  7         7 3.1676234
-##  8         8 0.9258774
-##  9         9 0.0995048
-## 10        10 0.3809027
+##    replicate         stat
+##        &lt;int&gt;        &lt;dbl&gt;
+##  1         1  1.530991833
+##  2         2  0.196540347
+##  3         3  0.003075894
+##  4         4  1.907259179
+##  5         5  0.164987437
+##  6         6 11.002965930
+##  7         7  0.480954340
+##  8         8  0.196419594
+##  9         9  0.461585943
+## 10        10  0.031919626
 ## # ... with 90 more rows</code></pre>
 <p>Two numerical vars - SLR</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -306,18 +605,18 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>)</code></pre></div>
 <pre><code>## # A tibble: 100 x 2
-##    replicate         stat
-##        &lt;int&gt;        &lt;dbl&gt;
-##  1         1  0.005091074
-##  2         2  0.037458259
-##  3         3 -0.025373580
-##  4         4  0.025114148
-##  5         5  0.025609938
-##  6         6  0.012023906
-##  7         7 -0.005199410
-##  8         8  0.019923487
-##  9         9  0.005610024
-## 10        10 -0.015441472
+##    replicate          stat
+##        &lt;int&gt;         &lt;dbl&gt;
+##  1         1 -0.0179597535
+##  2         2  0.0060884875
+##  3         3  0.0138482950
+##  4         4  0.0055118522
+##  5         5 -0.0206695316
+##  6         6  0.0003511706
+##  7         7 -0.0004030657
+##  8         8 -0.0066368163
+##  9         9  0.0046055764
+## 10        10 -0.0243241423
 ## # ... with 90 more rows</code></pre>
 <div id="confidence-intervals" class="section level3">
 <h3 class="hasAnchor">
@@ -330,16 +629,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate     stat
 ##        &lt;int&gt;    &lt;dbl&gt;
-##  1         1 20.85938
-##  2         2 20.75000
-##  3         3 22.95312
-##  4         4 19.92188
-##  5         5 21.07187
-##  6         6 20.49375
-##  7         7 18.80937
-##  8         8 20.18437
-##  9         9 20.34688
-## 10        10 18.40312
+##  1         1 20.91875
+##  2         2 18.56563
+##  3         3 20.11563
+##  4         4 19.05313
+##  5         5 20.35938
+##  6         6 19.73438
+##  7         7 20.15625
+##  8         8 20.98438
+##  9         9 22.40000
+## 10        10 19.46250
 ## # ... with 90 more rows</code></pre>
 <p>One numerical (one median)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -349,16 +648,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
-##  1         1 19.45
-##  2         2 19.20
-##  3         3 17.55
-##  4         4 21.20
-##  5         5 20.35
-##  6         6 21.00
+##  1         1 21.00
+##  2         2 16.85
+##  3         3 18.65
+##  4         4 17.70
+##  5         5 22.15
+##  6         6 20.35
 ##  7         7 18.70
-##  8         8 17.55
-##  9         9 21.00
-## 10        10 19.70
+##  8         8 19.20
+##  9         9 17.70
+## 10        10 17.95
 ## # ... with 90 more rows</code></pre>
 <p>One numerical (standard deviation)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -368,16 +667,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate     stat
 ##        &lt;int&gt;    &lt;dbl&gt;
-##  1         1 5.971974
-##  2         2 6.188334
-##  3         3 6.536127
-##  4         4 6.713368
-##  5         5 6.308286
-##  6         6 4.768851
-##  7         7 6.817955
-##  8         8 6.394551
-##  9         9 5.031818
-## 10        10 6.386193
+##  1         1 5.542213
+##  2         2 5.614953
+##  3         3 6.414952
+##  4         4 6.242653
+##  5         5 6.823063
+##  6         6 5.330609
+##  7         7 7.247296
+##  8         8 6.347822
+##  9         9 6.004699
+## 10        10 6.273022
 ## # ... with 90 more rows</code></pre>
 <p>One categorical (one proportion)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -387,54 +686,54 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate    stat
 ##        &lt;int&gt;   &lt;dbl&gt;
-##  1         1 0.31250
-##  2         2 0.25000
-##  3         3 0.56250
-##  4         4 0.37500
-##  5         5 0.34375
-##  6         6 0.43750
-##  7         7 0.34375
+##  1         1 0.37500
+##  2         2 0.31250
+##  3         3 0.31250
+##  4         4 0.40625
+##  5         5 0.56250
+##  6         6 0.40625
+##  7         7 0.37500
 ##  8         8 0.40625
-##  9         9 0.40625
+##  9         9 0.34375
 ## 10        10 0.43750
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable one categorical (2 levels) (diff in means)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</code></pre></div>
 <pre><code>## # A tibble: 100 x 2
 ##    replicate      stat
 ##        &lt;int&gt;     &lt;dbl&gt;
-##  1         1  8.006667
-##  2         2  6.771818
-##  3         3  8.045000
-##  4         4  5.717255
-##  5         5  6.311667
-##  6         6  2.699595
-##  7         7  6.763333
-##  8         8  7.668421
-##  9         9  5.968831
-## 10        10 10.130370
+##  1         1 -5.364372
+##  2         2 -7.269264
+##  3         3 -7.161905
+##  4         4 -4.561961
+##  5         5 -9.762698
+##  6         6 -8.400000
+##  7         7 -6.306073
+##  8         8 -8.075000
+##  9         9 -5.716883
+## 10        10 -5.804762
 ## # ... with 90 more rows</code></pre>
 <p>Two categorical variables (diff in proportions)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(am <span class="op">~</span><span class="st"> </span>vs, <span class="dt">success =</span> <span class="st">"1"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</code></pre></div>
 <pre><code>## # A tibble: 100 x 2
 ##    replicate        stat
 ##        &lt;int&gt;       &lt;dbl&gt;
-##  1         1  0.29959514
-##  2         2 -0.30588235
-##  3         3  0.18750000
-##  4         4  0.05314010
-##  5         5  0.16666667
-##  6         6  0.07058824
-##  7         7  0.25101215
-##  8         8 -0.05000000
-##  9         9  0.12500000
-## 10        10  0.22267206
+##  1         1 -0.39393939
+##  2         2 -0.28333333
+##  3         3 -0.40579710
+##  4         4 -0.13636364
+##  5         5 -0.38181818
+##  6         6 -0.23809524
+##  7         7 -0.31250000
+##  8         8 -0.10317460
+##  9         9 -0.07359307
+## 10        10 -0.18857143
 ## # ... with 90 more rows</code></pre>
 <p>Two numerical vars - SLR</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -444,16 +743,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate        stat
 ##        &lt;int&gt;       &lt;dbl&gt;
-##  1         1 -0.06712336
-##  2         2 -0.09517209
-##  3         3 -0.04876789
-##  4         4 -0.07504706
-##  5         5 -0.06632348
-##  6         6 -0.05930276
-##  7         7 -0.08632499
-##  8         8 -0.09076651
-##  9         9 -0.06297375
-## 10        10 -0.08587812
+##  1         1 -0.05952141
+##  2         2 -0.05333991
+##  3         3 -0.08101046
+##  4         4 -0.06792162
+##  5         5 -0.05519318
+##  6         6 -0.07266634
+##  7         7 -0.06213196
+##  8         8 -0.06684122
+##  9         9 -0.06901628
+## 10        10 -0.06444952
 ## # ... with 90 more rows</code></pre>
 </div>
 </div>

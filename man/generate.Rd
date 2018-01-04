@@ -15,17 +15,19 @@ generate(x, reps = 1, type = "bootstrap", ...)
 
 \item{...}{currently ignored}
 }
+\value{
+A tibble containing a \code{replicate} column and corresponding \code{stat} column 
+of calculated statistics
+}
 \description{
 Generate resamples
 }
 \examples{
 
 #' # Permutation test for two binary variables
-if (require(dplyr)) {
   mtcars \%>\%
-    mutate(am = factor(am), vs = factor(vs)) \%>\%
+    dplyr::mutate(am = factor(am), vs = factor(vs)) \%>\%
     specify(am ~ vs, success = "1") \%>\%
     hypothesize(null = "independence") \%>\%
     generate(reps = 100, type = "permute")
-}
 }

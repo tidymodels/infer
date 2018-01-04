@@ -3,20 +3,36 @@
 #' @param reps the number of resamples to generate
 #' @param type currently either \code{bootstrap}, \code{permute}, or \code{simulate}
 #' @param ... currently ignored
+#' @return A tibble containing \code{rep} generated datasets, indicated by the 
+#' \code{replicate} column.
 #' @importFrom dplyr group_by
 #' @export
 #' @examples
 #'
 #' #' # Permutation test for two binary variables
-#' if (require(dplyr)) {
 #'   mtcars %>%
-#'     mutate(am = factor(am), vs = factor(vs)) %>%
+#'     dplyr::mutate(am = factor(am), vs = factor(vs)) %>%
 #'     specify(am ~ vs, success = "1") %>%
 #'     hypothesize(null = "independence") %>%
 #'     generate(reps = 100, type = "permute")
-#' }
 
 generate <- function(x, reps = 1, type = "bootstrap", ...) {
+
+  if (type == "permute" &&
+      any(is.null(attr(x, "response")), is.null(attr(x, "explanatory")))) {
+    stop("Please `specify()` an explanatory and a response variable when permuting.")
+  }
+  if (type == "simulate" &&
+      attr(x, "null") != "point" &&
+      !(length(grep("p", names(attr(x, "params")))) >= 1)) {
+    stop("Simulation requires a `point` null hypothesis on proportions.")
+  }
+  if (type == "bootstrap" &&
+      !(attr(attr(x, "params"), "names") %in% c("mu", "med", "sigma")) &&
+      !is.null(attr(x, "null"))) {
+    stop("Bootstrapping is inappropriate in this setting. Consider using `type = permute` or `type = simulate`.")
+  }
+
   if (type == "bootstrap") {
     return(bootstrap(x, reps, ...))
   }
@@ -40,21 +56,15 @@ bootstrap <- function(x, reps = 1, ...) {
     }
 
     # Similarly for median
-    if(attr(attr(x, "params"), "names") == "Med"){
+    if(attr(attr(x, "params"), "names") == "med"){
       col <- as.character(attr(x, "response"))
       x[[col]] <- x[[col]] - stats::median(x[[col]], na.rm = TRUE) + attr(x, "params")
     }
 
     # Similarly for sd
-    if(attr(attr(x, "params"), "names") == "sd"){
+    if(attr(attr(x, "params"), "names") == "sigma"){
       col <- as.character(attr(x, "response"))
       x[[col]] <- x[[col]] - stats::sd(x[[col]], na.rm = TRUE) + attr(x, "params")
-    }
-
-    # Similarly for sd
-    if(attr(attr(x, "params"), "names") == "sd"){
-      col <- as.character(attr(x, "response"))
-      x[[col]] <- x[[col]] - stats::sd(x[[col]]) + attr(x, "params")
     }
   }
 
@@ -115,9 +125,7 @@ simulate <- function(x, reps = 1, ...) {
   attr(rep_tbl, "response") <- attr(x, "response")
   attr(rep_tbl, "success") <- attr(x, "success")
   attr(rep_tbl, "explanatory") <- attr(x, "explanatory")
-  #  attr(rep_tbl, "ci") <- attr(tbl, "ci")
-  # TODO: we may want to clean up this object before sending it out - do we
-  # really need all of the attributes() that it spits out?
+
   return(dplyr::group_by(rep_tbl, replicate))
 }
 
@@ -158,6 +166,5 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
                    tbl[i, ])
   rep_tbl <- dplyr::as_tibble(rep_tbl)
   names(rep_tbl)[-1] <- names(tbl)
-  #  attr(rep_tbl, "ci") <- attr(tbl, "ci")
   dplyr::group_by(rep_tbl, replicate)
 }
