@@ -37,4 +37,5 @@ test_that("hypothesize arguments function",{
   expect_warning(mtcars %>% specify(mpg ~ vs) %>%
                    hypothesize(null = "independence", p = 0.5))
   
+  expect_error(mtcars_s %>% hypothesize())
 })
