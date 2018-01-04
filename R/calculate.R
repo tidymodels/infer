@@ -116,7 +116,13 @@ calculate <- function(x, stat, order = NULL, ...) {
       stop("Statistic is a difference, the explanatory variable should have two levels.")
     }
     if (is.null(order)){
-      stop("Statistic is a difference, specify the order in which to subtract.")
+      stop("Statistic is a difference, specify the `order`` in which to subtract. Check `?calculate` for details.")
+    }
+    if (!is.null(order) & xor(is.na(order[1]), is.na(order[2]))){
+      stop("Only one level specified in `order`. Both levels need to be specified.")
+    }
+    if (!is.null(order) & length(order) > 2){
+      stop("`order` is expecting only two entries.")
     }
     if (!is.null(order) & (order[1] %in% unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
       stop(paste(order[1], "is not a level of the explanatory variable."))
