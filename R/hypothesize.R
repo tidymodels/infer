@@ -26,7 +26,7 @@
 #'     calculate(stat = "F")
 #' }
 
-hypothesize <- function(x, null = "independence", ...) {
+hypothesize <- function(x, null, ...) {
 
   # error: x is not a dataframe
   if (!sum(class(x) %in% c("data.frame", "tbl", "tbl_df", "grouped_df"))) {
