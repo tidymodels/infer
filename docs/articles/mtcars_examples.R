@@ -42,3 +42,94 @@ mtcars %>%
   generate(reps = 100, type = "simulate") %>% 
   calculate(stat = "prop")
 
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(am ~ vs, success = "1") %>% # alt: response = am, explanatory = vs
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute") %>%
+  calculate(stat = "diff in props")
+
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(cyl ~ NULL) %>% # alt: response = cyl
+  hypothesize(null = "point", p = c("4" = .5, "6" = .25, "8" = .25)) %>%
+  generate(reps = 100, type = "simulate") %>%
+  calculate(stat = "Chisq")
+
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(cyl ~ am) %>% # alt: response = cyl, explanatory = am
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute") %>%
+  calculate(stat = "Chisq")
+
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute") %>%
+  calculate(stat = "diff in means")
+
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute") %>%
+  calculate(stat = "diff in medians")
+
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(mpg ~ cyl) %>% # alt: response = mpg, explanatory = cyl
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute") %>%
+  calculate(stat = "F")
+
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(mpg ~ hp) %>% # alt: response = mpg, explanatory = cyl
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute") %>%
+  calculate(stat = "slope")
+
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(response = mpg) %>%
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "mean")
+
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(response = mpg) %>%
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "median")
+
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(response = mpg) %>%
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "sd")
+
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(response = am, success = "1") %>%
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "prop")
+
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(mpg ~ am) %>%
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "diff in means")
+
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(am ~ vs, success = "1") %>%
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "diff in props")
+
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(mpg ~ hp) %>% 
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "slope")
+

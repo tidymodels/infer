@@ -43,7 +43,7 @@ x_tilde <- fli_small %>%
   pull()
 null <- fli_small %>%
   specify(response = dep_delay) %>%
-  hypothesize(null = "point", median = 10) %>% 
+  hypothesize(null = "point", med = 10) %>% 
   generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "median")
 ggplot(null, aes(x = stat)) +
