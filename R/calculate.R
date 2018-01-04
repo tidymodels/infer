@@ -4,6 +4,10 @@
 #' @param stat a string giving the type of the statistic to calculate. Current
 #' options include "mean", "median", "sd", "prop", "diff in means",
 #' "diff in medians", "diff in props", "Chisq", "F", and "slope".
+#' @param order a string vector of specifying the order in which the levels of 
+#' the explanatory variable should be ordered for subtraction, where 
+#' \code{order = c("first", "second")} means \code{("first" - "second")}
+#' Needed for inference on difference in means, medians, or proportions.
 #' @param ... to pass options like \code{na.rm = TRUE} into functions like mean, sd, etc.
 #' @return A tibble containing a \code{stat} column of calculated statistics
 #' @importFrom dplyr group_by summarize
@@ -19,7 +23,7 @@
 #'     generate(reps = 100, type = "permute") %>%
 #'     calculate(stat = "diff in props")
 
-calculate <- function(x, stat, ...) {
+calculate <- function(x, stat, order = NULL, ...) {
   
   # TODO: Check to see if dplyr::group_by(replicate) is needed since
   # generate() does a grouping of replicate
@@ -107,12 +111,27 @@ calculate <- function(x, stat, ...) {
     }
   }
   
+  if(stat %in% c("diff in means", "diff in medians", "diff in props")){
+    if(length(unique(x[[as.character(attr(x, "explanatory"))]])) != 2){
+      stop("Statistic is a difference, the explanatory variable should have two levels.")
+    }
+    if(is.null(order)){
+      stop("Statistic is a difference, specify the order in which to subtract.")
+    }
+    if(!is.null(order) & (order[1] %in% unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
+      stop(paste(order[1], "is not a level of the explanatory variable."))
+    }
+    if(!is.null(order) & (order[2] %in% unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
+      stop(paste(order[2], "is not a level of the explanatory variable."))
+    }
+  }
+  
   if (stat == "diff in means") {
     df_out <- x %>%
       dplyr::group_by(replicate, UQ(attr(x, "explanatory"))) %>%
       dplyr::summarize(xbar = mean(UQ(attr(x, "response"), ...))) %>%
       dplyr::group_by(replicate) %>%
-      dplyr::summarize(stat = diff(xbar))
+      dplyr::summarize(stat = xbar[UQ(attr(x, "explanatory")) == order[1]] - xbar[UQ(attr(x, "explanatory")) == order[2]])
   }
   
   if (stat == "diff in medians") {
@@ -120,7 +139,7 @@ calculate <- function(x, stat, ...) {
       dplyr::group_by(replicate, UQ(attr(x, "explanatory"))) %>%
       dplyr::summarize(xtilde = stats::median(UQ(attr(x, "response"), ...))) %>%
       dplyr::group_by(replicate) %>%
-      dplyr::summarize(stat = diff(xtilde))
+      dplyr::summarize(stat = xtilde[UQ(attr(x, "explanatory")) == order[1]] - xtilde[UQ(attr(x, "explanatory")) == order[2]])
   }
   
   if (stat %in% c("diff in props", "Chisq")){
@@ -147,7 +166,7 @@ calculate <- function(x, stat, ...) {
       df_out <- x %>%
         dplyr::group_by(replicate, UQ(attr(x, "explanatory"))) %>%
         dplyr::summarize(prop = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...)) %>%
-        dplyr::summarize(stat = diff(prop))
+        dplyr::summarize(stat = prop[UQ(attr(x, "explanatory")) == order[1]] - prop[UQ(attr(x, "explanatory")) == order[2]])
     }
     
     if (stat == "Chisq") {

@@ -80,7 +80,7 @@ mtcars %>%
   specify(am ~ vs, success = "1") %>% # alt: response = am, explanatory = vs
   hypothesize(null = "independence") %>%
   generate(reps = 100, type = "permute") %>%
-  calculate(stat = "diff in props")
+  calculate(stat = "diff in props", order = c("0", "1"))
 ```
 
 One categorical (>2 level) - GoF
@@ -110,7 +110,7 @@ mtcars %>%
   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
   hypothesize(null = "independence") %>%
   generate(reps = 100, type = "permute") %>%
-  calculate(stat = "diff in means")
+  calculate(stat = "diff in means", order = c("0", "1"))
 ```
 
 One numerical variable one categorical (2 levels) (diff in medians)
@@ -120,7 +120,7 @@ mtcars %>%
   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
   hypothesize(null = "independence") %>%
   generate(reps = 100, type = "permute") %>%
-  calculate(stat = "diff in medians")
+  calculate(stat = "diff in medians", order = c("0", "1"))
 ```
 
 One numerical one categorical (>2 levels) -  ANOVA
@@ -187,7 +187,7 @@ One numerical variable one categorical (2 levels) (diff in means)
 mtcars %>%
   specify(mpg ~ am) %>%
   generate(reps = 100, type = "bootstrap") %>%
-  calculate(stat = "diff in means")
+  calculate(stat = "diff in means", order = c("0", "1"))
 ```
 
 Two categorical variables (diff in proportions)
@@ -196,7 +196,7 @@ Two categorical variables (diff in proportions)
 mtcars %>%
   specify(am ~ vs, success = "1") %>%
   generate(reps = 100, type = "bootstrap") %>%
-  calculate(stat = "diff in props")
+  calculate(stat = "diff in props", order = c("0", "1"))
 ```
 
 Two numerical vars - SLR
