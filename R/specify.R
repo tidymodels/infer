@@ -40,8 +40,9 @@ specify <- function(x, formula, response = NULL, explanatory = NULL, success = N
   }
 
   # if there's an explanatory var
-  if (!(is.null(attr(x, "explanatory"))) || as.character(attr(x, "explanatory")) != "1") {
-    if (!(as.character(attr(x, "explanatory")) %in% names(x))) {
+
+  if (!(is.null(attr(x, "explanatory")))) {
+    if (!as.character(attr(x, "explanatory")) %in% names(x)) {
       stop(paste0("The explanatory variable `", attr(x, "explanatory"), "` cannot be found in this dataframe."))
     }
     if (identical(as.character(attr(x, "response")), as.character(attr(x, "explanatory")))) {

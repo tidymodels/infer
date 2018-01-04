@@ -121,21 +121,21 @@ test_that("chi-square matches chisq.test value", {
   trad_way <- gen_iris8 %>%
     dplyr::group_by(replicate) %>%
     dplyr::do(broom::tidy(stats::chisq.test(table(.$Petal.Length.Group, .$Species)))) %>%
-    dplyr::select(replicate, stat = statistic) %>% 
-    dplyr::ungroup() %>% 
+    dplyr::select(replicate, stat = statistic) %>%
+    dplyr::ungroup() %>%
     dplyr::mutate(replicate = as.factor(replicate))
   expect_equal(infer_way, trad_way)
-  
-  gen_iris9 <- iris %>% 
-    specify(Species ~ NULL) %>% 
-    hypothesize(null = "point", 
-                p = c("setosa" = 1/3, "versicolor" = 1/3, "virginica" = 1/3)) %>% 
+
+  gen_iris9 <- iris %>%
+    specify(Species ~ NULL) %>%
+    hypothesize(null = "point",
+                p = c("setosa" = 1/3, "versicolor" = 1/3, "virginica" = 1/3)) %>%
     generate(reps = 10, type = "simulate")
   infer_way <- calculate(gen_iris9, stat = "Chisq")
   #chisq.test way
-  trad_way <- gen_iris9 %>% 
-    dplyr::group_by(replicate) %>% 
-    dplyr::do(broom::tidy(stats::chisq.test(table(.$Species)))) %>% 
+  trad_way <- gen_iris9 %>%
+    dplyr::group_by(replicate) %>%
+    dplyr::do(broom::tidy(stats::chisq.test(table(.$Species)))) %>%
     dplyr::select(replicate, stat = statistic)
   expect_equal(infer_way, trad_way)
 })
