@@ -7,11 +7,9 @@
 #' @importFrom dplyr as.tbl
 #' @export
 #' @examples
-#' if (require(dplyr)) {
-#'
 #' # One binary variable
 #'   mtcars %>%
-#'     mutate(am = factor(am)) %>%
+#'     dplyr::mutate(am = factor(am)) %>%
 #'     specify(response = am, success = "1") %>%
 #'     hypothesize(null = "point", p = 0.75) %>%
 #'     generate(reps = 100, type = "simulate") %>%
@@ -19,12 +17,11 @@
 #'
 #' # Permutation test
 #'   mtcars %>%
-#'     mutate(cyl = factor(cyl)) %>%
+#'     dplyr::mutate(cyl = factor(cyl)) %>%
 #'     specify(mpg ~ cyl) %>%
 #'     hypothesize(null = "independence") %>%
 #'     generate(reps = 100, type = "permute") %>%
 #'     calculate(stat = "F")
-#' }
 
 hypothesize <- function(x, null, ...) {
 

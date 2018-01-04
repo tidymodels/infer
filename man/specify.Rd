@@ -11,11 +11,11 @@ specify(x, formula, response = NULL, explanatory = NULL, success = NULL)
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
 
-\item{response}{the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument.}
+\item{response}{the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument}
 
 \item{explanatory}{the variable name in \code{x} that will serve as the explanatory variable}
 
-\item{success}{the level of \code{response} that will be considered a success, as a string. Needed for inference on one proportion or a difference in proportions.}
+\item{success}{the level of \code{response} that will be considered a success, as a string. Needed for inference on one proportion or a difference in proportions}
 }
 \value{
 A tibble containing the response (and explanatory, if specified) variable data
