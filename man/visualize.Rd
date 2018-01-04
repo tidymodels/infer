@@ -2,7 +2,7 @@
 % Please edit documentation in R/visualize.R
 \name{visualize}
 \alias{visualize}
-\title{(Currently) Visualize the resampling distribution 
+\title{(Currently) Visualize the randomization-based distribution 
 (To be updated to include theory-based distributions)}
 \usage{
 visualize(df, bins = 30, ...)
@@ -14,7 +14,12 @@ visualize(df, bins = 30, ...)
 
 \item{...}{currently ignored}
 }
+\value{
+A ggplot object showing the randomization-based distribution as a histogram.
+Preferable to use the ggplot2 package directly here as a histogram does not always
+display the distribution well.
+}
 \description{
-(Currently) Visualize the resampling distribution 
+(Currently) Visualize the randomization-based distribution 
 (To be updated to include theory-based distributions)
 }

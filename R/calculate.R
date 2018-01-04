@@ -7,7 +7,7 @@
 #' @param ... to pass options like \code{na.rm = TRUE} into functions like mean, sd, etc.
 #' @return A tibble containing a \code{stat} column of calculated statistics
 #' @importFrom dplyr group_by summarize
-#' @importFrom rlang !! sym quo enquo eval_tidy
+#' @importFrom rlang !! sym quo enquo eval_tidy UQ
 #' @export
 #' @examples
 #'

@@ -3,7 +3,8 @@
 #' @param formula a formula with the response variable on the left and the explanatory on the right
 #' @param response the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument.
 #' @param explanatory the variable name in \code{x} that will serve as the explanatory variable
-#' @param success the name of the level of \code{response} that will be considered a success. Needed for inference on one proportion or a difference in proportions.
+#' @param success the level of \code{response} that will be considered a success, as a string. Needed for inference on one proportion or a difference in proportions.
+#' @return A tibble containing the response (and explanatory, if specified) variable data
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
 #' @importFrom dplyr mutate_if select one_of as_tibble
@@ -11,30 +12,20 @@
 #' @export
 
 specify <- function(x, formula, response = NULL, explanatory = NULL, success = NULL) {
+  assertive::assert_is_data.frame(x)
 
-  # assertive::assert_is_data.frame(x)
-  # if(methods::hasArg(formula)) {
-  #   assertive::assert_is_formula(formula)
-  #   assertive::assert_is_subset(f_lhs(formula), colnames(x))
-  #   assertive::assert_is_subset(f_rhs(formula), colnames(x))
-  # } else {
-  #   response_arg <- as.character(substitute(response))
-  #   assertive::assert_is_subset(response_arg, colnames(x))
-  #   explanatory_arg <- as.character(substitute(explanatory))
-  #   assertive::assert_is_subset(explanatory_arg, colnames(x))
-  # }
-  #
- # Convert all character variables to be factor variables instead
- x <- dplyr::as_tibble(x) %>% mutate_if(is.character, as.factor)
-  #
-  # response_col <- rlang::eval_tidy(enquo(response), x)
-  # if(is.factor(response_col)) {
-  #   assertive::assert_is_subset(success, levels(response_col))
-  # }
+  # Convert all character variables to be factor variables
+  x <- dplyr::as_tibble(x) %>% mutate_if(is.character, as.factor)
 
- # Check if Andrew didn't do already:
- # Ensure that response and explanatory aren't set to the same variable
- 
+  if (!methods::hasArg(formula) && !methods::hasArg(response)) {
+    stop("Please specify the response variable.")
+  }
+  if (methods::hasArg(formula)) {
+    if (!rlang::is_formula(formula)) {
+      stop("The `formula` argument is not recognized as a formula.")
+    }
+  }
+
   attr(x, "response")    <- substitute(response)
   attr(x, "explanatory") <- substitute(explanatory)
 
@@ -42,19 +33,41 @@ specify <- function(x, formula, response = NULL, explanatory = NULL, success = N
     attr(x, "response")    <- f_lhs(formula)
     attr(x, "explanatory") <- f_rhs(formula)
   }
+  response_col <- rlang::eval_tidy(attr(x, "response"), x)
+
+  if (!as.character(attr(x, "response")) %in% names(x)) {
+    stop(paste0("The response variable `", attr(x, "response"), "` cannot be found in this dataframe."))
+  }
+
+  # if there's an explanatory var
+  if (!(is.null(attr(x, "explanatory")) || as.character(attr(x, "explanatory")) == "1")) {
+    if (!as.character(attr(x, "explanatory")) %in% names(x)) {
+      stop(paste0("The explanatory variable `", attr(x, "explanatory"), "` cannot be found in this dataframe."))
+    }
+    if (identical(as.character(attr(x, "response")), as.character(attr(x, "explanatory")))) {
+      stop("The response and explanatory variables must be different from one another.")
+    }
+    explanatory_col <- rlang::eval_tidy(attr(x, "explanatory"), x)
+    if (is.character(explanatory_col)) {
+      rlang::eval_tidy(attr(x, "explanatory"), x) <- as.factor(explanatory_col)
+    }
+  }
 
   attr(x, "success") <- success
 
-  if (!all(
-    as.character(
-      c(attr(x, "response"),
-        attr(x,"explanatory")
-        )
-    ) %in% names(x)
-  )) stop("The columns you specified could not be found.")
-  # TODO: coerce char to factor
+  if (!is.null(success)) {
+    if (!is.character(success)) {
+      stop("`success` must be a string.")
+    }
+    if (!is.factor(response_col)) {
+      stop("`success` should only be specified if the response is a categorical variable.")
+    }
+    if (!(success %in% levels(response_col))) {
+      stop(paste0(success, " is not a valid level of ", attr(x, "response"), "."))
+    }
+  }
 
-  x <- as_tibble(x) %>%
+  x <- x %>%
     select(one_of(c(
       as.character((attr(x, "response"))),
       as.character(attr(x, "explanatory"))

@@ -13,6 +13,10 @@ hypothesize(x, null = "independence", ...)
 
 \item{...}{arguments passed to downstream functions}
 }
+\value{
+A tibble containing the response (and explanatory, if specified) variable data with
+parameter information stored as well
+}
 \description{
 Declare a null hypothesis
 }

@@ -15,6 +15,10 @@ generate(x, reps = 1, type = "bootstrap", ...)
 
 \item{...}{currently ignored}
 }
+\value{
+A tibble containing a \code{replicate} column and corresponding \code{stat} column 
+of calculated statistics
+}
 \description{
 Generate resamples
 }
