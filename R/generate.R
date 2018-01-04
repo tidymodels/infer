@@ -3,20 +3,18 @@
 #' @param reps the number of resamples to generate
 #' @param type currently either \code{bootstrap}, \code{permute}, or \code{simulate}
 #' @param ... currently ignored
-#' @return A tibble containing a \code{replicate} column and corresponding \code{stat} column 
-#' of calculated statistics
+#' @return A tibble containing \code{rep} generated datasets, indicated by the 
+#' \code{replicate} column.
 #' @importFrom dplyr group_by
 #' @export
 #' @examples
 #'
 #' #' # Permutation test for two binary variables
-#' if (require(dplyr)) {
 #'   mtcars %>%
-#'     mutate(am = factor(am), vs = factor(vs)) %>%
+#'     dplyr::mutate(am = factor(am), vs = factor(vs)) %>%
 #'     specify(am ~ vs, success = "1") %>%
 #'     hypothesize(null = "independence") %>%
 #'     generate(reps = 100, type = "permute")
-#' }
 
 generate <- function(x, reps = 1, type = "bootstrap", ...) {
 
