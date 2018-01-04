@@ -31,22 +31,22 @@ calculate <- function(x, stat, order = NULL, ...) {
   assertive::assert_is_tbl(x)
   assertive::assert_is_a_string(stat)
 
-  if(is.null(attr(x, "response"))){
+  if (is.null(attr(x, "response"))){
     stop(paste("The response variable is not set.",
                "Make sure to `specify()` it first."))
   }
 
-  if(!stat %in% c("mean", "median", "sd", "prop",
+  if (!stat %in% c("mean", "median", "sd", "prop",
                   "diff in means", "diff in medians", "diff in props",
                   "Chisq", "F", "slope")){
     stop(paste("You specified a string for `stat` that is not implemented.",
                "Check your spelling and `?calculate` for the current options."))
   }
 
-  if(stat %in% c("mean", "median", "sd")){
+  if (stat %in% c("mean", "median", "sd")){
     col <- setdiff(names(x), "replicate")
 
-    if(!is.numeric(x[[col]])){
+    if (!is.numeric(x[[col]])){
       stop(paste0("Calculating a ",
                   stat,
                   " here is not appropriate \n  since the `",
@@ -90,8 +90,8 @@ calculate <- function(x, stat, order = NULL, ...) {
       dplyr::summarize(stat = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...))
   }
 
-  if(stat %in% c("diff in means", "diff in medians", "diff in props", "F")){
-    if(!is.factor(x[[as.character(attr(x, "explanatory"))]])){
+  if (stat %in% c("diff in means", "diff in medians", "diff in props", "F")){
+    if (!is.factor(x[[as.character(attr(x, "explanatory"))]])){
       stop(paste0("The explanatory variable of `",
                   attr(x, "explanatory"),
                   "` is not appropriate \n  since '",
@@ -101,7 +101,7 @@ calculate <- function(x, stat, order = NULL, ...) {
   }
 
   if (stat %in% c("F", "slope", "diff in means", "diff in medians")){
-    if(!is.null(attr(x, "explanatory"))
+    if (!is.null(attr(x, "explanatory"))
        & !is.numeric(x[[as.character(attr(x, "response"))]])){
       stop(paste0("The response variable of `",
                   attr(x, "response"),
@@ -111,17 +111,17 @@ calculate <- function(x, stat, order = NULL, ...) {
     }
   }
 
-  if(stat %in% c("diff in means", "diff in medians", "diff in props")){
-    if(length(unique(x[[as.character(attr(x, "explanatory"))]])) != 2){
+  if (stat %in% c("diff in means", "diff in medians", "diff in props")){
+    if (length(unique(x[[as.character(attr(x, "explanatory"))]])) != 2){
       stop("Statistic is a difference, the explanatory variable should have two levels.")
     }
-    if(is.null(order)){
+    if (is.null(order)){
       stop("Statistic is a difference, specify the order in which to subtract.")
     }
-    if(!is.null(order) & (order[1] %in% unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
+    if (!is.null(order) & (order[1] %in% unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
       stop(paste(order[1], "is not a level of the explanatory variable."))
     }
-    if(!is.null(order) & (order[2] %in% unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
+    if (!is.null(order) & (order[2] %in% unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
       stop(paste(order[2], "is not a level of the explanatory variable."))
     }
   }
@@ -143,7 +143,7 @@ calculate <- function(x, stat, order = NULL, ...) {
   }
 
   if (stat %in% c("diff in props", "Chisq")){
-    if(!is.null(attr(x, "explanatory")) & !is.factor(x[[as.character(attr(x, "response"))]])){
+    if (!is.null(attr(x, "explanatory")) & !is.factor(x[[as.character(attr(x, "response"))]])){
       stop(paste0("The response variable of `",
                   attr(x, "response"),
                   "` is not appropriate \n  since '",
@@ -154,7 +154,7 @@ calculate <- function(x, stat, order = NULL, ...) {
 
     if (stat == "diff in props") {
 
-      if(length(levels(x[[as.character(attr(x, "explanatory"))]])) != 2){
+      if (length(levels(x[[as.character(attr(x, "explanatory"))]])) != 2){
         stop(paste0("The explanatory variable of `",
                     attr(x, "explanatory"),
                     "` does not have exactly two levels. \n",
