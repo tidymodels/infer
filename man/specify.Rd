@@ -17,6 +17,9 @@ specify(x, formula, response = NULL, explanatory = NULL, success = NULL)
 
 \item{success}{the level of \code{response} that will be considered a success, as a string. Needed for inference on one proportion or a difference in proportions.}
 }
+\value{
+A tibble containing the response (and explanatory, if specified) variable data
+}
 \description{
 Specify the response and explanatory variables
 }

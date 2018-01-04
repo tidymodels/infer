@@ -4,6 +4,7 @@
 #' @param response the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument.
 #' @param explanatory the variable name in \code{x} that will serve as the explanatory variable
 #' @param success the level of \code{response} that will be considered a success, as a string. Needed for inference on one proportion or a difference in proportions.
+#' @return A tibble containing the response (and explanatory, if specified) variable data
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
 #' @importFrom dplyr mutate_if select one_of as_tibble

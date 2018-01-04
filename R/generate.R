@@ -3,6 +3,8 @@
 #' @param reps the number of resamples to generate
 #' @param type currently either \code{bootstrap}, \code{permute}, or \code{simulate}
 #' @param ... currently ignored
+#' @return A tibble containing a \code{replicate} column and corresponding \code{stat} column 
+#' of calculated statistics
 #' @importFrom dplyr group_by
 #' @export
 #' @examples

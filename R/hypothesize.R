@@ -2,6 +2,8 @@
 #' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
 #' @param null the null hypothesis. Options include "independence" and "point".
 #' @param ... arguments passed to downstream functions
+#' @return A tibble containing the response (and explanatory, if specified) variable data with
+#' parameter information stored as well
 #' @importFrom dplyr as.tbl
 #' @export
 #' @examples
