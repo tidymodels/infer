@@ -105,9 +105,9 @@ test_that("success is working for diff in means", {
     specify(Sepal.Width ~ Sepal.Length.Group) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_silent(calculate(gen_iris7, stat = "diff in means"))
-  expect_equal(nrow(calculate(gen_iris7, stat = "diff in means")), 10)
-  expect_equal(ncol(calculate(gen_iris7, stat = "diff in means")), 2)
+  expect_silent(calculate(gen_iris7, stat = "diff in means", order = c(">5", "<=5")))
+  expect_equal(nrow(calculate(gen_iris7, stat = "diff in means", order = c(">5", "<=5"))), 10)
+  expect_equal(ncol(calculate(gen_iris7, stat = "diff in means", order = c(">5", "<=5"))), 2)
 })
 
 test_that("chi-square matches chisq.test value", {
@@ -121,21 +121,21 @@ test_that("chi-square matches chisq.test value", {
   trad_way <- gen_iris8 %>%
     dplyr::group_by(replicate) %>%
     dplyr::do(broom::tidy(stats::chisq.test(table(.$Petal.Length.Group, .$Species)))) %>%
-    dplyr::select(replicate, stat = statistic) %>% 
-    dplyr::ungroup() %>% 
+    dplyr::select(replicate, stat = statistic) %>%
+    dplyr::ungroup() %>%
     dplyr::mutate(replicate = as.factor(replicate))
   expect_equal(infer_way, trad_way)
-  
-  gen_iris9 <- iris %>% 
-    specify(Species ~ NULL) %>% 
-    hypothesize(null = "point", 
-                p = c("setosa" = 1/3, "versicolor" = 1/3, "virginica" = 1/3)) %>% 
+
+  gen_iris9 <- iris %>%
+    specify(Species ~ NULL) %>%
+    hypothesize(null = "point",
+                p = c("setosa" = 1/3, "versicolor" = 1/3, "virginica" = 1/3)) %>%
     generate(reps = 10, type = "simulate")
   infer_way <- calculate(gen_iris9, stat = "Chisq")
   #chisq.test way
-  trad_way <- gen_iris9 %>% 
-    dplyr::group_by(replicate) %>% 
-    dplyr::do(broom::tidy(stats::chisq.test(table(.$Species)))) %>% 
+  trad_way <- gen_iris9 %>%
+    dplyr::group_by(replicate) %>%
+    dplyr::do(broom::tidy(stats::chisq.test(table(.$Species)))) %>%
     dplyr::select(replicate, stat = statistic)
   expect_equal(infer_way, trad_way)
 })
