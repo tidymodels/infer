@@ -3,7 +3,7 @@
 #' @param reps the number of resamples to generate
 #' @param type currently either \code{bootstrap}, \code{permute}, or \code{simulate}
 #' @param ... currently ignored
-#' @return A tibble containing \code{rep} generated datasets, indicated by the 
+#' @return A tibble containing \code{rep} generated datasets, indicated by the
 #' \code{replicate} column.
 #' @importFrom dplyr group_by
 #' @export
@@ -155,7 +155,7 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
     if (length(prob) != n) stop("The argument prob must have length nrow(tbl).")
     df_lkup <- dplyr::data_frame(vals = levels(dplyr::pull(tbl, 1)))
     names(df_lkup) <- names(tbl)
-    df_lkup$probs = prob
+    df_lkup$probs <- prob
     tbl_wgt <- dplyr::inner_join(tbl, df_lkup)
     prob <- tbl_wgt$probs
   }
