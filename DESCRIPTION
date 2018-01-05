@@ -9,7 +9,6 @@ Authors@R: c(
     person("Mine", "Cetinkaya-Rundel", email = "mine@stat.duke.edu", role = "aut"),
     person("Ted", "Laderas", email = "tedladeras@gmail.com", role = "ctb"),
     person("Nick", "Solomon", email = "nick.solomon@datacamp.com", role = "ctb"))
-Maintainer: Andrew Bray <abray@reed.edu>
 Description: The objective of this package is to perform inference using an expressive statistical grammar that coheres with the tidy design framework. 
 License: CC0
 Encoding: UTF-8
