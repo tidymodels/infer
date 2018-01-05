@@ -47,7 +47,7 @@ mtcars %>%
   specify(am ~ vs, success = "1") %>% # alt: response = am, explanatory = vs
   hypothesize(null = "independence") %>%
   generate(reps = 100, type = "permute") %>%
-  calculate(stat = "diff in props")
+  calculate(stat = "diff in props", order = c("0", "1"))
 
 ## ------------------------------------------------------------------------
 mtcars %>%
@@ -56,7 +56,7 @@ mtcars %>%
   generate(reps = 100, type = "simulate") %>%
   calculate(stat = "Chisq")
 
-## ------------------------------------------------------------------------
+## ----warning = FALSE-----------------------------------------------------
 mtcars %>%
   specify(cyl ~ am) %>% # alt: response = cyl, explanatory = am
   hypothesize(null = "independence") %>%
@@ -68,14 +68,14 @@ mtcars %>%
   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
   hypothesize(null = "independence") %>%
   generate(reps = 100, type = "permute") %>%
-  calculate(stat = "diff in means")
+  calculate(stat = "diff in means", order = c("0", "1"))
 
 ## ------------------------------------------------------------------------
 mtcars %>%
   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
   hypothesize(null = "independence") %>%
   generate(reps = 100, type = "permute") %>%
-  calculate(stat = "diff in medians")
+  calculate(stat = "diff in medians", order = c("0", "1"))
 
 ## ------------------------------------------------------------------------
 mtcars %>%
@@ -119,13 +119,13 @@ mtcars %>%
 mtcars %>%
   specify(mpg ~ am) %>%
   generate(reps = 100, type = "bootstrap") %>%
-  calculate(stat = "diff in means")
+  calculate(stat = "diff in means", order = c("0", "1"))
 
 ## ------------------------------------------------------------------------
 mtcars %>%
   specify(am ~ vs, success = "1") %>%
   generate(reps = 100, type = "bootstrap") %>%
-  calculate(stat = "diff in props")
+  calculate(stat = "diff in props", order = c("0", "1"))
 
 ## ------------------------------------------------------------------------
 mtcars %>%

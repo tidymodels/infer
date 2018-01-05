@@ -43,14 +43,14 @@ x_tilde <- fli_small %>%
   pull()
 null <- fli_small %>%
   specify(response = dep_delay) %>%
-  hypothesize(null = "point", med = 10) %>% 
+  hypothesize(null = "point", med = 0) %>% 
   generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "median")
 ggplot(null, aes(x = stat)) +
   geom_bar() +
   geom_vline(xintercept = x_tilde, color = "red")
 null %>%
-  summarize(p_value = mean(stat > x_tilde) * 2)
+  summarize(p_value = mean(stat < x_tilde) * 2)
 
 ## ------------------------------------------------------------------------
 p_hat <- fli_small %>%
@@ -77,7 +77,7 @@ null <- fli_small %>%
   specify(day_hour ~ season, success = "morning") %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>% 
-  calculate(stat = "diff in props")
+  calculate(stat = "diff in props", order = c("summer", "winter"))
 ggplot(null, aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = d_hat, color = "red")
@@ -120,7 +120,7 @@ null <- fli_small %>%
   specify(dep_delay ~ season) %>% # alt: response = dep_delay, explanatory = season
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in means")
+  calculate(stat = "diff in means", order = c("summer", "winter"))
 ggplot(null, aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = d_hat, color = "red")
@@ -137,7 +137,7 @@ null <- fli_small %>%
   specify(dep_delay ~ season) %>% # alt: response = dep_delay, explanatory = season
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in medians")
+  calculate(stat = "diff in medians", order = c("summer", "winter"))
 ggplot(null, aes(x = stat)) +
   geom_bar() +
   geom_vline(xintercept = d_hat, color = "red")
@@ -219,7 +219,7 @@ d_hat <- fli_small %>%
 boot <- fli_small %>%
    specify(arr_delay ~ season) %>%
    generate(reps = 1000, type = "bootstrap") %>%
-   calculate(stat = "diff in means") %>% 
+   calculate(stat = "diff in means", order = c("summer", "winter")) %>% 
    pull()
 c(lower = p_hat - 2 * sd(boot), 
   upper = p_hat + 2 * sd(boot))
@@ -233,7 +233,7 @@ d_hat <- fli_small %>%
 boot <- fli_small %>%
   specify(day_hour ~ season, success = "morning") %>%
   generate(reps = 1000, type = "bootstrap") %>% 
-  calculate(stat = "diff in props") %>%
+  calculate(stat = "diff in props", order = c("summer", "winter")) %>%
   pull()
 c(lower = d_hat - 2 * sd(boot), 
   upper = d_hat + 2 * sd(boot))
