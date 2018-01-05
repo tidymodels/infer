@@ -23,3 +23,20 @@ A tibble containing the response (and explanatory, if specified) variable data
 \description{
 Specify the response and explanatory variables
 }
+\examples{
+# One binary variable
+  mtcars \%>\%
+    dplyr::mutate(am = factor(am)) \%>\%
+    specify(response = am, success = "1") \%>\%
+    hypothesize(null = "point", p = 0.75) \%>\%
+    generate(reps = 100, type = "simulate") \%>\%
+    calculate(stat = "prop")
+
+# Permutation test
+  mtcars \%>\%
+    dplyr::mutate(cyl = factor(cyl)) \%>\%
+    specify(mpg ~ cyl) \%>\%
+    hypothesize(null = "independence") \%>\%
+    generate(reps = 100, type = "permute") \%>\%
+    calculate(stat = "F")
+}
