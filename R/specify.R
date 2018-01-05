@@ -10,6 +10,22 @@
 #' @importFrom dplyr mutate_if select one_of as_tibble
 #' @importFrom methods hasArg
 #' @export
+#' @examples
+#' # One binary variable
+#'   mtcars %>%
+#'     dplyr::mutate(am = factor(am)) %>%
+#'     specify(response = am, success = "1") %>%
+#'     hypothesize(null = "point", p = 0.75) %>%
+#'     generate(reps = 100, type = "simulate") %>%
+#'     calculate(stat = "prop")
+#'
+#' # Permutation test
+#'   mtcars %>%
+#'     dplyr::mutate(cyl = factor(cyl)) %>%
+#'     specify(mpg ~ cyl) %>%
+#'     hypothesize(null = "independence") %>%
+#'     generate(reps = 100, type = "permute") %>%
+#'     calculate(stat = "F")
 
 specify <- function(x, formula, response = NULL, explanatory = NULL, success = NULL) {
   assertive::assert_is_data.frame(x)
