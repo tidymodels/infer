@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pipeable statistical inference • infer</title>
+<title>Tidy Statistical Inference • infer</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -58,7 +58,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="http://github.com/andrewpbray/infer">
+  <a href="https://github.com/andrewpbray/infer">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -106,15 +106,15 @@ remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
           <span class="dt">carb =</span> <span class="kw">factor</span>(carb))</code></pre></div>
 <p>Hypothesis test for a difference in proportions:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="reference/specify.html">specify</a></span>(am <span class="op">~</span><span class="st"> </span>vs) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = am, explanatory = vs</span>
+<span class="st">  </span><span class="kw"><a href="reference/specify.html">specify</a></span>(am <span class="op">~</span><span class="st"> </span>vs, <span class="dt">success =</span> <span class="st">"1"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"1"</span>, <span class="st">"0"</span>))</code></pre></div>
 <p>Confidence interval for a difference in means:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"1"</span>, <span class="st">"0"</span>))</code></pre></div>
 </div>
 </div>
 </div>
@@ -124,7 +124,7 @@ remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
     <h2 class="hasAnchor">
 <a href="#sidebar" class="anchor"></a>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="http://github.com/andrewpbray/infer">http://​github.com/​andrewpbray/​infer</a>
+<li>Browse source code at <br><a href="https://github.com/andrewpbray/infer">https://​github.com/​andrewpbray/​infer</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/andrewpbray/infer/issues">https://​github.com/​andrewpbray/​infer/​issues</a>
 </li>
@@ -134,8 +134,8 @@ remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Andrew Bray <br><small class="roles"> Author, maintainer </small> </li>
-<li>Ben Baumer <br><small class="roles"> Author </small> </li>
 <li>Chester Ismay <br><small class="roles"> Author </small> </li>
+<li>Ben Baumer <br><small class="roles"> Author </small> </li>
 <li>Mine Cetinkaya-Rundel <br><small class="roles"> Author </small> </li>
 <li><a href="authors.html">All authors...</a></li>
 </ul>
@@ -150,7 +150,7 @@ remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
 
 
       <footer><div class="copyright">
-  <p>Developed by Andrew Bray, Ben Baumer, Chester Ismay, Mine Cetinkaya-Rundel.</p>
+  <p>Developed by Andrew Bray, Chester Ismay, Ben Baumer, Mine Cetinkaya-Rundel.</p>
 </div>
 
 <div class="pkgdown">

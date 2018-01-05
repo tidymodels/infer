@@ -7,3 +7,4 @@
 ^examples*
 ^codecov\.yml$
 ^docs*
+^CONDUCT\.md$
