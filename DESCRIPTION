@@ -1,6 +1,6 @@
 Package: infer
 Type: Package
-Title: Tidy statistical inference
+Title: Tidy Statistical Inference
 Version: 0.1.0
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
