@@ -1,4 +1,4 @@
-#' Generate resamples
+#' Generate resamples or simulations based on `specify` and `hypothesize` inputs
 #' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
 #' @param reps the number of resamples to generate
 #' @param type currently either \code{bootstrap}, \code{permute}, or \code{simulate}
