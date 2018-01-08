@@ -2,25 +2,17 @@
 Infer
 =====
 
-<table>
-<colgroup>
-<col width="100%" />
-</colgroup>
-<tbody>
-<tr class="odd">
-<td><a href="http://cran.rstudio.com/web/packages/infer/index.html"><img src="http://cranlogs.r-pkg.org/badges/infer" /></a> <a href="https://travis-ci.org/andrewpbray/infer"><img src="https://travis-ci.org/andrewpbray/infer.svg?branch=master" alt="Travis-CI Build Status" /></a> <a href="https://codecov.io/github/andrewpbray/infer/?branch=master"><img src="https://img.shields.io/codecov/c/github/andrewpbray/infer//master.svg" alt="Coverage Status" /></a></td>
-</tr>
-<tr class="even">
-<td>The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the <code>tidyverse</code> design framework.</td>
-</tr>
-<tr class="odd">
-<td><img src="https://raw.githubusercontent.com/andrewpbray/infer/master/figs/ht-diagram.png" /></td>
-</tr>
-<tr class="even">
-<td>### Installation</td>
-</tr>
-</tbody>
-</table>
+------------------------------------------------------------------------
+
+[![CRAN badge](http://cranlogs.r-pkg.org/badges/infer)](http://cran.rstudio.com/web/packages/infer/index.html) [![Travis-CI Build Status](https://travis-ci.org/andrewpbray/infer.svg?branch=master)](https://travis-ci.org/andrewpbray/infer) [![Coverage Status](https://img.shields.io/codecov/c/github/andrewpbray/infer/master.svg)](https://codecov.io/github/andrewpbray/infer/?branch=master)
+
+The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the `tidyverse` design framework.
+
+![](https://raw.githubusercontent.com/andrewpbray/infer/master/figs/ht-diagram.png)
+
+### Installation
+
+------------------------------------------------------------------------
 
 To install the current stable version of `infer` from CRAN:
 
