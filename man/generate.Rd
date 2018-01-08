@@ -2,7 +2,8 @@
 % Please edit documentation in R/generate.R
 \name{generate}
 \alias{generate}
-\title{Generate resamples}
+\title{Generate resamples, permutations, or simulations based on 
+`specify` and `hypothesize` inputs}
 \usage{
 generate(x, reps = 1, type = "bootstrap", ...)
 }
@@ -20,7 +21,8 @@ A tibble containing \code{rep} generated datasets, indicated by the
 \code{replicate} column.
 }
 \description{
-Generate resamples
+Generate resamples, permutations, or simulations based on 
+`specify` and `hypothesize` inputs
 }
 \examples{
 
