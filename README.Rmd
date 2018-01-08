@@ -20,7 +20,13 @@ knitr::include_graphics("https://raw.githubusercontent.com/andrewpbray/infer/mas
 
 ------------------------------------------------------------------------
 
-To install the current stable version of `infer`, make sure to install `remotes` first:
+To install the current stable version of `infer` from CRAN:
+
+```{r}
+install.packages("infer")
+```
+
+To install the developmental version of `infer`, make sure to install `remotes` first:
 
 ```{r}
 install.packages("remotes")
