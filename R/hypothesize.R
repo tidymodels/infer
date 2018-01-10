@@ -106,7 +106,7 @@ parse_params <- function(dots, x) {
       }
       if(dots$p < 0 | dots$p > 1)
         stop("The value suggested for `p` is not between 0 and 1, inclusive.")
-      missing_lev <- setdiff(levels(pull(x, !!attr(x, "response"))), attr(x, "success"))
+      missing_lev <- setdiff(unique(pull(x, !!attr(x, "response"))), attr(x, "success"))
       dots$p <- append(dots$p, 1 - dots$p)
       names(dots$p) <- c(attr(x, "success"), missing_lev)
     } else {

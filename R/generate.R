@@ -1,4 +1,4 @@
-#' Generate resamples, permutations, or simulations based on 
+#' Generate resamples, permutations, or simulations based on
 #' `specify` and `hypothesize` inputs
 #' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
 #' @param reps the number of resamples to generate
@@ -110,7 +110,7 @@ permute_once <- function(x, ...) {
 #' @importFrom rlang :=
 
 simulate <- function(x, reps = 1, ...) {
-  fct_levels <- levels(dplyr::pull(x, !! attr(x, "response")))
+  fct_levels <- as.character(unique(dplyr::pull(x, !! attr(x, "response"))))
 
   col_simmed <- unlist(replicate(reps, sample(fct_levels,
                                               size = nrow(x),
@@ -134,7 +134,7 @@ simulate <- function(x, reps = 1, ...) {
 
 format_params <- function(x) {
   par_levels <- get_par_levels(x)
-  fct_levels <- levels(dplyr::pull(x, !! attr(x, "response")))
+  fct_levels <- as.character(unique(dplyr::pull(x, !! attr(x, "response"))))
   return(attr(x, "params")[match(fct_levels, par_levels)])
 }
 
