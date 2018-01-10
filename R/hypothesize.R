@@ -57,7 +57,12 @@ hypothesize <- function(x, null, ...) {
     stop("Provide a parameter and a value to check such as `mu = 30` for the point hypothesis.")
   }
 
-  if (length(dots) > 0) {
+  if ((null == "independence") & (length(dots) > 0)) {
+    warning(paste("Parameter values are not specified when testing that two",
+                  "variables are independent."))
+  }
+
+  if ((length(dots) > 0) && (null == "point")) {
     params <- parse_params(dots, x)
     attr(x, "params") <- params
   }
@@ -77,10 +82,6 @@ hypothesize <- function(x, null, ...) {
       stop(paste('Testing one numerical variable requires one of `mu`, `med`, or `sd`',
                  'to be used as a parameter.'))
   }
-
-  if (null == "independence" & length(dots) > 0)
-    warning(paste("Parameter values are not specified when testing that two",
-                  "variables are independent. They are ignored."))
 
   return(as.tbl(x))
 }
