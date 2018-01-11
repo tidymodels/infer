@@ -98,7 +98,7 @@ permute_once <- function(x, ...) {
   if (attr(x, "null") == "independence") {
     y <- pull(x, !! attr(x, "response"))
 
-    y_prime <- sample(y, size = length(y), replace = TRUE)
+    y_prime <- sample(y, size = length(y), replace = FALSE)
     x[as.character(attr(x, "response"))] <- y_prime
     return(x)
   }
