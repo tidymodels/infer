@@ -37,7 +37,7 @@
 #' samples
 #'
 #' # Compute p_hats for all 1000 samples = proportion red
-#' p_hat <- samples %>% 
+#' p_hats <- samples %>% 
 #'   group_by(replicate) %>% 
 #'   summarize(prop_red = mean(color == "red"))
 #' p_hats
