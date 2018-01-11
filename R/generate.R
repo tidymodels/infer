@@ -142,30 +142,3 @@ get_par_levels <- function(x) {
   par_names <- names(attr(x, "params"))
   return(gsub("^.\\.", "", par_names))
 }
-
-#' @importFrom dplyr as_tibble pull data_frame inner_join
-
-# Modified oilabs::rep_sample_n() with attr added
-rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
-  n <- nrow(tbl)
-
-  # assign non-uniform probabilities
-  # there should be a better way!!
-  # prob needs to be nrow(tbl) -- not just number of factor levels
-  if (!is.null(prob)) {
-    if (length(prob) != n) stop("The argument prob must have length nrow(tbl).")
-    df_lkup <- dplyr::data_frame(vals = levels(dplyr::pull(tbl, 1)))
-    names(df_lkup) <- names(tbl)
-    df_lkup$probs <- prob
-    tbl_wgt <- dplyr::inner_join(tbl, df_lkup)
-    prob <- tbl_wgt$probs
-  }
-
-  i <- unlist(replicate(reps, sample.int(n, size, replace = replace, prob = prob),
-                        simplify = FALSE))
-  rep_tbl <- cbind(replicate = rep(1:reps, rep(size, reps)),
-                   tbl[i, ])
-  rep_tbl <- dplyr::as_tibble(rep_tbl)
-  names(rep_tbl)[-1] <- names(tbl)
-  dplyr::group_by(rep_tbl, replicate)
-}
