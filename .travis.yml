@@ -21,6 +21,10 @@ notifications:
 #r_binary_packages:
 # - dplyr
 
+r_packages:
+  - devtools
+  - Rcpp
+
 # Install the bleeding edge version of a package from github (eg to pick
 # up a not-yet-released bugfix)
 #r_github_packages:
