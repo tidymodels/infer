@@ -6,7 +6,11 @@ output: github_document
 
 ------------------------------------------------------------------------
 
-[![CRAN badge](http://cranlogs.r-pkg.org/badges/infer)](http://cran.rstudio.com/web/packages/infer/index.html) [![Travis-CI Build Status](https://travis-ci.org/andrewpbray/infer.svg?branch=master)](https://travis-ci.org/andrewpbray/infer) [![Coverage Status](https://img.shields.io/codecov/c/github/andrewpbray/infer/master.svg)](https://codecov.io/github/andrewpbray/infer/?branch=master)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)
+[![CRAN badge](http://cranlogs.r-pkg.org/badges/infer)](http://cran.rstudio.com/web/packages/infer/index.html) 
+[![Travis-CI Build Status](https://travis-ci.org/andrewpbray/infer.svg?branch=master)](https://travis-ci.org/andrewpbray/infer) 
+[![Coverage Status](https://img.shields.io/codecov/c/github/andrewpbray/infer/master.svg)](https://codecov.io/github/andrewpbray/infer/?branch=master)
+
 
 The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the `tidyverse` design framework.
 
