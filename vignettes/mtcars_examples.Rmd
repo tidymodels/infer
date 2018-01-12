@@ -1,7 +1,7 @@
 ---
 title: "Examples using `mtcars` data"
 author: "Chester Ismay and Andrew bray"
-date: "`r Sys.Date()`"
+date: "2018-01-05"
 output: 
   rmarkdown::html_vignette
 vignette: |
@@ -28,6 +28,8 @@ mtcars <- as.data.frame(mtcars) %>%
          am = factor(am),
          gear = factor(gear),
          carb = factor(carb))
+# For reproducibility         
+set.seed(2018)         
 ```
 
 

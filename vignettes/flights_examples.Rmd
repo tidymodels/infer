@@ -1,7 +1,7 @@
 ---
 title: "Randomization Examples using `nycflights13` `flights` data"
 author: "Chester Ismay and Andrew bray"
-date: "`r Sys.Date()`"
+date: "2018-01-05"
 output: 
   rmarkdown::html_vignette:
     df_print: kable
