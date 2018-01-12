@@ -24,6 +24,7 @@ notifications:
 r_packages:
   - devtools
   - Rcpp
+  - pkgdown
 
 # Install the bleeding edge version of a package from github (eg to pick
 # up a not-yet-released bugfix)
