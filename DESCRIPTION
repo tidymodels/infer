@@ -16,7 +16,7 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     assertive,
-    dplyr,
+    dplyr (>= 0.7.0),
     methods,
     tibble,
     rlang,
