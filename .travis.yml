@@ -30,5 +30,20 @@ r_packages:
 #r_github_packages:
 #  - r-lib/covr
 
+before_script:
+  - chmod +x ./_build.sh
+
+script:
+  - ./_build.sh
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_PAT
+  repo: andrewpbray/infer
+  target_branch: gh-pages
+
 after_success:
   - Rscript -e 'covr::codecov()'
+
+
