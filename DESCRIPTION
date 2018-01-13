@@ -8,14 +8,16 @@ Authors@R: c(
     person("Ben", "Baumer", email = "ben.baumer@gmail.com", role = "aut"),
     person("Mine", "Cetinkaya-Rundel", email = "mine@stat.duke.edu", role = "aut"),
     person("Ted", "Laderas", email = "tedladeras@gmail.com", role = "ctb"),
-    person("Nick", "Solomon", email = "nick.solomon@datacamp.com", role = "ctb"))
+    person("Nick", "Solomon", email = "nick.solomon@datacamp.com", role = "ctb"),
+    person("Johanna", "Hardin", email = "Jo.Hardin@pomona.edu", role = "ctb"),
+    person("Albert", "Kim", email = "albert.ys.kim@gmail.com", role = "ctb"))
 Description: The objective of this package is to perform inference using an expressive statistical grammar that coheres with the tidy design framework. 
 License: CC0
 Encoding: UTF-8
 LazyData: true
 Imports:
     assertive,
-    dplyr,
+    dplyr (>= 0.7.0),
     methods,
     tibble,
     rlang,
@@ -25,12 +27,16 @@ Depends:
     R (>= 2.10)
 Suggests: 
     broom,
+    devtools (>= 1.12.0),
     knitr,
     rmarkdown,
     nycflights13,
     stringr,
     testthat,
-    covr
+    covr,
+    pkgdown (>= 0.1.0.9000)
+Remotes:
+    hadley/pkgdown
 URL: https://github.com/andrewpbray/infer
 BugReports: https://github.com/andrewpbray/infer/issues
 RoxygenNote: 6.0.1
