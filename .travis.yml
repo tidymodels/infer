@@ -5,8 +5,8 @@ r:
 #  - oldrel
   - release
 #  - devel
-warnings_are_errors: false
-sudo: false
+warnings_are_errors: true
+sudo: required
 cache: packages
 latex: false
 
@@ -19,31 +19,24 @@ notifications:
     on_success: change
     on_failure: change
 
-# System dependencies for HTTP calling
-#r_binary_packages:
-# - dplyr
-
-#r_packages:
-#  - devtools
-#  - Rcpp
+r_github_packages:
+  - hadley/pkgdown
 
 before_deploy:
 #  - R CMD INSTALL .
   - Rscript -e 'pkgdown::build_site()'
-#  - npm install netlify-cli -g
-
-r_github_packages:
- - hadley/pkgdown
 
 deploy:
   provider: pages
   skip_cleanup: true
+  on:
+    branch: master
+  local-dir: docs
   github_token: $GITHUB_PAT
-  keep-history: true
-  repo: ismayc/inferdown
-  target_branch: master
+  repo: andrewpbray/infer
+  target_branch: gh-pages
 
 after_success:
   - Rscript -e 'covr::codecov()'
-#  - bash ./.deploy_pkgdown.sh
+
 
