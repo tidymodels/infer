@@ -30,11 +30,9 @@ r_packages:
 #r_github_packages:
 #  - r-lib/covr
 
-before_script:
-  - chmod +x ./_build.sh
-
-script:
-  - ./_build.sh
+before_deploy:
+  - R CMD INSTALL .
+  - Rscript -e 'pkgdown::build_site()`
 
 deploy:
   provider: pages

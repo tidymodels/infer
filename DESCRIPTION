@@ -27,12 +27,16 @@ Depends:
     R (>= 2.10)
 Suggests: 
     broom,
+    devtools (>= 1.12.0),
     knitr,
     rmarkdown,
     nycflights13,
     stringr,
     testthat,
-    covr
+    covr,
+    pkgdown (>= 0.1.0.9000)
+Remotes:
+    hadley/pkgdown
 URL: https://github.com/andrewpbray/infer
 BugReports: https://github.com/andrewpbray/infer/issues
 RoxygenNote: 6.0.1
