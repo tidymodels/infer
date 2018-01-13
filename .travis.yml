@@ -29,6 +29,7 @@ before_deploy:
   - R CMD INSTALL .
   - Rscript -e 'pkgdown::build_site()`
 
+
 deploy:
   provider: pages
   skip_cleanup: true
