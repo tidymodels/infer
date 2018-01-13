@@ -6,8 +6,9 @@ r:
   - release
 #  - devel
 warnings_are_errors: true
-sudo: required
+sudo: false
 cache: packages
+latex: false
 
 env:
  global:
@@ -34,15 +35,15 @@ before_deploy:
 r_github_packages:
  - hadley/pkgdown
 
-#deploy:
-#  provider: pages
-#  skip_cleanup: true
-#  github_token: $GITHUB_PAT
-#  keep-history: true
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_PAT
+  keep-history: true
 #  repo: ismayc/inferdown
 #  target_branch: master
 
 after_success:
   - Rscript -e 'covr::codecov()'
-  - bash ./.deploy_pkgdown.sh
+#  - bash ./.deploy_pkgdown.sh
 
