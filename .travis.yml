@@ -27,7 +27,7 @@ r_packages:
 
 before_deploy:
   - R CMD INSTALL .
-  - Rscript -e 'pkgdown::build_site()'
+  - Rscript -e 'pkgdown::build_site(path = ".")'
 
 
 deploy:
