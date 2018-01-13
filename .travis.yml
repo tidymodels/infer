@@ -22,9 +22,9 @@ notifications:
 #r_binary_packages:
 # - dplyr
 
-r_packages:
-  - devtools
-  - Rcpp
+#r_packages:
+#  - devtools
+#  - Rcpp
 
 before_deploy:
   - R CMD INSTALL .
@@ -35,10 +35,7 @@ deploy:
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_PAT
-  local-dir: docs
   keep-history: true
-  on:
-    branch: master
   repo: ismayc/inferdown
   target_branch: master
 
