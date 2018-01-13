@@ -7,6 +7,7 @@ r:
 #  - devel
 warnings_are_errors: true
 sudo: required
+cache: packages
 
 env:
  global:
@@ -27,15 +28,16 @@ r_packages:
 
 before_deploy:
   - R CMD INSTALL .
-  - Rscript -e 'pkgdown::build_site(path = ".")'
+  - Rscript -e 'pkgdown::build_site()'
 
 
 deploy:
   provider: pages
   skip_cleanup: true
   github_token: $GITHUB_PAT
-  repo: andrewpbray/infer
-  target_branch: gh-pages
+  local-dir: docs
+#  repo: andrewpbray/infer
+#  target_branch: gh-pages
 
 after_success:
   - Rscript -e 'covr::codecov()'
