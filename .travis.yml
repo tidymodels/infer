@@ -22,20 +22,23 @@ notifications:
 #r_binary_packages:
 # - dplyr
 
-r_packages:
-  - devtools
-  - Rcpp
+#r_packages:
+#  - devtools
+#  - Rcpp
 
 before_deploy:
   - R CMD INSTALL .
   - Rscript -e 'pkgdown::build_site()'
-
+#  - npm install netlify-cli -g
 
 deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $GITHUB_PAT
-  local-dir: docs
+  - provider: pages
+    skip_cleanup: true
+    github_token: $GITHUB_PAT
+    local-dir: docs
+    keep-history: true
+    on:
+      branch: master
 #  repo: andrewpbray/infer
 #  target_branch: gh-pages
 
