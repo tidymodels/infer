@@ -5,7 +5,7 @@ r:
 #  - oldrel
   - release
 #  - devel
-warnings_are_errors: true
+warnings_are_errors: false
 sudo: false
 cache: packages
 latex: false
@@ -27,8 +27,8 @@ notifications:
 #  - devtools
 #  - Rcpp
 
-before_deploy:
-  - R CMD INSTALL .
+#before_deploy:
+#  - R CMD INSTALL .
   - Rscript -e 'pkgdown::build_site()'
 #  - npm install netlify-cli -g
 
@@ -40,8 +40,8 @@ deploy:
   skip_cleanup: true
   github_token: $GITHUB_PAT
   keep-history: true
-#  repo: ismayc/inferdown
-#  target_branch: master
+  repo: ismayc/inferdown
+  target_branch: master
 
 after_success:
   - Rscript -e 'covr::codecov()'
