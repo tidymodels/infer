@@ -31,15 +31,18 @@ before_deploy:
   - Rscript -e 'pkgdown::build_site()'
 #  - npm install netlify-cli -g
 
-deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $GITHUB_PAT
-  keep-history: true
-  repo: ismayc/inferdown
-  target_branch: master
+r_github_packages:
+ - hadley/pkgdown
+
+#deploy:
+#  provider: pages
+#  skip_cleanup: true
+#  github_token: $GITHUB_PAT
+#  keep-history: true
+#  repo: ismayc/inferdown
+#  target_branch: master
 
 after_success:
   - Rscript -e 'covr::codecov()'
-
+  - bash ./.deploy_pkgdown.sh
 
