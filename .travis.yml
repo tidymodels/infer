@@ -27,7 +27,7 @@ notifications:
 #  - devtools
 #  - Rcpp
 
-#before_deploy:
+before_deploy:
 #  - R CMD INSTALL .
   - Rscript -e 'pkgdown::build_site()'
 #  - npm install netlify-cli -g
