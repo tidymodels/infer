@@ -21,6 +21,7 @@ notifications:
 
 r_github_packages:
   - hadley/pkgdown
+  - andrewpbray/infer
 
 before_deploy:
 #  - R CMD INSTALL .
