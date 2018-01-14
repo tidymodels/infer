@@ -7,6 +7,8 @@ r:
 #  - devel
 warnings_are_errors: true
 sudo: required
+cache: packages
+latex: false
 
 env:
  global:
@@ -17,25 +19,19 @@ notifications:
     on_success: change
     on_failure: change
 
-# System dependencies for HTTP calling
-#r_binary_packages:
-# - dplyr
-
-r_packages:
-  - devtools
-  - Rcpp
+r_github_packages:
+  - hadley/pkgdown
+  - andrewpbray/infer
 
 before_deploy:
-  - R CMD INSTALL .
   - Rscript -e 'pkgdown::build_site()'
-
 
 deploy:
   provider: pages
-  skip_cleanup: true
-  github_token: $GITHUB_PAT
-  repo: andrewpbray/infer
-  target_branch: gh-pages
+  skip-cleanup: true
+  keep-history: true
+  local-dir: docs
+  github_token: $CHESTER_GITHUB_PAT
 
 after_success:
   - Rscript -e 'covr::codecov()'
