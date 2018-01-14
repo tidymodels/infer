@@ -31,7 +31,7 @@ deploy:
   skip-cleanup: true
   keep-history: true
   local-dir: docs
-  github_token: $for-travis
+  github_token: $GITHUBTRAVIS
 
 after_success:
   - Rscript -e 'covr::codecov()'
