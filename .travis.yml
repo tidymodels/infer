@@ -34,7 +34,7 @@ deploy:
 #  on:
 #    branch: master
   local-dir: docs
-  github_token: $GITHUB_PAT
+  github_token: $CHESTER_GITHUB_PAT
 #  repo: ismayc/infer
 #  target_branch: gh-pages
 
