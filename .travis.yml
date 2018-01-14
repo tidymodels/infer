@@ -33,7 +33,7 @@ before_deploy:
 deploy:
   provider: pages
   skip_cleanup: true
-  github_token: $GITHUB_PAT
+  github_token: $for-travis
   repo: andrewpbray/infer
   target_branch: gh-pages
 
