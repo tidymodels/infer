@@ -33,8 +33,8 @@ deploy:
     branch: master
   local-dir: docs
   github_token: $GITHUB_PAT
-  repo: andrewpbray/infer
-  target_branch: gh-pages
+#  repo: ismayc/infer
+#  target_branch: gh-pages
 
 after_success:
   - Rscript -e 'covr::codecov()'
