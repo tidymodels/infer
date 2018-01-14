@@ -24,19 +24,14 @@ r_github_packages:
   - andrewpbray/infer
 
 before_deploy:
-#  - R CMD INSTALL .
   - Rscript -e 'pkgdown::build_site()'
 
 deploy:
   provider: pages
   skip-cleanup: true
   keep-history: true
-#  on:
-#    branch: master
   local-dir: docs
   github_token: $CHESTER_GITHUB_PAT
-#  repo: ismayc/infer
-#  target_branch: gh-pages
 
 after_success:
   - Rscript -e 'covr::codecov()'
