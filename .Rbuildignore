@@ -12,3 +12,4 @@
 ^NEWS\.md$
 ^cran-comments\.md$
 ^_build\.sh$
+^.deploy_pkgdown\.sh$
