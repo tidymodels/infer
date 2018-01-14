@@ -28,9 +28,10 @@ before_deploy:
 
 deploy:
   provider: pages
-  skip_cleanup: true
-  on:
-    branch: master
+  skip-cleanup: true
+  keep-history: true
+#  on:
+#    branch: master
   local-dir: docs
   github_token: $GITHUB_PAT
 #  repo: ismayc/infer
