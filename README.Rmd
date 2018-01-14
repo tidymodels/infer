@@ -18,7 +18,6 @@ knitr::opts_chunk$set(eval = FALSE)
 knitr::include_graphics("https://raw.githubusercontent.com/andrewpbray/infer/master/figs/ht-diagram.png")
 ```
 
-
 ### Installation
 
 ------------------------------------------------------------------------
