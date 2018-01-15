@@ -115,10 +115,12 @@ calculate <- function(x, stat, order = NULL, ...) {
 
   if (stat %in% c("diff in means", "diff in medians", "diff in props")){
     if (length(unique(x[[as.character(attr(x, "explanatory"))]])) != 2){
-      stop("Statistic is a difference, the explanatory variable should have two levels.")
+      stop(paste("Statistic is a difference, the explanatory variable",
+  "should have two levels."))
     }
     if (is.null(order)){
-      stop("Statistic is a difference, specify the `order`` in which to subtract. Check `?calculate` for details.")
+      stop(paste("Statistic is a difference, specify the `order`` in",
+"which to subtract. Check `?calculate` for details."))
     }
     if (!is.null(order) & xor(is.na(order[1]), is.na(order[2]))){
       stop("Only one level specified in `order`. Both levels need to be specified.")
@@ -126,10 +128,12 @@ calculate <- function(x, stat, order = NULL, ...) {
     if (!is.null(order) & length(order) > 2){
       stop("`order` is expecting only two entries.")
     }
-    if (!is.null(order) & (order[1] %in% unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
+    if (!is.null(order) & 
+        (order[1] %in% unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
       stop(paste(order[1], "is not a level of the explanatory variable."))
     }
-    if (!is.null(order) & (order[2] %in% unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
+    if (!is.null(order) & 
+        (order[2] %in% unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
       stop(paste(order[2], "is not a level of the explanatory variable."))
     }
   }
@@ -139,7 +143,8 @@ calculate <- function(x, stat, order = NULL, ...) {
       dplyr::group_by(replicate, UQ(attr(x, "explanatory"))) %>%
       dplyr::summarize(xbar = mean(UQ(attr(x, "response"), ...))) %>%
       dplyr::group_by(replicate) %>%
-      dplyr::summarize(stat = xbar[UQ(attr(x, "explanatory")) == order[1]] - xbar[UQ(attr(x, "explanatory")) == order[2]])
+      dplyr::summarize(stat = xbar[UQ(attr(x, "explanatory")) == order[1]] 
+                       - xbar[UQ(attr(x, "explanatory")) == order[2]])
   }
 
   if (stat == "diff in medians") {
@@ -147,11 +152,13 @@ calculate <- function(x, stat, order = NULL, ...) {
       dplyr::group_by(replicate, UQ(attr(x, "explanatory"))) %>%
       dplyr::summarize(xtilde = stats::median(UQ(attr(x, "response"), ...))) %>%
       dplyr::group_by(replicate) %>%
-      dplyr::summarize(stat = xtilde[UQ(attr(x, "explanatory")) == order[1]] - xtilde[UQ(attr(x, "explanatory")) == order[2]])
+      dplyr::summarize(stat = xtilde[UQ(attr(x, "explanatory")) == order[1]] 
+                       - xtilde[UQ(attr(x, "explanatory")) == order[2]])
   }
 
   if (stat %in% c("diff in props", "Chisq")){
-    if (!is.null(attr(x, "explanatory")) & !is.factor(x[[as.character(attr(x, "response"))]])){
+    if (!is.null(attr(x, "explanatory")) & 
+        !is.factor(x[[as.character(attr(x, "response"))]])){
       stop(paste0("The response variable of `",
                   attr(x, "response"),
                   "` is not appropriate \n  since '",
@@ -173,8 +180,10 @@ calculate <- function(x, stat, order = NULL, ...) {
       success <- attr(x, "success")
       df_out <- x %>%
         dplyr::group_by(replicate, UQ(attr(x, "explanatory"))) %>%
-        dplyr::summarize(prop = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...)) %>%
-        dplyr::summarize(stat = prop[UQ(attr(x, "explanatory")) == order[1]] - prop[UQ(attr(x, "explanatory")) == order[2]])
+        dplyr::summarize(prop = mean(rlang::eval_tidy(col) == 
+                                       rlang::eval_tidy(success), ...)) %>%
+        dplyr::summarize(stat = prop[UQ(attr(x, "explanatory")) == order[1]]
+                         - prop[UQ(attr(x, "explanatory")) == order[2]])
     }
 
     if (stat == "Chisq") {
@@ -184,7 +193,8 @@ calculate <- function(x, stat, order = NULL, ...) {
       if (is.null(attr(x, "explanatory"))) {
         expected <- n * attr(x, "params")
         df_out <- x %>%
-          dplyr::summarize(stat = sum((table(UQ(attr(x, "response"))) - expected)^2 / expected, ...))
+          dplyr::summarize(stat = sum((table(UQ(attr(x, "response"))) 
+                                       - expected)^2 / expected, ...))
       } else {
         # This is not matching with chisq.test
         # obs_tab <- x %>%
@@ -199,8 +209,9 @@ calculate <- function(x, stat, order = NULL, ...) {
 
         df_out <- x %>%
           dplyr::group_by(replicate) %>%
-          dplyr::do(broom::tidy(stats::chisq.test(table(.[[as.character(attr(x, "response"))]],
-                                          .[[as.character(attr(x, "explanatory"))]])))) %>%
+          dplyr::do(broom::tidy(stats::chisq.test(
+            table(.[[as.character(attr(x, "response"))]],
+                  .[[as.character(attr(x, "explanatory"))]])))) %>%
           dplyr::ungroup() %>%
           dplyr::transmute(replicate = as.factor(replicate), stat = statistic)
       }
@@ -215,7 +226,8 @@ calculate <- function(x, stat, order = NULL, ...) {
 
     if (stat == "slope") {
       df_out <- x %>%
-        dplyr::summarize(stat = stats::coef(stats::lm(UQ(attr(x, "response")) ~ UQ(attr(x, "explanatory"))))[2])
+        dplyr::summarize(stat = stats::coef(
+          stats::lm(UQ(attr(x, "response")) ~ UQ(attr(x, "explanatory"))))[2])
     }
 
     return(df_out)
