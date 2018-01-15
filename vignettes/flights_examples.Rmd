@@ -249,21 +249,6 @@ c(lower = x_bar - 2 * sd(boot),
   upper = x_bar + 2 * sd(boot))
 ```
 
-### One numerical (one median)
-
-```{r}
-x_tilde <- fli_small %>% 
-   summarize(median(arr_delay)) %>% 
-   pull()
-boot <- fli_small %>%
-   specify(response = arr_delay) %>%
-   generate(reps = 1000, type = "bootstrap") %>%
-   calculate(stat = "median") %>% 
-   pull()
-c(lower = x_tilde - 2 * sd(boot), 
-  upper = x_tilde + 2 * sd(boot))
-```
-
 ### One categorical (one proportion)
 
 ```{r}
