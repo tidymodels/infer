@@ -172,13 +172,14 @@ calculate <- function(x, stat, order = NULL, ...) {
   }
   
   if (stat == "diff in props") {
-    
-    if (length(levels(x[[as.character(attr(x, "explanatory"))]])) != 2){
-      stop(paste0("The explanatory variable of `",
-                  attr(x, "explanatory"),
-                  "` does not have exactly two levels. \n",
-                  "Convert it to have only two levels and try again."))
-    }
+
+    # Detected in another test    
+#    if (length(levels(x[[as.character(attr(x, "explanatory"))]])) != 2){
+#      stop(paste0("The explanatory variable of `",
+#                  attr(x, "explanatory"),
+#                  "` does not have exactly two levels. \n",
+#                  "Convert it to have only two levels and try again."))
+#    }
     
     col <- attr(x, "response")
     success <- attr(x, "success")
