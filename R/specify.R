@@ -11,15 +11,7 @@
 #' @importFrom methods hasArg
 #' @export
 #' @examples
-#' # One binary variable
-#'   mtcars %>%
-#'     dplyr::mutate(am = factor(am)) %>%
-#'     specify(response = am, success = "1") %>%
-#'     hypothesize(null = "point", p = 0.75) %>%
-#'     generate(reps = 100, type = "simulate") %>%
-#'     calculate(stat = "prop")
-#'
-#' # Permutation test
+#' # Permutation test similar to ANOVA
 #'   mtcars %>%
 #'     dplyr::mutate(cyl = factor(cyl)) %>%
 #'     specify(mpg ~ cyl) %>%
@@ -82,13 +74,16 @@ specify <- function(x, formula, response = NULL,
       stop("`success` must be a string.")
     }
     if (!is.factor(response_col)) {
-      stop("`success` should only be specified if the response is a categorical variable.")
+      stop(paste("`success` should only be specified if the response is",
+"a categorical variable."))
     }
     if (!(success %in% levels(response_col))) {
-      stop(paste0(success, " is not a valid level of ", attr(x, "response"), "."))
+      stop(paste0(success, " is not a valid level of ", 
+                  attr(x, "response"), "."))
     }
     if (sum(table(response_col) > 0) > 2) {
-      stop("`success` can only be used if the response has two levels. `filter()` can reduce a variable to two levels.")
+      stop(paste("`success` can only be used if the response has two levels.",
+           "`filter()` can reduce a variable to two levels."))
     }
   }
 
