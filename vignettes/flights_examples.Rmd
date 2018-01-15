@@ -236,7 +236,7 @@ null %>%
 
 ### One numerical (one mean)
 
-```{r}
+```{r eval=FALSE}
 # x_bar <- fli_small %>% 
 #    summarize(mean(arr_delay)) %>% 
 #    pull()
@@ -251,7 +251,7 @@ null %>%
 
 ### One categorical (one proportion)
 
-```{r}
+```{r eval=FALSE}
 # p_hat <- fli_small %>%
 #  summarize(mean(day_hour == "morning")) %>%
 #  pull()
