@@ -283,7 +283,7 @@ null &lt;-<span class="st"> </span>fli_small %&gt;%
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1  0.0260</code></pre>
+## 1  0.0540</code></pre>
 </div>
 <div id="one-numerical-one-categorical-2-levels---anova" class="section level3">
 <h3 class="hasAnchor">
@@ -306,7 +306,7 @@ null &lt;-<span class="st"> </span>fli_small %&gt;%
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.294</code></pre>
+## 1   0.286</code></pre>
 </div>
 <div id="two-numerical-vars---slr" class="section level3">
 <h3 class="hasAnchor">
@@ -380,7 +380,7 @@ boot &lt;-<span class="st"> </span>fli_small %&gt;%
 <span class="kw">c</span>(<span class="dt">lower =</span> d_hat -<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot), 
   <span class="dt">upper =</span> d_hat +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot))</code></pre></div>
 <pre><code>##     lower     upper 
-## -9.008625  5.170189</code></pre>
+## -9.013819  5.175384</code></pre>
 </div>
 <div id="two-categorical-variables-diff-in-proportions" class="section level3">
 <h3 class="hasAnchor">
@@ -398,7 +398,7 @@ boot &lt;-<span class="st"> </span>fli_small %&gt;%
 <span class="kw">c</span>(<span class="dt">lower =</span> d_hat -<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot), 
   <span class="dt">upper =</span> d_hat +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot))</code></pre></div>
 <pre><code>##       lower       upper 
-## -0.11154378  0.06817643</code></pre>
+## -0.11175130  0.06838395</code></pre>
 </div>
 <div id="two-numerical-vars---slr-1" class="section level3">
 <h3 class="hasAnchor">
@@ -415,8 +415,8 @@ boot &lt;-<span class="st"> </span>fli_small %&gt;%
 <span class="st">   </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()
 <span class="kw">c</span>(<span class="dt">lower =</span> slope_hat -<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot), 
   <span class="dt">upper =</span> slope_hat +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot))   </code></pre></div>
-<pre><code>##     lower     upper 
-## 0.9564808 1.0711919</code></pre>
+<pre><code>##    lower    upper 
+## 0.956282 1.071391</code></pre>
 </div>
 </div>
 </div>
