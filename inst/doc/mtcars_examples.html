@@ -179,16 +179,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate        stat
 ##        &lt;int&gt;       &lt;dbl&gt;
-##  1         1 -0.45238095
-##  2         2  0.04761905
-##  3         3  0.04761905
-##  4         4  0.15873016
-##  5         5 -0.02380952
-##  6         6  0.01587302
-##  7         7 -0.06349206
-##  8         8 -0.07936508
-##  9         9  0.03174603
-## 10        10  0.26984127
+##  1         1 -0.29365079
+##  2         2 -0.16666667
+##  3         3 -0.03968254
+##  4         4  0.21428571
+##  5         5 -0.16666667
+##  6         6 -0.16666667
+##  7         7  0.08730159
+##  8         8 -0.03968254
+##  9         9 -0.03968254
+## 10        10  0.34126984
 ## # ... with 90 more rows</code></pre>
 <p>One categorical (&gt;2 level) - GoF</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -219,16 +219,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate      stat
 ##       &lt;fctr&gt;     &lt;dbl&gt;
-##  1         1 1.8072220
-##  2         2 6.2618084
-##  3         3 0.9858492
-##  4         4 2.5059572
-##  5         5 0.1665703
-##  6         6 6.6858054
-##  7         7 2.2356483
-##  8         8 9.8942741
-##  9         9 1.3305690
-## 10        10 0.6765632
+##  1         1 3.6796887
+##  2         2 0.5569168
+##  3         3 4.9987907
+##  4         4 4.5680635
+##  5         5 6.4794153
+##  6         6 0.1261896
+##  7         7 3.7066092
+##  8         8 6.9101425
+##  9         9 1.4452916
+## 10        10 1.0145644
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable one categorical (2 levels) (diff in means)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -239,16 +239,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate        stat
 ##        &lt;int&gt;       &lt;dbl&gt;
-##  1         1  3.87570850
-##  2         2  2.09190283
-##  3         3 -0.75546559
-##  4         4  3.83886640
-##  5         5 -1.38825911
-##  6         6 -1.34817814
-##  7         7 -0.02753036
-##  8         8  2.90000000
-##  9         9  2.95951417
-## 10        10  2.43967611
+##  1         1  0.35991903
+##  2         2  0.04898785
+##  3         3  3.37854251
+##  4         4  1.88866397
+##  5         5  0.89109312
+##  6         6  0.90404858
+##  7         7 -0.32672065
+##  8         8 -3.43603239
+##  9         9  0.50242915
+## 10        10 -1.92024291
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable one categorical (2 levels) (diff in medians)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -259,16 +259,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
-##  1         1  -3.7
-##  2         2  -2.3
-##  3         3   0.5
-##  4         4  -3.6
-##  5         5   0.5
-##  6         6   1.1
+##  1         1   0.5
+##  2         2  -2.7
+##  3         3   2.4
+##  4         4   0.0
+##  5         5  -5.0
+##  6         6   2.4
 ##  7         7   0.0
-##  8         8  -2.4
-##  9         9   0.5
-## 10        10  -5.5
+##  8         8   2.9
+##  9         9  -0.5
+## 10        10   0.5
 ## # ... with 90 more rows</code></pre>
 <p>One numerical one categorical (&gt;2 levels) - ANOVA</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -279,16 +279,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate       stat
 ##        &lt;int&gt;      &lt;dbl&gt;
-##  1         1 1.62817090
-##  2         2 4.14143312
-##  3         3 0.08516897
-##  4         4 0.98541834
-##  5         5 1.38865033
-##  6         6 0.40206584
-##  7         7 0.77942454
-##  8         8 3.34061857
-##  9         9 0.49326015
-## 10        10 0.14084684
+##  1         1 2.53270204
+##  2         2 0.10366301
+##  3         3 0.23819911
+##  4         4 1.11847561
+##  5         5 0.65988848
+##  6         6 0.17291823
+##  7         7 0.79871733
+##  8         8 0.80000848
+##  9         9 0.25459266
+## 10        10 0.01981289
 ## # ... with 90 more rows</code></pre>
 <p>Two numerical vars - SLR</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -297,18 +297,18 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;permute&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;slope&quot;</span>)</code></pre></div>
 <pre><code>## # A tibble: 100 x 2
-##    replicate          stat
-##        &lt;int&gt;         &lt;dbl&gt;
-##  1         1  0.0034341641
-##  2         2  0.0005572925
-##  3         3  0.0117510926
-##  4         4  0.0026588267
-##  5         5 -0.0041196931
-##  6         6  0.0237490082
-##  7         7 -0.0281037300
-##  8         8 -0.0070128194
-##  9         9  0.0020654220
-## 10        10 -0.0033980520
+##    replicate         stat
+##        &lt;int&gt;        &lt;dbl&gt;
+##  1         1  0.030954525
+##  2         2  0.007061884
+##  3         3 -0.023141879
+##  4         4 -0.028523179
+##  5         5 -0.012406728
+##  6         6 -0.001637267
+##  7         7 -0.005867783
+##  8         8 -0.003693854
+##  9         9  0.005218023
+## 10        10 -0.008657935
 ## # ... with 90 more rows</code></pre>
 <div id="confidence-intervals" class="section level3">
 <h3>Confidence intervals</h3>
