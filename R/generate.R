@@ -45,7 +45,9 @@ generate <- function(x, reps = 1, type = "bootstrap", ...) {
   if (type == "simulate") {
     return(simulate(x, reps, ...))
   }
-  x
+  if (!(type %in% c("bootstrap", "permute", "simulate")))
+    stop(paste("Choose one of the available options for `type`:",
+               '`"bootstrap"`, `"permute"`, or `"simulate"`'))
 }
 
 bootstrap <- function(x, reps = 1, ...) {
