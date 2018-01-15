@@ -79,7 +79,7 @@ calculate <- function(x, stat, order = NULL, ...) {
     if(!is.factor(x[[col]])){
       stop(paste0("Calculating a ",
                   stat,
-                  "here is not appropriate \n  since the `",
+                  " here is not appropriate \n  since the `",
                   col,
                   "` variable is not a factor."))
     }
@@ -87,7 +87,9 @@ calculate <- function(x, stat, order = NULL, ...) {
     success <- attr(x, "success")
     df_out <- x %>%
       dplyr::group_by(replicate) %>%
-      dplyr::summarize(stat = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...))
+      dplyr::summarize(stat = mean(rlang::eval_tidy(col) == 
+                                     rlang::eval_tidy(success), 
+                                   ...))
   }
 
   if (stat %in% c("diff in means", "diff in medians", "diff in props", "F")){
