@@ -7,15 +7,7 @@
 #' @importFrom dplyr as.tbl
 #' @export
 #' @examples
-#' # One binary variable
-#'   mtcars %>%
-#'     dplyr::mutate(am = factor(am)) %>%
-#'     specify(response = am, success = "1") %>%
-#'     hypothesize(null = "point", p = 0.75) %>%
-#'     generate(reps = 100, type = "simulate") %>%
-#'     calculate(stat = "prop")
-#'
-#' # Permutation test
+#' # Permutation test similar to ANOVA
 #'   mtcars %>%
 #'     dplyr::mutate(cyl = factor(cyl)) %>%
 #'     specify(mpg ~ cyl) %>%

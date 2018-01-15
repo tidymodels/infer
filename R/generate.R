@@ -9,8 +9,7 @@
 #' @importFrom dplyr group_by
 #' @export
 #' @examples
-#'
-#' #' # Permutation test for two binary variables
+#' # Permutation test for two binary variables
 #'   mtcars %>%
 #'     dplyr::mutate(am = factor(am), vs = factor(vs)) %>%
 #'     specify(am ~ vs, success = "1") %>%

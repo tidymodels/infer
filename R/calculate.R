@@ -14,7 +14,6 @@
 #' @importFrom rlang !! sym quo enquo eval_tidy UQ
 #' @export
 #' @examples
-#'
 #' # Permutation test for two binary variables
 #'   mtcars %>%
 #'     dplyr::mutate(am = factor(am), vs = factor(vs)) %>%

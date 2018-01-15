@@ -208,16 +208,16 @@ test_that("`order` is working", {
   expect_error(calculate(gen_iris11, stat = "diff in means"))
 })
 
-test_that('success is working for stat = "prop"', {
-  gen_iris12 <- iris %>%
-    dplyr::mutate(Sepal.Length.Group = 
-                    dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
-    specify(Sepal.Length.Group ~ NULL, success = ">5") %>%
-    hypothesize(null = "point", p = 0.3) %>%
-    generate(reps = 10, type = "simulate")
-  expect_silent(gen_iris12 %>% 
-                  calculate(stat = "prop"))
-})
+# test_that('success is working for stat = "prop"', {
+#   gen_iris12 <- iris %>%
+#     dplyr::mutate(Sepal.Length.Group = 
+#                     dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
+#     specify(Sepal.Length.Group ~ NULL, success = ">5") %>%
+#     hypothesize(null = "point", p = 0.3) %>%
+#     generate(reps = 10, type = "simulate")
+#   expect_silent(gen_iris12 %>% 
+#                   calculate(stat = "prop"))
+# })
 
 test_that("NULL response gives error", {
   iris_improp <- tibble::as_tibble(iris) %>%
