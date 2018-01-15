@@ -147,16 +147,16 @@
     <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"prop"</span>)</div><div class='output co'>#&gt; # A tibble: 100 x 2
 #&gt;    replicate  stat
 #&gt;    &lt;fctr&gt;    &lt;dbl&gt;
-#&gt;  1 1         0.875
+#&gt;  1 1         0.781
 #&gt;  2 2         0.750
-#&gt;  3 3         0.812
-#&gt;  4 4         0.781
-#&gt;  5 5         0.656
-#&gt;  6 6         0.656
+#&gt;  3 3         0.688
+#&gt;  4 4         0.812
+#&gt;  5 5         0.688
+#&gt;  6 6         0.719
 #&gt;  7 7         0.719
-#&gt;  8 8         0.781
-#&gt;  9 9         0.719
-#&gt; 10 10        0.594
+#&gt;  8 8         0.750
+#&gt;  9 9         0.688
+#&gt; 10 10        0.688
 #&gt; # ... with 90 more rows</div><div class='input'>
 <span class='co'># Permutation test</span>
   <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
@@ -165,18 +165,18 @@
     <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"F"</span>)</div><div class='output co'>#&gt; # A tibble: 100 x 2
-#&gt;    replicate  stat
-#&gt;        &lt;int&gt; &lt;dbl&gt;
-#&gt;  1         1 6.43 
-#&gt;  2         2 1.31 
-#&gt;  3         3 1.06 
-#&gt;  4         4 0.355
-#&gt;  5         5 0.132
-#&gt;  6         6 1.76 
-#&gt;  7         7 0.329
-#&gt;  8         8 1.37 
-#&gt;  9         9 0.205
-#&gt; 10        10 0.126
+#&gt;    replicate   stat
+#&gt;        &lt;int&gt;  &lt;dbl&gt;
+#&gt;  1         1 1.17  
+#&gt;  2         2 0.892 
+#&gt;  3         3 0.799 
+#&gt;  4         4 0.0149
+#&gt;  5         5 0.0986
+#&gt;  6         6 0.0828
+#&gt;  7         7 2.28  
+#&gt;  8         8 0.962 
+#&gt;  9         9 2.34  
+#&gt; 10        10 1.89  
 #&gt; # ... with 90 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
