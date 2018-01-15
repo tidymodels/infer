@@ -13,8 +13,6 @@ mtcars <- as.data.frame(mtcars) %>%
          am = factor(am),
          gear = factor(gear),
          carb = factor(carb))
-# For reproducibility         
-set.seed(2018)         
 
 ## ------------------------------------------------------------------------
 mtcars %>%

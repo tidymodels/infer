@@ -141,14 +141,8 @@ the vector being sampled.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    matches</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='fu'>library</span>(<span class='no'>ggplot2</span>)
+    <pre class="examples"><div class='input'><span class='fu'>suppressPackageStartupMessages</span>(<span class='fu'>library</span>(<span class='no'>dplyr</span>))
+<span class='fu'>suppressPackageStartupMessages</span>(<span class='fu'>library</span>(<span class='no'>ggplot2</span>))
 
 <span class='co'># Create a virtual population of N = 2400 balls, of which 900 are red and the</span>
 <span class='co'># rest are white</span>
@@ -171,7 +165,7 @@ the vector being sampled.</p></td>
 #&gt;  9       9 red  
 #&gt; 10      10 red  
 #&gt; # ... with 2,390 more rows</div><div class='input'>
-<span class='co'># Take samples of size n = 50 balls; do this 1000 times</span>
+<span class='co'># Take samples of size n = 50 balls without replacement; do this 1000 times</span>
 <span class='no'>samples</span> <span class='kw'>&lt;-</span> <span class='no'>population</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>rep_sample_n</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1000</span>)
 <span class='no'>samples</span></div><div class='output co'>#&gt; # A tibble: 50,000 x 3
@@ -209,9 +203,9 @@ the vector being sampled.</p></td>
 #&gt; # ... with 990 more rows</div><div class='input'>
 <span class='co'># Plot sampling distribution</span>
 <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>p_hats</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>prop_red</span>)) +
-  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_histogram'>geom_histogram</a></span>(<span class='kw'>binwidth</span> <span class='kw'>=</span> <span class='fl'>0.05</span>) +
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>geom_density</a></span>() +
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"p_hat"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Number of samples"</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Sampling distribution of p_hat based on 1000 samples of size n = 50"</span>)</div><div class='img'><img src='rep_sample_n-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Sampling distribution of p_hat from 1000 samples of size 50"</span>)</div><div class='img'><img src='rep_sample_n-1.png' alt='' width='700' height='432.632880098887' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
