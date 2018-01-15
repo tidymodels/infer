@@ -27,6 +27,14 @@ hyp_mean <- mtcars %>%
   specify(response = mpg) %>%
   hypothesize(null = "point", mu = 3)
 
+hyp_median <- mtcars %>%
+  specify(response = mpg) %>%
+  hypothesize(null = "point", med = 3)
+
+hyp_sd <- mtcars %>%
+  specify(response = mpg) %>%
+  hypothesize(null = "point", sigma = 7)
+
 hyp_diff_in_means <- mtcars %>%
   specify(mpg ~ vs) %>%
   hypothesize(null = "independence")
@@ -42,6 +50,8 @@ test_that("cohesion with type argument", {
   expect_error(generate(hyp_chisq_gof, type = "bootstrap"))
   expect_error(generate(hyp_chisq_ind, type = "bootstrap"))
   expect_silent(generate(hyp_mean, type = "bootstrap"))
+  expect_silent(generate(hyp_median, type = "bootstrap"))
+  expect_silent(generate(hyp_sd, type = "bootstrap"))
   expect_error(generate(hyp_diff_in_means, type = "bootstrap"))
   expect_error(generate(hyp_anova, type = "bootstrap"))
 
@@ -66,5 +76,6 @@ test_that("cohesion with type argument", {
 test_that("sensible output", {
 
   expect_equal(nrow(mtcars) * 500, nrow(generate(hyp_prop, reps = 500, type = "simulate")))
+  expect_silent(generate(hyp_mean, reps = 1, type = "bootstrap"))
 
 })

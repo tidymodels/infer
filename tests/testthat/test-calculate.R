@@ -30,7 +30,8 @@ test_that("variable chosen is of appropriate class (one var problems)", {
   gen_iris1 <- iris %>%
     specify(Species ~ NULL) %>%
     hypothesize(null = "point",
-                p = c("setosa" = .5, "versicolor" = .25, "virginica" = .25)) %>%
+                p = c("setosa" = .5, 
+                      "versicolor" = .25, "virginica" = .25)) %>%
     generate(reps = 10, type = "simulate")
   expect_error(calculate(gen_iris1, stat = "mean"))
 
@@ -90,7 +91,8 @@ test_that("response variable is a factor (two var problems)", {
 
   # Species has more than 2 levels
   gen_iris4 <- iris %>%
-    dplyr::mutate(Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
+    dplyr::mutate(Sepal.Length.Group = 
+                    dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
     specify(Sepal.Length.Group ~ Species) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
@@ -121,17 +123,21 @@ test_that("properties of tibble passed-in are correct", {
 
 test_that("success is working for diff in means", {
   gen_iris7 <- iris %>%
-    dplyr::mutate(Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
+    dplyr::mutate(Sepal.Length.Group = 
+                    dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
     specify(Sepal.Width ~ Sepal.Length.Group) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_equal(nrow(calculate(gen_iris7, stat = "diff in means", order = c(">5", "<=5"))), 10)
-  expect_equal(ncol(calculate(gen_iris7, stat = "diff in means", order = c(">5", "<=5"))), 2)
+  expect_equal(nrow(calculate(gen_iris7, stat = "diff in means", 
+                              order = c(">5", "<=5"))), 10)
+  expect_equal(ncol(calculate(gen_iris7, stat = "diff in means", 
+                              order = c(">5", "<=5"))), 2)
 })
 
 test_that("chi-square matches chisq.test value", {
   gen_iris8 <- iris %>%
-    dplyr::mutate(Petal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
+    dplyr::mutate(Petal.Length.Group = 
+                    dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
     specify(Petal.Length.Group ~ Species) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
@@ -139,7 +145,8 @@ test_that("chi-square matches chisq.test value", {
   #chisq.test way
   trad_way <- gen_iris8 %>%
     dplyr::group_by(replicate) %>%
-    dplyr::do(broom::tidy(stats::chisq.test(table(.$Petal.Length.Group, .$Species)))) %>%
+    dplyr::do(broom::tidy(stats::chisq.test(table(.$Petal.Length.Group, 
+                                                  .$Species)))) %>%
     dplyr::select(replicate, stat = statistic) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(replicate = as.factor(replicate))
@@ -161,20 +168,27 @@ test_that("chi-square matches chisq.test value", {
 
 test_that("`order` is working", {
   gen_iris10 <- iris %>%
-    dplyr::mutate(Petal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
+    dplyr::mutate(Petal.Length.Group = 
+                    dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
     specify(Petal.Width ~ Petal.Length.Group) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_error(calculate(gen_iris10, stat = "diff in means", order = c(TRUE, FALSE)))
+  expect_error(calculate(gen_iris10, stat = "diff in means", 
+                         order = c(TRUE, FALSE)))
 
   gen_iris11 <- iris %>%
-    dplyr::mutate(Petal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
+    dplyr::mutate(Petal.Length.Group = 
+                    dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
     specify(Petal.Width ~ Petal.Length.Group) %>%
     generate(reps = 10, type = "bootstrap")
-  expect_error(calculate(gen_iris11, stat = "diff in medians", order = ">5"))
-  expect_error(calculate(gen_iris11, stat = "diff in medians", order = c(NA, ">5")))
-  expect_error(calculate(gen_iris11, stat = "diff in medians", order = c(">5", "<=4")))
-  expect_error(calculate(gen_iris11, stat = "diff in means", order = c(">5", "<=4", ">4")))
+  expect_error(calculate(gen_iris11, stat = "diff in medians", 
+                         order = ">5"))
+  expect_error(calculate(gen_iris11, stat = "diff in medians", 
+                         order = c(NA, ">5")))
+  expect_error(calculate(gen_iris11, stat = "diff in medians", 
+                         order = c(">5", "<=4")))
+  expect_error(calculate(gen_iris11, stat = "diff in means", 
+                         order = c(">5", "<=4", ">4")))
 })
 
 test_that("NULL response gives error", {

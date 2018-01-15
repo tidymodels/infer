@@ -21,7 +21,8 @@ test_that("hypothesize arguments function",{
   
   expect_error(mtcars_s %>% hypothesize(null = "independence"))
   expect_error(mtcars_s %>% hypothesize(null = "point"))
-  expect_warning(mtcars_s %>% hypothesize(null = c("point", "independence"), mu = 3))
+  expect_warning(mtcars_s %>% 
+                   hypothesize(null = c("point", "independence"), mu = 3))
   
   expect_error(mtcars %>% dplyr::select(vs) %>%
                  hypothesize(null = "point", mu = 1))
@@ -35,7 +36,8 @@ test_that("hypothesize arguments function",{
                  hypothesize(null = "point", p = -23))
   
   expect_error(mtcars_s %>% 
-                 hypothesize(null = "point", p = c("4" = .2, "6" = .25, "8" = .25)))
+                 hypothesize(null = "point", 
+                             p = c("4" = .2, "6" = .25, "8" = .25)))
   
   expect_error(mtcars_s %>% hypothesize(null = "point", p = 0.2))
   expect_warning(mtcars %>% specify(mpg ~ vs) %>%
