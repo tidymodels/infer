@@ -88,7 +88,8 @@ null %>%
 Chisq_hat <- chisq.test(table(fli_small$origin))$stat
 null <- fli_small %>%
   specify(response = origin) %>%
-  hypothesize(null = "point", p = c("EWR" = .33, "JFK" = .33, "LGA" = .34)) %>% 
+  hypothesize(null = "point", 
+              p = c("EWR" = .33, "JFK" = .33, "LGA" = .34)) %>% 
   generate(reps = 1000, type = "simulate") %>% 
   calculate(stat = "Chisq")
 ggplot(null, aes(x = stat)) +
@@ -117,7 +118,8 @@ d_hat <- fli_small %>%
   summarize(diff(mean_stat)) %>% 
   pull()
 null <- fli_small %>%
-  specify(dep_delay ~ season) %>% # alt: response = dep_delay, explanatory = season
+  specify(dep_delay ~ season) %>% # alt: response = dep_delay, 
+  # explanatory = season
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in means", order = c("summer", "winter"))
@@ -134,7 +136,8 @@ d_hat <- fli_small %>%
   summarize(diff(median_stat)) %>% 
   pull()
 null <- fli_small %>%
-  specify(dep_delay ~ season) %>% # alt: response = dep_delay, explanatory = season
+  specify(dep_delay ~ season) %>% # alt: response = dep_delay, 
+  # explanatory = season
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in medians", order = c("summer", "winter"))
@@ -145,9 +148,12 @@ null %>%
   summarize(p_value = mean(stat > d_hat) * 2)    
 
 ## ------------------------------------------------------------------------
-F_hat <- anova(aov(formula = arr_delay ~ origin, data = fli_small))$`F value`[1]
+F_hat <- anova(
+               aov(formula = arr_delay ~ origin, data = fli_small)
+               )$`F value`[1]
 null <- fli_small %>%
-   specify(arr_delay ~ origin) %>% # alt: response = arr_delay, explanatory = origin
+   specify(arr_delay ~ origin) %>% # alt: response = arr_delay, 
+   # explanatory = origin
    hypothesize(null = "independence") %>%
    generate(reps = 1000, type = "permute") %>%
    calculate(stat = "F")
@@ -164,7 +170,8 @@ slope_hat <- lm(arr_delay ~ dep_delay, data = fli_small) %>%
   select(estimate) %>% 
   pull()
 null <- fli_small %>%
-   specify(arr_delay ~ dep_delay) %>% # alt: response = arr_delay, explanatory = dep_delay
+   specify(arr_delay ~ dep_delay) %>% # alt: response = arr_delay, 
+   # explanatory = dep_delay
    hypothesize(null = "independence") %>%
    generate(reps = 1000, type = "permute") %>%
    calculate(stat = "slope")
@@ -174,29 +181,29 @@ ggplot(null, aes(x = stat)) +
 null %>% 
   summarize(p_value = mean(stat > slope_hat) * 2)   
 
-## ------------------------------------------------------------------------
-# x_bar <- fli_small %>% 
-#    summarize(mean(arr_delay)) %>% 
-#    pull()
-# boot <- fli_small %>%
-#    specify(response = arr_delay) %>%
-#    generate(reps = 1000, type = "bootstrap") %>%
-#    calculate(stat = "mean") %>% 
-#    pull()
-# c(lower = x_bar - 2 * sd(boot), 
-#   upper = x_bar + 2 * sd(boot))
+## ----eval=FALSE----------------------------------------------------------
+#  # x_bar <- fli_small %>%
+#  #    summarize(mean(arr_delay)) %>%
+#  #    pull()
+#  # boot <- fli_small %>%
+#  #    specify(response = arr_delay) %>%
+#  #    generate(reps = 1000, type = "bootstrap") %>%
+#  #    calculate(stat = "mean") %>%
+#  #    pull()
+#  # c(lower = x_bar - 2 * sd(boot),
+#  #   upper = x_bar + 2 * sd(boot))
 
-## ------------------------------------------------------------------------
-# p_hat <- fli_small %>%
-#  summarize(mean(day_hour == "morning")) %>%
-#  pull()
-# boot <- fli_small %>%
-#  specify(response = day_hour, success = "morning") %>%
-#  generate(reps = 1000, type = "bootstrap") %>% 
-#  calculate(stat = "prop") %>%
-#  pull()
-# c(lower = p_hat - 2 * sd(boot), 
-#  upper = p_hat + 2 * sd(boot))
+## ----eval=FALSE----------------------------------------------------------
+#  # p_hat <- fli_small %>%
+#  #  summarize(mean(day_hour == "morning")) %>%
+#  #  pull()
+#  # boot <- fli_small %>%
+#  #  specify(response = day_hour, success = "morning") %>%
+#  #  generate(reps = 1000, type = "bootstrap") %>%
+#  #  calculate(stat = "prop") %>%
+#  #  pull()
+#  # c(lower = p_hat - 2 * sd(boot),
+#  #  upper = p_hat + 2 * sd(boot))
 
 ## ------------------------------------------------------------------------
 d_hat <- fli_small %>% 
@@ -209,8 +216,8 @@ boot <- fli_small %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "diff in means", order = c("summer", "winter")) %>% 
    pull()
-c(lower = p_hat - 2 * sd(boot), 
-  upper = p_hat + 2 * sd(boot))
+c(lower = d_hat - 2 * sd(boot), 
+  upper = d_hat + 2 * sd(boot))
 
 ## ------------------------------------------------------------------------
 d_hat <- fli_small %>%

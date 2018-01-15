@@ -240,7 +240,8 @@ null &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Chisq_hat &lt;-<span class="st"> </span><span class="kw">chisq.test</span>(<span class="kw">table</span>(fli_small<span class="op">$</span>origin))<span class="op">$</span>stat
 null &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">specify</span>(<span class="dt">response =</span> origin) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;point&quot;</span>, <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">&quot;EWR&quot;</span> =<span class="st"> </span>.<span class="dv">33</span>, <span class="st">&quot;JFK&quot;</span> =<span class="st"> </span>.<span class="dv">33</span>, <span class="st">&quot;LGA&quot;</span> =<span class="st"> </span>.<span class="dv">34</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;point&quot;</span>, 
+              <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">&quot;EWR&quot;</span> =<span class="st"> </span>.<span class="dv">33</span>, <span class="st">&quot;JFK&quot;</span> =<span class="st"> </span>.<span class="dv">33</span>, <span class="st">&quot;LGA&quot;</span> =<span class="st"> </span>.<span class="dv">34</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">&quot;simulate&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;Chisq&quot;</span>)
 <span class="kw">ggplot</span>(null, <span class="kw">aes</span>(<span class="dt">x =</span> stat)) <span class="op">+</span>
@@ -301,7 +302,8 @@ null &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">summarize</span>(<span class="kw">diff</span>(mean_stat)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">pull</span>()
 null &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">specify</span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = dep_delay, explanatory = season</span>
+<span class="st">  </span><span class="kw">specify</span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = dep_delay, </span>
+<span class="st">  </span><span class="co"># explanatory = season</span>
 <span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;independence&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">&quot;permute&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;diff in means&quot;</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">&quot;summer&quot;</span>, <span class="st">&quot;winter&quot;</span>))
@@ -334,7 +336,8 @@ null &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">summarize</span>(<span class="kw">diff</span>(median_stat)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">pull</span>()
 null &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">specify</span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = dep_delay, explanatory = season</span>
+<span class="st">  </span><span class="kw">specify</span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = dep_delay, </span>
+<span class="st">  </span><span class="co"># explanatory = season</span>
 <span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;independence&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">&quot;permute&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;diff in medians&quot;</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">&quot;summer&quot;</span>, <span class="st">&quot;winter&quot;</span>))
@@ -361,9 +364,12 @@ null &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 </div>
 <div id="one-numerical-one-categorical-2-levels---anova" class="section level3">
 <h3>One numerical, one categorical (&gt;2 levels) - ANOVA</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">F_hat &lt;-<span class="st"> </span><span class="kw">anova</span>(<span class="kw">aov</span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>origin, <span class="dt">data =</span> fli_small))<span class="op">$</span><span class="st">`</span><span class="dt">F value</span><span class="st">`</span>[<span class="dv">1</span>]
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">F_hat &lt;-<span class="st"> </span><span class="kw">anova</span>(
+               <span class="kw">aov</span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>origin, <span class="dt">data =</span> fli_small)
+               )<span class="op">$</span><span class="st">`</span><span class="dt">F value</span><span class="st">`</span>[<span class="dv">1</span>]
 null &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
-<span class="st">   </span><span class="kw">specify</span>(arr_delay <span class="op">~</span><span class="st"> </span>origin) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = arr_delay, explanatory = origin</span>
+<span class="st">   </span><span class="kw">specify</span>(arr_delay <span class="op">~</span><span class="st"> </span>origin) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = arr_delay, </span>
+<span class="st">   </span><span class="co"># explanatory = origin</span>
 <span class="st">   </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;independence&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">&quot;permute&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;F&quot;</span>)
@@ -396,7 +402,8 @@ null &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">select</span>(estimate) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">pull</span>()
 null &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
-<span class="st">   </span><span class="kw">specify</span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = arr_delay, explanatory = dep_delay</span>
+<span class="st">   </span><span class="kw">specify</span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = arr_delay, </span>
+<span class="st">   </span><span class="co"># explanatory = dep_delay</span>
 <span class="st">   </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;independence&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">&quot;permute&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;slope&quot;</span>)
@@ -461,10 +468,10 @@ boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">&quot;bootstrap&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;diff in means&quot;</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">&quot;summer&quot;</span>, <span class="st">&quot;winter&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">   </span><span class="kw">pull</span>()
-<span class="kw">c</span>(<span class="dt">lower =</span> p_hat <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(boot), 
-  <span class="dt">upper =</span> p_hat <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(boot))</code></pre></div>
+<span class="kw">c</span>(<span class="dt">lower =</span> d_hat <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(boot), 
+  <span class="dt">upper =</span> d_hat <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(boot))</code></pre></div>
 <pre><code>##     lower     upper 
-## -6.847049  7.750142</code></pre>
+## -9.217813  5.379378</code></pre>
 </div>
 <div id="two-categorical-variables-diff-in-proportions" class="section level3">
 <h3>Two categorical variables (diff in proportions)</h3>
