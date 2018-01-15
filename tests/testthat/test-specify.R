@@ -17,10 +17,13 @@ test_that("data argument", {
 test_that("response and explanatory arguments", {
 
   expect_error(specify(mtcars, response = blah))
+  expect_error(specify(mtcars, response = "blah"))
   expect_error(specify(mtcars, formula = mpg ~ blah))
   expect_error(specify(blah ~ cyl))
   expect_error(specify(mtcars_f, blah2 ~ cyl))
   expect_error(specify(mtcars))
+  expect_error(specify(mtcars, formula = mpg ~ mpg))
+  expect_silent(specify(mtcars, formula = mpg ~ "cyl"))
 
 })
 
@@ -28,6 +31,8 @@ test_that("success argument", {
 
   expect_error(specify(mtcars, response = vs, success = 1))
   expect_error(specify(mtcars, response = vs, success = "bogus"))
+  expect_error(specify(mtcars, response = mpg, success = "1"))
+  expect_error(specify(mtcars, response = cyl, success = "4"))
 
 })
 
@@ -35,4 +40,8 @@ test_that("sensible output", {
   expect_equal(ncol(specify(mtcars, formula = mpg ~ NULL)), 1)
   expect_equal(ncol(specify(mtcars, formula = mpg ~ wt)), 2)
   expect_equal(class(specify(mtcars, formula = mpg ~ wt))[1], "infer")
+})
+
+test_that("formula argument is a formula", {
+  expect_error(specify(mtcars, formula = "vs", success = 1))
 })

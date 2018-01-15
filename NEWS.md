@@ -1,4 +1,4 @@
-# infer 0.1.0.999
+# infer 0.1.1.999
 - Added `obs_stat` and `shade_direction` arguments to `visualize()`
   - Used internal `ggplot2` package functions suggested by @jimhester to shade
   density histogram appropriately
@@ -9,6 +9,11 @@
     - ANOVA F
     - One proportion z
     - Two proportion z
+
+# infer 0.1.1
+- Added additional tests
+- Fixed bugs post-CRAN release
+- Automated travis build of pkgdown to gh-pages branch
 
 # infer 0.1.0
 - Altered the way that successes are indicated in an infer pipeline. They now live in `specify()`.

@@ -21,8 +21,7 @@ parameter information stored as well
 Declare a null hypothesis
 }
 \examples{
-
-# Permutation test on a difference in proportions
+# Permutation test similar to ANOVA
   mtcars \%>\%
     dplyr::mutate(cyl = factor(cyl)) \%>\%
     specify(mpg ~ cyl) \%>\%

@@ -12,6 +12,10 @@
 visualize <- function(df, bins = 30, ...) {
   # TODO:  determine whether a bar graph or a histogram is
   # more appropriate
+  
+  assertive::assert_is_data.frame(df)
+  assertive::assert_is_numeric(bins)
+  
   ggplot(data = df, mapping = aes(x = stat)) +
     geom_histogram(bins = bins, color = "white")
 }

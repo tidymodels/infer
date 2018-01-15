@@ -1,7 +1,7 @@
 Package: infer
 Type: Package
 Title: Tidy Statistical Inference
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
     person("Chester", "Ismay", email = "chester.ismay@gmail.com", role = "aut"),
@@ -24,7 +24,7 @@ Imports:
     ggplot2,
     magrittr
 Depends:
-    R (>= 2.10)
+    R (>= 3.1.2)
 Suggests: 
     broom,
     devtools (>= 1.12.0),

@@ -28,7 +28,6 @@ A tibble containing a \code{stat} column of calculated statistics
 Calculate summary statistics
 }
 \examples{
-
 # Permutation test for two binary variables
   mtcars \%>\%
     dplyr::mutate(am = factor(am), vs = factor(vs)) \%>\%
