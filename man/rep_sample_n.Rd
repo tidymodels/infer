@@ -27,8 +27,8 @@ Perform repeated sampling of samples of size n. Useful for creating
 sampling distributions
 }
 \examples{
-library(dplyr)
-library(ggplot2)
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(ggplot2))
 
 # Create a virtual population of N = 2400 balls, of which 900 are red and the
 # rest are white
@@ -39,7 +39,7 @@ population <- data_frame(
 )
 population
 
-# Take samples of size n = 50 balls; do this 1000 times
+# Take samples of size n = 50 balls without replacement; do this 1000 times
 samples <- population \%>\%
   rep_sample_n(size = 50, reps = 1000)
 samples
@@ -52,7 +52,7 @@ p_hats
 
 # Plot sampling distribution
 ggplot(p_hats, aes(x = prop_red)) + 
-  geom_histogram(binwidth = 0.05) + 
+  geom_density() + 
   labs(x = "p_hat", y = "Number of samples", 
-  title = "Sampling distribution of p_hat based on 1000 samples of size n = 50")
+  title = "Sampling distribution of p_hat from 1000 samples of size 50")
 }

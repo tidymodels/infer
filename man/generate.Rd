@@ -25,8 +25,7 @@ Generate resamples, permutations, or simulations based on
 `specify` and `hypothesize` inputs
 }
 \examples{
-
-#' # Permutation test for two binary variables
+# Permutation test for two binary variables
   mtcars \%>\%
     dplyr::mutate(am = factor(am), vs = factor(vs)) \%>\%
     specify(am ~ vs, success = "1") \%>\%
