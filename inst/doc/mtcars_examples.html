@@ -156,20 +156,6 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;point&quot;</span>, <span class="dt">p =</span> .<span class="dv">25</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;simulate&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;prop&quot;</span>)</code></pre></div>
-<pre><code>## # A tibble: 100 x 2
-##    replicate    stat
-##       &lt;fctr&gt;   &lt;dbl&gt;
-##  1         1 0.28125
-##  2         2 0.28125
-##  3         3 0.28125
-##  4         4 0.21875
-##  5         5 0.25000
-##  6         6 0.25000
-##  7         7 0.28125
-##  8         8 0.25000
-##  9         9 0.18750
-## 10        10 0.34375
-## # ... with 90 more rows</code></pre>
 <p>Two categorical (2 level) variables</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">specify</span>(am <span class="op">~</span><span class="st"> </span>vs, <span class="dt">success =</span> <span class="st">&quot;1&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = am, explanatory = vs</span>
@@ -179,16 +165,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate        stat
 ##        &lt;int&gt;       &lt;dbl&gt;
-##  1         1 -0.29365079
+##  1         1 -0.42063492
 ##  2         2 -0.16666667
-##  3         3 -0.03968254
-##  4         4  0.21428571
-##  5         5 -0.16666667
-##  6         6 -0.16666667
-##  7         7  0.08730159
+##  3         3 -0.42063492
+##  4         4 -0.03968254
+##  5         5  0.08730159
+##  6         6 -0.03968254
+##  7         7 -0.03968254
 ##  8         8 -0.03968254
-##  9         9 -0.03968254
-## 10        10  0.34126984
+##  9         9  0.08730159
+## 10        10 -0.16666667
 ## # ... with 90 more rows</code></pre>
 <p>One categorical (&gt;2 level) - GoF</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -199,16 +185,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate   stat
 ##       &lt;fctr&gt;  &lt;dbl&gt;
-##  1         1 3.0000
-##  2         2 2.2500
-##  3         3 3.0000
+##  1         1 6.7500
+##  2         2 1.6875
+##  3         3 3.1875
 ##  4         4 1.6875
-##  5         5 6.7500
-##  6         6 0.1875
-##  7         7 2.2500
-##  8         8 1.1875
+##  5         5 6.0000
+##  6         6 2.6875
+##  7         7 4.7500
+##  8         8 0.7500
 ##  9         9 0.6875
-## 10        10 3.1875
+## 10        10 3.6875
 ## # ... with 90 more rows</code></pre>
 <p>Two categorical (&gt;2 level) variables</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -219,16 +205,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate      stat
 ##       &lt;fctr&gt;     &lt;dbl&gt;
-##  1         1 3.6796887
-##  2         2 0.5569168
-##  3         3 4.9987907
-##  4         4 4.5680635
-##  5         5 6.4794153
-##  6         6 0.1261896
-##  7         7 3.7066092
-##  8         8 6.9101425
-##  9         9 1.4452916
-## 10        10 1.0145644
+##  1         1 1.3376098
+##  2         2 1.6337347
+##  3         3 1.6337347
+##  4         4 2.6297913
+##  5         5 3.8950523
+##  6         6 1.7414165
+##  7         7 0.1261896
+##  8         8 1.7414165
+##  9         9 1.3376098
+## 10        10 1.3376098
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable one categorical (2 levels) (diff in means)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -237,18 +223,18 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;permute&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;diff in means&quot;</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>))</code></pre></div>
 <pre><code>## # A tibble: 100 x 2
-##    replicate        stat
-##        &lt;int&gt;       &lt;dbl&gt;
-##  1         1  0.35991903
-##  2         2  0.04898785
-##  3         3  3.37854251
-##  4         4  1.88866397
-##  5         5  0.89109312
-##  6         6  0.90404858
-##  7         7 -0.32672065
-##  8         8 -3.43603239
-##  9         9  0.50242915
-## 10        10 -1.92024291
+##    replicate       stat
+##        &lt;int&gt;      &lt;dbl&gt;
+##  1         1 -1.1040486
+##  2         2  0.2174089
+##  3         3 -1.0781377
+##  4         4 -3.7987854
+##  5         5  3.0805668
+##  6         6  0.4894737
+##  7         7  2.3421053
+##  8         8  4.1040486
+##  9         9 -1.8554656
+## 10        10 -0.2101215
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable one categorical (2 levels) (diff in medians)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -260,15 +246,15 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1   0.5
-##  2         2  -2.7
-##  3         3   2.4
-##  4         4   0.0
-##  5         5  -5.0
-##  6         6   2.4
-##  7         7   0.0
-##  8         8   2.9
-##  9         9  -0.5
-## 10        10   0.5
+##  2         2  -1.1
+##  3         3   5.2
+##  4         4   1.8
+##  5         5   0.5
+##  6         6   3.3
+##  7         7  -1.6
+##  8         8  -2.3
+##  9         9   2.9
+## 10        10  -0.5
 ## # ... with 90 more rows</code></pre>
 <p>One numerical one categorical (&gt;2 levels) - ANOVA</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -277,18 +263,18 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;permute&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;F&quot;</span>)</code></pre></div>
 <pre><code>## # A tibble: 100 x 2
-##    replicate       stat
-##        &lt;int&gt;      &lt;dbl&gt;
-##  1         1 2.53270204
-##  2         2 0.10366301
-##  3         3 0.23819911
-##  4         4 1.11847561
-##  5         5 0.65988848
-##  6         6 0.17291823
-##  7         7 0.79871733
-##  8         8 0.80000848
-##  9         9 0.25459266
-## 10        10 0.01981289
+##    replicate      stat
+##        &lt;int&gt;     &lt;dbl&gt;
+##  1         1 1.4326103
+##  2         2 1.6527188
+##  3         3 0.3178257
+##  4         4 0.3925536
+##  5         5 1.0534391
+##  6         6 0.8257242
+##  7         7 1.3158305
+##  8         8 0.8331259
+##  9         9 0.1444885
+## 10        10 0.3650422
 ## # ... with 90 more rows</code></pre>
 <p>Two numerical vars - SLR</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -299,16 +285,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate         stat
 ##        &lt;int&gt;        &lt;dbl&gt;
-##  1         1  0.030954525
-##  2         2  0.007061884
-##  3         3 -0.023141879
-##  4         4 -0.028523179
-##  5         5 -0.012406728
-##  6         6 -0.001637267
-##  7         7 -0.005867783
-##  8         8 -0.003693854
-##  9         9  0.005218023
-## 10        10 -0.008657935
+##  1         1 -0.015114534
+##  2         2  0.002235046
+##  3         3 -0.011975785
+##  4         4  0.002915085
+##  5         5  0.020257116
+##  6         6 -0.007295797
+##  7         7 -0.024632339
+##  8         8  0.005549465
+##  9         9  0.010919786
+## 10        10  0.017639205
 ## # ... with 90 more rows</code></pre>
 <div id="confidence-intervals" class="section level3">
 <h3>Confidence intervals</h3>
@@ -320,16 +306,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate     stat
 ##        &lt;int&gt;    &lt;dbl&gt;
-##  1         1 19.33750
-##  2         2 20.80312
-##  3         3 22.53125
-##  4         4 19.29688
-##  5         5 21.32500
-##  6         6 20.09375
-##  7         7 20.69063
-##  8         8 20.44063
-##  9         9 19.78750
-## 10        10 19.77500
+##  1         1 19.57500
+##  2         2 21.78125
+##  3         3 18.67500
+##  4         4 19.15625
+##  5         5 21.62500
+##  6         6 19.89688
+##  7         7 20.65312
+##  8         8 19.28438
+##  9         9 21.21875
+## 10        10 21.33125
 ## # ... with 90 more rows</code></pre>
 <p>One numerical (one median)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -340,15 +326,15 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1 19.20
-##  2         2 19.20
-##  3         3 18.95
-##  4         4 17.95
-##  5         5 21.20
-##  6         6 21.00
-##  7         7 16.95
-##  8         8 19.45
-##  9         9 18.95
-## 10        10 21.20
+##  2         2 20.10
+##  3         3 21.00
+##  4         4 17.80
+##  5         5 20.10
+##  6         6 19.20
+##  7         7 18.40
+##  8         8 19.20
+##  9         9 19.20
+## 10        10 17.95
 ## # ... with 90 more rows</code></pre>
 <p>One numerical (standard deviation)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -358,36 +344,22 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate     stat
 ##        &lt;int&gt;    &lt;dbl&gt;
-##  1         1 5.270918
-##  2         2 6.290257
-##  3         3 5.315130
-##  4         4 4.953085
-##  5         5 5.565511
-##  6         6 6.917800
-##  7         7 6.451037
-##  8         8 4.849051
-##  9         9 6.162530
-## 10        10 6.492698
+##  1         1 5.283984
+##  2         2 6.741122
+##  3         3 5.289878
+##  4         4 5.406746
+##  5         5 5.559784
+##  6         6 5.649593
+##  7         7 6.174243
+##  8         8 6.401058
+##  9         9 6.306428
+## 10        10 6.109534
 ## # ... with 90 more rows</code></pre>
 <p>One categorical (one proportion)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">specify</span>(<span class="dt">response =</span> am, <span class="dt">success =</span> <span class="st">&quot;1&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;bootstrap&quot;</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;prop&quot;</span>)</code></pre></div>
-<pre><code>## # A tibble: 100 x 2
-##    replicate    stat
-##        &lt;int&gt;   &lt;dbl&gt;
-##  1         1 0.34375
-##  2         2 0.31250
-##  3         3 0.34375
-##  4         4 0.43750
-##  5         5 0.40625
-##  6         6 0.43750
-##  7         7 0.46875
-##  8         8 0.37500
-##  9         9 0.34375
-## 10        10 0.46875
-## # ... with 90 more rows</code></pre>
 <p>One numerical variable one categorical (2 levels) (diff in means)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">specify</span>(mpg <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span>
@@ -396,16 +368,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate      stat
 ##        &lt;int&gt;     &lt;dbl&gt;
-##  1         1 -6.903644
-##  2         2 -5.023482
-##  3         3 -7.511336
-##  4         4 -5.712500
-##  5         5 -8.250588
-##  6         6 -7.229952
-##  7         7 -8.452381
-##  8         8 -3.707287
-##  9         9 -6.539683
-## 10        10 -9.371667
+##  1         1 -6.373333
+##  2         2 -8.936437
+##  3         3 -7.307692
+##  4         4 -4.302727
+##  5         5 -6.582727
+##  6         6 -9.628627
+##  7         7 -8.111905
+##  8         8 -7.851691
+##  9         9 -4.603175
+## 10        10 -9.100000
 ## # ... with 90 more rows</code></pre>
 <p>Two categorical variables (diff in proportions)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -415,16 +387,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate        stat
 ##        &lt;int&gt;       &lt;dbl&gt;
-##  1         1 -0.26274510
-##  2         2  0.01666667
-##  3         3  0.10822511
-##  4         4 -0.18823529
-##  5         5 -0.40784314
-##  6         6  0.00000000
-##  7         7 -0.56410256
-##  8         8 -0.56349206
-##  9         9 -0.03381643
-## 10        10  0.13333333
+##  1         1 -0.40476190
+##  2         2 -0.12145749
+##  3         3 -0.03030303
+##  4         4 -0.17004049
+##  5         5 -0.20346320
+##  6         6 -0.23636364
+##  7         7 -0.31250000
+##  8         8  0.00000000
+##  9         9 -0.01960784
+## 10        10 -0.37651822
 ## # ... with 90 more rows</code></pre>
 <p>Two numerical vars - SLR</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -434,16 +406,16 @@ mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcar
 <pre><code>## # A tibble: 100 x 2
 ##    replicate        stat
 ##        &lt;int&gt;       &lt;dbl&gt;
-##  1         1 -0.09512641
-##  2         2 -0.09512681
-##  3         3 -0.10266707
-##  4         4 -0.05527802
-##  5         5 -0.10435414
-##  6         6 -0.06772109
-##  7         7 -0.05878011
-##  8         8 -0.06498243
-##  9         9 -0.09871879
-## 10        10 -0.06569059
+##  1         1 -0.06039075
+##  2         2 -0.05762805
+##  3         3 -0.05572732
+##  4         4 -0.07180227
+##  5         5 -0.10133809
+##  6         6 -0.07969898
+##  7         7 -0.07059600
+##  8         8 -0.04718719
+##  9         9 -0.07521713
+## 10        10 -0.08670363
 ## # ... with 90 more rows</code></pre>
 </div>
 </div>

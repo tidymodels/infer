@@ -2,9 +2,9 @@
 
 language: r
 r:
-#  - oldrel
+  - oldrel
   - release
-#  - devel
+  - devel
 warnings_are_errors: true
 sudo: required
 cache: packages

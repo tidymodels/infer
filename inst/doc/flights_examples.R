@@ -53,21 +53,6 @@ null %>%
   summarize(p_value = mean(stat < x_tilde) * 2)
 
 ## ------------------------------------------------------------------------
-p_hat <- fli_small %>%
-  summarize(mean(day_hour == "morning")) %>%
-  pull()
-null <- fli_small %>%
-  specify(response = day_hour, success = "morning") %>%
-  hypothesize(null = "point", p = .5) %>% 
-  generate(reps = 1000, type = "simulate") %>% 
-  calculate(stat = "prop")
-ggplot(null, aes(x = stat)) +
-  geom_density() +
-  geom_vline(xintercept = p_hat, color = "red")
-null %>%
-  summarize(p_value = mean(stat < p_hat) * 2)
-
-## ------------------------------------------------------------------------
 d_hat <- fli_small %>%
   group_by(season) %>%
   summarize(prop = mean(day_hour == "morning")) %>%

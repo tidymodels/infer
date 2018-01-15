@@ -37,12 +37,12 @@ mtcars %>%
   generate(reps = 100, type = "bootstrap") %>% 
   calculate(stat = "sd")
 
-## ------------------------------------------------------------------------
-mtcars %>%
-  specify(response = am, success = "1") %>% # formula alt: am ~ NULL
-  hypothesize(null = "point", p = .25) %>% 
-  generate(reps = 100, type = "simulate") %>% 
-  calculate(stat = "prop")
+## ----eval=FALSE----------------------------------------------------------
+#  mtcars %>%
+#    specify(response = am, success = "1") %>% # formula alt: am ~ NULL
+#    hypothesize(null = "point", p = .25) %>%
+#    generate(reps = 100, type = "simulate") %>%
+#    calculate(stat = "prop")
 
 ## ------------------------------------------------------------------------
 mtcars %>%
@@ -111,11 +111,11 @@ mtcars %>%
   generate(reps = 100, type = "bootstrap") %>%
   calculate(stat = "sd")
 
-## ------------------------------------------------------------------------
-mtcars %>%
-  specify(response = am, success = "1") %>%
-  generate(reps = 100, type = "bootstrap") %>%
-  calculate(stat = "prop")
+## ----eval=FALSE----------------------------------------------------------
+#  mtcars %>%
+#    specify(response = am, success = "1") %>%
+#    generate(reps = 100, type = "bootstrap") %>%
+#    calculate(stat = "prop")
 
 ## ------------------------------------------------------------------------
 mtcars %>%
