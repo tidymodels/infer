@@ -35,12 +35,32 @@ test_that("variable chosen is of appropriate class (one var problems)", {
   expect_error(calculate(gen_iris1, stat = "mean"))
 
   # One mean example
-  gen_iris_num <- iris %>%
-    specify(Sepal.Width ~ NULL) %>%
-    hypothesize(null = "point", mu = 3) %>%
-    generate(reps = 10, type = "bootstrap")
-  expect_error(calculate(gen_iris_num, stat = "prop"))
-
+  # gen_iris_num <- iris %>%
+  #   specify(Sepal.Width ~ NULL) %>%
+  #   hypothesize(null = "point", mu = 3) %>%
+  #   generate(reps = 10, type = "bootstrap")
+  # expect_error(calculate(gen_iris_num, stat = "prop"))
+  # expect_silent(calculate(gen_iris_num, stat = "mean"))
+  # expect_error(calculate(gen_iris_num, stat = "median"))
+  # expect_error(calculate(gen_iris_num, stat = "sd"))
+  # 
+  # gen_iris_num2 <- iris %>%
+  #   specify(Sepal.Width ~ NULL) %>%
+  #   hypothesize(null = "point", med = 3) %>%
+  #   generate(reps = 10, type = "bootstrap")
+  # expect_error(calculate(gen_iris_num2, stat = "prop"))
+  # expect_error(calculate(gen_iris_num2, stat = "mean"))
+  # expect_silent(calculate(gen_iris_num2, stat = "median"))
+  # expect_error(calculate(gen_iris_num2, stat = "sd"))
+  # 
+  # gen_iris_num3 <- iris %>%
+  #   specify(Sepal.Width ~ NULL) %>%
+  #   hypothesize(null = "point", sigma = 0.6) %>%
+  #   generate(reps = 10, type = "bootstrap")
+  # expect_error(calculate(gen_iris_num3, stat = "prop"))
+  # expect_error(calculate(gen_iris_num3, stat = "mean"))
+  # expect_error(calculate(gen_iris_num3, stat = "median"))
+  # expect_silent(calculate(gen_iris_num3, stat = "sd"))
 })
 
 test_that("grouping (explanatory) variable is a factor (two var problems)", {
@@ -155,4 +175,13 @@ test_that("`order` is working", {
   expect_error(calculate(gen_iris11, stat = "diff in medians", order = c(NA, ">5")))
   expect_error(calculate(gen_iris11, stat = "diff in medians", order = c(">5", "<=4")))
   expect_error(calculate(gen_iris11, stat = "diff in means", order = c(">5", "<=4", ">4")))
+})
+
+test_that("NULL response gives error", {
+  iris_improp <- tibble::as_tibble(iris) %>%
+    dplyr::select(Sepal.Width, Sepal.Length) 
+  
+  expect_error(
+    iris_improp %>% calculate(stat = "mean") 
+  )
 })
