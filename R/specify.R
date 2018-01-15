@@ -27,7 +27,8 @@
 #'     generate(reps = 100, type = "permute") %>%
 #'     calculate(stat = "F")
 
-specify <- function(x, formula, response = NULL, explanatory = NULL, success = NULL) {
+specify <- function(x, formula, response = NULL, 
+                    explanatory = NULL, success = NULL) {
   assertive::assert_is_data.frame(x)
 
   # Convert all character variables to be factor variables
@@ -52,17 +53,21 @@ specify <- function(x, formula, response = NULL, explanatory = NULL, success = N
   response_col <- rlang::eval_tidy(attr(x, "response"), x)
 
   if (!as.character(attr(x, "response")) %in% names(x)) {
-    stop(paste0("The response variable `", attr(x, "response"), "` cannot be found in this dataframe."))
+    stop(paste0("The response variable `", attr(x, "response"), 
+                "` cannot be found in this dataframe."))
   }
 
   # if there's an explanatory var
 
   if (!(is.null(attr(x, "explanatory")))) {
     if (!as.character(attr(x, "explanatory")) %in% names(x)) {
-      stop(paste0("The explanatory variable `", attr(x, "explanatory"), "` cannot be found in this dataframe."))
+      stop(paste0("The explanatory variable `", attr(x, "explanatory"), 
+                  "` cannot be found in this dataframe."))
     }
-    if (identical(as.character(attr(x, "response")), as.character(attr(x, "explanatory")))) {
-      stop("The response and explanatory variables must be different from one another.")
+    if (identical(as.character(attr(x, "response")), 
+                  as.character(attr(x, "explanatory")))) {
+      stop(paste("The response and explanatory variables must be different",
+"from one another."))
     }
     explanatory_col <- rlang::eval_tidy(attr(x, "explanatory"), x)
     if (is.character(explanatory_col)) {
