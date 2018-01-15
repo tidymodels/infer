@@ -237,16 +237,16 @@ null %>%
 ### One numerical (one mean)
 
 ```{r}
-x_bar <- fli_small %>% 
-   summarize(mean(arr_delay)) %>% 
-   pull()
-boot <- fli_small %>%
-   specify(response = arr_delay) %>%
-   generate(reps = 1000, type = "bootstrap") %>%
-   calculate(stat = "mean") %>% 
-   pull()
-c(lower = x_bar - 2 * sd(boot), 
-  upper = x_bar + 2 * sd(boot))
+# x_bar <- fli_small %>% 
+#    summarize(mean(arr_delay)) %>% 
+#    pull()
+# boot <- fli_small %>%
+#    specify(response = arr_delay) %>%
+#    generate(reps = 1000, type = "bootstrap") %>%
+#    calculate(stat = "mean") %>% 
+#    pull()
+# c(lower = x_bar - 2 * sd(boot), 
+#   upper = x_bar + 2 * sd(boot))
 ```
 
 ### One categorical (one proportion)
