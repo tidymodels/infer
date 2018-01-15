@@ -75,7 +75,8 @@ test_that("cohesion with type argument", {
 
 test_that("sensible output", {
 
-  expect_equal(nrow(mtcars) * 500, nrow(generate(hyp_prop, reps = 500, type = "simulate")))
+  expect_equal(nrow(mtcars) * 500, 
+               nrow(generate(hyp_prop, reps = 500, type = "simulate")))
   expect_silent(generate(hyp_mean, reps = 1, type = "bootstrap"))
   expect_error(generate(hyp_mean, reps = 1, type = "other"))
 })

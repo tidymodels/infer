@@ -167,7 +167,9 @@ test_that("chi-square matches chisq.test value", {
   gen_iris9 <- iris %>%
     specify(Species ~ NULL) %>%
     hypothesize(null = "point",
-                p = c("setosa" = 1/3, "versicolor" = 1/3, "virginica" = 1/3)) %>%
+                p = c("setosa" = 1/3, 
+                      "versicolor" = 1/3, 
+                      "virginica" = 1/3)) %>%
     generate(reps = 10, type = "simulate")
   infer_way <- calculate(gen_iris9, stat = "Chisq")
   #chisq.test way
@@ -224,4 +226,20 @@ test_that("NULL response gives error", {
   expect_error(
     iris_improp %>% calculate(stat = "mean") 
   )
+})
+
+test_that("Permute F test works", {
+  gen_iris13 <- iris %>%
+    specify(Petal.Width ~ Species) %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 10, type = "permute")
+  expect_silent(calculate(gen_iris13, stat = "F"))
+})
+
+test_that("Permute slope test works", {
+  gen_iris14 <- iris %>%
+    specify(Petal.Width ~ Petal.Length) %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 10, type = "permute")
+  expect_silent(calculate(gen_iris14, stat = "slope"))
 })
