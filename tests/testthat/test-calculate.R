@@ -97,6 +97,18 @@ test_that("response variable is a factor (two var problems)", {
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
   expect_error(calculate(gen_iris4, stat = "diff in props"))
+  
+  # Check successful diff in props
+  gen_iris4a <- iris %>%
+    dplyr::mutate(Sepal.Length.Group = 
+                    dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
+    dplyr::mutate(Sepal.Width.Group = 
+                    dplyr::if_else(Sepal.Width > 3, "large", "small")) %>% 
+    specify(Sepal.Length.Group ~ Sepal.Width.Group, success = ">5") %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 10, type = "permute")
+  expect_silent(calculate(gen_iris4a, stat = "diff in props",
+                          order = c("large", "small")))
 })
 
 gen_iris5 <- iris %>%
@@ -187,8 +199,22 @@ test_that("`order` is working", {
                          order = c(NA, ">5")))
   expect_error(calculate(gen_iris11, stat = "diff in medians", 
                          order = c(">5", "<=4")))
+  expect_silent(calculate(gen_iris11, stat = "diff in medians", 
+                         order = c(">5", "<=5")))
   expect_error(calculate(gen_iris11, stat = "diff in means", 
                          order = c(">5", "<=4", ">4")))
+  expect_error(calculate(gen_iris11, stat = "diff in means"))
+})
+
+test_that('success is working for stat = "prop"', {
+  gen_iris12 <- iris %>%
+    dplyr::mutate(Sepal.Length.Group = 
+                    dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
+    specify(Sepal.Length.Group ~ NULL, success = ">5") %>%
+    hypothesize(null = "point", p = 0.3) %>%
+    generate(reps = 10, type = "simulate")
+  expect_silent(gen_iris12 %>% 
+                  calculate(stat = "prop"))
 })
 
 test_that("NULL response gives error", {

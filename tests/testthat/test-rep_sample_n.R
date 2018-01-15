@@ -17,6 +17,6 @@ test_that("rep_sample_n works", {
                               prob = c(1/2, 1/2)))
   expect_error(population %>% 
                  rep_sample_n(size = 2, reps = 10,
-                              prob = c(1/5, 1/5, 1/5, 1/5, 1/5)))
+                              prob = c(0.25, 1/5, 1/5, 1/5, 0.15)))
 })
 
