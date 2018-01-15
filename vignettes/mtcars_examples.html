@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Chester Ismay and Andrew bray" />
+
+<meta name="date" content="2018-01-05" />
+
+<title>Examples using mtcars data</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Examples using <code>mtcars</code> data</h1>
+<h4 class="author"><em>Chester Ismay and Andrew bray</em></h4>
+<h4 class="date"><em>2018-01-05</em></h4>
+
+
+
+<div id="data-preparation" class="section level2">
+<h2>Data preparation</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(nycflights13)
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(stringr)
+<span class="kw">library</span>(infer)
+mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcars) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cyl =</span> <span class="kw">factor</span>(cyl),
+         <span class="dt">vs =</span> <span class="kw">factor</span>(vs),
+         <span class="dt">am =</span> <span class="kw">factor</span>(am),
+         <span class="dt">gear =</span> <span class="kw">factor</span>(gear),
+         <span class="dt">carb =</span> <span class="kw">factor</span>(carb))
+<span class="co"># For reproducibility         </span>
+<span class="kw">set.seed</span>(<span class="dv">2018</span>)         </code></pre></div>
+<hr />
+<p>One numerical variable (mean)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># formula alt: mpg ~ NULL</span>
+<span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;point&quot;</span>, <span class="dt">mu =</span> <span class="dv">25</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;bootstrap&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;mean&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate     stat
+##        &lt;int&gt;    &lt;dbl&gt;
+##  1         1 26.60625
+##  2         2 25.06875
+##  3         3 25.19375
+##  4         4 24.73125
+##  5         5 24.63750
+##  6         6 25.79688
+##  7         7 24.72188
+##  8         8 25.63125
+##  9         9 24.97500
+## 10        10 25.05625
+## # ... with 90 more rows</code></pre>
+<p>One numerical variable (median)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># formula alt: mpg ~ NULL</span>
+<span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;point&quot;</span>, <span class="dt">med =</span> <span class="dv">26</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;bootstrap&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;median&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate  stat
+##        &lt;int&gt; &lt;dbl&gt;
+##  1         1 28.20
+##  2         2 27.15
+##  3         3 26.25
+##  4         4 26.00
+##  5         5 26.50
+##  6         6 24.50
+##  7         7 26.00
+##  8         8 28.20
+##  9         9 28.20
+## 10        10 23.20
+## # ... with 90 more rows</code></pre>
+<p>One numerical variable (standard deviation)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># formula alt: mpg ~ NULL</span>
+<span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;point&quot;</span>, <span class="dt">sigma =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;bootstrap&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;sd&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate     stat
+##        &lt;int&gt;    &lt;dbl&gt;
+##  1         1 5.880866
+##  2         2 6.271324
+##  3         3 5.084376
+##  4         4 6.905348
+##  5         5 5.957997
+##  6         6 6.011192
+##  7         7 6.748736
+##  8         8 5.144711
+##  9         9 6.064638
+## 10        10 5.632150
+## # ... with 90 more rows</code></pre>
+<p>One categorical (2 level) variable</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(<span class="dt">response =</span> am, <span class="dt">success =</span> <span class="st">&quot;1&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># formula alt: am ~ NULL</span>
+<span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;point&quot;</span>, <span class="dt">p =</span> .<span class="dv">25</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;simulate&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;prop&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate    stat
+##       &lt;fctr&gt;   &lt;dbl&gt;
+##  1         1 0.28125
+##  2         2 0.28125
+##  3         3 0.28125
+##  4         4 0.21875
+##  5         5 0.25000
+##  6         6 0.25000
+##  7         7 0.28125
+##  8         8 0.25000
+##  9         9 0.18750
+## 10        10 0.34375
+## # ... with 90 more rows</code></pre>
+<p>Two categorical (2 level) variables</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(am <span class="op">~</span><span class="st"> </span>vs, <span class="dt">success =</span> <span class="st">&quot;1&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = am, explanatory = vs</span>
+<span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;independence&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;permute&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;diff in props&quot;</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>))</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate        stat
+##        &lt;int&gt;       &lt;dbl&gt;
+##  1         1 -0.29365079
+##  2         2 -0.16666667
+##  3         3 -0.03968254
+##  4         4  0.21428571
+##  5         5 -0.16666667
+##  6         6 -0.16666667
+##  7         7  0.08730159
+##  8         8 -0.03968254
+##  9         9 -0.03968254
+## 10        10  0.34126984
+## # ... with 90 more rows</code></pre>
+<p>One categorical (&gt;2 level) - GoF</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(cyl <span class="op">~</span><span class="st"> </span><span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = cyl</span>
+<span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;point&quot;</span>, <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">&quot;4&quot;</span> =<span class="st"> </span>.<span class="dv">5</span>, <span class="st">&quot;6&quot;</span> =<span class="st"> </span>.<span class="dv">25</span>, <span class="st">&quot;8&quot;</span> =<span class="st"> </span>.<span class="dv">25</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;simulate&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;Chisq&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate   stat
+##       &lt;fctr&gt;  &lt;dbl&gt;
+##  1         1 3.0000
+##  2         2 2.2500
+##  3         3 3.0000
+##  4         4 1.6875
+##  5         5 6.7500
+##  6         6 0.1875
+##  7         7 2.2500
+##  8         8 1.1875
+##  9         9 0.6875
+## 10        10 3.1875
+## # ... with 90 more rows</code></pre>
+<p>Two categorical (&gt;2 level) variables</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(cyl <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = cyl, explanatory = am</span>
+<span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;independence&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;permute&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;Chisq&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate      stat
+##       &lt;fctr&gt;     &lt;dbl&gt;
+##  1         1 3.6796887
+##  2         2 0.5569168
+##  3         3 4.9987907
+##  4         4 4.5680635
+##  5         5 6.4794153
+##  6         6 0.1261896
+##  7         7 3.7066092
+##  8         8 6.9101425
+##  9         9 1.4452916
+## 10        10 1.0145644
+## # ... with 90 more rows</code></pre>
+<p>One numerical variable one categorical (2 levels) (diff in means)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(mpg <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = mpg, explanatory = am</span>
+<span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;independence&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;permute&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;diff in means&quot;</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>))</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate        stat
+##        &lt;int&gt;       &lt;dbl&gt;
+##  1         1  0.35991903
+##  2         2  0.04898785
+##  3         3  3.37854251
+##  4         4  1.88866397
+##  5         5  0.89109312
+##  6         6  0.90404858
+##  7         7 -0.32672065
+##  8         8 -3.43603239
+##  9         9  0.50242915
+## 10        10 -1.92024291
+## # ... with 90 more rows</code></pre>
+<p>One numerical variable one categorical (2 levels) (diff in medians)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(mpg <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = mpg, explanatory = am</span>
+<span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;independence&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;permute&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;diff in medians&quot;</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>))</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate  stat
+##        &lt;int&gt; &lt;dbl&gt;
+##  1         1   0.5
+##  2         2  -2.7
+##  3         3   2.4
+##  4         4   0.0
+##  5         5  -5.0
+##  6         6   2.4
+##  7         7   0.0
+##  8         8   2.9
+##  9         9  -0.5
+## 10        10   0.5
+## # ... with 90 more rows</code></pre>
+<p>One numerical one categorical (&gt;2 levels) - ANOVA</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(mpg <span class="op">~</span><span class="st"> </span>cyl) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = mpg, explanatory = cyl</span>
+<span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;independence&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;permute&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;F&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate       stat
+##        &lt;int&gt;      &lt;dbl&gt;
+##  1         1 2.53270204
+##  2         2 0.10366301
+##  3         3 0.23819911
+##  4         4 1.11847561
+##  5         5 0.65988848
+##  6         6 0.17291823
+##  7         7 0.79871733
+##  8         8 0.80000848
+##  9         9 0.25459266
+## 10        10 0.01981289
+## # ... with 90 more rows</code></pre>
+<p>Two numerical vars - SLR</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(mpg <span class="op">~</span><span class="st"> </span>hp) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = mpg, explanatory = cyl</span>
+<span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;independence&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;permute&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;slope&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate         stat
+##        &lt;int&gt;        &lt;dbl&gt;
+##  1         1  0.030954525
+##  2         2  0.007061884
+##  3         3 -0.023141879
+##  4         4 -0.028523179
+##  5         5 -0.012406728
+##  6         6 -0.001637267
+##  7         7 -0.005867783
+##  8         8 -0.003693854
+##  9         9  0.005218023
+## 10        10 -0.008657935
+## # ... with 90 more rows</code></pre>
+<div id="confidence-intervals" class="section level3">
+<h3>Confidence intervals</h3>
+<p>One numerical (one mean)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;bootstrap&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;mean&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate     stat
+##        &lt;int&gt;    &lt;dbl&gt;
+##  1         1 19.33750
+##  2         2 20.80312
+##  3         3 22.53125
+##  4         4 19.29688
+##  5         5 21.32500
+##  6         6 20.09375
+##  7         7 20.69063
+##  8         8 20.44063
+##  9         9 19.78750
+## 10        10 19.77500
+## # ... with 90 more rows</code></pre>
+<p>One numerical (one median)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;bootstrap&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;median&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate  stat
+##        &lt;int&gt; &lt;dbl&gt;
+##  1         1 19.20
+##  2         2 19.20
+##  3         3 18.95
+##  4         4 17.95
+##  5         5 21.20
+##  6         6 21.00
+##  7         7 16.95
+##  8         8 19.45
+##  9         9 18.95
+## 10        10 21.20
+## # ... with 90 more rows</code></pre>
+<p>One numerical (standard deviation)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;bootstrap&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;sd&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate     stat
+##        &lt;int&gt;    &lt;dbl&gt;
+##  1         1 5.270918
+##  2         2 6.290257
+##  3         3 5.315130
+##  4         4 4.953085
+##  5         5 5.565511
+##  6         6 6.917800
+##  7         7 6.451037
+##  8         8 4.849051
+##  9         9 6.162530
+## 10        10 6.492698
+## # ... with 90 more rows</code></pre>
+<p>One categorical (one proportion)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(<span class="dt">response =</span> am, <span class="dt">success =</span> <span class="st">&quot;1&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;bootstrap&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;prop&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate    stat
+##        &lt;int&gt;   &lt;dbl&gt;
+##  1         1 0.34375
+##  2         2 0.31250
+##  3         3 0.34375
+##  4         4 0.43750
+##  5         5 0.40625
+##  6         6 0.43750
+##  7         7 0.46875
+##  8         8 0.37500
+##  9         9 0.34375
+## 10        10 0.46875
+## # ... with 90 more rows</code></pre>
+<p>One numerical variable one categorical (2 levels) (diff in means)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(mpg <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;bootstrap&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;diff in means&quot;</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>))</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate      stat
+##        &lt;int&gt;     &lt;dbl&gt;
+##  1         1 -6.903644
+##  2         2 -5.023482
+##  3         3 -7.511336
+##  4         4 -5.712500
+##  5         5 -8.250588
+##  6         6 -7.229952
+##  7         7 -8.452381
+##  8         8 -3.707287
+##  9         9 -6.539683
+## 10        10 -9.371667
+## # ... with 90 more rows</code></pre>
+<p>Two categorical variables (diff in proportions)</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(am <span class="op">~</span><span class="st"> </span>vs, <span class="dt">success =</span> <span class="st">&quot;1&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;bootstrap&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;diff in props&quot;</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">&quot;0&quot;</span>, <span class="st">&quot;1&quot;</span>))</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate        stat
+##        &lt;int&gt;       &lt;dbl&gt;
+##  1         1 -0.26274510
+##  2         2  0.01666667
+##  3         3  0.10822511
+##  4         4 -0.18823529
+##  5         5 -0.40784314
+##  6         6  0.00000000
+##  7         7 -0.56410256
+##  8         8 -0.56349206
+##  9         9 -0.03381643
+## 10        10  0.13333333
+## # ... with 90 more rows</code></pre>
+<p>Two numerical vars - SLR</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(mpg <span class="op">~</span><span class="st"> </span>hp) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">&quot;bootstrap&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;slope&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 100 x 2
+##    replicate        stat
+##        &lt;int&gt;       &lt;dbl&gt;
+##  1         1 -0.09512641
+##  2         2 -0.09512681
+##  3         3 -0.10266707
+##  4         4 -0.05527802
+##  5         5 -0.10435414
+##  6         6 -0.06772109
+##  7         7 -0.05878011
+##  8         8 -0.06498243
+##  9         9 -0.09871879
+## 10        10 -0.06569059
+## # ... with 90 more rows</code></pre>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

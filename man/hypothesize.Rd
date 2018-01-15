@@ -21,15 +21,8 @@ parameter information stored as well
 Declare a null hypothesis
 }
 \examples{
-# One binary variable
-  mtcars \%>\%
-    dplyr::mutate(am = factor(am)) \%>\%
-    specify(response = am, success = "1") \%>\%
-    hypothesize(null = "point", p = 0.75) \%>\%
-    generate(reps = 100, type = "simulate") \%>\%
-    calculate(stat = "prop")
 
-# Permutation test
+# Permutation test on a difference in proportions
   mtcars \%>\%
     dplyr::mutate(cyl = factor(cyl)) \%>\%
     specify(mpg ~ cyl) \%>\%
