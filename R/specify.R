@@ -66,7 +66,7 @@ specify <- function(x, formula, response = NULL, explanatory = NULL, success = N
     }
     explanatory_col <- rlang::eval_tidy(attr(x, "explanatory"), x)
     if (is.character(explanatory_col)) {
-      rlang::eval_tidy(attr(x, "explanatory"), x) <- as.factor(explanatory_col)
+      explanatory_col <- as.factor(explanatory_col)
     }
   }
 
