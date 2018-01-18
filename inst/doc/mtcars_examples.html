@@ -77,6 +77,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="data-preparation" class="section level2">
 <h2>Data preparation</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(infer)
+<span class="kw">library</span>(dplyr)
 mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcars) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cyl =</span> <span class="kw">factor</span>(cyl),
          <span class="dt">vs =</span> <span class="kw">factor</span>(vs),
