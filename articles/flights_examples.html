@@ -283,7 +283,7 @@ null &lt;-<span class="st"> </span>fli_small %&gt;%
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1  0.0540</code></pre>
+## 1  0.0260</code></pre>
 </div>
 <div id="one-numerical-one-categorical-2-levels---anova" class="section level3">
 <h3 class="hasAnchor">
@@ -306,7 +306,7 @@ null &lt;-<span class="st"> </span>fli_small %&gt;%
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.286</code></pre>
+## 1   0.294</code></pre>
 </div>
 <div id="two-numerical-vars---slr" class="section level3">
 <h3 class="hasAnchor">
@@ -339,30 +339,30 @@ null &lt;-<span class="st"> </span>fli_small %&gt;%
 <div id="one-numerical-one-mean" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-numerical-one-mean" class="anchor"></a>One numerical (one mean)</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># x_bar &lt;- fli_small %&gt;% </span>
-<span class="co">#    summarize(mean(arr_delay)) %&gt;% </span>
-<span class="co">#    pull()</span>
-<span class="co"># boot &lt;- fli_small %&gt;%</span>
-<span class="co">#    specify(response = arr_delay) %&gt;%</span>
-<span class="co">#    generate(reps = 1000, type = "bootstrap") %&gt;%</span>
-<span class="co">#    calculate(stat = "mean") %&gt;% </span>
-<span class="co">#    pull()</span>
-<span class="co"># c(lower = x_bar - 2 * sd(boot), </span>
-<span class="co">#   upper = x_bar + 2 * sd(boot))</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x_bar &lt;-<span class="st"> </span>fli_small %&gt;%
+<span class="st">   </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="kw">mean</span>(arr_delay)) %&gt;%
+<span class="st">   </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()
+boot &lt;-<span class="st"> </span>fli_small %&gt;%
+<span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) %&gt;%
+<span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) %&gt;%
+<span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>) %&gt;%
+<span class="st">   </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()
+<span class="kw">c</span>(<span class="dt">lower =</span> x_bar -<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot),
+  <span class="dt">upper =</span> x_bar +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot))</code></pre></div>
 </div>
 <div id="one-categorical-one-proportion" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-categorical-one-proportion" class="anchor"></a>One categorical (one proportion)</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># p_hat &lt;- fli_small %&gt;%</span>
-<span class="co">#  summarize(mean(day_hour == "morning")) %&gt;%</span>
-<span class="co">#  pull()</span>
-<span class="co"># boot &lt;- fli_small %&gt;%</span>
-<span class="co">#  specify(response = day_hour, success = "morning") %&gt;%</span>
-<span class="co">#  generate(reps = 1000, type = "bootstrap") %&gt;% </span>
-<span class="co">#  calculate(stat = "prop") %&gt;%</span>
-<span class="co">#  pull()</span>
-<span class="co"># c(lower = p_hat - 2 * sd(boot), </span>
-<span class="co">#  upper = p_hat + 2 * sd(boot))</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p_hat &lt;-<span class="st"> </span>fli_small %&gt;%
+<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="kw">mean</span>(day_hour ==<span class="st"> "morning"</span>)) %&gt;%
+<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()
+boot &lt;-<span class="st"> </span>fli_small %&gt;%
+<span class="st"> </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour, <span class="dt">success =</span> <span class="st">"morning"</span>) %&gt;%
+<span class="st"> </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) %&gt;%
+<span class="st"> </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>) %&gt;%
+<span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()
+<span class="kw">c</span>(<span class="dt">lower =</span> p_hat -<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot),
+ <span class="dt">upper =</span> p_hat +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot))</code></pre></div>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-diff-in-means-1" class="section level3">
 <h3 class="hasAnchor">
@@ -380,7 +380,7 @@ boot &lt;-<span class="st"> </span>fli_small %&gt;%
 <span class="kw">c</span>(<span class="dt">lower =</span> d_hat -<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot), 
   <span class="dt">upper =</span> d_hat +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot))</code></pre></div>
 <pre><code>##     lower     upper 
-## -9.013819  5.175384</code></pre>
+## -9.008625  5.170189</code></pre>
 </div>
 <div id="two-categorical-variables-diff-in-proportions" class="section level3">
 <h3 class="hasAnchor">
@@ -398,7 +398,7 @@ boot &lt;-<span class="st"> </span>fli_small %&gt;%
 <span class="kw">c</span>(<span class="dt">lower =</span> d_hat -<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot), 
   <span class="dt">upper =</span> d_hat +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot))</code></pre></div>
 <pre><code>##       lower       upper 
-## -0.11175130  0.06838395</code></pre>
+## -0.11154378  0.06817643</code></pre>
 </div>
 <div id="two-numerical-vars---slr-1" class="section level3">
 <h3 class="hasAnchor">
@@ -415,8 +415,8 @@ boot &lt;-<span class="st"> </span>fli_small %&gt;%
 <span class="st">   </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()
 <span class="kw">c</span>(<span class="dt">lower =</span> slope_hat -<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot), 
   <span class="dt">upper =</span> slope_hat +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot))   </code></pre></div>
-<pre><code>##    lower    upper 
-## 0.956282 1.071391</code></pre>
+<pre><code>##     lower     upper 
+## 0.9564808 1.0711919</code></pre>
 </div>
 </div>
 </div>
