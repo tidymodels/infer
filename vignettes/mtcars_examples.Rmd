@@ -17,10 +17,6 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 5)
 ## Data preparation
 
 ```{r message=FALSE, warning=FALSE}
-library(nycflights13)
-library(dplyr)
-library(ggplot2)
-library(stringr)
 library(infer)
 mtcars <- as.data.frame(mtcars) %>%
   mutate(cyl = factor(cyl),
