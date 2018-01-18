@@ -67,7 +67,7 @@ mtcars %>%
 
 One categorical (2 level) variable
 
-```{r eval=FALSE}
+```{r}
 mtcars %>%
   specify(response = am, success = "1") %>% # formula alt: am ~ NULL
   hypothesize(null = "point", p = .25) %>% 
@@ -176,7 +176,7 @@ mtcars %>%
 
 One categorical (one proportion)
 
-```{r eval=FALSE}
+```{r}
 mtcars %>%
   specify(response = am, success = "1") %>%
   generate(reps = 100, type = "bootstrap") %>%
