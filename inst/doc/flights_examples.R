@@ -53,6 +53,29 @@ null %>%
   summarize(p_value = mean(stat < x_tilde) * 2)
 
 ## ------------------------------------------------------------------------
+p_hat <- fli_small %>%
+  summarize(mean(day_hour == "morning")) %>%
+  pull()
+null <- fli_small %>%
+  specify(response = day_hour, success = "morning") %>%
+  hypothesize(null = "point", p = .5) %>%
+  generate(reps = 1000, type = "simulate") %>%
+  calculate(stat = "prop")
+ggplot(null, aes(x = stat)) +
+  geom_bar() +
+  geom_vline(xintercept = p_hat, color = "red")
+null %>%
+  summarize(p_value = mean(stat < p_hat) * 2)
+
+## ------------------------------------------------------------------------
+null <- fli_small %>%
+  mutate(day_hour_logical = (day_hour == "morning")) %>%
+  specify(response = day_hour_logical, success = "TRUE") %>%
+  hypothesize(null = "point", p = .5) %>%
+  generate(reps = 1000, type = "simulate") %>%
+  calculate(stat = "prop")
+
+## ------------------------------------------------------------------------
 d_hat <- fli_small %>%
   group_by(season) %>%
   summarize(prop = mean(day_hour == "morning")) %>%
@@ -166,29 +189,29 @@ ggplot(null, aes(x = stat)) +
 null %>% 
   summarize(p_value = mean(stat > slope_hat) * 2)   
 
-## ----eval=FALSE----------------------------------------------------------
-#  x_bar <- fli_small %>%
-#     summarize(mean(arr_delay)) %>%
-#     pull()
-#  boot <- fli_small %>%
-#     specify(response = arr_delay) %>%
-#     generate(reps = 1000, type = "bootstrap") %>%
-#     calculate(stat = "mean") %>%
-#     pull()
-#  c(lower = x_bar - 2 * sd(boot),
-#    upper = x_bar + 2 * sd(boot))
+## ------------------------------------------------------------------------
+x_bar <- fli_small %>%
+   summarize(mean(arr_delay)) %>%
+   pull()
+boot <- fli_small %>%
+   specify(response = arr_delay) %>%
+   generate(reps = 1000, type = "bootstrap") %>%
+   calculate(stat = "mean") %>%
+   pull()
+c(lower = x_bar - 2 * sd(boot),
+  upper = x_bar + 2 * sd(boot))
 
-## ----eval=FALSE----------------------------------------------------------
-#  p_hat <- fli_small %>%
-#   summarize(mean(day_hour == "morning")) %>%
-#   pull()
-#  boot <- fli_small %>%
-#   specify(response = day_hour, success = "morning") %>%
-#   generate(reps = 1000, type = "bootstrap") %>%
-#   calculate(stat = "prop") %>%
-#   pull()
-#  c(lower = p_hat - 2 * sd(boot),
-#   upper = p_hat + 2 * sd(boot))
+## ------------------------------------------------------------------------
+p_hat <- fli_small %>%
+ summarize(mean(day_hour == "morning")) %>%
+ pull()
+boot <- fli_small %>%
+ specify(response = day_hour, success = "morning") %>%
+ generate(reps = 1000, type = "bootstrap") %>%
+ calculate(stat = "prop") %>%
+ pull()
+c(lower = p_hat - 2 * sd(boot),
+ upper = p_hat + 2 * sd(boot))
 
 ## ------------------------------------------------------------------------
 d_hat <- fli_small %>% 
