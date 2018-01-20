@@ -33,10 +33,7 @@ Suggests:
     nycflights13,
     stringr,
     testthat,
-    covr,
-    pkgdown (>= 0.1.0.9000)
-Remotes:
-    hadley/pkgdown
+    covr
 URL: https://github.com/andrewpbray/infer
 BugReports: https://github.com/andrewpbray/infer/issues
 RoxygenNote: 6.0.1
