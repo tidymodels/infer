@@ -2,11 +2,8 @@
 knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
 
 ## ----message=FALSE, warning=FALSE----------------------------------------
-library(nycflights13)
-library(dplyr)
-library(ggplot2)
-library(stringr)
 library(infer)
+library(dplyr)
 mtcars <- as.data.frame(mtcars) %>%
   mutate(cyl = factor(cyl),
          vs = factor(vs),
@@ -37,12 +34,12 @@ mtcars %>%
   generate(reps = 100, type = "bootstrap") %>% 
   calculate(stat = "sd")
 
-## ----eval=FALSE----------------------------------------------------------
-#  mtcars %>%
-#    specify(response = am, success = "1") %>% # formula alt: am ~ NULL
-#    hypothesize(null = "point", p = .25) %>%
-#    generate(reps = 100, type = "simulate") %>%
-#    calculate(stat = "prop")
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(response = am, success = "1") %>% # formula alt: am ~ NULL
+  hypothesize(null = "point", p = .25) %>% 
+  generate(reps = 100, type = "simulate") %>% 
+  calculate(stat = "prop")
 
 ## ------------------------------------------------------------------------
 mtcars %>%
@@ -111,11 +108,11 @@ mtcars %>%
   generate(reps = 100, type = "bootstrap") %>%
   calculate(stat = "sd")
 
-## ----eval=FALSE----------------------------------------------------------
-#  mtcars %>%
-#    specify(response = am, success = "1") %>%
-#    generate(reps = 100, type = "bootstrap") %>%
-#    calculate(stat = "prop")
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(response = am, success = "1") %>%
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "prop")
 
 ## ------------------------------------------------------------------------
 mtcars %>%

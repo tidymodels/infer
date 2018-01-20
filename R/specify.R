@@ -19,12 +19,14 @@
 #'     generate(reps = 100, type = "permute") %>%
 #'     calculate(stat = "F")
 
-specify <- function(x, formula, response = NULL, 
+specify <- function(x, formula, response = NULL,
                     explanatory = NULL, success = NULL) {
   assertive::assert_is_data.frame(x)
 
-  # Convert all character variables to be factor variables
-  x <- dplyr::as_tibble(x) %>% mutate_if(is.character, as.factor)
+  # Convert all character and logical variables to be factor variables
+  x <- dplyr::as_tibble(x) %>%
+    mutate_if(is.character, as.factor) %>%
+    mutate_if(is.logical, as.factor)
 
   if (!methods::hasArg(formula) && !methods::hasArg(response)) {
     stop("Please specify the response variable.")
@@ -45,7 +47,7 @@ specify <- function(x, formula, response = NULL,
   response_col <- rlang::eval_tidy(attr(x, "response"), x)
 
   if (!as.character(attr(x, "response")) %in% names(x)) {
-    stop(paste0("The response variable `", attr(x, "response"), 
+    stop(paste0("The response variable `", attr(x, "response"),
                 "` cannot be found in this dataframe."))
   }
 
@@ -53,10 +55,10 @@ specify <- function(x, formula, response = NULL,
 
   if (!(is.null(attr(x, "explanatory")))) {
     if (!as.character(attr(x, "explanatory")) %in% names(x)) {
-      stop(paste0("The explanatory variable `", attr(x, "explanatory"), 
+      stop(paste0("The explanatory variable `", attr(x, "explanatory"),
                   "` cannot be found in this dataframe."))
     }
-    if (identical(as.character(attr(x, "response")), 
+    if (identical(as.character(attr(x, "response")),
                   as.character(attr(x, "explanatory")))) {
       stop(paste("The response and explanatory variables must be different",
 "from one another."))
@@ -78,7 +80,7 @@ specify <- function(x, formula, response = NULL,
 "a categorical variable."))
     }
     if (!(success %in% levels(response_col))) {
-      stop(paste0(success, " is not a valid level of ", 
+      stop(paste0(success, " is not a valid level of ",
                   attr(x, "response"), "."))
     }
     if (sum(table(response_col) > 0) > 2) {
