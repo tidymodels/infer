@@ -5,4 +5,13 @@
 ^profiles*
 ^\.travis\.yml$
 ^examples*
-^docs$
+^codecov\.yml$
+^docs*
+^CONDUCT\.md$
+^README\.md$
+^NEWS\.md$
+^cran-comments\.md$
+^_build\.sh$
+^appveyor\.yml$
+^implement_new_methods\.md
+^CONTRIBUTING\.md$

@@ -1,33 +1,41 @@
 Package: infer
 Type: Package
-Title: An R package for tidyverse-friendly statistical inference
-Version: 0.1.0
+Title: Tidy Statistical Inference
+Version: 0.1.1
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
-    person("Ben", "Baumer", email = "ben.baumer@gmail.com", role = c("aut")),
-    person("Chester", "Ismay", email = "chester.ismay@gmail.com", role = "aut"))
-Maintainer: Andrew Bray <abray@reed.edu>
-Description: The objective of this package is to perform inference using an expressive statistical grammar that coheres with the `tidyverse` design framework. 
+    person("Chester", "Ismay", email = "chester.ismay@gmail.com", role = "aut"),
+    person("Ben", "Baumer", email = "ben.baumer@gmail.com", role = "aut"),
+    person("Mine", "Cetinkaya-Rundel", email = "mine@stat.duke.edu", role = "aut"),
+    person("Ted", "Laderas", email = "tedladeras@gmail.com", role = "ctb"),
+    person("Nick", "Solomon", email = "nick.solomon@datacamp.com", role = "ctb"),
+    person("Johanna", "Hardin", email = "Jo.Hardin@pomona.edu", role = "ctb"),
+    person("Albert", "Kim", email = "albert.ys.kim@gmail.com", role = "ctb"))
+Description: The objective of this package is to perform inference using an expressive statistical grammar that coheres with the tidy design framework. 
 License: CC0
 Encoding: UTF-8
 LazyData: true
 Imports:
-    dplyr,
+    assertive,
+    dplyr (>= 0.7.0),
     methods,
     tibble,
     rlang,
     ggplot2,
     magrittr
 Depends:
-    R (>= 2.10)
-Suggests:
+    R (>= 3.1.2)
+Suggests: 
     broom,
-    okcupiddata,
+    devtools (>= 1.12.0),
+    knitr,
+    rmarkdown,
     nycflights13,
     stringr,
-    knitr
-URL: http://github.com/andrewpbray/infer
+    testthat,
+    covr,
+    okcupiddata
+URL: https://github.com/andrewpbray/infer
 BugReports: https://github.com/andrewpbray/infer/issues
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr
-
