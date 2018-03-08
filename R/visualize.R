@@ -1,4 +1,4 @@
-#' (Currently) Visualize the resampling distribution 
+#' (Currently) Visualize the randomization-based distribution 
 #' (To be updated to include theory-based distributions)
 #' @param data the output from \code{\link{calculate}}
 #' @param bins the number of bins in the histogram
@@ -13,49 +13,50 @@
 #' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle xlab ylab 
 #' @importFrom ggplot2 geom_vline geom_rect
 #' @importFrom stats dt qt df qf dnorm qnorm
+#' @return A ggplot object showing the randomization-based distribution as a histogram.
+#' Preferable to use the ggplot2 package directly here as a histogram does not always
+#' display the distribution well.
 #' @export
 #' @examples 
 #' # Permutations to create randomization null distribution for 
 #' # one numerical response and one categorical predictor
 #' # using t statistic
-#' if(require(dplyr)) {
 #' mtcars %>%
-#'     mutate(am = factor(am)) %>%
+#'     dplyr::mutate(am = factor(am)) %>%
 #'     specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
 #'     hypothesize(null = "independence") %>%
 #'     generate(reps = 100, type = "permute") %>%
-#'     calculate(stat = "t") %>%
+#'     calculate(stat = "t", order = c("1", "0")) %>%
 #'     visualize(method = "randomization") #default method
-#' }
 #' 
 #' # Theoretical t distribution for 
 #' # one numerical response and one categorical predictor
 #' # using t statistic
-#' if(require(dplyr)) {
 #' mtcars %>%
-#'     mutate(am = factor(am)) %>%
+#'     dplyr::mutate(am = factor(am)) %>%
 #'     specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
 #'     hypothesize(null = "independence") %>%
-#'     calculate(stat = "t") %>%
+#'     # generate() is not needed since we are not doing randomization
+#'     # calculate(stat = "t") ## Not needed since t implied based on variable types
 #'     visualize(method = "theoretical") #default method
-#' }
 #' 
 #' # Overlay theoretical distribution on top of randomized t-statistics
-#' if(require(dplyr)) {
 #' mtcars %>%
-#'     mutate(am = factor(am)) %>%
+#'     dplyr::mutate(am = factor(am)) %>%
 #'     specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
 #'     hypothesize(null = "independence") %>%
 #'     generate(reps = 100, type = "permute") %>%
-#'     calculate(stat = "t") %>%
+#'     calculate(stat = "t", order = c("1", "0")) %>%
 #'     visualize(method = "both")
-#' }
 
 visualize <- function(data, bins = 30, method = "randomization", 
                       dens_color = "black",
                       obs_stat = NULL, 
                       obs_stat_color = "#00BFC4",
                       direction = NULL, ...) {
+  
+  assertive::assert_is_data.frame(data)
+  assertive::assert_is_numeric(bins)
   
   if(!is.null(direction) & is.null(obs_stat))
     stop("Shading requires observed statistic value to be given.")
