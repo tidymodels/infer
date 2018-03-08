@@ -1,12 +1,12 @@
 ---
-title: "Two sample $t$ test example using `nycflights13` `flights` data"
+title: "Chi-squared test example using `nycflights13` `flights` data"
 author: "Chester Ismay"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     df_print: kable
 vignette: |
-  %\VignetteIndexEntry{Two sample t test flights example}
+  %\VignetteIndexEntry{Chi-squared test flights example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,26 +20,28 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 3)
 ```{r message=FALSE, warning=FALSE}
 library(nycflights13)
 library(dplyr)
+library(ggplot2)
 library(stringr)
 library(infer)
 set.seed(2017)
 fli_small <- flights %>% 
+  na.omit() %>% 
   sample_n(size = 500) %>% 
-  mutate(half_year = case_when(
-    between(month, 1, 6) ~ "h1",
-    between(month, 7, 12) ~ "h2"
+  mutate(season = case_when(
+    month %in% c(10:12, 1:3) ~ "winter",
+    month %in% c(4:9) ~ "summer"
   )) %>% 
   mutate(day_hour = case_when(
     between(hour, 1, 12) ~ "morning",
     between(hour, 13, 24) ~ "not morning"
   )) %>% 
-  select(arr_delay, dep_delay, half_year, 
+  select(arr_delay, dep_delay, season, 
          day_hour, origin, carrier)
 ```
 
 * Two numeric - `arr_delay`, `dep_delay`
 * Two categories 
-    - `half_year` (`"h1"`, `"h2"`), 
+    - `season` (`"winter"`, `"summer"`), 
     - `day_hour` (`"morning"`, `"not morning"`)
 * Three categories - `origin` (`"EWR"`, `"JFK"`, `"LGA"`)
 * Sixteen categories - `carrier`
@@ -50,42 +52,42 @@ fli_small <- flights %>%
 
 ## Calculate observed statistic 
 
-Using `t_test` in `infer`
+Using `chisq_test` in `infer`
 
 ```{r}
-obs_t <- fli_small %>% 
-  t_test(formula = arr_delay ~ half_year) %>% 
+obs_chisq <- fli_small %>% 
+  chisq_test(formula = origin ~ season) %>% 
   dplyr::select(statistic) %>% 
   dplyr::pull()
 ```
 
-The observed $t$ statistic is `r obs_t`.
+The observed $t$ statistic is `r obs_chisq`.
 
 Or using another shortcut function in `infer`:
 
 ```{r}
-obs_t <- fli_small %>% 
-  t_stat(formula = arr_delay ~ half_year)
+obs_chisq <- fli_small %>% 
+  chisq_stat(formula = origin ~ season)
 ```
 
-The observed $t$ statistic is `r obs_t`.
+The observed $\chi^2$ statistic is `r obs_chisq`.
 
-## Randomization approach to t-statistic
+## Randomization approach to $\chi^2$-statistic
 
 ```{r}
-t_null_distn <- fli_small %>%
-  specify(arr_delay ~ half_year) %>% # alt: response = arr_delay, explanatory = half_year
+chisq_null_distn <- fli_small %>%
+  specify(origin ~ season) %>% # alt: response = origin, explanatory = season
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "t", order = c("h1", "h2"))
-t_null_distn %>% visualize(obs_stat = obs_t, direction = "two_sided")
+  calculate(stat = "Chisq")
+chisq_null_distn %>% visualize(obs_stat = obs_chisq, direction = "greater")
 ```
 
 ## Calculate the randomization-based $p$-value
 
 ```{r}
-t_null_distn %>% 
-  dplyr::summarize(p_value = mean(abs(stat) >= obs_t)) %>% 
+chisq_null_distn %>% 
+  dplyr::summarize(p_value = mean(stat >= obs_chisq)) %>% 
   dplyr::pull()
 ```
 
@@ -94,27 +96,27 @@ t_null_distn %>%
 
 ```{r }
 fli_small %>%
-  specify(arr_delay ~ half_year) %>% # alt: response = arr_delay, explanatory = half_year
+  specify(origin ~ season) %>% # alt: response = origin, explanatory = season
   hypothesize(null = "independence") %>%
-  # calculate(stat = "t") ## Not needed since t is implied based on variable types
-  visualize(method = "theoretical", obs_stat = obs_t, direction = "two_sided")
+  # calculate(stat = "Chisq") ## Not needed since t is implied based on variable types
+  visualize(method = "theoretical", obs_stat = obs_chisq, direction = "right")
 ```
 
-## Overlay appropriate $t$ distribution on top of permuted t-statistics
+## Overlay appropriate $\chi^2$ distribution on top of permuted statistics
 
 ```{r eval=FALSE}
 fli_small %>%
-  specify(arr_delay ~ half_year) %>% # alt: response = arr_delay, explanatory = half_year
+  specify(origin ~ season) %>% # alt: response = origin, explanatory = season
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "t", order = c("h1", "h2")) %>% 
-  visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
+  calculate(stat = "Chisq") %>% 
+  visualize(method = "both", obs_stat = obs_chisq)
 ```
 
 ```{r echo=FALSE}
 # To use same distribution calculated above
-t_null_distn %>% 
-  visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
+chisq_null_distn %>% 
+  visualize(method = "both", obs_stat = obs_chisq)
 ```
 
 
@@ -122,7 +124,7 @@ t_null_distn %>%
 
 ```{r}
 fli_small %>% 
-  t_test(formula = arr_delay ~ half_year) %>% 
+  chisq_test(formula = origin ~ season) %>% 
   dplyr::select(p_value) %>% 
   dplyr::pull()
 ```

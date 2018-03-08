@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>A tidier version of t.test — t_test • infer</title>
+<title>A tidier version of t.test for two sample tests — t_test • infer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -68,6 +68,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/chisq_test.html">Chi-squared test example using `nycflights13` `flights` data</a>
+    </li>
+    <li>
       <a href="../articles/flights_examples.html">Randomization Examples using `nycflights13` `flights` data</a>
     </li>
     <li>
@@ -107,11 +110,11 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>A tidier version of t.test</h1>
+    <h1>A tidier version of t.test for two sample tests</h1>
     </div>
 
     
-    <p>A tidier version of t.test</p>
+    <p>A tidier version of t.test for two sample tests</p>
     
 
     <pre class="usage"><span class='fu'>t_test</span>(<span class='no'>data</span>, <span class='no'>formula</span>, <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"two_sided"</span>, <span class='no'>...</span>)</pre>
@@ -139,12 +142,20 @@
     </table>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># t test for comparing mpg against automatic/manual</span>
+  <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
+    <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'>t_test</span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>, <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"less"</span>)</div><div class='output co'>#&gt;   statistic     t_df      p_value alternative
+#&gt; 1 -3.767123 18.33225 0.0006868192        less</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

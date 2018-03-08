@@ -45,6 +45,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/chisq_test.html">Chi-squared test example using `nycflights13` `flights` data</a>
+    </li>
+    <li>
       <a href="../articles/flights_examples.html">Randomization Examples using `nycflights13` `flights` data</a>
     </li>
     <li>
@@ -217,10 +220,6 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 </div>
-<div id="testing" class="section level2">
-<h2 class="hasAnchor">
-<a href="#testing" class="anchor"></a>Testing</h2>
-</div>
 <div id="two-categorical-2-level-variables" class="section level2">
 <h2 class="hasAnchor">
 <a href="#two-categorical-2-level-variables" class="anchor"></a>Two categorical (2 level) variables</h2>
@@ -248,21 +247,40 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"san fran"</span>, <span class="st">"not san fran"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
-<hr>
 </div>
-<div id="to-do" class="section level2">
+<div id="testing" class="section level2">
 <h2 class="hasAnchor">
-<a href="#to-do" class="anchor"></a>TO DO</h2>
+<a href="#testing" class="anchor"></a>Testing</h2>
+</div>
+<div id="two-categorical-2-level-variables-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#two-categorical-2-level-variables-1" class="anchor"></a>Two categorical (&gt;2 level) variables</h2>
+<p>Theoretical distribution</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(drugs <span class="op">~</span><span class="st"> </span>status) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = drugs, explanatory = status</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># generate() is not needed since we are not doing randomization</span>
+<span class="st">  </span><span class="co"># calculate(stat = "Chisq") ## Not needed since Chisq implied based on variable types</span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
+<p>Overlay standard chi-square distribution on top of permuted statistics</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(drugs <span class="op">~</span><span class="st"> </span>status) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = drugs, explanatory = status</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
 <div id="to-do-also-overlay-appropriate-chi-sq-distn" class="section level3">
 <h3 class="hasAnchor">
 <a href="#to-do-also-overlay-appropriate-chi-sq-distn" class="anchor"></a>To Do (Also overlay appropriate chi-sq distn)</h3>
 <p>One categorical (&gt;2 level) - GoF</p>
+<hr>
 </div>
-<div id="to-do-also-overlay-appropriate-chi-sq-distn-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#to-do-also-overlay-appropriate-chi-sq-distn-1" class="anchor"></a>To Do (Also overlay appropriate chi-sq distn)</h3>
-<p>Two categorical (&gt;2 level) variables</p>
 </div>
+<div id="to-do" class="section level2">
+<h2 class="hasAnchor">
+<a href="#to-do" class="anchor"></a>TO DO</h2>
 <div id="to-do-slope-t-stat" class="section level3">
 <h3 class="hasAnchor">
 <a href="#to-do-slope-t-stat" class="anchor"></a>To Do (slope <span class="math inline">\(t\)</span> stat)</h3>
@@ -359,8 +377,9 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
       <li><a href="#hypothesis-tests">Hypothesis tests</a></li>
       <li><a href="#implemented">Implemented</a></li>
       <li><a href="#one-categorical-2-level-variable">One categorical (2 level) variable</a></li>
-      <li><a href="#testing">Testing</a></li>
       <li><a href="#two-categorical-2-level-variables">Two categorical (2 level) variables</a></li>
+      <li><a href="#testing">Testing</a></li>
+      <li><a href="#two-categorical-2-level-variables-1">Two categorical (&gt;2 level) variables</a></li>
       <li><a href="#to-do">TO DO</a></li>
       <li><a href="#confidence-intervals">Confidence intervals</a></li>
       </ul>

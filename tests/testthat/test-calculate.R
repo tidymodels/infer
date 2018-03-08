@@ -160,8 +160,8 @@ test_that("chi-square matches chisq.test value", {
     dplyr::do(broom::tidy(stats::chisq.test(table(.$Petal.Length.Group, 
                                                   .$Species)))) %>%
     dplyr::select(replicate, stat = statistic) %>%
-    dplyr::ungroup() %>%
-    dplyr::mutate(replicate = as.factor(replicate))
+    dplyr::ungroup() #%>%
+ #   dplyr::mutate(replicate = as.factor(replicate))
   expect_equal(infer_way, trad_way)
 
   gen_iris9 <- iris %>%
@@ -207,6 +207,7 @@ test_that("`order` is working", {
                          order = c(">5", "<=4", ">4")))
   # order not given
   expect_error(calculate(gen_iris11, stat = "diff in means"))
+  
 })
 
 test_that('success is working for stat = "prop"', {
@@ -244,4 +245,15 @@ test_that("Permute slope test works", {
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
   expect_silent(calculate(gen_iris14, stat = "slope"))
+})
+
+test_that("order being given when not needed gives warning", {
+  gen_iris15 <- iris %>%
+    dplyr::mutate(Petal.Length.Group =
+                    dplyr::if_else(Sepal.Length > 4, ">4", "<=4")) %>%
+    specify(Petal.Length.Group ~ Species, success = ">4") %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 10, type = "permute")
+  expect_warning(calculate(gen_iris15, stat = "Chisq",
+                           order = c("setosa", "virginica")))
 })

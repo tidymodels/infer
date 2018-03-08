@@ -13,24 +13,28 @@ visualize(data, bins = 30, method = "randomization", dens_color = "black",
 
 \item{bins}{the number of bins in the histogram}
 
-\item{method}{a string giving the method to display. Options are "randomization", "theoretical", or "both"
+\item{method}{a string giving the method to display. Options are 
+"randomization", "theoretical", or "both"
 with "both" corresponding to "randomization" and "theoretical"}
 
-\item{dens_color}{a character or hex string specifying the color of the theoretical density curve}
+\item{dens_color}{a character or hex string specifying the color of the
+theoretical density curve}
 
-\item{obs_stat}{a numeric value corresponding to what the observed statistic is}
+\item{obs_stat}{a numeric value corresponding to what the observed 
+statistic is}
 
-\item{obs_stat_color}{a character or hex string specifying the color of the observed statistic}
+\item{obs_stat_color}{a character or hex string specifying the color of
+the observed statistic}
 
-\item{direction}{a string specifying in which direction the shading should occur. Options are "less", "greater", or "two_sided".
+\item{direction}{a string specifying in which direction the shading 
+should occur. Options are "less", "greater", or "two_sided".
 Can also specify "left", "right", or "both".}
 
 \item{...}{currently ignored}
 }
 \value{
-A ggplot object showing the randomization-based distribution as a histogram.
-Preferable to use the ggplot2 package directly here as a histogram does not always
-display the distribution well.
+A ggplot object showing the randomization-based distribution as a
+ histogram or bar graph. Also used to show the theoretical curves.
 }
 \description{
 (Currently) Visualize the randomization-based distribution 

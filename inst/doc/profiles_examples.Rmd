@@ -15,6 +15,13 @@ vignette: |
 knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
 ```
 
+# Note
+
+The `okcupiddata` is thought by some to be controversial. Its use here is only
+to check for a variety of different variable types and levels. It will remain only in this
+"cutting edge" version of the package as we continue to add and test examples.
+
+
 ## Data preparation
 
 ```{r message=FALSE, warning=FALSE}
@@ -23,6 +30,7 @@ library(stringr)
 library(infer)
 set.seed(2017)
 prof_small <- profiles %>% 
+  na.omit() %>% 
   dplyr::sample_n(size = 500) %>% 
   dplyr::mutate(city = dplyr::case_when(
     str_detect(location, "san fran") ~ "san fran",
@@ -56,7 +64,7 @@ One numerical variable (median)
 
 ```{r}
 prof_small %>%
-  specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
+  specify(response = age) %>% # alt: age ~ NULL
   hypothesize(null = "point", med = 55) %>% 
   generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "median") %>% 
@@ -67,7 +75,7 @@ One categorical (2 level) variable
 
 ```{r}
 prof_small %>%
-  specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
+  specify(response = sex, success = "m") %>%
   hypothesize(null = "point", p = c("m" = .65)) %>% 
   generate(reps = 1000, type = "simulate") %>% 
   calculate(stat = "prop") %>% 
@@ -78,10 +86,10 @@ Two categorical (2 level) variables
 
 ```{r}
 prof_small %>%
-  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
+  specify(sex ~ city, success = "m") %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in props") %>% 
+  calculate(stat = "diff in props", order = c("san fran", "not san fran")) %>% 
   visualize()
 ```
 
@@ -115,7 +123,7 @@ prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in means") %>% 
+  calculate(stat = "diff in means", order = c("m", "f")) %>% 
   visualize()
 ```
 
@@ -126,7 +134,7 @@ prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in medians") %>% 
+  calculate(stat = "diff in medians", order = c("m", "f")) %>% 
   visualize()
 ```
 
@@ -178,9 +186,9 @@ One categorical (one proportion)
 
 ```{r}
 prof_small %>%
-  specify(response = sex) %>%
+  specify(response = sex, success = "f") %>%
   generate(reps = 1000, type = "bootstrap") %>%
-  calculate(stat = "prop", success = "f") %>% 
+  calculate(stat = "prop") %>% 
   visualize()
 ```
 
@@ -190,7 +198,7 @@ One numerical variable one categorical (2 levels) (diff in means)
 prof_small %>%
   specify(age ~ sex) %>%
   generate(reps = 1000, type = "bootstrap") %>%
-  calculate(stat = "diff in means") %>% 
+  calculate(stat = "diff in means", order = c("m", "f")) %>% 
   visualize()
 ```
 
@@ -198,9 +206,9 @@ Two categorical variables (diff in proportions)
 
 ```{r}
 prof_small %>%
-  specify(sex ~ city) %>%
+  specify(sex ~ city, success = "m") %>%
   generate(reps = 1000, type = "bootstrap") %>%
-  calculate(stat = "diff in props") %>% 
+  calculate(stat = "diff in props", order = c("san fran", "not san fran")) %>% 
   visualize()
 ```
 

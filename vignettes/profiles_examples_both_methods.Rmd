@@ -156,8 +156,6 @@ prof_small %>%
   visualize(method = "both")
 ```
 
-## Testing
-
 
 ## Two categorical (2 level) variables
 
@@ -194,10 +192,41 @@ prof_small %>%
   visualize(method = "both")
 ```
 
-***
 
-## TO DO
+## Testing
 
+## Two categorical (>2 level) variables
+
+```{r eval=FALSE, include=FALSE}
+prof_small %>%
+  specify(drugs ~ status) %>% # alt: response = drugs, explanatory = status
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "Chisq") %>% 
+  visualize()
+```
+
+Theoretical distribution
+
+```{r}
+prof_small %>%
+  specify(drugs ~ status) %>% # alt: response = drugs, explanatory = status
+  hypothesize(null = "independence") %>%
+  # generate() is not needed since we are not doing randomization
+  # calculate(stat = "Chisq") ## Not needed since Chisq implied based on variable types
+  visualize(method = "theoretical")
+```
+
+Overlay standard chi-square distribution on top of permuted statistics
+
+```{r}
+prof_small %>%
+  specify(drugs ~ status) %>% # alt: response = drugs, explanatory = status
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "Chisq") %>% 
+  visualize(method = "both")
+```
 
 
 ### To Do (Also overlay appropriate chi-sq distn)
@@ -215,18 +244,10 @@ prof_small %>%
   visualize()
 ```
 
-### To Do (Also overlay appropriate chi-sq distn)
 
-Two categorical (>2 level) variables
+***
 
-```{r eval=FALSE, include=FALSE}
-prof_small %>%
-  specify(drugs ~ status) %>% # alt: response = drugs, explanatory = status
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "Chisq") %>% 
-  visualize()
-```
+## TO DO
 
 
 ### To Do (slope $t$ stat)

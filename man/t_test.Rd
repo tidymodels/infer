@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrappers.R
 \name{t_test}
 \alias{t_test}
-\title{A tidier version of t.test}
+\title{A tidier version of t.test for two sample tests}
 \usage{
 t_test(data, formula, alternative = "two_sided", ...)
 }
@@ -17,5 +17,11 @@ t_test(data, formula, alternative = "two_sided", ...)
 \item{...}{currently ignored}
 }
 \description{
-A tidier version of t.test
+A tidier version of t.test for two sample tests
+}
+\examples{
+# t test for comparing mpg against automatic/manual
+  mtcars \%>\%
+    dplyr::mutate(am = factor(am)) \%>\%
+    t_test(mpg ~ am, alternative = "less")
 }
