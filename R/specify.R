@@ -2,42 +2,43 @@
 #' \code{specify} also converting character variables chosen to be \code{factor}s
 #' @param x a data frame that can be coerced into a \code{\link[tibble]{tibble}}
 #' @param formula a formula with the response variable on the left and the explanatory on the right
-#' @param response the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument.
+#' @param response the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument
 #' @param explanatory the variable name in \code{x} that will serve as the explanatory variable
+#' @param success the level of \code{response} that will be considered a success, as a string. 
+#' Needed for inference on one proportion, a difference in proportions, and corresponding z stats
+#' @return A tibble containing the response (and explanatory, if specified) variable data
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
 #' @importFrom dplyr mutate_if select one_of as_tibble
 #' @importFrom methods hasArg
 #' @export
 #' @examples
-#' # Response attribute set corresponding to
-#' # response argument and specified variable selected
-#' if(require(dplyr)){
+#' # Permutation test similar to ANOVA
 #'   mtcars %>%
-#'     mutate(am = factor(am)) %>%
-#'     specify(response = am)
-#' }
-#' # Response and explanatory attributes set corresponding to
-#' # response and explanatory arguments
-#' if(require(dplyr)){
-#'   mtcars %>%
-#'     mutate(am = factor(am), vs = factor(vs)) %>%
-#'     specify(response = am, explanatory = vs)
-#' }
-#' 
-#' # Response and explanatory attributes set corresponding to
-#' # formula argument expecting response ~ explanatory
-#' if(require(dplyr)){
-#'   mtcars %>%
-#'     mutate(am = factor(am), vs = factor(vs)) %>%
-#'     specify(formula = am ~ vs)
-#' }
+#'     dplyr::mutate(cyl = factor(cyl)) %>%
+#'     specify(mpg ~ cyl) %>%
+#'     hypothesize(null = "independence") %>%
+#'     generate(reps = 100, type = "permute") %>%
+#'     calculate(stat = "F")
 
-specify <- function(x, formula, response = NULL, explanatory = NULL) {
-  
-  # Convert all character variables to be factor variables instead
-  x <- dplyr::as_tibble(x) %>% mutate_if(is.character, as.factor)
-  
+specify <- function(x, formula, response = NULL,
+                    explanatory = NULL, success = NULL) {
+  assertive::assert_is_data.frame(x)
+
+  # Convert all character and logical variables to be factor variables
+  x <- dplyr::as_tibble(x) %>%
+    mutate_if(is.character, as.factor) %>%
+    mutate_if(is.logical, as.factor)
+
+  if (!methods::hasArg(formula) && !methods::hasArg(response)) {
+    stop("Please specify the `response`` variable.")
+  }
+  if (methods::hasArg(formula)) {
+    if (!rlang::is_formula(formula)) {
+      stop("The `formula` argument is not recognized as a formula.")
+    }
+  }
+
   attr(x, "response")    <- substitute(response)
   attr(x, "explanatory") <- substitute(explanatory)
 
@@ -45,16 +46,53 @@ specify <- function(x, formula, response = NULL, explanatory = NULL) {
     attr(x, "response")    <- f_lhs(formula)
     attr(x, "explanatory") <- f_rhs(formula)
   }
-  
-  if (!all(
-    as.character(
-      c(attr(x, "response"),
-        attr(x, "explanatory")
-        )
-    ) %in% names(x)
-  )) stop("The columns you specified could not be found.")
 
-  x <- as_tibble(x) %>%
+  response_col <- rlang::eval_tidy(attr(x, "response"), x)
+
+  if (!as.character(attr(x, "response")) %in% names(x)) {
+    stop(paste0("The response variable `", attr(x, "response"),
+                "` cannot be found in this dataframe."))
+  }
+
+  # if there's an explanatory var
+
+  if (!(is.null(attr(x, "explanatory")))) {
+    if (!as.character(attr(x, "explanatory")) %in% names(x)) {
+      stop(paste0("The explanatory variable `", attr(x, "explanatory"),
+                  "` cannot be found in this dataframe."))
+    }
+    if (identical(as.character(attr(x, "response")),
+                  as.character(attr(x, "explanatory")))) {
+      stop(paste("The response and explanatory variables must be different",
+"from one another."))
+    }
+    explanatory_col <- rlang::eval_tidy(attr(x, "explanatory"), x)
+    if (is.character(explanatory_col)) {
+      explanatory_col <- as.factor(explanatory_col)
+    }
+  }
+
+  attr(x, "success") <- success
+
+  if (!is.null(success)) {
+    if (!is.character(success)) {
+      stop("`success` must be a string.")
+    }
+    if (!is.factor(response_col)) {
+      stop(paste("`success` should only be specified if the response is",
+"a categorical variable."))
+    }
+    if (!(success %in% levels(response_col))) {
+      stop(paste0(success, " is not a valid level of ",
+                  attr(x, "response"), "."))
+    }
+    if (sum(table(response_col) > 0) > 2) {
+      stop(paste("`success` can only be used if the response has two levels.",
+           "`filter()` can reduce a variable to two levels."))
+    }
+  }
+
+  x <- x %>%
     select(one_of(c(
       as.character((attr(x, "response"))),
       as.character(attr(x, "explanatory"))
@@ -71,11 +109,18 @@ specify <- function(x, formula, response = NULL, explanatory = NULL) {
   else
     attr(x, "explanatory_type") <- class(x[[as.character(attr(x, "explanatory"))]])
   
+  if(attr(x, "response_type") == "factor" & is.null(success) &
+     length(levels(x[[as.character(attr(x, "response"))]])) == 2)
+ #    sum(table(response_col) > 0) == 2)
+    stop(paste0("A level of the response variable `",
+                attr(x, "response"),
+                "` needs to be specified for the `success` argument in `specify()`."))
+  
   # Determine appropriate parameters for theoretical distribution fit
   x <- set_params(x)
   
   # add "infer" class
   class(x) <- append("infer", class(x))
-  
+
   return(x)
 }
