@@ -38,11 +38,11 @@ install.packages("remotes")
 remotes::install_github("andrewpbray/infer", ref = "develop")
 ```
 
-To see the things we are working on with the package as vignettes/Articles, check out the developmental `pkgdown` site at <https://infer-dev.netlify.com>.
+To see the things we are working on with the package as vignettes/Articles, check out the developmental `pkgdown` site at <http://bit.ly/infer-dev>.
 
 ### Contributing
 
-We welcome others helping us make this package as user friendly and efficient as possible. Please review our [contributing](CONTRIBUTING.md) and [conduct](CONDUCT.md) guidelines. Of particular interest is helping us to write `testthat` tests and help us in building vignettes that show how to (and how NOT to) use the package.
+We welcome others helping us make this package as user friendly and efficient as possible. Please review our [contributing](https://github.com/andrewpbray/infer/blob/develop/CONDUCT.md) and [conduct](CONDUCT.md) guidelines. Of particular interest is helping us to write `testthat` tests and help us in building vignettes that show how to (and how NOT to) use the package.
 
 ### Examples
 
