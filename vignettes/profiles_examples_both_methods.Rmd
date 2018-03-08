@@ -15,6 +15,13 @@ vignette: |
 knitr::opts_chunk$set(fig.width = 7, fig.height = 3) 
 ```
 
+# Note
+
+The `okcupiddata` is thought by some to be controversial. Its use here is only
+to check for a variety of different variable types and levels. It will remain only in this
+"cutting edge" version of the package as we continue to add and test examples.
+
+
 ## Data preparation
 
 ```{r message=FALSE, warning=FALSE}
@@ -52,7 +59,7 @@ prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "t") %>% 
+  calculate(stat = "t", order = c("m", "f")) %>% 
   visualize()
 ```
 
@@ -62,7 +69,8 @@ Theoretical distribution
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
-  # calculate(stat = "t") ## Not needed since t is implied based on variable types
+  # generate() is not needed since we are not doing randomization
+  # calculate(stat = "t") ## Not needed since t implied based on variable types
   visualize(method = "theoretical")
 ```
 
@@ -73,7 +81,7 @@ prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "t") %>% 
+  calculate(stat = "t", order = c("m", "f")) %>% 
   visualize(method = "both")
 ```
 
@@ -95,6 +103,8 @@ Theoretical distribution
 ```{r}
 prof_small %>%
   specify(age ~ status) %>% # alt: response = age, explanatory = status
+  # generate() is not needed since we are not doing randomization
+  # calculate(stat = "F") ## Not needed since F implied based on variable types
   hypothesize(null = "independence") %>%
   visualize(method = "theoretical")
 ```
@@ -117,7 +127,7 @@ Randomization approach to z-statistic
 
 ```{r}
 prof_small %>%
-  specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
+  specify(response = sex, success = "m") %>% 
   hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
   generate(reps = 1000, type = "simulate") %>% 
   calculate(stat = "z") %>% 
@@ -128,8 +138,10 @@ Theoretical distribution
 
 ```{r}
 prof_small %>%
-  specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
+  specify(response = sex, success = "m") %>%
   hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
+  # generate() is not needed since we are not doing randomization
+  # calculate(stat = "z") ## Not needed since z implied based on variable types
   visualize(method = "theoretical")
 ```
 
@@ -137,7 +149,7 @@ Overlay standard normal distribution on top of permuted z-statistics
 
 ```{r}
 prof_small %>%
-  specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
+  specify(response = sex, success = "m") %>%
   hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
   generate(reps = 1000, type = "simulate") %>% 
   calculate(stat = "z") %>% 
@@ -153,10 +165,10 @@ Randomization approach to z-statistic
 
 ```{r}
 prof_small %>%
-  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
+  specify(sex ~ city, success = "m") %>%
   hypothesize(null = "independence") %>%
-  generate(reps = 5000, type = "permute") %>%
-  calculate(stat = "z") %>% 
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "z", order = c("san fran", "not san fran")) %>% 
   visualize()
 ```
 
@@ -164,8 +176,10 @@ Theoretical distribution
 
 ```{r}
 prof_small %>%
-  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
+  specify(sex ~ city, success = "m") %>%
   hypothesize(null = "independence") %>% 
+  # generate() is not needed since we are not doing randomization
+  # calculate(stat = "z") ## Not needed since z implied based on variable types
   visualize(method = "theoretical")
 ```
 
@@ -173,10 +187,10 @@ Overlay standard normal distribution on top of permuted z-statistics
 
 ```{r}
 prof_small %>%
-  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
+  specify(sex ~ city, success = "m") %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "z") %>% 
+  calculate(stat = "z", order = c("san fran", "not san fran")) %>% 
   visualize(method = "both")
 ```
 

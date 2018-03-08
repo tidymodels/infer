@@ -7,6 +7,7 @@ library(stringr)
 library(infer)
 set.seed(2017)
 prof_small <- profiles %>% 
+  na.omit() %>% 
   dplyr::sample_n(size = 500) %>% 
   dplyr::mutate(city = dplyr::case_when(
     str_detect(location, "san fran") ~ "san fran",
@@ -24,7 +25,7 @@ prof_small %>%
 
 ## ------------------------------------------------------------------------
 prof_small %>%
-  specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
+  specify(response = age) %>% # alt: age ~ NULL
   hypothesize(null = "point", med = 55) %>% 
   generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "median") %>% 
@@ -32,7 +33,7 @@ prof_small %>%
 
 ## ------------------------------------------------------------------------
 prof_small %>%
-  specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
+  specify(response = sex, success = "m") %>% # alt: sex ~ NULL
   hypothesize(null = "point", p = c("m" = .65)) %>% 
   generate(reps = 1000, type = "simulate") %>% 
   calculate(stat = "prop") %>% 
@@ -40,10 +41,10 @@ prof_small %>%
 
 ## ------------------------------------------------------------------------
 prof_small %>%
-  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
+  specify(sex ~ city) %>% # alt: response = sex, explanatory = city
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in props") %>% 
+  calculate(stat = "diff in props", order = c("san fran", "not san fran")) %>% 
   visualize()
 
 ## ------------------------------------------------------------------------
@@ -68,7 +69,7 @@ prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in means") %>% 
+  calculate(stat = "diff in means", order = c("m", "f")) %>% 
   visualize()
 
 ## ------------------------------------------------------------------------
@@ -76,7 +77,7 @@ prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in medians") %>% 
+  calculate(stat = "diff in medians", order = c("m", "f")) %>% 
   visualize()
 
 ## ------------------------------------------------------------------------
@@ -120,14 +121,14 @@ prof_small %>%
 prof_small %>%
   specify(age ~ sex) %>%
   generate(reps = 1000, type = "bootstrap") %>%
-  calculate(stat = "diff in means") %>% 
+  calculate(stat = "diff in means", order = c("m", "f")) %>% 
   visualize()
 
 ## ------------------------------------------------------------------------
 prof_small %>%
   specify(sex ~ city) %>%
   generate(reps = 1000, type = "bootstrap") %>%
-  calculate(stat = "diff in props") %>% 
+  calculate(stat = "diff in props", order = c("san fran", "not san fran")) %>% 
   visualize()
 
 ## ------------------------------------------------------------------------
