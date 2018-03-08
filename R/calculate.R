@@ -118,6 +118,14 @@ calculate <- function(x, stat, order = NULL, ...) {
                   "' is expecting the response variable to be a factor."))
     }
   }
+
+  if (!(stat %in% c("diff in means", "diff in medians", "diff in props") |
+      attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))) {
+    if (!is.null(order)){
+      warning(paste("Statistic is not based on a difference; the `order` argument",
+                 "is ignored. Check `?calculate` for details."))
+    }
+  }
   
   # add "infer" class
   class(x) <- append("infer", class(x))
@@ -127,6 +135,18 @@ calculate <- function(x, stat, order = NULL, ...) {
     structure(stat, class = gsub(" ", "_", stat)), x, order, ...
   )
   
+  # result <- x
+  # 
+  # attr(result, "response") <- attr(x, "response")
+  # attr(result, "success") <- attr(x, "success")
+  # attr(result, "explanatory") <- attr(x, "explanatory")
+  # attr(result, "response_type") <- attr(x, "response_type")
+  # attr(result, "explanatory_type") <- attr(x, "explanatory_type")
+  # attr(result, "distr_param") <- attr(x, "distr_param")
+  # attr(result, "distr_param2") <- attr(x, "distr_param2")
+  # attr(result, "theory_type") <- attr(x, "theory_type")
+  # 
+  # result
   
 }
 
@@ -213,9 +233,9 @@ calc_impl.diff_in_medians <- function(stat, x, order, ...) {
 
 calc_impl.Chisq <- function(stat, x, order, ...) {
   ## The following could stand to be cleaned up
-  n   <- attr(x, "biggest_group_size")
   
   if (is.null(attr(x, "explanatory"))) {
+    n   <- attr(x, "biggest_group_size")
     expected <- n * attr(x, "params")
     x %>%
       dplyr::summarize(stat = sum((table(!!(attr(x, "response")))
@@ -234,13 +254,27 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
     #                                      !!(attr(x, "explanatory")))
     #                                - expected)^2 / expected, ...))
     
-    x %>%
-      dplyr::group_by(replicate) %>%
+    
+    result <- x %>%
+#      dplyr::group_by(replicate) %>%
       dplyr::do(broom::tidy(suppressWarnings(stats::chisq.test(
         table(.[[as.character(attr(x, "response"))]],
               .[[as.character(attr(x, "explanatory"))]]))))) %>%
       dplyr::ungroup() %>%
-      dplyr::transmute(replicate = as.factor(replicate), stat = statistic)
+#      dplyr::mutate(replicate = as.factor(replicate), stat = statistic) %>% 
+      dplyr::select(replicate, stat = statistic)
+    
+    attr(result, "response") <- attr(x, "response")
+    attr(result, "success") <- attr(x, "success")
+    attr(result, "explanatory") <- attr(x, "explanatory")
+    attr(result, "response_type") <- attr(x, "response_type")
+    attr(result, "explanatory_type") <- attr(x, "explanatory_type")
+    attr(result, "distr_param") <- attr(x, "distr_param")
+    attr(result, "distr_param2") <- attr(x, "distr_param2")
+    attr(result, "theory_type") <- attr(x, "theory_type")
+    
+    result
+    
   }
 }
 

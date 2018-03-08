@@ -2,20 +2,24 @@
 #' (To be updated to include theory-based distributions)
 #' @param data the output from \code{\link{calculate}}
 #' @param bins the number of bins in the histogram
-#' @param method a string giving the method to display. Options are "randomization", "theoretical", or "both"
+#' @param method a string giving the method to display. Options are 
+#' "randomization", "theoretical", or "both"
 #' with "both" corresponding to "randomization" and "theoretical"
-#' @param dens_color a character or hex string specifying the color of the theoretical density curve
-#' @param obs_stat a numeric value corresponding to what the observed statistic is
-#' @param obs_stat_color a character or hex string specifying the color of the observed statistic
-#' @param direction a string specifying in which direction the shading should occur. Options are "less", "greater", or "two_sided".
+#' @param dens_color a character or hex string specifying the color of the
+#'  theoretical density curve
+#' @param obs_stat a numeric value corresponding to what the observed 
+#' statistic is
+#' @param obs_stat_color a character or hex string specifying the color of
+#'  the observed statistic
+#' @param direction a string specifying in which direction the shading 
+#' should occur. Options are "less", "greater", or "two_sided".
 #' Can also specify "left", "right", or "both".
 #' @param ... currently ignored
 #' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle xlab ylab 
 #' @importFrom ggplot2 geom_vline geom_rect
-#' @importFrom stats dt qt df qf dnorm qnorm
-#' @return A ggplot object showing the randomization-based distribution as a histogram.
-#' Preferable to use the ggplot2 package directly here as a histogram does not always
-#' display the distribution well.
+#' @importFrom stats dt qt df qf dnorm qnorm dchisq qchisq
+#' @return A ggplot object showing the randomization-based distribution as a
+#'  histogram or bar graph. Also used to show the theoretical curves.
 #' @export
 #' @examples 
 #' # Permutations to create randomization null distribution for 
@@ -100,24 +104,37 @@ visualize <- function(data, bins = 30, method = "randomization",
   
 } else if(method == "theoretical"){
   
+#  print(attr(data, "theory_type"))
+  
   if(attr(data, "theory_type") == "Two sample t"){    
     infer_plot <- theory_t_plot(deg_freedom = attr(data, "distr_param"),
                                 statistic_text = "t",
                                 dens_color = dens_color)
   }
   
-  if(attr(data, "theory_type") == "ANOVA"){
+  else if(attr(data, "theory_type") == "ANOVA"){
     infer_plot <- theory_anova_plot(deg_freedom_top = attr(data, "distr_param"), 
                                     deg_freedom_bottom = attr(data, "distr_param2"), 
                                     statistic_text = "F",
                                     dens_color = dens_color)
   }
   
-  if(attr(data, "theory_type") %in% c("One sample prop z", "Two sample props z")){
+  else if(attr(data, "theory_type") %in% c("One sample prop z", "Two sample props z")){
     infer_plot <- theory_z_plot(statistic_text = "z")
   }
   
+  else if(attr(data, "theory_type") == "Chi-square test of indep"){    
+    infer_plot <- theory_chisq_plot(deg_freedom = attr(data, "distr_param"),
+                                statistic_text = "Chi-Square",
+                                dens_color = dens_color)
+  }
+  
+  else
+    stop(paste0("'", attr(data, "theory_type"), "' is not implemented yet."))
+  
 } else { #method == "both"
+  
+ # print(attr(data, "theory_type"))
   
   if(attr(data, "theory_type") == "Two sample t"){
     infer_plot <- both_t_plot(data = data, 
@@ -129,7 +146,7 @@ visualize <- function(data, bins = 30, method = "randomization",
                               obs_stat = obs_stat)
   }
   
-  if(attr(data, "theory_type") == "ANOVA"){
+  else if(attr(data, "theory_type") == "ANOVA"){
     infer_plot <- both_anova_plot(data = data, 
                                   deg_freedom_top = attr(data, "distr_param"), 
                                   deg_freedom_bottom = attr(data, "distr_param2"), 
@@ -140,7 +157,7 @@ visualize <- function(data, bins = 30, method = "randomization",
                                   obs_stat = obs_stat) 
   }
   
-  if(attr(data, "theory_type") %in% c("One sample prop z", "Two sample props z")){
+  else if(attr(data, "theory_type") %in% c("One sample prop z", "Two sample props z")){
     infer_plot <- both_z_plot(data = data, 
                               statistic_text = "z", 
                               dens_color = dens_color,
@@ -148,6 +165,19 @@ visualize <- function(data, bins = 30, method = "randomization",
                               direction = direction,
                               obs_stat = obs_stat) 
   }
+ 
+  else if(attr(data, "theory_type") == "Chi-square test of indep"){
+    infer_plot <- both_chisq_plot(data = data, 
+                                  deg_freedom = attr(data, "distr_param"),
+                                  statistic_text = "Chi-Square", 
+                                  dens_color = dens_color,
+                                  bins = bins,
+                                  direction = "right",
+                                  obs_stat = obs_stat) 
+  }
+   
+  else
+    stop(paste0("'", attr(data, "theory_type"), "' is not implemented yet."))
   
 }
 
@@ -252,6 +282,36 @@ both_z_plot <- function(data, statistic_text = "z",
     xlab("zstat") +
     ylab("")
 }
+
+theory_chisq_plot <- function(deg_freedom, statistic_text = "Chi-Square", 
+                              dens_color = "black", ...){
+  ggplot(data.frame(x = c(qchisq(0.001, deg_freedom), qchisq(0.999, deg_freedom))), 
+         aes(x)) + 
+    stat_function(fun = dchisq, args = list(df = deg_freedom), color = dens_color) +
+    ggtitle(paste("Theoretical", statistic_text, "Null Distribution")) +
+    xlab("") +
+    ylab("")
+}
+
+both_chisq_plot <- function(data, deg_freedom, statistic_text = "Chi-Square",
+                        dens_color = "black",
+                        obs_stat = NULL,
+                        direction = "greater", bins = 30,...){
+
+  infer_chisq_plot <- shade_density_check(data = data,
+                                      obs_stat = obs_stat,
+                                      direction = direction,
+                                      bins = bins)
+  
+  infer_chisq_plot +
+    stat_function(fun = dchisq, args = list(df = deg_freedom), 
+                  color = dens_color) +
+    ggtitle(paste("Randomization-Based and Theoretical", 
+                  statistic_text, "Null Distributions")) +
+    xlab("chisqstat") +
+    ylab("")
+}
+
 
 shade_density_check <- function(data = data, #gg_plot, 
                                 obs_stat, direction, bins, 

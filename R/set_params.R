@@ -65,6 +65,11 @@ set_params <- function(x){
       # >2 sample proportions (chi-square test of indep)
       else{
         attr(x, "theory_type") <- "Chi-square test of indep"
+        attr(x, "distr_param") <- x %>% 
+          dplyr::summarize(df = suppressWarnings(stats::chisq.test(
+            table(x[[as.character(attr(x, "response"))]],
+                  x[[as.character(attr(x, "explanatory"))]]))$parameter)) %>%
+          dplyr::pull()
       }
     }
     
