@@ -47,7 +47,7 @@ calculate <- function(x, stat, order = NULL, ...) {
   if (stat %in% c("mean", "median", "sd")){
     col <- setdiff(names(x), "replicate")
     
-    if (!is.numeric(x[[col]])){
+    if (!is.numeric(x[[as.character(col)]])){
       stop(paste0("Calculating a ",
                   stat,
                   " here is not appropriate \n  since the `",
@@ -287,7 +287,7 @@ calc_impl.z <- function(stat, x, order, ...) {
     col <- attr(x, "response")
     success <- attr(x, "success")
     
-    x$explan <- factor(x[[attr(x, "explanatory")]], 
+    x$explan <- factor(x[[as.character(attr(x, "explanatory"))]], 
                        levels = c(order[1], order[2]))
     
     aggregated <- x %>%
