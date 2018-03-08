@@ -2,6 +2,8 @@
 #' @param x a data frame that can be coerced into a \code{\link[tibble]{tibble}}
 set_params <- function(x){
 
+  attr(x, "theory_type") <- NULL
+  
   # One variable
   if (!is.null(attr(x, "response")) & is.null(attr(x, "explanatory")) & 
       !is.null(attr(x, "response_type")) & is.null(attr(x, "explanatory_type"))){
@@ -56,13 +58,22 @@ set_params <- function(x){
       
       # Two sample proportions (z distribution) 
       # Parameter(s) not needed since standard normal
-      if(length(levels(x[[as.character(attr(x, "explanatory"))]])) == 2){
+      if(length(levels(x[[as.character(attr(x, "response"))]])) == 2 &
+         length(levels(x[[as.character(attr(x, "explanatory"))]])) == 2){
         attr(x, "theory_type") <- "Two sample props z"
       }
       # >2 sample proportions (chi-square test of indep)
-      if(length(levels(x[[as.character(attr(x, "explanatory"))]])) > 2){
+      else{
         attr(x, "theory_type") <- "Chi-square test of indep"
       }
+    }
+    
+    # Response is numeric, explanatory is numeric
+    if(attr(x, "response_type") %in% c("integer", "numeric") &
+       attr(x, "explanatory_type") %in% c("integer", "numeric")){
+    attr(x, "theory_type") <- "Slope with t"
+    
+    # TO DO: Determine parameters
     }
   }
   x
