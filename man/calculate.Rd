@@ -4,42 +4,37 @@
 \alias{calculate}
 \title{Calculate summary statistics}
 \usage{
-calculate(x, stat, success = NULL, ...)
+calculate(x, stat, order = NULL, ...)
 }
 \arguments{
-\item{x}{the output from \code{\link{hypothesize}} or \code{\link{generate}}}
+\item{x}{the output from \code{\link{generate}} for computation-based 
+inference or the output from \code{\link{hypothesize}}
+piped in to here for theory-based inference.}
 
 \item{stat}{a string giving the type of the statistic to calculate. Current
 options include "mean", "median", "sd", "prop", "diff in means",
-"diff in medians", "diff in props", "Chisq", "F", and "slope". (Testing implementations
-of "z" and "t".)}
+"diff in medians", "diff in props", "Chisq", "F", "t", "z", and "slope".}
 
-\item{success}{a string specifying which level of the response variable should be
-used as a success in bootstrapping a one proportion confidence interval}
+\item{order}{a string vector of specifying the order in which the levels of
+the explanatory variable should be ordered for subtraction, where
+\code{order = c("first", "second")} means \code{("first" - "second")}
+Needed for inference on difference in means, medians, or proportions.}
 
-\item{...}{to pass options like \code{na.rm = TRUE} into functions like mean, sd, etc.}
+\item{...}{to pass options like \code{na.rm = TRUE} into functions like
+mean, sd, etc.}
+}
+\value{
+A tibble containing a \code{stat} column of calculated statistics
 }
 \description{
 Calculate summary statistics
 }
 \examples{
 # Permutation test for two binary variables
-if(require(dplyr)) {
   mtcars \%>\%
-    mutate(am = factor(am), vs = factor(vs)) \%>\%
-    specify(am ~ vs) \%>\%
+    dplyr::mutate(am = factor(am), vs = factor(vs)) \%>\%
+    specify(am ~ vs, success = "1") \%>\%
     hypothesize(null = "independence") \%>\%
     generate(reps = 100, type = "permute") \%>\%
-    calculate(stat = "diff in props") \%>\%
-    visualize()
-}
-
-# Confidence interval using bootstrapping for one proportion
-if(require(dplyr)) {
-    mtcars \%>\%
-        mutate(am = factor(am)) \%>\%
-        specify(response = am) \%>\%
-        generate(reps = 100, type = "bootstrap") \%>\%
-        calculate(stat = "prop", success = "1")
-}
+    calculate(stat = "diff in props", order = c("1", "0"))
 }

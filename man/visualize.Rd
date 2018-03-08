@@ -2,7 +2,7 @@
 % Please edit documentation in R/visualize.R
 \name{visualize}
 \alias{visualize}
-\title{(Currently) Visualize the resampling distribution 
+\title{(Currently) Visualize the randomization-based distribution 
 (To be updated to include theory-based distributions)}
 \usage{
 visualize(data, bins = 30, method = "randomization", dens_color = "black",
@@ -27,44 +27,44 @@ Can also specify "left", "right", or "both".}
 
 \item{...}{currently ignored}
 }
+\value{
+A ggplot object showing the randomization-based distribution as a histogram.
+Preferable to use the ggplot2 package directly here as a histogram does not always
+display the distribution well.
+}
 \description{
-(Currently) Visualize the resampling distribution 
+(Currently) Visualize the randomization-based distribution 
 (To be updated to include theory-based distributions)
 }
 \examples{
 # Permutations to create randomization null distribution for 
 # one numerical response and one categorical predictor
 # using t statistic
-if(require(dplyr)) {
 mtcars \%>\%
-    mutate(am = factor(am)) \%>\%
+    dplyr::mutate(am = factor(am)) \%>\%
     specify(mpg ~ am) \%>\% # alt: response = mpg, explanatory = am
     hypothesize(null = "independence") \%>\%
     generate(reps = 100, type = "permute") \%>\%
-    calculate(stat = "t") \%>\%
+    calculate(stat = "t", order = c("1", "0")) \%>\%
     visualize(method = "randomization") #default method
-}
 
 # Theoretical t distribution for 
 # one numerical response and one categorical predictor
 # using t statistic
-if(require(dplyr)) {
 mtcars \%>\%
-    mutate(am = factor(am)) \%>\%
+    dplyr::mutate(am = factor(am)) \%>\%
     specify(mpg ~ am) \%>\% # alt: response = mpg, explanatory = am
     hypothesize(null = "independence") \%>\%
-    calculate(stat = "t") \%>\%
+    # generate() is not needed since we are not doing randomization
+    # calculate(stat = "t") ## Not needed since t implied based on variable types
     visualize(method = "theoretical") #default method
-}
 
 # Overlay theoretical distribution on top of randomized t-statistics
-if(require(dplyr)) {
 mtcars \%>\%
-    mutate(am = factor(am)) \%>\%
+    dplyr::mutate(am = factor(am)) \%>\%
     specify(mpg ~ am) \%>\% # alt: response = mpg, explanatory = am
     hypothesize(null = "independence") \%>\%
     generate(reps = 100, type = "permute") \%>\%
-    calculate(stat = "t") \%>\%
+    calculate(stat = "t", order = c("1", "0")) \%>\%
     visualize(method = "both")
-}
 }

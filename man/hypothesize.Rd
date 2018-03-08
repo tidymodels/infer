@@ -4,63 +4,28 @@
 \alias{hypothesize}
 \title{Declare a null hypothesis}
 \usage{
-hypothesize(x, null = c("independence", "point"), ...)
+hypothesize(x, null, ...)
 }
 \arguments{
 \item{x}{a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}}
 
-\item{null}{the null hypothesis. Options include "independence" and "point".}
+\item{null}{the null hypothesis. Options include "independence" and "point"}
 
 \item{...}{arguments passed to downstream functions}
+}
+\value{
+A tibble containing the response (and explanatory, if specified) variable data with
+parameter information stored as well
 }
 \description{
 Declare a null hypothesis
 }
 \examples{
-# To see the output of hypothesize() function provided
-# in the infer class
-if(require(dplyr)){
+# Permutation test similar to ANOVA
   mtcars \%>\%
-    mutate(am = factor(am)) \%>\%
-    specify(response = am) \%>\%
-    hypothesize(null = "point", p = c("0" = 0.25, "1" = 0.75)) 
-}
-
-# hypothesize() assigns attributes to an infer class
-if(require(dplyr)){
-  mtcars \%>\%
-    mutate(am = factor(am)) \%>\%
-    specify(response = am) \%>\%
-    hypothesize(null = "point", p = c("0" = 0.25, "1" = 0.75)) \%>\%
-    class()
-}
-
-# To view where hypothesize() falls in the infer package pipeline
-if(require(dplyr)) {
-# One binary variable
-  mtcars \%>\%
-    mutate(am = factor(am)) \%>\%
-    specify(response = am) \%>\%
-    hypothesize(null = "point", p = c("0" = 0.25, "1" = 0.75)) \%>\%
-    generate(reps = 100, type = "simulate") \%>\%
-    calculate(stat = "prop")
-}
-
-if(require(dplyr)) {
-# Permutation test
-  mtcars \%>\%
-    mutate(cyl = factor(cyl)) \%>\%
+    dplyr::mutate(cyl = factor(cyl)) \%>\%
     specify(mpg ~ cyl) \%>\%
     hypothesize(null = "independence") \%>\%
     generate(reps = 100, type = "permute") \%>\%
     calculate(stat = "F")
-}
-
-# Compare with traditional "tidy" hypothesis test results
-if (require(dplyr) && require(broom)) {
-  cars <- mtcars \%>\%
-    summarize(N = n(), num_manual = sum(am))
-  with(cars, prop.test(num_manual, N, correct = FALSE)) \%>\%
-    tidy()
-}
 }

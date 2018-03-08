@@ -5,42 +5,33 @@
 \title{Specify the response and explanatory variables with
 \code{specify} also converting character variables chosen to be \code{factor}s}
 \usage{
-specify(x, formula, response = NULL, explanatory = NULL)
+specify(x, formula, response = NULL, explanatory = NULL, success = NULL)
 }
 \arguments{
 \item{x}{a data frame that can be coerced into a \code{\link[tibble]{tibble}}}
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
 
-\item{response}{the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument.}
+\item{response}{the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument}
 
 \item{explanatory}{the variable name in \code{x} that will serve as the explanatory variable}
+
+\item{success}{the level of \code{response} that will be considered a success, as a string. 
+Needed for inference on one proportion, a difference in proportions, and corresponding z stats}
+}
+\value{
+A tibble containing the response (and explanatory, if specified) variable data
 }
 \description{
 Specify the response and explanatory variables with
 \code{specify} also converting character variables chosen to be \code{factor}s
 }
 \examples{
-# Response attribute set corresponding to
-# response argument and specified variable selected
-if(require(dplyr)){
+# Permutation test similar to ANOVA
   mtcars \%>\%
-    mutate(am = factor(am)) \%>\%
-    specify(response = am)
-}
-# Response and explanatory attributes set corresponding to
-# response and explanatory arguments
-if(require(dplyr)){
-  mtcars \%>\%
-    mutate(am = factor(am), vs = factor(vs)) \%>\%
-    specify(response = am, explanatory = vs)
-}
-
-# Response and explanatory attributes set corresponding to
-# formula argument expecting response ~ explanatory
-if(require(dplyr)){
-  mtcars \%>\%
-    mutate(am = factor(am), vs = factor(vs)) \%>\%
-    specify(formula = am ~ vs)
-}
+    dplyr::mutate(cyl = factor(cyl)) \%>\%
+    specify(mpg ~ cyl) \%>\%
+    hypothesize(null = "independence") \%>\%
+    generate(reps = 100, type = "permute") \%>\%
+    calculate(stat = "F")
 }
