@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate resamples of a type provided via <code>type</code> parameter — generate • infer</title>
+<title>Generate resamples, permutations, or simulations based on
+`specify` and (if needed) `hypothesize` inputs — generate • infer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -52,7 +53,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -67,6 +68,12 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/flights_examples.html">Randomization Examples using `nycflights13` `flights` data</a>
+    </li>
+    <li>
+      <a href="../articles/mtcars_examples.html">Examples using `mtcars` data</a>
+    </li>
     <li>
       <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
     </li>
@@ -85,7 +92,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="http://github.com/andrewpbray/infer">
+  <a href="https://github.com/andrewpbray/infer">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -101,11 +108,13 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate resamples of a type provided via <code>type</code> parameter</h1>
+    <h1>Generate resamples, permutations, or simulations based on
+`specify` and (if needed) `hypothesize` inputs</h1>
     </div>
 
     
-    <p>Generate resamples of a type provided via <code>type</code> parameter</p>
+    <p>Generate resamples, permutations, or simulations based on
+`specify` and (if needed) `hypothesize` inputs</p>
     
 
     <pre class="usage"><span class='fu'>generate</span>(<span class='no'>x</span>, <span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>, <span class='no'>...</span>)</pre>
@@ -131,80 +140,41 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A tibble containing <code>rep</code> generated datasets, indicated by the
+<code>replicate</code> column.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Generate 100 bootstrap means</span>
-<span class='co'># resulting in 100 * 32 = 3200 rows</span>
-<span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-   <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>mpg</span>) <span class='kw'>%&gt;%</span>
-   <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>)</div><div class='output co'>#&gt; # A tibble: 3,200 x 2
+    <pre class="examples"><div class='input'><span class='co'># Permutation test for two binary variables</span>
+  <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
+    <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>am</span> ~ <span class='no'>vs</span>, <span class='kw'>success</span> <span class='kw'>=</span> <span class='st'>"1"</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>)</div><div class='output co'>#&gt; # A tibble: 3,200 x 3
 #&gt; # Groups:   replicate [100]
-#&gt;    replicate   mpg
-#&gt;        &lt;int&gt; &lt;dbl&gt;
-#&gt;  1         1  30.4
-#&gt;  2         1  15.2
-#&gt;  3         1  21.0
-#&gt;  4         1  32.4
-#&gt;  5         1  32.4
-#&gt;  6         1  19.2
-#&gt;  7         1  15.8
-#&gt;  8         1  21.4
-#&gt;  9         1  10.4
-#&gt; 10         1  30.4
-#&gt; # ... with 3,190 more rows</div><div class='input'>
-<span class='co'># Generate 200 permutations of two proportions example</span>
-<span class='co'># resulting in 200 * 32 = 6400 rows</span>
-<span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
-    <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-        <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
-        <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>am</span> ~ <span class='no'>vs</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = am, explanatory = vs</span>
-        <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-        <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>)
- }</div><div class='output co'>#&gt; # A tibble: 6,400 x 3
-#&gt; # Groups:   replicate [200]
-#&gt;        am     vs replicate
-#&gt;    &lt;fctr&gt; &lt;fctr&gt;     &lt;int&gt;
-#&gt;  1      0      0         1
-#&gt;  2      0      0         1
-#&gt;  3      0      1         1
-#&gt;  4      0      1         1
-#&gt;  5      0      0         1
-#&gt;  6      0      1         1
-#&gt;  7      0      0         1
-#&gt;  8      0      1         1
-#&gt;  9      1      1         1
-#&gt; 10      1      1         1
-#&gt; # ... with 6,390 more rows</div><div class='input'>
-<span class='co'># Generate 150 simulations assuming true probability</span>
-<span class='co'># of success (a "1") is 0.25,</span>
-<span class='co'># resulting in 150 * 32 = 4800 rows</span>
-<span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
-    <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-        <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
-        <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: am ~ NULL (or am ~ 1)</span>
-        <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span> <span class='kw'>=</span> <span class='fl'>.25</span>)) <span class='kw'>%&gt;%</span>
-        <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>150</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"simulate"</span>)
-}</div><div class='output co'>#&gt; <span class='warning'>Warning: Missing level, assuming proportion is 1 - 0.25.</span></div><div class='output co'>#&gt; # A tibble: 4,800 x 2
-#&gt; # Groups:   replicate [150]
-#&gt;        am replicate
-#&gt;    &lt;fctr&gt;    &lt;fctr&gt;
-#&gt;  1      0         1
-#&gt;  2      1         1
-#&gt;  3      1         1
-#&gt;  4      1         1
-#&gt;  5      0         1
-#&gt;  6      1         1
-#&gt;  7      1         1
-#&gt;  8      0         1
-#&gt;  9      0         1
-#&gt; 10      0         1
-#&gt; # ... with 4,790 more rows</div></pre>
+#&gt;    am    vs    replicate
+#&gt;    &lt;fct&gt; &lt;fct&gt;     &lt;int&gt;
+#&gt;  1 0     0             1
+#&gt;  2 0     0             1
+#&gt;  3 1     1             1
+#&gt;  4 0     1             1
+#&gt;  5 0     0             1
+#&gt;  6 1     1             1
+#&gt;  7 0     0             1
+#&gt;  8 0     1             1
+#&gt;  9 0     1             1
+#&gt; 10 1     1             1
+#&gt; # ... with 3,190 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#value">Value</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -213,11 +183,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Andrew Bray, Ben Baumer, Chester Ismay.</p>
+  <p>Developed by Andrew Bray, Chester Ismay, Ben Baumer, Mine Cetinkaya-Rundel.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

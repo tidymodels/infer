@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Visualize the resampling distribution and/or theory-based distributions with shading — visualize • infer</title>
+<title>(Currently) Visualize the randomization-based distribution 
+(To be updated to include theory-based distributions) — visualize • infer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -52,7 +53,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -67,6 +68,12 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/flights_examples.html">Randomization Examples using `nycflights13` `flights` data</a>
+    </li>
+    <li>
+      <a href="../articles/mtcars_examples.html">Examples using `mtcars` data</a>
+    </li>
     <li>
       <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
     </li>
@@ -85,7 +92,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="http://github.com/andrewpbray/infer">
+  <a href="https://github.com/andrewpbray/infer">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -101,11 +108,13 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Visualize the resampling distribution and/or theory-based distributions with shading</h1>
+    <h1>(Currently) Visualize the randomization-based distribution 
+(To be updated to include theory-based distributions)</h1>
     </div>
 
     
-    <p>Visualize the resampling distribution and/or theory-based distributions with shading</p>
+    <p>(Currently) Visualize the randomization-based distribution 
+(To be updated to include theory-based distributions)</p>
     
 
     <pre class="usage"><span class='fu'>visualize</span>(<span class='no'>data</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>30</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"randomization"</span>, <span class='kw'>dens_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
@@ -150,47 +159,50 @@ Can also specify "left", "right", or "both".</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A ggplot object showing the randomization-based distribution as a histogram.
+Preferable to use the ggplot2 package directly here as a histogram does not always
+display the distribution well.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Permutations to create randomization null distribution for </span>
 <span class='co'># one numerical response and one categorical predictor</span>
 <span class='co'># using t statistic</span>
-<span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
+    <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
     <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"randomization"</span>) <span class='co'>#default method</span>
-}</div><div class='img'><img src='visualize-22.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+    <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"randomization"</span>) <span class='co'>#default method</span></div><div class='img'><img src='visualize-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># Theoretical t distribution for </span>
 <span class='co'># one numerical response and one categorical predictor</span>
 <span class='co'># using t statistic</span>
-<span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
+    <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
     <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"theoretical"</span>) <span class='co'>#default method</span>
-}</div><div class='img'><img src='visualize-23.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+    <span class='co'># generate() is not needed since we are not doing randomization</span>
+    <span class='co'># calculate(stat = "t") ## Not needed since t implied based on variable types</span>
+    <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"theoretical"</span>) <span class='co'>#default method</span></div><div class='img'><img src='visualize-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># Overlay theoretical distribution on top of randomized t-statistics</span>
-<span class='kw'>if</span>(<span class='fu'>require</span>(<span class='no'>dplyr</span>)) {
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
+    <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
     <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"both"</span>)
-}</div><div class='img'><img src='visualize-24.png' alt='' width='700' height='432.632880098887' /></div></pre>
+    <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"both"</span>)</div><div class='img'><img src='visualize-3.png' alt='' width='700' height='432.632880098887' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#value">Value</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -199,11 +211,11 @@ Can also specify "left", "right", or "both".</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Andrew Bray, Ben Baumer, Chester Ismay.</p>
+  <p>Developed by Andrew Bray, Chester Ismay, Ben Baumer, Mine Cetinkaya-Rundel.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

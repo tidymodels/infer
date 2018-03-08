@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -67,6 +67,12 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/flights_examples.html">Randomization Examples using `nycflights13` `flights` data</a>
+    </li>
+    <li>
+      <a href="../articles/mtcars_examples.html">Examples using `mtcars` data</a>
+    </li>
     <li>
       <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
     </li>
@@ -85,7 +91,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="http://github.com/andrewpbray/infer">
+  <a href="https://github.com/andrewpbray/infer">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -106,20 +112,16 @@
     </div>
 
     <div class="contents">
-    <div id="infer-0-1-0" class="section level1">
+    <div id="infer-0-1-1-999" class="section level1">
 <h1 class="hasAnchor">
-<a href="#infer-0-1-0" class="anchor"></a>infer 0.1.0</h1>
+<a href="#infer-0-1-1-999" class="anchor"></a>infer 0.1.1.999</h1>
 <ul>
-<li>Updated documentation with examples</li>
-<li>Created <code>pkgdown</code> site materials</li>
-<li>Deployed to <a href="https://infer.netlify.com" class="uri">https://infer.netlify.com</a>
-</li>
 <li>Added <code>obs_stat</code> and <code>shade_direction</code> arguments to <code><a href="../reference/visualize.html">visualize()</a></code>
 </li>
 <li>Used internal <code>ggplot2</code> package functions suggested by @jimhester to shade density histogram appropriately</li>
 <li>
 <code>bin.R</code> copied from <code>ggplot2</code> package for use here</li>
-<li>Shading not currently available for <code>method = "theoretical"</code><br>
+<li>Shading not currently available for <code>method = "theoretical"</code>
 </li>
 <li>Adding theoretical distributions to <code><a href="../reference/visualize.html">visualize()</a></code> alone and as overlay with current implementations being
 <ul>
@@ -128,6 +130,26 @@
 <li>One proportion z</li>
 <li>Two proportion z</li>
 </ul>
+</li>
+</ul>
+</div>
+    <div id="infer-0-1-1" class="section level1">
+<h1 class="hasAnchor">
+<a href="#infer-0-1-1" class="anchor"></a>infer 0.1.1</h1>
+<ul>
+<li>Added additional tests</li>
+<li>Fixed bugs post-CRAN release</li>
+<li>Automated travis build of pkgdown to gh-pages branch</li>
+</ul>
+</div>
+    <div id="infer-0-1-0" class="section level1">
+<h1 class="hasAnchor">
+<a href="#infer-0-1-0" class="anchor"></a>infer 0.1.0</h1>
+<ul>
+<li>Altered the way that successes are indicated in an infer pipeline. They now live in <code><a href="../reference/specify.html">specify()</a></code>.</li>
+<li>Updated documentation with examples</li>
+<li>Created <code>pkgdown</code> site materials</li>
+<li>Deployed to <a href="https://infer.netlify.com" class="uri">https://infer.netlify.com</a>
 </li>
 </ul>
 </div>
@@ -145,6 +167,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#infer-0-1-1-999">0.1.1.999</a></li>
+        <li><a href="#infer-0-1-1">0.1.1</a></li>
         <li><a href="#infer-0-1-0">0.1.0</a></li>
         <li><a href="#infer-0-0-1">0.0.1</a></li>
       </ul>
@@ -155,11 +179,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Andrew Bray, Ben Baumer, Chester Ismay.</p>
+  <p>Developed by Andrew Bray, Chester Ismay, Ben Baumer, Mine Cetinkaya-Rundel.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>

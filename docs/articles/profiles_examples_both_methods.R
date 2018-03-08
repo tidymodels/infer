@@ -26,6 +26,7 @@ prof_small %>%
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
+  # generate() is not needed since we are not doing randomization
   # calculate(stat = "t") ## Not needed since t is implied based on variable types
   visualize(method = "theoretical")
 
@@ -48,6 +49,8 @@ prof_small %>%
 ## ------------------------------------------------------------------------
 prof_small %>%
   specify(age ~ status) %>% # alt: response = age, explanatory = status
+  # generate() is not needed since we are not doing randomization
+  # calculate(stat = "F") ## Not needed since t is implied based on variable types
   hypothesize(null = "independence") %>%
   visualize(method = "theoretical")
 
@@ -61,7 +64,7 @@ prof_small %>%
 
 ## ------------------------------------------------------------------------
 prof_small %>%
-  specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
+  specify(response = sex, success = "m") %>% 
   hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
   generate(reps = 1000, type = "simulate") %>% 
   calculate(stat = "z") %>% 
@@ -69,13 +72,15 @@ prof_small %>%
 
 ## ------------------------------------------------------------------------
 prof_small %>%
-  specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
+  specify(response = sex, success = "m") %>%
   hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
+  # generate() is not needed since we are not doing randomization
+  # calculate(stat = "z") ## Not needed since t is implied based on variable types
   visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------
 prof_small %>%
-  specify(response = sex) %>% # alt: sex ~ NULL (or sex ~ 1)
+  specify(response = sex, success = "m") %>%
   hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
   generate(reps = 1000, type = "simulate") %>% 
   calculate(stat = "z") %>% 
@@ -83,24 +88,26 @@ prof_small %>%
 
 ## ------------------------------------------------------------------------
 prof_small %>%
-  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
+  specify(sex ~ city, success = "m") %>%
   hypothesize(null = "independence") %>%
-  generate(reps = 5000, type = "permute") %>%
-  calculate(stat = "z") %>% 
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "z", order = c("san fran", "not san fran")) %>% 
   visualize()
 
 ## ------------------------------------------------------------------------
 prof_small %>%
-  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
+  specify(sex ~ city, success = "m") %>%
   hypothesize(null = "independence") %>% 
+  # generate() is not needed since we are not doing randomization
+  # calculate(stat = "z") ## Not needed since t is implied based on variable types
   visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------
 prof_small %>%
-  specify(sex ~ city) %>% # alt: response = sex, explanatory = vs
+  specify(sex ~ city, success = "m") %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "z") %>% 
+  calculate(stat = "z", order = c("san fran", "not san fran")) %>% 
   visualize(method = "both")
 
 ## ----eval=FALSE, include=FALSE-------------------------------------------

@@ -52,7 +52,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -67,6 +67,12 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/flights_examples.html">Randomization Examples using `nycflights13` `flights` data</a>
+    </li>
+    <li>
+      <a href="../articles/mtcars_examples.html">Examples using `mtcars` data</a>
+    </li>
     <li>
       <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
     </li>
@@ -85,7 +91,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="http://github.com/andrewpbray/infer">
+  <a href="https://github.com/andrewpbray/infer">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -103,7 +109,7 @@
     <div class="page-header">
       <h1>
         Reference
-        <small>version&nbsp;0.1.0</small>
+        <small>version&nbsp;0.1.1</small>
       </h1>
     </div>
 
@@ -133,7 +139,8 @@
           <td>
             <p><code><a href="generate.html">generate</a></code> </p>
           </td>
-          <td><p>Generate resamples of a type provided via <code>type</code> parameter</p></td>
+          <td><p>Generate resamples, permutations, or simulations based on
+`specify` and (if needed) `hypothesize` inputs</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -143,13 +150,13 @@
         </tr><tr>
           <!--  -->
           <td>
-            <p></p>
+            <p><code><a href="infer.html">infer</a></code> </p>
           </td>
           <td><p>infer: a grammar for statistical inference</p></td>
         </tr><tr>
           <!--  -->
           <td>
-            <p></p>
+            <p><code><a href="pipe.html">%>%</a></code> </p>
           </td>
           <td><p>Pipe</p></td>
         </tr><tr>
@@ -158,6 +165,12 @@
             <p><code><a href="print.infer.html">print</a></code> </p>
           </td>
           <td><p>Print methods</p></td>
+        </tr><tr>
+          <!--  -->
+          <td>
+            <p><code><a href="rep_sample_n.html">rep_sample_n</a></code> </p>
+          </td>
+          <td><p>Perform repeated sampling</p></td>
         </tr><tr>
           <!--  -->
           <td>
@@ -188,7 +201,8 @@
           <td>
             <p><code><a href="visualize.html">visualize</a></code> </p>
           </td>
-          <td><p>Visualize the resampling distribution and/or theory-based distributions with shading</p></td>
+          <td><p>(Currently) Visualize the randomization-based distribution 
+(To be updated to include theory-based distributions)</p></td>
         </tr>
       </tbody>
       </table>
@@ -205,11 +219,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Andrew Bray, Ben Baumer, Chester Ismay.</p>
+  <p>Developed by Andrew Bray, Chester Ismay, Ben Baumer, Mine Cetinkaya-Rundel.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
