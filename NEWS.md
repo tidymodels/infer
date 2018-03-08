@@ -9,7 +9,7 @@
     - ANOVA F
     - One proportion z
     - Two proportion z
-
+    
 # infer 0.1.1
 - Added additional tests
 - Fixed bugs post-CRAN release

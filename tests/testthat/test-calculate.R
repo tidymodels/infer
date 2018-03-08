@@ -93,7 +93,7 @@ test_that("response variable is a factor (two var problems)", {
   gen_iris4 <- iris %>%
     dplyr::mutate(Sepal.Length.Group = 
                     dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
-    specify(Sepal.Length.Group ~ Species) %>%
+    specify(Sepal.Length.Group ~ Species, success = ">5") %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
   expect_error(calculate(gen_iris4, stat = "diff in props"))
@@ -133,7 +133,7 @@ test_that("properties of tibble passed-in are correct", {
   expect_false("infer" %in% class(gen_iris6))
 })
 
-test_that("success is working for diff in means", {
+test_that("order is working for diff in means", {
   gen_iris7 <- iris %>%
     dplyr::mutate(Sepal.Length.Group = 
                     dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
@@ -150,7 +150,7 @@ test_that("chi-square matches chisq.test value", {
   gen_iris8 <- iris %>%
     dplyr::mutate(Petal.Length.Group = 
                     dplyr::if_else(Sepal.Length > 5, ">5", "<=5")) %>%
-    specify(Petal.Length.Group ~ Species) %>%
+    specify(Petal.Length.Group ~ Species, success = ">5") %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
   infer_way <- calculate(gen_iris8, stat = "Chisq")
@@ -205,6 +205,7 @@ test_that("`order` is working", {
                          order = c(">5", "<=5")))
   expect_error(calculate(gen_iris11, stat = "diff in means", 
                          order = c(">5", "<=4", ">4")))
+  # order not given
   expect_error(calculate(gen_iris11, stat = "diff in means"))
 })
 
@@ -217,6 +218,7 @@ test_that('success is working for stat = "prop"', {
     generate(reps = 10, type = "simulate")
   expect_silent(gen_iris12 %>%
                   calculate(stat = "prop"))
+  
 })
 
 test_that("NULL response gives error", {

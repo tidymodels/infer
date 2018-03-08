@@ -23,7 +23,8 @@ test_that("response and explanatory arguments", {
   expect_error(specify(mtcars_f, blah2 ~ cyl))
   expect_error(specify(mtcars))
   expect_error(specify(mtcars, formula = mpg ~ mpg))
-  expect_silent(specify(mtcars, formula = mpg ~ "cyl"))
+  expect_error(specify(mtcars, formula = mpg ~ "cyl"))
+  expect_silent(specify(mtcars, formula = mpg ~ cyl))
 
 })
 
@@ -33,6 +34,8 @@ test_that("success argument", {
   expect_error(specify(mtcars, response = vs, success = "bogus"))
   expect_error(specify(mtcars, response = mpg, success = "1"))
   expect_error(specify(mtcars, response = cyl, success = "4"))
+  # success not given
+  expect_error(specify(mtcars, response = am))
 
 })
 
