@@ -87,6 +87,7 @@ calculate <- function(x, stat, order = NULL, ...) {
     if (is.null(order)){
       stop(paste("Statistic is based on a difference; specify the `order` in",
                  "which to subtract the levels of the explanatory variable.",
+                 '`order = c("first", "second")` means `("first" - "second")`',
                  "Check `?calculate` for details."))
     }
     if (!is.null(order) & xor(is.na(order[1]), is.na(order[2]))){
