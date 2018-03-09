@@ -20,7 +20,7 @@ Imports:
     dplyr (>= 0.7.0),
     methods,
     tibble,
-    rlang,
+    rlang (>= 0.2.0),
     ggplot2,
     magrittr
 Depends:
