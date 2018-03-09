@@ -2,7 +2,7 @@
 output: github_document
 ---
 
-#Infer
+# Infer
 
 ------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ output: github_document
 <!--https://img.shields.io/codecov/c/github/andrewpbray/infer/master.svg-->
 
 
-[![CRAN_Status_Badge](figs/infer.svg)](https://cran.r-project.org/package=infer) [![Travis-CI Build Status](https://travis-ci.org/andrewpbray/infer.svg?branch=master)](https://travis-ci.org/andrewpbray/infer) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/andrewpbray/infer?branch=master&svg=true)](https://ci.appveyor.com/project/andrewpbray/infer) [![Coverage Status](figs/master.svg)](https://codecov.io/github/andrewpbray/infer/?branch=master)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer) [![Travis-CI Build Status](https://travis-ci.org/andrewpbray/infer.svg?branch=master)](https://travis-ci.org/andrewpbray/infer) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/andrewpbray/infer?branch=master&svg=true)](https://ci.appveyor.com/project/andrewpbray/infer) [![Coverage Status](https://img.shields.io/codecov/c/github/andrewpbray/infer/master.svg)](https://codecov.io/github/andrewpbray/infer/?branch=master)
 
 
 The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the `tidyverse` design framework.
@@ -47,7 +47,7 @@ remotes::install_github("andrewpbray/infer", ref = "develop")
 ```
 
 To see the things we are working on with the package as vignettes/Articles, check out 
-the developmental `pkgdown` site at <http://bit.ly/infer-dev>.
+the developmental `pkgdown` site at <https://infer-dev.netlify.com>.
 
 ### Contributing
 
@@ -71,7 +71,8 @@ mtcars <- as.data.frame(mtcars) %>%
           carb = factor(carb))
 ```
 
-Hypothesis test for a difference in proportions:
+Hypothesis test for a difference in proportions (using the formula interface 
+`y ~ x` in `specify()`):
 
 ```{r}
 mtcars %>%
@@ -81,14 +82,20 @@ mtcars %>%
   calculate(stat = "diff in props", order = c("1", "0"))
 ```
 
-Confidence interval for a difference in means:
+Confidence interval for a difference in means (using the non-formula interface
+giving both the `response` and `explanatory` variables in `specify()`):
 
 ```{r}
 mtcars %>%
-  specify(mpg ~ am) %>%
+  specify(response = mpg, explanatory = am) %>%
   generate(reps = 100, type = "bootstrap") %>%
   calculate(stat = "diff in means", order = c("1", "0"))
 ```
+
+Note that the formula and non-formula interfaces work for all implemented inference
+procedures in `infer`. Use whatever is more natural for you. If you will be doing
+modeling using functions like `lm()` and `glm()`, we recommend you begin to use the
+formula `y ~ x` notation as soon as possible though.
 
 Other examples are available in the package vignettes.
 
