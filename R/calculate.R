@@ -117,10 +117,12 @@ calculate <- function(x, stat, order = NULL, ...) {
   }
 
   # Use S3 method to match correct calculation
-  calc_impl(
+  result <- calc_impl(
     structure(stat, class=gsub(" ", "_", stat)), x, order, ...
   )
 
+  class(result) <- append("infer", class(result))
+  return(result)
 }
 
 calc_impl <- function(type, x, order, ...) UseMethod("calc_impl", type)
@@ -128,7 +130,7 @@ calc_impl <- function(type, x, order, ...) UseMethod("calc_impl", type)
 
 calc_impl.mean <- function(stat, x, order, ...) {
   col <- setdiff(names(x), "replicate")
-  
+
   x %>%
     dplyr::group_by(replicate) %>%
     dplyr::summarize(stat = mean(UQ(sym(col)), ...))
@@ -136,7 +138,7 @@ calc_impl.mean <- function(stat, x, order, ...) {
 
 calc_impl.median <- function(stat, x, order, ...) {
   col <- setdiff(names(x), "replicate")
-  
+
   x %>%
     dplyr::group_by(replicate) %>%
     dplyr::summarize(stat = stats::median(UQ(sym(col)), ...))
@@ -144,7 +146,7 @@ calc_impl.median <- function(stat, x, order, ...) {
 
 calc_impl.sd <- function(stat, x, order, ...) {
   col <- setdiff(names(x), "replicate")
-  
+
   x %>%
     dplyr::group_by(replicate) %>%
     dplyr::summarize(stat = stats::sd(UQ(sym(col)), ...))
@@ -152,7 +154,7 @@ calc_impl.sd <- function(stat, x, order, ...) {
 
 calc_impl.prop <- function(stat, x, order, ...) {
   col <- attr(x, "response")
-  
+
   if(!is.factor(x[[as.character(col)]])){
     stop(paste0("Calculating a ",
                 stat,
@@ -160,7 +162,7 @@ calc_impl.prop <- function(stat, x, order, ...) {
                 col,
                 "` variable is not a factor."))
   }
-  
+
   success <- attr(x, "success")
   x %>%
     dplyr::group_by(replicate) %>%
@@ -207,7 +209,7 @@ calc_impl.diff_in_medians <- function(stat, x, order, ...) {
 calc_impl.Chisq <- function(stat, x, order, ...) {
   ## The following could stand to be cleaned up
   n   <- attr(x, "biggest_group_size")
-  
+
   if (is.null(attr(x, "explanatory"))) {
     expected <- n * attr(x, "params")
     x %>%
@@ -226,7 +228,7 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
     #   dplyr::summarize(stat = sum((table(UQ(attr(x, "response")),
     #                                      UQ(attr(x, "explanatory")))
     #                                - expected)^2 / expected, ...))
-    
+
     x %>%
       dplyr::group_by(replicate) %>%
       dplyr::do(broom::tidy(stats::chisq.test(
@@ -238,7 +240,7 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
 }
 
 calc_impl.diff_in_props <- function(stat, x, order, ...) {
-  
+
   # Detected in another test
   #    if (length(levels(x[[as.character(attr(x, "explanatory"))]])) != 2){
   #      stop(paste0("The explanatory variable of `",
@@ -246,7 +248,7 @@ calc_impl.diff_in_props <- function(stat, x, order, ...) {
   #                  "` does not have exactly two levels. \n",
   #                  "Convert it to have only two levels and try again."))
   #    }
-  
+
   col <- attr(x, "response")
   success <- attr(x, "success")
   x %>%
