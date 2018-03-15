@@ -302,7 +302,7 @@ null &lt;-<span class="st"> </span>fli_small %&gt;%
 ## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1    1.61</code></pre>
+## 1    1.64</code></pre>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-diff-in-medians" class="section level3">
 <h3 class="hasAnchor">
@@ -330,7 +330,7 @@ null &lt;-<span class="st"> </span>fli_small %&gt;%
 ## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1  0.0420</code></pre>
+## 1  0.0460</code></pre>
 </div>
 <div id="one-numerical-one-categorical-2-levels---anova" class="section level3">
 <h3 class="hasAnchor">
@@ -356,7 +356,7 @@ null &lt;-<span class="st"> </span>fli_small %&gt;%
 ## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.301</code></pre>
+## 1   0.299</code></pre>
 </div>
 <div id="two-numerical-vars---slr" class="section level3">
 <h3 class="hasAnchor">
@@ -403,7 +403,7 @@ boot &lt;-<span class="st"> </span>fli_small %&gt;%
 <span class="kw">c</span>(<span class="dt">lower =</span> x_bar -<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot),
   <span class="dt">upper =</span> x_bar +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot))</code></pre></div>
 <pre><code>##      lower      upper 
-## -0.6169776  6.7613075</code></pre>
+## -0.6356892  6.7800191</code></pre>
 </div>
 <div id="one-categorical-one-proportion-1" class="section level3">
 <h3 class="hasAnchor">
@@ -419,7 +419,7 @@ boot &lt;-<span class="st"> </span>fli_small %&gt;%
 <span class="kw">c</span>(<span class="dt">lower =</span> p_hat -<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot),
  <span class="dt">upper =</span> p_hat +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot))</code></pre></div>
 <pre><code>##     lower     upper 
-## 0.4057081 0.4973847</code></pre>
+## 0.4056057 0.4974871</code></pre>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-diff-in-means-1" class="section level3">
 <h3 class="hasAnchor">
@@ -437,7 +437,7 @@ boot &lt;-<span class="st"> </span>fli_small %&gt;%
 <span class="kw">c</span>(<span class="dt">lower =</span> d_hat -<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot), 
   <span class="dt">upper =</span> d_hat +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot))</code></pre></div>
 <pre><code>##     lower     upper 
-## -9.034099  5.195664</code></pre>
+## -9.034822  5.196387</code></pre>
 </div>
 <div id="two-categorical-variables-diff-in-proportions" class="section level3">
 <h3 class="hasAnchor">
@@ -455,7 +455,7 @@ boot &lt;-<span class="st"> </span>fli_small %&gt;%
 <span class="kw">c</span>(<span class="dt">lower =</span> d_hat -<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot), 
   <span class="dt">upper =</span> d_hat +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot))</code></pre></div>
 <pre><code>##       lower       upper 
-## -0.11165849  0.06829114</code></pre>
+## -0.11176960  0.06840225</code></pre>
 </div>
 <div id="two-numerical-vars---slr-1" class="section level3">
 <h3 class="hasAnchor">
@@ -473,7 +473,7 @@ boot &lt;-<span class="st"> </span>fli_small %&gt;%
 <span class="kw">c</span>(<span class="dt">lower =</span> slope_hat -<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot), 
   <span class="dt">upper =</span> slope_hat +<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span><span class="kw">sd</span>(boot))   </code></pre></div>
 <pre><code>##     lower     upper 
-## 0.9541501 1.0735226</code></pre>
+## 0.9540922 1.0735805</code></pre>
 </div>
 </div>
 </div>
