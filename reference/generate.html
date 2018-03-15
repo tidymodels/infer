@@ -26,8 +26,6 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
 <meta property="og:title" content="Generate resamples, permutations, or simulations based on
 `specify` and `hypothesize` inputs — generate" />
 
@@ -151,7 +149,10 @@
     <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>am</span> ~ <span class='no'>vs</span>, <span class='kw'>success</span> <span class='kw'>=</span> <span class='st'>"1"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>)</div><div class='output co'>#&gt; # A tibble: 3,200 x 3
+    <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>)</div><div class='output co'>#&gt; Response:  am 
+#&gt; Explanatory:  vs 
+#&gt; Null Hypothesis:  independence 
+#&gt; # A tibble: 3,200 x 3
 #&gt; # Groups:   replicate [100]
 #&gt;    am    vs    replicate
 #&gt;    &lt;fct&gt; &lt;fct&gt;     &lt;int&gt;
