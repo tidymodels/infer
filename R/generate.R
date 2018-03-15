@@ -62,14 +62,14 @@ bootstrap <- function(x, reps = 1, ...) {
     # Similarly for median
     if(attr(attr(x, "params"), "names") == "med"){
       col <- as.character(attr(x, "response"))
-      x[[col]] <- x[[col]] - 
+      x[[col]] <- x[[col]] -
         stats::median(x[[col]], na.rm = TRUE) + attr(x, "params")
     }
 
     # Similarly for sd
     if(attr(attr(x, "params"), "names") == "sigma"){
       col <- as.character(attr(x, "response"))
-      x[[col]] <- x[[col]] - 
+      x[[col]] <- x[[col]] -
         stats::sd(x[[col]], na.rm = TRUE) + attr(x, "params")
     }
   }
@@ -79,6 +79,7 @@ bootstrap <- function(x, reps = 1, ...) {
   attr(result, "response") <- attr(x, "response")
   attr(result, "success") <- attr(x, "success")
   attr(result, "explanatory") <- attr(x, "explanatory")
+  class(result) <- append("infer", class(result))
 
   return(result)
 }
@@ -94,6 +95,8 @@ permute <- function(x, reps = 1, ...) {
   attr(df_out, "response") <- attr(x, "response")
   attr(df_out, "success") <- attr(x, "success")
   attr(df_out, "explanatory") <- attr(x, "explanatory")
+  class(df_out) <- append("infer", class(df_out))
+
   return(df_out)
 }
 
@@ -131,6 +134,7 @@ simulate <- function(x, reps = 1, ...) {
   attr(rep_tbl, "response") <- attr(x, "response")
   attr(rep_tbl, "success") <- attr(x, "success")
   attr(rep_tbl, "explanatory") <- attr(x, "explanatory")
+  class(rep_tbl) <- append("infer", class(rep_tbl))
 
   return(dplyr::group_by(rep_tbl, replicate))
 }
