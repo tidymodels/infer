@@ -37,7 +37,7 @@ hypothesize <- function(x, null, ...) {
                "Make sure to `specify()` it first."))
   }
   
-  if(null == "independence" & is.null(attr(x, "explanatory"))){
+  if(null == "independence" && is.null(attr(x, "explanatory"))){
     stop(paste0('Please `specify()` an explanatory and a response variable',
                 'when testing \n',
                 'a null hypothesis of `"independence"`.'))
@@ -47,12 +47,12 @@ hypothesize <- function(x, null, ...) {
   
   dots <- list(...)
   
-  if( (null == "point") & (length(dots) == 0) ){
+  if( (null == "point") && (length(dots) == 0) ){
     stop(paste("Provide a parameter and a value to check such as `mu = 30`",
                "for the point hypothesis."))
   }
   
-  if((null == "independence") & (length(dots) > 0)) {
+  if((null == "independence") && (length(dots) > 0)) {
     warning(paste("Parameter values are not specified when testing that two",
                   "variables are independent."))
   }
@@ -74,7 +74,7 @@ hypothesize <- function(x, null, ...) {
   # Check one numeric test set up correctly
   if(null == "point"){
     if(!is.factor(x[[as.character(attr(x, "response"))]])
-       & !any(grepl("mu|med|sigma", attr(attr(x, "params"), "names"))))
+       && !any(grepl("mu|med|sigma", attr(attr(x, "params"), "names"))))
       stop(paste('Testing one numerical variable requires one of',
                  '`mu`, `med`, or `sd` to be used as a parameter.'))
   }

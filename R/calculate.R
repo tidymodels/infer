@@ -67,7 +67,7 @@ calculate <- function(x, stat, order = NULL, ...) {
 
   if (stat %in% c("F", "slope", "diff in means", "diff in medians")){
     if (!is.null(attr(x, "explanatory"))
-        & !is.numeric(x[[as.character(attr(x, "response"))]])){
+        && !is.numeric(x[[as.character(attr(x, "response"))]])){
       stop(paste0("The response variable of `",
                   attr(x, "response"),
                   "` is not appropriate \n  since '",
@@ -85,19 +85,19 @@ calculate <- function(x, stat, order = NULL, ...) {
       stop(paste("Statistic is a difference, specify the `order`` in",
                  "which to subtract. Check `?calculate` for details."))
     }
-    if (!is.null(order) & xor(is.na(order[1]), is.na(order[2]))){
+    if (!is.null(order) && xor(is.na(order[1]), is.na(order[2]))){
       stop(paste("Only one level specified in `order`.",
                  "Both levels need to be specified."))
     }
-    if (!is.null(order) & length(order) > 2){
+    if (!is.null(order) && length(order) > 2){
       stop("`order` is expecting only two entries.")
     }
-    if (!is.null(order) &
+    if (!is.null(order) &&
         (order[1] %in%
          unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
       stop(paste(order[1], "is not a level of the explanatory variable."))
     }
-    if (!is.null(order) &
+    if (!is.null(order) &&
         (order[2] %in%
          unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
       stop(paste(order[2], "is not a level of the explanatory variable."))
@@ -106,7 +106,7 @@ calculate <- function(x, stat, order = NULL, ...) {
 
 
   if (stat %in% c("diff in props", "Chisq")){
-    if (!is.null(attr(x, "explanatory")) &
+    if (!is.null(attr(x, "explanatory")) &&
         !is.factor(x[[as.character(attr(x, "response"))]])){
       stop(paste0("The response variable of `",
                   attr(x, "response"),
