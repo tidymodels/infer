@@ -11,7 +11,7 @@
 #' @param ... to pass options like \code{na.rm = TRUE} into functions like mean, sd, etc.
 #' @return A tibble containing a \code{stat} column of calculated statistics
 #' @importFrom dplyr group_by summarize
-#' @importFrom rlang !! sym quo enquo eval_tidy UQ
+#' @importFrom rlang !! sym quo enquo eval_tidy
 #' @export
 #' @examples
 #' # Permutation test for two binary variables
@@ -133,7 +133,7 @@ calc_impl.mean <- function(stat, x, order, ...) {
 
   x %>%
     dplyr::group_by(replicate) %>%
-    dplyr::summarize(stat = mean(UQ(sym(col)), ...))
+    dplyr::summarize(stat = mean(!!(sym(col)), ...))
 }
 
 calc_impl.median <- function(stat, x, order, ...) {
@@ -141,7 +141,7 @@ calc_impl.median <- function(stat, x, order, ...) {
 
   x %>%
     dplyr::group_by(replicate) %>%
-    dplyr::summarize(stat = stats::median(UQ(sym(col)), ...))
+    dplyr::summarize(stat = stats::median(!!(sym(col)), ...))
 }
 
 calc_impl.sd <- function(stat, x, order, ...) {
@@ -149,7 +149,7 @@ calc_impl.sd <- function(stat, x, order, ...) {
 
   x %>%
     dplyr::group_by(replicate) %>%
-    dplyr::summarize(stat = stats::sd(UQ(sym(col)), ...))
+    dplyr::summarize(stat = stats::sd(!!(sym(col)), ...))
 }
 
 calc_impl.prop <- function(stat, x, order, ...) {
@@ -175,7 +175,7 @@ calc_impl.prop <- function(stat, x, order, ...) {
 calc_impl.F <- function(stat, x, order, ...) {
   x %>%
     dplyr::summarize(stat = stats::anova(
-      stats::lm(UQ(attr(x, "response")) ~ UQ(attr(x, "explanatory")))
+      stats::lm(!!(attr(x, "response")) ~ !!(attr(x, "explanatory")))
     )$`F value`[1])
 }
 
@@ -184,26 +184,26 @@ calc_impl.F <- function(stat, x, order, ...) {
 calc_impl.slope <- function(stat, x, order, ...) {
   x %>%
     dplyr::summarize(stat = stats::coef(
-    stats::lm(UQ(attr(x, "response")) ~ UQ(attr(x, "explanatory"))))[2])
+    stats::lm(!!(attr(x, "response")) ~ !!(attr(x, "explanatory"))))[2])
 }
 
 calc_impl.diff_in_means <- function(stat, x, order, ...) {
   x %>%
-    dplyr::group_by(replicate, UQ(attr(x, "explanatory"))) %>%
-    dplyr::summarize(xbar = mean(UQ(attr(x, "response"), ...))) %>%
+    dplyr::group_by(replicate, !!(attr(x, "explanatory"))) %>%
+    dplyr::summarize(xbar = mean(`!!`(attr(x, "response"), ...))) %>%
     dplyr::group_by(replicate) %>%
-    dplyr::summarize(stat = xbar[UQ(attr(x, "explanatory")) == order[1]]
-                     - xbar[UQ(attr(x, "explanatory")) == order[2]])
+    dplyr::summarize(stat = xbar[!!(attr(x, "explanatory")) == order[1]]
+                     - xbar[!!(attr(x, "explanatory")) == order[2]])
 }
 
 calc_impl.diff_in_medians <- function(stat, x, order, ...) {
   x %>%
-    dplyr::group_by(replicate, UQ(attr(x, "explanatory"))) %>%
+    dplyr::group_by(replicate, !!(attr(x, "explanatory"))) %>%
     dplyr::summarize(xtilde =
-                       stats::median(UQ(attr(x, "response"), ...))) %>%
+                       stats::median(`!!`(attr(x, "response"), ...))) %>%
     dplyr::group_by(replicate) %>%
-    dplyr::summarize(stat = xtilde[UQ(attr(x, "explanatory")) == order[1]]
-                     - xtilde[UQ(attr(x, "explanatory")) == order[2]])
+    dplyr::summarize(stat = xtilde[!!(attr(x, "explanatory")) == order[1]]
+                     - xtilde[!!(attr(x, "explanatory")) == order[2]])
 }
 
 calc_impl.Chisq <- function(stat, x, order, ...) {
@@ -213,7 +213,7 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
   if (is.null(attr(x, "explanatory"))) {
     expected <- n * attr(x, "params")
     x %>%
-      dplyr::summarize(stat = sum((table(UQ(attr(x, "response")))
+      dplyr::summarize(stat = sum((table(!!(attr(x, "response")))
                                    - expected)^2 / expected, ...))
   } else {
     # This is not matching with chisq.test
@@ -221,12 +221,12 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
     #   dplyr::filter(replicate == 1) %>%
     #   dplyr::ungroup() %>%
     #   dplyr::select(!!attr(x, "response"),
-    #                 UQ(attr(x, "explanatory"))) %>%
+    #                 !!(attr(x, "explanatory"))) %>%
     #   table()
     # expected <- outer(rowSums(obs_tab), colSums(obs_tab)) / n
     # df_out <- x %>%
-    #   dplyr::summarize(stat = sum((table(UQ(attr(x, "response")),
-    #                                      UQ(attr(x, "explanatory")))
+    #   dplyr::summarize(stat = sum((table(!!(attr(x, "response")),
+    #                                      !!(attr(x, "explanatory")))
     #                                - expected)^2 / expected, ...))
 
     x %>%
@@ -252,9 +252,9 @@ calc_impl.diff_in_props <- function(stat, x, order, ...) {
   col <- attr(x, "response")
   success <- attr(x, "success")
   x %>%
-    dplyr::group_by(replicate, UQ(attr(x, "explanatory"))) %>%
+    dplyr::group_by(replicate, !!(attr(x, "explanatory"))) %>%
     dplyr::summarize(prop = mean(rlang::eval_tidy(col) ==
                                    rlang::eval_tidy(success), ...)) %>%
-    dplyr::summarize(stat = prop[UQ(attr(x, "explanatory")) == order[1]]
-                     - prop[UQ(attr(x, "explanatory")) == order[2]])
+    dplyr::summarize(stat = prop[!!(attr(x, "explanatory")) == order[1]]
+                     - prop[!!(attr(x, "explanatory")) == order[2]])
 }
