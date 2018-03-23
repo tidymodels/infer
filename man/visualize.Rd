@@ -5,21 +5,70 @@
 \title{(Currently) Visualize the randomization-based distribution 
 (To be updated to include theory-based distributions)}
 \usage{
-visualize(df, bins = 30, ...)
+visualize(data, bins = 30, method = "randomization", dens_color = "black",
+  obs_stat = NULL, obs_stat_color = "#00BFC4", direction = NULL, ...)
 }
 \arguments{
-\item{df}{the output from \code{\link{calculate}}}
+\item{data}{the output from \code{\link{calculate}}}
 
 \item{bins}{the number of bins in the histogram}
+
+\item{method}{a string giving the method to display. Options are 
+"randomization", "theoretical", or "both"
+with "both" corresponding to "randomization" and "theoretical"}
+
+\item{dens_color}{a character or hex string specifying the color of the
+theoretical density curve}
+
+\item{obs_stat}{a numeric value corresponding to what the observed 
+statistic is}
+
+\item{obs_stat_color}{a character or hex string specifying the color of
+the observed statistic}
+
+\item{direction}{a string specifying in which direction the shading 
+should occur. Options are "less", "greater", or "two_sided".
+Can also specify "left", "right", or "both".}
 
 \item{...}{currently ignored}
 }
 \value{
-A ggplot object showing the randomization-based distribution as a histogram.
-Preferable to use the ggplot2 package directly here as a histogram does not always
-display the distribution well.
+A ggplot object showing the randomization-based distribution as a
+ histogram or bar graph. Also used to show the theoretical curves.
 }
 \description{
 (Currently) Visualize the randomization-based distribution 
 (To be updated to include theory-based distributions)
+}
+\examples{
+# Permutations to create randomization null distribution for 
+# one numerical response and one categorical predictor
+# using t statistic
+mtcars \%>\%
+    dplyr::mutate(am = factor(am)) \%>\%
+    specify(mpg ~ am) \%>\% # alt: response = mpg, explanatory = am
+    hypothesize(null = "independence") \%>\%
+    generate(reps = 100, type = "permute") \%>\%
+    calculate(stat = "t", order = c("1", "0")) \%>\%
+    visualize(method = "randomization") #default method
+
+# Theoretical t distribution for 
+# one numerical response and one categorical predictor
+# using t statistic
+mtcars \%>\%
+    dplyr::mutate(am = factor(am)) \%>\%
+    specify(mpg ~ am) \%>\% # alt: response = mpg, explanatory = am
+    hypothesize(null = "independence") \%>\%
+    # generate() is not needed since we are not doing randomization
+    # calculate(stat = "t") ## Not needed since t implied based on variable types
+    visualize(method = "theoretical") #default method
+
+# Overlay theoretical distribution on top of randomized t-statistics
+mtcars \%>\%
+    dplyr::mutate(am = factor(am)) \%>\%
+    specify(mpg ~ am) \%>\% # alt: response = mpg, explanatory = am
+    hypothesize(null = "independence") \%>\%
+    generate(reps = 100, type = "permute") \%>\%
+    calculate(stat = "t", order = c("1", "0")) \%>\%
+    visualize(method = "both")
 }
