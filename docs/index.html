@@ -103,13 +103,13 @@
 <a href="#installation" class="anchor"></a>Installation</h3>
 <hr>
 <p>To install the current stable version of <code>infer</code> from CRAN:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">"infer"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"infer"</span>)</code></pre></div>
 <p>To install the developmental version of <code>infer</code>, make sure to install <code>remotes</code> first:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"andrewpbray/infer"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)
+remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"andrewpbray/infer"</span>)</code></pre></div>
 <p>To install the cutting edge version of <code>infer</code> (do so at your own risk), make sure to install <code>remotes</code> first:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"andrewpbray/infer"</span>, <span class="dt">ref =</span> <span class="st">"develop"</span>)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)
+remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"andrewpbray/infer"</span>, <span class="dt">ref =</span> <span class="st">"develop"</span>)</code></pre></div>
 <p>To see the things we are working on with the package as vignettes/Articles, check out the developmental <code>pkgdown</code> site at <a href="https://infer-dev.netlify.com" class="uri">https://infer-dev.netlify.com</a>.</p>
 </div>
 <div id="contributing" class="section level3">
@@ -122,23 +122,23 @@
 <a href="#examples" class="anchor"></a>Examples</h3>
 <hr>
 <p>These examples assume that <code>mtcars</code> has been overwritten so that the variables <code>cyl</code>, <code>vs</code>, <code>am</code>, <code>gear</code>, and <code>carb</code> are <code>factor</code>s.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcars) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cyl =</span> <span class="kw">factor</span>(cyl),</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">          <span class="dt">vs =</span> <span class="kw">factor</span>(vs),</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">          <span class="dt">am =</span> <span class="kw">factor</span>(am),</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">          <span class="dt">gear =</span> <span class="kw">factor</span>(gear),</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">          <span class="dt">carb =</span> <span class="kw">factor</span>(carb))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcars) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cyl =</span> <span class="kw">factor</span>(cyl),
+          <span class="dt">vs =</span> <span class="kw">factor</span>(vs),
+          <span class="dt">am =</span> <span class="kw">factor</span>(am),
+          <span class="dt">gear =</span> <span class="kw">factor</span>(gear),
+          <span class="dt">carb =</span> <span class="kw">factor</span>(carb))</code></pre></div>
 <p>Hypothesis test for a difference in proportions (using the formula interface <code>y ~ x</code> in <code><a href="reference/specify.html">specify()</a></code>):</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="reference/specify.html">specify</a></span>(am <span class="op">~</span><span class="st"> </span>vs, <span class="dt">success =</span> <span class="st">"1"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"1"</span>, <span class="st">"0"</span>))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/specify.html">specify</a></span>(am <span class="op">~</span><span class="st"> </span>vs, <span class="dt">success =</span> <span class="st">"1"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"1"</span>, <span class="st">"0"</span>))</code></pre></div>
 <p>Confidence interval for a difference in means (using the non-formula interface giving both the <code>response</code> and <code>explanatory</code> variables in <code><a href="reference/specify.html">specify()</a></code>):</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg, <span class="dt">explanatory =</span> am) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"1"</span>, <span class="st">"0"</span>))</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg, <span class="dt">explanatory =</span> am) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"1"</span>, <span class="st">"0"</span>))</code></pre></div>
 <p>Note that the formula and non-formula interfaces work for all implemented inference procedures in <code>infer</code>. Use whatever is more natural for you. If you will be doing modeling using functions like <code>lm()</code> and <code>glm()</code>, we recommend you begin to use the formula <code>y ~ x</code> notation as soon as possible though.</p>
 <p>Other examples are available in the package vignettes.</p>
 <hr>

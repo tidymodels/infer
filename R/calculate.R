@@ -128,27 +128,23 @@ calculate <- function(x, stat, order = NULL, ...) {
     }
   }
   
-  # add "infer" class
-  class(x) <- append("infer", class(x))
-  
   # Use S3 method to match correct calculation
-  calc_impl(
+  result <- calc_impl(
     structure(stat, class = gsub(" ", "_", stat)), x, order, ...
   )
+
+  class(result) <- append("infer", class(result))
   
-  # result <- x
-  # 
-  # attr(result, "response") <- attr(x, "response")
-  # attr(result, "success") <- attr(x, "success")
-  # attr(result, "explanatory") <- attr(x, "explanatory")
-  # attr(result, "response_type") <- attr(x, "response_type")
-  # attr(result, "explanatory_type") <- attr(x, "explanatory_type")
-  # attr(result, "distr_param") <- attr(x, "distr_param")
-  # attr(result, "distr_param2") <- attr(x, "distr_param2")
-  # attr(result, "theory_type") <- attr(x, "theory_type")
-  # 
-  # result
+  attr(result, "response") <- attr(x, "response")
+  attr(result, "success") <- attr(x, "success")
+  attr(result, "explanatory") <- attr(x, "explanatory")
+  attr(result, "response_type") <- attr(x, "response_type")
+  attr(result, "explanatory_type") <- attr(x, "explanatory_type")
+  attr(result, "distr_param") <- attr(x, "distr_param")
+  attr(result, "distr_param2") <- attr(x, "distr_param2")
+  attr(result, "theory_type") <- attr(x, "theory_type")
   
+  return(result)
 }
 
 calc_impl <- function(type, x, order, ...) UseMethod("calc_impl", type)
@@ -156,7 +152,7 @@ calc_impl <- function(type, x, order, ...) UseMethod("calc_impl", type)
 
 calc_impl.mean <- function(stat, x, order, ...) {
   col <- setdiff(names(x), "replicate")
-  
+
   x %>%
     dplyr::group_by(replicate) %>%
     dplyr::summarize(stat = mean(!!(sym(col)), ...))
@@ -164,7 +160,7 @@ calc_impl.mean <- function(stat, x, order, ...) {
 
 calc_impl.median <- function(stat, x, order, ...) {
   col <- setdiff(names(x), "replicate")
-  
+
   x %>%
     dplyr::group_by(replicate) %>%
     dplyr::summarize(stat = stats::median(!!(sym(col)), ...))
@@ -172,7 +168,7 @@ calc_impl.median <- function(stat, x, order, ...) {
 
 calc_impl.sd <- function(stat, x, order, ...) {
   col <- setdiff(names(x), "replicate")
-  
+
   x %>%
     dplyr::group_by(replicate) %>%
     dplyr::summarize(stat = stats::sd(!!(sym(col)), ...))
@@ -180,7 +176,7 @@ calc_impl.sd <- function(stat, x, order, ...) {
 
 calc_impl.prop <- function(stat, x, order, ...) {
   col <- attr(x, "response")
-  
+
   if(!is.factor(x[[as.character(col)]])){
     stop(paste0("Calculating a ",
                 stat,
@@ -188,7 +184,7 @@ calc_impl.prop <- function(stat, x, order, ...) {
                 col,
                 "` variable is not a factor."))
   }
-  
+
   success <- attr(x, "success")
   x %>%
     dplyr::group_by(replicate) %>%
@@ -234,7 +230,7 @@ calc_impl.diff_in_medians <- function(stat, x, order, ...) {
 
 calc_impl.Chisq <- function(stat, x, order, ...) {
   ## The following could stand to be cleaned up
-  
+
   if (is.null(attr(x, "explanatory"))) {
     n   <- attr(x, "biggest_group_size")
     expected <- n * attr(x, "params")
@@ -257,12 +253,12 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
     
     
     result <- x %>%
-#      dplyr::group_by(replicate) %>%
+      #      dplyr::group_by(replicate) %>%
       dplyr::do(broom::tidy(suppressWarnings(stats::chisq.test(
         table(.[[as.character(attr(x, "response"))]],
               .[[as.character(attr(x, "explanatory"))]]))))) %>%
       dplyr::ungroup() %>%
-#      dplyr::mutate(replicate = as.factor(replicate), stat = statistic) %>% 
+      #      dplyr::mutate(replicate = as.factor(replicate), stat = statistic) %>% 
       dplyr::select(replicate, stat = statistic)
     
     attr(result, "response") <- attr(x, "response")
@@ -280,7 +276,7 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
 }
 
 calc_impl.diff_in_props <- function(stat, x, order, ...) {
-  
+
   # Detected in another test
   #    if (length(levels(x[[as.character(attr(x, "explanatory"))]])) != 2){
   #      stop(paste0("The explanatory variable of `",
@@ -288,7 +284,7 @@ calc_impl.diff_in_props <- function(stat, x, order, ...) {
   #                  "` does not have exactly two levels. \n",
   #                  "Convert it to have only two levels and try again."))
   #    }
-  
+
   col <- attr(x, "response")
   success <- attr(x, "success")
   

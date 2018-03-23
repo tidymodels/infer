@@ -1,4 +1,5 @@
-# infer 0.1.1.999
+# infer 0.1.1.9000
+
 - Switched to `!!` instead of `UQ()` since `UQ()` is deprecated in {rlang} 0.2.0
 - Added `obs_stat` and `shade_direction` arguments to `visualize()`
 <!--

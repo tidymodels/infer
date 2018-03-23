@@ -99,24 +99,26 @@
 <div id="data-preparation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-preparation" class="anchor"></a>Data preparation</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(infer)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(dplyr)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcars) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">cyl =</span> <span class="kw">factor</span>(cyl),</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">         <span class="dt">vs =</span> <span class="kw">factor</span>(vs),</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">         <span class="dt">am =</span> <span class="kw">factor</span>(am),</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">         <span class="dt">gear =</span> <span class="kw">factor</span>(gear),</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">         <span class="dt">carb =</span> <span class="kw">factor</span>(carb))</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co"># For reproducibility         </span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="kw">set.seed</span>(<span class="dv">2018</span>)         </a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(infer)
+<span class="kw">library</span>(dplyr)
+mtcars &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mtcars) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">cyl =</span> <span class="kw">factor</span>(cyl),
+         <span class="dt">vs =</span> <span class="kw">factor</span>(vs),
+         <span class="dt">am =</span> <span class="kw">factor</span>(am),
+         <span class="dt">gear =</span> <span class="kw">factor</span>(gear),
+         <span class="dt">carb =</span> <span class="kw">factor</span>(carb))
+<span class="co"># For reproducibility         </span>
+<span class="kw">set.seed</span>(<span class="dv">2018</span>)         </code></pre></div>
 <hr>
 <p>One numerical variable (mean)</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># formula alt: mpg ~ NULL</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">mu =</span> <span class="dv">25</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># formula alt: mpg ~ NULL</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">mu =</span> <span class="dv">25</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>)</code></pre></div>
+<pre><code>## Response:  mpg 
+##  Response Type:  numeric 
+## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1  26.6
@@ -131,12 +133,14 @@
 ## 10        10  25.1
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable (median)</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># formula alt: mpg ~ NULL</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">med =</span> <span class="dv">26</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"median"</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># formula alt: mpg ~ NULL</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">med =</span> <span class="dv">26</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"median"</span>)</code></pre></div>
+<pre><code>## Response:  mpg 
+##  Response Type:  numeric 
+## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1  28.2
@@ -151,12 +155,14 @@
 ## 10        10  23.2
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable (standard deviation)</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># formula alt: mpg ~ NULL</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">sigma =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"sd"</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># formula alt: mpg ~ NULL</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">sigma =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"sd"</span>)</code></pre></div>
+<pre><code>## Response:  mpg 
+##  Response Type:  numeric 
+## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1  5.88
@@ -171,12 +177,15 @@
 ## 10        10  5.63
 ## # ... with 90 more rows</code></pre>
 <p>One categorical (2 level) variable</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> am, <span class="dt">success =</span> <span class="st">"1"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># formula alt: am ~ NULL</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> <span class="fl">.25</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> am, <span class="dt">success =</span> <span class="st">"1"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># formula alt: am ~ NULL</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> .<span class="dv">25</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>)</code></pre></div>
+<pre><code>## Response:  am 
+##  Response Type:  factor 
+## Null Hypothesis:  point 
+## # A tibble: 100 x 2
 ##    replicate  stat
 ##    &lt;fct&gt;     &lt;dbl&gt;
 ##  1 1         0.281
@@ -191,12 +200,17 @@
 ## 10 10        0.344
 ## # ... with 90 more rows</code></pre>
 <p>Two categorical (2 level) variables</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(am <span class="op">~</span><span class="st"> </span>vs, <span class="dt">success =</span> <span class="st">"1"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = am, explanatory = vs</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(am <span class="op">~</span><span class="st"> </span>vs, <span class="dt">success =</span> <span class="st">"1"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = am, explanatory = vs</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</code></pre></div>
+<pre><code>## Response:  am 
+##  Response Type:  factor 
+## Explanatory:  vs 
+##  Explanatory Type:  factor 
+## Null Hypothesis:  independence 
+## # A tibble: 100 x 2
 ##    replicate    stat
 ##        &lt;int&gt;   &lt;dbl&gt;
 ##  1         1 -0.294 
@@ -211,12 +225,15 @@
 ## 10        10  0.341 
 ## # ... with 90 more rows</code></pre>
 <p>One categorical (&gt;2 level) - GoF</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(cyl <span class="op">~</span><span class="st"> </span><span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = cyl</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"4"</span> =<span class="st"> </span><span class="fl">.5</span>, <span class="st">"6"</span> =<span class="st"> </span><span class="fl">.25</span>, <span class="st">"8"</span> =<span class="st"> </span><span class="fl">.25</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(cyl <span class="op">~</span><span class="st"> </span><span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = cyl</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"4"</span> =<span class="st"> </span>.<span class="dv">5</span>, <span class="st">"6"</span> =<span class="st"> </span>.<span class="dv">25</span>, <span class="st">"8"</span> =<span class="st"> </span>.<span class="dv">25</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)</code></pre></div>
+<pre><code>## Response:  cyl 
+##  Response Type:  factor 
+## Null Hypothesis:  point 
+## # A tibble: 100 x 2
 ##    replicate  stat
 ##    &lt;fct&gt;     &lt;dbl&gt;
 ##  1 1         3.00 
@@ -231,12 +248,16 @@
 ## 10 10        3.19 
 ## # ... with 90 more rows</code></pre>
 <p>Two categorical (&gt;2 level) variables</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(cyl <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = cyl, explanatory = am</span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(cyl <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = cyl, explanatory = am</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)</code></pre></div>
+<pre><code>## Response:  cyl 
+##  Response Type:  factor 
+## Explanatory:  am 
+##  Explanatory Type:  factor 
+## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1 3.68 
@@ -251,12 +272,17 @@
 ## 10        10 1.01 
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable one categorical (2 levels) (diff in means)</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = mpg, explanatory = am</span></a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = mpg, explanatory = am</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</code></pre></div>
+<pre><code>## Response:  mpg 
+##  Response Type:  numeric 
+## Explanatory:  am 
+##  Explanatory Type:  factor 
+## Null Hypothesis:  independence 
+## # A tibble: 100 x 2
 ##    replicate    stat
 ##        &lt;int&gt;   &lt;dbl&gt;
 ##  1         1  0.360 
@@ -271,12 +297,17 @@
 ## 10        10 -1.92  
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable one categorical (2 levels) (diff in medians)</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = mpg, explanatory = am</span></a>
-<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in medians"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = mpg, explanatory = am</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in medians"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</code></pre></div>
+<pre><code>## Response:  mpg 
+##  Response Type:  numeric 
+## Explanatory:  am 
+##  Explanatory Type:  factor 
+## Null Hypothesis:  independence 
+## # A tibble: 100 x 2
 ##    replicate   stat
 ##        &lt;int&gt;  &lt;dbl&gt;
 ##  1         1  0.500
@@ -291,12 +322,17 @@
 ## 10        10  0.500
 ## # ... with 90 more rows</code></pre>
 <p>One numerical one categorical (&gt;2 levels) - ANOVA</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>cyl) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = mpg, explanatory = cyl</span></a>
-<a class="sourceLine" id="cb20-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb20-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb20-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>cyl) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = mpg, explanatory = cyl</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>)</code></pre></div>
+<pre><code>## Response:  mpg 
+##  Response Type:  numeric 
+## Explanatory:  cyl 
+##  Explanatory Type:  factor 
+## Null Hypothesis:  independence 
+## # A tibble: 100 x 2
 ##    replicate   stat
 ##        &lt;int&gt;  &lt;dbl&gt;
 ##  1         1 2.53  
@@ -311,12 +347,17 @@
 ## 10        10 0.0198
 ## # ... with 90 more rows</code></pre>
 <p>Two numerical vars - SLR</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>hp) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = mpg, explanatory = cyl</span></a>
-<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>hp) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = mpg, explanatory = cyl</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>)</code></pre></div>
+<pre><code>## Response:  mpg 
+##  Response Type:  numeric 
+## Explanatory:  hp 
+##  Explanatory Type:  numeric 
+## Null Hypothesis:  independence 
+## # A tibble: 100 x 2
 ##    replicate     stat
 ##        &lt;int&gt;    &lt;dbl&gt;
 ##  1         1  0.0310 
@@ -334,11 +375,13 @@
 <h3 class="hasAnchor">
 <a href="#confidence-intervals" class="anchor"></a>Confidence intervals</h3>
 <p>One numerical (one mean)</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb24-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb24-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>)</code></pre></div>
+<pre><code>## Response:  mpg 
+##  Response Type:  numeric 
+## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1  19.3
@@ -353,11 +396,13 @@
 ## 10        10  19.8
 ## # ... with 90 more rows</code></pre>
 <p>One numerical (one median)</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb26-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"median"</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"median"</span>)</code></pre></div>
+<pre><code>## Response:  mpg 
+##  Response Type:  numeric 
+## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1  19.2
@@ -372,11 +417,13 @@
 ## 10        10  21.2
 ## # ... with 90 more rows</code></pre>
 <p>One numerical (standard deviation)</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"sd"</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"sd"</span>)</code></pre></div>
+<pre><code>## Response:  mpg 
+##  Response Type:  numeric 
+## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1  5.27
@@ -391,11 +438,13 @@
 ## 10        10  6.49
 ## # ... with 90 more rows</code></pre>
 <p>One categorical (one proportion)</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> am, <span class="dt">success =</span> <span class="st">"1"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb30-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> am, <span class="dt">success =</span> <span class="st">"1"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>)</code></pre></div>
+<pre><code>## Response:  am 
+##  Response Type:  factor 
+## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1 0.344
@@ -410,11 +459,15 @@
 ## 10        10 0.469
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable one categorical (2 levels) (diff in means)</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb32-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</code></pre></div>
+<pre><code>## Response:  mpg 
+##  Response Type:  numeric 
+## Explanatory:  am 
+##  Explanatory Type:  factor 
+## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1 -6.90
@@ -429,11 +482,15 @@
 ## 10        10 -9.37
 ## # ... with 90 more rows</code></pre>
 <p>Two categorical variables (diff in proportions)</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(am <span class="op">~</span><span class="st"> </span>vs, <span class="dt">success =</span> <span class="st">"1"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb34-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(am <span class="op">~</span><span class="st"> </span>vs, <span class="dt">success =</span> <span class="st">"1"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</code></pre></div>
+<pre><code>## Response:  am 
+##  Response Type:  factor 
+## Explanatory:  vs 
+##  Explanatory Type:  factor 
+## # A tibble: 100 x 2
 ##    replicate    stat
 ##        &lt;int&gt;   &lt;dbl&gt;
 ##  1         1 -0.263 
@@ -448,11 +505,15 @@
 ## 10        10  0.133 
 ## # ... with 90 more rows</code></pre>
 <p>Two numerical vars - SLR</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">mtcars <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>hp) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb36-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>)</a></code></pre></div>
-<pre><code>## # A tibble: 100 x 2
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>hp) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>)</code></pre></div>
+<pre><code>## Response:  mpg 
+##  Response Type:  numeric 
+## Explanatory:  hp 
+##  Explanatory Type:  numeric 
+## # A tibble: 100 x 2
 ##    replicate    stat
 ##        &lt;int&gt;   &lt;dbl&gt;
 ##  1         1 -0.0951

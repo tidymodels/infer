@@ -62,7 +62,7 @@ bootstrap <- function(x, reps = 1, ...) {
     # Similarly for median
     if(attr(attr(x, "params"), "names") == "med"){
       col <- as.character(attr(x, "response"))
-      x[[col]] <- x[[col]] - 
+      x[[col]] <- x[[col]] -
         stats::median(x[[col]], na.rm = TRUE) + attr(x, "params")
     }
 
@@ -73,7 +73,7 @@ bootstrap <- function(x, reps = 1, ...) {
     # Similarly for sd
     if(attr(attr(x, "params"), "names") == "sigma"){
       col <- as.character(attr(x, "response"))
-      x[[col]] <- x[[col]] - 
+      x[[col]] <- x[[col]] -
         stats::sd(x[[col]], na.rm = TRUE) + attr(x, "params")
     }
   }
@@ -89,11 +89,13 @@ bootstrap <- function(x, reps = 1, ...) {
   attr(result, "distr_param2") <- attr(x, "distr_param2")
   attr(result, "theory_type") <- attr(x, "theory_type")
   
+  class(result) <- append("infer", class(result))
+  
+  return(result)
+  
   # Copy over all attr except for row names
   # attributes(result)[which(names(attributes(result)) == "row.names")] <-
   #   attributes(x)[which(names(attributes(x)) == "row.names")]
-  
-  return(result)
 }
 
 #' @importFrom dplyr bind_rows group_by
@@ -113,6 +115,8 @@ permute <- function(x, reps = 1, ...) {
   attr(df_out, "distr_param") <- attr(x, "distr_param")
   attr(df_out, "distr_param2") <- attr(x, "distr_param2")
   attr(df_out, "theory_type") <- attr(x, "theory_type")
+  
+  class(df_out) <- append("infer", class(df_out))
   
   # Copy over all attr except for row names
   # attributes(df_out)[which(names(attributes(df_out)) == "row.names")] <-
@@ -160,6 +164,8 @@ simulate <- function(x, reps = 1, ...) {
   attr(rep_tbl, "distr_param") <- attr(x, "distr_param")
   attr(rep_tbl, "distr_param2") <- attr(x, "distr_param2")
   attr(rep_tbl, "theory_type") <- attr(x, "theory_type")
+  
+  class(rep_tbl) <- append("infer", class(rep_tbl))
   
   # Copy over all attr except for row names
   #attributes(rep_tbl)[which(names(attributes(rep_tbl)) == "row.names")] <-
