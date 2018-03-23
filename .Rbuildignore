@@ -13,3 +13,5 @@
 ^cran-comments\.md$
 ^_build\.sh$
 ^appveyor\.yml$
+^implement_new_methods\.md
+^CONTRIBUTING\.md$

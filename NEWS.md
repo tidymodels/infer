@@ -1,15 +1,18 @@
-# infer 0.1.1.999
+# infer 0.1.1.9000
 - Added `obs_stat` and `shade_direction` arguments to `visualize()`
+<!--
   - Used internal `ggplot2` package functions suggested by @jimhester to shade
   density histogram appropriately
   - `bin.R` copied from `ggplot2` package for use here
+-->
   - Shading not currently available for `method = "theoretical"`
 - Adding theoretical distributions to `visualize()` alone and as overlay with current implementations being
     - Two sample t
     - ANOVA F
     - One proportion z
     - Two proportion z
-
+    - Chi-square test of independence
+    
 # infer 0.1.1
 - Added additional tests
 - Fixed bugs post-CRAN release
