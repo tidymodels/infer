@@ -175,6 +175,23 @@ test_that("chi-square matches chisq.test value", {
     dplyr::do(broom::tidy(stats::chisq.test(table(.$Species)))) %>%
     dplyr::select(replicate, stat = statistic)
   expect_equal(infer_way, trad_way)
+  
+  gen_iris9a <- iris %>%
+    specify(Species ~ NULL) %>%
+    hypothesize(null = "point",
+                p = c("setosa" = 0.8,
+                      "versicolor" = 0.1,
+                      "virginica" = 0.1)) %>%
+    generate(reps = 10, type = "simulate")
+  infer_way <- calculate(gen_iris9a, stat = "Chisq")
+  #chisq.test way
+  trad_way <- gen_iris9a %>%
+    dplyr::group_by(replicate) %>%
+    dplyr::do(broom::tidy(stats::chisq.test(table(.$Species),
+                                            p = c(0.8, 0.1, 0.1)))) %>%
+    dplyr::select(replicate, stat = statistic)
+  expect_equal(infer_way, trad_way)
+  
 })
 
 test_that("`order` is working", {

@@ -12,3 +12,4 @@ chunks of `*both_methods.Rmd` file there up to "Implemented"
   - Run `devtools::check()` again until 0 errors | 0 warnings | 0 notes
 1. Run `pkgdown::build_site()`
 1. Commit files to GitHub and continue
+

@@ -4,6 +4,10 @@ set_params <- function(x){
 
   attr(x, "theory_type") <- NULL
   
+  if(!is.null(attr(x, "response"))){
+    num_response_levels <- length(levels(x[[as.character(attr(x, "response"))]]))
+  }
+  
   # One variable
   if (!is.null(attr(x, "response")) & is.null(attr(x, "explanatory")) & 
       !is.null(attr(x, "response_type")) & is.null(attr(x, "explanatory_type"))){
@@ -17,9 +21,12 @@ set_params <- function(x){
     }
     
     # One prop
-    if(attr(x, "response_type") == "factor"){
-      attr(x, "theory_type") <- "One sample prop z"
+    if(attr(x, "response_type") == "factor" & (num_response_levels == 2)){
       # No parameters since standard normal
+      attr(x, "theory_type") <- "One sample prop z"
+    } else {
+      attr(x, "theory_type") <- "Chi-square Goodness of Fit"
+      attr(x, "distr_param") <- num_response_levels - 1
     }
     
   }
@@ -81,5 +88,9 @@ set_params <- function(x){
     # TO DO: Determine parameters
     }
   }
+  
+#  if(is.null(attr(x, "theory_type")))
+#     warning("Theoretical type not yet implemented")
+  
   x
 }

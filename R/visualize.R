@@ -53,7 +53,7 @@
 #'     calculate(stat = "t", order = c("1", "0")) %>%
 #'     visualize(method = "both")
 
-visualize <- function(data, bins = 30, method = "randomization", 
+visualize <- function(data, bins = 15, method = "randomization", 
                       dens_color = "black",
                       obs_stat = NULL, 
                       obs_stat_color = "#00BFC4",
@@ -125,7 +125,8 @@ visualize <- function(data, bins = 30, method = "randomization",
     infer_plot <- theory_z_plot(statistic_text = "z")
   }
   
-  else if(attr(data, "theory_type") == "Chi-square test of indep"){    
+  else if(attr(data, "theory_type") %in% 
+          c("Chi-square test of indep", "Chi-square Goodness of Fit")){    
     infer_plot <- theory_chisq_plot(deg_freedom = attr(data, "distr_param"),
                                 statistic_text = "Chi-Square",
                                 dens_color = dens_color)
@@ -170,7 +171,9 @@ visualize <- function(data, bins = 30, method = "randomization",
                               obs_stat = obs_stat) 
   }
  
-  else if(attr(data, "theory_type") == "Chi-square test of indep"){
+  else if(
+    attr(data, "theory_type") %in% 
+      c("Chi-square test of indep", "Chi-square Goodness of Fit")){
     infer_plot <- both_chisq_plot(data = data, 
                                   deg_freedom = attr(data, "distr_param"),
                                   statistic_text = "Chi-Square", 
@@ -218,7 +221,7 @@ theory_t_plot <- function(deg_freedom, statistic_text = "t",
 both_t_plot <- function(data, deg_freedom, statistic_text = "t",
                         dens_color = "black",
                         obs_stat = NULL,
-                        direction = NULL, bins = 30,...){
+                        direction = NULL, bins = 15,...){
   #  infer_t_plot <- ggplot(data = data, mapping = aes(x = stat))
   
   infer_t_plot <- shade_density_check(data = data, #gg_plot = infer_t_plot,
@@ -252,7 +255,7 @@ both_anova_plot <- function(data, deg_freedom_top,
                             deg_freedom_bottom, statistic_text = "F",
                             dens_color = "black",
                             obs_stat = NULL,
-                            direction = NULL, bins = 30,....){
+                            direction = NULL, bins = 15,....){
   
   infer_anova_plot <- shade_density_check(data = data, 
                                           obs_stat = obs_stat,
@@ -280,7 +283,7 @@ theory_z_plot <- function(statistic_text = "z", dens_color = "black", ...){
 both_z_plot <- function(data, statistic_text = "z",
                         dens_color = "black",
                         obs_stat = NULL,
-                        direction = NULL, bins = 30,...){
+                        direction = NULL, bins = 15,...){
   infer_z_plot <- shade_density_check(data = data, 
                                       obs_stat = obs_stat,
                                       direction = direction,
@@ -309,7 +312,7 @@ theory_chisq_plot <- function(deg_freedom, statistic_text = "Chi-Square",
 both_chisq_plot <- function(data, deg_freedom, statistic_text = "Chi-Square",
                         dens_color = "black",
                         obs_stat = NULL,
-                        direction = "greater", bins = 30,...){
+                        direction = "greater", bins = 15,...){
 
   infer_chisq_plot <- shade_density_check(data = data,
                                       obs_stat = obs_stat,

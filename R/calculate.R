@@ -78,8 +78,8 @@ calculate <- function(x, stat, order = NULL, ...) {
     }
   }
   
-  if (stat %in% c("diff in means", "diff in medians", "diff in props") |
-      attr(x, "theory_type") %in% c("Two sample props z", "Two sample t")) {
+  if ( stat %in% c("diff in means", "diff in medians", "diff in props")  ||
+      attr(x, "theory_type") %in% c("Two sample props z", "Two sample t") ) {
     if (length(unique(x[[as.character(attr(x, "explanatory"))]])) != 2){
       stop(paste("Statistic is based on a difference; the explanatory variable",
                  "should have two levels."))

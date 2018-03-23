@@ -5,7 +5,7 @@
 \title{(Currently) Visualize the randomization-based distribution 
 (To be updated to include theory-based distributions)}
 \usage{
-visualize(data, bins = 30, method = "randomization", dens_color = "black",
+visualize(data, bins = 15, method = "randomization", dens_color = "black",
   obs_stat = NULL, obs_stat_color = "#00BFC4", direction = NULL, ...)
 }
 \arguments{
