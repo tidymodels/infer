@@ -1,5 +1,5 @@
 #' Generate resamples, permutations, or simulations based on
-#' `specify` and `hypothesize` inputs
+#' `specify` and (if needed) `hypothesize` inputs
 #' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
 #' @param reps the number of resamples to generate
 #' @param type currently either \code{bootstrap}, \code{permute}, or \code{simulate}
@@ -66,6 +66,10 @@ bootstrap <- function(x, reps = 1, ...) {
         stats::median(x[[col]], na.rm = TRUE) + attr(x, "params")
     }
 
+    # TODO: Similarly for t
+
+    # TODO: Similarly for z  
+
     # Similarly for sd
     if(attr(attr(x, "params"), "names") == "sigma"){
       col <- as.character(attr(x, "response"))
@@ -79,9 +83,19 @@ bootstrap <- function(x, reps = 1, ...) {
   attr(result, "response") <- attr(x, "response")
   attr(result, "success") <- attr(x, "success")
   attr(result, "explanatory") <- attr(x, "explanatory")
+  attr(result, "response_type") <- attr(x, "response_type")
+  attr(result, "explanatory_type") <- attr(x, "explanatory_type")
+  attr(result, "distr_param") <- attr(x, "distr_param")
+  attr(result, "distr_param2") <- attr(x, "distr_param2")
+  attr(result, "theory_type") <- attr(x, "theory_type")
+  
   class(result) <- append("infer", class(result))
-
+  
   return(result)
+  
+  # Copy over all attr except for row names
+  # attributes(result)[which(names(attributes(result)) == "row.names")] <-
+  #   attributes(x)[which(names(attributes(x)) == "row.names")]
 }
 
 #' @importFrom dplyr bind_rows group_by
@@ -91,12 +105,23 @@ permute <- function(x, reps = 1, ...) {
     dplyr::bind_rows() %>%
     dplyr::mutate(replicate = rep(1:reps, each = nrow(x))) %>%
     dplyr::group_by(replicate)
+  
   attr(df_out, "null") <- attr(x, "null")
   attr(df_out, "response") <- attr(x, "response")
   attr(df_out, "success") <- attr(x, "success")
   attr(df_out, "explanatory") <- attr(x, "explanatory")
+  attr(df_out, "response_type") <- attr(x, "response_type")
+  attr(df_out, "explanatory_type") <- attr(x, "explanatory_type")
+  attr(df_out, "distr_param") <- attr(x, "distr_param")
+  attr(df_out, "distr_param2") <- attr(x, "distr_param2")
+  attr(df_out, "theory_type") <- attr(x, "theory_type")
+  
   class(df_out) <- append("infer", class(df_out))
-
+  
+  # Copy over all attr except for row names
+  # attributes(df_out)[which(names(attributes(df_out)) == "row.names")] <-
+  #   attributes(x)[which(names(attributes(x)) == "row.names")]
+  
   return(df_out)
 }
 
@@ -134,7 +159,24 @@ simulate <- function(x, reps = 1, ...) {
   attr(rep_tbl, "response") <- attr(x, "response")
   attr(rep_tbl, "success") <- attr(x, "success")
   attr(rep_tbl, "explanatory") <- attr(x, "explanatory")
+  attr(rep_tbl, "response_type") <- attr(x, "response_type")
+  attr(rep_tbl, "explanatory_type") <- attr(x, "explanatory_type")
+  attr(rep_tbl, "distr_param") <- attr(x, "distr_param")
+  attr(rep_tbl, "distr_param2") <- attr(x, "distr_param2")
+  attr(rep_tbl, "theory_type") <- attr(x, "theory_type")
+  
   class(rep_tbl) <- append("infer", class(rep_tbl))
+  
+  # Copy over all attr except for row names
+  #attributes(rep_tbl)[which(names(attributes(rep_tbl)) == "row.names")] <-
+  #  attributes(x)[which(names(attributes(x)) == "row.names")]
+  
+  
+  # TODO: we may want to clean up this object before sending it out - do we
+  # really need all of the attributes() that it spits out?
+  
+  ## From Chester: Upon further inspection, I think we'll need a bunch of these to 
+  ## appropriately determine the theoretical distributions when they exist
 
   return(dplyr::group_by(rep_tbl, replicate))
 }
