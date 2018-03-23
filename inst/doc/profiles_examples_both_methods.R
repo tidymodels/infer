@@ -7,6 +7,7 @@ library(stringr)
 library(infer)
 set.seed(2017)
 prof_small <- profiles %>% 
+  na.omit() %>% 
   dplyr::sample_n(size = 500) %>% 
   dplyr::mutate(city = dplyr::case_when(
     str_detect(location, "san fran") ~ "san fran",
@@ -134,14 +135,32 @@ prof_small %>%
   calculate(stat = "Chisq") %>% 
   visualize(method = "both")
 
-## ----eval=FALSE, include=FALSE-------------------------------------------
-#  prof_small %>%
-#    specify(drugs ~ NULL) %>% # alt: response = drugs
-#    hypothesize(null = "point",
-#                p = c("never" = .7, "sometimes" = .25, "often" = .05)) %>%
-#    generate(reps = 1000, type = "simulate") %>%
-#    calculate(stat = "Chisq") %>%
-#    visualize()
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(drugs ~ NULL) %>% # alt: response = drugs
+  hypothesize(null = "point", 
+              p = c("never" = .7, "often" = .05, "sometimes" = .25)) %>%
+  generate(reps = 1000, type = "simulate") %>%
+  calculate(stat = "Chisq") %>% 
+  visualize()
+
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(drugs ~ NULL) %>% # alt: response = drugs
+  hypothesize(null = "point", 
+              p = c("never" = .7, "often" = .05, "sometimes" = .25)) %>%
+#  generate(reps = 1000, type = "simulate") %>%
+#  calculate(stat = "Chisq") %>% 
+  visualize(method = "theoretical")
+
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(drugs ~ NULL) %>% # alt: response = drugs
+  hypothesize(null = "point", 
+              p = c("never" = .7, "often" = .05, "sometimes" = .25)) %>%
+  generate(reps = 1000, type = "simulate") %>%
+  calculate(stat = "Chisq") %>% 
+  visualize(method = "both")
 
 ## ----eval=FALSE, include=FALSE-------------------------------------------
 #  prof_small %>%

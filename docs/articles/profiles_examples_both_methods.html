@@ -108,6 +108,7 @@
 <span class="kw">library</span>(infer)
 <span class="kw">set.seed</span>(<span class="dv">2017</span>)
 prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">na.omit</span>() <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(<span class="dt">size =</span> <span class="dv">500</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">city =</span> dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span>(
     <span class="kw"><a href="http://www.rdocumentation.org/packages/stringr/topics/str_detect">str_detect</a></span>(location, <span class="st">"san fran"</span>) <span class="op">~</span><span class="st"> "san fran"</span>,
@@ -153,6 +154,7 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># generate() is not needed since we are not doing randomization</span>
 <span class="st">  </span><span class="co"># calculate(stat = "t") ## Not needed since t implied based on variable types</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<pre><code>## [1] "Two sample t"</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 <p>Overlay appropriate <span class="math inline">\(t\)</span> distribution on top of permuted t-statistics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
@@ -181,6 +183,7 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># calculate(stat = "F") ## Not needed since F implied based on variable types</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<pre><code>## [1] "ANOVA"</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 <p>Overlay appropriate <span class="math inline">\(F\)</span> distribution on top of permuted F-statistics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
@@ -210,6 +213,7 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># generate() is not needed since we are not doing randomization</span>
 <span class="st">  </span><span class="co"># calculate(stat = "z") ## Not needed since z implied based on variable types</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<pre><code>## [1] "One sample prop z"</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
 <p>Overlay standard normal distribution on top of permuted z-statistics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
@@ -238,6 +242,7 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># generate() is not needed since we are not doing randomization</span>
 <span class="st">  </span><span class="co"># calculate(stat = "z") ## Not needed since z implied based on variable types</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<pre><code>## [1] "Two sample props z"</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
 <p>Overlay standard normal distribution on top of permuted z-statistics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
@@ -248,13 +253,10 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 </div>
-<div id="testing" class="section level2">
-<h2 class="hasAnchor">
-<a href="#testing" class="anchor"></a>Testing</h2>
-</div>
 <div id="two-categorical-2-level-variables-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#two-categorical-2-level-variables-1" class="anchor"></a>Two categorical (&gt;2 level) variables</h2>
+<p>Randomization approach to <span class="math inline">\(\chi^2\)</span>-statistic</p>
 <p>Theoretical distribution</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(drugs <span class="op">~</span><span class="st"> </span>status) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = drugs, explanatory = status</span>
@@ -262,6 +264,7 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># generate() is not needed since we are not doing randomization</span>
 <span class="st">  </span><span class="co"># calculate(stat = "Chisq") ## Not needed since Chisq implied based on variable types</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<pre><code>## [1] "Chi-square test of indep"</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
 <p>Overlay standard chi-square distribution on top of permuted statistics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
@@ -271,12 +274,39 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
-<div id="to-do-also-overlay-appropriate-chi-sq-distn" class="section level3">
-<h3 class="hasAnchor">
-<a href="#to-do-also-overlay-appropriate-chi-sq-distn" class="anchor"></a>To Do (Also overlay appropriate chi-sq distn)</h3>
-<p>One categorical (&gt;2 level) - GoF</p>
-<hr>
 </div>
+<div id="one-categorical-2-level---gof" class="section level2">
+<h2 class="hasAnchor">
+<a href="#one-categorical-2-level---gof" class="anchor"></a>One categorical (&gt;2 level) - GoF</h2>
+<p>Randomization approach to <span class="math inline">\(\chi^2\)</span>-statistic</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(drugs <span class="op">~</span><span class="st"> </span><span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = drugs</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, 
+              <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"never"</span> =<span class="st"> </span>.<span class="dv">7</span>, <span class="st">"often"</span> =<span class="st"> </span>.<span class="dv">05</span>, <span class="st">"sometimes"</span> =<span class="st"> </span>.<span class="dv">25</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>()</code></pre></div>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
+<p>Theoretical distribution</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(drugs <span class="op">~</span><span class="st"> </span><span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = drugs</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, 
+              <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"never"</span> =<span class="st"> </span>.<span class="dv">7</span>, <span class="st">"often"</span> =<span class="st"> </span>.<span class="dv">05</span>, <span class="st">"sometimes"</span> =<span class="st"> </span>.<span class="dv">25</span>)) <span class="op">%&gt;%</span>
+<span class="co">#  generate(reps = 1000, type = "simulate") %&gt;%</span>
+<span class="co">#  calculate(stat = "Chisq") %&gt;% </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<pre><code>## [1] "Chi-square Goodness of Fit"</code></pre>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
+<p>Overlay standard chi-square distribution on top of permuted statistics</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(drugs <span class="op">~</span><span class="st"> </span><span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = drugs</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, 
+              <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"never"</span> =<span class="st"> </span>.<span class="dv">7</span>, <span class="st">"often"</span> =<span class="st"> </span>.<span class="dv">05</span>, <span class="st">"sometimes"</span> =<span class="st"> </span>.<span class="dv">25</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
+<p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
+<hr>
 </div>
 <div id="to-do" class="section level2">
 <h2 class="hasAnchor">
@@ -288,6 +318,7 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <div id="to-do-also-overlay-appropriate-t-distn" class="section level3">
 <h3 class="hasAnchor">
 <a href="#to-do-also-overlay-appropriate-t-distn" class="anchor"></a>To Do (Also overlay appropriate t distn)</h3>
+<!-- ## Testing -->
 <p>Two numerical vars - SLR</p>
 </div>
 <div id="to-do-one-mean-t-stat" class="section level3">
@@ -378,8 +409,8 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
       <li><a href="#implemented">Implemented</a></li>
       <li><a href="#one-categorical-2-level-variable">One categorical (2 level) variable</a></li>
       <li><a href="#two-categorical-2-level-variables">Two categorical (2 level) variables</a></li>
-      <li><a href="#testing">Testing</a></li>
       <li><a href="#two-categorical-2-level-variables-1">Two categorical (&gt;2 level) variables</a></li>
+      <li><a href="#one-categorical-2-level---gof">One categorical (&gt;2 level) - GoF</a></li>
       <li><a href="#to-do">TO DO</a></li>
       <li><a href="#confidence-intervals">Confidence intervals</a></li>
       </ul>

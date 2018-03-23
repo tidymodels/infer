@@ -184,16 +184,16 @@ the vector being sampled.</p></td>
 #&gt; # Groups:   replicate [1,000]
 #&gt;    replicate ball_ID color
 #&gt;        &lt;int&gt;   &lt;int&gt; &lt;chr&gt;
-#&gt;  1         1    1115 white
-#&gt;  2         1     458 red  
-#&gt;  3         1     289 red  
-#&gt;  4         1    1145 white
-#&gt;  5         1     674 red  
-#&gt;  6         1     619 red  
-#&gt;  7         1    1187 white
-#&gt;  8         1    1449 white
-#&gt;  9         1    1933 white
-#&gt; 10         1    1523 white
+#&gt;  1         1     300 red  
+#&gt;  2         1    1115 white
+#&gt;  3         1     458 red  
+#&gt;  4         1     288 red  
+#&gt;  5         1    1145 white
+#&gt;  6         1     674 red  
+#&gt;  7         1     619 red  
+#&gt;  8         1    1186 white
+#&gt;  9         1    1449 white
+#&gt; 10         1    1932 white
 #&gt; # ... with 49,990 more rows</div><div class='input'>
 <span class='co'># Compute p_hats for all 1000 samples = proportion red</span>
 <span class='no'>p_hats</span> <span class='kw'>&lt;-</span> <span class='no'>samples</span> <span class='kw'>%&gt;%</span>
@@ -202,15 +202,15 @@ the vector being sampled.</p></td>
 <span class='no'>p_hats</span></div><div class='output co'>#&gt; # A tibble: 1,000 x 2
 #&gt;    replicate prop_red
 #&gt;        &lt;int&gt;    &lt;dbl&gt;
-#&gt;  1         1    0.300
-#&gt;  2         2    0.280
+#&gt;  1         1    0.320
+#&gt;  2         2    0.260
 #&gt;  3         3    0.260
-#&gt;  4         4    0.300
+#&gt;  4         4    0.320
 #&gt;  5         5    0.400
 #&gt;  6         6    0.400
-#&gt;  7         7    0.420
-#&gt;  8         8    0.340
-#&gt;  9         9    0.360
+#&gt;  7         7    0.440
+#&gt;  8         8    0.320
+#&gt;  9         9    0.340
 #&gt; 10        10    0.300
 #&gt; # ... with 990 more rows</div><div class='input'>
 <span class='co'># Plot sampling distribution</span>
