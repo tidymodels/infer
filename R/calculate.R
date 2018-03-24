@@ -302,6 +302,17 @@ calc_impl.t <- function(stat, x, order, ...) {
     df_out <- x %>%
       dplyr::summarize(stat = stats::t.test(
         !! attr(x, "response") ~ !! attr(x, "explanatory"))[["statistic"]])
+  }
+    
+  # Standardized slope
+  else if (attr(x, "theory_type") == "Slope with t"){
+    explan_string <- as.character(attr(x, "explanatory"))
+  
+    x %>%
+      dplyr::summarize(stat = summary(
+          stats::lm(!!(attr(x, "response")) ~ !!(attr(x, "explanatory")))
+        )[["coefficients"]][explan_string, "t value"])
+    
     
     # One sample mean (TESTING - not currently working)
   } else if (attr(x, "theory_type") == "One sample t"){

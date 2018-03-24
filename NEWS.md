@@ -8,12 +8,14 @@
   - `bin.R` copied from `ggplot2` package for use here
 -->
   - Shading not currently available for `method = "theoretical"`
-- Adding theoretical distributions to `visualize()` alone and as overlay with current implementations being
+- Adding theoretical distributions to `visualize()` alone and as overlay with current implementations being (Need to convert these into methods similar to what was done in `calculate()`)
     - Two sample t
     - ANOVA F
     - One proportion z
     - Two proportion z
     - Chi-square test of independence
+    - Chi-square Goodness of Fit test
+    - Standardized slope (t)
     
 # infer 0.1.1
 - Added additional tests

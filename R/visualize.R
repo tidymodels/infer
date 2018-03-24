@@ -106,7 +106,8 @@ visualize <- function(data, bins = 15, method = "randomization",
   
 #  print(attr(data, "theory_type"))
   
-  if(attr(data, "theory_type") == "Two sample t"){    
+  if(attr(data, "theory_type") %in% 
+     c("Two sample t", "Slope with t")){    
     infer_plot <- theory_t_plot(deg_freedom = attr(data, "distr_param"),
                                 statistic_text = "t",
                                 dens_color = dens_color)
@@ -139,7 +140,7 @@ visualize <- function(data, bins = 15, method = "randomization",
   
  # print(attr(data, "theory_type"))
   
-  if(attr(data, "theory_type") == "Two sample t"){
+  if(attr(data, "theory_type") %in% c("Two sample t", "Slope with t")){
     infer_plot <- both_t_plot(data = data, 
                               deg_freedom = attr(data, "distr_param"),
                               statistic_text = "t",

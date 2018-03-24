@@ -31,7 +31,7 @@ install.packages("remotes")
 remotes::install_github("andrewpbray/infer")
 ```
 
-To install the cutting edge version of `infer` (do so at your own risk), make sure to install `remotes` first:
+To install the cutting edge version of `infer` (do so at your own risk), make sure to install `remotes` first. This version was last updated on 2018-03-24.
 
 ``` r
 install.packages("remotes")
@@ -42,7 +42,9 @@ To see the things we are working on with the package as vignettes/Articles, chec
 
 ### Contributing
 
-We welcome others helping us make this package as user friendly and efficient as possible. Please review our [contributing](https://github.com/andrewpbray/infer/blob/develop/CONDUCT.md) and [conduct](CONDUCT.md) guidelines. Of particular interest is helping us to write `testthat` tests and help us in building vignettes that show how to (and how NOT to) use the package.
+------------------------------------------------------------------------
+
+We welcome others helping us make this package as user friendly and efficient as possible. Please review our [contributing](https://github.com/andrewpbray/infer/blob/develop/CONDUCT.md) and [conduct](CONDUCT.md) guidelines. Of particular interest is helping us to write `testthat` tests and help us in building vignettes that show how to (and how NOT to) use the package. By participating in this project you agree to abide by its terms.
 
 ### Examples
 
@@ -81,7 +83,3 @@ mtcars %>%
 Note that the formula and non-formula interfaces work for all implemented inference procedures in `infer`. Use whatever is more natural for you. If you will be doing modeling using functions like `lm()` and `glm()`, we recommend you begin to use the formula `y ~ x` notation as soon as possible though.
 
 Other examples are available in the package vignettes.
-
-------------------------------------------------------------------------
-
-Please note that this project is released with a [Contributor Code of Conduct](https://github.com/andrewpbray/infer/blob/master/CONDUCT.md). By participating in this project you agree to abide by its terms.

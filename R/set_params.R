@@ -83,9 +83,10 @@ set_params <- function(x){
     # Response is numeric, explanatory is numeric
     if(attr(x, "response_type") %in% c("integer", "numeric") &
        attr(x, "explanatory_type") %in% c("integer", "numeric")){
+      response_string <- as.character(attr(x, "response"))
+      explanatory_string <- as.character(attr(x, "explanatory"))
     attr(x, "theory_type") <- "Slope with t"
-    
-    # TO DO: Determine parameters
+    attr(x, "distr_param") <- nrow(x) - 2
     }
   }
   
