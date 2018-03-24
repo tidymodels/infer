@@ -266,31 +266,44 @@ prof_small %>%
   visualize(method = "both")
 ```
 
+## Two numerical vars - SLR 
 
-***
+Randomization approach to $t$-statistic
 
-## TO DO
-
-
-### To Do (slope $t$ stat)
-### To Do (Also overlay appropriate t distn)
-
-<!-- ## Testing -->
-
-Two numerical vars - SLR 
-
-
-```{r eval=FALSE, include=FALSE}
+```{r}
 prof_small %>%
   specify(age ~ height) %>% # alt: response = age, explanatory = height
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "slope") %>% 
+  calculate(stat = "t") %>% 
   visualize()
 ```
 
-### To Do (one mean $t$ stat)
-### To Do (Also overlay appropriate t distn)
+Theoretical distribution
+
+```{r}
+prof_small %>%
+  specify(age ~ height) %>% # alt: response = age, explanatory = height
+  hypothesize(null = "independence") %>%
+#  generate(reps = 1000, type = "permute") %>%
+#  calculate(stat = "t") %>% 
+  visualize(method = "theoretical")
+```
+
+Overlay appropriate $t$ distribution on top of permuted t-statistics
+
+```{r}
+prof_small %>%
+  specify(age ~ height) %>% # alt: response = age, explanatory = height
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "t") %>% 
+  visualize(method = "both")
+```
+
+***
+
+## Testing
 
 One numerical variable (mean)
 
@@ -304,6 +317,15 @@ prof_small %>%
   calculate(stat = "t") %>% 
   visualize()
 ```
+
+
+## TO DO
+
+
+### To Do (one mean $t$ stat)
+### To Do (Also overlay appropriate t distn)
+
+
 
 
 ## Confidence intervals

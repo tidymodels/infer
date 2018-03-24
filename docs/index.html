@@ -107,7 +107,7 @@
 <p>To install the developmental version of <code>infer</code>, make sure to install <code>remotes</code> first:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)
 remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"andrewpbray/infer"</span>)</code></pre></div>
-<p>To install the cutting edge version of <code>infer</code> (do so at your own risk), make sure to install <code>remotes</code> first:</p>
+<p>To install the cutting edge version of <code>infer</code> (do so at your own risk), make sure to install <code>remotes</code> first. This version was last updated on 2018-03-24.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)
 remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"andrewpbray/infer"</span>, <span class="dt">ref =</span> <span class="st">"develop"</span>)</code></pre></div>
 <p>To see the things we are working on with the package as vignettes/Articles, check out the developmental <code>pkgdown</code> site at <a href="https://infer-dev.netlify.com" class="uri">https://infer-dev.netlify.com</a>.</p>
@@ -115,7 +115,8 @@ remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
 <div id="contributing" class="section level3">
 <h3 class="hasAnchor">
 <a href="#contributing" class="anchor"></a>Contributing</h3>
-<p>We welcome others helping us make this package as user friendly and efficient as possible. Please review our <a href="https://github.com/andrewpbray/infer/blob/develop/CONDUCT.md">contributing</a> and <a href="CONDUCT.md">conduct</a> guidelines. Of particular interest is helping us to write <code>testthat</code> tests and help us in building vignettes that show how to (and how NOT to) use the package.</p>
+<hr>
+<p>We welcome others helping us make this package as user friendly and efficient as possible. Please review our <a href="https://github.com/andrewpbray/infer/blob/develop/CONDUCT.md">contributing</a> and <a href="CONDUCT.md">conduct</a> guidelines. Of particular interest is helping us to write <code>testthat</code> tests and help us in building vignettes that show how to (and how NOT to) use the package. By participating in this project you agree to abide by its terms.</p>
 </div>
 <div id="examples" class="section level3">
 <h3 class="hasAnchor">
@@ -141,8 +142,6 @@ remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
 <span class="st">  </span><span class="kw"><a href="reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"1"</span>, <span class="st">"0"</span>))</code></pre></div>
 <p>Note that the formula and non-formula interfaces work for all implemented inference procedures in <code>infer</code>. Use whatever is more natural for you. If you will be doing modeling using functions like <code>lm()</code> and <code>glm()</code>, we recommend you begin to use the formula <code>y ~ x</code> notation as soon as possible though.</p>
 <p>Other examples are available in the package vignettes.</p>
-<hr>
-<p>Please note that this project is released with a <a href="https://github.com/andrewpbray/infer/blob/master/CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
 </div>
 </div>
