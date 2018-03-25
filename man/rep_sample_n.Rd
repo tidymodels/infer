@@ -30,14 +30,9 @@ sampling distributions
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(ggplot2))
 
-# Create a virtual population of N = 2400 balls, of which 900 are red and the
+# A virtual population of N = 2400 balls, of which 900 are red and the
 # rest are white
-N <- 2400
-population <- data_frame(
-  ball_ID = 1:N,
-  color = c(rep("red", 900), rep("white", N - 900))
-)
-population
+population <- moderndive::bowl
 
 # Take samples of size n = 50 balls without replacement; do this 1000 times
 samples <- population \%>\%
