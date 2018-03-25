@@ -41,7 +41,7 @@
 #'     specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
 #'     hypothesize(null = "independence") %>%
 #'     # generate() is not needed since we are not doing randomization
-#'     # calculate(stat = "t") ## Not needed since t implied based on variable types
+#'     # calculate(stat = "t") ## Not needed since t based on variable types
 #'     visualize(method = "theoretical") #default method
 #' 
 #' # Overlay theoretical distribution on top of randomized t-statistics
@@ -66,8 +66,6 @@ visualize <- function(data, bins = 15, method = "randomization",
     stop("Shading requires observed statistic `obs_stat` value to be given.")
   
   if(method == "randomization"){
-    # TODO:  determine whether a bar graph or a histogram is
-    # more appropriate
     if(is.null(direction)){
       if(length(unique(data$stat)) >= bins)
         infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
@@ -111,7 +109,7 @@ visualize <- function(data, bins = 15, method = "randomization",
 #  print(attr(data, "theory_type"))
   
   if(attr(data, "theory_type") %in% 
-     c("Two sample t", "Slope with t")){    
+     c("Two sample t", "Slope with t", "One sample t")){    
     infer_plot <- theory_t_plot(deg_freedom = attr(data, "distr_param"),
                                 statistic_text = "t",
                                 dens_color = dens_color)
