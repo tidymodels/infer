@@ -72,6 +72,9 @@
       <a href="../articles/chisq_test.html">Chi-squared test example using `nycflights13` `flights` data</a>
     </li>
     <li>
+      <a href="../articles/flights_examples.html">Randomization Examples using `nycflights13` `flights` data</a>
+    </li>
+    <li>
       <a href="../articles/mtcars_examples.html">Examples using `mtcars` data</a>
     </li>
     <li>
@@ -189,7 +192,7 @@ Can also specify "left", "right", or "both".</p></td>
     <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
     <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
     <span class='co'># generate() is not needed since we are not doing randomization</span>
-    <span class='co'># calculate(stat = "t") ## Not needed since t implied based on variable types</span>
+    <span class='co'># calculate(stat = "t") ## Not needed since t based on variable types</span>
     <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"theoretical"</span>) <span class='co'>#default method</span></div><div class='img'><img src='visualize-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 <span class='co'># Overlay theoretical distribution on top of randomized t-statistics</span>
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>

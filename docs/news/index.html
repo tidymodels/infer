@@ -71,6 +71,9 @@
       <a href="../articles/chisq_test.html">Chi-squared test example using `nycflights13` `flights` data</a>
     </li>
     <li>
+      <a href="../articles/flights_examples.html">Randomization Examples using `nycflights13` `flights` data</a>
+    </li>
+    <li>
       <a href="../articles/mtcars_examples.html">Examples using `mtcars` data</a>
     </li>
     <li>
@@ -117,6 +120,7 @@
 <a href="#infer-0-1-1-9000" class="anchor"></a>infer 0.1.1.9000</h1>
 <ul>
 <li>Switched to <code>!!</code> instead of <code>UQ()</code> since <code>UQ()</code> is deprecated in {rlang} 0.2.0</li>
+<li>Added wrapper functions <code><a href="../reference/t_test.html">t_test()</a></code> and <code><a href="../reference/chisq_test.html">chisq_test()</a></code> that use a formula interface</li>
 <li>Added <code>obs_stat</code> and <code>shade_direction</code> arguments to <code><a href="../reference/visualize.html">visualize()</a></code>
 </li>
 <li>Added check so that bar graph created with <code><a href="../reference/visualize.html">visualize()</a></code> if number of unique values for generated statistics is small <!--
@@ -125,9 +129,7 @@
   - `bin.R` copied from `ggplot2` package for use here
 -->
 </li>
-<li>Shading not currently available for <code>method = "theoretical"</code>
-</li>
-<li>Adding theoretical distributions to <code><a href="../reference/visualize.html">visualize()</a></code> alone and as overlay with current implementations being (Need to convert these into methods similar to what was done in <code><a href="../reference/calculate.html">calculate()</a></code>)
+<li>Adding theoretical distributions to <code><a href="../reference/visualize.html">visualize()</a></code> alone and as overlay with current implementations being
 <ul>
 <li>Two sample t</li>
 <li>ANOVA F</li>
@@ -139,6 +141,24 @@
 </ul>
 </li>
 </ul>
+<div id="to-dos" class="section level2">
+<h2 class="hasAnchor">
+<a href="#to-dos" class="anchor"></a>To Dos</h2>
+<ul>
+<li>Need to also add parameters to wrapper functions so that randomization methods can be implemented by practictioners looking to skip the longer pipe syntax</li>
+<li>Determine if other wrapper functions should be created
+<ul>
+<li>
+<code>z_test()</code>?</li>
+<li>Add implementation of one sample <code><a href="../reference/t_test.html">t_test()</a></code>?</li>
+</ul>
+</li>
+<li>Shading not currently available for <code>method = "theoretical"</code>
+</li>
+<li>Need to convert the <code><a href="../reference/visualize.html">visualize()</a></code> functions into methods similar to what was done in <code><a href="../reference/calculate.html">calculate()</a></code>
+</li>
+</ul>
+</div>
 </div>
     <div id="infer-0-1-1" class="section level1">
 <h1 class="hasAnchor">
