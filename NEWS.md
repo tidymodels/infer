@@ -2,6 +2,8 @@
 
 - Switched to `!!` instead of `UQ()` since `UQ()` is deprecated in {rlang} 0.2.0
 - Added `obs_stat` and `shade_direction` arguments to `visualize()`
+- Added check so that bar graph created with `visualize()` if number of unique
+values for generated statistics is small
 <!--
   - Used internal `ggplot2` package functions suggested by @jimhester to shade
   density histogram appropriately
@@ -16,6 +18,7 @@
     - Chi-square test of independence
     - Chi-square Goodness of Fit test
     - Standardized slope (t)
+    
     
 # infer 0.1.1
 - Added additional tests
