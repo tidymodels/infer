@@ -2,7 +2,8 @@
 #' `specify` and (if needed) `hypothesize` inputs
 #' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
 #' @param reps the number of resamples to generate
-#' @param type currently either \code{bootstrap}, \code{permute}, or \code{simulate}
+#' @param type currently either \code{bootstrap}, \code{permute}, 
+#' or \code{simulate}
 #' @param ... currently ignored
 #' @return A tibble containing \code{rep} generated datasets, indicated by the
 #' \code{replicate} column.
@@ -29,8 +30,9 @@ generate <- function(x, reps = 1, type = "bootstrap", ...) {
     stop("Simulation requires a `point` null hypothesis on proportions.")
   }
   if (type == "bootstrap" &&
-      !(attr(attr(x, "params"), "names") %in% c("mu", "med", "sigma")) &&
-      !is.null(attr(x, "null"))) {
+        !(attr(attr(x, "params"), "names") %in% c("mu", "med", "sigma")) &&
+        !is.null(attr(x, "null"))
+      ) {
     stop(paste("Bootstrapping is inappropriate in this setting.",
           "Consider using `type = permute` or `type = simulate`."))
   }
@@ -55,23 +57,35 @@ bootstrap <- function(x, reps = 1, ...) {
     # If so, shift the variable chosen to have a mean corresponding
     # to that specified in `hypothesize`
     if(attr(attr(x, "params"), "names") == "mu"){
+      
       col <- as.character(attr(x, "response"))
-      x[[col]] <- x[[col]] - mean(x[[col]], na.rm = TRUE) + attr(x, "params")
+      if(attr(x, "theory_type") != "One sample t"){
+        x[[col]] <- x[[col]] - mean(x[[col]], na.rm = TRUE) + attr(x, "params")
+      }
+    
+      # Standardize after centering above
+      #####
+      # Determining whether or not to implement this t transformation
+      #####
+#      else {
+#        std_error <- stats::sd(x[[col]], na.rm = TRUE) / 
+#                        sqrt(length(x[[col]]))
+#        x[[col]] <- ( x[[col]] - mean(x[[col]], na.rm = TRUE) ) / std_error
+#      }
     }
 
     # Similarly for median
-    if(attr(attr(x, "params"), "names") == "med"){
+    else if(attr(attr(x, "params"), "names") == "med"){
       col <- as.character(attr(x, "response"))
       x[[col]] <- x[[col]] -
         stats::median(x[[col]], na.rm = TRUE) + attr(x, "params")
     }
 
-    # TODO: Similarly for t
-
-    # TODO: Similarly for z  
+    # Implement confidence interval for bootstrapped proportions?
+    # Implement z transformation?
 
     # Similarly for sd
-    if(attr(attr(x, "params"), "names") == "sigma"){
+    else if(attr(attr(x, "params"), "names") == "sigma"){
       col <- as.character(attr(x, "response"))
       x[[col]] <- x[[col]] -
         stats::sd(x[[col]], na.rm = TRUE) + attr(x, "params")
@@ -92,10 +106,6 @@ bootstrap <- function(x, reps = 1, ...) {
   class(result) <- append("infer", class(result))
   
   return(result)
-  
-  # Copy over all attr except for row names
-  # attributes(result)[which(names(attributes(result)) == "row.names")] <-
-  #   attributes(x)[which(names(attributes(x)) == "row.names")]
 }
 
 #' @importFrom dplyr bind_rows group_by
@@ -175,8 +185,9 @@ simulate <- function(x, reps = 1, ...) {
   # TODO: we may want to clean up this object before sending it out - do we
   # really need all of the attributes() that it spits out?
   
-  ## From Chester: Upon further inspection, I think we'll need a bunch of these to 
-  ## appropriately determine the theoretical distributions when they exist
+  ## From Chester: Upon further inspection, I think we'll need a bunch of 
+  ## these to appropriately determine the theoretical distributions
+  ## when they exist
 
   return(dplyr::group_by(rep_tbl, replicate))
 }

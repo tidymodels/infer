@@ -64,7 +64,7 @@ specify <- function(x, formula, response = NULL,
     if (identical(as.character(attr(x, "response")),
                   as.character(attr(x, "explanatory")))) {
       stop(paste("The response and explanatory variables must be different",
-"from one another."))
+                 "from one another."))
     }
     explanatory_col <- rlang::eval_tidy(attr(x, "explanatory"), x)
     if (is.character(explanatory_col)) {
@@ -80,7 +80,7 @@ specify <- function(x, formula, response = NULL,
     }
     if (!is.factor(response_col)) {
       stop(paste("`success` should only be specified if the response is",
-"a categorical variable."))
+                 "a categorical variable."))
     }
     if (!(success %in% levels(response_col))) {
       stop(paste0(success, " is not a valid level of ",
@@ -107,14 +107,17 @@ specify <- function(x, formula, response = NULL,
   if(is.null(attr(x, "explanatory")))
     attr(x, "explanatory_type") <- NULL
   else
-    attr(x, "explanatory_type") <- class(x[[as.character(attr(x, "explanatory"))]])
+    attr(x, "explanatory_type") <- class(
+        x[[as.character(attr(x, "explanatory"))]]
+      )
   
   if(attr(x, "response_type") == "factor" & is.null(success) &
      length(levels(x[[as.character(attr(x, "response"))]])) == 2)
  #    sum(table(response_col) > 0) == 2)
     stop(paste0("A level of the response variable `",
                 attr(x, "response"),
-                "` needs to be specified for the `success` argument in `specify()`."))
+                "` needs to be specified for the `success` argument ",
+                "in `specify()`."))
   
   # Determine appropriate parameters for theoretical distribution fit
   x <- set_params(x)

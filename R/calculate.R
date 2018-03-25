@@ -69,7 +69,7 @@ calculate <- function(x, stat, order = NULL, ...) {
   
   if (stat %in% c("F", "slope", "diff in means", "diff in medians")){
     if (!is.null(attr(x, "explanatory"))
-        & !is.numeric(x[[as.character(attr(x, "response"))]])){
+        && !is.numeric(x[[as.character(attr(x, "response"))]])){
       stop(paste0("The response variable of `",
                   attr(x, "response"),
                   "` is not appropriate \n  since '",
@@ -90,19 +90,19 @@ calculate <- function(x, stat, order = NULL, ...) {
                  '`order = c("first", "second")` means `("first" - "second")`',
                  "Check `?calculate` for details."))
     }
-    if (!is.null(order) & xor(is.na(order[1]), is.na(order[2]))){
+    if (!is.null(order) && xor(is.na(order[1]), is.na(order[2]))){
       stop(paste("Only one level specified in `order`.",
                  "Both levels need to be specified."))
     }
-    if (!is.null(order) & length(order) > 2){
+    if (!is.null(order) && length(order) > 2){
       stop("`order` is expecting only two entries.")
     }
-    if (!is.null(order) &
+    if (!is.null(order) &&
         (order[1] %in%
          unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
       stop(paste(order[1], "is not a level of the explanatory variable."))
     }
-    if (!is.null(order) &
+    if (!is.null(order) &&
         (order[2] %in%
          unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
       stop(paste(order[2], "is not a level of the explanatory variable."))
@@ -110,7 +110,7 @@ calculate <- function(x, stat, order = NULL, ...) {
   }
   
   if (stat %in% c("diff in props", "Chisq")){
-    if (!is.null(attr(x, "explanatory")) &
+    if (!is.null(attr(x, "explanatory")) &&
         !is.factor(x[[as.character(attr(x, "response"))]])){
       stop(paste0("The response variable of `",
                   attr(x, "response"),
@@ -120,7 +120,7 @@ calculate <- function(x, stat, order = NULL, ...) {
     }
   }
 
-  if (!(stat %in% c("diff in means", "diff in medians", "diff in props") |
+  if (!(stat %in% c("diff in means", "diff in medians", "diff in props") ||
       attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))) {
     if (!is.null(order)){
       warning(paste("Statistic is not based on a difference; the `order` argument",
@@ -253,12 +253,10 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
     
     
     result <- x %>%
-      #      dplyr::group_by(replicate) %>%
       dplyr::do(broom::tidy(suppressWarnings(stats::chisq.test(
         table(.[[as.character(attr(x, "response"))]],
               .[[as.character(attr(x, "explanatory"))]]))))) %>%
       dplyr::ungroup() %>%
-      #      dplyr::mutate(replicate = as.factor(replicate), stat = statistic) %>% 
       dplyr::select(replicate, stat = statistic)
     
     attr(result, "response") <- attr(x, "response")
@@ -276,14 +274,6 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
 }
 
 calc_impl.diff_in_props <- function(stat, x, order, ...) {
-
-  # Detected in another test
-  #    if (length(levels(x[[as.character(attr(x, "explanatory"))]])) != 2){
-  #      stop(paste0("The explanatory variable of `",
-  #                  attr(x, "explanatory"),
-  #                  "` does not have exactly two levels. \n",
-  #                  "Convert it to have only two levels and try again."))
-  #    }
 
   col <- attr(x, "response")
   success <- attr(x, "success")
@@ -312,14 +302,13 @@ calc_impl.t <- function(stat, x, order, ...) {
       dplyr::summarize(stat = summary(
           stats::lm(!!(attr(x, "response")) ~ !!(attr(x, "explanatory")))
         )[["coefficients"]][explan_string, "t value"])
-    
-    
-    # One sample mean (TESTING - not currently working)
-  } else if (attr(x, "theory_type") == "One sample t"){
-    df_out <- x %>%
-      dplyr::summarize(stat = stats::t.test(
-        x[[as.character(attr(x, "response"))]])[["statistic"]])
-  }
+  } 
+  # One sample mean (Not currently implemented)
+  # else if (attr(x, "theory_type") == "One sample t"){
+  #   df_out <- x %>%
+  #     dplyr::summarize(stat = stats::t.test(
+  #       x[[as.character(attr(x, "response"))]])[["statistic"]])
+  # }
 }
 
 calc_impl.z <- function(stat, x, order, ...) {
@@ -353,20 +342,6 @@ calc_impl.z <- function(stat, x, order, ...) {
                        stat = diff_prop / denom) %>%
       dplyr::select(-total_suc, -n1, -n2)
     
-    # df_out <- x %>%
-    #   dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
-    #   dplyr::summarize(prop = mean((!!attr(x, "response")) == levels(!!attr(x, "response"))[1], ...),
-    #                    num_suc = sum((!!attr(x, "response")) == levels(!!attr(x, "response"))[1], ...),
-    #                    group_num = n()) %>%
-    #   dplyr::summarize(diff_prop = diff(prop),
-    #                    total_suc = sum(num_suc),
-    #                    n1 = group_num[1],
-    #                    n2 = group_num[2],
-    #                    p_hat = total_suc / (n1 + n2),
-    #                    denom = sqrt(p_hat * (1 - p_hat) / n1 + p_hat * (1 - p_hat) / n2),
-    #                    stat = diff_prop / denom) %>%
-    #   dplyr::select(-total_suc, -n1, -n2)
-    
   } else
     # One sample proportion
     if (attr(x, "theory_type") == "One sample prop z"){
@@ -382,8 +357,8 @@ calc_impl.z <- function(stat, x, order, ...) {
       # Error given instead
       
       df_out <- x %>%
-        dplyr::summarize(stat =
-                           (mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...) - p0) /
-                           sqrt( (p0 * (1 - p0)) / num_rows))
+        dplyr::summarize(stat = (mean(
+            rlang::eval_tidy(col) == rlang::eval_tidy(success), ...) - p0
+          ) / sqrt( (p0 * (1 - p0)) / num_rows))
     }
 }
