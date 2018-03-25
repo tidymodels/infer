@@ -12,7 +12,8 @@ generate(x, reps = 1, type = "bootstrap", ...)
 
 \item{reps}{the number of resamples to generate}
 
-\item{type}{currently either \code{bootstrap}, \code{permute}, or \code{simulate}}
+\item{type}{currently either \code{bootstrap}, \code{permute}, 
+or \code{simulate}}
 
 \item{...}{currently ignored}
 }

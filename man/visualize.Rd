@@ -60,7 +60,7 @@ mtcars \%>\%
     specify(mpg ~ am) \%>\% # alt: response = mpg, explanatory = am
     hypothesize(null = "independence") \%>\%
     # generate() is not needed since we are not doing randomization
-    # calculate(stat = "t") ## Not needed since t implied based on variable types
+    # calculate(stat = "t") ## Not needed since t based on variable types
     visualize(method = "theoretical") #default method
 
 # Overlay theoretical distribution on top of randomized t-statistics
