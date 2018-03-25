@@ -21,6 +21,22 @@ The `okcupiddata` is thought by some to be controversial. Its use here is only
 to check for a variety of different variable types and levels. It will remain only in this
 "cutting edge" version of the package as we continue to add and test examples.
 
+The `method = "both"` examples here do another randomization instead of using the one
+with `visualize()` set to the default of `method = "randomization"`. This is to show the full
+pipeline for a variety of examples, but more than likely you'll want to do something like the
+following instead in practice.
+
+```{r eval=FALSE}
+null_distn <- prof_small %>%
+  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "t", order = c("m", "f")) 
+
+null_distn %>% visualize()
+null_distn %>% visualize(method = "both")
+```
+
 
 ## Data preparation
 
@@ -249,8 +265,8 @@ prof_small %>%
   specify(drugs ~ NULL) %>% # alt: response = drugs
   hypothesize(null = "point", 
               p = c("never" = .7, "often" = .05, "sometimes" = .25)) %>%
-#  generate(reps = 1000, type = "simulate") %>%
-#  calculate(stat = "Chisq") %>% 
+  # generate() is not needed since we are not doing randomization
+  # calculate(stat = "Chisq") ## Not needed since z implied based on variable types
   visualize(method = "theoretical")
 ```
 
@@ -285,8 +301,8 @@ Theoretical distribution
 prof_small %>%
   specify(age ~ height) %>% # alt: response = age, explanatory = height
   hypothesize(null = "independence") %>%
-#  generate(reps = 1000, type = "permute") %>%
-#  calculate(stat = "t") %>% 
+  # generate() is not needed since we are not doing randomization
+  # calculate(stat = "t") ## Not needed since z implied based on variable types
   visualize(method = "theoretical")
 ```
 
@@ -301,15 +317,15 @@ prof_small %>%
   visualize(method = "both")
 ```
 
-***
+# Determining whether or not to implement
 
-## Testing
+Note that all code from here throughout the rest of this vignette is to think about but is not currently implemented
 
-One numerical variable (mean)
+## One numerical variable (mean)
 
-**Testing but not working yet**
+Randomization approach to $t$-statistic (Not implemented)
 
-```{r eval=FALSE, include=FALSE}
+```{r eval=FALSE}
 prof_small %>%
   specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
   hypothesize(null = "point", mu = 50) %>% 
@@ -318,15 +334,27 @@ prof_small %>%
   visualize()
 ```
 
+Theoretical distribution (Implemented)
 
-## TO DO
+```{r}
+prof_small %>%
+  specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
+  hypothesize(null = "point", mu = 50) %>% 
+#  generate(reps = 1000, type = "bootstrap") %>% 
+#  calculate(stat = "t") %>% 
+  visualize(method = "theoretical")
+```
 
+Overlay appropriate $t$ distribution on top of permuted t-statistics (Not implemented)
 
-### To Do (one mean $t$ stat)
-### To Do (Also overlay appropriate t distn)
-
-
-
+```{r eval=FALSE}
+prof_small %>%
+  specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
+  hypothesize(null = "point", mu = 50) %>% 
+  generate(reps = 1000, type = "bootstrap") %>% 
+  calculate(stat = "t") %>% 
+  visualize(method = "both")
+```
 
 ## Confidence intervals
 
@@ -336,7 +364,7 @@ prof_small %>%
 One numerical (one mean)
 
 
-```{r eval=FALSE, include=FALSE}
+```{r eval=FALSE}
 prof_small %>%
   specify(response = age) %>%
   generate(reps = 1000, type = "bootstrap") %>%
@@ -349,7 +377,7 @@ prof_small %>%
 
 One categorical (one proportion)
 
-```{r eval=FALSE, include=FALSE}
+```{r eval=FALSE}
 prof_small %>%
   specify(response = sex) %>%
   generate(reps = 1000, type = "bootstrap") %>%
@@ -357,13 +385,12 @@ prof_small %>%
   visualize()
 ```
 
-### Currently testing t-stat
 ### To Do (Also overlay appropriate t distn)
 ### To Do (Shift t stats to be centered at 0 for bootstrapping)
 
 One numerical variable one categorical (2 levels) (diff in means)
 
-```{r eval=FALSE, include=FALSE}
+```{r eval=FALSE}
 prof_small %>%
   specify(age ~ sex) %>%
   generate(reps = 1000, type = "bootstrap") %>%
@@ -377,7 +404,7 @@ prof_small %>%
 
 Two categorical variables (diff in proportions)
 
-```{r eval=FALSE, include=FALSE}
+```{r eval=FALSE}
 prof_small %>%
   specify(sex ~ city) %>%
   generate(reps = 1000, type = "bootstrap") %>%
@@ -391,7 +418,7 @@ prof_small %>%
 
 Two numerical vars - SLR
 
-```{r eval=FALSE, include=FALSE}
+```{r eval=FALSE}
 prof_small %>%
   specify(age ~ height) %>% 
   generate(reps = 1000, type = "bootstrap") %>%
