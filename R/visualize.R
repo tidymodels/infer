@@ -16,7 +16,7 @@
 #' Can also specify "left", "right", or "both".
 #' @param ... currently ignored
 #' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle xlab ylab 
-#' @importFrom ggplot2 geom_vline geom_rect
+#' @importFrom ggplot2 geom_vline geom_rect geom_bar
 #' @importFrom stats dt qt df qf dnorm qnorm dchisq qchisq
 #' @return A ggplot object showing the randomization-based distribution as a
 #'  histogram or bar graph. Also used to show the theoretical curves.
@@ -63,14 +63,18 @@ visualize <- function(data, bins = 15, method = "randomization",
   assertive::assert_is_numeric(bins)
   
   if(!is.null(direction) & is.null(obs_stat))
-    stop("Shading requires observed statistic value to be given.")
+    stop("Shading requires observed statistic `obs_stat` value to be given.")
   
   if(method == "randomization"){
     # TODO:  determine whether a bar graph or a histogram is
     # more appropriate
     if(is.null(direction)){
-      infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
-        geom_histogram(bins = bins, color = "white")
+      if(length(unique(data$stat)) >= bins)
+        infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
+          geom_histogram(bins = bins, color = "white")
+      else
+        infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
+          geom_bar()
     } else {
       infer_plot <- shade_density_check(data = data, #gg_plot = infer_t_plot,
                                         obs_stat = obs_stat,
