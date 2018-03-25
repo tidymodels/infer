@@ -162,13 +162,29 @@ prof_small %>%
   calculate(stat = "Chisq") %>% 
   visualize(method = "both")
 
-## ----eval=FALSE, include=FALSE-------------------------------------------
-#  prof_small %>%
-#    specify(age ~ height) %>% # alt: response = age, explanatory = height
-#    hypothesize(null = "independence") %>%
-#    generate(reps = 1000, type = "permute") %>%
-#    calculate(stat = "slope") %>%
-#    visualize()
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(age ~ height) %>% # alt: response = age, explanatory = height
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "t") %>% 
+  visualize()
+
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(age ~ height) %>% # alt: response = age, explanatory = height
+  hypothesize(null = "independence") %>%
+#  generate(reps = 1000, type = "permute") %>%
+#  calculate(stat = "t") %>% 
+  visualize(method = "theoretical")
+
+## ------------------------------------------------------------------------
+prof_small %>%
+  specify(age ~ height) %>% # alt: response = age, explanatory = height
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "t") %>% 
+  visualize(method = "both")
 
 ## ----eval=FALSE, include=FALSE-------------------------------------------
 #  prof_small %>%

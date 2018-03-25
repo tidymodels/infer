@@ -1,25 +1,7 @@
----
-title: "Randomization Examples using `nycflights13` `flights` data"
-author: "Chester Ismay and Andrew bray"
-date: "2018-01-05"
-output: 
-  rmarkdown::html_vignette:
-    df_print: kable
-vignette: |
-  %\VignetteIndexEntry{flights example}
-  %\VignetteEncoding{UTF-8}
-  %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: console
----
-
-```{r include=FALSE}
+## ----include=FALSE-------------------------------------------------------
 knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
-```
 
-## Data preparation
-
-```{r message=FALSE, warning=FALSE}
+## ----message=FALSE, warning=FALSE----------------------------------------
 library(nycflights13)
 library(dplyr)
 library(ggplot2)
@@ -39,22 +21,8 @@ fli_small <- flights %>%
   select(arr_delay, dep_delay, season, 
          day_hour, origin, carrier) %>%
   filter(., complete.cases(.))
-```
 
-* Two numeric - `arr_delay`, `dep_delay`
-* Two categories 
-    - `season` (`"winter"`, `"summer"`), 
-    - `day_hour` (`"morning"`, `"not morning"`)
-* Three categories - `origin` (`"EWR"`, `"JFK"`, `"LGA"`)
-* Sixteen categories - `carrier`
-
-***
-
-# Hypothesis tests
-
-### One numerical variable (mean)
-
-```{r}
+## ------------------------------------------------------------------------
 x_bar <- fli_small %>%
   summarize(mean(dep_delay)) %>%
   pull()
@@ -68,11 +36,8 @@ ggplot(data = null_distn, mapping = aes(x = stat)) +
   geom_vline(xintercept = x_bar, color = "red")
 null_distn %>%
   summarize(p_value = mean(stat > x_bar) * 2)
-```
 
-### One numerical variable (median)
-
-```{r}
+## ------------------------------------------------------------------------
 x_tilde <- fli_small %>%
   summarize(median(dep_delay)) %>%
   pull()
@@ -86,11 +51,8 @@ ggplot(null_distn, aes(x = stat)) +
   geom_vline(xintercept = x_tilde, color = "red")
 null_distn %>%
   summarize(p_value = mean(stat < x_tilde) * 2)
-```
 
-### One categorical (one proportion)
-
-```{r}
+## ------------------------------------------------------------------------
 p_hat <- fli_small %>%
   summarize(mean(day_hour == "morning")) %>%
   pull()
@@ -104,23 +66,16 @@ ggplot(null_distn, aes(x = stat)) +
   geom_vline(xintercept = p_hat, color = "red")
 null_distn %>%
   summarize(p_value = mean(stat < p_hat) * 2)
-```
 
-Logical variables will be coerced to factors:
-
-```{r}
+## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
   mutate(day_hour_logical = (day_hour == "morning")) %>%
   specify(response = day_hour_logical, success = "TRUE") %>%
   hypothesize(null = "point", p = .5) %>%
   generate(reps = 1000, type = "simulate") %>%
   calculate(stat = "prop")
-```
 
-
-### Two categorical (2 level) variables
-
-```{r}
+## ------------------------------------------------------------------------
 d_hat <- fli_small %>%
   group_by(season) %>%
   summarize(prop = mean(day_hour == "morning")) %>%
@@ -136,11 +91,8 @@ ggplot(null_distn, aes(x = stat)) +
   geom_vline(xintercept = d_hat, color = "red")
 null_distn %>%
   summarize(p_value = mean(stat < d_hat) * 2)
-```
 
-### One categorical (>2 level) - GoF
-
-```{r}
+## ------------------------------------------------------------------------
 Chisq_hat <- chisq.test(table(fli_small$origin))$stat
 null_distn <- fli_small %>%
   specify(response = origin) %>%
@@ -153,11 +105,8 @@ ggplot(null_distn, aes(x = stat)) +
   geom_vline(xintercept = Chisq_hat, color = "red")
 null_distn %>%
   summarize(p_value = mean(stat > Chisq_hat)) 
-```
 
-### Two categorical (>2 level) variables
-
-```{r}
+## ------------------------------------------------------------------------
 Chisq_hat <- chisq.test(table(fli_small$day_hour, fli_small$origin))$stat
 null_distn <- fli_small %>%
   specify(day_hour ~ origin, success = "morning") %>%
@@ -169,11 +118,8 @@ ggplot(null_distn, aes(x = stat)) +
   geom_vline(xintercept = Chisq_hat, color = "red")
 null_distn %>%
   summarize(p_value = mean(stat > Chisq_hat)) 
-```
 
-### One numerical variable, one categorical (2 levels) (diff in means)
-
-```{r}
+## ------------------------------------------------------------------------
 d_hat <- fli_small %>% 
   group_by(season) %>% 
   summarize(mean_stat = mean(dep_delay)) %>% 
@@ -190,11 +136,8 @@ ggplot(null_distn, aes(x = stat)) +
   geom_vline(xintercept = d_hat, color = "red")
 null_distn %>%
   summarize(p_value = mean(stat > d_hat) * 2)   
-```
 
-### One numerical variable, one categorical (2 levels) (diff in medians)
-
-```{r}
+## ------------------------------------------------------------------------
 d_hat <- fli_small %>% 
   group_by(season) %>% 
   summarize(median_stat = median(dep_delay)) %>% 
@@ -211,11 +154,8 @@ ggplot(null_distn, aes(x = stat)) +
   geom_vline(xintercept = d_hat, color = "red")
 null_distn %>%
   summarize(p_value = mean(stat > d_hat) * 2)    
-```
 
-### One numerical, one categorical (>2 levels) -  ANOVA
-
-```{r}
+## ------------------------------------------------------------------------
 F_hat <- anova(
                aov(formula = arr_delay ~ origin, data = fli_small)
                )$`F value`[1]
@@ -230,11 +170,8 @@ ggplot(null_distn, aes(x = stat)) +
   geom_vline(xintercept = F_hat, color = "red")  
 null_distn %>% 
   summarize(p_value = mean(stat > F_hat))
-```
 
-### Two numerical vars - SLR 
-
-```{r}
+## ------------------------------------------------------------------------
 slope_hat <- lm(arr_delay ~ dep_delay, data = fli_small) %>% 
   broom::tidy() %>% 
   filter(term == "dep_delay") %>% 
@@ -250,13 +187,8 @@ ggplot(null_distn, aes(x = stat)) +
   geom_vline(xintercept = slope_hat, color = "red")  
 null_distn %>% 
   summarize(p_value = mean(stat > slope_hat) * 2)   
-```
 
-## Confidence intervals
-
-### One numerical (one mean)
-
-```{r}
+## ------------------------------------------------------------------------
 x_bar <- fli_small %>%
    summarize(mean(arr_delay)) %>%
    pull()
@@ -267,11 +199,8 @@ boot <- fli_small %>%
    pull()
 c(lower = x_bar - 2 * sd(boot),
   upper = x_bar + 2 * sd(boot))
-```
 
-### One categorical (one proportion)
-
-```{r}
+## ------------------------------------------------------------------------
 p_hat <- fli_small %>%
  summarize(mean(day_hour == "morning")) %>%
  pull()
@@ -282,11 +211,8 @@ boot <- fli_small %>%
  pull()
 c(lower = p_hat - 2 * sd(boot),
  upper = p_hat + 2 * sd(boot))
-```
 
-### One numerical variable, one categorical (2 levels) (diff in means)
-
-```{r}
+## ------------------------------------------------------------------------
 d_hat <- fli_small %>% 
   group_by(season) %>% 
   summarize(mean_stat = mean(arr_delay)) %>% 
@@ -299,11 +225,8 @@ boot <- fli_small %>%
    pull()
 c(lower = d_hat - 2 * sd(boot), 
   upper = d_hat + 2 * sd(boot))
-```
 
-### Two categorical variables (diff in proportions)
-
-```{r}
+## ------------------------------------------------------------------------
 d_hat <- fli_small %>%
   group_by(season) %>%
   summarize(prop = mean(day_hour == "morning")) %>%
@@ -316,11 +239,8 @@ boot <- fli_small %>%
   pull()
 c(lower = d_hat - 2 * sd(boot), 
   upper = d_hat + 2 * sd(boot))
-```
 
-### Two numerical vars - SLR
-
-```{r}
+## ------------------------------------------------------------------------
 slope_hat <- lm(arr_delay ~ dep_delay, data = fli_small) %>% 
   broom::tidy() %>% 
   filter(term == "dep_delay") %>% 
@@ -333,4 +253,4 @@ boot <- fli_small %>%
    pull()
 c(lower = slope_hat - 2 * sd(boot), 
   upper = slope_hat + 2 * sd(boot))   
-```
+
