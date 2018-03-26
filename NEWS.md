@@ -21,6 +21,7 @@ values for generated statistics is small
 - Determine if other wrapper functions should be created 
     - `z_test()`? 
     - Add implementation of one sample `t_test()`?
+- Write tests to get `covr::package_coverage()` back up over 90%
     
 # infer 0.1.1
 - Added additional tests
