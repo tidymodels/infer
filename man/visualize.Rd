@@ -2,8 +2,8 @@
 % Please edit documentation in R/visualize.R
 \name{visualize}
 \alias{visualize}
-\title{(Currently) Visualize the randomization-based distribution 
-(To be updated to include theory-based distributions)}
+\title{Visualize the distribution of the randomization-based statistics
+or the theoretical distribution (or both!)}
 \usage{
 visualize(data, bins = 15, method = "randomization", dens_color = "black",
   obs_stat = NULL, obs_stat_color = "#00BFC4", direction = NULL, ...)
@@ -37,8 +37,8 @@ A ggplot object showing the randomization-based distribution as a
  histogram or bar graph. Also used to show the theoretical curves.
 }
 \description{
-(Currently) Visualize the randomization-based distribution 
-(To be updated to include theory-based distributions)
+Visualize the distribution of the randomization-based statistics
+or the theoretical distribution (or both!)
 }
 \examples{
 # Permutations to create randomization null distribution for 
