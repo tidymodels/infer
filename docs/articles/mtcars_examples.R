@@ -4,7 +4,7 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 5)
 ## ----message=FALSE, warning=FALSE----------------------------------------
 library(infer)
 library(dplyr)
-mtcars <- as.data.frame(mtcars) %>%
+mtcars <- mtcars %>%
   mutate(cyl = factor(cyl),
          vs = factor(vs),
          am = factor(am),

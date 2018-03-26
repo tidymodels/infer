@@ -33,7 +33,7 @@ prof_small %>%
 
 ## ------------------------------------------------------------------------
 prof_small %>%
-  specify(response = sex, success = "m") %>% # alt: sex ~ NULL
+  specify(response = sex, success = "m") %>%
   hypothesize(null = "point", p = c("m" = .65)) %>% 
   generate(reps = 1000, type = "simulate") %>% 
   calculate(stat = "prop") %>% 
@@ -41,7 +41,7 @@ prof_small %>%
 
 ## ------------------------------------------------------------------------
 prof_small %>%
-  specify(sex ~ city) %>% # alt: response = sex, explanatory = city
+  specify(sex ~ city, success = "m") %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in props", order = c("san fran", "not san fran")) %>% 
@@ -112,9 +112,9 @@ prof_small %>%
 
 ## ------------------------------------------------------------------------
 prof_small %>%
-  specify(response = sex) %>%
+  specify(response = sex, success = "f") %>%
   generate(reps = 1000, type = "bootstrap") %>%
-  calculate(stat = "prop", success = "f") %>% 
+  calculate(stat = "prop") %>% 
   visualize()
 
 ## ------------------------------------------------------------------------
@@ -126,7 +126,7 @@ prof_small %>%
 
 ## ------------------------------------------------------------------------
 prof_small %>%
-  specify(sex ~ city) %>%
+  specify(sex ~ city, success = "m") %>%
   generate(reps = 1000, type = "bootstrap") %>%
   calculate(stat = "diff in props", order = c("san fran", "not san fran")) %>% 
   visualize()

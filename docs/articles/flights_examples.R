@@ -9,6 +9,7 @@ library(stringr)
 library(infer)
 set.seed(2017)
 fli_small <- flights %>% 
+  na.omit() %>%
   sample_n(size = 500) %>% 
   mutate(season = case_when(
     month %in% c(10:12, 1:3) ~ "winter",
@@ -19,8 +20,7 @@ fli_small <- flights %>%
     between(hour, 13, 24) ~ "not morning"
   )) %>% 
   select(arr_delay, dep_delay, season, 
-         day_hour, origin, carrier) %>%
-  filter(., complete.cases(.))
+         day_hour, origin, carrier)
 
 ## ------------------------------------------------------------------------
 x_bar <- fli_small %>%

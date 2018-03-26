@@ -49,8 +49,8 @@ chisq_null_distn %>%
 fli_small %>%
   specify(origin ~ season) %>% # alt: response = origin, explanatory = season
   hypothesize(null = "independence") %>%
-  # calculate(stat = "Chisq") ## Not needed since t is implied based on variable types
-  visualize(method = "theoretical", obs_stat = obs_chisq)
+  # calculate(stat = "Chisq") ## Not needed since Chisq is implied based on variable types
+  visualize(method = "theoretical", obs_stat = obs_chisq, direction = "right")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  fli_small %>%
@@ -58,5 +58,16 @@ fli_small %>%
 #    hypothesize(null = "independence") %>%
 #    generate(reps = 1000, type = "permute") %>%
 #    calculate(stat = "Chisq") %>%
-#    visualize(method = "both", obs_stat = obs_chisq)
+#    visualize(method = "both", obs_stat = obs_chisq, direction = "right")
+
+## ----echo=FALSE----------------------------------------------------------
+# To use same distribution calculated above
+chisq_null_distn %>% 
+  visualize(method = "both", obs_stat = obs_chisq, direction = "right")
+
+## ------------------------------------------------------------------------
+fli_small %>% 
+  chisq_test(formula = origin ~ season) %>% 
+  dplyr::select(p_value) %>% 
+  dplyr::pull()
 

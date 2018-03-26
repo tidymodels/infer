@@ -24,14 +24,14 @@ To install the current stable version of `infer` from CRAN:
 install.packages("infer")
 ```
 
-To install the developmental version of `infer`, make sure to install `remotes` first:
+To install the developmental version of `infer`, make sure to install `remotes` first. The `pkgdown` website for this developmental version is at <https://infer.netlify.com>.
 
 ``` r
 install.packages("remotes")
 remotes::install_github("andrewpbray/infer")
 ```
 
-To install the cutting edge version of `infer` (do so at your own risk), make sure to install `remotes` first. This version was last updated on 2018-03-25.
+To install the cutting edge version of `infer` (do so at your own risk), make sure to install `remotes` first. This version was last updated on 2018-03-25 22:01:05.
 
 ``` r
 install.packages("remotes")
