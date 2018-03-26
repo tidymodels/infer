@@ -18,6 +18,7 @@ values for generated statistics is small
 ## To Dos
 
 - Need to also add parameters to wrapper functions so that randomization methods can be implemented by practictioners looking to skip the longer pipe syntax
+- Implement shading for randomization methods without a traditional distribution
 - Determine if other wrapper functions should be created 
     - `z_test()`? 
     - Add implementation of one sample `t_test()`?

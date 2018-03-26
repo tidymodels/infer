@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • infer</title>
+<title>All news • infer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,7 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Changelog" />
+  
+  
+<meta property="og:title" content="All news" />
 
 
 <!-- mathjax -->
@@ -52,14 +54,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1.9000</span>
+        <span class="label label-" data-toggle="tooltip" data-placement="bottom" title="">0.1.1.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="..//index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -84,10 +86,10 @@
       <a href="../articles/mtcars_examples.html">Examples using `mtcars` data</a>
     </li>
     <li>
-      <a href="../articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
+      <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
-      <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
+      <a href="../articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
       <a href="../articles/two_sample_t.html">Two sample $t$ test example using `nycflights13` `flights` data</a>
@@ -95,7 +97,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="../news/index.html">News</a>
 </li>
       </ul>
       
@@ -118,15 +120,14 @@
 
   <div class="col-md-9">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/andrewpbray/infer/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+      <h1>Changelog <small>All releases</small></h1>
+      
     </div>
 
     <div class="contents">
     <div id="infer-0-1-1-9000" class="section level1">
-<h1 class="page-header">
-<a href="#infer-0-1-1-9000" class="anchor"></a>infer 0.1.1.9000<small> Unreleased </small>
-</h1>
+<h1 class="hasAnchor">
+<a href="#infer-0-1-1-9000" class="anchor"></a>infer 0.1.1.9000</h1>
 <ul>
 <li>Switched to <code>!!</code> instead of <code>UQ()</code> since <code>UQ()</code> is deprecated in {rlang} 0.2.0</li>
 <li>Added wrapper functions <code><a href="../reference/t_test.html">t_test()</a></code> and <code><a href="../reference/chisq_test.html">chisq_test()</a></code> that use a formula interface</li>
@@ -152,6 +153,7 @@
 <a href="#to-dos" class="anchor"></a>To Dos</h2>
 <ul>
 <li>Need to also add parameters to wrapper functions so that randomization methods can be implemented by practictioners looking to skip the longer pipe syntax</li>
+<li>Implement shading for randomization methods without a traditional distribution</li>
 <li>Determine if other wrapper functions should be created
 <ul>
 <li>
@@ -164,9 +166,8 @@
 </div>
 </div>
     <div id="infer-0-1-1" class="section level1">
-<h1 class="page-header">
-<a href="#infer-0-1-1" class="anchor"></a>infer 0.1.1<small> 2018-01-22 </small>
-</h1>
+<h1 class="hasAnchor">
+<a href="#infer-0-1-1" class="anchor"></a>infer 0.1.1</h1>
 <ul>
 <li>Added additional tests</li>
 <li>Fixed bugs post-CRAN release</li>
@@ -174,9 +175,8 @@
 </ul>
 </div>
     <div id="infer-0-1-0" class="section level1">
-<h1 class="page-header">
-<a href="#infer-0-1-0" class="anchor"></a>infer 0.1.0<small> 2018-01-08 </small>
-</h1>
+<h1 class="hasAnchor">
+<a href="#infer-0-1-0" class="anchor"></a>infer 0.1.0</h1>
 <ul>
 <li>Altered the way that successes are indicated in an infer pipeline. They now live in <code><a href="../reference/specify.html">specify()</a></code>.</li>
 <li>Updated documentation with examples</li>
@@ -186,9 +186,8 @@
 </ul>
 </div>
     <div id="infer-0-0-1" class="section level1">
-<h1 class="page-header">
-<a href="#infer-0-0-1" class="anchor"></a>infer 0.0.1<small> Unreleased </small>
-</h1>
+<h1 class="hasAnchor">
+<a href="#infer-0-0-1" class="anchor"></a>infer 0.0.1</h1>
 <ul>
 <li>Implemented the “intro stats” examples for randomization methods as shown on the README</li>
 </ul>
@@ -224,4 +223,3 @@
 
   </body>
 </html>
-
