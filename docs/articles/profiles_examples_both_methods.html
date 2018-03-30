@@ -109,8 +109,7 @@
 <div id="note" class="section level1">
 <h1 class="hasAnchor">
 <a href="#note" class="anchor"></a>Note</h1>
-<p>The <code>okcupiddata</code> is thought by some to be controversial. Its use here is only to check for a variety of different variable types and levels. It will remain only in this “cutting edge” version of the package as we continue to add and test examples.</p>
-<p><strong>AMSTAT NEWS POST</strong></p>
+<p>There has been some recent <a href="https://www.wired.com/2016/05/okcupid-study-reveals-perils-big-data-science/">controversy</a> surrounding data of this sort similar to what is given in the {okcupiddata} package. Explicit permission was obtained from OkCupid and usernames were not included in the data set for that package. Its use here is only to check for a variety of different variable types and levels. It will remain only in this “cutting edge” version of the package as we continue to add and test examples.</p>
 <p>The <code>method = "both"</code> examples here do another randomization instead of using the one with <code><a href="../reference/visualize.html">visualize()</a></code> set to the default of <code>method = "randomization"</code>. This is to show the full pipeline for a variety of examples, but more than likely you’ll want to do something like the following instead in practice.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn &lt;-<span class="st"> </span>prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>sex) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = sex</span>

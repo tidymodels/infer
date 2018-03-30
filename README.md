@@ -31,7 +31,7 @@ install.packages("remotes")
 remotes::install_github("andrewpbray/infer")
 ```
 
-To install the cutting edge version of `infer` (do so at your own risk), make sure to install `remotes` first. This version was last updated on 2018-03-25 22:01:05.
+To install the cutting edge version of `infer` (do so at your own risk), make sure to install `remotes` first. This version was last updated on 2018-03-29 18:36:32.
 
 ``` r
 install.packages("remotes")
