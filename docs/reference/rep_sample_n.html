@@ -25,9 +25,11 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
 <meta property="og:title" content="Perform repeated sampling — rep_sample_n" />
+
+<meta property="og:description" content="Perform repeated sampling of samples of size n. Useful for creating
+sampling distributions" />
+<meta name="twitter:card" content="summary" />
 
 
 <!-- mathjax -->
@@ -54,14 +56,14 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-" data-toggle="tooltip" data-placement="bottom" title="">0.1.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.1.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="..//index.html">
+  <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
@@ -86,10 +88,10 @@
       <a href="../articles/mtcars_examples.html">Examples using `mtcars` data</a>
     </li>
     <li>
-      <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
+      <a href="../articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
-      <a href="../articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
+      <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
       <a href="../articles/two_sample_t.html">Two sample $t$ test example using `nycflights13` `flights` data</a>
@@ -97,7 +99,7 @@
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -120,7 +122,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Perform repeated sampling</h1>
-    
+    <small>Source: <a href='https://github.com/andrewpbray/infer/blob/master/R/rep_sample_n.R'><code>R/rep_sample_n.R</code></a></small>
     </div>
 
     
@@ -210,7 +212,7 @@ the vector being sampled.</p></td>
 <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>p_hats</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>prop_red</span>)) +
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>geom_density</a></span>() +
   <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"p_hat"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Number of samples"</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Sampling distribution of p_hat from 1000 samples of size 50"</span>)</div><div class='img'><img src='rep_sample_n-5.png' alt='' width='700' height='432.632880098887' /></div></pre>
+  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Sampling distribution of p_hat from 1000 samples of size 50"</span>)</div><div class='img'><img src='rep_sample_n-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -239,3 +241,4 @@ the vector being sampled.</p></td>
 
   </body>
 </html>
+

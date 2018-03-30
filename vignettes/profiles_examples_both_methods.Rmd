@@ -21,6 +21,8 @@ The `okcupiddata` is thought by some to be controversial. Its use here is only
 to check for a variety of different variable types and levels. It will remain only in this
 "cutting edge" version of the package as we continue to add and test examples.
 
+**AMSTAT NEWS POST**
+
 The `method = "both"` examples here do another randomization instead of using the one
 with `visualize()` set to the default of `method = "randomization"`. This is to show the full
 pipeline for a variety of examples, but more than likely you'll want to do something like the
@@ -213,7 +215,7 @@ prof_small %>%
 
 Randomization approach to $\chi^2$-statistic
 
-```{r eval=FALSE, include=FALSE}
+```{r}
 prof_small %>%
   specify(drugs ~ status) %>% # alt: response = drugs, explanatory = status
   hypothesize(null = "independence") %>%

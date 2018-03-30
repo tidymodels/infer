@@ -6,7 +6,8 @@
 or the theoretical distribution (or both!)}
 \usage{
 visualize(data, bins = 15, method = "randomization", dens_color = "black",
-  obs_stat = NULL, obs_stat_color = "#00BFC4", direction = NULL, ...)
+  obs_stat = NULL, obs_stat_color = "#e51010", shade_color = "#efb8b8",
+  direction = NULL, ...)
 }
 \arguments{
 \item{data}{the output from \code{\link{calculate}}}
@@ -25,6 +26,8 @@ statistic is}
 
 \item{obs_stat_color}{a character or hex string specifying the color of
 the observed statistic}
+
+\item{shade_color}{a character or hex string specifying the color to shade}
 
 \item{direction}{a string specifying in which direction the shading 
 should occur. Options are "less", "greater", or "two_sided".
