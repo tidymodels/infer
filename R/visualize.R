@@ -460,6 +460,6 @@ visualize_both <- function(data = data, bins = bins,
   infer_plot
 }
 
-get_percentile <- function(x, perc) {
-  stats::ecdf(x)(perc)
+get_percentile <- function(vector, observation) {
+  stats::ecdf(vector)(observation)
 }
