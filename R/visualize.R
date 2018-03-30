@@ -16,8 +16,8 @@
 #' should occur. Options are "less", "greater", or "two_sided".
 #' Can also specify "left", "right", or "both".
 #' @param ... currently ignored
-#' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle xlab ylab 
-#' @importFrom ggplot2 geom_vline geom_rect geom_bar
+#' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle  
+#' @importFrom ggplot2 xlab ylab geom_vline geom_rect geom_bar
 #' @importFrom stats dt qt df qf dnorm qnorm dchisq qchisq
 #' @return A ggplot object showing the randomization-based distribution as a
 #'  histogram or bar graph. Also used to show the theoretical curves.
@@ -197,7 +197,8 @@ theory_chisq_plot <- function(deg_freedom,
                               dens_color = "black", ...){
   ggplot(data.frame(x = c(qchisq(0.001, deg_freedom), 
                           qchisq(0.999, deg_freedom)))) + 
-    stat_function(mapping = aes(x), fun = dchisq, args = list(df = deg_freedom), 
+    stat_function(mapping = aes(x), fun = dchisq, 
+                  args = list(df = deg_freedom), 
                   color = dens_color) +
     ggtitle(paste("Theoretical", statistic_text, "Null Distribution")) +
     xlab("") +
@@ -268,9 +269,10 @@ shade_density_check <- function(data = data,
          obs_stat >= stats::median(data$stat)){
         gg_plot <- gg_plot +
           geom_rect(fill = shade_color, alpha = 0.01,
-                    aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf)) +
+                    mapping = aes(xmin = obs_stat, xmax = Inf, ymin = 0, 
+                                  ymax = Inf)) +
           geom_rect(fill = shade_color, alpha = 0.01,
-                    aes(
+                    mapping = aes(
                       xmin = -Inf, 
                       xmax = stats::quantile(
                         data$stat, 
@@ -284,9 +286,10 @@ shade_density_check <- function(data = data,
          obs_stat < stats::median(data$stat)){
         gg_plot <- gg_plot +
           geom_rect(fill = shade_color, alpha = 0.01,
-                    aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf)) +
+                    mapping = aes(xmin = -Inf, xmax = obs_stat, ymin = 0, 
+                                  ymax = Inf)) +
           geom_rect(fill = shade_color, alpha = 0.01,
-                    aes(#xmin = -obs_stat, 
+                    mapping = aes( 
                       xmin = stats::quantile(
                         data$stat, 
                         probs = 1 - get_percentile(data$stat, obs_stat)
@@ -309,7 +312,8 @@ visualize_randomization <- function(data, bins = 15, method = "randomization",
         geom_histogram(bins = bins, color = "white")
     else
       infer_plot <- ggplot(data = data, mapping = aes(x = factor(stat))) +
-        geom_bar()
+        geom_bar() +
+        xlab("stat")
   } else {
     infer_plot <- shade_density_check(data = data,
                                       obs_stat = obs_stat,
@@ -375,8 +379,8 @@ visualize_theoretical <- function(data,
                         xmax = Inf, ymin = 0, ymax = Inf))
       }
       
-      # Assuming two-tailed shading will only happen with theoretical distributions
-      # centered at 0
+      # Assuming two-tailed shading will only happen with theoretical 
+      # distributions centered at 0
       if(direction %in% c("two_sided", "both") && obs_stat >= 0){
         infer_plot <- infer_plot +
           geom_rect(data = data.frame(obs_stat), fill = shade_color, 

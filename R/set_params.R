@@ -5,18 +5,23 @@ set_params <- function(x){
   attr(x, "theory_type") <- NULL
   
   if(!is.null(attr(x, "response"))){
-    num_response_levels <- length(levels(x[[as.character(attr(x, "response"))]]))
+    num_response_levels <- length(
+        levels(x[[as.character(attr(x, "response"))]])
+      )
   }
   
   # One variable
   if (!is.null(attr(x, "response")) && is.null(attr(x, "explanatory")) && 
-      !is.null(attr(x, "response_type")) && is.null(attr(x, "explanatory_type"))){
+      !is.null(attr(x, "response_type")) && 
+      is.null(attr(x, "explanatory_type"))){
     
     # One mean
     if(attr(x, "response_type") %in% c("integer", "numeric")){
       attr(x, "theory_type") <- "One sample t"
       attr(x, "distr_param") <- x %>% 
-        dplyr::summarize(df = stats::t.test(x[[as.character(attr(x, "response"))]])[["parameter"]]) %>% 
+        dplyr::summarize(df = stats::t.test(
+            x[[as.character(attr(x, "response"))]])[["parameter"]]
+          ) %>% 
         dplyr::pull()
     }
     
@@ -33,7 +38,8 @@ set_params <- function(x){
   
   # Two variables
   if (!is.null(attr(x, "response")) && !is.null(attr(x, "explanatory")) & 
-      !is.null(attr(x, "response_type")) && !is.null(attr(x, "explanatory_type"))){
+      !is.null(attr(x, "response_type")) && 
+      !is.null(attr(x, "explanatory_type"))){
     # Response is numeric, explanatory is categorical
     if(attr(x, "response_type") %in% c("integer", "numeric") &
        attr(x, "explanatory_type") == "factor"){
@@ -41,11 +47,11 @@ set_params <- function(x){
       # Two sample means (t distribution)
       if(length(levels(x[[as.character(attr(x, "explanatory"))]])) == 2) {
         attr(x, "theory_type") <- "Two sample t"
-        # Keep track of Satterthwaite degrees of freedom since lost when in aggregation w/
-        # calculate()/generate()
+        # Keep track of Satterthwaite degrees of freedom since lost when 
+        # in aggregation w/ calculate()/generate()
         attr(x, "distr_param") <- x %>% 
           dplyr::summarize(df = stats::t.test(
-              !! attr(x, "response") ~ !! attr(x, "explanatory"))[["parameter"]]
+              !!attr(x, "response") ~ !!attr(x, "explanatory"))[["parameter"]]
             ) %>% 
           dplyr::pull()
       } else {

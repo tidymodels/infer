@@ -123,8 +123,9 @@ calculate <- function(x, stat, order = NULL, ...) {
   if (!(stat %in% c("diff in means", "diff in medians", "diff in props") ||
       attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))) {
     if (!is.null(order)){
-      warning(paste("Statistic is not based on a difference; the `order` argument",
-                 "is ignored. Check `?calculate` for details."))
+      warning(paste("Statistic is not based on a difference;",
+                    "the `order` argument",
+                    "is ignored. Check `?calculate` for details."))
     }
   }
   
