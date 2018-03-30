@@ -59,11 +59,12 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
     if (length(prob) != n) 
       stop(paste("The argument `prob` must have length `nrow(tbl)` = ", 
                  nrow(tbl)))
-    df_lkup <- dplyr::data_frame(vals = levels(dplyr::pull(tbl, 1)))
-    names(df_lkup) <- names(tbl)
-    df_lkup$probs <- prob
-    tbl_wgt <- dplyr::inner_join(tbl, df_lkup)
-    prob <- tbl_wgt$probs
+    
+    prob <- dplyr::data_frame(vals = levels(dplyr::pull(tbl, 1))) %>% 
+      dplyr::mutate(probs = prob) %>% 
+      dplyr::inner_join(tbl) %>% 
+      dplyr::select(probs) %>% 
+      dplyr::pull()
   }
   
   i <- unlist(replicate(reps, sample.int(n, size, replace = replace, 
@@ -71,7 +72,7 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
                         simplify = FALSE))
   rep_tbl <- cbind(replicate = rep(1:reps, rep(size, reps)),
                    tbl[i, ])
-  rep_tbl <- dplyr::as_tibble(rep_tbl)
+  rep_tbl <- tibble::as_tibble(rep_tbl)
   names(rep_tbl)[-1] <- names(tbl)
   dplyr::group_by(rep_tbl, replicate)
 }
