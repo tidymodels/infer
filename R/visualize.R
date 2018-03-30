@@ -11,6 +11,7 @@
 #' statistic is
 #' @param obs_stat_color a character or hex string specifying the color of
 #'  the observed statistic
+#' @param shade_color a character or hex string specifying the color to shade
 #' @param direction a string specifying in which direction the shading 
 #' should occur. Options are "less", "greater", or "two_sided".
 #' Can also specify "left", "right", or "both".
@@ -56,7 +57,8 @@
 visualize <- function(data, bins = 15, method = "randomization", 
                       dens_color = "black",
                       obs_stat = NULL, 
-                      obs_stat_color = "#00BFC4",
+                      obs_stat_color = "#e51010",#"#00BFC4",
+                      shade_color = "#efb8b8",
                       direction = NULL, ...) {
   
   assertive::assert_is_data.frame(data)
@@ -70,14 +72,16 @@ visualize <- function(data, bins = 15, method = "randomization",
                                           dens_color = dens_color,
                                           obs_stat = obs_stat, 
                                           obs_stat_color = obs_stat_color,
-                                          direction = direction, ...)
+                                          direction = direction, 
+                                          shade_color = shade_color, ...)
     
   } else if(method == "theoretical"){
     infer_plot <- visualize_theoretical(data = data,
                                         dens_color = dens_color,
                                         obs_stat = obs_stat, 
                                         obs_stat_color = obs_stat_color,
-                                        direction = direction, ...)
+                                        direction = direction, 
+                                        shade_color = shade_color, ...)
     
     
   } else { #method == "both"
@@ -85,7 +89,8 @@ visualize <- function(data, bins = 15, method = "randomization",
                                  dens_color = dens_color,
                                  obs_stat = obs_stat, 
                                  obs_stat_color = obs_stat_color,
-                                 direction = direction, ...)
+                                 direction = direction,
+                                 shade_color = shade_color, ...)
     
   }
   
@@ -224,7 +229,7 @@ shade_density_check <- function(data = data,
                                 direction, 
                                 bins, 
                                 density = TRUE, 
-                                ...){ 
+                                shade_color = "#efb8b8", ...) {
   
   if(is.null(direction) || is.null(obs_stat)){
     if(density){
@@ -250,27 +255,43 @@ shade_density_check <- function(data = data,
       
       if(direction %in% c("less", "left")){
         gg_plot <- gg_plot +
-          geom_rect(fill = "lightcyan", alpha = 0.02, 
+          geom_rect(fill = shade_color, alpha = 0.01, 
                     aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf))
       }
       if(direction %in% c("greater", "right")){
         gg_plot <- gg_plot +
-          geom_rect(fill = "lightcyan", alpha = 0.02, 
+          geom_rect(fill = shade_color, alpha = 0.01, 
                     aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf))
       }
-      if(direction %in% c("two_sided", "both") && obs_stat >= 0){
+      
+      if(direction %in% c("two_sided", "both") && 
+         obs_stat >= stats::median(data$stat)){
         gg_plot <- gg_plot +
-          geom_rect(fill = "lightcyan", alpha = 0.02, 
+          geom_rect(fill = shade_color, alpha = 0.01,
                     aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf)) +
-          geom_rect(fill = "lightcyan", alpha = 0.02, 
-                    aes(xmin = -Inf, xmax = -obs_stat, ymin = 0, ymax = Inf)) 
+          geom_rect(fill = shade_color, alpha = 0.01,
+                    aes(
+                      xmin = -Inf, 
+                      xmax = stats::quantile(
+                        data$stat, 
+                        probs = 1 - get_percentile(data$stat, obs_stat)
+                      ),
+                      ymin = 0, ymax = Inf)
+          ) 
       }
-      if(direction %in% c("two_sided", "both") && obs_stat < 0){
+      
+      if(direction %in% c("two_sided", "both") && 
+         obs_stat < stats::median(data$stat)){
         gg_plot <- gg_plot +
-          geom_rect(fill = "lightcyan", alpha = 0.02, 
+          geom_rect(fill = shade_color, alpha = 0.01,
                     aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf)) +
-          geom_rect(fill = "lightcyan", alpha = 0.02, 
-                    aes(xmin = -obs_stat, xmax = Inf, ymin = 0, ymax = Inf)) 
+          geom_rect(fill = shade_color, alpha = 0.01,
+                    aes(#xmin = -obs_stat, 
+                      xmin = stats::quantile(
+                        data$stat, 
+                        probs = 1 - get_percentile(data$stat, obs_stat)
+                      ), xmax = Inf, ymin = 0, ymax = Inf)
+          ) 
       }
     }
   }
@@ -280,14 +301,14 @@ shade_density_check <- function(data = data,
 visualize_randomization <- function(data, bins = 15, method = "randomization", 
                                     dens_color = "black",
                                     obs_stat = NULL, 
-                                    obs_stat_color = "#00BFC4",
+                                    obs_stat_color = "#e51010",
                                     direction = NULL, ...) {
   if(is.null(direction)){
     if(length(unique(data$stat)) >= bins)
       infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
         geom_histogram(bins = bins, color = "white")
     else
-      infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
+      infer_plot <- ggplot(data = data, mapping = aes(x = factor(stat))) +
         geom_bar()
   } else {
     infer_plot <- shade_density_check(data = data,
@@ -302,8 +323,9 @@ visualize_randomization <- function(data, bins = 15, method = "randomization",
 visualize_theoretical <- function(data,
                                   dens_color = "black",
                                   obs_stat = NULL, 
-                                  obs_stat_color = "#00BFC4",
-                                  direction = NULL, ...) {
+                                  obs_stat_color = "#e51010",#"#00BFC4",
+                                  direction = NULL, 
+                                  shade_color = "#efb8b8", ...) {
   
   if(attr(data, "theory_type") %in% 
      c("Two sample t", "Slope with t", "One sample t")){    
@@ -341,33 +363,37 @@ visualize_theoretical <- function(data,
     if(!is.null(direction)){
       if(direction %in% c("less", "left")){
         infer_plot <- infer_plot +
-          geom_rect(data = data.frame(obs_stat), fill = "lightcyan", 
-                    alpha = 0.4,
+          geom_rect(data = data.frame(obs_stat), fill = shade_color, 
+                    alpha = 0.6,
                     aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf))
       }
       if(direction %in% c("greater", "right")){
         infer_plot <- infer_plot +
-          geom_rect(data = data.frame(obs_stat), fill = "lightcyan", 
-                    alpha = 0.4,
+          geom_rect(data = data.frame(obs_stat), fill = shade_color, 
+                    alpha = 0.6,
                     aes(xmin = obs_stat,
                         xmax = Inf, ymin = 0, ymax = Inf))
       }
+      
+      # Assuming two-tailed shading will only happen with theoretical distributions
+      # centered at 0
       if(direction %in% c("two_sided", "both") && obs_stat >= 0){
         infer_plot <- infer_plot +
-          geom_rect(data = data.frame(obs_stat), fill = "lightcyan", 
-                    alpha = 0.4,
+          geom_rect(data = data.frame(obs_stat), fill = shade_color, 
+                    alpha = 0.6,
                     aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf)) +
-          geom_rect(data = data.frame(obs_stat), fill = "lightcyan", 
-                    alpha = 0.4,
+          geom_rect(data = data.frame(obs_stat), fill = shade_color, 
+                    alpha = 0.6,
                     aes(xmin = -Inf, xmax = -obs_stat, ymin = 0, ymax = Inf))
       }
+
       if(direction %in% c("two_sided", "both") && obs_stat < 0){
         infer_plot <- infer_plot +
-          geom_rect(data = data.frame(obs_stat), fill = "lightcyan", 
-                    alpha = 0.4,
+          geom_rect(data = data.frame(obs_stat), fill = shade_color, 
+                    alpha = 0.6,
                     aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf)) +
-          geom_rect(data = data.frame(obs_stat), fill = "lightcyan", 
-                    alpha = 0.4,
+          geom_rect(data = data.frame(obs_stat), fill = shade_color, 
+                    alpha = 0.6,
                     aes(xmin = -obs_stat, xmax = Inf, ymin = 0, ymax = Inf))
       }
     }
@@ -379,8 +405,9 @@ visualize_theoretical <- function(data,
 visualize_both <- function(data = data, bins = bins, 
                            dens_color = dens_color,
                            obs_stat = obs_stat, 
-                           obs_stat_color = obs_stat_color,
-                           direction = direction, ...) {
+                           obs_stat_color = "#e51010",#"#00BFC4",
+                           direction = direction, 
+                           shade_color = "#efb8b8", ...) {
   
   if(attr(data, "theory_type") %in% c("Two sample t", "Slope with t")){
     
@@ -431,4 +458,8 @@ visualize_both <- function(data = data, bins = bins,
     stop(paste0("'", attr(data, "theory_type"), "' is not implemented yet."))
   
   infer_plot
+}
+
+get_percentile <- function(x, perc) {
+  stats::ecdf(x)(perc)
 }
