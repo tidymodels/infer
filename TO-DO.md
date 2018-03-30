@@ -9,6 +9,7 @@
 
 ## For future versions
 
+- Implement theoretical distributions for bootstrap distributions
 - Shading for Confidence Intervals in `visualize()` (Mine would prefer green
 for CI and red for p-values)
 - Determine whether `calculate()` should be where the `set_params()` function is called
@@ -20,5 +21,4 @@ methods can be implemented by practitioners looking to skip the longer pipe synt
     - Add implementation of one sample `t_test()`?
 - Create easy functions to determine observed statistics like the implemented
 `t_stat`: e.g., `mean_stat`?
-- Implement theoretical distributions for bootstrap distributions
-- Tweak `pkgdown` page to include ToDo's. [{dplyr}](https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml#L101) example
+- Tweak `pkgdown` page to include ToDo's. [{dplyr}](https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml) example
