@@ -173,24 +173,32 @@ prof_small %>%
 One numerical one categorical (>2 levels) -  ANOVA
 
 ```{r}
+F_hat <- anova(
+               aov(formula = age ~ status, data = prof_small)
+               )$`F value`[1]
 prof_small %>%
   specify(age ~ status) %>% # alt: response = age, explanatory = status
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "F") %>% 
   # Only "right" or "greater" as options here
-  visualize(obs_stat = obs_diff, direction = "greater")
+  visualize(obs_stat = F_hat, direction = "greater")
 ```
 
 Two numerical vars - SLR 
 
 ```{r}
+slope_hat <- lm(age ~ height, data = prof_small) %>% 
+  broom::tidy() %>% 
+  filter(term == "height") %>% 
+  select(estimate) %>% 
+  pull()
 prof_small %>%
   specify(age ~ height) %>% # alt: response = age, explanatory = height
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "slope") %>% 
-  visualize(obs_stat = obs_diff, direction = "right")
+  visualize(obs_stat = slope_hat, direction = "both")
 ```
 
 ## Confidence intervals

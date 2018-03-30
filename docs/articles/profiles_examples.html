@@ -239,26 +239,37 @@ prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> obs_diff, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
 <p><img src="profiles_examples_files/figure-html/unnamed-chunk-10-1.png" width="768"></p>
 <p>One numerical one categorical (&gt;2 levels) - ANOVA</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">F_hat &lt;-<span class="st"> </span><span class="kw">anova</span>(
+               <span class="kw">aov</span>(<span class="dt">formula =</span> age <span class="op">~</span><span class="st"> </span>status, <span class="dt">data =</span> prof_small)
+               )<span class="op">$</span><span class="st">`</span><span class="dt">F value</span><span class="st">`</span>[<span class="dv">1</span>]
+prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>status) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = status</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="co"># Only "right" or "greater" as options here</span>
-<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> obs_diff, <span class="dt">direction =</span> <span class="st">"greater"</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> F_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</code></pre></div>
 <p><img src="profiles_examples_files/figure-html/unnamed-chunk-11-1.png" width="768"></p>
 <p>Two numerical vars - SLR</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">slope_hat &lt;-<span class="st"> </span><span class="kw">lm</span>(age <span class="op">~</span><span class="st"> </span>height, <span class="dt">data =</span> prof_small) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>broom<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/broom/topics/tidy">tidy</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(term <span class="op">==</span><span class="st"> "height"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(estimate) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()
+prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>height) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = height</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> obs_diff, <span class="dt">direction =</span> <span class="st">"right"</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> slope_hat, <span class="dt">direction =</span> <span class="st">"both"</span>)</code></pre></div>
 <p><img src="profiles_examples_files/figure-html/unnamed-chunk-12-1.png" width="768"></p>
 </div>
 <div id="confidence-intervals" class="section level2">
 <h2 class="hasAnchor">
 <a href="#confidence-intervals" class="anchor"></a>Confidence intervals</h2>
+<div id="confidence-interval-shading-is-not-implemented-yet" class="section level3">
+<h3 class="hasAnchor">
+<a href="#confidence-interval-shading-is-not-implemented-yet" class="anchor"></a>Confidence interval shading is not implemented yet</h3>
 <p>One numerical (one mean)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> age) <span class="op">%&gt;%</span>
@@ -301,6 +312,7 @@ prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>()</code></pre></div>
 <p><img src="profiles_examples_files/figure-html/unnamed-chunk-18-1.png" width="768"></p>
+</div>
 </div>
 </div>
 </div>
