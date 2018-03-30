@@ -190,9 +190,9 @@ Two numerical vars - SLR
 ```{r}
 slope_hat <- lm(age ~ height, data = prof_small) %>% 
   broom::tidy() %>% 
-  filter(term == "height") %>% 
-  select(estimate) %>% 
-  pull()
+  dplyr::filter(term == "height") %>% 
+  dplyr::select(estimate) %>% 
+  dplyr::pull()
 prof_small %>%
   specify(age ~ height) %>% # alt: response = age, explanatory = height
   hypothesize(null = "independence") %>%
@@ -202,6 +202,8 @@ prof_small %>%
 ```
 
 ## Confidence intervals
+
+### Confidence interval shading is not implemented yet
 
 One numerical (one mean)
 

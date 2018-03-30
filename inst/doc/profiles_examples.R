@@ -123,9 +123,9 @@ prof_small %>%
 ## ------------------------------------------------------------------------
 slope_hat <- lm(age ~ height, data = prof_small) %>% 
   broom::tidy() %>% 
-  filter(term == "height") %>% 
-  select(estimate) %>% 
-  pull()
+  dplyr::filter(term == "height") %>% 
+  dplyr::select(estimate) %>% 
+  dplyr::pull()
 prof_small %>%
   specify(age ~ height) %>% # alt: response = age, explanatory = height
   hypothesize(null = "independence") %>%

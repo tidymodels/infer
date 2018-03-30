@@ -164,7 +164,8 @@ fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><s
 <h2 class="hasAnchor">
 <a href="#randomization-approach-to-t-statistic" class="anchor"></a>Randomization approach to t-statistic</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span>
+<span class="st">  </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"h1"</span>, <span class="st">"h2"</span>))
@@ -183,9 +184,10 @@ t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class=
 <h2 class="hasAnchor">
 <a href="#theoretical-distribution" class="anchor"></a>Theoretical distribution</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fli_small <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span>
+<span class="st">  </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># calculate(stat = "t") ## Not needed since t is implied based on variable types</span>
+<span class="st">  </span><span class="co"># calculate(stat = "t") ## Not needed since t is implied</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>, <span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
 <p><img src="two_sample_t_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
 </div>
@@ -193,7 +195,8 @@ t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class=
 <h2 class="hasAnchor">
 <a href="#overlay-appropriate-t-distribution-on-top-of-permuted-t-statistics" class="anchor"></a>Overlay appropriate <span class="math inline">\(t\)</span> distribution on top of permuted t-statistics</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fli_small <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span>
+<span class="st">  </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"h1"</span>, <span class="st">"h2"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>

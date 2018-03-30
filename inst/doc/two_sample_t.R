@@ -32,7 +32,8 @@ obs_t <- fli_small %>%
 
 ## ------------------------------------------------------------------------
 t_null_distn <- fli_small %>%
-  specify(arr_delay ~ half_year) %>% # alt: response = arr_delay, explanatory = half_year
+  # alt: response = arr_delay, explanatory = half_year
+  specify(arr_delay ~ half_year) %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t", order = c("h1", "h2"))
@@ -45,14 +46,16 @@ t_null_distn %>%
 
 ## ------------------------------------------------------------------------
 fli_small %>%
-  specify(arr_delay ~ half_year) %>% # alt: response = arr_delay, explanatory = half_year
+  # alt: response = arr_delay, explanatory = half_year
+  specify(arr_delay ~ half_year) %>%
   hypothesize(null = "independence") %>%
-  # calculate(stat = "t") ## Not needed since t is implied based on variable types
+  # calculate(stat = "t") ## Not needed since t is implied
   visualize(method = "theoretical", obs_stat = obs_t, direction = "two_sided")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  fli_small %>%
-#    specify(arr_delay ~ half_year) %>% # alt: response = arr_delay, explanatory = half_year
+#    # alt: response = arr_delay, explanatory = half_year
+#    specify(arr_delay ~ half_year) %>%
 #    hypothesize(null = "independence") %>%
 #    generate(reps = 1000, type = "permute") %>%
 #    calculate(stat = "t", order = c("h1", "h2")) %>%

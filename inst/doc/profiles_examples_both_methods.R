@@ -134,7 +134,7 @@ prof_small %>%
   specify(drugs ~ status) %>% # alt: response = drugs, explanatory = status
   hypothesize(null = "independence") %>%
   # generate() is not needed since we are not doing randomization
-  # calculate(stat = "Chisq") ## Not needed since Chisq implied based on variable types
+  # calculate(stat = "Chisq") ## Not needed since Chisq implied
   visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------
@@ -160,7 +160,7 @@ prof_small %>%
   hypothesize(null = "point", 
               p = c("never" = .7, "often" = .05, "sometimes" = .25)) %>%
   # generate() is not needed since we are not doing randomization
-  # calculate(stat = "Chisq") ## Not needed since z implied based on variable types
+  # calculate(stat = "Chisq") ## Not needed since Chisq implied
   visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------
@@ -185,7 +185,7 @@ prof_small %>%
   specify(age ~ height) %>% # alt: response = age, explanatory = height
   hypothesize(null = "independence") %>%
   # generate() is not needed since we are not doing randomization
-  # calculate(stat = "t") ## Not needed since z implied based on variable types
+  # calculate(stat = "t") ## Not needed since t implied based on variable types
   visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------
