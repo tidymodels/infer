@@ -17,9 +17,13 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 5)
 
 # Note
 
-The `okcupiddata` is thought by some to be controversial. Its use here is only
-to check for a variety of different variable types and levels. It will remain only in this
-"cutting edge" version of the package as we continue to add and test examples.
+There has been some recent [controversy](https://www.wired.com/2016/05/okcupid-study-reveals-perils-big-data-science/) 
+surrounding data of this sort similar to what is given in the {okcupiddata}
+package. Explicit permission was obtained from OkCupid and usernames were not
+included in the data set for that package. Its use here is only
+to check for a variety of different variable types and levels. It will remain 
+only in this "cutting edge" version of the package as we continue to add 
+and test examples.
 
 
 ## Data preparation
