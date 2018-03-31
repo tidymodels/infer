@@ -10,6 +10,8 @@
 ## For future versions
 
 - Implement theoretical distributions for bootstrap distributions
+- Create `references.md` with links to slides/talks/workshops given about `infer`
+- Produce error is `mu` is given in `specify()` but `stat = "median"` provided in `calculate()`
 - Shading for Confidence Intervals in `visualize()` (Mine would prefer green
 for CI and red for p-values)
 - Determine whether `calculate()` should be where the `set_params()` function is called
