@@ -134,7 +134,13 @@ calculate <- function(x, stat, order = NULL, ...) {
     structure(stat, class = gsub(" ", "_", stat)), x, order, ...
   )
 
-  class(result) <- append("infer", class(result))
+  if("NULL" %in% class(result))
+      stop(paste0(
+        "Your choice of `stat` is invalid for the ",
+        "types of variables `specify`ed.")
+      )
+  else
+    class(result) <- append("infer", class(result))
   
   attr(result, "response") <- attr(x, "response")
   attr(result, "success") <- attr(x, "success")
