@@ -63,6 +63,15 @@ visualize <- function(data, bins = 15, method = "randomization",
   
   assertive::assert_is_data.frame(data)
   assertive::assert_is_numeric(bins)
+  assertive::assert_is_character(method)
+  if(!is.null(obs_stat))
+    assertive::assert_is_numeric(obs_stat)
+  assertive::assert_is_character(dens_color)
+  assertive::assert_is_character(obs_stat_color)
+  assertive::assert_is_character(shade_color)
+  if(!is.null(direction))
+    assertive::assert_is_character(direction)
+  
   
   if(!is.null(direction) && is.null(obs_stat))
     stop("Shading requires observed statistic `obs_stat` value to be given.")
@@ -167,6 +176,10 @@ both_anova_plot <- function(data, deg_freedom_top,
                             obs_stat = NULL,
                             direction = NULL, bins = 15,....){
   
+  if(!is.null(direction) && !(direction %in% c("greater", "right")))
+    warning(paste("F usually corresponds to right-tailed tests. Proceed",
+                  "with caution."))
+  
   infer_anova_plot <- shade_density_check(data = data, 
                                           obs_stat = obs_stat,
                                           direction = direction,
@@ -224,6 +237,10 @@ both_chisq_plot <- function(data, deg_freedom, statistic_text = "Chi-Square",
                             dens_color = "black",
                             obs_stat = NULL,
                             direction = "greater", bins = 15,...){
+  
+  if(!is.null(direction) && !(direction %in% c("greater", "right")))
+     warning(paste("Chi-square usually corresponds to right-tailed tests. Proceed",
+                   "with caution."))
   
   infer_chisq_plot <- shade_density_check(data = data,
                                           obs_stat = obs_stat,
@@ -354,6 +371,11 @@ visualize_theoretical <- function(data,
   }
   
   else if(attr(data, "theory_type") == "ANOVA"){
+    
+    if(!is.null(direction) && !(direction %in% c("greater", "right")))
+      warning(paste("F usually corresponds to right-tailed tests. Proceed",
+                    "with caution."))
+    
     infer_plot <- theory_anova_plot(
       deg_freedom_top = attr(data, "distr_param"), 
       deg_freedom_bottom = attr(data, "distr_param2"), 
@@ -367,14 +389,20 @@ visualize_theoretical <- function(data,
   }
   
   else if(attr(data, "theory_type") %in% 
-          c("Chi-square test of indep", "Chi-square Goodness of Fit")){    
+          c("Chi-square test of indep", "Chi-square Goodness of Fit")){   
+    
+    if(!is.null(direction) && !(direction %in% c("greater", "right")))
+      warning(paste("Chi-square usually corresponds to right-tailed tests. Proceed",
+                    "with caution."))
+    
     infer_plot <- theory_chisq_plot(deg_freedom = attr(data, "distr_param"),
                                     statistic_text = "Chi-Square",
                                     dens_color = dens_color)
   }
   
   else
-    stop(paste0("'", attr(data, "theory_type"), "' is not implemented yet."))
+    stop(paste0("'", attr(data, "theory_type"), "' is not implemented",
+                "(possibly yet)."))
   
   # Move into its own function
   

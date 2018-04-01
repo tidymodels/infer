@@ -109,9 +109,9 @@ test_that("visualize basic tests", {
                   specify(Sepal.Length ~ Sepal.Width.Group) %>% 
                   hypothesize(null = "independence") %>% 
                   generate(reps = 100, type = "permute") %>% 
-                  calculate(stat = "t", order = c("large", "small") ) %>% 
-                  visualize(method = "both", direction = "both", 
-                            obs_stat = obs_t)
+                  calculate(stat = "t", order = c("small", "large") ) %>% 
+                  visualize(method = "both", direction = "left", 
+                            obs_stat = -obs_t)
   )
   
   expect_silent(iris_tbl %>% 
@@ -134,6 +134,15 @@ test_that("visualize basic tests", {
                   calculate(stat = "F") %>% 
                   visualize(method = "both", obs_stat = obs_F, 
                             direction = "right")
+  )
+  
+  expect_warning(iris_tbl %>% 
+                  specify(Sepal.Length ~ Species) %>% 
+                  hypothesize(null = "independence") %>% 
+                  generate(reps = 100, type = "permute") %>% 
+                  calculate(stat = "F") %>% 
+                  visualize(method = "both", obs_stat = obs_F, 
+                            direction = "left")
   )
   
   expect_silent(iris_tbl %>% 
