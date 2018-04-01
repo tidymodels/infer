@@ -6,6 +6,7 @@
 ## For future versions
 
 - Decide on how to handle NA's
+- Shift to list-columns in `generate()`
 - Write vignettes on how NOT to use infer (strange errors, funky results, etc.)
 - Implement theoretical distributions for bootstrap distributions
 - Create `references.md` with links to slides/talks/workshops given about `infer`
