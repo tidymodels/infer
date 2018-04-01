@@ -28,6 +28,11 @@ obs_diff <- iris_tbl %>%
   summarize(diff(prop)) %>%
   pull()
 
+obs_z <- sqrt(stats::prop.test(x = table(iris_tbl$Sepal.Length.Group, 
+                                    iris_tbl$Sepal.Width.Group),
+                          n = nrow(iris_tbl),
+                          alternative = "two.sided",
+                          correct = FALSE)$statistic)
 
 obs_diff_mean <- iris_tbl %>%
   group_by(Sepal.Length.Group) %>% 
@@ -100,9 +105,31 @@ test_that("visualize basic tests", {
                          success = "large") %>% 
                  hypothesize(null = "independence") %>% 
                  generate(reps = 100, type = "permute") %>% 
-                 calculate(stat = "z", 
+                 calculate(stat = "diff in props", 
                            order = c(">5", "<=5")) %>% 
                  visualize()
+  )
+  
+  expect_silent(iris_tbl %>% 
+                 specify(Sepal.Width.Group ~ Sepal.Length.Group,
+                         success = "large") %>% 
+                 hypothesize(null = "independence") %>% 
+                 generate(reps = 100, type = "permute") %>% 
+                 calculate(stat = "z", 
+                           order = c(">5", "<=5")) %>% 
+                 visualize(method = "both", direction = "both",
+                           obs_stat = obs_z)
+  )
+  
+  expect_silent(iris_tbl %>% 
+                  specify(Sepal.Width.Group ~ Sepal.Length.Group,
+                          success = "large") %>% 
+                  hypothesize(null = "independence") %>% 
+                  generate(reps = 100, type = "permute") %>% 
+                  calculate(stat = "z", 
+                            order = c("<=5", ">5")) %>% 
+                  visualize(method = "both", direction = "both",
+                            obs_stat = -obs_z)
   )
   
   expect_silent(iris_tbl %>% 
@@ -115,12 +142,20 @@ test_that("visualize basic tests", {
   )
   
   expect_silent(iris_tbl %>% 
+                  specify(Sepal.Length ~ Sepal.Width.Group) %>% 
+                  hypothesize(null = "independence") %>% 
+ #                 generate(reps = 100, type = "permute") %>% 
+#                  calculate(stat = "t", order = c("small", "large") ) %>% 
+                  visualize(method = "theoretical", direction = "left", 
+                            obs_stat = -obs_t)
+  )
+  
+  expect_silent(iris_tbl %>% 
                   specify(Sepal.Length ~ Sepal.Length.Group) %>% 
                   hypothesize(null = "independence") %>% 
                   visualize(method = "theoretical")
   )
   
-  ## Adding
   expect_silent(iris_tbl %>% 
                   specify(Sepal.Length ~ Species) %>% 
                   hypothesize(null = "independence") %>% 
@@ -218,7 +253,7 @@ test_that("visualize basic tests", {
                              obs_stat = obs_diff_mean)
   )
   
-  expect_silent(iris_tbl %>% 
+  expect_warning(iris_tbl %>% 
                  specify(Petal.Width ~ Sepal.Width.Group) %>% 
                  hypothesize(null = "independence") %>% 
                  generate(reps = 100, type = "permute") %>% 
@@ -227,6 +262,26 @@ test_that("visualize basic tests", {
                  visualize(method = "theoretical", direction = "both",
                            obs_stat = obs_diff_mean)
   )
+  
+  expect_silent(iris_tbl %>% 
+                  specify(Sepal.Width.Group ~ NULL, success = "small") %>% 
+                  hypothesize(null = "point", p = 0.8) %>% 
+#                 generate(reps = 100, type = "simulate") %>% 
+#                  calculate(stat = "z") %>% 
+                  visualize(method = "theoretical", 
+                            obs_stat = 2, # Should probably update
+                            direction = "both")
+  )
+  
+  expect_silent(iris_tbl %>%
+                  specify(Petal.Width ~ NULL) %>%
+                  hypothesize(null = "point", mu = 1.3) %>% 
+                  generate(reps = 100, type = "bootstrap") %>% 
+                  calculate(stat = "mean") %>% 
+                  visualize(direction = "left",
+                            obs_stat = mean(iris$Petal.Width))
+  )
+  
   
 })
 
