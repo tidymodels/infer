@@ -239,8 +239,8 @@ both_chisq_plot <- function(data, deg_freedom, statistic_text = "Chi-Square",
                             direction = "greater", bins = 15,...){
   
   if(!is.null(direction) && !(direction %in% c("greater", "right")))
-     warning(paste("Chi-square usually corresponds to right-tailed tests. Proceed",
-                   "with caution."))
+     warning(paste("Chi-square usually corresponds to right-tailed tests.",
+                   "Proceed with caution."))
   
   infer_chisq_plot <- shade_density_check(data = data,
                                           obs_stat = obs_stat,
@@ -270,8 +270,9 @@ shade_density_check <- function(data = data,
         geom_histogram(bins = bins, color = "white",
                        mapping = aes(y = ..density..))
     } else {
-      gg_plot <- ggplot(data = data, mapping = aes(x = stat)) +
-        geom_histogram(bins = bins, color = "white")
+      # Not sure if needed? Can't get tests to find it
+      #gg_plot <- ggplot(data = data, mapping = aes(x = stat)) +
+      #  geom_histogram(bins = bins, color = "white")
     }
   }
   
@@ -337,9 +338,10 @@ visualize_randomization <- function(data, bins = 15, method = "randomization",
                                     dens_color = "black",
                                     obs_stat = NULL, 
                                     obs_stat_color = "#e51010",
-                                    direction = NULL, ...) {
+                                    direction = NULL, 
+                                    shade_color = "#efb8b8", ...) {
   if(is.null(direction)){
-    if(length(unique(data$stat)) >= bins)
+    if(length(unique(data$stat)) >= 10)
       infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
         geom_histogram(bins = bins, color = "white")
     else
@@ -348,10 +350,11 @@ visualize_randomization <- function(data, bins = 15, method = "randomization",
         xlab("stat")
   } else {
     infer_plot <- shade_density_check(data = data,
-                                      obs_stat = obs_stat,
-                                      direction = direction,
-                                      bins = bins,
-                                      density = FALSE)
+                                        obs_stat = obs_stat,
+                                        direction = direction,
+                                        bins = bins,
+                                        density = FALSE,
+                                        shade_color = shade_color)
   }
   infer_plot
 }
@@ -362,6 +365,12 @@ visualize_theoretical <- function(data,
                                   obs_stat_color = "#e51010",#"#00BFC4",
                                   direction = NULL, 
                                   shade_color = "#efb8b8", ...) {
+  
+  if(!is.null(attr(data, "stat")) && 
+     !(attr(data, "stat") %in% c("t", "z", "Chisq", "F")))
+    warning(paste("Your `calculate`d statistic and the theoretical", 
+                  "distribution are on different scales. Displaying only", 
+                  "the theoretical distribution."))
   
   if(attr(data, "theory_type") %in% 
      c("Two sample t", "Slope with t", "One sample t")){    
@@ -392,8 +401,8 @@ visualize_theoretical <- function(data,
           c("Chi-square test of indep", "Chi-square Goodness of Fit")){   
     
     if(!is.null(direction) && !(direction %in% c("greater", "right")))
-      warning(paste("Chi-square usually corresponds to right-tailed tests. Proceed",
-                    "with caution."))
+      warning(paste("Chi-square usually corresponds to right-tailed tests.",
+                    "Proceed with caution."))
     
     infer_plot <- theory_chisq_plot(deg_freedom = attr(data, "distr_param"),
                                     statistic_text = "Chi-Square",
@@ -457,8 +466,8 @@ visualize_both <- function(data = data, bins = bins,
                            shade_color = "#efb8b8", ...) {
   
   if(!(attr(data, "stat") %in% c("t", "z", "Chisq", "F")))
-    stop(paste("Your `calculate`d statistic and the theoretical distribution are",
-               "on different scales. Use a standardized `stat` instead."))
+    stop(paste("Your `calculate`d statistic and the theoretical distribution",
+               "are on different scales. Use a standardized `stat` instead."))
   
   if(attr(data, "theory_type") %in% c("Two sample t", "Slope with t")){
     
