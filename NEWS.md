@@ -7,6 +7,7 @@
 - Added wrapper functions `t_test()` and `chisq_test()` that use a
 formula interface and provide an intuitive wrapper to `t.test()` and
 `chisq.test()`
+- Created `stat = "z"` and `stat = "t"` options
 - Added many new arguments to `visualize()` to prescribe colors to shade and 
 use for observed statistics and theoretical density curves
 - Added check so that a bar graph created with `visualize()` if number of 
