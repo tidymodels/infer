@@ -11,6 +11,7 @@
 
 - Implement theoretical distributions for bootstrap distributions
 - Create `references.md` with links to slides/talks/workshops given about `infer`
+- Add Lionel's vis checking package ([`vdiffr`](https://github.com/lionel-/vdiffr)) to `visualize()` tests
 - Produce error is `mu` is given in `specify()` but `stat = "median"` provided in `calculate()`
 - Shading for Confidence Intervals in `visualize()` (Mine would prefer green
 for CI and red for p-values)

@@ -37,6 +37,10 @@ calculate <- function(x, stat, order = NULL, ...) {
                "Make sure to `specify()` it first."))
   }
   
+  if(!("replicate" %in% names(x)))
+    warning(paste0('A `generate()` step was not performed prior to',
+                   '`calculate()`. Review carefully.'))
+  
   if (!stat %in% c("mean", "median", "sd", "prop",
                    "diff in means", "diff in medians", "diff in props",
                    "Chisq", "F", "slope", "t", "z")){

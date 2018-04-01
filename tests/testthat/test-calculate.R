@@ -297,3 +297,16 @@ test_that("order being given when not needed gives warning", {
   expect_warning(calculate(gen_iris15, stat = "Chisq",
                            order = c("setosa", "virginica")))
 })
+
+test_that("warning given if calculate without generate", {
+  expect_warning(iris %>% 
+                   specify(Species ~ NULL) %>% 
+                   hypothesize(null = "point", 
+                               p = c("setosa" = 0.4,
+                                     "versicolor" = 0.4,
+                                     "virginica" = 0.2)) %>% 
+                   #generate(reps = 10, type = "simulate") %>% 
+                   calculate(stat = "Chisq")
+  )
+  
+})

@@ -59,9 +59,9 @@ bootstrap <- function(x, reps = 1, ...) {
     if(attr(attr(x, "params"), "names") == "mu"){
       
       col <- as.character(attr(x, "response"))
-      if(attr(x, "theory_type") != "One sample t"){
+#      if(attr(x, "theory_type") != "One sample t"){
         x[[col]] <- x[[col]] - mean(x[[col]], na.rm = TRUE) + attr(x, "params")
-      }
+#      }
     
       # Standardize after centering above
       #####
@@ -77,8 +77,11 @@ bootstrap <- function(x, reps = 1, ...) {
     # Similarly for median
     else if(attr(attr(x, "params"), "names") == "med"){
       col <- as.character(attr(x, "response"))
+#      print(median(x[[col]]))
+#      print(attr(x, "params"))
       x[[col]] <- x[[col]] -
         stats::median(x[[col]], na.rm = TRUE) + attr(x, "params")
+#      print(median(x[[col]]))
     }
 
     # Implement confidence interval for bootstrapped proportions?
@@ -87,8 +90,10 @@ bootstrap <- function(x, reps = 1, ...) {
     # Similarly for sd
     else if(attr(attr(x, "params"), "names") == "sigma"){
       col <- as.character(attr(x, "response"))
+#      print(sd(x[[col]]))
       x[[col]] <- x[[col]] -
         stats::sd(x[[col]], na.rm = TRUE) + attr(x, "params")
+#      print(sd(x[[col]]))
     }
   }
 
@@ -103,6 +108,7 @@ bootstrap <- function(x, reps = 1, ...) {
   attr(result, "distr_param2") <- attr(x, "distr_param2")
   attr(result, "theory_type") <- attr(x, "theory_type")
   
+
   class(result) <- append("infer", class(result))
   
   return(result)

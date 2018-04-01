@@ -68,6 +68,7 @@ visualize <- function(data, bins = 15, method = "randomization",
     stop("Shading requires observed statistic `obs_stat` value to be given.")
   
   if(method == "randomization"){
+    
     infer_plot <- visualize_randomization(data = data, bins = bins, 
                                           dens_color = dens_color,
                                           obs_stat = obs_stat, 
@@ -84,14 +85,22 @@ visualize <- function(data, bins = 15, method = "randomization",
                                         shade_color = shade_color, ...)
     
     
-  } else { #method == "both"
+  } else if(method == "both"){
+    
+    if(!("stat" %in% names(data)))
+      stop(paste0('`generate()` and `calculate()` are both required ', 
+                  'to be done prior to `visualize(method = "both")`'))
     infer_plot <- visualize_both(data = data, bins = bins, 
                                  dens_color = dens_color,
                                  obs_stat = obs_stat, 
                                  obs_stat_color = obs_stat_color,
                                  direction = direction,
                                  shade_color = shade_color, ...)
-    
+  } else {
+    stop(paste("Provide `method` with one of three options:",
+               "`theoretical`, `both`, or `randomization`",
+               "`randomization` is the default.")
+    )
   }
   
   if(!is.null(obs_stat) && !is.null(direction)){

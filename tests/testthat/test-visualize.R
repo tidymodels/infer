@@ -37,6 +37,11 @@ obs_diff_mean <- iris_tbl %>%
 obs_t <- iris_tbl %>%
   t_stat(Sepal.Width ~ Sepal.Length.Group)
 
+obs_F <- anova(
+    aov(formula = Sepal.Width ~ Species, data = iris_tbl)
+  )$`F value`[1]
+  
+
 test_that("visualize basic tests", {
   expect_silent(visualize(Sepal.Width_resamp))
   expect_error(
@@ -84,7 +89,8 @@ test_that("visualize basic tests", {
                   generate(reps = 10, type = "permute") %>% 
                   calculate(stat = "diff in props", 
                             order = c(">5", "<=5")) %>% 
-                  visualize(method = "both", direction = "both", obs_stat = obs_diff)
+                  visualize(method = "both", direction = "both", 
+                            obs_stat = obs_diff)
   )
   
   expect_silent(iris_tbl %>% 
@@ -101,4 +107,78 @@ test_that("visualize basic tests", {
                   hypothesize(null = "independence") %>% 
                   visualize(method = "theoretical")
   )
+  
+  ## Adding
+  expect_silent(iris_tbl %>% 
+                  specify(Sepal.Length ~ Species) %>% 
+                  hypothesize(null = "independence") %>% 
+                  visualize(method = "theoretical")
+  )
+  
+  expect_silent(iris_tbl %>% 
+                  specify(Sepal.Length ~ Species) %>% 
+                  hypothesize(null = "independence") %>% 
+                  generate(reps = 10, type = "permute") %>% 
+                  calculate(stat = "F") %>% 
+                  visualize(method = "both", obs_stat = obs_F, 
+                            direction = "right")
+  )
+  
+  expect_silent(iris_tbl %>% 
+                  specify(Sepal.Width.Group ~ Species, 
+                          success = "large") %>% 
+                  hypothesize(null = "independence") %>% 
+                  generate(reps = 10, type = "permute") %>% 
+                  calculate(stat = "Chisq") %>% 
+                  visualize(method = "both", obs_stat = obs_F, 
+                            direction = "right")
+  )
+  
+  expect_silent(iris_tbl %>% 
+                  specify(Sepal.Width.Group ~ Species, 
+                          success = "large") %>% 
+                  hypothesize(null = "independence") %>% 
+                  #calculate(stat = "Chisq") %>% 
+                  visualize(method = "theoretical", obs_stat = obs_F, 
+                            direction = "right")
+  )
+  
+  expect_silent(iris_tbl %>% 
+                  specify(Species ~ NULL) %>% 
+                  hypothesize(null = "point", 
+                              p = c("setosa" = 0.4,
+                                    "versicolor" = 0.4,
+                                    "virginica" = 0.2)) %>% 
+                  generate(reps = 10, type = "simulate") %>% 
+                  calculate(stat = "Chisq") %>% 
+                  visualize(method = "both")
+  )
+  
+  #traditional instead of theoretical
+  expect_error(iris_tbl %>% 
+                  specify(Species ~ NULL) %>% 
+                  hypothesize(null = "point", 
+                              p = c("setosa" = 0.4,
+                                    "versicolor" = 0.4,
+                                    "virginica" = 0.2)) %>% 
+#                  generate(reps = 10, type = "simulate") %>% 
+#                  calculate(stat = "Chisq") %>% 
+                  visualize(method = "traditional")
+  )
+  
+  expect_silent(iris_tbl %>% 
+                 specify(Species ~ NULL) %>% 
+                 hypothesize(null = "point", 
+                             p = c("setosa" = 0.4,
+                                   "versicolor" = 0.4,
+                                   "virginica" = 0.2)) %>% 
+                 #generate(reps = 10, type = "simulate") %>% 
+                 #calculate(stat = "Chisq") %>% 
+                 visualize(method = "theoretical")
+  )
+  
+})
+
+test_that("get_percentile works", {
+  expect_equal(get_percentile(1:10, 4), 0.4)
 })
