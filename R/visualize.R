@@ -90,6 +90,12 @@ visualize <- function(data, bins = 15, method = "randomization",
     if(!("stat" %in% names(data)))
       stop(paste0('`generate()` and `calculate()` are both required ', 
                   'to be done prior to `visualize(method = "both")`'))
+    
+    if(length(unique(data$replicate)) < 100)
+      warning(paste("With only", length(unique(data$stat)),
+                    "replicates, it may be difficult to see the",
+                    "relationship between randomization and theory."))
+    
     infer_plot <- visualize_both(data = data, bins = bins, 
                                  dens_color = dens_color,
                                  obs_stat = obs_stat, 
@@ -421,6 +427,10 @@ visualize_both <- function(data = data, bins = bins,
                            obs_stat_color = "#e51010",#"#00BFC4",
                            direction = direction, 
                            shade_color = "#efb8b8", ...) {
+  
+  if(!(attr(data, "stat") %in% c("t", "z", "Chisq", "F")))
+    stop(paste("Your `calculate`d statistic and the theoretical distribution are",
+               "on different scales. Use a standardized `stat` instead."))
   
   if(attr(data, "theory_type") %in% c("Two sample t", "Slope with t")){
     

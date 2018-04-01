@@ -2,6 +2,8 @@
 
 - Switched to `!!` instead of `UQ()` since `UQ()` is deprecated in 
 {rlang} 0.2.0
+- Added many new files: `CONDUCT.md`, `CONTRIBUTING.md`, and `TO-DO.md`
+- Updated README file with more development information
 - Added wrapper functions `t_test()` and `chisq_test()` that use a
 formula interface and provide an intuitive wrapper to `t.test()` and
 `chisq.test()`

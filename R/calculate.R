@@ -154,6 +154,7 @@ calculate <- function(x, stat, order = NULL, ...) {
   attr(result, "distr_param") <- attr(x, "distr_param")
   attr(result, "distr_param2") <- attr(x, "distr_param2")
   attr(result, "theory_type") <- attr(x, "theory_type")
+  attr(result, "stat") <- stat
   
   return(result)
 }
