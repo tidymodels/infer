@@ -1,14 +1,12 @@
 ## For upcoming CRAN version
 
-- Write tests to get `covr::package_coverage()` back up over 90%
-  - Check for `visualize()` producing appropriate plots if `generate()` is or is
-  not done
 - Write test to check that bootstrapped values are centered near the 
   hypothesized value in `specify()`
-- Decide on how to handle NA's
-
+  
 ## For future versions
 
+- Decide on how to handle NA's
+- Write vignettes on how NOT to use infer (strange errors, funky results, etc.)
 - Implement theoretical distributions for bootstrap distributions
 - Create `references.md` with links to slides/talks/workshops given about `infer`
 - Add Lionel's vis checking package ([`vdiffr`](https://github.com/lionel-/vdiffr)) to `visualize()` tests
