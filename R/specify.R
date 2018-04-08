@@ -4,7 +4,7 @@
 #' @param formula a formula with the response variable on the left and the explanatory on the right
 #' @param response the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument
 #' @param explanatory the variable name in \code{x} that will serve as the explanatory variable
-#' @param success the level of \code{response} that will be considered a success, as a string. 
+#' @param success the level of \code{response} that will be considered a success, as a string.
 #' Needed for inference on one proportion, a difference in proportions, and corresponding z stats
 #' @return A tibble containing the response (and explanatory, if specified) variable data
 #' @importFrom rlang f_lhs
@@ -98,19 +98,25 @@ specify <- function(x, formula, response = NULL,
       as.character(attr(x, "explanatory"))
     )))
 
+  is_complete <- complete.cases(x)
+  if (!all(is_complete)) {
+    x <- filter(x, is_complete)
+    warning(paste0("Warning: Removed ", sum(!is_complete), " rows containing missing values."), call. = FALSE)
+  }
+
   # To help determine theoretical distribution to plot
   if(is.null(attr(x, "response")))
     attr(x, "response_type") <- NULL
   else
     attr(x, "response_type") <- class(x[[as.character(attr(x, "response"))]])
-  
+
   if(is.null(attr(x, "explanatory")))
     attr(x, "explanatory_type") <- NULL
   else
     attr(x, "explanatory_type") <- class(
         x[[as.character(attr(x, "explanatory"))]]
       )
-  
+
   if(attr(x, "response_type") == "factor" & is.null(success) &
      length(levels(x[[as.character(attr(x, "response"))]])) == 2)
  #    sum(table(response_col) > 0) == 2)
@@ -118,10 +124,10 @@ specify <- function(x, formula, response = NULL,
                 attr(x, "response"),
                 "` needs to be specified for the `success` argument ",
                 "in `specify()`."))
-  
+
   # Determine appropriate parameters for theoretical distribution fit
   x <- set_params(x)
-  
+
   # add "infer" class
   class(x) <- append("infer", class(x))
 
