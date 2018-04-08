@@ -66,11 +66,11 @@ t_stat <- function(data, formula, ...){
 }
 
 #'
-#' A tidier version of chisq.test for two sample tests
+#' A tidier version of chisq.test for goodness of fit tests and tests of independence.
 #'
 #' @param data a data frame that can be coerced into a \code{\link[tibble]{tibble}}
 #' @param formula a formula with the response variable on the left and the explanatory on the right
-#' @param ... currently ignored
+#' @param ... additional arguments for \code{chisq.test}
 #' @importFrom rlang f_lhs f_rhs
 #' @export
 #' @examples
@@ -86,8 +86,8 @@ chisq_test <- function(data, formula, #response = NULL, explanatory = NULL,
   explanatory_var <- f_rhs(formula)
   response_var <- f_lhs(formula)
 
-  stats::chisq.test(x = table(data[[as.character(explanatory_var)]],
-                            data[[as.character(response_var)]])) %>%
+  df <- data[ , as.character(c(response_var, explanatory_var))]
+  stats::chisq.test(table(df), ...) %>%
     broom::glance() %>%
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
 }
@@ -96,7 +96,7 @@ chisq_test <- function(data, formula, #response = NULL, explanatory = NULL,
 #'
 #' @param data a data frame that can be coerced into a \code{\link[tibble]{tibble}}
 #' @param formula a formula with the response variable on the left and the explanatory on the right
-#' @param ... currently ignored
+#' @param ... additional arguments for \code{chisq.test}
 #' @export
 
 chisq_stat <- function(data, formula, ...){
