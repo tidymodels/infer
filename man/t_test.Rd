@@ -11,7 +11,7 @@ t_test(data, formula, alternative = "two_sided", ...)
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
 
-\item{alternative}{character string specifying the direction of the alternative hypothesis. Options are 
+\item{alternative}{character string specifying the direction of the alternative hypothesis. Options are
 "\code{two_sided}" (default), "\code{greater}", or "\code{less}".}
 
 \item{...}{currently ignored}

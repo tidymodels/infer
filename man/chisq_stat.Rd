@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrappers.R
 \name{chisq_stat}
 \alias{chisq_stat}
-\title{A shortcut wrapper function to get the observed test statistic for a chisq test}
+\title{A shortcut wrapper function to get the observed test statistic for a chisq test. Uses \code{stats::chisq.test}, which applies a continuity correction.}
 \usage{
 chisq_stat(data, formula, ...)
 }
@@ -11,8 +11,8 @@ chisq_stat(data, formula, ...)
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
 
-\item{...}{currently ignored}
+\item{...}{additional arguments for \code{chisq.test}}
 }
 \description{
-A shortcut wrapper function to get the observed test statistic for a chisq test
+A shortcut wrapper function to get the observed test statistic for a chisq test. Uses \code{stats::chisq.test}, which applies a continuity correction.
 }

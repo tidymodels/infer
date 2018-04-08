@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrappers.R
 \name{chisq_test}
 \alias{chisq_test}
-\title{A tidier version of chisq.test for two sample tests}
+\title{A tidier version of chisq.test for goodness of fit tests and tests of independence.}
 \usage{
 chisq_test(data, formula, ...)
 }
@@ -11,10 +11,10 @@ chisq_test(data, formula, ...)
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
 
-\item{...}{currently ignored}
+\item{...}{additional arguments for \code{chisq.test}}
 }
 \description{
-A tidier version of chisq.test for two sample tests
+A tidier version of chisq.test for goodness of fit tests and tests of independence.
 }
 \examples{
 # chisq test for comparing number of cylinders against automatic/manual
