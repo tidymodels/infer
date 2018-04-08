@@ -194,7 +194,7 @@ ggplot(null_distn, aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = d_hat, color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat > d_hat) * 2) %>%
+  summarize(p_value = mean(stat < d_hat) * 2) %>%
   pull()
 ```
 
@@ -216,7 +216,7 @@ ggplot(null_distn, aes(x = stat)) +
   geom_bar() +
   geom_vline(xintercept = d_hat, color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat > d_hat) * 2) %>%
+  summarize(p_value = mean(stat < d_hat) * 2) %>%
   pull()
 ```
 
