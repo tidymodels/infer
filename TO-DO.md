@@ -5,7 +5,7 @@
   
 ## For future versions
 
-- Decide on how to handle NA's
+- Consider re-working how p-values can be calculated (both for computational and theoretical)
 - Shift to list-columns in `generate()`
 - Write vignettes on how NOT to use infer (strange errors, funky results, etc.)
 - Implement theoretical distributions for bootstrap distributions
