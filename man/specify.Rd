@@ -16,7 +16,7 @@ specify(x, formula, response = NULL, explanatory = NULL, success = NULL)
 
 \item{explanatory}{the variable name in \code{x} that will serve as the explanatory variable}
 
-\item{success}{the level of \code{response} that will be considered a success, as a string. 
+\item{success}{the level of \code{response} that will be considered a success, as a string.
 Needed for inference on one proportion, a difference in proportions, and corresponding z stats}
 }
 \value{
