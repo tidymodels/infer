@@ -1,15 +1,17 @@
 ## For upcoming CRAN version
 
-- Add warning when theoretical distribution is used that 
-  assumptions should be checked  
-- Remove commented out `calculate()` for theoretical distributions in vignettes
 - Remove hypothesis test for standard deviation (Mine will fix)
-- Change `method = "randomization"` to `method = "simulation"`
-- Change `type = "simulate"` to `type = "probability model"`
   
 ## For future versions
 
 - Consider re-working how p-values can be calculated (both for computational and theoretical)
+- Check that `stat` is calculated appropriately if `generate()` is not called
+  - `order` of the arguments into the standardized statistics should be checked again
+  - May require moving of `set_params()` to be after `specify()`
+  - Update `visualize()` tests to include `calculate()` step for `method = "theoretical"`
+- Get `specify() %>% calculate()` to work for the observed statistic
+  - Coerce the argument to `xintercept` to be a vector in `geom_vline()` in `visualize()`
+- Add `add_obs_stat` toggle into `visualize()` and p-value calculation?
 - Shift to list-columns in `generate()`
 - Implement check of `stat` in theoretical `visualize()`
 - Write test to check that bootstrapped values are centered near the 

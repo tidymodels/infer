@@ -13,8 +13,11 @@ use for observed statistics and theoretical density curves
 - Added check so that a bar graph created with `visualize()` if number of 
 unique values for generated statistics is small
 - Added shading for `method = "theoretical"` 
-- Implemented shading for randomization methods w/o a traditional distribution
+- Implemented shading for simulation methods w/o a traditional distribution
   - Use percentiles to determine two-tailed shading
+- Changed `method = "randomization"` to `method = "simulation"`
+- Added warning when theoretical distribution is used that 
+  assumptions should be checked  
 - Added theoretical distributions to `visualize()` alone and as overlay with
 current implementations being
     - Two sample t
