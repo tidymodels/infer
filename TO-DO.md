@@ -1,16 +1,19 @@
 ## For upcoming CRAN version
 
-- Write test to check that bootstrapped values are centered near the 
-  hypothesized value in `specify()`
 - Add warning when theoretical distribution is used that 
   assumptions should be checked  
-- Remove commented out `calculate()` for theoretical distributions
+- Remove commented out `calculate()` for theoretical distributions in vignettes
 - Remove hypothesis test for standard deviation (Mine will fix)
+- Change `method = "randomization"` to `method = "simulation"`
+- Change `type = "simulate"` to `type = "probability model"`
   
 ## For future versions
 
 - Consider re-working how p-values can be calculated (both for computational and theoretical)
 - Shift to list-columns in `generate()`
+- Implement check of `stat` in theoretical `visualize()`
+- Write test to check that bootstrapped values are centered near the 
+  hypothesized value in `specify()`
 - Check that assumptions have been met for the theoretical distribution and `"both"`
 - Write vignettes on how NOT to use infer (strange errors, funky results, etc.)
 - Implement theoretical distributions for bootstrap distributions
