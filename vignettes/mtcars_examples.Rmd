@@ -52,16 +52,6 @@ mtcars %>%
   calculate(stat = "median")
 ```
 
-One numerical variable (standard deviation)
-
-```{r}
-mtcars %>%
-  specify(response = mpg) %>% # formula alt: mpg ~ NULL
-  hypothesize(null = "point", sigma = 5) %>% 
-  generate(reps = 100, type = "bootstrap") %>% 
-  calculate(stat = "sd")
-```
-
 One categorical (2 level) variable
 
 ```{r}
@@ -141,6 +131,19 @@ mtcars %>%
   generate(reps = 100, type = "permute") %>%
   calculate(stat = "slope")
 ```
+
+One numerical variable (standard deviation)
+
+**Not currently implemented**
+
+```{r eval=FALSE}
+mtcars %>%
+  specify(response = mpg) %>% # formula alt: mpg ~ NULL
+  hypothesize(null = "point", sigma = 5) %>% 
+  generate(reps = 100, type = "bootstrap") %>% 
+  calculate(stat = "sd")
+```
+
 
 ### Confidence intervals
 
