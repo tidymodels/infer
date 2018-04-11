@@ -2,16 +2,21 @@
 
 - Write test to check that bootstrapped values are centered near the 
   hypothesized value in `specify()`
+- Add warning when theoretical distribution is used that 
+  assumptions should be checked  
+- Remove commented out `calculate()` for theoretical distributions
+- Remove hypothesis test for standard deviation (Mine will fix)
   
 ## For future versions
 
 - Consider re-working how p-values can be calculated (both for computational and theoretical)
 - Shift to list-columns in `generate()`
+- Check that assumptions have been met for the theoretical distribution and `"both"`
 - Write vignettes on how NOT to use infer (strange errors, funky results, etc.)
 - Implement theoretical distributions for bootstrap distributions
 - Create `references.md` with links to slides/talks/workshops given about `infer`
 - Add Lionel's vis checking package ([`vdiffr`](https://github.com/lionel-/vdiffr)) to `visualize()` tests
-- Produce error is `mu` is given in `specify()` but `stat = "median"` provided in `calculate()`
+- Produce error if `mu` is given in `specify()` but `stat = "median"` provided in `calculate()`
 - Shading for Confidence Intervals in `visualize()` (Mine would prefer green
 for CI and red for p-values)
 - Determine whether `calculate()` should be where the `set_params()` function is called
