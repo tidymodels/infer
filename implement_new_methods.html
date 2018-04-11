@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>/home/travis/build/andrewpbray/infer/cran-comments.md • infer</title>
+<title>NA • infer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,7 +25,9 @@
 <link href="pkgdown.css" rel="stylesheet">
 <script src="jquery.sticky-kit.min.js"></script>
 <script src="pkgdown.js"></script>
-<meta property="og:title" content="/home/travis/build/andrewpbray/infer/cran-comments.md" />
+<meta property="og:title" content="NA" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -33,6 +35,8 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
 
 
   </head>
@@ -48,8 +52,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">infer</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="index.html">infer</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -69,15 +77,21 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="articles/chisq_test.html">Chi-squared test example using `nycflights13` `flights` data</a>
+    </li>
+    <li>
       <a href="articles/flights_examples.html">Randomization Examples using `nycflights13` `flights` data</a>
     </li>
     <li>
       <a href="articles/mtcars_examples.html">Examples using `mtcars` data</a>
     </li>
+    <li>
+      <a href="articles/two_sample_t.html">Two sample $t$ test example using `nycflights13` `flights` data</a>
+    </li>
   </ul>
 </li>
 <li>
-  <a href="news/index.html">News</a>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -89,6 +103,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -96,36 +111,41 @@
       
       </header>
 
-      <div class="row">
-  <div class="contents col-md-12">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
-      <h1>/home/travis/build/andrewpbray/infer/cran-comments.md</h1>
+      <h1>NA</h1>
     </div>
 
 
-<div id="test-environments" class="section level2">
-<h2 class="hasAnchor">
-<a href="#test-environments" class="anchor"></a>Test environments</h2>
+<ol>
+<li>Check that <code>data %&gt;% specify()</code> gives appropriate variable types</li>
+<li>Check that <code>attr(data, "theory_type")</code> is set appropriately</li>
+</ol>
 <ul>
-<li>local OS X install, R 3.4.3</li>
-<li>ubuntu 12.04 (on travis-ci), R 3.4.1, R-oldrel, R-devel</li>
-<li>win-builder (devel and release)</li>
+<li>If not, write code to add it in <code>set_params.R</code> based on variable types also set as <code>attr</code>ibutes</li>
 </ul>
-</div>
-<div id="r-cmd-check-results" class="section level2">
-<h2 class="hasAnchor">
-<a href="#r-cmd-check-results" class="anchor"></a>R CMD check results</h2>
-<p>0 errors | 0 warnings | 0 notes</p>
-<p>New submission</p>
+<ol>
+<li>Create <code># Testing</code> as last section of <code># Implemented</code> and move appropriate chunks of <code>*both_methods.Rmd</code> file there up to “Implemented”<br>
+</li>
+<li>Write code to calculate theory-based statistic (t, z, chi-square, etc.) in <code>calculate.R</code>
+</li>
+<li>Write code to add theoretical distribution in <code>visualize.R</code>
+</li>
+<li>Delete <code># Testing</code> above new implementation</li>
+<li>Run <code><a href="http://www.rdocumentation.org/packages/devtools/topics/check">devtools::check()</a></code>
+</li>
+</ol>
 <ul>
-<li>This is a new release.</li>
+<li>Add undefined global functions or variables to <code>infer.R</code> <code>globalVariables</code>
+</li>
+<li>Run <code><a href="http://www.rdocumentation.org/packages/devtools/topics/check">devtools::check()</a></code> again until 0 errors | 0 warnings | 0 notes</li>
 </ul>
-</div>
-<div id="reverse-dependencies" class="section level2">
-<h2 class="hasAnchor">
-<a href="#reverse-dependencies" class="anchor"></a>Reverse dependencies</h2>
-<p>This is a new release, so there are no reverse dependencies.</p>
-</div>
+<ol>
+<li>Run <code><a href="http://pkgdown.r-lib.org/reference/build_site.html">pkgdown::build_site()</a></code>
+</li>
+<li>Commit files to GitHub and continue</li>
+</ol>
 
 
   </div>
@@ -144,6 +164,8 @@
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

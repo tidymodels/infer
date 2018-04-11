@@ -18,7 +18,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -27,8 +27,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">infer</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="index.html">infer</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
@@ -48,15 +52,21 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="articles/chisq_test.html">Chi-squared test example using `nycflights13` `flights` data</a>
+    </li>
+    <li>
       <a href="articles/flights_examples.html">Randomization Examples using `nycflights13` `flights` data</a>
     </li>
     <li>
       <a href="articles/mtcars_examples.html">Examples using `mtcars` data</a>
     </li>
+    <li>
+      <a href="articles/two_sample_t.html">Two sample  test example using `nycflights13` `flights` data</a>
+    </li>
   </ul>
 </li>
 <li>
-  <a href="news/index.html">News</a>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -76,16 +86,16 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     
 
     
     
-<div class="contents">
 <div id="infer" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#infer" class="anchor"></a>Infer</h1></div>
 <hr>
+<!--figs/infer.svg--><!--http://www.r-pkg.org/badges/version/infer--><!--figs/master.svg--><!--https://img.shields.io/codecov/c/github/andrewpbray/infer/master.svg-->
 <p>The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the <code>tidyverse</code> design framework.</p>
 <p><img src="https://raw.githubusercontent.com/andrewpbray/infer/master/figs/ht-diagram.png" alt=""><!-- --></p>
 <div id="installation" class="section level3">
@@ -94,9 +104,19 @@
 <hr>
 <p>To install the current stable version of <code>infer</code> from CRAN:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"infer"</span>)</code></pre></div>
-<p>To install the developmental version of <code>infer</code>, make sure to install <code>remotes</code> first:</p>
+<p>To install the developmental version of <code>infer</code>, make sure to install <code>remotes</code> first. The <code>pkgdown</code> website for this developmental version is at <a href="https://infer.netlify.com" class="uri">https://infer.netlify.com</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)
 remotes::<span class="kw">install_github</span>(<span class="st">"andrewpbray/infer"</span>)</code></pre></div>
+<p>To install the cutting edge version of <code>infer</code> (do so at your own risk), make sure to install <code>remotes</code> first. This version was last updated on 2018-04-11 17:19:06.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)
+remotes::<span class="kw">install_github</span>(<span class="st">"andrewpbray/infer"</span>, <span class="dt">ref =</span> <span class="st">"develop"</span>)</code></pre></div>
+<p>To see the things we are working on with the package as vignettes/Articles, check out the developmental <code>pkgdown</code> site at <a href="https://infer-dev.netlify.com" class="uri">https://infer-dev.netlify.com</a>.</p>
+</div>
+<div id="contributing" class="section level3">
+<h3 class="hasAnchor">
+<a href="#contributing" class="anchor"></a>Contributing</h3>
+<hr>
+<p>We welcome others helping us make this package as user friendly and efficient as possible. Please review our <a href="https://github.com/andrewpbray/infer/blob/develop/CONDUCT.html">contributing</a> and <a href="CONDUCT.html">conduct</a> guidelines. Of particular interest is helping us to write <code>testthat</code> tests and help us in building vignettes that show how to (and how NOT to) use the package. By participating in this project you agree to abide by its terms.</p>
 </div>
 <div id="examples" class="section level3">
 <h3 class="hasAnchor">
@@ -109,38 +129,42 @@ remotes::<span class="kw">install_github</span>(<span class="st">"andrewpbray/in
           <span class="dt">am =</span> <span class="kw">factor</span>(am),
           <span class="dt">gear =</span> <span class="kw">factor</span>(gear),
           <span class="dt">carb =</span> <span class="kw">factor</span>(carb))</code></pre></div>
-<p>Hypothesis test for a difference in proportions:</p>
+<p>Hypothesis test for a difference in proportions (using the formula interface <code>y ~ x</code> in <code><a href="reference/specify.html">specify()</a></code>):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars %&gt;%
 <span class="st">  </span><span class="kw"><a href="reference/specify.html">specify</a></span>(am ~<span class="st"> </span>vs, <span class="dt">success =</span> <span class="st">"1"</span>) %&gt;%
 <span class="st">  </span><span class="kw"><a href="reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) %&gt;%
 <span class="st">  </span><span class="kw"><a href="reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) %&gt;%
 <span class="st">  </span><span class="kw"><a href="reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"1"</span>, <span class="st">"0"</span>))</code></pre></div>
-<p>Confidence interval for a difference in means:</p>
+<p>Confidence interval for a difference in means (using the non-formula interface giving both the <code>response</code> and <code>explanatory</code> variables in <code><a href="reference/specify.html">specify()</a></code>):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars %&gt;%
-<span class="st">  </span><span class="kw"><a href="reference/specify.html">specify</a></span>(mpg ~<span class="st"> </span>am) %&gt;%
+<span class="st">  </span><span class="kw"><a href="reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg, <span class="dt">explanatory =</span> am) %&gt;%
 <span class="st">  </span><span class="kw"><a href="reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) %&gt;%
 <span class="st">  </span><span class="kw"><a href="reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"1"</span>, <span class="st">"0"</span>))</code></pre></div>
+<p>Note that the formula and non-formula interfaces work for all implemented inference procedures in <code>infer</code>. Use whatever is more natural for you. If you will be doing modeling using functions like <code>lm()</code> and <code>glm()</code>, we recommend you begin to use the formula <code>y ~ x</code> notation as soon as possible though.</p>
 <p>Other examples are available in the package vignettes.</p>
-<hr>
-<p>Please note that this project is released with a <a href="https://github.com/andrewpbray/infer/blob/master/CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
-</div>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2 class="hasAnchor">
-<a href="#sidebar" class="anchor"></a>Links</h2>
+    <div class="links">
+<h2>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cran.r-project.org/package=infer">https://​cran.r-project.org/​package=infer</a>
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=infer">https://​cloud.r-project.org/​package=infer</a>
 </li>
 <li>Browse source code at <br><a href="https://github.com/andrewpbray/infer">https://​github.com/​andrewpbray/​infer</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/andrewpbray/infer/issues">https://​github.com/​andrewpbray/​infer/​issues</a>
 </li>
 </ul>
+</div>
+<div class="license">
 <h2>License</h2>
-<p>CC0</p>
+<ul class="list-unstyled">
+<li>CC0</li>
+</ul>
+</div>
+<div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Andrew Bray <br><small class="roles"> Author, maintainer </small>  </li>
@@ -149,6 +173,9 @@ remotes::<span class="kw">install_github</span>(<span class="st">"andrewpbray/in
 <li>Mine Cetinkaya-Rundel <br><small class="roles"> Author </small>  </li>
 <li><a href="authors.html">All authors...</a></li>
 </ul>
+</div>
+
+      <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://cran.r-project.org/package=infer"><img src="http://www.r-pkg.org/badges/version/infer" alt="CRAN_Status_Badge"></a></li>
@@ -156,6 +183,7 @@ remotes::<span class="kw">install_github</span>(<span class="st">"andrewpbray/in
 <li><a href="https://ci.appveyor.com/project/andrewpbray/infer"><img src="https://ci.appveyor.com/api/projects/status/github/andrewpbray/infer?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
 <li><a href="https://codecov.io/github/andrewpbray/infer/?branch=master"><img src="https://img.shields.io/codecov/c/github/andrewpbray/infer/master.svg" alt="Coverage Status"></a></li>
 </ul>
+</div>
 </div>
 
 </div>
@@ -171,6 +199,8 @@ remotes::<span class="kw">install_github</span>(<span class="st">"andrewpbray/in
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>
