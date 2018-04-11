@@ -12,7 +12,7 @@
 
 <meta name="author" content="Chester Ismay" />
 
-<meta name="date" content="2018-04-10" />
+<meta name="date" content="2018-04-11" />
 
 <title>Two sample t test example using nycflights13 flights data</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Two sample <span class="math inline">\(t\)</span> test example using <code>nycflights13</code> <code>flights</code> data</h1>
 <h4 class="author"><em>Chester Ismay</em></h4>
-<h4 class="date"><em>2018-04-10</em></h4>
+<h4 class="date"><em>2018-04-11</em></h4>
 
 
 
@@ -145,7 +145,8 @@ fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><s
 <span class="st">  </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span>
 <span class="st">  </span><span class="kw">specify</span>(arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;independence&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># calculate(stat = &quot;t&quot;) ## Not needed since t is implied</span>
+<span class="st">  </span><span class="co"># generate() ## Not used for theoretical</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;t&quot;</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">&quot;h1&quot;</span>, <span class="st">&quot;h2&quot;</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">visualize</span>(<span class="dt">method =</span> <span class="st">&quot;theoretical&quot;</span>, <span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">&quot;two_sided&quot;</span>)</code></pre></div>
 <pre><code>## Warning: Removed 15 rows containing missing values.</code></pre>
 <pre><code>## Warning: Check to make sure the conditions have been met for the
