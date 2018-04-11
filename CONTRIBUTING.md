@@ -1,7 +1,7 @@
 # Contributing
 
 Contributions to the `infer` whether in the form of bug fixes, issue reports, new code or documentation improvement
-are encouraged and welcome. We welcome newbies who may have never contributed to a package before as well as friendly
+are encouraged and welcome. We welcome novices who may have never contributed to a package before as well as friendly
 veterans looking to help us improve the package for users.
 
 Please use the GitHub issues. For any pull request, please link to or open a corresponding issue 
@@ -10,13 +10,13 @@ needed changes promptly.
 
 ##  Tests
 
-Skimr uses `testthat` for testing. Please try to provide 100% test coverage for any submitted code and always check 
-that existing tests continue to pass.  If you are a beginner and need help with writing a test, mention this
+`infer` uses `testthat` for testing. Please try to provide 100% test coverage for any submitted code and always check 
+that existing tests continue to pass. If you are a beginner and need help with writing a test, mention this
 in the issue and we will try to help.
 
 ## Pull requests
 
-Pull requests should be against the _develop_ branch not the `master` branch.  You can set this when creating 
+Pull requests should be against the `develop` branch NOT the `master` branch.  You can set this when creating 
 your pull request. Please make a separately named branch to submit.  Keep each branch for a complete specific
 issue.
 
