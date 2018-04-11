@@ -29,13 +29,6 @@ mtcars %>%
 
 ## ------------------------------------------------------------------------
 mtcars %>%
-  specify(response = mpg) %>% # formula alt: mpg ~ NULL
-  hypothesize(null = "point", sigma = 5) %>% 
-  generate(reps = 100, type = "bootstrap") %>% 
-  calculate(stat = "sd")
-
-## ------------------------------------------------------------------------
-mtcars %>%
   specify(response = am, success = "1") %>% # formula alt: am ~ NULL
   hypothesize(null = "point", p = .25) %>% 
   generate(reps = 100, type = "simulate") %>% 
@@ -89,6 +82,13 @@ mtcars %>%
   hypothesize(null = "independence") %>%
   generate(reps = 100, type = "permute") %>%
   calculate(stat = "slope")
+
+## ----eval=FALSE----------------------------------------------------------
+#  mtcars %>%
+#    specify(response = mpg) %>% # formula alt: mpg ~ NULL
+#    hypothesize(null = "point", sigma = 5) %>%
+#    generate(reps = 100, type = "bootstrap") %>%
+#    calculate(stat = "sd")
 
 ## ------------------------------------------------------------------------
 mtcars %>%

@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Randomization and Traditional Examples using <code>okcupiddata</code> <code>profiles</code> data • infer</title>
+<title>Simulation-based and Traditional Examples using <code>okcupiddata</code> <code>profiles</code> data • infer</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><meta property="og:title" content="Randomization and Traditional Examples using &lt;code&gt;okcupiddata&lt;/code&gt; &lt;code&gt;profiles&lt;/code&gt; data">
+<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><meta property="og:title" content="Simulation-based and Traditional Examples using &lt;code&gt;okcupiddata&lt;/code&gt; &lt;code&gt;profiles&lt;/code&gt; data">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -64,7 +64,7 @@
       <a href="../articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
-      <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
+      <a href="../articles/profiles_examples_both_methods.html">Simulation-based and Traditional Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
       <a href="../articles/two_sample_t.html">Two sample  test example using `nycflights13` `flights` data</a>
@@ -94,10 +94,10 @@
       </header><div class="row">
   <div class="col-md-9">
     <div class="page-header toc-ignore">
-      <h1>Randomization and Traditional Examples using <code>okcupiddata</code> <code>profiles</code> data</h1>
+      <h1>Simulation-based and Traditional Examples using <code>okcupiddata</code> <code>profiles</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2018-03-31</h4>
+            <h4 class="date">2018-04-10</h4>
       
       <small>Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/profiles_examples_both_methods.Rmd"><code>vignettes/profiles_examples_both_methods.Rmd</code></a></small>
 
@@ -110,7 +110,7 @@
 <h1 class="hasAnchor">
 <a href="#note" class="anchor"></a>Note</h1>
 <p>There has been some recent <a href="https://www.wired.com/2016/05/okcupid-study-reveals-perils-big-data-science/">controversy</a> surrounding data of this sort similar to what is given in the {okcupiddata} package. Explicit permission was obtained from OkCupid and usernames were not included in the data set for that package. Its use here is only to check for a variety of different variable types and levels. It will remain only in this “cutting edge” version of the package as we continue to add and test examples.</p>
-<p>The <code>method = "both"</code> examples here do another randomization instead of using the one with <code><a href="../reference/visualize.html">visualize()</a></code> set to the default of <code>method = "randomization"</code>. This is to show the full pipeline for a variety of examples, but more than likely you’ll want to do something like the following instead in practice.</p>
+<p>The <code>method = "both"</code> examples here do another simulation-based instead of using the one with <code><a href="../reference/visualize.html">visualize()</a></code> set to the default of <code>method = "simulation"</code>. This is to show the full pipeline for a variety of examples, but more than likely you’ll want to do something like the following instead in practice.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn &lt;-<span class="st"> </span>prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>sex) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = sex</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
@@ -158,7 +158,7 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <div id="one-numerical-variable-one-categorical-2-levels" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-numerical-variable-one-categorical-2-levels" class="anchor"></a>One numerical variable, one categorical (2 levels)</h3>
-<p>Randomization approach to t-statistic</p>
+<p>Simulation-based approach to t-statistic</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>sex) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = sex</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
@@ -170,9 +170,11 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>sex) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = sex</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># generate() is not needed since we are not doing randomization</span>
-<span class="st">  </span><span class="co"># calculate(stat = "t") ## Not needed since t implied based on variable types</span>
+<span class="st">  </span><span class="co"># generate() is not needed since we are not doing simulation-based</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
 <p>Overlay appropriate <span class="math inline">\(t\)</span> distribution on top of permuted t-statistics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
@@ -181,12 +183,14 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"m"</span>, <span class="st">"f"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 </div>
 <div id="one-numerical-one-categorical-2-levels---anova" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-numerical-one-categorical-2-levels---anova" class="anchor"></a>One numerical, one categorical (&gt;2 levels) - ANOVA</h3>
-<p>Randomization approach to F-statistic</p>
+<p>Simulation-based approach to F-statistic</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>status) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = status</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
@@ -197,10 +201,12 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <p>Theoretical distribution</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>status) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = status</span>
-<span class="st">  </span><span class="co"># generate() is not needed since we are not doing randomization</span>
-<span class="st">  </span><span class="co"># calculate(stat = "F") ## Not needed since F implied based on variable types</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="co"># generate() is not needed since we are not doing simulation-based</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 <p>Overlay appropriate <span class="math inline">\(F\)</span> distribution on top of permuted F-statistics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
@@ -209,13 +215,15 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
 </div>
 </div>
 <div id="one-categorical-2-level-variable" class="section level2">
 <h2 class="hasAnchor">
 <a href="#one-categorical-2-level-variable" class="anchor"></a>One categorical (2 level) variable</h2>
-<p>Randomization approach to z-statistic</p>
+<p>Simulation-based approach to z-statistic</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> sex, <span class="dt">success =</span> <span class="st">"m"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"m"</span> =<span class="st"> </span>.<span class="dv">65</span>, <span class="st">"f"</span> =<span class="st"> </span>.<span class="dv">35</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -227,9 +235,11 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> sex, <span class="dt">success =</span> <span class="st">"m"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"m"</span> =<span class="st"> </span>.<span class="dv">65</span>, <span class="st">"f"</span> =<span class="st"> </span>.<span class="dv">35</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="co"># generate() is not needed since we are not doing randomization</span>
-<span class="st">  </span><span class="co"># calculate(stat = "z") ## Not needed since z implied based on variable types</span>
+<span class="st">  </span><span class="co"># generate() is not needed since we are not doing simulation-based</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 <p>Overlay standard normal distribution on top of permuted z-statistics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
@@ -238,12 +248,14 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 </div>
 <div id="two-categorical-2-level-variables" class="section level2">
 <h2 class="hasAnchor">
 <a href="#two-categorical-2-level-variables" class="anchor"></a>Two categorical (2 level) variables</h2>
-<p>Randomization approach to z-statistic</p>
+<p>Simulation-based approach to z-statistic</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(sex <span class="op">~</span><span class="st"> </span>city, <span class="dt">success =</span> <span class="st">"m"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
@@ -255,9 +267,11 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(sex <span class="op">~</span><span class="st"> </span>city, <span class="dt">success =</span> <span class="st">"m"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="co"># generate() is not needed since we are not doing randomization</span>
-<span class="st">  </span><span class="co"># calculate(stat = "z") ## Not needed since z implied based on variable types</span>
+<span class="st">  </span><span class="co"># generate() is not needed since we are not doing simulation-based</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"san fran"</span>, <span class="st">"not san fran"</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 <p>Overlay standard normal distribution on top of permuted z-statistics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
@@ -266,12 +280,14 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"san fran"</span>, <span class="st">"not san fran"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 </div>
 <div id="two-categorical-2-level-variables-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#two-categorical-2-level-variables-1" class="anchor"></a>Two categorical (&gt;2 level) variables</h2>
-<p>Randomization approach to <span class="math inline">\(\chi^2\)</span>-statistic</p>
+<p>Simulation-based approach to <span class="math inline">\(\chi^2\)</span>-statistic</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(drugs <span class="op">~</span><span class="st"> </span>status) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = drugs, explanatory = status</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
@@ -283,9 +299,11 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(drugs <span class="op">~</span><span class="st"> </span>status) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = drugs, explanatory = status</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># generate() is not needed since we are not doing randomization</span>
-<span class="st">  </span><span class="co"># calculate(stat = "Chisq") ## Not needed since Chisq implied</span>
+<span class="st">  </span><span class="co"># generate() is not needed since we are not doing simulation-based</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
 <p>Overlay standard chi-square distribution on top of permuted statistics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
@@ -294,12 +312,14 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
 </div>
 <div id="one-categorical-2-level---gof" class="section level2">
 <h2 class="hasAnchor">
 <a href="#one-categorical-2-level---gof" class="anchor"></a>One categorical (&gt;2 level) - GoF</h2>
-<p>Randomization approach to <span class="math inline">\(\chi^2\)</span>-statistic</p>
+<p>Simulation-based approach to <span class="math inline">\(\chi^2\)</span>-statistic</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(drugs <span class="op">~</span><span class="st"> </span><span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = drugs</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, 
@@ -313,9 +333,11 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(drugs <span class="op">~</span><span class="st"> </span><span class="ot">NULL</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = drugs</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, 
               <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"never"</span> =<span class="st"> </span>.<span class="dv">7</span>, <span class="st">"often"</span> =<span class="st"> </span>.<span class="dv">05</span>, <span class="st">"sometimes"</span> =<span class="st"> </span>.<span class="dv">25</span>)) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># generate() is not needed since we are not doing randomization</span>
-<span class="st">  </span><span class="co"># calculate(stat = "Chisq") ## Not needed since Chisq implied</span>
+<span class="st">  </span><span class="co"># generate() is not needed since we are not doing simulation-based</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
 <p>Overlay standard chi-square distribution on top of permuted statistics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
@@ -325,12 +347,14 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
 </div>
 <div id="two-numerical-vars---slr" class="section level2">
 <h2 class="hasAnchor">
 <a href="#two-numerical-vars---slr" class="anchor"></a>Two numerical vars - SLR</h2>
-<p>Randomization approach to <span class="math inline">\(t\)</span>-statistic</p>
+<p>Simulation-based approach to <span class="math inline">\(t\)</span>-statistic</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>height) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = height</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
@@ -342,9 +366,11 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(age <span class="op">~</span><span class="st"> </span>height) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = age, explanatory = height</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># generate() is not needed since we are not doing randomization</span>
-<span class="st">  </span><span class="co"># calculate(stat = "t") ## Not needed since t implied based on variable types</span>
+<span class="st">  </span><span class="co"># generate() is not needed since we are not doing simulation-based</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 <p>Overlay appropriate <span class="math inline">\(t\)</span> distribution on top of permuted t-statistics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
@@ -353,6 +379,8 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-24-1.png" width="672"></p>
 </div>
 </div>
@@ -363,7 +391,7 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <div id="one-numerical-variable-mean" class="section level2">
 <h2 class="hasAnchor">
 <a href="#one-numerical-variable-mean" class="anchor"></a>One numerical variable (mean)</h2>
-<p>Randomization approach to <span class="math inline">\(t\)</span>-statistic (Not implemented)</p>
+<p>Simulation-based approach to <span class="math inline">\(t\)</span>-statistic (Not implemented)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> age) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: age ~ NULL (or age ~ 1)</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">mu =</span> <span class="dv">50</span>) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -377,6 +405,8 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="co">#  generate(reps = 1000, type = "bootstrap") %&gt;% </span>
 <span class="co">#  calculate(stat = "t") %&gt;% </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-26-1.png" width="672"></p>
 <p>Overlay appropriate <span class="math inline">\(t\)</span> distribution on top of permuted t-statistics (Not implemented)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>

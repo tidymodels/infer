@@ -98,10 +98,11 @@ specify <- function(x, formula, response = NULL,
       as.character(attr(x, "explanatory"))
     )))
 
-  is_complete <- complete.cases(x)
+  is_complete <- stats::complete.cases(x)
   if (!all(is_complete)) {
-    x <- filter(x, is_complete)
-    warning(paste0("Warning: Removed ", sum(!is_complete), " rows containing missing values."), call. = FALSE)
+    x <- dplyr::filter(x, is_complete)
+    warning(paste0("Removed ", sum(!is_complete), 
+                   " rows containing missing values."), call. = FALSE)
   }
 
   # To help determine theoretical distribution to plot

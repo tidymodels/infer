@@ -48,3 +48,8 @@ test_that("sensible output", {
 test_that("formula argument is a formula", {
   expect_error(specify(mtcars, formula = "vs", success = 1))
 })
+
+test_that("is_complete works", {
+  some_missing <- data.frame(vec = c(NA, 2, 3))
+  expect_warning(specify(some_missing, response = vec))
+})

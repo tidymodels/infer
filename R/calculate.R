@@ -37,9 +37,13 @@ calculate <- function(x, stat, order = NULL, ...) {
                "Make sure to `specify()` it first."))
   }
   
-  if(!("replicate" %in% names(x)))
+  if (!("replicate" %in% names(x)) && !is.null(attr(x, "generate")))
     warning(paste0('A `generate()` step was not performed prior to',
                    '`calculate()`. Review carefully.'))
+  
+  # Catch-all if generate was not called
+  if (is.null(attr(x, "generate")) || !attr(x, "generate"))
+    return(x)
   
   if (!stat %in% c("mean", "median", "sd", "prop",
                    "diff in means", "diff in medians", "diff in props",

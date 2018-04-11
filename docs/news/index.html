@@ -87,7 +87,7 @@
       <a href="../articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
-      <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
+      <a href="../articles/profiles_examples_both_methods.html">Simulation-based and Traditional Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
       <a href="../articles/two_sample_t.html">Two sample $t$ test example using `nycflights13` `flights` data</a>
@@ -139,8 +139,12 @@
 <li>Added check so that a bar graph created with <code><a href="../reference/visualize.html">visualize()</a></code> if number of unique values for generated statistics is small</li>
 <li>Added shading for <code>method = "theoretical"</code>
 </li>
-<li>Implemented shading for randomization methods w/o a traditional distribution</li>
+<li>Implemented shading for simulation methods w/o a traditional distribution</li>
 <li>Use percentiles to determine two-tailed shading</li>
+<li>Changed <code>method = "randomization"</code> to <code>method = "simulation"</code>
+</li>
+<li>Added warning when theoretical distribution is used that assumptions should be checked<br>
+</li>
 <li>Added theoretical distributions to <code><a href="../reference/visualize.html">visualize()</a></code> alone and as overlay with current implementations being
 <ul>
 <li>Two sample t</li>

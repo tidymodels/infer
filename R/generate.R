@@ -19,6 +19,8 @@
 
 generate <- function(x, reps = 1, type = "bootstrap", ...) {
 
+  attr(x, "generate") <- TRUE
+  
   if (type == "permute" &&
       any(is.null(attr(x, "response")), is.null(attr(x, "explanatory")))) {
     stop(paste("Please `specify()` an explanatory and a response variable",
@@ -77,24 +79,20 @@ bootstrap <- function(x, reps = 1, ...) {
     # Similarly for median
     else if(attr(attr(x, "params"), "names") == "med"){
       col <- as.character(attr(x, "response"))
-#      print(median(x[[col]]))
-#      print(attr(x, "params"))
       x[[col]] <- x[[col]] -
         stats::median(x[[col]], na.rm = TRUE) + attr(x, "params")
-#      print(median(x[[col]]))
     }
 
     # Implement confidence interval for bootstrapped proportions?
     # Implement z transformation?
 
     # Similarly for sd
-    else if(attr(attr(x, "params"), "names") == "sigma"){
-      col <- as.character(attr(x, "response"))
-#      print(sd(x[[col]]))
-      x[[col]] <- x[[col]] -
-        stats::sd(x[[col]], na.rm = TRUE) + attr(x, "params")
-#      print(sd(x[[col]]))
-    }
+    ## Temporarily removed since this implementation does not scale correctly
+    # else if(attr(attr(x, "params"), "names") == "sigma"){
+    #   col <- as.character(attr(x, "response"))
+    #   x[[col]] <- x[[col]] -
+    #     stats::sd(x[[col]], na.rm = TRUE) + attr(x, "params")
+    # }
   }
 
   # Set variables for use in calculate()
@@ -107,8 +105,8 @@ bootstrap <- function(x, reps = 1, ...) {
   attr(result, "distr_param") <- attr(x, "distr_param")
   attr(result, "distr_param2") <- attr(x, "distr_param2")
   attr(result, "theory_type") <- attr(x, "theory_type")
+  attr(result, "generate") <- attr(x, "generate")
   
-
   class(result) <- append("infer", class(result))
   
   return(result)
@@ -131,6 +129,7 @@ permute <- function(x, reps = 1, ...) {
   attr(df_out, "distr_param") <- attr(x, "distr_param")
   attr(df_out, "distr_param2") <- attr(x, "distr_param2")
   attr(df_out, "theory_type") <- attr(x, "theory_type")
+  attr(df_out, "generate") <- attr(x, "generate")
   
   class(df_out) <- append("infer", class(df_out))
   
@@ -180,6 +179,7 @@ simulate <- function(x, reps = 1, ...) {
   attr(rep_tbl, "distr_param") <- attr(x, "distr_param")
   attr(rep_tbl, "distr_param2") <- attr(x, "distr_param2")
   attr(rep_tbl, "theory_type") <- attr(x, "theory_type")
+  attr(rep_tbl, "generate") <- attr(x, "generate")
   
   class(rep_tbl) <- append("infer", class(rep_tbl))
   

@@ -61,7 +61,7 @@ obs_chisq <- fli_small %>%
   dplyr::pull()
 ```
 
-The observed $t$ statistic is `r obs_chisq`.
+The observed $\chi^2$ statistic is `r obs_chisq`.
 
 Or using another shortcut function in `infer`:
 

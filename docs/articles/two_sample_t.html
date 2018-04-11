@@ -64,7 +64,7 @@
       <a href="../articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
-      <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
+      <a href="../articles/profiles_examples_both_methods.html">Simulation-based and Traditional Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
       <a href="../articles/two_sample_t.html">Two sample  test example using `nycflights13` `flights` data</a>
@@ -97,7 +97,7 @@
       <h1>Two sample <span class="math inline">\(t\)</span> test example using <code>nycflights13</code> <code>flights</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2018-03-31</h4>
+            <h4 class="date">2018-04-10</h4>
       
       <small>Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/two_sample_t.Rmd"><code>vignettes/two_sample_t.Rmd</code></a></small>
 
@@ -168,8 +168,9 @@ fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><s
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"h1"</span>, <span class="st">"h2"</span>))
-t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"h1"</span>, <span class="st">"h2"</span>))</code></pre></div>
+<pre><code>## Warning: Removed 15 rows containing missing values.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
 <p><img src="two_sample_t_files/figure-html/unnamed-chunk-5-1.png" width="768"></p>
 </div>
 <div id="calculate-the-randomization-based-p-value" class="section level2">
@@ -178,7 +179,7 @@ t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class=
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_null_distn <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(<span class="kw">abs</span>(stat) <span class="op">&gt;=</span><span class="st"> </span>obs_t)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.41</code></pre>
+<pre><code>## [1] 0.42</code></pre>
 </div>
 <div id="theoretical-distribution" class="section level2">
 <h2 class="hasAnchor">
@@ -189,6 +190,9 @@ t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class=
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># calculate(stat = "t") ## Not needed since t is implied</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>, <span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<pre><code>## Warning: Removed 15 rows containing missing values.</code></pre>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="two_sample_t_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
 </div>
 <div id="overlay-appropriate-t-distribution-on-top-of-permuted-t-statistics" class="section level2">
@@ -201,6 +205,8 @@ t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class=
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"h1"</span>, <span class="st">"h2"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>, <span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="two_sample_t_files/figure-html/unnamed-chunk-9-1.png" width="768"></p>
 </div>
 <div id="compute-theoretical-p-value" class="section level2">

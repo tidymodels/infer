@@ -93,7 +93,7 @@
       <a href="../articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
-      <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
+      <a href="../articles/profiles_examples_both_methods.html">Simulation-based and Traditional Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
       <a href="../articles/two_sample_t.html">Two sample $t$ test example using `nycflights13` `flights` data</a>
@@ -169,10 +169,8 @@ or <code>simulate</code></p></td>
     <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>am</span> ~ <span class='no'>vs</span>, <span class='kw'>success</span> <span class='kw'>=</span> <span class='st'>"1"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>)</div><div class='output co'>#&gt; Response:  am 
-#&gt;  Response Type:  factor 
-#&gt; Explanatory:  vs 
-#&gt;  Explanatory Type:  factor 
+    <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>)</div><div class='output co'>#&gt; Response: am (factor)
+#&gt; Explanatory: vs (factor)
 #&gt; Null Hypothesis:  independence 
 #&gt; # A tibble: 3,200 x 3
 #&gt; # Groups:   replicate [100]

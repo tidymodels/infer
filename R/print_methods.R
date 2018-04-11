@@ -7,9 +7,11 @@
 print.infer <- function(x, ...) {
   attrs <- names(attributes(x))
   if ("response" %in% attrs) {
-    cat(paste0("Response: ", attr(x, "response"), " (", attr(x, "response_type"), ")", "\n"))
+    cat(paste0("Response: ", attr(x, "response"), " (", 
+               attr(x, "response_type"), ")", "\n"))
     if ("explanatory" %in% attrs) {
-      cat(paste0("Explanatory: ", attr(x, "explanatory"), " (", attr(x, "explanatory_type"), ")", "\n"))
+      cat(paste0("Explanatory: ", attr(x, "explanatory"), 
+                 " (", attr(x, "explanatory_type"), ")", "\n"))
     }
   }
   if ("null" %in% attrs) {
