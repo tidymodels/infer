@@ -97,7 +97,7 @@
       <h1>Chi-squared test example using <code>nycflights13</code> <code>flights</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2018-04-10</h4>
+            <h4 class="date">2018-04-11</h4>
       
       <small>Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/chisq_test.Rmd"><code>vignettes/chisq_test.Rmd</code></a></small>
 
@@ -187,7 +187,8 @@ chisq_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span cl
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(origin <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = origin, explanatory = season</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="co"># calculate(stat = "Chisq") ## Not needed since Chisq is implied</span>
+<span class="st">  </span><span class="co"># generate() ## Not used for theoretical</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>, <span class="dt">obs_stat =</span> obs_chisq, <span class="dt">direction =</span> <span class="st">"right"</span>)</code></pre></div>
 <pre><code>## Warning: Check to make sure the conditions have been met for the
 ## theoretical method. `infer` currently does not check these for you.</code></pre>
