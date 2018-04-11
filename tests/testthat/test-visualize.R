@@ -81,7 +81,7 @@ test_that("visualize basic tests", {
                  visualize(direction = "both", obs_stat = obs_diff)
   )
   
-  expect_silent(iris_tbl %>% 
+  expect_warning(iris_tbl %>% 
                   specify(Sepal.Width.Group ~ Sepal.Length.Group,
                           success = "large") %>% 
                   hypothesize(null = "independence") %>% 
@@ -89,7 +89,7 @@ test_that("visualize basic tests", {
   )
   
   # diff in props and z on different scales
-  expect_error(iris_tbl %>% 
+  expect_error(expect_warning(iris_tbl %>% 
                   specify(Sepal.Width.Group ~ Sepal.Length.Group,
                           success = "large") %>% 
                   hypothesize(null = "independence") %>% 
@@ -98,7 +98,7 @@ test_that("visualize basic tests", {
                             order = c(">5", "<=5")) %>% 
                   visualize(method = "both", direction = "both", 
                             obs_stat = obs_diff)
-  )
+  ))
   
   expect_silent(iris_tbl %>% 
                  specify(Sepal.Width.Group ~ Sepal.Length.Group,
@@ -110,7 +110,7 @@ test_that("visualize basic tests", {
                  visualize()
   )
   
-  expect_silent(iris_tbl %>% 
+  expect_warning(iris_tbl %>% 
                  specify(Sepal.Width.Group ~ Sepal.Length.Group,
                          success = "large") %>% 
                  hypothesize(null = "independence") %>% 
@@ -121,7 +121,7 @@ test_that("visualize basic tests", {
                            obs_stat = obs_z)
   )
   
-  expect_silent(iris_tbl %>% 
+  expect_warning(iris_tbl %>% 
                   specify(Sepal.Width.Group ~ Sepal.Length.Group,
                           success = "large") %>% 
                   hypothesize(null = "independence") %>% 
@@ -132,7 +132,7 @@ test_that("visualize basic tests", {
                             obs_stat = -obs_z)
   )
   
-  expect_silent(iris_tbl %>% 
+  expect_warning(iris_tbl %>% 
                   specify(Sepal.Length ~ Sepal.Width.Group) %>% 
                   hypothesize(null = "independence") %>% 
                   generate(reps = 100, type = "permute") %>% 
@@ -141,28 +141,28 @@ test_that("visualize basic tests", {
                             obs_stat = -obs_t)
   )
   
-  expect_silent(iris_tbl %>% 
+  expect_warning(iris_tbl %>% 
                   specify(Sepal.Length ~ Sepal.Width.Group) %>% 
                   hypothesize(null = "independence") %>% 
  #                 generate(reps = 100, type = "permute") %>% 
-#                  calculate(stat = "t", order = c("small", "large") ) %>% 
+                  calculate(stat = "t", order = c("small", "large") ) %>% 
                   visualize(method = "theoretical", direction = "left", 
                             obs_stat = -obs_t)
   )
   
-  expect_silent(iris_tbl %>% 
+  expect_warning(iris_tbl %>% 
                   specify(Sepal.Length ~ Sepal.Length.Group) %>% 
                   hypothesize(null = "independence") %>% 
                   visualize(method = "theoretical")
   )
   
-  expect_silent(iris_tbl %>% 
+  expect_warning(iris_tbl %>% 
                   specify(Sepal.Length ~ Species) %>% 
                   hypothesize(null = "independence") %>% 
                   visualize(method = "theoretical")
   )
   
-  expect_silent(iris_tbl %>% 
+  expect_warning(iris_tbl %>% 
                   specify(Sepal.Length ~ Species) %>% 
                   hypothesize(null = "independence") %>% 
                   generate(reps = 100, type = "permute") %>% 
@@ -180,7 +180,7 @@ test_that("visualize basic tests", {
                             direction = "left")
   )
   
-  expect_silent(iris_tbl %>% 
+  expect_warning(iris_tbl %>% 
                   specify(Sepal.Width.Group ~ Species, 
                           success = "large") %>% 
                   hypothesize(null = "independence") %>% 
@@ -190,7 +190,7 @@ test_that("visualize basic tests", {
                             direction = "right")
   )
   
-  expect_silent(iris_tbl %>% 
+  expect_warning(iris_tbl %>% 
                   specify(Sepal.Width.Group ~ Species, 
                           success = "large") %>% 
                   hypothesize(null = "independence") %>% 
@@ -199,7 +199,7 @@ test_that("visualize basic tests", {
                             direction = "right")
   )
   
-  expect_silent(iris_tbl %>% 
+  expect_warning(iris_tbl %>% 
                   specify(Species ~ NULL) %>% 
                   hypothesize(null = "point", 
                               p = c("setosa" = 0.4,
@@ -222,7 +222,7 @@ test_that("visualize basic tests", {
                   visualize(method = "traditional")
   )
   
-  expect_silent(iris_tbl %>% 
+  expect_warning(iris_tbl %>% 
                  specify(Species ~ NULL) %>% 
                  hypothesize(null = "point", 
                              p = c("setosa" = 0.4,
@@ -243,7 +243,8 @@ test_that("visualize basic tests", {
                             obs_stat = obs_diff_mean)
   )
   
-  expect_error(iris_tbl %>% 
+  # Produces warning first for not checking conditions but would also error
+  expect_error(expect_warning(iris_tbl %>% 
                    specify(Petal.Width ~ Sepal.Width.Group) %>% 
                    hypothesize(null = "independence") %>% 
                    generate(reps = 100, type = "permute") %>% 
@@ -251,7 +252,7 @@ test_that("visualize basic tests", {
                              order = c("large", "small")) %>% 
                    visualize(method = "both", direction = "both",
                              obs_stat = obs_diff_mean)
-  )
+  ))
   
   expect_warning(iris_tbl %>% 
                  specify(Petal.Width ~ Sepal.Width.Group) %>% 
@@ -263,7 +264,7 @@ test_that("visualize basic tests", {
                            obs_stat = obs_diff_mean)
   )
   
-  expect_silent(iris_tbl %>% 
+  expect_warning(iris_tbl %>% 
                   specify(Sepal.Width.Group ~ NULL, success = "small") %>% 
                   hypothesize(null = "point", p = 0.8) %>% 
 #                 generate(reps = 100, type = "simulate") %>% 
