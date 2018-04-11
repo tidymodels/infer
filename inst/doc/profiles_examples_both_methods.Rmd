@@ -1,5 +1,5 @@
 ---
-title: "Randomization and Traditional Examples using `okcupiddata` `profiles` data"
+title: "Simulation-based and Traditional Examples using `okcupiddata` `profiles` data"
 author: "Chester Ismay"
 date: "`r Sys.Date()`"
 output: 
@@ -21,8 +21,8 @@ There has been some recent [controversy](https://www.wired.com/2016/05/okcupid-s
 to check for a variety of different variable types and levels. It will remain only in this
 "cutting edge" version of the package as we continue to add and test examples.
 
-The `method = "both"` examples here do another randomization instead of using the one
-with `visualize()` set to the default of `method = "randomization"`. This is to show the full
+The `method = "both"` examples here do another simulation-based instead of using the one
+with `visualize()` set to the default of `method = "simulation"`. This is to show the full
 pipeline for a variety of examples, but more than likely you'll want to do something like the
 following instead in practice.
 
@@ -69,7 +69,7 @@ prof_small <- profiles %>%
 
 ### One numerical variable, one categorical (2 levels)
 
-Randomization approach to t-statistic
+Simulation-based approach to t-statistic
 
 ```{r}
 prof_small %>%
@@ -86,8 +86,8 @@ Theoretical distribution
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
-  # generate() is not needed since we are not doing randomization
-  # calculate(stat = "t") ## Not needed since t implied based on variable types
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "t") %>% 
   visualize(method = "theoretical")
 ```
 
@@ -104,7 +104,7 @@ prof_small %>%
 
 ### One numerical, one categorical (>2 levels) -  ANOVA
 
-Randomization approach to F-statistic
+Simulation-based approach to F-statistic
 
 ```{r}
 prof_small %>%
@@ -120,9 +120,9 @@ Theoretical distribution
 ```{r}
 prof_small %>%
   specify(age ~ status) %>% # alt: response = age, explanatory = status
-  # generate() is not needed since we are not doing randomization
-  # calculate(stat = "F") ## Not needed since F implied based on variable types
   hypothesize(null = "independence") %>%
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "F") %>%
   visualize(method = "theoretical")
 ```
 
@@ -140,7 +140,7 @@ prof_small %>%
 
 ## One categorical (2 level) variable
 
-Randomization approach to z-statistic
+Simulation-based approach to z-statistic
 
 ```{r}
 prof_small %>%
@@ -157,8 +157,8 @@ Theoretical distribution
 prof_small %>%
   specify(response = sex, success = "m") %>%
   hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
-  # generate() is not needed since we are not doing randomization
-  # calculate(stat = "z") ## Not needed since z implied based on variable types
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "z") %>%
   visualize(method = "theoretical")
 ```
 
@@ -176,7 +176,7 @@ prof_small %>%
 
 ## Two categorical (2 level) variables
 
-Randomization approach to z-statistic
+Simulation-based approach to z-statistic
 
 ```{r}
 prof_small %>%
@@ -193,8 +193,8 @@ Theoretical distribution
 prof_small %>%
   specify(sex ~ city, success = "m") %>%
   hypothesize(null = "independence") %>% 
-  # generate() is not needed since we are not doing randomization
-  # calculate(stat = "z") ## Not needed since z implied based on variable types
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "z", order = c("san fran", "not san fran")) %>%
   visualize(method = "theoretical")
 ```
 
@@ -211,7 +211,7 @@ prof_small %>%
 
 ## Two categorical (>2 level) variables
 
-Randomization approach to $\chi^2$-statistic
+Simulation-based approach to $\chi^2$-statistic
 
 ```{r}
 prof_small %>%
@@ -228,8 +228,8 @@ Theoretical distribution
 prof_small %>%
   specify(drugs ~ status) %>% # alt: response = drugs, explanatory = status
   hypothesize(null = "independence") %>%
-  # generate() is not needed since we are not doing randomization
-  # calculate(stat = "Chisq") ## Not needed since Chisq implied
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "Chisq") %>%
   visualize(method = "theoretical")
 ```
 
@@ -246,7 +246,7 @@ prof_small %>%
 
 ## One categorical (>2 level) - GoF
 
-Randomization approach to $\chi^2$-statistic
+Simulation-based approach to $\chi^2$-statistic
 
 ```{r}
 prof_small %>%
@@ -265,8 +265,8 @@ prof_small %>%
   specify(drugs ~ NULL) %>% # alt: response = drugs
   hypothesize(null = "point", 
               p = c("never" = .7, "often" = .05, "sometimes" = .25)) %>%
-  # generate() is not needed since we are not doing randomization
-  # calculate(stat = "Chisq") ## Not needed since Chisq implied
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "Chisq") %>%
   visualize(method = "theoretical")
 ```
 
@@ -284,7 +284,7 @@ prof_small %>%
 
 ## Two numerical vars - SLR 
 
-Randomization approach to $t$-statistic
+Simulation-based approach to $t$-statistic
 
 ```{r}
 prof_small %>%
@@ -301,8 +301,8 @@ Theoretical distribution
 prof_small %>%
   specify(age ~ height) %>% # alt: response = age, explanatory = height
   hypothesize(null = "independence") %>%
-  # generate() is not needed since we are not doing randomization
-  # calculate(stat = "t") ## Not needed since t implied based on variable types
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "t") %>%
   visualize(method = "theoretical")
 ```
 
@@ -323,7 +323,7 @@ Note that all code from here throughout the rest of this vignette is to think ab
 
 ## One numerical variable (mean)
 
-Randomization approach to $t$-statistic (Not implemented)
+Simulation-based approach to $t$-statistic (Not implemented)
 
 ```{r eval=FALSE}
 prof_small %>%

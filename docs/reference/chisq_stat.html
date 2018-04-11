@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>A shortcut wrapper function to get the observed test statistic for a chisq test — chisq_stat • infer</title>
+<title>A shortcut wrapper function to get the observed test statistic for a chisq test. Uses <code>stats::chisq.test</code>, which applies a continuity correction. — chisq_stat • infer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -25,9 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="A shortcut wrapper function to get the observed test statistic for a chisq test — chisq_stat" />
+<meta property="og:title" content="A shortcut wrapper function to get the observed test statistic for a chisq test. Uses <code>stats::chisq.test</code>, which applies a continuity correction. — chisq_stat" />
 
-<meta property="og:description" content="A shortcut wrapper function to get the observed test statistic for a chisq test" />
+<meta property="og:description" content="A shortcut wrapper function to get the observed test statistic for a chisq test. Uses stats::chisq.test, which applies a continuity correction." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -90,7 +90,7 @@
       <a href="../articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
-      <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
+      <a href="../articles/profiles_examples_both_methods.html">Simulation-based and Traditional Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
       <a href="../articles/two_sample_t.html">Two sample $t$ test example using `nycflights13` `flights` data</a>
@@ -120,12 +120,12 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>A shortcut wrapper function to get the observed test statistic for a chisq test</h1>
+    <h1>A shortcut wrapper function to get the observed test statistic for a chisq test. Uses <code>stats::chisq.test</code>, which applies a continuity correction.</h1>
     <small>Source: <a href='https://github.com/andrewpbray/infer/blob/master/R/wrappers.R'><code>R/wrappers.R</code></a></small>
     </div>
 
     
-    <p>A shortcut wrapper function to get the observed test statistic for a chisq test</p>
+    <p>A shortcut wrapper function to get the observed test statistic for a chisq test. Uses <code><a href='http://www.rdocumentation.org/packages/stats/topics/chisq.test'>stats::chisq.test</a></code>, which applies a continuity correction.</p>
     
 
     <pre class="usage"><span class='fu'>chisq_stat</span>(<span class='no'>data</span>, <span class='no'>formula</span>, <span class='no'>...</span>)</pre>
@@ -143,7 +143,7 @@
     </tr>
     <tr>
       <th>...</th>
-      <td><p>currently ignored</p></td>
+      <td><p>additional arguments for <code>chisq.test</code></p></td>
     </tr>
     </table>
     

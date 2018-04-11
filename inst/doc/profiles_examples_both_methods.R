@@ -37,8 +37,8 @@ prof_small %>%
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
-  # generate() is not needed since we are not doing randomization
-  # calculate(stat = "t") ## Not needed since t implied based on variable types
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "t") %>% 
   visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------
@@ -60,9 +60,9 @@ prof_small %>%
 ## ------------------------------------------------------------------------
 prof_small %>%
   specify(age ~ status) %>% # alt: response = age, explanatory = status
-  # generate() is not needed since we are not doing randomization
-  # calculate(stat = "F") ## Not needed since F implied based on variable types
   hypothesize(null = "independence") %>%
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "F") %>%
   visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------
@@ -85,8 +85,8 @@ prof_small %>%
 prof_small %>%
   specify(response = sex, success = "m") %>%
   hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
-  # generate() is not needed since we are not doing randomization
-  # calculate(stat = "z") ## Not needed since z implied based on variable types
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "z") %>%
   visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------
@@ -109,8 +109,8 @@ prof_small %>%
 prof_small %>%
   specify(sex ~ city, success = "m") %>%
   hypothesize(null = "independence") %>% 
-  # generate() is not needed since we are not doing randomization
-  # calculate(stat = "z") ## Not needed since z implied based on variable types
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "z", order = c("san fran", "not san fran")) %>%
   visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------
@@ -133,8 +133,8 @@ prof_small %>%
 prof_small %>%
   specify(drugs ~ status) %>% # alt: response = drugs, explanatory = status
   hypothesize(null = "independence") %>%
-  # generate() is not needed since we are not doing randomization
-  # calculate(stat = "Chisq") ## Not needed since Chisq implied
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "Chisq") %>%
   visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------
@@ -159,8 +159,8 @@ prof_small %>%
   specify(drugs ~ NULL) %>% # alt: response = drugs
   hypothesize(null = "point", 
               p = c("never" = .7, "often" = .05, "sometimes" = .25)) %>%
-  # generate() is not needed since we are not doing randomization
-  # calculate(stat = "Chisq") ## Not needed since Chisq implied
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "Chisq") %>%
   visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------
@@ -184,8 +184,8 @@ prof_small %>%
 prof_small %>%
   specify(age ~ height) %>% # alt: response = age, explanatory = height
   hypothesize(null = "independence") %>%
-  # generate() is not needed since we are not doing randomization
-  # calculate(stat = "t") ## Not needed since t implied based on variable types
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "t") %>%
   visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------

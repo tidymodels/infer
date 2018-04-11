@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Visualize the distribution of the randomization-based statistics
+<title>Visualize the distribution of the simulation-based inferential statistics
 or the theoretical distribution (or both!) — visualize • infer</title>
 
 <!-- jquery -->
@@ -26,10 +26,10 @@ or the theoretical distribution (or both!) — visualize • infer</title>
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-<meta property="og:title" content="Visualize the distribution of the randomization-based statistics
+<meta property="og:title" content="Visualize the distribution of the simulation-based inferential statistics
 or the theoretical distribution (or both!) — visualize" />
 
-<meta property="og:description" content="Visualize the distribution of the randomization-based statistics
+<meta property="og:description" content="Visualize the distribution of the simulation-based inferential statistics
 or the theoretical distribution (or both!)" />
 <meta name="twitter:card" content="summary" />
 
@@ -93,7 +93,7 @@ or the theoretical distribution (or both!)" />
       <a href="../articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
-      <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
+      <a href="../articles/profiles_examples_both_methods.html">Simulation-based and Traditional Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
       <a href="../articles/two_sample_t.html">Two sample $t$ test example using `nycflights13` `flights` data</a>
@@ -123,17 +123,17 @@ or the theoretical distribution (or both!)" />
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Visualize the distribution of the randomization-based statistics
+    <h1>Visualize the distribution of the simulation-based inferential statistics
 or the theoretical distribution (or both!)</h1>
     <small>Source: <a href='https://github.com/andrewpbray/infer/blob/master/R/visualize.R'><code>R/visualize.R</code></a></small>
     </div>
 
     
-    <p>Visualize the distribution of the randomization-based statistics
+    <p>Visualize the distribution of the simulation-based inferential statistics
 or the theoretical distribution (or both!)</p>
     
 
-    <pre class="usage"><span class='fu'>visualize</span>(<span class='no'>data</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"randomization"</span>, <span class='kw'>dens_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+    <pre class="usage"><span class='fu'>visualize</span>(<span class='no'>data</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"simulation"</span>, <span class='kw'>dens_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
   <span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>obs_stat_color</span> <span class='kw'>=</span> <span class='st'>"#e51010"</span>, <span class='kw'>shade_color</span> <span class='kw'>=</span> <span class='st'>"#efb8b8"</span>,
   <span class='kw'>direction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
@@ -151,8 +151,8 @@ or the theoretical distribution (or both!)</p>
     <tr>
       <th>method</th>
       <td><p>a string giving the method to display. Options are 
-"randomization", "theoretical", or "both"
-with "both" corresponding to "randomization" and "theoretical"</p></td>
+"simulation", "theoretical", or "both"
+with "both" corresponding to "simulation" and "theoretical"</p></td>
     </tr>
     <tr>
       <th>dens_color</th>
@@ -187,12 +187,12 @@ Can also specify "left", "right", or "both".</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A ggplot object showing the randomization-based distribution as a
+    <p>A ggplot object showing the simulation-based distribution as a
  histogram or bar graph. Also used to show the theoretical curves.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Permutations to create randomization null distribution for </span>
+    <pre class="examples"><div class='input'><span class='co'># Permutations to create a simulation-based null distribution for </span>
 <span class='co'># one numerical response and one categorical predictor</span>
 <span class='co'># using t statistic</span>
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
@@ -201,7 +201,7 @@ Can also specify "left", "right", or "both".</p></td>
     <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"randomization"</span>) <span class='co'>#default method</span></div><div class='img'><img src='visualize-1.png' alt='' width='700' height='433' /></div><div class='input'>
+    <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"simulation"</span>) <span class='co'>#default method</span></div><div class='img'><img src='visualize-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Theoretical t distribution for </span>
 <span class='co'># one numerical response and one categorical predictor</span>
 <span class='co'># using t statistic</span>
@@ -209,9 +209,9 @@ Can also specify "left", "right", or "both".</p></td>
     <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
     <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-    <span class='co'># generate() is not needed since we are not doing randomization</span>
-    <span class='co'># calculate(stat = "t") ## Not needed since t based on variable types</span>
-    <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"theoretical"</span>) <span class='co'>#default method</span></div><div class='img'><img src='visualize-2.png' alt='' width='700' height='433' /></div><div class='input'>
+    <span class='co'># generate() is not needed since we are not doing simulation</span>
+    <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"theoretical"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Check to make sure the conditions have been met for the theoretical method. `infer` currently does not check these for you.</span></div><div class='img'><img src='visualize-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Overlay theoretical distribution on top of randomized t-statistics</span>
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
     <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
@@ -219,7 +219,7 @@ Can also specify "left", "right", or "both".</p></td>
     <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"both"</span>)</div><div class='img'><img src='visualize-3.png' alt='' width='700' height='433' /></div></pre>
+    <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"both"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Check to make sure the conditions have been met for the theoretical method. `infer` currently does not check these for you.</span></div><div class='img'><img src='visualize-3.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

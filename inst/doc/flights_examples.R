@@ -90,10 +90,12 @@ ggplot(null_distn, aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = d_hat, color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat < d_hat) * 2)
+  summarize(p_value = mean(stat < d_hat) * 2) %>%
+  pull()
 
 ## ------------------------------------------------------------------------
-Chisq_hat <- chisq.test(table(fli_small$origin))$stat
+Chisq_hat <- fli_small %>%
+  chisq_stat(formula = origin ~ NULL)
 null_distn <- fli_small %>%
   specify(response = origin) %>%
   hypothesize(null = "point", 
@@ -104,10 +106,12 @@ ggplot(null_distn, aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = Chisq_hat, color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat > Chisq_hat)) 
+  summarize(p_value = mean(stat > Chisq_hat)) %>%
+  pull()
 
 ## ------------------------------------------------------------------------
-Chisq_hat <- chisq.test(table(fli_small$day_hour, fli_small$origin))$stat
+Chisq_hat <- fli_small %>%
+  chisq_stat(formula = day_hour ~ origin)
 null_distn <- fli_small %>%
   specify(day_hour ~ origin, success = "morning") %>%
   hypothesize(null = "independence") %>% 
@@ -117,7 +121,8 @@ ggplot(null_distn, aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = Chisq_hat, color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat > Chisq_hat)) 
+  summarize(p_value = mean(stat > Chisq_hat)) %>%
+  pull()
 
 ## ------------------------------------------------------------------------
 d_hat <- fli_small %>% 
@@ -135,7 +140,8 @@ ggplot(null_distn, aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = d_hat, color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat > d_hat) * 2)   
+  summarize(p_value = mean(stat < d_hat) * 2) %>%
+  pull()
 
 ## ------------------------------------------------------------------------
 d_hat <- fli_small %>% 
@@ -153,7 +159,8 @@ ggplot(null_distn, aes(x = stat)) +
   geom_bar() +
   geom_vline(xintercept = d_hat, color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat > d_hat) * 2)    
+  summarize(p_value = mean(stat < d_hat) * 2) %>%
+  pull()
 
 ## ------------------------------------------------------------------------
 F_hat <- anova(
@@ -169,9 +176,10 @@ ggplot(null_distn, aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = F_hat, color = "red")  
 null_distn %>% 
-  summarize(p_value = mean(stat > F_hat))
+  summarize(p_value = mean(stat > F_hat)) %>%
+  pull()
 
-## ------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------
 slope_hat <- lm(arr_delay ~ dep_delay, data = fli_small) %>% 
   broom::tidy() %>% 
   filter(term == "dep_delay") %>% 
@@ -186,9 +194,10 @@ ggplot(null_distn, aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = slope_hat, color = "red")  
 null_distn %>% 
-  summarize(p_value = mean(stat > slope_hat) * 2)   
+  summarize(p_value = mean(stat > slope_hat) * 2) %>%
+  pull()
 
-## ------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------
 x_bar <- fli_small %>%
    summarize(mean(arr_delay)) %>%
    pull()
@@ -200,7 +209,7 @@ boot <- fli_small %>%
 c(lower = x_bar - 2 * sd(boot),
   upper = x_bar + 2 * sd(boot))
 
-## ------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------
 p_hat <- fli_small %>%
  summarize(mean(day_hour == "morning")) %>%
  pull()
@@ -212,7 +221,7 @@ boot <- fli_small %>%
 c(lower = p_hat - 2 * sd(boot),
  upper = p_hat + 2 * sd(boot))
 
-## ------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------
 d_hat <- fli_small %>% 
   group_by(season) %>% 
   summarize(mean_stat = mean(arr_delay)) %>% 
@@ -226,7 +235,7 @@ boot <- fli_small %>%
 c(lower = d_hat - 2 * sd(boot), 
   upper = d_hat + 2 * sd(boot))
 
-## ------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------
 d_hat <- fli_small %>%
   group_by(season) %>%
   summarize(prop = mean(day_hour == "morning")) %>%
@@ -240,7 +249,7 @@ boot <- fli_small %>%
 c(lower = d_hat - 2 * sd(boot), 
   upper = d_hat + 2 * sd(boot))
 
-## ------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------
 slope_hat <- lm(arr_delay ~ dep_delay, data = fli_small) %>% 
   broom::tidy() %>% 
   filter(term == "dep_delay") %>% 

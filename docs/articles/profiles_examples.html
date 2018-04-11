@@ -64,7 +64,7 @@
       <a href="../articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
-      <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
+      <a href="../articles/profiles_examples_both_methods.html">Simulation-based and Traditional Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
       <a href="../articles/two_sample_t.html">Two sample  test example using `nycflights13` `flights` data</a>
@@ -97,7 +97,7 @@
       <h1>Randomization Examples using <code>okcupiddata</code> <code>profiles</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2018-03-31</h4>
+            <h4 class="date">2018-04-10</h4>
       
       <small>Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/profiles_examples.Rmd"><code>vignettes/profiles_examples.Rmd</code></a></small>
 
@@ -201,9 +201,8 @@ prof_small <span class="op">%&gt;%</span>
 <p><img src="profiles_examples_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
 <p>Two categorical (&gt;2 level) variables</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Chisq_hat &lt;-<span class="st"> </span>prof_small <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/chisq_stat.html">chisq_stat</a></span>(<span class="dt">formula =</span> drugs <span class="op">~</span><span class="st"> </span>status)</code></pre></div>
-<pre><code>## Warning in stats::chisq.test(x =
-## table(data[[as.character(explanatory_var)]], : Chi-squared approximation
-## may be incorrect</code></pre>
+<pre><code>## Warning in stats::chisq.test(table(df), ...): Chi-squared approximation may
+## be incorrect</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(drugs <span class="op">~</span><span class="st"> </span>status) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = drugs, explanatory = status</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>

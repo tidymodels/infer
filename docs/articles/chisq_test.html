@@ -64,7 +64,7 @@
       <a href="../articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
-      <a href="../articles/profiles_examples_both_methods.html">Randomization and Traditional Examples using `okcupiddata` `profiles` data</a>
+      <a href="../articles/profiles_examples_both_methods.html">Simulation-based and Traditional Examples using `okcupiddata` `profiles` data</a>
     </li>
     <li>
       <a href="../articles/two_sample_t.html">Two sample  test example using `nycflights13` `flights` data</a>
@@ -97,7 +97,7 @@
       <h1>Chi-squared test example using <code>nycflights13</code> <code>flights</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2018-03-31</h4>
+            <h4 class="date">2018-04-10</h4>
       
       <small>Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/chisq_test.Rmd"><code>vignettes/chisq_test.Rmd</code></a></small>
 
@@ -156,7 +156,7 @@ fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><s
 <span class="st">  </span><span class="kw"><a href="../reference/chisq_test.html">chisq_test</a></span>(<span class="dt">formula =</span> origin <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(statistic) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<p>The observed <span class="math inline">\(t\)</span> statistic is 0.571898.</p>
+<p>The observed <span class="math inline">\(\chi^2\)</span> statistic is 0.571898.</p>
 <p>Or using another shortcut function in <code>infer</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_chisq &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/chisq_stat.html">chisq_stat</a></span>(<span class="dt">formula =</span> origin <span class="op">~</span><span class="st"> </span>season)</code></pre></div>
@@ -189,6 +189,8 @@ chisq_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span cl
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="co"># calculate(stat = "Chisq") ## Not needed since Chisq is implied</span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>, <span class="dt">obs_stat =</span> obs_chisq, <span class="dt">direction =</span> <span class="st">"right"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="chisq_test_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
 </div>
 <div id="overlay-appropriate-chi2-distribution-on-top-of-permuted-statistics" class="section level2">
@@ -200,6 +202,8 @@ chisq_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span cl
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>, <span class="dt">obs_stat =</span> obs_chisq, <span class="dt">direction =</span> <span class="st">"right"</span>)</code></pre></div>
+<pre><code>## Warning: Check to make sure the conditions have been met for the
+## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="chisq_test_files/figure-html/unnamed-chunk-9-1.png" width="768"></p>
 </div>
 <div id="compute-theoretical-p-value" class="section level2">
