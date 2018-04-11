@@ -49,7 +49,8 @@ fli_small %>%
   # alt: response = arr_delay, explanatory = half_year
   specify(arr_delay ~ half_year) %>%
   hypothesize(null = "independence") %>%
-  # calculate(stat = "t") ## Not needed since t is implied
+  # generate() ## Not used for theoretical
+  calculate(stat = "t", order = c("h1", "h2")) %>%
   visualize(method = "theoretical", obs_stat = obs_t, direction = "two_sided")
 
 ## ----eval=FALSE----------------------------------------------------------

@@ -98,7 +98,8 @@ chisq_null_distn %>%
 fli_small %>%
   specify(origin ~ season) %>% # alt: response = origin, explanatory = season
   hypothesize(null = "independence") %>%
-  # calculate(stat = "Chisq") ## Not needed since Chisq is implied
+  # generate() ## Not used for theoretical
+  calculate(stat = "Chisq") %>%
   visualize(method = "theoretical", obs_stat = obs_chisq, direction = "right")
 ```
 
