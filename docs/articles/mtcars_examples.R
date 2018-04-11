@@ -2,17 +2,16 @@
 knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
 
 ## ----message=FALSE, warning=FALSE----------------------------------------
-library(nycflights13)
-library(dplyr)
-library(ggplot2)
-library(stringr)
 library(infer)
-mtcars <- as.data.frame(mtcars) %>%
+library(dplyr)
+mtcars <- mtcars %>%
   mutate(cyl = factor(cyl),
          vs = factor(vs),
          am = factor(am),
          gear = factor(gear),
          carb = factor(carb))
+# For reproducibility         
+set.seed(2018)         
 
 ## ------------------------------------------------------------------------
 mtcars %>%

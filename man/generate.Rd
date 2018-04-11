@@ -3,7 +3,7 @@
 \name{generate}
 \alias{generate}
 \title{Generate resamples, permutations, or simulations based on
-`specify` and `hypothesize` inputs}
+`specify` and (if needed) `hypothesize` inputs}
 \usage{
 generate(x, reps = 1, type = "bootstrap", ...)
 }
@@ -12,7 +12,8 @@ generate(x, reps = 1, type = "bootstrap", ...)
 
 \item{reps}{the number of resamples to generate}
 
-\item{type}{currently either \code{bootstrap}, \code{permute}, or \code{simulate}}
+\item{type}{currently either \code{bootstrap}, \code{permute}, 
+or \code{simulate}}
 
 \item{...}{currently ignored}
 }
@@ -22,7 +23,7 @@ A tibble containing \code{rep} generated datasets, indicated by the
 }
 \description{
 Generate resamples, permutations, or simulations based on
-`specify` and `hypothesize` inputs
+`specify` and (if needed) `hypothesize` inputs
 }
 \examples{
 # Permutation test for two binary variables

@@ -2,12 +2,13 @@
 % Please edit documentation in R/specify.R
 \name{specify}
 \alias{specify}
-\title{Specify the response and explanatory variables}
+\title{Specify the response and explanatory variables with
+\code{specify} also converting character variables chosen to be \code{factor}s}
 \usage{
 specify(x, formula, response = NULL, explanatory = NULL, success = NULL)
 }
 \arguments{
-\item{x}{a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}}
+\item{x}{a data frame that can be coerced into a \code{\link[tibble]{tibble}}}
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
 
@@ -15,13 +16,15 @@ specify(x, formula, response = NULL, explanatory = NULL, success = NULL)
 
 \item{explanatory}{the variable name in \code{x} that will serve as the explanatory variable}
 
-\item{success}{the level of \code{response} that will be considered a success, as a string. Needed for inference on one proportion or a difference in proportions}
+\item{success}{the level of \code{response} that will be considered a success, as a string.
+Needed for inference on one proportion, a difference in proportions, and corresponding z stats}
 }
 \value{
 A tibble containing the response (and explanatory, if specified) variable data
 }
 \description{
-Specify the response and explanatory variables
+Specify the response and explanatory variables with
+\code{specify} also converting character variables chosen to be \code{factor}s
 }
 \examples{
 # Permutation test similar to ANOVA

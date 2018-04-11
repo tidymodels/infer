@@ -2,8 +2,8 @@
 #' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
 #' @param null the null hypothesis. Options include "independence" and "point"
 #' @param ... arguments passed to downstream functions
-#' @return A tibble containing the response (and explanatory, if specified) variable data with
-#' parameter information stored as well
+#' @return A tibble containing the response (and explanatory, if specified) 
+#' variable data with parameter information stored as well
 #' @importFrom dplyr as.tbl
 #' @export
 #' @examples
@@ -37,7 +37,7 @@ hypothesize <- function(x, null, ...) {
                "Make sure to `specify()` it first."))
   }
   
-  if(null == "independence" & is.null(attr(x, "explanatory"))){
+  if(null == "independence" && is.null(attr(x, "explanatory"))){
     stop(paste0('Please `specify()` an explanatory and a response variable',
                 'when testing \n',
                 'a null hypothesis of `"independence"`.'))
@@ -47,12 +47,12 @@ hypothesize <- function(x, null, ...) {
   
   dots <- list(...)
   
-  if( (null == "point") & (length(dots) == 0) ){
+  if( (null == "point") && (length(dots) == 0) ){
     stop(paste("Provide a parameter and a value to check such as `mu = 30`",
                "for the point hypothesis."))
   }
   
-  if((null == "independence") & (length(dots) > 0)) {
+  if((null == "independence") && (length(dots) > 0)) {
     warning(paste("Parameter values are not specified when testing that two",
                   "variables are independent."))
   }
@@ -103,7 +103,7 @@ parse_params <- function(dots, x) {
         stop(paste("A point null regarding a proportion requires",
                    "that `success` be indicated in `specify()`."))
       }
-      if(dots$p < 0 | dots$p > 1)
+      if(dots$p < 0 || dots$p > 1)
         stop("The value suggested for `p` is not between 0 and 1, inclusive.")
       missing_lev <- setdiff(unique(pull(x, !!attr(x, "response"))), 
                              attr(x, "success"))

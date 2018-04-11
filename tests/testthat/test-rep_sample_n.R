@@ -18,5 +18,10 @@ test_that("rep_sample_n works", {
   expect_error(population %>% 
                  rep_sample_n(size = 2, reps = 10,
                               prob = c(0.25, 1/5, 1/5, 1/5, 0.15)))
+  test_rep <- population %>%
+    rep_sample_n(size = 2, reps = 10)
+  expect_equal(c("replicate", names(population)), names(test_rep))
+  
+  
 })
 

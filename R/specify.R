@@ -1,9 +1,11 @@
-#' Specify the response and explanatory variables
-#' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
+#' Specify the response and explanatory variables with
+#' \code{specify} also converting character variables chosen to be \code{factor}s
+#' @param x a data frame that can be coerced into a \code{\link[tibble]{tibble}}
 #' @param formula a formula with the response variable on the left and the explanatory on the right
 #' @param response the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument
 #' @param explanatory the variable name in \code{x} that will serve as the explanatory variable
-#' @param success the level of \code{response} that will be considered a success, as a string. Needed for inference on one proportion or a difference in proportions
+#' @param success the level of \code{response} that will be considered a success, as a string.
+#' Needed for inference on one proportion, a difference in proportions, and corresponding z stats
 #' @return A tibble containing the response (and explanatory, if specified) variable data
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
@@ -29,7 +31,7 @@ specify <- function(x, formula, response = NULL,
     mutate_if(is.logical, as.factor)
 
   if (!methods::hasArg(formula) && !methods::hasArg(response)) {
-    stop("Please specify the response variable.")
+    stop("Please specify the `response`` variable.")
   }
   if (methods::hasArg(formula)) {
     if (!rlang::is_formula(formula)) {
@@ -44,6 +46,7 @@ specify <- function(x, formula, response = NULL,
     attr(x, "response")    <- f_lhs(formula)
     attr(x, "explanatory") <- f_rhs(formula)
   }
+
   response_col <- rlang::eval_tidy(attr(x, "response"), x)
 
   if (!as.character(attr(x, "response")) %in% names(x)) {
@@ -61,7 +64,7 @@ specify <- function(x, formula, response = NULL,
     if (identical(as.character(attr(x, "response")),
                   as.character(attr(x, "explanatory")))) {
       stop(paste("The response and explanatory variables must be different",
-"from one another."))
+                 "from one another."))
     }
     explanatory_col <- rlang::eval_tidy(attr(x, "explanatory"), x)
     if (is.character(explanatory_col)) {
@@ -77,7 +80,7 @@ specify <- function(x, formula, response = NULL,
     }
     if (!is.factor(response_col)) {
       stop(paste("`success` should only be specified if the response is",
-"a categorical variable."))
+                 "a categorical variable."))
     }
     if (!(success %in% levels(response_col))) {
       stop(paste0(success, " is not a valid level of ",
@@ -94,6 +97,37 @@ specify <- function(x, formula, response = NULL,
       as.character((attr(x, "response"))),
       as.character(attr(x, "explanatory"))
     )))
+
+  is_complete <- stats::complete.cases(x)
+  if (!all(is_complete)) {
+    x <- dplyr::filter(x, is_complete)
+    warning(paste0("Removed ", sum(!is_complete), 
+                   " rows containing missing values."), call. = FALSE)
+  }
+
+  # To help determine theoretical distribution to plot
+  if(is.null(attr(x, "response")))
+    attr(x, "response_type") <- NULL
+  else
+    attr(x, "response_type") <- class(x[[as.character(attr(x, "response"))]])
+
+  if(is.null(attr(x, "explanatory")))
+    attr(x, "explanatory_type") <- NULL
+  else
+    attr(x, "explanatory_type") <- class(
+        x[[as.character(attr(x, "explanatory"))]]
+      )
+
+  if(attr(x, "response_type") == "factor" & is.null(success) &
+     length(levels(x[[as.character(attr(x, "response"))]])) == 2)
+ #    sum(table(response_col) > 0) == 2)
+    stop(paste0("A level of the response variable `",
+                attr(x, "response"),
+                "` needs to be specified for the `success` argument ",
+                "in `specify()`."))
+
+  # Determine appropriate parameters for theoretical distribution fit
+  x <- set_params(x)
 
   # add "infer" class
   class(x) <- append("infer", class(x))

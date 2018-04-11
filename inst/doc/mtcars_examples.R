@@ -4,7 +4,7 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 5)
 ## ----message=FALSE, warning=FALSE----------------------------------------
 library(infer)
 library(dplyr)
-mtcars <- as.data.frame(mtcars) %>%
+mtcars <- mtcars %>%
   mutate(cyl = factor(cyl),
          vs = factor(vs),
          am = factor(am),
@@ -26,13 +26,6 @@ mtcars %>%
   hypothesize(null = "point", med = 26) %>% 
   generate(reps = 100, type = "bootstrap") %>% 
   calculate(stat = "median")
-
-## ------------------------------------------------------------------------
-mtcars %>%
-  specify(response = mpg) %>% # formula alt: mpg ~ NULL
-  hypothesize(null = "point", sigma = 5) %>% 
-  generate(reps = 100, type = "bootstrap") %>% 
-  calculate(stat = "sd")
 
 ## ------------------------------------------------------------------------
 mtcars %>%
@@ -89,6 +82,13 @@ mtcars %>%
   hypothesize(null = "independence") %>%
   generate(reps = 100, type = "permute") %>%
   calculate(stat = "slope")
+
+## ----eval=FALSE----------------------------------------------------------
+#  mtcars %>%
+#    specify(response = mpg) %>% # formula alt: mpg ~ NULL
+#    hypothesize(null = "point", sigma = 5) %>%
+#    generate(reps = 100, type = "bootstrap") %>%
+#    calculate(stat = "sd")
 
 ## ------------------------------------------------------------------------
 mtcars %>%

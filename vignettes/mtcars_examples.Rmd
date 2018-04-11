@@ -19,7 +19,7 @@ knitr::opts_chunk$set(fig.width = 8, fig.height = 5)
 ```{r message=FALSE, warning=FALSE}
 library(infer)
 library(dplyr)
-mtcars <- as.data.frame(mtcars) %>%
+mtcars <- mtcars %>%
   mutate(cyl = factor(cyl),
          vs = factor(vs),
          am = factor(am),
@@ -50,16 +50,6 @@ mtcars %>%
   hypothesize(null = "point", med = 26) %>% 
   generate(reps = 100, type = "bootstrap") %>% 
   calculate(stat = "median")
-```
-
-One numerical variable (standard deviation)
-
-```{r}
-mtcars %>%
-  specify(response = mpg) %>% # formula alt: mpg ~ NULL
-  hypothesize(null = "point", sigma = 5) %>% 
-  generate(reps = 100, type = "bootstrap") %>% 
-  calculate(stat = "sd")
 ```
 
 One categorical (2 level) variable
@@ -141,6 +131,19 @@ mtcars %>%
   generate(reps = 100, type = "permute") %>%
   calculate(stat = "slope")
 ```
+
+One numerical variable (standard deviation)
+
+**Not currently implemented**
+
+```{r eval=FALSE}
+mtcars %>%
+  specify(response = mpg) %>% # formula alt: mpg ~ NULL
+  hypothesize(null = "point", sigma = 5) %>% 
+  generate(reps = 100, type = "bootstrap") %>% 
+  calculate(stat = "sd")
+```
+
 
 ### Confidence intervals
 

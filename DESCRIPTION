@@ -1,7 +1,7 @@
 Package: infer
 Type: Package
 Title: Tidy Statistical Inference
-Version: 0.1.1
+Version: 0.2.0
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
     person("Chester", "Ismay", email = "chester.ismay@gmail.com", role = "aut"),
@@ -10,7 +10,9 @@ Authors@R: c(
     person("Ted", "Laderas", email = "tedladeras@gmail.com", role = "ctb"),
     person("Nick", "Solomon", email = "nick.solomon@datacamp.com", role = "ctb"),
     person("Johanna", "Hardin", email = "Jo.Hardin@pomona.edu", role = "ctb"),
-    person("Albert", "Kim", email = "albert.ys.kim@gmail.com", role = "ctb"))
+    person("Albert", "Kim", email = "albert.ys.kim@gmail.com", role = "ctb"),
+    person("Neal", "Fultz", email = "nfultz@gmail.com", role = "ctb"),
+    person("Doug", "Friedman", email = "doug.nhp@gmail.com", role = "ctb"))
 Description: The objective of this package is to perform inference using an expressive statistical grammar that coheres with the tidy design framework. 
 License: CC0
 Encoding: UTF-8
@@ -20,7 +22,7 @@ Imports:
     dplyr (>= 0.7.0),
     methods,
     tibble,
-    rlang,
+    rlang (>= 0.2.0),
     ggplot2,
     magrittr
 Depends:
@@ -33,7 +35,9 @@ Suggests:
     nycflights13,
     stringr,
     testthat,
-    covr
+    covr,
+    moderndive,
+    okcupiddata
 URL: https://github.com/andrewpbray/infer
 BugReports: https://github.com/andrewpbray/infer/issues
 RoxygenNote: 6.0.1
