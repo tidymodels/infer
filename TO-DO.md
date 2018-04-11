@@ -1,8 +1,4 @@
-## For upcoming CRAN version
-
-- Remove hypothesis test for standard deviation (Mine will fix)
-  
-## For future versions
+## For future CRAN releases
 
 - Consider re-working how p-values can be calculated (both for computational and theoretical)
 - Check that `stat` is calculated appropriately if `generate()` is not called
