@@ -1,10 +1,10 @@
-#' Visualize the distribution of the randomization-based statistics
+#' Visualize the distribution of the simulation-based inferential statistics
 #' or the theoretical distribution (or both!)
 #' @param data the output from \code{\link{calculate}}
 #' @param bins the number of bins in the histogram
 #' @param method a string giving the method to display. Options are 
-#' "randomization", "theoretical", or "both"
-#' with "both" corresponding to "randomization" and "theoretical"
+#' "simulation", "theoretical", or "both"
+#' with "both" corresponding to "simulation" and "theoretical"
 #' @param dens_color a character or hex string specifying the color of the
 #'  theoretical density curve
 #' @param obs_stat a numeric value corresponding to what the observed 
@@ -19,11 +19,11 @@
 #' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle  
 #' @importFrom ggplot2 xlab ylab geom_vline geom_rect geom_bar
 #' @importFrom stats dt qt df qf dnorm qnorm dchisq qchisq
-#' @return A ggplot object showing the randomization-based distribution as a
+#' @return A ggplot object showing the simulation-based distribution as a
 #'  histogram or bar graph. Also used to show the theoretical curves.
 #' @export
 #' @examples 
-#' # Permutations to create randomization null distribution for 
+#' # Permutations to create a simulation-based null distribution for 
 #' # one numerical response and one categorical predictor
 #' # using t statistic
 #' mtcars %>%
@@ -32,7 +32,7 @@
 #'     hypothesize(null = "independence") %>%
 #'     generate(reps = 100, type = "permute") %>%
 #'     calculate(stat = "t", order = c("1", "0")) %>%
-#'     visualize(method = "randomization") #default method
+#'     visualize(method = "simulation") #default method
 #' 
 #' # Theoretical t distribution for 
 #' # one numerical response and one categorical predictor
@@ -41,9 +41,9 @@
 #'     dplyr::mutate(am = factor(am)) %>%
 #'     specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
 #'     hypothesize(null = "independence") %>%
-#'     # generate() is not needed since we are not doing randomization
-#'     # calculate(stat = "t") ## Not needed since t based on variable types
-#'     visualize(method = "theoretical") #default method
+#'     # generate() is not needed since we are not doing simulation
+#'     calculate(stat = "t", order = c("1", "0")) %>%
+#'     visualize(method = "theoretical")
 #' 
 #' # Overlay theoretical distribution on top of randomized t-statistics
 #' mtcars %>%
@@ -54,7 +54,7 @@
 #'     calculate(stat = "t", order = c("1", "0")) %>%
 #'     visualize(method = "both")
 
-visualize <- function(data, bins = 15, method = "randomization", 
+visualize <- function(data, bins = 15, method = "simulation", 
                       dens_color = "black",
                       obs_stat = NULL, 
                       obs_stat_color = "#e51010",#"#00BFC4",
@@ -76,9 +76,9 @@ visualize <- function(data, bins = 15, method = "randomization",
   if(!is.null(direction) && is.null(obs_stat))
     stop("Shading requires observed statistic `obs_stat` value to be given.")
   
-  if(method == "randomization"){
+  if(method == "simulation"){
     
-    infer_plot <- visualize_randomization(data = data, bins = bins, 
+    infer_plot <- visualize_simulation(data = data, bins = bins, 
                                           dens_color = dens_color,
                                           obs_stat = obs_stat, 
                                           obs_stat_color = obs_stat_color,
@@ -103,7 +103,7 @@ visualize <- function(data, bins = 15, method = "randomization",
     if(length(unique(data$replicate)) < 100)
       warning(paste("With only", length(unique(data$stat)),
                     "replicates, it may be difficult to see the",
-                    "relationship between randomization and theory."))
+                    "relationship between simulation and theory."))
     
     infer_plot <- visualize_both(data = data, bins = bins, 
                                  dens_color = dens_color,
@@ -113,8 +113,8 @@ visualize <- function(data, bins = 15, method = "randomization",
                                  shade_color = shade_color, ...)
   } else {
     stop(paste("Provide `method` with one of three options:",
-               "`theoretical`, `both`, or `randomization`",
-               "`randomization` is the default.")
+               "`theoretical`, `both`, or `simulation`",
+               "`simulation` is the default.")
     )
   }
   
@@ -152,7 +152,7 @@ both_t_plot <- function(data = data, deg_freedom, statistic_text = "t",
   infer_t_plot +
     stat_function(fun = dt, args = list(df = deg_freedom), 
                   color = dens_color) +
-    ggtitle(paste("Randomization-Based and Theoretical", 
+    ggtitle(paste("Simulation-Based and Theoretical", 
                   statistic_text, "Null Distributions")) +
     xlab("tstat") +
     ylab("")
@@ -189,7 +189,7 @@ both_anova_plot <- function(data, deg_freedom_top,
     stat_function(fun = df, 
                   args = list(df1 = deg_freedom_top, df2 = deg_freedom_bottom),
                   color = dens_color) +
-    ggtitle(paste("Randomization-Based and Theoretical", 
+    ggtitle(paste("Simulation-Based and Theoretical", 
                   statistic_text, "Null Distributions")) +
     xlab("Fstat") +
     ylab("")  
@@ -214,7 +214,7 @@ both_z_plot <- function(data, statistic_text = "z",
   
   infer_z_plot +
     stat_function(fun = dnorm, color = dens_color) +
-    ggtitle(paste("Randomization-Based and Theoretical", 
+    ggtitle(paste("Simulation-Based and Theoretical", 
                   statistic_text, "Null Distributions")) +
     xlab("zstat") +
     ylab("")
@@ -250,7 +250,7 @@ both_chisq_plot <- function(data, deg_freedom, statistic_text = "Chi-Square",
   infer_chisq_plot +
     stat_function(fun = dchisq, args = list(df = deg_freedom), 
                   color = dens_color) +
-    ggtitle(paste("Randomization-Based and Theoretical", 
+    ggtitle(paste("Simulation-Based and Theoretical", 
                   statistic_text, "Null Distributions")) +
     xlab("chisqstat") +
     ylab("")
@@ -334,7 +334,7 @@ shade_density_check <- function(data = data,
     gg_plot
 }
 
-visualize_randomization <- function(data, bins = 15, method = "randomization", 
+visualize_simulation <- function(data, bins = 15, method = "simulation", 
                                     dens_color = "black",
                                     obs_stat = NULL, 
                                     obs_stat_color = "#e51010",
@@ -365,6 +365,11 @@ visualize_theoretical <- function(data,
                                   obs_stat_color = "#e51010",#"#00BFC4",
                                   direction = NULL, 
                                   shade_color = "#efb8b8", ...) {
+  
+  warning(paste("Check to make sure the conditions", 
+                "have been met for",
+                "the theoretical method. `infer` currently does not check",
+                "these for you."), call. = FALSE)
   
   if(!is.null(attr(data, "stat")) && 
      !(attr(data, "stat") %in% c("t", "z", "Chisq", "F")))
@@ -464,6 +469,11 @@ visualize_both <- function(data = data, bins = bins,
                            obs_stat_color = "#e51010",#"#00BFC4",
                            direction = direction, 
                            shade_color = "#efb8b8", ...) {
+  
+  warning(paste("Check to make sure the conditions", 
+                "have been met for",
+                "the theoretical method. `infer` currently does not check",
+                "these for you."), call. = FALSE)
   
   if(!(attr(data, "stat") %in% c("t", "z", "Chisq", "F")))
     stop(paste("Your `calculate`d statistic and the theoretical distribution",
