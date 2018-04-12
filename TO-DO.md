@@ -7,6 +7,7 @@
   - Update `visualize()` tests to include `calculate()` step for `method = "theoretical"`
 - Get `specify() %>% calculate()` to work for the observed statistic
   - Coerce the argument to `xintercept` to be a vector in `geom_vline()` in `visualize()`
+  - Write tests to check results there with wrapper function results like `t_test()`
 - Add `add_obs_stat` toggle into `visualize()` and p-value calculation?
 - Shift to list-columns in `generate()`
 - Implement check of `stat` in theoretical `visualize()`
