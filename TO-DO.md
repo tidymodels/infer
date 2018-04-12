@@ -27,6 +27,7 @@ methods can be implemented by practitioners looking to skip the longer pipe synt
 - Determine if other wrapper functions should be created 
     - `z_test()`? 
     - Add implementation of one sample `t_test()`?
+    - Add `order` argument to `t_test()`, `t_stat()`, and similar
 - Create easy functions to determine observed statistics like the implemented
 `t_stat`: e.g., `mean_stat`?
 - Tweak `pkgdown` page to include ToDo's. [{dplyr}](https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml) example
