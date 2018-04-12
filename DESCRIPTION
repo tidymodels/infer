@@ -36,7 +36,7 @@ Suggests:
     stringr,
     testthat,
     covr,
-    moderndive,
+    moderndive (>= 0.1.1),
     okcupiddata
 URL: https://github.com/andrewpbray/infer
 BugReports: https://github.com/andrewpbray/infer/issues
