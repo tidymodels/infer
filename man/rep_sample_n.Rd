@@ -15,11 +15,11 @@ rep_sample_n(tbl, size, replace = FALSE, reps = 1, prob = NULL)
 
 \item{reps}{number of samples of size n = \code{size} to take}
 
-\item{prob}{a vector of probability weights for obtaining the elements of 
+\item{prob}{a vector of probability weights for obtaining the elements of
 the vector being sampled.}
 }
 \value{
-A tibble of size \code{rep} times \code{size} rows corresponding to 
+A tibble of size \code{rep} times \code{size} rows corresponding to
 \code{rep} samples of size n = \code{size} from \code{tbl}.
 }
 \description{
@@ -30,24 +30,23 @@ sampling distributions
 suppressPackageStartupMessages(library(dplyr))
 suppressPackageStartupMessages(library(ggplot2))
 
-# A virtual population of N = 2400 balls, of which 900 are red and the
-# rest are white
-population <- moderndive::bowl
+# A virtual population of N = 10,010, of which 3091 are hurricanes
+population <- dplyr::storms \%>\%
+ select(status)
 
-# Take samples of size n = 50 balls without replacement; do this 1000 times
+# Take samples of size n = 50 storms without replacement; do this 1000 times
 samples <- population \%>\%
-  rep_sample_n(size = 50, reps = 1000)
+ rep_sample_n(size = 50, reps = 1000)
 samples
 
-# Compute p_hats for all 1000 samples = proportion red
-p_hats <- samples \%>\% 
-  group_by(replicate) \%>\% 
-  summarize(prop_red = mean(color == "red"))
+# Compute p_hats for all 1000 samples = proportion hurricanes
+p_hats <- samples \%>\%
+ group_by(replicate) \%>\%
+ summarize(prop_hurricane = mean(status == "hurricane"))
 p_hats
-
 # Plot sampling distribution
-ggplot(p_hats, aes(x = prop_red)) + 
-  geom_density() + 
-  labs(x = "p_hat", y = "Number of samples", 
-  title = "Sampling distribution of p_hat from 1000 samples of size 50")
+ggplot(p_hats, aes(x = prop_hurricane)) +
+ geom_density() +
+ labs(x = "p_hat", y = "Number of samples",
+ title = "Sampling distribution of p_hat from 1000 samples of size 50")
 }
