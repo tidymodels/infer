@@ -7,7 +7,7 @@
 #' with "both" corresponding to "simulation" and "theoretical"
 #' @param dens_color a character or hex string specifying the color of the
 #'  theoretical density curve
-#' @param obs_stat a numeric value corresponding to what the observed 
+#' @param obs_stat a numeric value or 1x1 data frame corresponding to what the observed 
 #' statistic is
 #' @param obs_stat_color a character or hex string specifying the color of
 #'  the observed statistic
@@ -64,14 +64,22 @@ visualize <- function(data, bins = 15, method = "simulation",
   assertive::assert_is_data.frame(data)
   assertive::assert_is_numeric(bins)
   assertive::assert_is_character(method)
-  if(!is.null(obs_stat))
-    assertive::assert_is_numeric(obs_stat)
+  
+  if(!is.null(obs_stat)){
+    if("data.frame" %in% class(obs_stat)){
+      assertive::assert_is_data.frame(obs_stat)
+      # [[1]] is used in case `stat` is not specified as name of 1x1
+      obs_stat <- obs_stat[[1]]
+    }
+    else{
+      assertive::assert_is_numeric(obs_stat)
+    }
+  }
   assertive::assert_is_character(dens_color)
   assertive::assert_is_character(obs_stat_color)
   assertive::assert_is_character(shade_color)
   if(!is.null(direction))
     assertive::assert_is_character(direction)
-  
   
   if(!is.null(direction) && is.null(obs_stat))
     stop("Shading requires observed statistic `obs_stat` value to be given.")
@@ -86,6 +94,7 @@ visualize <- function(data, bins = 15, method = "simulation",
                                           shade_color = shade_color, ...)
     
   } else if(method == "theoretical"){
+    
     infer_plot <- visualize_theoretical(data = data,
                                         dens_color = dens_color,
                                         obs_stat = obs_stat, 
@@ -118,9 +127,9 @@ visualize <- function(data, bins = 15, method = "simulation",
     )
   }
   
-  if(!is.null(obs_stat) && !is.null(direction)){
+  if(!is.null(obs_stat)){#&& !is.null(direction)
     infer_plot <- infer_plot +
-      geom_vline(xintercept = obs_stat, size = 2, color = obs_stat_color)
+      geom_vline(xintercept = obs_stat, size = 2, color = obs_stat_color, ...)
   }
   
   infer_plot
@@ -268,12 +277,12 @@ shade_density_check <- function(data = data,
     if(density){
       gg_plot <- ggplot(data = data, mapping = aes(x = stat)) +
         geom_histogram(bins = bins, color = "white",
-                       mapping = aes(y = ..density..))
-    } else {
+                       mapping = aes(y = ..density..), ...)
+    } #else {
       # Not sure if needed? Can't get tests to find it
       #gg_plot <- ggplot(data = data, mapping = aes(x = stat)) +
-      #  geom_histogram(bins = bins, color = "white")
-    }
+      #  geom_histogram(bins = bins, color = "white", ...)
+    #}
   }
   
   if(!is.null(obs_stat)){
@@ -281,21 +290,23 @@ shade_density_check <- function(data = data,
       if(density){
         gg_plot <- ggplot(data = data, mapping = aes(x = stat)) +
           geom_histogram(bins = bins, color = "white",
-                         mapping = aes(y = ..density..))
+                         mapping = aes(y = ..density..), ...)
       } else {
         gg_plot <- ggplot(data = data, mapping = aes(x = stat)) +
-          geom_histogram(bins = bins, color = "white")
+          geom_histogram(bins = bins, color = "white", ...)
       }
       
       if(direction %in% c("less", "left")){
         gg_plot <- gg_plot +
           geom_rect(fill = shade_color, alpha = 0.01, 
-                    aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf))
+                    aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf), 
+                    ...)
       }
       if(direction %in% c("greater", "right")){
         gg_plot <- gg_plot +
           geom_rect(fill = shade_color, alpha = 0.01, 
-                    aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf))
+                    aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf), 
+                    ...)
       }
       
       if(direction %in% c("two_sided", "both") && 
@@ -303,7 +314,7 @@ shade_density_check <- function(data = data,
         gg_plot <- gg_plot +
           geom_rect(fill = shade_color, alpha = 0.01,
                     mapping = aes(xmin = obs_stat, xmax = Inf, ymin = 0, 
-                                  ymax = Inf)) +
+                                  ymax = Inf), ...) +
           geom_rect(fill = shade_color, alpha = 0.01,
                     mapping = aes(
                       xmin = -Inf, 
@@ -311,7 +322,7 @@ shade_density_check <- function(data = data,
                         data$stat, 
                         probs = 1 - get_percentile(data$stat, obs_stat)
                       ),
-                      ymin = 0, ymax = Inf)
+                      ymin = 0, ymax = Inf, ...)
           ) 
       }
       
@@ -320,13 +331,13 @@ shade_density_check <- function(data = data,
         gg_plot <- gg_plot +
           geom_rect(fill = shade_color, alpha = 0.01,
                     mapping = aes(xmin = -Inf, xmax = obs_stat, ymin = 0, 
-                                  ymax = Inf)) +
+                                  ymax = Inf), ...) +
           geom_rect(fill = shade_color, alpha = 0.01,
                     mapping = aes( 
                       xmin = stats::quantile(
                         data$stat, 
                         probs = 1 - get_percentile(data$stat, obs_stat)
-                      ), xmax = Inf, ymin = 0, ymax = Inf)
+                      ), xmax = Inf, ymin = 0, ymax = Inf, ...)
           ) 
       }
     }
@@ -343,10 +354,10 @@ visualize_simulation <- function(data, bins = 15, method = "simulation",
   if(is.null(direction)){
     if(length(unique(data$stat)) >= 10)
       infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
-        geom_histogram(bins = bins, color = "white")
+        geom_histogram(bins = bins, color = "white", ...)
     else
-      infer_plot <- ggplot(data = data, mapping = aes(x = factor(stat))) +
-        geom_bar() +
+      infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
+        geom_bar(...) +
         xlab("stat")
   } else {
     infer_plot <- shade_density_check(data = data,
@@ -426,14 +437,16 @@ visualize_theoretical <- function(data,
         infer_plot <- infer_plot +
           geom_rect(data = data.frame(obs_stat), fill = shade_color, 
                     alpha = 0.6,
-                    aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf))
+                    aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf),
+                    ...)
       }
       if(direction %in% c("greater", "right")){
         infer_plot <- infer_plot +
           geom_rect(data = data.frame(obs_stat), fill = shade_color, 
                     alpha = 0.6,
                     aes(xmin = obs_stat,
-                        xmax = Inf, ymin = 0, ymax = Inf))
+                        xmax = Inf, ymin = 0, ymax = Inf),
+                    ...)
       }
       
       # Assuming two-tailed shading will only happen with theoretical 
@@ -442,20 +455,24 @@ visualize_theoretical <- function(data,
         infer_plot <- infer_plot +
           geom_rect(data = data.frame(obs_stat), fill = shade_color, 
                     alpha = 0.6,
-                    aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf)) +
+                    aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf),
+                    ...) +
           geom_rect(data = data.frame(obs_stat), fill = shade_color, 
                     alpha = 0.6,
-                    aes(xmin = -Inf, xmax = -obs_stat, ymin = 0, ymax = Inf))
+                    aes(xmin = -Inf, xmax = -obs_stat, ymin = 0, ymax = Inf),
+                    ...)
       }
 
       if(direction %in% c("two_sided", "both") && obs_stat < 0){
         infer_plot <- infer_plot +
           geom_rect(data = data.frame(obs_stat), fill = shade_color, 
                     alpha = 0.6,
-                    aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf)) +
+                    aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf),
+                    ...) +
           geom_rect(data = data.frame(obs_stat), fill = shade_color, 
                     alpha = 0.6,
-                    aes(xmin = -obs_stat, xmax = Inf, ymin = 0, ymax = Inf))
+                    aes(xmin = -obs_stat, xmax = Inf, ymin = 0, ymax = Inf),
+                    ...)
       }
     }
   }

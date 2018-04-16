@@ -41,9 +41,20 @@ calculate <- function(x, stat, order = NULL, ...) {
     warning(paste0('A `generate()` step was not performed prior to',
                    '`calculate()`. Review carefully.'))
   
-  # Catch-all if generate was not called
-  if (is.null(attr(x, "generate")) || !attr(x, "generate"))
-    return(x)
+  if (is.null(attr(x, "generate")) || !attr(x, "generate")){
+    if (is.null(attr(x, "null"))){
+#      warning(paste("Chaining `specify()` into `calculate()` is not implemented",
+#                    "yet. Returning the `specify()`ed data frame."))
+      x <- x %>% dplyr::mutate(replicate = 1L) %>% 
+        dplyr::select(replicate, everything())
+    }
+    else
+      # From `hypothesize()` to `calculate()`
+      # Catch-all if generate was not called
+      return(x)
+  }
+  
+  
   
   if (!stat %in% c("mean", "median", "sd", "prop",
                    "diff in means", "diff in medians", "diff in props",
@@ -87,7 +98,8 @@ calculate <- function(x, stat, order = NULL, ...) {
   }
   
   if ( stat %in% c("diff in means", "diff in medians", "diff in props")  ||
-      attr(x, "theory_type") %in% c("Two sample props z", "Two sample t") ) {
+       (!is.null(attr(x, "theory_type")) &&
+      attr(x, "theory_type") %in% c("Two sample props z", "Two sample t") )) {
     if (length(unique(x[[as.character(attr(x, "explanatory"))]])) != 2){
       stop(paste("Statistic is based on a difference; the explanatory variable",
                  "should have two levels."))
@@ -129,7 +141,8 @@ calculate <- function(x, stat, order = NULL, ...) {
   }
 
   if (!(stat %in% c("diff in means", "diff in medians", "diff in props") ||
-      attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))) {
+      (!is.null(attr(x, "theory_type")) &&
+        attr(x, "theory_type") %in% c("Two sample props z", "Two sample t")))) {
     if (!is.null(order)){
       warning(paste("Statistic is not based on a difference;",
                     "the `order` argument",
@@ -160,6 +173,10 @@ calculate <- function(x, stat, order = NULL, ...) {
   attr(result, "theory_type") <- attr(x, "theory_type")
   attr(result, "stat") <- stat
   
+  # For returning a 1x1 observed statistic value
+  if(nrow(result) == 1)
+    result <- select(result, stat)
+  
   return(result)
 }
 
@@ -168,10 +185,11 @@ calc_impl <- function(type, x, order, ...) UseMethod("calc_impl", type)
 
 calc_impl.mean <- function(stat, x, order, ...) {
   col <- setdiff(names(x), "replicate")
-
+  
   x %>%
     dplyr::group_by(replicate) %>%
     dplyr::summarize(stat = mean(!!(sym(col)), ...))
+  
 }
 
 calc_impl.median <- function(stat, x, order, ...) {
@@ -193,10 +211,12 @@ calc_impl.sd <- function(stat, x, order, ...) {
 calc_impl.prop <- function(stat, x, order, ...) {
   col <- attr(x, "response")
 
+  print("In calc_impl.prop")
+  
   if(!is.factor(x[[as.character(col)]])){
     stop(paste0("Calculating a ",
                 stat,
-                " here is not appropriate \n  since the `",
+                " here is not appropriate since the `",
                 col,
                 "` variable is not a factor."))
   }

@@ -21,7 +21,7 @@ with "both" corresponding to "simulation" and "theoretical"}
 \item{dens_color}{a character or hex string specifying the color of the
 theoretical density curve}
 
-\item{obs_stat}{a numeric value corresponding to what the observed 
+\item{obs_stat}{a numeric value or 1x1 data frame corresponding to what the observed 
 statistic is}
 
 \item{obs_stat_color}{a character or hex string specifying the color of
