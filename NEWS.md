@@ -1,4 +1,4 @@
-# infer 0.1.1.9000
+# infer 0.2.0
 
 - Switched to `!!` instead of `UQ()` since `UQ()` is deprecated in 
 {rlang} 0.2.0
