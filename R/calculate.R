@@ -26,9 +26,6 @@
 
 calculate <- function(x, stat, order = NULL, ...) {
   
-  # TODO: Check to see if dplyr::group_by(replicate) is needed since
-  # generate() does a grouping of replicate
-  
   assertive::assert_is_tbl(x)
   assertive::assert_is_a_string(stat)
   
@@ -41,9 +38,26 @@ calculate <- function(x, stat, order = NULL, ...) {
     warning(paste0('A `generate()` step was not performed prior to',
                    '`calculate()`. Review carefully.'))
   
-  # Catch-all if generate was not called
-  if (is.null(attr(x, "generate")) || !attr(x, "generate"))
-    return(x)
+
+  if (is.null(attr(x, "generate")) || !attr(x, "generate")){
+    if (is.null(attr(x, "null"))){
+#      warning(paste("Chaining `specify()` into `calculate()` is not implemented",
+#                    "yet. Returning the `specify()`ed data frame."))
+
+      x$replicate <- 1L
+    }
+    else if(stat %in% c("mean", "median", "sd", "prop",
+                        "diff in means", "diff in medians", "diff in props",
+                        "slope"))
+      stop(paste0("Theoretical distributions do not exist / have not been ", 
+                 "implemented for `stat = \"", stat, "\". Are you missing ",
+                 "a `generate()` step?"))
+      
+      else
+      # From `hypothesize()` to `calculate()`
+      # Catch-all if generate was not called
+        return(x)
+  }
   
   if (!stat %in% c("mean", "median", "sd", "prop",
                    "diff in means", "diff in medians", "diff in props",
@@ -87,7 +101,8 @@ calculate <- function(x, stat, order = NULL, ...) {
   }
   
   if ( stat %in% c("diff in means", "diff in medians", "diff in props")  ||
-      attr(x, "theory_type") %in% c("Two sample props z", "Two sample t") ) {
+       (!is.null(attr(x, "theory_type")) &&
+      attr(x, "theory_type") %in% c("Two sample props z", "Two sample t") )) {
     if (length(unique(x[[as.character(attr(x, "explanatory"))]])) != 2){
       stop(paste("Statistic is based on a difference; the explanatory variable",
                  "should have two levels."))
@@ -129,14 +144,15 @@ calculate <- function(x, stat, order = NULL, ...) {
   }
 
   if (!(stat %in% c("diff in means", "diff in medians", "diff in props") ||
-      attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))) {
+      (!is.null(attr(x, "theory_type")) &&
+        attr(x, "theory_type") %in% c("Two sample props z", "Two sample t")))) {
     if (!is.null(order)){
       warning(paste("Statistic is not based on a difference;",
                     "the `order` argument",
                     "is ignored. Check `?calculate` for details."))
     }
   }
-  
+
   # Use S3 method to match correct calculation
   result <- calc_impl(
     structure(stat, class = gsub(" ", "_", stat)), x, order, ...
@@ -160,6 +176,10 @@ calculate <- function(x, stat, order = NULL, ...) {
   attr(result, "theory_type") <- attr(x, "theory_type")
   attr(result, "stat") <- stat
   
+  # For returning a 1x1 observed statistic value
+  if(nrow(result) == 1)
+    result <- select(result, stat)
+  
   return(result)
 }
 
@@ -168,10 +188,11 @@ calc_impl <- function(type, x, order, ...) UseMethod("calc_impl", type)
 
 calc_impl.mean <- function(stat, x, order, ...) {
   col <- setdiff(names(x), "replicate")
-
+  
   x %>%
     dplyr::group_by(replicate) %>%
     dplyr::summarize(stat = mean(!!(sym(col)), ...))
+  
 }
 
 calc_impl.median <- function(stat, x, order, ...) {
@@ -191,12 +212,12 @@ calc_impl.sd <- function(stat, x, order, ...) {
 }
 
 calc_impl.prop <- function(stat, x, order, ...) {
-  col <- attr(x, "response")
-
-  if(!is.factor(x[[as.character(col)]])){
+  col <- setdiff(names(x), "replicate")
+  
+  if(!is.factor(x[[col]])){
     stop(paste0("Calculating a ",
                 stat,
-                " here is not appropriate \n  since the `",
+                " here is not appropriate since the `",
                 col,
                 "` variable is not a factor."))
   }
@@ -204,8 +225,8 @@ calc_impl.prop <- function(stat, x, order, ...) {
   success <- attr(x, "success")
   x %>%
     dplyr::group_by(replicate) %>%
-    dplyr::summarize(stat = mean(rlang::eval_tidy(col) ==
-                                   rlang::eval_tidy(success),
+    dplyr::summarize(stat = mean(!!sym(col) == success,
+      #rlang::eval_tidy(col) == rlang::eval_tidy(success),
                                  ...))
 }
 
@@ -296,8 +317,7 @@ calc_impl.diff_in_props <- function(stat, x, order, ...) {
   
   x %>%
     dplyr::group_by(replicate, !!(attr(x, "explanatory"))) %>%
-    dplyr::summarize(prop = mean(rlang::eval_tidy(col) ==
-                                   rlang::eval_tidy(success), ...)) %>%
+    dplyr::summarize(prop = mean(!!sym(col) == success, ...)) %>%
     dplyr::summarize(stat = prop[!!(attr(x, "explanatory")) == order[1]]
                      - prop[!!(attr(x, "explanatory")) == order[2]])
 }

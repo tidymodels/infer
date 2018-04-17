@@ -1,0 +1,428 @@
+---
+title: "Simulation-based and Traditional Examples using `okcupiddata` `profiles` data"
+author: "Chester Ismay"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    df_print: kable
+vignette: |
+  %\VignetteIndexEntry{OKCupid profiles example with resampling & theory-based methods}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(fig.width = 7, fig.height = 3) 
+```
+
+# Note
+
+There has been some recent [controversy](https://www.wired.com/2016/05/okcupid-study-reveals-perils-big-data-science/) surrounding data of this sort similar to what is given in the {okcupiddata} package. Explicit permission was obtained from OkCupid and usernames were not included in the data set for that package. Its use here is only
+to check for a variety of different variable types and levels. It will remain only in this
+"cutting edge" version of the package as we continue to add and test examples.
+
+The `method = "both"` examples here do another simulation-based instead of using the one
+with `visualize()` set to the default of `method = "simulation"`. This is to show the full
+pipeline for a variety of examples, but more than likely you'll want to do something like the
+following instead in practice.
+
+```{r eval=FALSE}
+null_distn <- prof_small %>%
+  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "t", order = c("m", "f")) 
+
+null_distn %>% visualize()
+null_distn %>% visualize(method = "both")
+```
+
+
+## Data preparation
+
+```{r message=FALSE, warning=FALSE}
+library(okcupiddata)
+library(stringr)
+#remotes::install_github("andrewpbray/infer", ref = "develop")
+library(infer)
+set.seed(2017)
+prof_small <- profiles %>% 
+  na.omit() %>% 
+  dplyr::sample_n(size = 500) %>% 
+  dplyr::mutate(city = dplyr::case_when(
+    str_detect(location, "san fran") ~ "san fran",
+    !str_detect(location, "san fran") ~ "not san fran"
+  )) %>% 
+  dplyr::select(age, sex, city, drugs, height, status)
+```
+
+- `height` and `age` are numerical variables.
+- `sex` has two categories (`"m"`, `"f"`)
+- `city` has two categories (`"san fran"`, `"not san fran"`)
+- `drugs` has three categories (`"never"`, `"sometimes"`, `"often"`) - Also has missing values
+- `status` has three categories (`"single"`, `"available"`, `"seeing someone"`)
+
+***
+
+## Hypothesis tests
+
+## Implemented
+
+### One numerical variable, one categorical (2 levels)
+
+Simulation-based approach to t-statistic
+
+```{r}
+prof_small %>%
+  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "t", order = c("m", "f")) %>% 
+  visualize()
+```
+
+Theoretical distribution
+
+```{r }
+prof_small %>%
+  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+  hypothesize(null = "independence") %>%
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "t") %>% 
+  visualize(method = "theoretical")
+```
+
+Overlay appropriate $t$ distribution on top of permuted t-statistics
+
+```{r }
+prof_small %>%
+  specify(age ~ sex) %>% # alt: response = age, explanatory = sex
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "t", order = c("m", "f")) %>% 
+  visualize(method = "both")
+```
+
+### One numerical, one categorical (>2 levels) -  ANOVA
+
+Simulation-based approach to F-statistic
+
+```{r}
+prof_small %>%
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "F") %>% 
+  visualize()
+```
+
+Theoretical distribution
+
+```{r}
+prof_small %>%
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
+  hypothesize(null = "independence") %>%
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "F") %>%
+  visualize(method = "theoretical")
+```
+
+Overlay appropriate $F$ distribution on top of permuted F-statistics
+
+```{r}
+prof_small %>%
+  specify(age ~ status) %>% # alt: response = age, explanatory = status
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "F") %>% 
+  visualize(method = "both")
+```
+
+
+## One categorical (2 level) variable
+
+Simulation-based approach to z-statistic
+
+```{r}
+prof_small %>%
+  specify(response = sex, success = "m") %>% 
+  hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
+  generate(reps = 1000, type = "simulate") %>% 
+  calculate(stat = "z") %>% 
+  visualize()
+```
+
+Theoretical distribution
+
+```{r}
+prof_small %>%
+  specify(response = sex, success = "m") %>%
+  hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "z") %>%
+  visualize(method = "theoretical")
+```
+
+Overlay standard normal distribution on top of permuted z-statistics
+
+```{r}
+prof_small %>%
+  specify(response = sex, success = "m") %>%
+  hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
+  generate(reps = 1000, type = "simulate") %>% 
+  calculate(stat = "z") %>% 
+  visualize(method = "both")
+```
+
+
+## Two categorical (2 level) variables
+
+Simulation-based approach to z-statistic
+
+```{r}
+prof_small %>%
+  specify(sex ~ city, success = "m") %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "z", order = c("san fran", "not san fran")) %>% 
+  visualize()
+```
+
+Theoretical distribution
+
+```{r}
+prof_small %>%
+  specify(sex ~ city, success = "m") %>%
+  hypothesize(null = "independence") %>% 
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "z", order = c("san fran", "not san fran")) %>%
+  visualize(method = "theoretical")
+```
+
+Overlay standard normal distribution on top of permuted z-statistics
+
+```{r}
+prof_small %>%
+  specify(sex ~ city, success = "m") %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "z", order = c("san fran", "not san fran")) %>% 
+  visualize(method = "both")
+```
+
+## Two categorical (>2 level) variables
+
+Simulation-based approach to $\chi^2$-statistic
+
+```{r}
+prof_small %>%
+  specify(drugs ~ status) %>% # alt: response = drugs, explanatory = status
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "Chisq") %>% 
+  visualize()
+```
+
+Theoretical distribution
+
+```{r}
+prof_small %>%
+  specify(drugs ~ status) %>% # alt: response = drugs, explanatory = status
+  hypothesize(null = "independence") %>%
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "Chisq") %>%
+  visualize(method = "theoretical")
+```
+
+Overlay standard chi-square distribution on top of permuted statistics
+
+```{r}
+prof_small %>%
+  specify(drugs ~ status) %>% # alt: response = drugs, explanatory = status
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "Chisq") %>% 
+  visualize(method = "both")
+```
+
+## One categorical (>2 level) - GoF
+
+Simulation-based approach to $\chi^2$-statistic
+
+```{r}
+prof_small %>%
+  specify(drugs ~ NULL) %>% # alt: response = drugs
+  hypothesize(null = "point", 
+              p = c("never" = .7, "often" = .05, "sometimes" = .25)) %>%
+  generate(reps = 1000, type = "simulate") %>%
+  calculate(stat = "Chisq") %>% 
+  visualize()
+```
+
+Theoretical distribution
+
+```{r}
+prof_small %>%
+  specify(drugs ~ NULL) %>% # alt: response = drugs
+  hypothesize(null = "point", 
+              p = c("never" = .7, "often" = .05, "sometimes" = .25)) %>%
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "Chisq") %>%
+  visualize(method = "theoretical")
+```
+
+Overlay standard chi-square distribution on top of permuted statistics
+
+```{r}
+prof_small %>%
+  specify(drugs ~ NULL) %>% # alt: response = drugs
+  hypothesize(null = "point", 
+              p = c("never" = .7, "often" = .05, "sometimes" = .25)) %>%
+  generate(reps = 1000, type = "simulate") %>%
+  calculate(stat = "Chisq") %>% 
+  visualize(method = "both")
+```
+
+## Two numerical vars - SLR 
+
+Simulation-based approach to $t$-statistic
+
+```{r}
+prof_small %>%
+  specify(age ~ height) %>% # alt: response = age, explanatory = height
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "t") %>% 
+  visualize()
+```
+
+Theoretical distribution
+
+```{r}
+prof_small %>%
+  specify(age ~ height) %>% # alt: response = age, explanatory = height
+  hypothesize(null = "independence") %>%
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "t") %>%
+  visualize(method = "theoretical")
+```
+
+Overlay appropriate $t$ distribution on top of permuted t-statistics
+
+```{r}
+prof_small %>%
+  specify(age ~ height) %>% # alt: response = age, explanatory = height
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "t") %>% 
+  visualize(method = "both")
+```
+
+# Determining whether or not to implement
+
+Note that all code from here throughout the rest of this vignette is to think about but is not currently implemented
+
+## One numerical variable (mean)
+
+Simulation-based approach to $t$-statistic (Not implemented)
+
+```{r eval=FALSE}
+prof_small %>%
+  specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
+  hypothesize(null = "point", mu = 50) %>% 
+  generate(reps = 1000, type = "bootstrap") %>% 
+  calculate(stat = "t") %>% 
+  visualize()
+```
+
+Theoretical distribution (Implemented)
+
+```{r}
+prof_small %>%
+  specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
+  hypothesize(null = "point", mu = 50) %>% 
+#  generate(reps = 1000, type = "bootstrap") %>% 
+#  calculate(stat = "t") %>% 
+  visualize(method = "theoretical")
+```
+
+Overlay appropriate $t$ distribution on top of permuted t-statistics (Not implemented)
+
+```{r eval=FALSE}
+prof_small %>%
+  specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
+  hypothesize(null = "point", mu = 50) %>% 
+  generate(reps = 1000, type = "bootstrap") %>% 
+  calculate(stat = "t") %>% 
+  visualize(method = "both")
+```
+
+## Confidence intervals
+
+### To Do (one mean $t$ stat)
+### To Do (Also overlay appropriate t distn)
+
+One numerical (one mean)
+
+
+```{r eval=FALSE}
+prof_small %>%
+  specify(response = age) %>%
+  generate(reps = 1000, type = "bootstrap") %>%
+  calculate(stat = "mean") %>% 
+  visualize()
+```
+
+### To Do (one prop $z$ stat)
+### To Do (Also overlay std normal distn)
+
+One categorical (one proportion)
+
+```{r eval=FALSE}
+prof_small %>%
+  specify(response = sex) %>%
+  generate(reps = 1000, type = "bootstrap") %>%
+  calculate(stat = "prop", success = "f") %>% 
+  visualize()
+```
+
+### To Do (Also overlay appropriate t distn)
+### To Do (Shift t stats to be centered at 0 for bootstrapping)
+
+One numerical variable one categorical (2 levels) (diff in means)
+
+```{r eval=FALSE}
+prof_small %>%
+  specify(age ~ sex) %>%
+  generate(reps = 1000, type = "bootstrap") %>%
+  calculate(stat = "t") %>% 
+  visualize()
+```
+
+### To Do (two prop $z$ stat)
+### To Do (Also overlay appropriate std normal distn)
+### To Do (Shift z stats to be centered at 0 for bootstrapping)
+
+Two categorical variables (diff in proportions)
+
+```{r eval=FALSE}
+prof_small %>%
+  specify(sex ~ city) %>%
+  generate(reps = 1000, type = "bootstrap") %>%
+  calculate(stat = "diff in props") %>% 
+  visualize()
+```
+
+### To Do (slope $t$ stat)
+### To Do (Also overlay appropriate t distn)
+### To Do (Shift t stats to be centered at 0 for bootstrapping)
+
+Two numerical vars - SLR
+
+```{r eval=FALSE}
+prof_small %>%
+  specify(age ~ height) %>% 
+  generate(reps = 1000, type = "bootstrap") %>%
+  calculate(stat = "slope") %>% 
+  visualize()
+```

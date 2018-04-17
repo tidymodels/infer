@@ -1,6 +1,7 @@
 ## For future CRAN releases
 
 - Consider re-working how p-values can be calculated (both for computational and theoretical)
+  - Create a `p_value()` function?
 - Check that `stat` is calculated appropriately if `generate()` is not called
   - `order` of the arguments into the standardized statistics should be checked again
   - May require moving of `set_params()` to be after `specify()`
