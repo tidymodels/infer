@@ -289,3 +289,16 @@ test_that("visualize basic tests", {
 test_that("get_percentile works", {
   expect_equal(get_percentile(1:10, 4), 0.4)
 })
+
+test_that("obs_stat as a data.frame works", {
+  mean_petal_width <- iris_tbl %>% 
+                  specify(Petal.Width ~ NULL) %>%
+                  calculate(stat = "mean")
+  expect_silent(iris_tbl %>% 
+                 specify(Petal.Width ~ NULL) %>%
+                 hypothesize(null = "point", mu = 4) %>%
+                  generate(reps = 100, type = "bootstrap") %>%
+                 calculate(stat = "mean") %>% 
+                 visualize(obs_stat = mean_petal_width)
+  )
+})

@@ -311,3 +311,21 @@ test_that("order being given when not needed gives warning", {
 #   )
 #   
 # })
+
+test_that("specify() %>% calculate() works", {
+  iris_tbl <- tibble::as_tibble(iris) %>% 
+    dplyr::mutate(Sepal.Length.Group =
+                    dplyr::if_else(Sepal.Length > 5, ">5", "<=5"),
+                  Sepal.Width.Group =
+                    dplyr::if_else(Sepal.Width > 3, "large", "small")) 
+  
+  expect_silent(iris_tbl %>% 
+                  specify(Petal.Width ~ NULL) %>%
+                  calculate(stat = "mean")
+  )
+  expect_error(iris_tbl %>% 
+                 specify(Petal.Width ~ NULL) %>%
+                 hypothesize(null = "point", mu = 4) %>%
+                 calculate(stat = "mean")
+  )
+})
