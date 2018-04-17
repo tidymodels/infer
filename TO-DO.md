@@ -8,6 +8,7 @@
   - Update `visualize()` tests to include `calculate()` step for `method = "theoretical"`
 - Get `specify() %>% calculate()` to work for the observed statistic
   - Coerce the argument to `xintercept` to be a vector in `geom_vline()` in `visualize()`
+  - Write tests to check results there with wrapper function results like `t_test()`
 - Add `add_obs_stat` toggle into `visualize()` and p-value calculation?
 - Shift to list-columns in `generate()`
 - Implement check of `stat` in theoretical `visualize()`
@@ -28,6 +29,7 @@ methods can be implemented by practitioners looking to skip the longer pipe synt
 - Determine if other wrapper functions should be created 
     - `z_test()`? 
     - Add implementation of one sample `t_test()`?
+    - Add `order` argument to `t_test()`, `t_stat()`, and similar
 - Create easy functions to determine observed statistics like the implemented
 `t_stat`: e.g., `mean_stat`?
 - Tweak `pkgdown` page to include ToDo's. [{dplyr}](https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml) example
