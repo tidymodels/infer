@@ -41,16 +41,16 @@ calculate <- function(x, stat, order = NULL, ...) {
 
   if (is.null(attr(x, "generate")) || !attr(x, "generate")){
     if (is.null(attr(x, "null"))){
-#      warning(paste("Chaining `specify()` into `calculate()` is not implemented",
-#                    "yet. Returning the `specify()`ed data frame."))
+# warning(paste("Chaining `specify()` into `calculate()` is not implemented",
+#           "yet. Returning the `specify()`ed data frame."))
 
       x$replicate <- 1L
     }
     else if(stat %in% c("mean", "median", "sd", "prop",
                         "diff in means", "diff in medians", "diff in props",
                         "slope"))
-      stop(paste0("Theoretical distributions do not exist / have not been ", 
-                 "implemented for `stat = \"", stat, "\". Are you missing ",
+      stop(paste0("Theoretical distributions do not exist (or have not been ", 
+                 "implemented) for `stat = \"", stat, "\". Are you missing ",
                  "a `generate()` step?"))
       
       else
