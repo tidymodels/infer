@@ -5,6 +5,7 @@ articles:
   chisq_test: chisq_test.html
   flights_examples: flights_examples.html
   mtcars_examples: mtcars_examples.html
+  observed_stat_examples: observed_stat_examples.html
   profiles_examples: profiles_examples.html
   profiles_examples_both_methods: profiles_examples_both_methods.html
   two_sample_t: two_sample_t.html
