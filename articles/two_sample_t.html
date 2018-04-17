@@ -91,7 +91,7 @@
       <h1>Two sample <span class="math inline">\(t\)</span> test example using <code>nycflights13</code> <code>flights</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2018-04-12</h4>
+            <h4 class="date">2018-04-17</h4>
       
       <small>Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/two_sample_t.Rmd"><code>vignettes/two_sample_t.Rmd</code></a></small>
       <div class="hidden name"><code>two_sample_t.Rmd</code></div>
@@ -173,7 +173,7 @@ fli_small &lt;-<span class="st"> </span>flights %&gt;%<span class="st"> </span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_null_distn %&gt;%<span class="st"> </span>
 <span class="st">  </span>dplyr::<span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(<span class="kw">abs</span>(stat) &gt;=<span class="st"> </span>obs_t)) %&gt;%<span class="st"> </span>
 <span class="st">  </span>dplyr::<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.42</code></pre>
+<pre><code>## [1] 0.38</code></pre>
 </div>
 <div id="theoretical-distribution" class="section level2">
 <h2 class="hasAnchor">
