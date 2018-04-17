@@ -54,7 +54,6 @@ fli_small <- flights %>%
 
 ### One numerical variable (mean)
 
-**Observed stat**
 ```{r}
 x_bar <- fli_small %>%
   summarize(mean(dep_delay)) %>%
@@ -134,7 +133,7 @@ null_distn <- fli_small %>%
   specify(day_hour ~ season, success = "morning") %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>% 
-  calculate(stat = "diff in props", order = c("summer", "winter"))
+  calculate(stat = "diff in props", order = c("winter", "summer"))
 ggplot(null_distn, aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = d_hat, color = "red")

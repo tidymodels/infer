@@ -100,9 +100,6 @@ null_distn %>%
 p_hat <- fli_small %>%
   specify(response = day_hour, success = "morning") %>%
   calculate(stat = "prop")  
-p_hat_old <- fli_small %>%
-  summarize(mean(day_hour == "morning")) %>%
-  pull()
 ```
 
 ```{r}
@@ -111,11 +108,9 @@ null_distn <- fli_small %>%
   hypothesize(null = "point", p = .5) %>%
   generate(reps = 1000, type = "simulate") %>%
   calculate(stat = "prop")
-ggplot(null_distn, aes(x = stat)) +
-  geom_bar() +
-  geom_vline(xintercept = p_hat, color = "red")
+null_distn %>% visualize(obs_stat = p_hat)
 null_distn %>%
-  summarize(p_value = mean(stat <= p_hat) * 2)
+  summarize(p_value = mean(stat <= pull(p_hat)) * 2)
 ```
 
 Logical variables will be coerced to factors:
@@ -132,30 +127,37 @@ null_distn <- fli_small %>%
 
 ### Two categorical (2 level) variables
 
+**Observed stat**
+
 ```{r}
-d_hat <- fli_small %>%
-  group_by(season) %>%
-  summarize(prop = mean(day_hour == "morning")) %>%
-  summarize(diff(prop)) %>%
-  pull()
+d_hat <- fli_small %>% 
+  specify(day_hour ~ season, success = "morning") %>%
+  calculate(stat = "diff in props", order = c("winter", "summer"))
+```
+
+
+```{r}
 null_distn <- fli_small %>%
   specify(day_hour ~ season, success = "morning") %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>% 
-  calculate(stat = "diff in props", order = c("summer", "winter"))
-ggplot(null_distn, aes(x = stat)) +
-  geom_density() +
-  geom_vline(xintercept = d_hat, color = "red")
+  calculate(stat = "diff in props", order = c("winter", "summer"))
+null_distn %>% visualize(obs_stat = d_hat)
 null_distn %>%
-  summarize(p_value = mean(stat <= d_hat) * 2) %>%
+  summarize(p_value = mean(stat <= pull(d_hat)) * 2) %>%
   pull()
 ```
+
+# Up to here
 
 ### One categorical (>2 level) - GoF
 
 ```{r}
 Chisq_hat <- fli_small %>%
   chisq_stat(formula = origin ~ NULL)
+#Chisq_hat <- fli_small %>%
+#    specify(response = origin) %>%
+#    calculate(stat = "Chisq")
 null_distn <- fli_small %>%
   specify(response = origin) %>%
   hypothesize(null = "point", 

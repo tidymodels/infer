@@ -43,6 +43,7 @@ null_distn %>% visualize(method = "both")
 ```{r message=FALSE, warning=FALSE}
 library(okcupiddata)
 library(stringr)
+#remotes::install_github("andrewpbray/infer", ref = "develop")
 library(infer)
 set.seed(2017)
 prof_small <- profiles %>% 

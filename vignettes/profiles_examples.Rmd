@@ -25,11 +25,11 @@ to check for a variety of different variable types and levels. It will remain
 only in this "cutting edge" version of the package as we continue to add 
 and test examples.
 
-
 ## Data preparation
 
 ```{r message=FALSE, warning=FALSE}
 library(okcupiddata)
+#remotes::install_github("andrewpbray/infer", ref = "develop")
 library(infer)
 
 set.seed(2017)
