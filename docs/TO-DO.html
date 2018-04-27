@@ -127,6 +127,11 @@
 <h2 class="hasAnchor">
 <a href="#for-future-cran-releases" class="anchor"></a>For future CRAN releases</h2>
 <ul>
+<li>From <a href="https://github.com/andrewpbray/infer/issues/54">here</a>
+</li>
+<li>determine type based on <code><a href="reference/specify.html">specify()</a></code> (and <code><a href="reference/hypothesize.html">hypothesize()</a></code>) and provide functionality to run <code><a href="reference/generate.html">generate()</a></code> without specifying the <code>type</code> argument (so users/instructors can decide whether to get into this or not)</li>
+<li>find a better word than “simulate”</li>
+<li>have checks in place so if users chooses a <code>type</code> different than what (1) gives, they get are notified</li>
 <li>Consider re-working how p-values can be calculated (both for computational and theoretical)</li>
 <li>Create a <code>p_value()</code> function?</li>
 <li>Check that <code>stat</code> is calculated appropriately if <code><a href="reference/generate.html">generate()</a></code> is not called</li>
@@ -139,7 +144,10 @@
 <li>Get <code>specify() %&gt;% calculate()</code> to work for the observed statistic</li>
 <li>Coerce the argument to <code>xintercept</code> to be a vector in <code>geom_vline()</code> in <code><a href="reference/visualize.html">visualize()</a></code>
 </li>
+<li>Write tests to check results there with wrapper function results like <code><a href="reference/t_test.html">t_test()</a></code>
+</li>
 <li>Add <code>add_obs_stat</code> toggle into <code><a href="reference/visualize.html">visualize()</a></code> and p-value calculation?</li>
+<li>Refactor <code><a href="reference/calculate.html">calculate()</a></code> into smaller functions to reduce complexity</li>
 <li>Shift to list-columns in <code><a href="reference/generate.html">generate()</a></code>
 </li>
 <li>Implement check of <code>stat</code> in theoretical <code><a href="reference/visualize.html">visualize()</a></code>
@@ -164,6 +172,7 @@
 <li>
 <code>z_test()</code>?</li>
 <li>Add implementation of one sample <code><a href="reference/t_test.html">t_test()</a></code>?</li>
+<li>Add <code>order</code> argument to <code><a href="reference/t_test.html">t_test()</a></code>, <code><a href="reference/t_stat.html">t_stat()</a></code>, and similar</li>
 </ul>
 </li>
 <li>Create easy functions to determine observed statistics like the implemented <code>t_stat</code>: e.g., <code>mean_stat</code>?</li>

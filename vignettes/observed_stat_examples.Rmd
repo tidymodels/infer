@@ -13,6 +13,7 @@ editor_options:
   chunk_output_type: console
 ---
 
+
 ```{r include=FALSE}
 knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
 ```
@@ -65,7 +66,7 @@ x_bar <- fli_small %>%
 null_distn <- fli_small %>%
   specify(response = dep_delay) %>%
   hypothesize(null = "point", mu = 10) %>%
-  generate(reps = 1000, type = "bootstrap") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "mean")
 null_distn %>% visualize(obs_stat = x_bar)
 null_distn %>%
@@ -85,7 +86,7 @@ x_tilde <- fli_small %>%
 null_distn <- fli_small %>%
   specify(response = dep_delay) %>%
   hypothesize(null = "point", med = -1) %>% 
-  generate(reps = 1000, type = "bootstrap") %>% 
+  generate(reps = 1000) %>% 
   calculate(stat = "median")
 null_distn %>% visualize(obs_stat = x_tilde)
 null_distn %>%
@@ -106,7 +107,7 @@ p_hat <- fli_small %>%
 null_distn <- fli_small %>%
   specify(response = day_hour, success = "morning") %>%
   hypothesize(null = "point", p = .5) %>%
-  generate(reps = 1000, type = "simulate") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "prop")
 null_distn %>% visualize(obs_stat = p_hat)
 null_distn %>%
@@ -140,7 +141,7 @@ d_hat <- fli_small %>%
 null_distn <- fli_small %>%
   specify(day_hour ~ season, success = "morning") %>%
   hypothesize(null = "independence") %>% 
-  generate(reps = 1000, type = "permute") %>% 
+  generate(reps = 1000) %>% 
   calculate(stat = "diff in props", order = c("winter", "summer"))
 null_distn %>% visualize(obs_stat = d_hat)
 null_distn %>%

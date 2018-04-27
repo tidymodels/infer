@@ -30,7 +30,7 @@ following instead in practice.
 null_distn <- prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "t", order = c("m", "f")) 
 
 null_distn %>% visualize()
@@ -76,7 +76,7 @@ Simulation-based approach to t-statistic
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "t", order = c("m", "f")) %>% 
   visualize()
 ```
@@ -98,7 +98,7 @@ Overlay appropriate $t$ distribution on top of permuted t-statistics
 prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "t", order = c("m", "f")) %>% 
   visualize(method = "both")
 ```
@@ -111,7 +111,7 @@ Simulation-based approach to F-statistic
 prof_small %>%
   specify(age ~ status) %>% # alt: response = age, explanatory = status
   hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "F") %>% 
   visualize()
 ```
@@ -133,7 +133,7 @@ Overlay appropriate $F$ distribution on top of permuted F-statistics
 prof_small %>%
   specify(age ~ status) %>% # alt: response = age, explanatory = status
   hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "F") %>% 
   visualize(method = "both")
 ```
@@ -147,7 +147,7 @@ Simulation-based approach to z-statistic
 prof_small %>%
   specify(response = sex, success = "m") %>% 
   hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
-  generate(reps = 1000, type = "simulate") %>% 
+  generate(reps = 1000) %>% 
   calculate(stat = "z") %>% 
   visualize()
 ```
@@ -169,7 +169,7 @@ Overlay standard normal distribution on top of permuted z-statistics
 prof_small %>%
   specify(response = sex, success = "m") %>%
   hypothesize(null = "point", p = c("m" = .65, "f" = .35)) %>% 
-  generate(reps = 1000, type = "simulate") %>% 
+  generate(reps = 1000) %>% 
   calculate(stat = "z") %>% 
   visualize(method = "both")
 ```
@@ -183,7 +183,7 @@ Simulation-based approach to z-statistic
 prof_small %>%
   specify(sex ~ city, success = "m") %>%
   hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "z", order = c("san fran", "not san fran")) %>% 
   visualize()
 ```
@@ -205,7 +205,7 @@ Overlay standard normal distribution on top of permuted z-statistics
 prof_small %>%
   specify(sex ~ city, success = "m") %>%
   hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "z", order = c("san fran", "not san fran")) %>% 
   visualize(method = "both")
 ```
@@ -218,7 +218,7 @@ Simulation-based approach to $\chi^2$-statistic
 prof_small %>%
   specify(drugs ~ status) %>% # alt: response = drugs, explanatory = status
   hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "Chisq") %>% 
   visualize()
 ```
@@ -240,7 +240,7 @@ Overlay standard chi-square distribution on top of permuted statistics
 prof_small %>%
   specify(drugs ~ status) %>% # alt: response = drugs, explanatory = status
   hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "Chisq") %>% 
   visualize(method = "both")
 ```
@@ -254,7 +254,7 @@ prof_small %>%
   specify(drugs ~ NULL) %>% # alt: response = drugs
   hypothesize(null = "point", 
               p = c("never" = .7, "often" = .05, "sometimes" = .25)) %>%
-  generate(reps = 1000, type = "simulate") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "Chisq") %>% 
   visualize()
 ```
@@ -278,7 +278,7 @@ prof_small %>%
   specify(drugs ~ NULL) %>% # alt: response = drugs
   hypothesize(null = "point", 
               p = c("never" = .7, "often" = .05, "sometimes" = .25)) %>%
-  generate(reps = 1000, type = "simulate") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "Chisq") %>% 
   visualize(method = "both")
 ```
@@ -291,7 +291,7 @@ Simulation-based approach to $t$-statistic
 prof_small %>%
   specify(age ~ height) %>% # alt: response = age, explanatory = height
   hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "t") %>% 
   visualize()
 ```
@@ -313,7 +313,7 @@ Overlay appropriate $t$ distribution on top of permuted t-statistics
 prof_small %>%
   specify(age ~ height) %>% # alt: response = age, explanatory = height
   hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "t") %>% 
   visualize(method = "both")
 ```
@@ -330,7 +330,7 @@ Simulation-based approach to $t$-statistic (Not implemented)
 prof_small %>%
   specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
   hypothesize(null = "point", mu = 50) %>% 
-  generate(reps = 1000, type = "bootstrap") %>% 
+  generate(reps = 1000) %>% 
   calculate(stat = "t") %>% 
   visualize()
 ```
@@ -341,8 +341,8 @@ Theoretical distribution (Implemented)
 prof_small %>%
   specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
   hypothesize(null = "point", mu = 50) %>% 
-#  generate(reps = 1000, type = "bootstrap") %>% 
-#  calculate(stat = "t") %>% 
+  # generate() is not needed since we are not doing simulation-based
+  calculate(stat = "t") %>% 
   visualize(method = "theoretical")
 ```
 
@@ -352,7 +352,7 @@ Overlay appropriate $t$ distribution on top of permuted t-statistics (Not implem
 prof_small %>%
   specify(response = age) %>% # alt: age ~ NULL (or age ~ 1)
   hypothesize(null = "point", mu = 50) %>% 
-  generate(reps = 1000, type = "bootstrap") %>% 
+  generate(reps = 1000) %>% 
   calculate(stat = "t") %>% 
   visualize(method = "both")
 ```

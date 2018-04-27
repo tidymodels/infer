@@ -13,6 +13,9 @@ editor_options:
   chunk_output_type: console
 ---
 
+**Note**: The `type` argument in `generate()` is automatically filled based on the entries for `specify()` and
+`hypothesize()`. It can be removed throughout the examples that follow. It is left in to reiterate the type of generation process being performed.
+
 ```{r include=FALSE}
 knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
 ```
