@@ -1,4 +1,8 @@
-# infer 0.1.1.9000
+# infer 0.2.0.9000
+- Filled the `type` argument automatically in `generate()` based
+on `specify()` and `hypothesize()`
+
+# infer 0.2.0
 
 - Switched to `!!` instead of `UQ()` since `UQ()` is deprecated in 
 {rlang} 0.2.0
