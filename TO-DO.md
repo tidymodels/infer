@@ -1,9 +1,9 @@
 ## For future CRAN releases
 
 - From [here](https://github.com/andrewpbray/infer/issues/54)
-  - determine type based on specify() (and hypothesize()) and provide functionality to run generate() without specifying the type argument (so users/instructors can decide whether to get into this or not)
+  - determine type based on `specify()` (and `hypothesize()`) and provide functionality to run `generate()` without specifying the `type` argument (so users/instructors can decide whether to get into this or not)
   - find a better word than "simulate"
-  - have checks in place so if users chooses a type different than what (1) gives, they get are notified
+  - have checks in place so if users chooses a `type` different than what (1) gives, they get are notified
 - Consider re-working how p-values can be calculated (both for computational and theoretical)
   - Create a `p_value()` function?
 - Check that `stat` is calculated appropriately if `generate()` is not called
