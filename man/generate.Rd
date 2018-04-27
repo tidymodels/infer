@@ -5,7 +5,7 @@
 \title{Generate resamples, permutations, or simulations based on
 `specify` and (if needed) `hypothesize` inputs}
 \usage{
-generate(x, reps = 1, type = "bootstrap", ...)
+generate(x, reps = 1, type = attr(x, "type"), ...)
 }
 \arguments{
 \item{x}{a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}}

@@ -148,8 +148,8 @@ test_that("properties of tibble passed-in are correct", {
   expect_equal(ncol(gen_iris5), 3)
 
   gen_iris6 <- iris %>%
-    specify(Species ~ NULL) %>%
-    generate(reps = 10, type = "bootstrap")
+    specify(Sepal.Length ~ NULL) %>%
+    generate(reps = 10)
   expect_equal(ncol(gen_iris6), 2)
   expect_error(calculate(gen_iris6))
 })

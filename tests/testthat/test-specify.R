@@ -7,6 +7,29 @@ mtcars <- as.data.frame(mtcars) %>%
                 gear = factor(gear),
                 carb = factor(carb))
 
+one_nonshift_mean <- mtcars %>%
+  specify(response = mpg)
+
+one_nonshift_prop <- mtcars %>%
+  specify(response = am, success = "1")
+
+two_means_boot <- mtcars %>%
+  specify(mpg ~ am)
+
+two_props_boot <- mtcars %>%
+  specify(am ~ vs, success = "1")
+
+slope_boot <- mtcars %>%
+  specify(mpg ~ hp)
+
+test_that("auto `type` works (specify)", {
+  expect_equal(attr(one_nonshift_mean, "type"), "bootstrap")
+  expect_equal(attr(one_nonshift_prop, "type"), "bootstrap")
+  expect_equal(attr(two_means_boot, "type"), "bootstrap")
+  expect_equal(attr(two_props_boot, "type"), "bootstrap")
+  expect_equal(attr(slope_boot, "type"), "bootstrap")
+})
+
 test_that("data argument", {
 
   expect_error(specify(blah ~ cyl))
