@@ -38,7 +38,7 @@ hypothesize <- function(x, null, ...) {
   }
   
   if(null == "independence" && is.null(attr(x, "explanatory"))){
-    stop(paste0('Please `specify()` an explanatory and a response variable',
+    stop(paste0('Please `specify()` an explanatory and a response variable ',
                 'when testing \n',
                 'a null hypothesis of `"independence"`.'))
   }
@@ -57,10 +57,21 @@ hypothesize <- function(x, null, ...) {
                   "variables are independent."))
   }
   
-  if ((length(dots) > 0) && (null == "point")) {
+  if((length(dots) > 0) && (null == "point")) {
     params <- parse_params(dots, x)
     attr(x, "params") <- params
+    
+    if(any(grepl("p.", attr(attr(x, "params"), "names")))){
+     # simulate instead of bootstrap based on the value of `p` provided
+      attr(x, "type") <- "simulate"
+    } else {
+      attr(x, "type") <- "bootstrap"
+    }
+    
   }
+  
+  if(!is.null(null) && null == "independence")
+    attr(x, "type") <- "permute"
   
   # Check one proportion test set up correctly
   if(null == "point"){
@@ -99,6 +110,7 @@ parse_params <- function(dots, x) {
   # 0 index of dots
   if (length(p_ind)) {
     if (length(dots[[p_ind]]) == 1) {
+      
       if (attr(x, "null") == "point" && is.null(attr(x, "success"))) {
         stop(paste("A point null regarding a proportion requires",
                    "that `success` be indicated in `specify()`."))

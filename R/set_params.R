@@ -23,15 +23,19 @@ set_params <- function(x){
             x[[as.character(attr(x, "response"))]])[["parameter"]]
           ) %>% 
         dplyr::pull()
+      attr(x, "type") <- "bootstrap"
     }
     
     # One prop
     else if(attr(x, "response_type") == "factor" && (num_response_levels == 2)){
       # No parameters since standard normal
       attr(x, "theory_type") <- "One sample prop z"
+      # Changed to `"simulate"` when `p` provided in `hypothesize()`
+      attr(x, "type") <- "bootstrap"
     } else {
       attr(x, "theory_type") <- "Chi-square Goodness of Fit"
       attr(x, "distr_param") <- num_response_levels - 1
+      attr(x, "type") <- "simulate"
     }
     
   }
@@ -40,6 +44,9 @@ set_params <- function(x){
   if (!is.null(attr(x, "response")) && !is.null(attr(x, "explanatory")) & 
       !is.null(attr(x, "response_type")) && 
       !is.null(attr(x, "explanatory_type"))){
+    
+    attr(x, "type") <- "bootstrap"
+    
     # Response is numeric, explanatory is categorical
     if(attr(x, "response_type") %in% c("integer", "numeric") &
        attr(x, "explanatory_type") == "factor"){
@@ -74,6 +81,8 @@ set_params <- function(x){
     # Response is categorical, explanatory is categorical
     if(attr(x, "response_type") == "factor" &
        attr(x, "explanatory_type") == "factor"){
+      
+      attr(x, "type") <- "bootstrap"
       
       # Two sample proportions (z distribution) 
       # Parameter(s) not needed since standard normal
