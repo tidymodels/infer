@@ -17,8 +17,20 @@
 #'     hypothesize(null = "independence") %>%
 #'     generate(reps = 100, type = "permute")
 
-generate <- function(x, reps = 1, type = "bootstrap", ...) {
+generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
 
+  auto_type <- attr(x, "type")
+  
+  if(!is.null(auto_type)){
+    if(auto_type != type)
+      stop(paste0("You have specified `type = \"",
+                    type, "\"`, but `type` is expected to be `\"",
+                    auto_type, "\"`. Please try again with appropriate ",
+                  "`type` value."))
+    else
+      type <- auto_type
+  }
+  
   attr(x, "generate") <- TRUE
   
   if (type == "permute" &&
@@ -26,31 +38,32 @@ generate <- function(x, reps = 1, type = "bootstrap", ...) {
     stop(paste("Please `specify()` an explanatory and a response variable",
          "when permuting."))
   }
-  if (type == "simulate" &&
-      attr(x, "null") != "point" &&
-      !(length(grep("p", names(attr(x, "params")))) >= 1)) {
-    stop("Simulation requires a `point` null hypothesis on proportions.")
-  }
-  if (type == "bootstrap" &&
-        !(attr(attr(x, "params"), "names") %in% c("mu", "med", "sigma")) &&
-        !is.null(attr(x, "null"))
-      ) {
-    stop(paste("Bootstrapping is inappropriate in this setting.",
-          "Consider using `type = permute` or `type = simulate`."))
-  }
+## Can't get to these anymore
+#  if (type == "simulate" &&
+#      attr(x, "null") != "point" &&
+#      !(length(grep("p.", names(attr(x, "params")))) >= 1)) {
+#    stop("Simulation requires a `point` null hypothesis on proportions.")
+#  }
+#  if (type == "bootstrap" &&
+#        !(attr(attr(x, "params"), "names") %in% c("mu", "med", "sigma")) &&
+#        !is.null(attr(x, "null"))
+#      ) {
+#    stop(paste("Bootstrapping is inappropriate in this setting.",
+#          "Consider using `type = permute` or `type = simulate`."))
+#  }
 
   if (type == "bootstrap") {
     return(bootstrap(x, reps, ...))
   }
-  if (type == "permute") {
+  else if (type == "permute") {
     return(permute(x, reps, ...))
   }
-  if (type == "simulate") {
+  else if (type == "simulate") {
     return(simulate(x, reps, ...))
   }
-  if (!(type %in% c("bootstrap", "permute", "simulate")))
-    stop(paste("Choose one of the available options for `type`:",
-               '`"bootstrap"`, `"permute"`, or `"simulate"`'))
+#  else if (!(type %in% c("bootstrap", "permute", "simulate")))
+#    stop(paste("Choose one of the available options for `type`:",
+#               '`"bootstrap"`, `"permute"`, or `"simulate"`'))
 }
 
 bootstrap <- function(x, reps = 1, ...) {
@@ -106,6 +119,7 @@ bootstrap <- function(x, reps = 1, ...) {
   attr(result, "distr_param2") <- attr(x, "distr_param2")
   attr(result, "theory_type") <- attr(x, "theory_type")
   attr(result, "generate") <- attr(x, "generate")
+  attr(result, "type") <- attr(x, "type")
   
   class(result) <- append("infer", class(result))
   
@@ -130,6 +144,7 @@ permute <- function(x, reps = 1, ...) {
   attr(df_out, "distr_param2") <- attr(x, "distr_param2")
   attr(df_out, "theory_type") <- attr(x, "theory_type")
   attr(df_out, "generate") <- attr(x, "generate")
+  attr(df_out, "type") <- attr(x, "type")
   
   class(df_out) <- append("infer", class(df_out))
   
@@ -180,6 +195,7 @@ simulate <- function(x, reps = 1, ...) {
   attr(rep_tbl, "distr_param2") <- attr(x, "distr_param2")
   attr(rep_tbl, "theory_type") <- attr(x, "theory_type")
   attr(rep_tbl, "generate") <- attr(x, "generate")
+  attr(rep_tbl, "type") <- attr(x, "type")
   
   class(rep_tbl) <- append("infer", class(rep_tbl))
   
