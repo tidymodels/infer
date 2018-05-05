@@ -291,7 +291,7 @@ null_distn <- fli_small %>%
   calculate(stat = "diff in medians", order = c("summer", "winter"))
 null_distn %>% visualize(obs_stat = d_hat)
 null_distn %>%
-  summarize(p_value = mean(stat <= pull(d_hat)) * 2) %>%
+  summarize(p_value = mean(stat >= pull(d_hat)) * 2) %>%
   pull()
 ```
 

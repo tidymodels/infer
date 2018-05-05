@@ -370,9 +370,9 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> d_hat)</code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-23-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&lt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(d_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(d_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 2</code></pre>
+<pre><code>## [1] 0.086</code></pre>
 </div>
 <div id="one-numerical-one-categorical-2-levels---anova" class="section level3">
 <h3 class="hasAnchor">
