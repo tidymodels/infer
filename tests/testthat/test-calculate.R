@@ -45,25 +45,25 @@ test_that("variable chosen is of appropriate class (one var problems)", {
     generate(reps = 10, type = "bootstrap")
   expect_error(calculate(gen_iris_num, stat = "prop"))
   expect_silent(calculate(gen_iris_num, stat = "mean"))
-  #expect_error(calculate(gen_iris_num, stat = "median"))
-  #expect_error(calculate(gen_iris_num, stat = "sd"))
+  expect_error(calculate(gen_iris_num, stat = "median"))
+  expect_error(calculate(gen_iris_num, stat = "sd"))
 
   gen_iris_num2 <- iris %>%
     specify(Sepal.Width ~ NULL) %>%
     hypothesize(null = "point", med = 3) %>%
     generate(reps = 10, type = "bootstrap")
   expect_error(calculate(gen_iris_num2, stat = "prop"))
-  #expect_error(calculate(gen_iris_num2, stat = "mean"))
+  expect_error(calculate(gen_iris_num2, stat = "mean"))
   expect_silent(calculate(gen_iris_num2, stat = "median"))
-  #expect_error(calculate(gen_iris_num2, stat = "sd"))
+  expect_error(calculate(gen_iris_num2, stat = "sd"))
 
   gen_iris_num3 <- iris %>%
     specify(Sepal.Width ~ NULL) %>%
     hypothesize(null = "point", sigma = 0.6) %>%
     generate(reps = 10, type = "bootstrap")
   expect_error(calculate(gen_iris_num3, stat = "prop"))
-  #expect_error(calculate(gen_iris_num3, stat = "mean"))
-  #expect_error(calculate(gen_iris_num3, stat = "median"))
+  expect_error(calculate(gen_iris_num3, stat = "mean"))
+  expect_error(calculate(gen_iris_num3, stat = "median"))
   expect_silent(calculate(gen_iris_num3, stat = "sd"))
 })
 
