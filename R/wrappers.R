@@ -101,7 +101,6 @@ chisq_test <- function(data, formula, #response = NULL, explanatory = NULL,
 
 chisq_stat <- function(data, formula, ...){
   data %>%
-    chisq_test(formula = formula, ...) %>%
-    dplyr::select(statistic) %>%
-    dplyr::pull()
+    specify(formula = formula, ...) %>%
+    calculate(stat = "Chisq")
 }

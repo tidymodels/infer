@@ -55,19 +55,18 @@ specify <- function(x, formula, response = NULL,
   }
 
   # if there's an explanatory var
-
-  if (!(is.null(attr(x, "explanatory")))) {
-    if (!as.character(attr(x, "explanatory")) %in% names(x)) {
+  if(has_explanatory(x)) {
+    if(!as.character(attr(x, "explanatory")) %in% names(x)) {
       stop(paste0("The explanatory variable `", attr(x, "explanatory"),
                   "` cannot be found in this dataframe."))
     }
-    if (identical(as.character(attr(x, "response")),
+    if(identical(as.character(attr(x, "response")),
                   as.character(attr(x, "explanatory")))) {
       stop(paste("The response and explanatory variables must be different",
                  "from one another."))
     }
     explanatory_col <- rlang::eval_tidy(attr(x, "explanatory"), x)
-    if (is.character(explanatory_col)) {
+    if(is.character(explanatory_col)) {
       explanatory_col <- as.factor(explanatory_col)
     }
   }
@@ -109,18 +108,16 @@ specify <- function(x, formula, response = NULL,
   if(is.null(attr(x, "response")))
     attr(x, "response_type") <- NULL
   else
-    attr(x, "response_type") <- class(x[[as.character(attr(x, "response"))]])
+    attr(x, "response_type") <- class(response_variable(x))
 
   if(is.null(attr(x, "explanatory")))
     attr(x, "explanatory_type") <- NULL
   else
-    attr(x, "explanatory_type") <- class(
-        x[[as.character(attr(x, "explanatory"))]]
-      )
-
-  if(attr(x, "response_type") == "factor" & is.null(success) &
-     length(levels(x[[as.character(attr(x, "response"))]])) == 2)
- #    sum(table(response_col) > 0) == 2)
+    attr(x, "explanatory_type") <- class(explanatory_variable(x))
+  
+  if(attr(x, "response_type") == "factor" && is.null(success) &&
+     length(levels(response_variable(x))) == 2 &&
+     length(levels(explanatory_variable(x))) == 2)
     stop(paste0("A level of the response variable `",
                 attr(x, "response"),
                 "` needs to be specified for the `success` argument ",
