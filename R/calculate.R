@@ -24,123 +24,44 @@
 #'     generate(reps = 100, type = "permute") %>%
 #'     calculate(stat = "diff in props", order = c("1", "0"))
 
-calculate <- function(x, stat, order = NULL, ...) {
+calculate <- function(x, 
+                      stat = c("mean", "median", "sd", "prop", "diff in means",
+                             "diff in medians", "diff in props", "Chisq", "F",
+                             "slope", "t", "z"),
+                      order = NULL, ...) {
   
   assertive::assert_is_tbl(x)
   assertive::assert_is_a_string(stat)
+  check_for_numeric_stat(x, stat)
+  check_for_factor_stat(x, stat, explanatory_variable(x))
+  check_args_and_attr(x, explanatory_variable(x), response_variable(x), stat)
   
-  if (is.null(attr(x, "response"))){
+  if(!has_response(x))
     stop(paste("The response variable is not set.",
                "Make sure to `specify()` it first."))
-  }
   
-  if (!("replicate" %in% names(x)) && !is.null(attr(x, "generate")))
-    warning(paste0('A `generate()` step was not performed prior to',
-                   '`calculate()`. Review carefully.'))
-  
-
-  if (is.null(attr(x, "generate")) || !attr(x, "generate")){
-    if (is.null(attr(x, "null"))){
-# warning(paste("Chaining `specify()` into `calculate()` is not implemented",
-#           "yet. Returning the `specify()`ed data frame."))
-
+  if(is.null(attr(x, "generate")) || !attr(x, "generate")){
+    if(is.null(attr(x, "null"))){
       x$replicate <- 1L
     }
     else if(stat %in% c("mean", "median", "sd", "prop",
                         "diff in means", "diff in medians", "diff in props",
                         "slope"))
       stop(paste0("Theoretical distributions do not exist (or have not been ", 
-                 "implemented) for `stat = \"", stat, "\". Are you missing ",
-                 "a `generate()` step?"))
-      
-      else
+                  "implemented) for `stat = \"", stat, "\". Are you missing ",
+                  "a `generate()` step?"))
+    
+    else
       # From `hypothesize()` to `calculate()`
       # Catch-all if generate was not called
-        return(x)
+      return(x)
   }
-  
-  if (!stat %in% c("mean", "median", "sd", "prop",
-                   "diff in means", "diff in medians", "diff in props",
-                   "Chisq", "F", "slope", "t", "z")){
-    stop(paste("You specified a string for `stat` that is not implemented.",
-               "Check your spelling and `?calculate` for current options."))
-  }
-  
-  if (stat %in% c("mean", "median", "sd")){
-    col <- setdiff(names(x), "replicate")
-    
-    if (!is.numeric(x[[as.character(col)]])){
-      stop(paste0("Calculating a ",
-                  stat,
-                  " here is not appropriate \n  since the `",
-                  col,
-                  "` variable is not numeric."))
-    }
-  }
-  
-  
-  if (stat %in% c("diff in means", "diff in medians", "diff in props", "F")){
-    if (!is.factor(x[[as.character(attr(x, "explanatory"))]])){
-      stop(paste0("The explanatory variable of `",
-                  attr(x, "explanatory"),
-                  "` is not appropriate \n  since '",
-                  stat,
-                  "' is expecting the explanatory variable to be a factor."))
-    }
-  }
-  
-  if (stat %in% c("F", "slope", "diff in means", "diff in medians")){
-    if (!is.null(attr(x, "explanatory"))
-        && !is.numeric(x[[as.character(attr(x, "response"))]])){
-      stop(paste0("The response variable of `",
-                  attr(x, "response"),
-                  "` is not appropriate \n  since '",
-                  stat,
-                  "' is expecting the response variable to be numeric."))
-    }
-  }
-  
+
   if ( stat %in% c("diff in means", "diff in medians", "diff in props")  ||
        (!is.null(attr(x, "theory_type")) &&
       attr(x, "theory_type") %in% c("Two sample props z", "Two sample t") )) {
-    if (length(unique(x[[as.character(attr(x, "explanatory"))]])) != 2){
-      stop(paste("Statistic is based on a difference; the explanatory variable",
-                 "should have two levels."))
-    }
-    if (is.null(order)){
-      stop(paste("Statistic is based on a difference; specify the `order` in",
-                 "which to subtract the levels of the explanatory variable.",
-                 '`order = c("first", "second")` means `("first" - "second")`',
-                 "Check `?calculate` for details."))
-    }
-    if (!is.null(order) && xor(is.na(order[1]), is.na(order[2]))){
-      stop(paste("Only one level specified in `order`.",
-                 "Both levels need to be specified."))
-    }
-    if (!is.null(order) && length(order) > 2){
-      stop("`order` is expecting only two entries.")
-    }
-    if (!is.null(order) &&
-        (order[1] %in%
-         unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
-      stop(paste(order[1], "is not a level of the explanatory variable."))
-    }
-    if (!is.null(order) &&
-        (order[2] %in%
-         unique(x[[as.character(attr(x, "explanatory"))]]) == FALSE)){
-      stop(paste(order[2], "is not a level of the explanatory variable."))
-    }
-  }
-  
-  if (stat %in% c("diff in props", "Chisq")){
-    if (!is.null(attr(x, "explanatory")) &&
-        !is.factor(x[[as.character(attr(x, "response"))]])){
-      stop(paste0("The response variable of `",
-                  attr(x, "response"),
-                  "` is not appropriate \n  since '",
-                  stat,
-                  "' is expecting the response variable to be a factor."))
-    }
+    
+      check_order(x, explanatory_variable(x), order)
   }
 
   if (!(stat %in% c("diff in means", "diff in medians", "diff in props") ||
@@ -157,7 +78,7 @@ calculate <- function(x, stat, order = NULL, ...) {
   result <- calc_impl(
     structure(stat, class = gsub(" ", "_", stat)), x, order, ...
   )
-
+  
   if("NULL" %in% class(result))
       stop(paste0(
         "Your choice of `stat` is invalid for the ",
@@ -269,11 +190,21 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
   ## The following could stand to be cleaned up
 
   if (is.null(attr(x, "explanatory"))) {
-    n   <- attr(x, "biggest_group_size")
-    expected <- n * attr(x, "params")
-    x %>%
-      dplyr::summarize(stat = sum((table(!!(attr(x, "response")))
-                                   - expected)^2 / expected, ...))
+    if(!is.null(attr(x, "params"))){
+      # When `hypothesize()` has been called
+      n <- attr(x, "biggest_group_size")
+      expected <- n * attr(x, "params")
+      x %>%
+        dplyr::summarize(stat = sum((table(!!(attr(x, "response")))
+                                     - expected)^2 / expected, ...))
+    } else {
+      # Straight from `specify()`
+      x %>% 
+        dplyr::summarize(stat = stats::chisq.test(
+          table(!!(attr(x, "response"))))$stat
+        )
+    }
+
   } else {
     # This is not matching with chisq.test
     # obs_tab <- x %>%
@@ -293,8 +224,12 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
       dplyr::do(broom::tidy(suppressWarnings(stats::chisq.test(
         table(.[[as.character(attr(x, "response"))]],
               .[[as.character(attr(x, "explanatory"))]]))))) %>%
-      dplyr::ungroup() %>%
-      dplyr::select(replicate, stat = statistic)
+      dplyr::ungroup()
+    
+    if(!is.null(attr(x, "params")))
+      result <- result %>% dplyr::select(replicate, stat = statistic)
+    else
+      result <- result %>% dplyr::select(stat = statistic)
     
     attr(result, "response") <- attr(x, "response")
     attr(result, "success") <- attr(x, "success")
@@ -343,7 +278,7 @@ calc_impl.t <- function(stat, x, order, ...) {
   # else if (attr(x, "theory_type") == "One sample t"){
   #   df_out <- x %>%
   #     dplyr::summarize(stat = stats::t.test(
-  #       x[[as.character(attr(x, "response"))]])[["statistic"]])
+  #       response_variable(x))[["statistic"]])
   # }
 }
 
@@ -354,7 +289,7 @@ calc_impl.z <- function(stat, x, order, ...) {
     col <- attr(x, "response")
     success <- attr(x, "success")
     
-    x$explan <- factor(x[[as.character(attr(x, "explanatory"))]], 
+    x$explan <- factor(explanatory_variable(x), 
                        levels = c(order[1], order[2]))
     
     aggregated <- x %>%
@@ -381,20 +316,137 @@ calc_impl.z <- function(stat, x, order, ...) {
   } else
     # One sample proportion
     if (attr(x, "theory_type") == "One sample prop z"){
-      
-      success <- attr(x, "success")
-      
-      p0 <- attr(x, "params")[1]
-      num_rows <- nrow(x) / length(unique(x$replicate))
-      
-      col <- attr(x, "response")
-      #    if(is.null(success))
-      #      success <- quo(get_par_levels(x)[1])
-      # Error given instead
-      
-      df_out <- x %>%
-        dplyr::summarize(stat = (mean(
+ #     if(!is.null(attr(x, "params"))){
+        # When `hypothesize()` has been called
+        
+        success <- attr(x, "success")
+        
+        p0 <- attr(x, "params")[1]
+        num_rows <- nrow(x) / length(unique(x$replicate))
+        
+        col <- attr(x, "response")
+        #    if(is.null(success))
+        #      success <- quo(get_par_levels(x)[1])
+        # Error given instead
+        
+        df_out <- x %>%
+          dplyr::summarize(stat = (mean(
             rlang::eval_tidy(col) == rlang::eval_tidy(success), ...) - p0
           ) / sqrt( (p0 * (1 - p0)) / num_rows))
+#      } else
+#        # Straight from `specify()`
+        
     }
+}
+
+explanatory_variable <- function(x) {
+  x[[as.character(attr(x, "explanatory"))]]
+}
+
+# `explanatory_variable<-` <- function(x, value) {
+#   x[[as.character(attr(x, "explanatory"))]] <- value
+# }
+
+response_variable <- function(x) {
+  x[[as.character(attr(x, "response"))]]
+}
+
+# `response_variable<-` <- function(x, value) {
+#   x[[as.character(attr(x, "response"))]] <- value
+# }
+
+has_explanatory <- function(x){
+  !is.null(attr(x, "explanatory"))
+}
+
+has_response <- function(x){
+  !is.null(attr(x, "response"))
+}
+
+check_order <- function(x, explanatory_variable, order){
+  unique_explanatory_variable <- unique(explanatory_variable)
+  if (length(unique_explanatory_variable) != 2){
+    stop(paste("Statistic is based on a difference; the explanatory variable",
+               "should have two levels."))
+  }
+  if(is.null(order)){
+    stop(paste("Statistic is based on a difference; specify the `order` in",
+               "which to subtract the levels of the explanatory variable.",
+               '`order = c("first", "second")` means `("first" - "second")`',
+               "Check `?calculate` for details."))
+  } else {
+    if(xor(is.na(order[1]), is.na(order[2])))
+      stop(paste("Only one level specified in `order`.",
+                 "Both levels need to be specified."))
+    if(length(order) > 2)
+      stop("`order` is expecting only two entries.")
+    if(order[1] %in% unique_explanatory_variable == FALSE)
+      stop(paste(order[1], "is not a level of the explanatory variable."))
+    if(order[2] %in% unique_explanatory_variable == FALSE)
+      stop(paste(order[2], "is not a level of the explanatory variable."))
+  }
+}
+
+check_args_and_attr <- function(x, explanatory_variable, response_variable, 
+                                stat){
+  
+  # Could also do `stat <- match.arg(stat)`
+  # but that's not as helpful to beginners with the cryptic error msg
+  if (!stat %in% c("mean", "median", "sd", "prop",
+                   "diff in means", "diff in medians", "diff in props",
+                   "Chisq", "F", "slope", "t", "z")){
+    stop(paste("You specified a string for `stat` that is not implemented.",
+               "Check your spelling and `?calculate` for current options."))
+  }
+  
+  if (!("replicate" %in% names(x)) && !is.null(attr(x, "generate")))
+    warning(paste0('A `generate()` step was not performed prior to',
+                   '`calculate()`. Review carefully.'))
+  
+  if (stat %in% c("F", "slope", "diff in means", "diff in medians")){
+    if (has_explanatory(x) && !is.numeric(response_variable(x))){
+      stop(paste0("The response variable of `",
+                  attr(x, "response"),
+                  "` is not appropriate \n  since '",
+                  stat,
+                  "' is expecting the response variable to be numeric."))
+    }
+  }
+  
+  if (stat %in% c("diff in props", "Chisq")){
+    if (has_explanatory(x) && !is.factor(response_variable(x))){
+      stop(paste0("The response variable of `",
+                  attr(x, "response"),
+                  "` is not appropriate \n  since '",
+                  stat,
+                  "' is expecting the response variable to be a factor."))
+    }
+  }
+}
+
+check_for_numeric_stat <- function(x, stat){
+  if (stat %in% c("mean", "median", "sd")){
+    col <- setdiff(names(x), "replicate")
+    
+    if (!is.numeric(x[[as.character(col)]])){
+      stop(paste0("Calculating a ",
+                  stat,
+                  " here is not appropriate \n since the `",
+                  col,
+                  "` variable is not numeric."))
+    }
+  }
+}
+
+check_for_factor_stat <- function(x, stat, explanatory_variable){
+
+  if (stat %in% c("diff in means", "diff in medians", "diff in props", "F")){
+    if (!is.factor(explanatory_variable)){
+      stop(paste0("The explanatory variable of `",
+                  attr(x, "explanatory"),
+                  "` is not appropriate \n since '",
+                  stat,
+                  "' is expecting the explanatory variable to be a factor."))
+    }
+  }
 }
