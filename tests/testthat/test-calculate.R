@@ -22,7 +22,9 @@ test_that("stat argument is appropriate", {
 })
 
 test_that("response attribute has been set", {
-  expect_error(calculate(iris, stat = "median"))
+  expect_error(tibble::as.tibble(iris) %>% 
+                 calculate(stat = "median")
+               )
 })
 
 test_that("variable chosen is of appropriate class (one var problems)", {
@@ -31,7 +33,8 @@ test_that("variable chosen is of appropriate class (one var problems)", {
     specify(Species ~ NULL) %>%
     hypothesize(null = "point",
                 p = c("setosa" = .5,
-                      "versicolor" = .25, "virginica" = .25)) %>%
+                      "versicolor" = .25, 
+                      "virginica" = .25)) %>%
     generate(reps = 10, type = "simulate")
   expect_error(calculate(gen_iris1, stat = "mean"))
 
@@ -180,9 +183,9 @@ test_that("chi-square matches chisq.test value", {
     dplyr::group_by(replicate) %>%
     dplyr::do(broom::tidy(stats::chisq.test(table(.$Petal.Length.Group,
                                                   .$Species)))) %>%
-    dplyr::select(replicate, stat = statistic) %>%
-    dplyr::ungroup() #%>%
- #   dplyr::mutate(replicate = as.factor(replicate))
+    dplyr::ungroup() %>%
+    dplyr::select(stat = statistic)
+  # Equal not including attributes
   expect_equal(infer_way, trad_way)
 
   gen_iris9 <- iris %>%
@@ -328,4 +331,8 @@ test_that("specify() %>% calculate() works", {
                  hypothesize(null = "point", mu = 4) %>%
                  calculate(stat = "mean")
   )
+  
+  expect_silent(iris_tbl %>% 
+                  specify(Species ~ NULL) %>% 
+                  calculate(stat = "Chisq"))
 })
