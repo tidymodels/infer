@@ -110,18 +110,7 @@ bootstrap <- function(x, reps = 1, ...) {
 
   # Set variables for use in calculate()
   result <- rep_sample_n(x, size = nrow(x), replace = TRUE, reps = reps)
-  attr(result, "response") <- attr(x, "response")
-  attr(result, "success") <- attr(x, "success")
-  attr(result, "explanatory") <- attr(x, "explanatory")
-  attr(result, "response_type") <- attr(x, "response_type")
-  attr(result, "explanatory_type") <- attr(x, "explanatory_type")
-  attr(result, "params") <- attr(x, "params")
-  attr(result, "null") <- attr(x, "null")
-  attr(result, "distr_param") <- attr(x, "distr_param")
-  attr(result, "distr_param2") <- attr(x, "distr_param2")
-  attr(result, "theory_type") <- attr(x, "theory_type")
-  attr(result, "generate") <- attr(x, "generate")
-  attr(result, "type") <- attr(x, "type")
+  result <- set_attributes(to = result, from = x)
   
   class(result) <- append("infer", class(result))
   
@@ -136,25 +125,9 @@ permute <- function(x, reps = 1, ...) {
     dplyr::mutate(replicate = rep(1:reps, each = nrow(x))) %>%
     dplyr::group_by(replicate)
   
-  attr(df_out, "null") <- attr(x, "null")
-  attr(df_out, "response") <- attr(x, "response")
-  attr(df_out, "success") <- attr(x, "success")
-  attr(df_out, "explanatory") <- attr(x, "explanatory")
-  attr(df_out, "response_type") <- attr(x, "response_type")
-  attr(df_out, "explanatory_type") <- attr(x, "explanatory_type")
-  attr(df_out, "params") <- attr(x, "params")
-  attr(df_out, "null") <- attr(x, "null")
-  attr(df_out, "distr_param") <- attr(x, "distr_param")
-  attr(df_out, "distr_param2") <- attr(x, "distr_param2")
-  attr(df_out, "theory_type") <- attr(x, "theory_type")
-  attr(df_out, "generate") <- attr(x, "generate")
-  attr(df_out, "type") <- attr(x, "type")
+  df_out <- set_attributes(to = df_out, from = x)
   
   class(df_out) <- append("infer", class(df_out))
-  
-  # Copy over all attr except for row names
-  # attributes(df_out)[which(names(attributes(df_out)) == "row.names")] <-
-  #   attributes(x)[which(names(attributes(x)) == "row.names")]
   
   return(df_out)
 }
@@ -188,18 +161,7 @@ simulate <- function(x, reps = 1, ...) {
   rep_tbl <- tibble(!! attr(x, "response") := as.factor(col_simmed),
                    replicate = as.factor(rep(1:reps, rep(nrow(x), reps))))
 
-  attr(rep_tbl, "response") <- attr(x, "response")
-  attr(rep_tbl, "success") <- attr(x, "success")
-  attr(rep_tbl, "explanatory") <- attr(x, "explanatory")
-  attr(rep_tbl, "response_type") <- attr(x, "response_type")
-  attr(rep_tbl, "explanatory_type") <- attr(x, "explanatory_type")
-  attr(rep_tbl, "distr_param") <- attr(x, "distr_param")
-  attr(rep_tbl, "distr_param2") <- attr(x, "distr_param2")
-  attr(rep_tbl, "null") <- attr(x, "null")
-  attr(rep_tbl, "params") <- attr(x, "params")
-  attr(rep_tbl, "theory_type") <- attr(x, "theory_type")
-  attr(rep_tbl, "generate") <- attr(x, "generate")
-  attr(rep_tbl, "type") <- attr(x, "type")
+  rep_tbl <- set_attributes(to = rep_tbl, from = x)
   
   class(rep_tbl) <- append("infer", class(rep_tbl))
 
@@ -217,4 +179,21 @@ format_params <- function(x) {
 get_par_levels <- function(x) {
   par_names <- names(attr(x, "params"))
   return(gsub("^.\\.", "", par_names))
+}
+
+set_attributes <- function(to, from = x){
+  attr(to, "response") <- attr(from, "response")
+  attr(to, "success") <- attr(from, "success")
+  attr(to, "explanatory") <- attr(from, "explanatory")
+  attr(to, "response_type") <- attr(from, "response_type")
+  attr(to, "explanatory_type") <- attr(from, "explanatory_type")
+  attr(to, "distr_param") <- attr(from, "distr_param")
+  attr(to, "distr_param2") <- attr(from, "distr_param2")
+  attr(to, "null") <- attr(from, "null")
+  attr(to, "params") <- attr(from, "params")
+  attr(to, "theory_type") <- attr(from, "theory_type")
+  attr(to, "generate") <- attr(from, "generate")
+  attr(to, "type") <- attr(from, "type")
+  
+  return(to)
 }
