@@ -188,7 +188,8 @@ null_distn %>%
 d_hat <- fli_small %>% 
   group_by(season) %>% 
   summarize(mean_stat = mean(dep_delay)) %>% 
-  summarize(diff(mean_stat)) %>% 
+  # Since summer - winter
+  summarize(-diff(mean_stat)) %>% 
   pull()
 null_distn <- fli_small %>%
   specify(dep_delay ~ season) %>% # alt: response = dep_delay, 
@@ -210,7 +211,8 @@ null_distn %>%
 d_hat <- fli_small %>% 
   group_by(season) %>% 
   summarize(median_stat = median(dep_delay)) %>% 
-  summarize(diff(median_stat)) %>% 
+  # Since summer - winter
+  summarize(-diff(median_stat)) %>% 
   pull()
 null_distn <- fli_small %>%
   specify(dep_delay ~ season) %>% # alt: response = dep_delay, 
@@ -222,7 +224,7 @@ ggplot(null_distn, aes(x = stat)) +
   geom_bar() +
   geom_vline(xintercept = d_hat, color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat <= d_hat) * 2) %>%
+  summarize(p_value = mean(stat >= d_hat) * 2) %>%
   pull()
 ```
 
@@ -305,7 +307,8 @@ c(lower = p_hat - 2 * sd(boot),
 d_hat <- fli_small %>% 
   group_by(season) %>% 
   summarize(mean_stat = mean(arr_delay)) %>% 
-  summarize(diff(mean_stat)) %>% 
+  # Since summer - winter
+  summarize(-diff(mean_stat)) %>% 
   pull()
 boot <- fli_small %>%
    specify(arr_delay ~ season) %>%
@@ -322,7 +325,8 @@ c(lower = d_hat - 2 * sd(boot),
 d_hat <- fli_small %>%
   group_by(season) %>%
   summarize(prop = mean(day_hour == "morning")) %>%
-  summarize(diff(prop)) %>%
+  # Since summer - winter
+  summarize(-diff(prop)) %>%
   pull()
 boot <- fli_small %>%
   specify(day_hour ~ season, success = "morning") %>%
