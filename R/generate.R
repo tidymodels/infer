@@ -115,6 +115,8 @@ bootstrap <- function(x, reps = 1, ...) {
   attr(result, "explanatory") <- attr(x, "explanatory")
   attr(result, "response_type") <- attr(x, "response_type")
   attr(result, "explanatory_type") <- attr(x, "explanatory_type")
+  attr(result, "params") <- attr(x, "params")
+  attr(result, "null") <- attr(x, "null")
   attr(result, "distr_param") <- attr(x, "distr_param")
   attr(result, "distr_param2") <- attr(x, "distr_param2")
   attr(result, "theory_type") <- attr(x, "theory_type")
@@ -140,6 +142,8 @@ permute <- function(x, reps = 1, ...) {
   attr(df_out, "explanatory") <- attr(x, "explanatory")
   attr(df_out, "response_type") <- attr(x, "response_type")
   attr(df_out, "explanatory_type") <- attr(x, "explanatory_type")
+  attr(df_out, "params") <- attr(x, "params")
+  attr(df_out, "null") <- attr(x, "null")
   attr(df_out, "distr_param") <- attr(x, "distr_param")
   attr(df_out, "distr_param2") <- attr(x, "distr_param2")
   attr(df_out, "theory_type") <- attr(x, "theory_type")
@@ -184,8 +188,6 @@ simulate <- function(x, reps = 1, ...) {
   rep_tbl <- tibble(!! attr(x, "response") := as.factor(col_simmed),
                    replicate = as.factor(rep(1:reps, rep(nrow(x), reps))))
 
-  attr(rep_tbl, "null") <- attr(x, "null")
-  attr(rep_tbl, "params") <- attr(x, "params")
   attr(rep_tbl, "response") <- attr(x, "response")
   attr(rep_tbl, "success") <- attr(x, "success")
   attr(rep_tbl, "explanatory") <- attr(x, "explanatory")
@@ -193,23 +195,13 @@ simulate <- function(x, reps = 1, ...) {
   attr(rep_tbl, "explanatory_type") <- attr(x, "explanatory_type")
   attr(rep_tbl, "distr_param") <- attr(x, "distr_param")
   attr(rep_tbl, "distr_param2") <- attr(x, "distr_param2")
+  attr(rep_tbl, "null") <- attr(x, "null")
+  attr(rep_tbl, "params") <- attr(x, "params")
   attr(rep_tbl, "theory_type") <- attr(x, "theory_type")
   attr(rep_tbl, "generate") <- attr(x, "generate")
   attr(rep_tbl, "type") <- attr(x, "type")
   
   class(rep_tbl) <- append("infer", class(rep_tbl))
-  
-  # Copy over all attr except for row names
-  #attributes(rep_tbl)[which(names(attributes(rep_tbl)) == "row.names")] <-
-  #  attributes(x)[which(names(attributes(x)) == "row.names")]
-  
-  
-  # TODO: we may want to clean up this object before sending it out - do we
-  # really need all of the attributes() that it spits out?
-  
-  ## From Chester: Upon further inspection, I think we'll need a bunch of 
-  ## these to appropriately determine the theoretical distributions
-  ## when they exist
 
   return(dplyr::group_by(rep_tbl, replicate))
 }

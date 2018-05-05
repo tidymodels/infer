@@ -6,7 +6,9 @@ on `specify()` and `hypothesize()`
 statistics.
   - `visualize()` works with either a 1x1 data frame or a vector
     for its `obs_stat` argument
-- Refactored `calculate()` into smaller functions to reduce complexity    
+- Refactored `calculate()` into smaller functions to reduce complexity
+- Produced error if `mu` is given in `hypothesize()` but `stat = "median"`
+is provided in `calculate()` and other similar mis-specifications
 
 # infer 0.2.0
 

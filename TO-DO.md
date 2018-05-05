@@ -1,6 +1,5 @@
 ## For future CRAN releases
 
-- Produce error if `mu` is given in `hypothesize()` but `stat = "median"` provided in `calculate()`
 - Check that `specify() %>% calculate()` works for `stat = "z"` and `stat = "t"`
   - Modify wrapper functions like `t_stat()` and `chisq_stat()` to wrap 
   `specify() %>% calculate()`. Maybe create `mean_stat()`, etc. as well?

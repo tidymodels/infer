@@ -35,6 +35,7 @@ calculate <- function(x,
   check_for_numeric_stat(x, stat)
   check_for_factor_stat(x, stat, explanatory_variable(x))
   check_args_and_attr(x, explanatory_variable(x), response_variable(x), stat)
+  check_point_params(x, stat)
   
   if(!has_response(x))
     stop(paste("The response variable is not set.",
@@ -92,6 +93,7 @@ calculate <- function(x,
   attr(result, "explanatory") <- attr(x, "explanatory")
   attr(result, "response_type") <- attr(x, "response_type")
   attr(result, "explanatory_type") <- attr(x, "explanatory_type")
+  attr(result, "params") <- attr(x, "params")
   attr(result, "distr_param") <- attr(x, "distr_param")
   attr(result, "distr_param2") <- attr(x, "distr_param2")
   attr(result, "theory_type") <- attr(x, "theory_type")
@@ -135,13 +137,14 @@ calc_impl.sd <- function(stat, x, order, ...) {
 calc_impl.prop <- function(stat, x, order, ...) {
   col <- setdiff(names(x), "replicate")
   
-  if(!is.factor(x[[col]])){
-    stop(paste0("Calculating a ",
-                stat,
-                " here is not appropriate since the `",
-                col,
-                "` variable is not a factor."))
-  }
+  ## No longer needed with implementation of `check_point_params()`
+  # if(!is.factor(x[[col]])){
+  #   stop(paste0("Calculating a ",
+  #               stat,
+  #               " here is not appropriate since the `",
+  #               col,
+  #               "` variable is not a factor."))
+  # }
 
   success <- attr(x, "success")
   x %>%
@@ -447,6 +450,31 @@ check_for_factor_stat <- function(x, stat, explanatory_variable){
                   "` is not appropriate \n since '",
                   stat,
                   "' is expecting the explanatory variable to be a factor."))
+    }
+  }
+}
+
+check_point_params <- function(x, stat){
+  
+  param_names <- attr(attr(x, "params"), "names") 
+  hyp_text <- ' to be set in `hypothesize()`.'
+  if(!is.null(attr(x, "null"))){
+    if(stat %in% c("mean", "median", "sd", "prop")){
+      if( (stat == "mean" && !("mu" %in% param_names)) )
+        stop(paste0('`stat == "mean"` requires `"mu"`', hyp_text))
+      if ( (!(stat == "mean") && ("mu" %in% param_names)) )
+        stop(paste0('`"mu"` does not correspond to `stat = "', stat, '"`.'))
+      if( (stat == "median" && !("med" %in% param_names) ) )
+        stop(paste0('`stat == "median"` requires `"med"`', hyp_text))
+      if ( (!(stat == "median") && ("med" %in% param_names)) )
+        stop(paste0('`"med"` does not correspond to `stat = "', stat, '"`.'))
+      if( (stat == "sigma" && !("sd" %in% param_names)) )
+        stop(paste0('`stat == "sd"` requires `"sigma"`', hyp_text))
+      if ( (!(stat == "sd") && ("sigma" %in% param_names)) )
+        stop(paste0('`"sigma"` does not correspond to `stat = "', stat, '"`.'))
+      
+      if(stat == "prop" && !(any(grepl("p.", param_names))))
+        stop(paste0('`stat == "prop"` requires `"p"`', hyp_text))
     }
   }
 }
