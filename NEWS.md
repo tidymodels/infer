@@ -1,6 +1,12 @@
 # infer 0.2.0.9000
 - Filled the `type` argument automatically in `generate()` based
 on `specify()` and `hypothesize()`
+  - Added message if `type` is given differently than expected
+- Implemented `specify() %>% calculate()` for getting observed
+statistics.
+  - `visualize()` works with either a 1x1 data frame or a vector
+    for its `obs_stat` argument
+- Refactored `calculate()` into smaller functions to reduce complexity    
 
 # infer 0.2.0
 
