@@ -210,13 +210,13 @@ null_distn %>%
 
 ```{r}
 Chisq_hat <- fli_small %>%
-  specify(formula = day_hour ~ origin, success = "morning") %>% 
+  specify(formula = day_hour ~ origin) %>% 
   calculate(stat = "Chisq")
 ```
 
 ```{r}
 null_distn <- fli_small %>%
-  specify(day_hour ~ origin, success = "morning") %>%
+  specify(day_hour ~ origin) %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>% 
   calculate(stat = "Chisq")

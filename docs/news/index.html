@@ -25,6 +25,9 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="Changelog" />
 
 
@@ -110,6 +113,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -117,15 +121,13 @@
       
       </header>
 
-      <div class="row">
-
-  <div class="col-md-9">
+<div class="row">
+  <div class="col-md-9 contents">
     <div class="page-header">
       <h1>Changelog <small></small></h1>
       <small>Source: <a href='https://github.com/andrewpbray/infer/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="contents">
     <div id="infer-0-2-0-9000" class="section level1">
 <h1 class="page-header">
 <a href="#infer-0-2-0-9000" class="anchor"></a>infer 0.2.0.9000<small> Unreleased </small>
@@ -133,6 +135,13 @@
 <ul>
 <li>Filled the <code>type</code> argument automatically in <code><a href="../reference/generate.html">generate()</a></code> based on <code><a href="../reference/specify.html">specify()</a></code> and <code><a href="../reference/hypothesize.html">hypothesize()</a></code>
 </li>
+<li>Added message if <code>type</code> is given differently than expected</li>
+<li>Implemented <code>specify() %&gt;% calculate()</code> for getting observed statistics.</li>
+<li>
+<code><a href="../reference/visualize.html">visualize()</a></code> works with either a 1x1 data frame or a vector for its <code>obs_stat</code> argument</li>
+<li>Refactored <code><a href="../reference/calculate.html">calculate()</a></code> into smaller functions to reduce complexity</li>
+<li>Produced error if <code>mu</code> is given in <code><a href="../reference/hypothesize.html">hypothesize()</a></code> but <code>stat = "median"</code> is provided in <code><a href="../reference/calculate.html">calculate()</a></code> and other similar mis-specifications</li>
+<li>Tweaked <code><a href="../reference/chisq_stat.html">chisq_stat()</a></code> to match with <code>specify() %&gt;% calculate()</code> framework</li>
 </ul>
 </div>
     <div id="infer-0-2-0" class="section level1">
@@ -202,7 +211,6 @@
 <li>Implemented the “intro stats” examples for randomization methods</li>
 </ul>
 </div>
-    </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -231,6 +239,8 @@
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

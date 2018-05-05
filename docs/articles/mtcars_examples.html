@@ -18,7 +18,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -95,20 +95,20 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Examples using <code>mtcars</code> data</h1>
                         <h4 class="author">Chester Ismay and Andrew bray</h4>
             
             <h4 class="date">2018-01-05</h4>
       
-      <small>Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/mtcars_examples.Rmd"><code>vignettes/mtcars_examples.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/mtcars_examples.Rmd"><code>vignettes/mtcars_examples.Rmd</code></a></small>
+      <div class="hidden name"><code>mtcars_examples.Rmd</code></div>
 
     </div>
 
     
     
-<div class="contents">
 <p><strong>Note</strong>: The <code>type</code> argument in <code><a href="../reference/generate.html">generate()</a></code> is automatically filled based on the entries for <code><a href="../reference/specify.html">specify()</a></code> and <code><a href="../reference/hypothesize.html">hypothesize()</a></code>. It can be removed throughout the examples that follow. It is left in to reiterate the type of generation process being performed.</p>
 <div id="data-preparation" class="section level2">
 <h2 class="hasAnchor">
@@ -131,6 +131,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>)</code></pre></div>
 <pre><code>## Response: mpg (numeric)
+## Null Hypothesis:  point 
 ## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
@@ -152,6 +153,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"median"</span>)</code></pre></div>
 <pre><code>## Response: mpg (numeric)
+## Null Hypothesis:  point 
 ## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
@@ -241,19 +243,19 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)</code></pre></div>
 <pre><code>## Response: cyl (factor)
 ## Explanatory: am (factor)
-## # A tibble: 100 x 2
-##    replicate  stat
-##        &lt;int&gt; &lt;dbl&gt;
-##  1         1 1.34 
-##  2         2 1.63 
-##  3         3 1.63 
-##  4         4 2.63 
-##  5         5 3.90 
-##  6         6 1.74 
-##  7         7 0.126
-##  8         8 1.74 
-##  9         9 1.34 
-## 10        10 1.34 
+## # A tibble: 100 x 1
+##     stat
+##    &lt;dbl&gt;
+##  1 1.34 
+##  2 1.63 
+##  3 1.63 
+##  4 2.63 
+##  5 3.90 
+##  6 1.74 
+##  7 0.126
+##  8 1.74 
+##  9 1.34 
+## 10 1.34 
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable one categorical (2 levels) (diff in means)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
@@ -502,7 +504,6 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 ## # ... with 90 more rows</code></pre>
 </div>
 </div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -528,6 +529,8 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

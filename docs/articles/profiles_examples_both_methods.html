@@ -18,7 +18,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -95,20 +95,20 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Simulation-based and Traditional Examples using <code>okcupiddata</code> <code>profiles</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2018-04-28</h4>
+            <h4 class="date">2018-05-05</h4>
       
-      <small>Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/profiles_examples_both_methods.Rmd"><code>vignettes/profiles_examples_both_methods.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/profiles_examples_both_methods.Rmd"><code>vignettes/profiles_examples_both_methods.Rmd</code></a></small>
+      <div class="hidden name"><code>profiles_examples_both_methods.Rmd</code></div>
 
     </div>
 
     
     
-<div class="contents">
 <div id="note" class="section level1">
 <h1 class="hasAnchor">
 <a href="#note" class="anchor"></a>Note</h1>
@@ -316,6 +316,9 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
+<pre><code>## Warning: Unknown or uninitialised column: 'replicate'.</code></pre>
+<pre><code>## Warning in visualize(., method = "both"): With only 443 replicates, it may
+## be difficult to see the relationship between simulation and theory.</code></pre>
 <pre><code>## Warning: Check to make sure the conditions have been met for the
 ## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
@@ -503,7 +506,6 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 </div>
 </div>
 </div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -546,6 +548,8 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

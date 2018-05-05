@@ -31,6 +31,17 @@ test_that("chisq_test works", {
 })
 
 test_that("_stat functions work", {
+  # Missing `success`
+  # Test of independence
   expect_silent(iris3 %>% chisq_stat(Sepal.Length.Group ~ Species))
+  another_way <- iris3 %>%
+    chisq_test(Sepal.Length.Group ~ Species) %>%
+    dplyr::select(statistic)
+  obs_stat_way <- iris3 %>% 
+    chisq_stat(Sepal.Length.Group ~ Species, success = ">5")
+  expect_equivalent(another_way, obs_stat_way)
   expect_silent(iris2 %>% t_stat(Sepal.Width ~ Species))
+  
+  # Goodness of Fit
+
 })

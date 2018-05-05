@@ -18,7 +18,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -95,12 +95,11 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     
 
     
     
-<div class="contents">
 <div id="infer" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#infer" class="anchor"></a>Infer</h1></div>
@@ -117,7 +116,7 @@
 <p>To install the developmental version of <code>infer</code>, make sure to install <code>remotes</code> first. The <code>pkgdown</code> website for this developmental version is at <a href="https://infer.netlify.com" class="uri">https://infer.netlify.com</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)
 remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"andrewpbray/infer"</span>)</code></pre></div>
-<p>To install the cutting edge version of <code>infer</code> (do so at your own risk), make sure to install <code>remotes</code> first. This version was last updated on 2018-04-28 00:17:33.</p>
+<p>To install the cutting edge version of <code>infer</code> (do so at your own risk), make sure to install <code>remotes</code> first. This version was last updated on 2018-05-05 16:52:06.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)
 remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"andrewpbray/infer"</span>, <span class="dt">ref =</span> <span class="st">"develop"</span>)</code></pre></div>
 <p>To see the things we are working on with the package as vignettes/Articles, check out the developmental <code>pkgdown</code> site at <a href="https://infer-dev.netlify.com" class="uri">https://infer-dev.netlify.com</a>.</p>
@@ -152,7 +151,6 @@ remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
 <span class="st">  </span><span class="kw"><a href="reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"1"</span>, <span class="st">"0"</span>))</code></pre></div>
 <p>Note that the formula and non-formula interfaces work for all implemented inference procedures in <code>infer</code>. Use whatever is more natural for you. If you will be doing modeling using functions like <code>lm()</code> and <code>glm()</code>, we recommend you begin to use the formula <code>y ~ x</code> notation as soon as possible though.</p>
 <p>Other examples are available in the package vignettes.</p>
-</div>
 </div>
 </div>
   </div>
@@ -210,6 +208,8 @@ remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

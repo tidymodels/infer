@@ -25,6 +25,9 @@
 <link href="pkgdown.css" rel="stylesheet">
 <script src="jquery.sticky-kit.min.js"></script>
 <script src="pkgdown.js"></script>
+
+
+
 <meta property="og:title" content="NA" />
 
 
@@ -110,6 +113,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -117,7 +121,7 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="contents col-md-9">
     <div class="page-header">
       <h1>NA</h1>
@@ -127,13 +131,20 @@
 <h2 class="hasAnchor">
 <a href="#for-future-cran-releases" class="anchor"></a>For future CRAN releases</h2>
 <ul>
-<li>From <a href="https://github.com/andrewpbray/infer/issues/54">here</a>
+<li>Check that <code>specify() %&gt;% calculate()</code> works for <code>stat = "z"</code> and <code>stat = "t"</code>
 </li>
-<li>determine type based on <code><a href="reference/specify.html">specify()</a></code> (and <code><a href="reference/hypothesize.html">hypothesize()</a></code>) and provide functionality to run <code><a href="reference/generate.html">generate()</a></code> without specifying the <code>type</code> argument (so users/instructors can decide whether to get into this or not)</li>
-<li>find a better word than “simulate”</li>
-<li>have checks in place so if users chooses a <code>type</code> different than what (1) gives, they get are notified</li>
+<li>Modify wrapper functions like <code><a href="reference/t_stat.html">t_stat()</a></code> and <code><a href="reference/chisq_stat.html">chisq_stat()</a></code> to wrap <code>specify() %&gt;% calculate()</code>. Maybe create <code>mean_stat()</code>, etc. as well?</li>
+<li>Determine if other wrapper functions should be created
+<ul>
+<li>
+<code>z_test()</code>?</li>
+<li>Add implementation of one sample <code><a href="reference/t_test.html">t_test()</a></code>?</li>
+<li>Add <code>order</code> argument to <code><a href="reference/t_test.html">t_test()</a></code>, <code><a href="reference/t_stat.html">t_stat()</a></code>, and similar</li>
+</ul>
+</li>
 <li>Consider re-working how p-values can be calculated (both for computational and theoretical)</li>
 <li>Create a <code>p_value()</code> function?</li>
+<li>Similarly, create a <code>conf_int()</code> function?</li>
 <li>Check that <code>stat</code> is calculated appropriately if <code><a href="reference/generate.html">generate()</a></code> is not called</li>
 <li>
 <code>order</code> of the arguments into the standardized statistics should be checked again</li>
@@ -141,13 +152,7 @@
 </li>
 <li>Update <code><a href="reference/visualize.html">visualize()</a></code> tests to include <code><a href="reference/calculate.html">calculate()</a></code> step for <code>method = "theoretical"</code>
 </li>
-<li>Get <code>specify() %&gt;% calculate()</code> to work for the observed statistic</li>
-<li>Coerce the argument to <code>xintercept</code> to be a vector in <code>geom_vline()</code> in <code><a href="reference/visualize.html">visualize()</a></code>
-</li>
-<li>Write tests to check results there with wrapper function results like <code><a href="reference/t_test.html">t_test()</a></code>
-</li>
 <li>Add <code>add_obs_stat</code> toggle into <code><a href="reference/visualize.html">visualize()</a></code> and p-value calculation?</li>
-<li>Refactor <code><a href="reference/calculate.html">calculate()</a></code> into smaller functions to reduce complexity</li>
 <li>Shift to list-columns in <code><a href="reference/generate.html">generate()</a></code>
 </li>
 <li>Implement check of <code>stat</code> in theoretical <code><a href="reference/visualize.html">visualize()</a></code>
@@ -161,21 +166,12 @@
 <li>Create <code>references.md</code> with links to slides/talks/workshops given about <code>infer</code>
 </li>
 <li>Add Lionel’s vis checking package (<a href="https://github.com/lionel-/vdiffr"><code>vdiffr</code></a>) to <code><a href="reference/visualize.html">visualize()</a></code> tests</li>
-<li>Produce error if <code>mu</code> is given in <code><a href="reference/specify.html">specify()</a></code> but <code>stat = "median"</code> provided in <code><a href="reference/calculate.html">calculate()</a></code>
-</li>
 <li>Shading for Confidence Intervals in <code><a href="reference/visualize.html">visualize()</a></code> (Mine would prefer green for CI and red for p-values)</li>
 <li>Determine whether <code><a href="reference/calculate.html">calculate()</a></code> should be where the <code><a href="reference/set_params.html">set_params()</a></code> function is called instead of in <code><a href="reference/specify.html">specify()</a></code>
 </li>
 <li>Need to also add parameters to wrapper functions so that randomization methods can be implemented by practitioners looking to skip the longer pipe syntax</li>
-<li>Determine if other wrapper functions should be created
-<ul>
-<li>
-<code>z_test()</code>?</li>
-<li>Add implementation of one sample <code><a href="reference/t_test.html">t_test()</a></code>?</li>
-<li>Add <code>order</code> argument to <code><a href="reference/t_test.html">t_test()</a></code>, <code><a href="reference/t_stat.html">t_stat()</a></code>, and similar</li>
-</ul>
+<li>Find a better word than <code>"simulate"</code> for <code>type</code> in <code><a href="reference/generate.html">generate()</a></code>
 </li>
-<li>Create easy functions to determine observed statistics like the implemented <code>t_stat</code>: e.g., <code>mean_stat</code>?</li>
 <li>Tweak <code>pkgdown</code> page to include ToDo’s. <a href="https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml">{dplyr}</a> example</li>
 </ul>
 </div>
@@ -196,6 +192,8 @@
 
       </footer>
    </div>
+
+  
 
   </body>
 </html>

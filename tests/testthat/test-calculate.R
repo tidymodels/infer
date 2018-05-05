@@ -186,7 +186,7 @@ test_that("chi-square matches chisq.test value", {
     dplyr::ungroup() %>%
     dplyr::select(stat = statistic)
   # Equal not including attributes
-  expect_equal(infer_way, trad_way)
+  expect_equivalent(infer_way, trad_way)
 
   gen_iris9 <- iris %>%
     specify(Species ~ NULL) %>%
