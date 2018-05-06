@@ -263,9 +263,10 @@ calc_impl.diff_in_props <- function(stat, x, order, ...) {
 calc_impl.t <- function(stat, x, order, ...) {
   # Two sample means
   if (attr(x, "theory_type") == "Two sample t"){
-    df_out <- x %>%
-      dplyr::summarize(stat = stats::t.test(
-        !! attr(x, "response") ~ !! attr(x, "explanatory"))[["statistic"]])
+      df_out <- x %>%
+        dplyr::summarize(stat = stats::t.test(
+          !! attr(x, "response") ~ !! attr(x, "explanatory")
+        )[["statistic"]])
   }
     
   # Standardized slope
@@ -277,12 +278,21 @@ calc_impl.t <- function(stat, x, order, ...) {
           stats::lm(!!(attr(x, "response")) ~ !!(attr(x, "explanatory")))
         )[["coefficients"]][explan_string, "t value"])
   } 
-  # One sample mean (Not currently implemented)
-  # else if (attr(x, "theory_type") == "One sample t"){
-  #   df_out <- x %>%
-  #     dplyr::summarize(stat = stats::t.test(
-  #       response_variable(x))[["statistic"]])
-  # }
+  # One sample mean
+  else if (attr(x, "theory_type") == "One sample t"){
+    # For bootstrap
+    if(is.null(attr(x, "null"))){
+      x %>%
+        dplyr::summarize(stat = stats::t.test(
+          !! attr(x, "response"))[["statistic"]])
+    }
+    # For hypothesis testing
+    else {
+      x %>%
+        dplyr::summarize(stat = stats::t.test(
+          !! attr(x, "response"), mu = attr(x, "params"))[["statistic"]])
+    }
+  }
 }
 
 calc_impl.z <- function(stat, x, order, ...) {
