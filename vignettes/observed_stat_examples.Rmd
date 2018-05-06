@@ -75,7 +75,24 @@ null_distn %>%
 
 ### One numerical variable (standardized mean $t$)
 
-Not yet implemented.
+**Observed stat**
+```{r}
+t_bar <- fli_small %>%
+  specify(response = dep_delay) %>%
+  calculate(stat = "t")
+```
+
+```{r}
+null_distn <- fli_small %>%
+  specify(response = dep_delay) %>%
+  hypothesize(null = "point", mu = 8) %>%
+  generate(reps = 1000) %>%
+  calculate(stat = "t")
+null_distn %>% visualize(obs_stat = t_bar)
+null_distn %>%
+  summarize(p_value = mean(stat >= pull(t_bar)) * 2)
+```
+
 
 ### One numerical variable (median)
 
@@ -386,7 +403,24 @@ c(lower = pull(x_bar) - 2 * sd(pull(boot)),
 
 ### One numerical (one mean - standardized)
 
-Not yet implemented.
+**Point estimate**
+
+```{r}
+t_bar <- fli_small %>% 
+  specify(response = arr_delay) %>%
+  calculate(stat = "t")  
+```
+
+```{r}
+boot <- fli_small %>%
+   specify(response = arr_delay) %>%
+   generate(reps = 1000, type = "bootstrap") %>%
+   calculate(stat = "t")
+visualize(boot)
+c(lower = pull(t_bar) - 2 * sd(pull(boot)),
+  upper = pull(t_bar) + 2 * sd(pull(boot)))
+```
+
 
 ### One categorical (one proportion)
 
