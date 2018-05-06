@@ -1,7 +1,8 @@
 context("wrappers")
 
 iris2 <- iris %>%
-  dplyr::filter(Species != "setosa")
+  dplyr::filter(Species != "setosa") %>% 
+  droplevels(.$Species)
 
 iris3 <- iris %>%
   dplyr::mutate(Sepal.Length.Group = 
@@ -31,17 +32,40 @@ test_that("chisq_test works", {
 })
 
 test_that("_stat functions work", {
-  # Missing `success`
   # Test of independence
   expect_silent(iris3 %>% chisq_stat(Sepal.Length.Group ~ Species))
   another_way <- iris3 %>%
     chisq_test(Sepal.Length.Group ~ Species) %>%
     dplyr::select(statistic)
   obs_stat_way <- iris3 %>% 
-    chisq_stat(Sepal.Length.Group ~ Species, success = ">5")
+    chisq_stat(Sepal.Length.Group ~ Species)
   expect_equivalent(another_way, obs_stat_way)
-  expect_silent(iris2 %>% t_stat(Sepal.Width ~ Species))
   
   # Goodness of Fit
-
+  expect_silent(iris3 %>% chisq_stat(Species ~ NULL))
+  another_way <- iris3 %>%
+    chisq_test(Species ~ NULL) %>%
+    dplyr::select(statistic)
+  obs_stat_way <- iris3 %>% 
+    chisq_stat(Species ~ NULL)
+  expect_equivalent(another_way, obs_stat_way)
+  
+  # Two sample t
+  expect_silent(iris2 %>% t_stat(Sepal.Width ~ Species, 
+                                 order = c("virginica", "versicolor")))
+  another_way <- iris2 %>%
+    t_test(Sepal.Width ~ Species, order = c("virginica", "versicolor")) %>%
+    dplyr::select(statistic)
+  obs_stat_way <- iris2 %>% 
+    t_stat(Sepal.Width ~ Species, order = c("virginica", "versicolor"))
+  expect_equivalent(another_way, obs_stat_way)
+  
+  # One sample t
+  expect_silent(iris2 %>% t_stat(Sepal.Width ~ NULL))
+  another_way <- iris2 %>%
+    t_test(Sepal.Width ~ NULL) %>%
+    dplyr::select(statistic)
+  obs_stat_way <- iris2 %>% 
+    t_stat(Sepal.Width ~ NULL)
+  expect_equivalent(another_way, obs_stat_way)
 })

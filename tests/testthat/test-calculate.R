@@ -336,3 +336,19 @@ test_that("specify() %>% calculate() works", {
                   specify(Species ~ NULL) %>% 
                   calculate(stat = "Chisq"))
 })
+
+test_that("One sample t hypothesis test is working", {
+  iris_tbl <- tibble::as_tibble(iris) %>% 
+    dplyr::mutate(Sepal.Length.Group =
+                    dplyr::if_else(Sepal.Length > 5, ">5", "<=5"),
+                  Sepal.Width.Group =
+                    dplyr::if_else(Sepal.Width > 3, "large", "small")) 
+  expect_silent(
+    iris_tbl %>% 
+      specify(Petal.Width ~ NULL) %>% 
+      hypothesize(null = "point", mu = 1) %>% 
+      generate(reps = 10) %>% 
+      calculate(stat = "t")
+  )
+  
+})

@@ -41,7 +41,8 @@ obs_diff_mean <- iris_tbl %>%
   pull()
 
 obs_t <- iris_tbl %>%
-  t_stat(Sepal.Width ~ Sepal.Length.Group)
+  t_stat(Sepal.Width ~ Sepal.Length.Group,
+         order = c(">5", "<=5"))
 
 obs_F <- anova(
     aov(formula = Sepal.Width ~ Species, data = iris_tbl)

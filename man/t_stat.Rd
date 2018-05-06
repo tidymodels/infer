@@ -11,7 +11,7 @@ t_stat(data, formula, ...)
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
 
-\item{...}{currently ignored}
+\item{...}{pass in arguments to {infer} functions}
 }
 \description{
 A shortcut wrapper function to get the observed test statistic for a t test
