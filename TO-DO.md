@@ -1,14 +1,12 @@
 ## For future CRAN releases
 
+- Look into formula for observed $z$ statistic for a proportion
+- Fix double printing of `Response:` and `Explanatory:`
 - Check that `specify() %>% calculate()` works for `stat = "z"` and `stat = "t"`
-  - Modify wrapper functions like `t_stat()` and `chisq_stat()` to wrap 
-  `specify() %>% calculate()`. Maybe create `mean_stat()`, etc. as well?
   - Determine if other wrapper functions should be created 
-    - `z_test()`? 
-    - Add implementation of one sample `t_test()`?
-    - Add `order` argument to `t_test()`, `t_stat()`, and similar
+    - `z_test()`, `mean_stat()`, `diff_in_mean_stat()`, etc.? 
 - Consider re-working how p-values can be calculated (both for computational and theoretical)
-  - Create a `p_value()` function?
+  - Create a `p_value()` function? Maybe check to make sure that p-values don't exceed 1
   - Similarly, create a `conf_int()` function?
 - Check that `stat` is calculated appropriately if `generate()` is not called
   - `order` of the arguments into the standardized statistics should be checked again
@@ -26,6 +24,7 @@
 - Add Lionel's vis checking package ([`vdiffr`](https://github.com/lionel-/vdiffr)) to `visualize()` tests
 - Shading for Confidence Intervals in `visualize()` (Mine would prefer green
 for CI and red for p-values)
+  - `direction = "between"` to get the green shading?
 - Determine whether `calculate()` should be where the `set_params()` function is called
 instead of in `specify()`
 - Need to also add parameters to wrapper functions so that randomization

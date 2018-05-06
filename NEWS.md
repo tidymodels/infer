@@ -6,10 +6,15 @@ on `specify()` and `hypothesize()`
 statistics.
   - `visualize()` works with either a 1x1 data frame or a vector
     for its `obs_stat` argument
+  - Got `stat = "t"` working
 - Refactored `calculate()` into smaller functions to reduce complexity
 - Produced error if `mu` is given in `hypothesize()` but `stat = "median"`
 is provided in `calculate()` and other similar mis-specifications
-- Tweaked `chisq_stat()` to match with `specify() %>% calculate()` framework
+- Tweaked `chisq_stat()` and `t_stat()` to match with `specify() %>% calculate()` framework
+  - Both work in the one sample and two sample cases by providing `formula`
+  - Added `order` argument to `t_stat()`
+- Added implementation of one sample `t_test()` by passing in the `mu` argument to `t.test`
+from `hypothesize()`
 
 # infer 0.2.0
 
