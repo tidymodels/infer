@@ -38,7 +38,7 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
     stop(paste("Please `specify()` an explanatory and a response variable",
          "when permuting."))
   }
-## Can't get to these anymore
+## Can't get to these anymore with tests
 #  if (type == "simulate" &&
 #      attr(x, "null") != "point" &&
 #      !(length(grep("p.", names(attr(x, "params")))) >= 1)) {

@@ -11,6 +11,8 @@
 #' @param alternative character string specifying the direction of the alternative hypothesis. Options are
 #' "\code{two_sided}" (default), "\code{greater}", or "\code{less}".
 #' @param ... currently ignored
+#' @importFrom rlang f_lhs
+#' @importFrom rlang f_rhs
 #' @export
 #' @examples
 #' # t test for comparing mpg against automatic/manual
@@ -20,7 +22,7 @@
 
 
 t_test <- function(data, formula, #response = NULL, explanatory = NULL,
-                   alternative = "two_sided",...){
+                   alternative = "two_sided", mu = 0, ...){
 
   # Match with old "dot" syntax
   if(alternative == "two_sided")
@@ -28,12 +30,24 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
 
   ### Only currently working with formula interface
 #  if (hasArg(formula)) {
+  if(!is.null(f_rhs(formula))){
+    # Two sample case
     data %>%
       stats::t.test(formula = formula, data = .,
-                    alternative = alternative) %>%
+                    alternative = alternative,
+                    mu = mu, ...) %>%
       broom::glance() %>%
       dplyr::select(statistic, t_df = parameter, p_value = p.value,
                     alternative)
+  } else {
+    # One sample case
+    stats::t.test(data[[as.character(f_lhs(formula))]],
+                  alternative = alternative,
+                  mu = mu, ...) %>% 
+      broom::glance() %>%
+      dplyr::select(statistic, t_df = parameter, p_value = p.value,
+                    alternative)
+  }
 #  } else {
     # data %>%
     #   stats::t.test(formula = substitute(response) ~ substitute(explanatory),
@@ -55,14 +69,13 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
 #'
 #' @param data a data frame that can be coerced into a \code{\link[tibble]{tibble}}
 #' @param formula a formula with the response variable on the left and the explanatory on the right
-#' @param ... currently ignored
+#' @param ... pass in arguments to {infer} functions
 #' @export
 
 t_stat <- function(data, formula, ...){
-  data %>%
-    t_test(formula = formula, ...) %>%
-    dplyr::select(statistic) %>%
-    dplyr::pull()
+  data %>% 
+    specify(formula = formula) %>% 
+    calculate(stat = "t", ...)
 }
 
 #'
