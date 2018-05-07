@@ -10,6 +10,8 @@
 #' @param formula a formula with the response variable on the left and the explanatory on the right
 #' @param alternative character string specifying the direction of the alternative hypothesis. Options are
 #' "\code{two_sided}" (default), "\code{greater}", or "\code{less}".
+#' @param mu a numeric value giving the hypothesized null mean value for a one sample test
+#' and the hypothesized difference for a two sample test
 #' @param ... currently ignored
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
