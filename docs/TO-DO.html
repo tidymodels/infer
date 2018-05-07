@@ -131,19 +131,19 @@
 <h2 class="hasAnchor">
 <a href="#for-future-cran-releases" class="anchor"></a>For future CRAN releases</h2>
 <ul>
+<li>Look into formula for observed $z$ statistic for a proportion</li>
+<li>Fix double printing of <code>Response:</code> and <code>Explanatory:</code>
+</li>
 <li>Check that <code>specify() %&gt;% calculate()</code> works for <code>stat = "z"</code> and <code>stat = "t"</code>
 </li>
-<li>Modify wrapper functions like <code><a href="reference/t_stat.html">t_stat()</a></code> and <code><a href="reference/chisq_stat.html">chisq_stat()</a></code> to wrap <code>specify() %&gt;% calculate()</code>. Maybe create <code>mean_stat()</code>, etc. as well?</li>
 <li>Determine if other wrapper functions should be created
 <ul>
 <li>
-<code>z_test()</code>?</li>
-<li>Add implementation of one sample <code><a href="reference/t_test.html">t_test()</a></code>?</li>
-<li>Add <code>order</code> argument to <code><a href="reference/t_test.html">t_test()</a></code>, <code><a href="reference/t_stat.html">t_stat()</a></code>, and similar</li>
+<code>z_test()</code>, <code>mean_stat()</code>, <code>diff_in_mean_stat()</code>, etc.?</li>
 </ul>
 </li>
 <li>Consider re-working how p-values can be calculated (both for computational and theoretical)</li>
-<li>Create a <code>p_value()</code> function?</li>
+<li>Create a <code>p_value()</code> function? Maybe check to make sure that p-values don’t exceed 1</li>
 <li>Similarly, create a <code>conf_int()</code> function?</li>
 <li>Check that <code>stat</code> is calculated appropriately if <code><a href="reference/generate.html">generate()</a></code> is not called</li>
 <li>
@@ -167,6 +167,8 @@
 </li>
 <li>Add Lionel’s vis checking package (<a href="https://github.com/lionel-/vdiffr"><code>vdiffr</code></a>) to <code><a href="reference/visualize.html">visualize()</a></code> tests</li>
 <li>Shading for Confidence Intervals in <code><a href="reference/visualize.html">visualize()</a></code> (Mine would prefer green for CI and red for p-values)</li>
+<li>
+<code>direction = "between"</code> to get the green shading?</li>
 <li>Determine whether <code><a href="reference/calculate.html">calculate()</a></code> should be where the <code><a href="reference/set_params.html">set_params()</a></code> function is called instead of in <code><a href="reference/specify.html">specify()</a></code>
 </li>
 <li>Need to also add parameters to wrapper functions so that randomization methods can be implemented by practitioners looking to skip the longer pipe syntax</li>
