@@ -14,6 +14,9 @@ t_test(data, formula, alternative = "two_sided", mu = 0, ...)
 \item{alternative}{character string specifying the direction of the alternative hypothesis. Options are
 "\code{two_sided}" (default), "\code{greater}", or "\code{less}".}
 
+\item{mu}{a numeric value giving the hypothesized null mean value for a one sample test
+and the hypothesized difference for a two sample test}
+
 \item{...}{currently ignored}
 }
 \description{
