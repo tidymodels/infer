@@ -168,32 +168,4 @@ simulate <- function(x, reps = 1, ...) {
   return(dplyr::group_by(rep_tbl, replicate))
 }
 
-#' @importFrom dplyr pull
 
-format_params <- function(x) {
-  par_levels <- get_par_levels(x)
-  fct_levels <- as.character(unique(dplyr::pull(x, !! attr(x, "response"))))
-  return(attr(x, "params")[match(fct_levels, par_levels)])
-}
-
-get_par_levels <- function(x) {
-  par_names <- names(attr(x, "params"))
-  return(gsub("^.\\.", "", par_names))
-}
-
-set_attributes <- function(to, from = x){
-  attr(to, "response") <- attr(from, "response")
-  attr(to, "success") <- attr(from, "success")
-  attr(to, "explanatory") <- attr(from, "explanatory")
-  attr(to, "response_type") <- attr(from, "response_type")
-  attr(to, "explanatory_type") <- attr(from, "explanatory_type")
-  attr(to, "distr_param") <- attr(from, "distr_param")
-  attr(to, "distr_param2") <- attr(from, "distr_param2")
-  attr(to, "null") <- attr(from, "null")
-  attr(to, "params") <- attr(from, "params")
-  attr(to, "theory_type") <- attr(from, "theory_type")
-  attr(to, "generate") <- attr(from, "generate")
-  attr(to, "type") <- attr(from, "type")
-  
-  return(to)
-}
