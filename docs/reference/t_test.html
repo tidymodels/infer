@@ -138,7 +138,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>t_test</span>(<span class='no'>data</span>, <span class='no'>formula</span>, <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"two_sided"</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>t_test</span>(<span class='no'>data</span>, <span class='no'>formula</span>, <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"two_sided"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -155,6 +155,11 @@
       <th>alternative</th>
       <td><p>character string specifying the direction of the alternative hypothesis. Options are
 "<code>two_sided</code>" (default), "<code>greater</code>", or "<code>less</code>".</p></td>
+    </tr>
+    <tr>
+      <th>mu</th>
+      <td><p>a numeric value giving the hypothesized null mean value for a one sample test
+and the hypothesized difference for a two sample test</p></td>
     </tr>
     <tr>
       <th>...</th>

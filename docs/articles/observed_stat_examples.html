@@ -177,7 +177,25 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <div id="one-numerical-variable-standardized-mean-t" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-numerical-variable-standardized-mean-t" class="anchor"></a>One numerical variable (standardized mean <span class="math inline">\(t\)</span>)</h3>
-<p>Not yet implemented.</p>
+<p><strong>Observed stat</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_bar &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">mu =</span> <span class="dv">8</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>)
+null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> t_bar)</code></pre></div>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-6-1.png" width="768"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(t_bar)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>)</code></pre></div>
+<pre><code>## Response: dep_delay (numeric)
+## Null Hypothesis:  point 
+## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1      0.</code></pre>
 </div>
 <div id="one-numerical-variable-median" class="section level3">
 <h3 class="hasAnchor">
@@ -192,7 +210,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"median"</span>)
 null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> x_tilde)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-6-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&lt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(x_tilde)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>)</code></pre></div>
 <pre><code>## Response: dep_delay (numeric)
@@ -200,7 +218,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 ## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.178</code></pre>
+## 1   0.150</code></pre>
 </div>
 <div id="one-categorical-one-proportion" class="section level3">
 <h3 class="hasAnchor">
@@ -215,7 +233,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>)
 null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> p_hat)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-10-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&lt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(p_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>)</code></pre></div>
 <pre><code>## Response: day_hour (factor)
@@ -223,7 +241,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 ## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.132</code></pre>
+## 1   0.110</code></pre>
 <p>Logical variables will be coerced to factors:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">day_hour_logical =</span> (day_hour <span class="op">==</span><span class="st"> "morning"</span>)) <span class="op">%&gt;%</span>
@@ -250,11 +268,11 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"winter"</span>, <span class="st">"summer"</span>))
 null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> d_hat)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-11-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&lt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(d_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.758</code></pre>
+<pre><code>## [1] 0.708</code></pre>
 </div>
 <div id="two-categorical-2-level-variables-z" class="section level3">
 <h3 class="hasAnchor">
@@ -269,11 +287,11 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"winter"</span>, <span class="st">"summer"</span>))
 null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> z_hat)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-15-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&lt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(z_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.708</code></pre>
+<pre><code>## [1] 0.684</code></pre>
 <p>Note the similarities in this plot and the previous one.</p>
 </div>
 <div id="one-categorical-2-level---gof" class="section level3">
@@ -290,11 +308,11 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)
 null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> Chisq_hat)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-15-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-17-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(Chisq_hat))) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.013</code></pre>
+<pre><code>## [1] 0.011</code></pre>
 </div>
 <div id="two-categorical-2-level-variables-1" class="section level3">
 <h3 class="hasAnchor">
@@ -309,11 +327,11 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)
 null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> Chisq_hat)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-17-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-19-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(Chisq_hat))) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.01</code></pre>
+<pre><code>## [1] 0.007</code></pre>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-diff-in-means" class="section level3">
 <h3 class="hasAnchor">
@@ -328,11 +346,11 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))
 null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> d_hat)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-19-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-21-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(d_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.464</code></pre>
+<pre><code>## [1] 0.488</code></pre>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-t" class="section level3">
 <h3 class="hasAnchor">
@@ -347,11 +365,11 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))
 null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> t_hat)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-21-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-23-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(t_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.488</code></pre>
+<pre><code>## [1] 0.49</code></pre>
 <p>Note the similarities in this plot and the previous one.</p>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-diff-in-medians" class="section level3">
@@ -368,11 +386,11 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in medians"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))
 null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> d_hat)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-23-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-25-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(d_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.086</code></pre>
+<pre><code>## [1] 0.084</code></pre>
 </div>
 <div id="one-numerical-one-categorical-2-levels---anova" class="section level3">
 <h3 class="hasAnchor">
@@ -387,11 +405,11 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>)
 null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> F_hat)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-25-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-27-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(F_hat))) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.344</code></pre>
+<pre><code>## [1] 0.353</code></pre>
 </div>
 <div id="two-numerical-vars---slr" class="section level3">
 <h3 class="hasAnchor">
@@ -406,7 +424,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>)
 null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> slope_hat)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-27-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-29-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(slope_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
@@ -425,7 +443,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>)
 null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> t_hat)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-29-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-31-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(t_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
@@ -446,16 +464,29 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>)
 <span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-31-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-33-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dt">lower =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(x_bar) <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)),
   <span class="dt">upper =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(x_bar) <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)))</code></pre></div>
 <pre><code>##    lower    upper 
-## 1.238934 7.905066</code></pre>
+## 1.199434 7.944566</code></pre>
 </div>
 <div id="one-numerical-one-mean---standardized" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-numerical-one-mean---standardized" class="anchor"></a>One numerical (one mean - standardized)</h3>
-<p>Not yet implemented.</p>
+<p><strong>Point estimate</strong></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_bar &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>)  </code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
+<span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) <span class="op">%&gt;%</span>
+<span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
+<span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>)
+<span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot)</code></pre></div>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-35-1.png" width="768"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dt">lower =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(t_bar) <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)),
+  <span class="dt">upper =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(t_bar) <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)))</code></pre></div>
+<pre><code>##   lower.t   upper.t 
+## 0.8780387 4.4801167</code></pre>
 </div>
 <div id="one-categorical-one-proportion-1" class="section level3">
 <h3 class="hasAnchor">
@@ -469,11 +500,11 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st"> </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
 <span class="st"> </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>)
 <span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-33-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-37-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dt">lower =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(p_hat) <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)),
  <span class="dt">upper =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(p_hat) <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)))</code></pre></div>
 <pre><code>##     lower     upper 
-## 0.4224288 0.5095712</code></pre>
+## 0.4208544 0.5111456</code></pre>
 </div>
 <div id="one-categorical-variable-standardized-proportion-z-1" class="section level3">
 <h3 class="hasAnchor">
@@ -492,11 +523,11 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))
 <span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-35-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-39-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dt">lower =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(d_hat) <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)), 
   <span class="dt">upper =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(d_hat) <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)))</code></pre></div>
 <pre><code>##     lower     upper 
-## -7.443546  5.953147</code></pre>
+## -7.429672  5.939273</code></pre>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-t-1" class="section level3">
 <h3 class="hasAnchor">
@@ -510,11 +541,11 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))
 <span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-37-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-41-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dt">lower =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(t_hat) <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)), 
   <span class="dt">upper =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(t_hat) <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)))</code></pre></div>
 <pre><code>##   lower.t   upper.t 
-## -2.183151  1.746819</code></pre>
+## -2.223004  1.786672</code></pre>
 </div>
 <div id="two-categorical-variables-diff-in-proportions" class="section level3">
 <h3 class="hasAnchor">
@@ -528,11 +559,11 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))
 <span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-39-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-43-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dt">lower =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(d_hat) <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)), 
   <span class="dt">upper =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(d_hat) <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)))</code></pre></div>
 <pre><code>##       lower       upper 
-## -0.06645543  0.10754606</code></pre>
+## -0.06943025  0.11052088</code></pre>
 </div>
 <div id="two-categorical-variables-z" class="section level3">
 <h3 class="hasAnchor">
@@ -546,11 +577,11 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))
 <span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-41-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-45-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dt">lower =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(z_hat) <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)), 
   <span class="dt">upper =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(z_hat) <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)))</code></pre></div>
 <pre><code>##     lower     upper 
-## -1.567987  2.488903</code></pre>
+## -1.562920  2.483837</code></pre>
 </div>
 <div id="two-numerical-vars---slr-1" class="section level3">
 <h3 class="hasAnchor">
@@ -564,11 +595,11 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>)
 <span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-43-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-47-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dt">lower =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(slope_hat) <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)), 
   <span class="dt">upper =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(slope_hat) <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)))   </code></pre></div>
 <pre><code>## lower.dep_delay upper.dep_delay 
-##        0.964683        1.069215</code></pre>
+##       0.9642674       1.0696305</code></pre>
 </div>
 <div id="two-numerical-vars---t" class="section level3">
 <h3 class="hasAnchor">
@@ -582,11 +613,11 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>)
 <span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot)</code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-45-1.png" width="768"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-49-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dt">lower =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(t_hat) <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)), 
   <span class="dt">upper =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(t_hat) <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(boot)))   </code></pre></div>
 <pre><code>##    lower    upper 
-## 35.84073 53.37148</code></pre>
+## 35.86019 53.35202</code></pre>
 </div>
 </div>
 </div>
