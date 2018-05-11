@@ -109,7 +109,8 @@ visualize <- function(data, bins = 15, method = "simulation",
       stop(paste0('`generate()` and `calculate()` are both required ', 
                   'to be done prior to `visualize(method = "both")`'))
     
-    if(length(unique(data$replicate)) < 100)
+    if(("replicate" %in% names(data)) &&
+         length(unique(data$replicate)) < 100)
       warning(paste("With only", length(unique(data$stat)),
                     "replicates, it may be difficult to see the",
                     "relationship between simulation and theory."))

@@ -326,6 +326,8 @@ calc_impl.z <- function(stat, x, order, ...) {
                        stat = diff_prop / denom) %>%
       dplyr::select(-total_suc, -n1, -n2)
     
+    df_out
+    
   } else
     # One sample proportion
     if (attr(x, "theory_type") == "One sample prop z"){
@@ -346,6 +348,8 @@ calc_impl.z <- function(stat, x, order, ...) {
           dplyr::summarize(stat = (mean(
             rlang::eval_tidy(col) == rlang::eval_tidy(success), ...) - p0
           ) / sqrt( (p0 * (1 - p0)) / num_rows))
+        
+        df_out
 #      } else
 #        # Straight from `specify()`
         
