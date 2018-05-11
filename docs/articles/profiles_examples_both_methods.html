@@ -100,7 +100,7 @@
       <h1>Simulation-based and Traditional Examples using <code>okcupiddata</code> <code>profiles</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2018-05-07</h4>
+            <h4 class="date">2018-05-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/profiles_examples_both_methods.Rmd"><code>vignettes/profiles_examples_both_methods.Rmd</code></a></small>
       <div class="hidden name"><code>profiles_examples_both_methods.Rmd</code></div>
@@ -309,16 +309,13 @@ prof_small &lt;-<span class="st"> </span>profiles <span class="op">%&gt;%</span>
 <pre><code>## Warning: Check to make sure the conditions have been met for the
 ## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
-<p>Overlay standard chi-square distribution on top of permuted statistics</p>
+<p>Overlay chi-square distribution on top of permuted statistics</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prof_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(drugs <span class="op">~</span><span class="st"> </span>status) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = drugs, explanatory = status</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>)</code></pre></div>
-<pre><code>## Warning: Unknown or uninitialised column: 'replicate'.</code></pre>
-<pre><code>## Warning in visualize(., method = "both"): With only 443 replicates, it may
-## be difficult to see the relationship between simulation and theory.</code></pre>
 <pre><code>## Warning: Check to make sure the conditions have been met for the
 ## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="profiles_examples_both_methods_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>

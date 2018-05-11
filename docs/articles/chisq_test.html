@@ -100,7 +100,7 @@
       <h1>Chi-squared test example using <code>nycflights13</code> <code>flights</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2018-05-07</h4>
+            <h4 class="date">2018-05-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/chisq_test.Rmd"><code>vignettes/chisq_test.Rmd</code></a></small>
       <div class="hidden name"><code>chisq_test.Rmd</code></div>
@@ -207,10 +207,6 @@ chisq_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span cl
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>, <span class="dt">obs_stat =</span> obs_chisq, <span class="dt">direction =</span> <span class="st">"right"</span>)</code></pre></div>
-<pre><code>## Warning: Unknown or uninitialised column: 'replicate'.</code></pre>
-<pre><code>## Warning in visualize(., method = "both", obs_stat = obs_chisq, direction
-## = "right"): With only 354 replicates, it may be difficult to see the
-## relationship between simulation and theory.</code></pre>
 <pre><code>## Warning: Check to make sure the conditions have been met for the
 ## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="chisq_test_files/figure-html/unnamed-chunk-9-1.png" width="768"></p>

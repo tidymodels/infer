@@ -234,7 +234,7 @@ prof_small %>%
   visualize(method = "theoretical")
 ```
 
-Overlay standard chi-square distribution on top of permuted statistics
+Overlay chi-square distribution on top of permuted statistics
 
 ```{r}
 prof_small %>%
