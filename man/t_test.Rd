@@ -4,14 +4,15 @@
 \alias{t_test}
 \title{A tidier version of t.test for two sample tests}
 \usage{
-t_test(data, formula, alternative = "two_sided", mu = 0, ...)
+t_test(data, formula, alternative = "two_sided", mu = 0, conf_int = FALSE,
+  ...)
 }
 \arguments{
 \item{data}{a data frame that can be coerced into a \code{\link[tibble]{tibble}}}
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
 
-\item{alternative}{character string specifying the direction of the alternative hypothesis. Options are
+\item{alternative}{character string giving the direction of the alternative hypothesis. Options are
 "\code{two_sided}" (default), "\code{greater}", or "\code{less}".}
 
 \item{mu}{a numeric value giving the hypothesized null mean value for a one sample test

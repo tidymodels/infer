@@ -75,13 +75,16 @@
       <a href="../articles/chisq_test.html">Chi-square Test Example</a>
     </li>
     <li>
+      <a href="../articles/two_sample_t.html">Two-Sample t-test Example</a>
+    </li>
+    <li>
+      <a href="../articles/observed_stat_examples.html">Observed Statistic Calculation Examples</a>
+    </li>
+    <li>
       <a href="../articles/flights_examples.html">Simulation-Based `flights` Examples</a>
     </li>
     <li>
       <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
-    </li>
-    <li>
-      <a href="../articles/two_sample_t.html">Two-Sample t-test Example</a>
     </li>
     <li>
       <a href="../articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
@@ -135,7 +138,8 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>t_test</span>(<span class='no'>data</span>, <span class='no'>formula</span>, <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"two_sided"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>t_test</span>(<span class='no'>data</span>, <span class='no'>formula</span>, <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"two_sided"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>conf_int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -150,7 +154,7 @@
     </tr>
     <tr>
       <th>alternative</th>
-      <td><p>character string specifying the direction of the alternative hypothesis. Options are
+      <td><p>character string giving the direction of the alternative hypothesis. Options are
 "<code>two_sided</code>" (default), "<code>greater</code>", or "<code>less</code>".</p></td>
     </tr>
     <tr>

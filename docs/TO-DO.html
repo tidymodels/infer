@@ -72,13 +72,16 @@
       <a href="articles/chisq_test.html">Chi-square Test Example</a>
     </li>
     <li>
+      <a href="articles/two_sample_t.html">Two-Sample t-test Example</a>
+    </li>
+    <li>
+      <a href="articles/observed_stat_examples.html">Observed Statistic Calculation Examples</a>
+    </li>
+    <li>
       <a href="articles/flights_examples.html">Simulation-Based `flights` Examples</a>
     </li>
     <li>
       <a href="articles/mtcars_examples.html">Examples using `mtcars`</a>
-    </li>
-    <li>
-      <a href="articles/two_sample_t.html">Two-Sample t-test Example</a>
     </li>
     <li>
       <a href="articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
@@ -130,7 +133,6 @@
 <h2 class="hasAnchor">
 <a href="#for-future-cran-releases" class="anchor"></a>For future CRAN releases</h2>
 <ul>
-<li>Look into formula for observed $z$ statistic for a proportion</li>
 <li>Check that assumptions have been met for the theoretical distribution and <code>"both"</code>
 </li>
 <li>Fix double printing of <code>Response:</code> and <code>Explanatory:</code>
@@ -146,6 +148,7 @@
 <li>Consider re-working how p-values can be calculated (both for computational and theoretical)</li>
 <li>Create a <code>p_value()</code> function? Maybe check to make sure that p-values don’t exceed 1</li>
 <li>Similarly, create a <code>conf_int()</code> function?</li>
+<li>Should the wrapper functions also include a logical <code>conf_int</code> argument?</li>
 <li>Check that <code>stat</code> is calculated appropriately if <code><a href="reference/generate.html">generate()</a></code> is not called</li>
 <li>
 <code>order</code> of the arguments into the standardized statistics should be checked again</li>
