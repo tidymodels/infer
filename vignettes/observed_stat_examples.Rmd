@@ -1,6 +1,6 @@
 ---
 title: "Computation of observed statistics using `nycflights13` `flights` data"
-author: "Chester Ismay and Andrew Bray"
+author: "Chester Ismay"
 date: "2018-04-15"
 output: 
   rmarkdown::html_vignette:

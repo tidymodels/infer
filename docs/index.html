@@ -35,15 +35,6 @@
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="reference/index.html">Reference</a>
-</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
@@ -52,30 +43,36 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/chisq_test.html">Chi-squared test example using `nycflights13` `flights` data</a>
+      <a href="articles/chisq_test.html">Chi-square Test Example</a>
     </li>
     <li>
-      <a href="articles/flights_examples.html">Randomization Examples using `nycflights13` `flights` data</a>
+      <a href="articles/flights_examples.html">Simulation-Based `flights` Examples</a>
     </li>
     <li>
-      <a href="articles/mtcars_examples.html">Examples using `mtcars` data</a>
+      <a href="articles/mtcars_examples.html">Examples using `mtcars`</a>
     </li>
     <li>
-      <a href="articles/observed_stat_examples.html">Computation of observed statistics using `nycflights13` `flights` data</a>
+      <a href="articles/two_sample_t.html">Two-Sample t-test Example</a>
     </li>
     <li>
-      <a href="articles/profiles_examples.html">Randomization Examples using `okcupiddata` `profiles` data</a>
+      <a href="articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
     </li>
     <li>
-      <a href="articles/profiles_examples_both_methods.html">Simulation-based and Traditional Examples using `okcupiddata` `profiles` data</a>
-    </li>
-    <li>
-      <a href="articles/two_sample_t.html">Two sample  test example using `nycflights13` `flights` data</a>
+      <a href="articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="news/index.html">Changelog</a>
+  <a href="reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="news/index.html">News</a>
+</li>
+<li>
+  <a href="CONTRIBUTING.html">How To Contribute</a>
+</li>
+<li>
+  <a href="TO-DO.html">To-Dos</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -116,7 +113,7 @@
 <p>To install the developmental version of <code>infer</code>, make sure to install <code>remotes</code> first. The <code>pkgdown</code> website for this developmental version is at <a href="https://infer.netlify.com" class="uri">https://infer.netlify.com</a>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)
 remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"andrewpbray/infer"</span>)</code></pre></div>
-<p>To install the cutting edge version of <code>infer</code> (do so at your own risk), make sure to install <code>remotes</code> first. This version was last updated on 2018-05-11 09:53:42.</p>
+<p>To install the cutting edge version of <code>infer</code> (do so at your own risk), make sure to install <code>remotes</code> first. This version was last updated on 2018-05-11 11:12:55.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)
 remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"andrewpbray/infer"</span>, <span class="dt">ref =</span> <span class="st">"develop"</span>)</code></pre></div>
 <p>To see the things we are working on with the package as vignettes/Articles, check out the developmental <code>pkgdown</code> site at <a href="https://infer-dev.netlify.com" class="uri">https://infer-dev.netlify.com</a>.</p>
@@ -125,7 +122,7 @@ remotes<span class="op">::</span><span class="kw"><a href="http://www.rdocumenta
 <h3 class="hasAnchor">
 <a href="#contributing" class="anchor"></a>Contributing</h3>
 <hr>
-<p>We welcome others helping us make this package as user friendly and efficient as possible. Please review our <a href="https://github.com/andrewpbray/infer/blob/develop/CONDUCT.html">contributing</a> and <a href="CONDUCT.html">conduct</a> guidelines. Of particular interest is helping us to write <code>testthat</code> tests and help us in building vignettes that show how to (and how NOT to) use the package. By participating in this project you agree to abide by its terms.</p>
+<p>We welcome others helping us make this package as user friendly and efficient as possible. Please review our <a href="https://github.com/andrewpbray/infer/blob/develop/CONDUCT.html">contributing</a> and <a href="CONDUCT.html">conduct</a> guidelines. Of particular interest is helping us to write <code>testthat</code> tests and in building vignettes that show how to (and how NOT to) use the package. By participating in this project you agree to abide by its terms.</p>
 </div>
 <div id="examples" class="section level3">
 <h3 class="hasAnchor">

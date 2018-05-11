@@ -56,7 +56,7 @@ the developmental `pkgdown` site at <https://infer-dev.netlify.com>.
 
 We welcome others helping us make this package as user friendly and efficient as possible. Please review
 our [contributing](https://github.com/andrewpbray/infer/blob/develop/CONDUCT.md) and [conduct](CONDUCT.md) guidelines. Of particular interest is
-helping us to write `testthat` tests and help us in building vignettes that show how to (and how NOT to)
+helping us to write `testthat` tests and in building vignettes that show how to (and how NOT to)
 use the package. By participating in this project you agree to abide by its terms.
 
 ### Examples

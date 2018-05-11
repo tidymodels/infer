@@ -1,6 +1,6 @@
 ---
 title: "Examples using `mtcars` data"
-author: "Chester Ismay and Andrew bray"
+author: "Chester Ismay and Andrew Bray"
 date: "2018-01-05"
 output: 
   rmarkdown::html_vignette

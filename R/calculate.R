@@ -331,9 +331,7 @@ calc_impl.z <- function(stat, x, order, ...) {
   } else
     # One sample proportion
     if (attr(x, "theory_type") == "One sample prop z"){
- #     if(!is.null(attr(x, "params"))){
         # When `hypothesize()` has been called
-        
         success <- attr(x, "success")
         
         p0 <- attr(x, "params")[1]
@@ -350,9 +348,9 @@ calc_impl.z <- function(stat, x, order, ...) {
           ) / sqrt( (p0 * (1 - p0)) / num_rows))
         
         df_out
-#      } else
-#        # Straight from `specify()`
-        
+
+        # Straight from `specify()` doesn't make sense
+        # since standardizing requires a hypothesized value
     }
 }
 

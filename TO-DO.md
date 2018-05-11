@@ -1,7 +1,8 @@
+# What we'd like to implement
+
 ## For future CRAN releases
 
 - Look into formula for observed $z$ statistic for a proportion
-- Tweak `pkgdown` page to include ToDo's. [{dplyr}](https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml) example
 - Check that assumptions have been met for the theoretical distribution and `"both"`
 - Fix double printing of `Response:` and `Explanatory:`
 - Check that `specify() %>% calculate()` works for `stat = "z"` and `stat = "t"`

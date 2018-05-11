@@ -15,6 +15,7 @@ is provided in `calculate()` and other similar mis-specifications
   - Added `order` argument to `t_stat()`
 - Added implementation of one sample `t_test()` by passing in the `mu` argument to `t.test`
 from `hypothesize()`
+- Tweaked `pkgdown` page to include ToDo's using [{dplyr}](https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml) example
 
 # infer 0.2.0
 
