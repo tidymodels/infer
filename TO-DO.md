@@ -1,6 +1,8 @@
 ## For future CRAN releases
 
 - Look into formula for observed $z$ statistic for a proportion
+- Tweak `pkgdown` page to include ToDo's. [{dplyr}](https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml) example
+- Check that assumptions have been met for the theoretical distribution and `"both"`
 - Fix double printing of `Response:` and `Explanatory:`
 - Check that `specify() %>% calculate()` works for `stat = "z"` and `stat = "t"`
   - Determine if other wrapper functions should be created 
@@ -17,7 +19,6 @@
 - Implement check of `stat` in theoretical `visualize()`
 - Write test to check that bootstrapped values are centered near the 
   hypothesized value in `specify()`
-- Check that assumptions have been met for the theoretical distribution and `"both"`
 - Write vignettes on how NOT to use infer (strange errors, funky results, etc.)
 - Implement theoretical distributions for bootstrap distributions
 - Create `references.md` with links to slides/talks/workshops given about `infer`
@@ -30,4 +31,3 @@ instead of in `specify()`
 - Need to also add parameters to wrapper functions so that randomization
 methods can be implemented by practitioners looking to skip the longer pipe syntax
 - Find a better word than `"simulate"` for `type` in `generate()`
-- Tweak `pkgdown` page to include ToDo's. [{dplyr}](https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml) example
