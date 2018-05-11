@@ -5,12 +5,14 @@ navbar:
     menu:
     - text: Chi-square Test Example
       href: articles/chisq_test.html
+    - text: Two-Sample t-test Example
+      href: articles/two_sample_t.html    
+    - text: Observed Statistic Calculation Examples
+      href: articles/observed_stat_examples.html
     - text: Simulation-Based `flights` Examples
       href: articles/flights_examples.html
     - text: Examples using `mtcars`
       href: articles/mtcars_examples.html
-    - text: Two-Sample t-test Example
-      href: articles/two_sample_t.html  
 # Remove these DEV vignettes when going to master branch/CRAN      
     - text: (DEV) Simulation-Based `okcupiddata` Examples
       href: articles/profiles_examples.html
