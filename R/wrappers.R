@@ -8,7 +8,7 @@
 #'
 #' @param data a data frame that can be coerced into a \code{\link[tibble]{tibble}}
 #' @param formula a formula with the response variable on the left and the explanatory on the right
-#' @param alternative character string specifying the direction of the alternative hypothesis. Options are
+#' @param alternative character string giving the direction of the alternative hypothesis. Options are
 #' "\code{two_sided}" (default), "\code{greater}", or "\code{less}".
 #' @param mu a numeric value giving the hypothesized null mean value for a one sample test
 #' and the hypothesized difference for a two sample test
