@@ -2,7 +2,6 @@
 
 ## For future CRAN releases
 
-- Look into formula for observed $z$ statistic for a proportion
 - Check that assumptions have been met for the theoretical distribution and `"both"`
 - Fix double printing of `Response:` and `Explanatory:`
 - Check that `specify() %>% calculate()` works for `stat = "z"` and `stat = "t"`
@@ -11,6 +10,7 @@
 - Consider re-working how p-values can be calculated (both for computational and theoretical)
   - Create a `p_value()` function? Maybe check to make sure that p-values don't exceed 1
   - Similarly, create a `conf_int()` function?
+  - Should the wrapper functions also include a logical `conf_int` argument?
 - Check that `stat` is calculated appropriately if `generate()` is not called
   - `order` of the arguments into the standardized statistics should be checked again
   - May require moving of `set_params()` to be after `specify()`
