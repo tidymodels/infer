@@ -46,13 +46,13 @@ specify <- function(x, formula, response = NULL,
     attr(x, "response")    <- f_lhs(formula)
     attr(x, "explanatory") <- f_rhs(formula)
   }
-
-  response_col <- rlang::eval_tidy(attr(x, "response"), x)
-
-  if (!as.character(attr(x, "response")) %in% names(x)) {
+  
+  if (!(as.character(attr(x, "response")) %in% names(x))) {
     stop(paste0("The response variable `", attr(x, "response"),
                 "` cannot be found in this dataframe."))
   }
+
+  response_col <- rlang::eval_tidy(attr(x, "response"), x)
 
   # if there's an explanatory var
   if(has_explanatory(x)) {
@@ -104,12 +104,13 @@ specify <- function(x, formula, response = NULL,
                    " rows containing missing values."), call. = FALSE)
   }
 
+  
   # To help determine theoretical distribution to plot
   if(is.null(attr(x, "response")))
     attr(x, "response_type") <- NULL
   else
     attr(x, "response_type") <- class(response_variable(x))
-
+  
   if(is.null(attr(x, "explanatory")))
     attr(x, "explanatory_type") <- NULL
   else
@@ -117,7 +118,9 @@ specify <- function(x, formula, response = NULL,
   
   if(attr(x, "response_type") == "factor" && is.null(success) &&
      length(levels(response_variable(x))) == 2 &&
-     length(levels(explanatory_variable(x))) == 2)
+     (is.null(attr(x, "explanatory_type")) ||
+     (!is.null(attr(x, "explanatory_type")) &&
+     length(levels(explanatory_variable(x))) == 2)) )
     stop(paste0("A level of the response variable `",
                 attr(x, "response"),
                 "` needs to be specified for the `success` argument ",
