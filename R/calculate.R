@@ -146,6 +146,10 @@ calc_impl.prop <- function(stat, x, order, ...) {
   #               "` variable is not a factor."))
   # }
 
+  if(is.null(attr(x, "success")))
+    stop(paste('To calculate a proportion, the `"success"` argument',
+                'must be provided in `specify()`.'))
+  
   success <- attr(x, "success")
   x %>%
     dplyr::group_by(replicate) %>%
