@@ -22,7 +22,7 @@
   hypothesized value in `specify()`
 - Write vignettes on how NOT to use infer (strange errors, funky results, etc.)
 - Implement theoretical distributions for bootstrap distributions
-- Create `references.md` with links to slides/talks/workshops given about `infer`
+- Create `resources.md` with links to slides/talks/workshops given about `infer`
 - Add Lionel's vis checking package ([`vdiffr`](https://github.com/lionel-/vdiffr)) to `visualize()` tests
 - Shading for Confidence Intervals in `visualize()` (Mine would prefer green
 for CI and red for p-values)

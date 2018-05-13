@@ -64,23 +64,12 @@ visualize <- function(data, bins = 15, method = "simulation",
   assertive::assert_is_data.frame(data)
   assertive::assert_is_numeric(bins)
   assertive::assert_is_character(method)
-  
-  if(!is.null(obs_stat)){
-    if("data.frame" %in% class(obs_stat)){
-      assertive::assert_is_data.frame(obs_stat)
-      # [[1]] is used in case `stat` is not specified as name of 1x1
-      obs_stat <- obs_stat[[1]]
-    }
-    else{
-      assertive::assert_is_numeric(obs_stat)
-    }
-  }
   assertive::assert_is_character(dens_color)
   assertive::assert_is_character(obs_stat_color)
   assertive::assert_is_character(shade_color)
   if(!is.null(direction))
     assertive::assert_is_character(direction)
-  
+  obs_stat <- check_obs_stat(obs_stat)
   if(!is.null(direction) && is.null(obs_stat))
     stop("Shading requires observed statistic `obs_stat` value to be given.")
   
@@ -550,4 +539,19 @@ visualize_both <- function(data = data, bins = bins,
 
 get_percentile <- function(vector, observation) {
   stats::ecdf(vector)(observation)
+}
+
+check_obs_stat <- function(obs_stat){
+  if(!is.null(obs_stat)){
+    if("data.frame" %in% class(obs_stat)){
+      assertive::assert_is_data.frame(obs_stat)
+      # [[1]] is used in case `stat` is not specified as name of 1x1
+      obs_stat <- obs_stat[[1]]
+    }
+    else{
+      assertive::assert_is_numeric(obs_stat)
+    }
+  }
+  
+  obs_stat
 }
