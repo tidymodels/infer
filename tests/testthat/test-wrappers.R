@@ -9,7 +9,9 @@ iris3 <- iris %>%
                   dplyr::if_else(Sepal.Length > 5, ">5", "<=5"))
 
 test_that("t_test works", {
-  expect_silent(iris2 %>% t_test(Sepal.Width ~ Species))
+  # order is missing
+  expect_error(iris2 %>% t_test(Sepal.Width ~ Species))
+  
   expect_error(iris2 %>% t_test(response = "Sepal.Width",
                                 explanatory = "Species"))
 ## Not implemented
