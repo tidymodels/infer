@@ -1,4 +1,5 @@
-# infer 0.3.0
+# infer 0.2.1
+
 - Filled the `type` argument automatically in `generate()` based
 on `specify()` and `hypothesize()`
   - Added message if `type` is given differently than expected
