@@ -8,6 +8,9 @@
 #'
 #' @param data a data frame that can be coerced into a \code{\link[tibble]{tibble}}
 #' @param formula a formula with the response variable on the left and the explanatory on the right
+#' @param order #' @param order a string vector of specifying the order in which the levels of
+#' the explanatory variable should be ordered for subtraction, where
+#' \code{order = c("first", "second")} means \code{("first" - "second")}
 #' @param alternative character string giving the direction of the alternative hypothesis. Options are
 #' "\code{two_sided}" (default), "\code{greater}", or "\code{less}".
 #' @param mu a numeric value giving the hypothesized null mean value for a one sample test
@@ -20,11 +23,13 @@
 #' # t test for comparing mpg against automatic/manual
 #'   mtcars %>%
 #'     dplyr::mutate(am = factor(am)) %>%
-#'     t_test(mpg ~ am, alternative = "less")
+#'     t_test(mpg ~ am, order = c("1", "0"), alternative = "less")
 
 
 t_test <- function(data, formula, #response = NULL, explanatory = NULL,
-                   alternative = "two_sided", mu = 0, ...){
+                   order,
+                   alternative = "two_sided", mu = 0, 
+                   ...){
 
   # Match with old "dot" syntax
   if(alternative == "two_sided")
@@ -33,6 +38,13 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
   ### Only currently working with formula interface
 #  if (hasArg(formula)) {
   if(!is.null(f_rhs(formula))){
+    
+#    data <- reorder_explanatory(x = data, order = order)
+    
+    data[[as.character(f_rhs(formula))]] <-
+      factor(data[[as.character(f_rhs(formula))]],
+             levels = c(order[1], order[2]))
+    
     # Two sample case
     data %>%
       stats::t.test(formula = formula, data = .,
