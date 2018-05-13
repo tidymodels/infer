@@ -4,12 +4,16 @@
 \alias{t_test}
 \title{A tidier version of t.test for two sample tests}
 \usage{
-t_test(data, formula, alternative = "two_sided", mu = 0, ...)
+t_test(data, formula, order, alternative = "two_sided", mu = 0, ...)
 }
 \arguments{
 \item{data}{a data frame that can be coerced into a \code{\link[tibble]{tibble}}}
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
+
+\item{order}{#' @param order a string vector of specifying the order in which the levels of
+the explanatory variable should be ordered for subtraction, where
+\code{order = c("first", "second")} means \code{("first" - "second")}}
 
 \item{alternative}{character string giving the direction of the alternative hypothesis. Options are
 "\code{two_sided}" (default), "\code{greater}", or "\code{less}".}
@@ -26,5 +30,5 @@ A tidier version of t.test for two sample tests
 # t test for comparing mpg against automatic/manual
   mtcars \%>\%
     dplyr::mutate(am = factor(am)) \%>\%
-    t_test(mpg ~ am, alternative = "less")
+    t_test(mpg ~ am, order = c("1", "0"), alternative = "less")
 }

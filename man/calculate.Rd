@@ -9,7 +9,7 @@ calculate(x, stat = c("mean", "median", "sd", "prop", "diff in means",
   order = NULL, ...)
 }
 \arguments{
-\item{x}{the output from \code{\link{generate}} for computation-based 
+\item{x}{the output from \code{\link{generate}} for computation-based
 inference or the output from \code{\link{hypothesize}}
 piped in to here for theory-based inference.}
 
@@ -20,7 +20,8 @@ options include "mean", "median", "sd", "prop", "diff in means",
 \item{order}{a string vector of specifying the order in which the levels of
 the explanatory variable should be ordered for subtraction, where
 \code{order = c("first", "second")} means \code{("first" - "second")}
-Needed for inference on difference in means, medians, or proportions.}
+Needed for inference on difference in means, medians, or proportions and
+t and z statistics.}
 
 \item{...}{to pass options like \code{na.rm = TRUE} into functions like
 mean, sd, etc.}
