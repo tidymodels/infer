@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
       </span>
     </div>
 
@@ -100,7 +100,7 @@
       <h1>Two sample <span class="math inline">\(t\)</span> test example using <code>nycflights13</code> <code>flights</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2018-05-11</h4>
+            <h4 class="date">2018-05-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/two_sample_t.Rmd"><code>vignettes/two_sample_t.Rmd</code></a></small>
       <div class="hidden name"><code>two_sample_t.Rmd</code></div>
@@ -155,7 +155,8 @@ fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><s
 <a href="#calculate-observed-statistic" class="anchor"></a>Calculate observed statistic</h2>
 <p>Using <code>t_test</code> in <code>infer</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_t &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>half_year, <span class="dt">alternative =</span> <span class="st">"two_sided"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>half_year, <span class="dt">alternative =</span> <span class="st">"two_sided"</span>,
+         <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"h1"</span>, <span class="st">"h2"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(statistic) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
 <p>The observed <span class="math inline">\(t\)</span> statistic is 0.8685463.</p>
@@ -219,7 +220,9 @@ fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><s
 <h2 class="hasAnchor">
 <a href="#compute-theoretical-p-value" class="anchor"></a>Compute theoretical p-value</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fli_small <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>half_year,
+         <span class="dt">alternative =</span> <span class="st">"two_sided"</span>,
+         <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"h1"</span>, <span class="st">"h2"</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(p_value) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
 <pre><code>## [1] 0.3855325</code></pre>

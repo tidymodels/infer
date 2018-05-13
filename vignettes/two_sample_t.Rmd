@@ -57,7 +57,8 @@ Using `t_test` in `infer`
 
 ```{r}
 obs_t <- fli_small %>% 
-  t_test(formula = arr_delay ~ half_year, alternative = "two_sided") %>% 
+  t_test(formula = arr_delay ~ half_year, alternative = "two_sided",
+         order = c("h1", "h2")) %>% 
   dplyr::select(statistic) %>% 
   dplyr::pull()
 ```
@@ -129,7 +130,9 @@ t_null_distn %>%
 
 ```{r}
 fli_small %>% 
-  t_test(formula = arr_delay ~ half_year) %>% 
+  t_test(formula = arr_delay ~ half_year,
+         alternative = "two_sided",
+         order = c("h1", "h2")) %>% 
   dplyr::select(p_value) %>% 
   dplyr::pull()
 ```
