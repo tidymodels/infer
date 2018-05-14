@@ -91,7 +91,7 @@
       <h1>Two sample <span class="math inline">\(t\)</span> test example using <code>nycflights13</code> <code>flights</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2018-04-27</h4>
+            <h4 class="date">2018-05-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/two_sample_t.Rmd"><code>vignettes/two_sample_t.Rmd</code></a></small>
       <div class="hidden name"><code>two_sample_t.Rmd</code></div>
@@ -103,23 +103,23 @@
 <div id="data-preparation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-preparation" class="anchor"></a>Data preparation</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(nycflights13)
-<span class="kw">library</span>(dplyr)
-<span class="kw">library</span>(stringr)
-<span class="kw">library</span>(infer)
-<span class="kw">set.seed</span>(<span class="dv">2017</span>)
-fli_small &lt;-<span class="st"> </span>flights %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(<span class="dt">size =</span> <span class="dv">500</span>) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">half_year =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span>(
-    <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(month, <span class="dv">1</span>, <span class="dv">6</span>) ~<span class="st"> "h1"</span>,
-    <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(month, <span class="dv">7</span>, <span class="dv">12</span>) ~<span class="st"> "h2"</span>
-  )) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">day_hour =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span>(
-    <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(hour, <span class="dv">1</span>, <span class="dv">12</span>) ~<span class="st"> "morning"</span>,
-    <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(hour, <span class="dv">13</span>, <span class="dv">24</span>) ~<span class="st"> "not morning"</span>
-  )) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(arr_delay, dep_delay, half_year, 
-         day_hour, origin, carrier)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(nycflights13)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(stringr)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">library</span>(infer)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">set.seed</span>(<span class="dv">2017</span>)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(<span class="dt">size =</span> <span class="dv">500</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">half_year =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span>(</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">    <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(month, <span class="dv">1</span>, <span class="dv">6</span>) <span class="op">~</span><span class="st"> "h1"</span>,</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">    <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(month, <span class="dv">7</span>, <span class="dv">12</span>) <span class="op">~</span><span class="st"> "h2"</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">  )) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">day_hour =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span>(</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">    <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(hour, <span class="dv">1</span>, <span class="dv">12</span>) <span class="op">~</span><span class="st"> "morning"</span>,</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">    <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(hour, <span class="dv">13</span>, <span class="dv">24</span>) <span class="op">~</span><span class="st"> "not morning"</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">  )) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(arr_delay, dep_delay, half_year, </a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">         day_hour, origin, carrier)</a></code></pre></div>
 <ul>
 <li>Two numeric - <code>arr_delay</code>, <code>dep_delay</code>
 </li>
@@ -144,47 +144,47 @@ fli_small &lt;-<span class="st"> </span>flights %&gt;%<span class="st"> </span>
 <h2 class="hasAnchor">
 <a href="#calculate-observed-statistic" class="anchor"></a>Calculate observed statistic</h2>
 <p>Using <code>t_test</code> in <code>infer</code></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_t &lt;-<span class="st"> </span>fli_small %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> arr_delay ~<span class="st"> </span>half_year) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(statistic) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">obs_t &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(statistic) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</a></code></pre></div>
 <p>The observed <span class="math inline">\(t\)</span> statistic is 0.8685463.</p>
 <p>Or using another shortcut function in <code>infer</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_t &lt;-<span class="st"> </span>fli_small %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/t_stat.html">t_stat</a></span>(<span class="dt">formula =</span> arr_delay ~<span class="st"> </span>half_year)</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">obs_t &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/t_stat.html">t_stat</a></span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>half_year)</a></code></pre></div>
 <p>The observed <span class="math inline">\(t\)</span> statistic is 0.8685463.</p>
 </div>
 <div id="randomization-approach-to-t-statistic" class="section level2">
 <h2 class="hasAnchor">
 <a href="#randomization-approach-to-t-statistic" class="anchor"></a>Randomization approach to t-statistic</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_null_distn &lt;-<span class="st"> </span>fli_small %&gt;%
-<span class="st">  </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span>
-<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay ~<span class="st"> </span>half_year) %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"h1"</span>, <span class="st">"h2"</span>))</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">t_null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"h1"</span>, <span class="st">"h2"</span>))</a></code></pre></div>
 <pre><code>## Warning: Removed 15 rows containing missing values.</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_null_distn %&gt;%<span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">t_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <p><img src="two_sample_t_files/figure-html/unnamed-chunk-5-1.png" width="768"></p>
 </div>
 <div id="calculate-the-randomization-based-p-value" class="section level2">
 <h2 class="hasAnchor">
 <a href="#calculate-the-randomization-based-p-value" class="anchor"></a>Calculate the randomization-based <span class="math inline">\(p\)</span>-value</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_null_distn %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(<span class="kw">abs</span>(stat) &gt;=<span class="st"> </span>obs_t)) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">t_null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(<span class="kw">abs</span>(stat) <span class="op">&gt;=</span><span class="st"> </span>obs_t)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</a></code></pre></div>
 <pre><code>## [1] 0.42</code></pre>
 </div>
 <div id="theoretical-distribution" class="section level2">
 <h2 class="hasAnchor">
 <a href="#theoretical-distribution" class="anchor"></a>Theoretical distribution</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fli_small %&gt;%
-<span class="st">  </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span>
-<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay ~<span class="st"> </span>half_year) %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) %&gt;%
-<span class="st">  </span><span class="co"># generate() ## Not used for theoretical</span>
-<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"h1"</span>, <span class="st">"h2"</span>)) %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>, <span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="co"># generate() ## Not used for theoretical</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"h1"</span>, <span class="st">"h2"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"theoretical"</span>, <span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <pre><code>## Warning: Removed 15 rows containing missing values.</code></pre>
 <pre><code>## Warning: Check to make sure the conditions have been met for the
 ## theoretical method. `infer` currently does not check these for you.</code></pre>
@@ -193,13 +193,13 @@ fli_small &lt;-<span class="st"> </span>flights %&gt;%<span class="st"> </span>
 <div id="overlay-appropriate-t-distribution-on-top-of-permuted-t-statistics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overlay-appropriate-t-distribution-on-top-of-permuted-t-statistics" class="anchor"></a>Overlay appropriate <span class="math inline">\(t\)</span> distribution on top of permuted t-statistics</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fli_small %&gt;%
-<span class="st">  </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span>
-<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay ~<span class="st"> </span>half_year) %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) %&gt;%
-<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"h1"</span>, <span class="st">"h2"</span>)) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>, <span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="co"># alt: response = arr_delay, explanatory = half_year</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"h1"</span>, <span class="st">"h2"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">method =</span> <span class="st">"both"</span>, <span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <pre><code>## Warning: Check to make sure the conditions have been met for the
 ## theoretical method. `infer` currently does not check these for you.</code></pre>
 <p><img src="two_sample_t_files/figure-html/unnamed-chunk-9-1.png" width="768"></p>
@@ -207,10 +207,10 @@ fli_small &lt;-<span class="st"> </span>flights %&gt;%<span class="st"> </span>
 <div id="compute-theoretical-p-value" class="section level2">
 <h2 class="hasAnchor">
 <a href="#compute-theoretical-p-value" class="anchor"></a>Compute theoretical p-value</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fli_small %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> arr_delay ~<span class="st"> </span>half_year) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(p_value) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/t_test.html">t_test</a></span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(p_value) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</a></code></pre></div>
 <pre><code>## [1] 0.3855325</code></pre>
 </div>
 </div>
