@@ -259,7 +259,7 @@
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;</span><span class="st"> </span>Chisq_hat)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</a></code></pre></div>
-<pre><code>## [1] 0.008</code></pre>
+<pre><code>## [1] 0.005</code></pre>
 </div>
 <div id="two-categorical-2-level-variables-1" class="section level3">
 <h3 class="hasAnchor">
@@ -278,7 +278,7 @@
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb19-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;</span><span class="st"> </span>Chisq_hat)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb19-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</a></code></pre></div>
-<pre><code>## [1] 0.017</code></pre>
+<pre><code>## [1] 0.013</code></pre>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-diff-in-means" class="section level3">
 <h3 class="hasAnchor">
@@ -301,7 +301,7 @@
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb22-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&lt;</span><span class="st"> </span>d_hat) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb22-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</a></code></pre></div>
-<pre><code>## [1] 0.448</code></pre>
+<pre><code>## [1] 0.454</code></pre>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-diff-in-medians" class="section level3">
 <h3 class="hasAnchor">
@@ -345,7 +345,7 @@
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb28-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;</span><span class="st"> </span>F_hat)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb28-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</a></code></pre></div>
-<pre><code>## [1] 0.351</code></pre>
+<pre><code>## [1] 0.313</code></pre>
 </div>
 <div id="two-numerical-vars---slr" class="section level3">
 <h3 class="hasAnchor">
@@ -386,7 +386,7 @@
 <a class="sourceLine" id="cb33-9" data-line-number="9"><span class="kw">c</span>(<span class="dt">lower =</span> x_bar <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(boot),</a>
 <a class="sourceLine" id="cb33-10" data-line-number="10">  <span class="dt">upper =</span> x_bar <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(boot))</a></code></pre></div>
 <pre><code>##    lower    upper 
-## 1.122209 8.021791</code></pre>
+## 1.116978 8.027022</code></pre>
 </div>
 <div id="one-categorical-one-proportion-1" class="section level3">
 <h3 class="hasAnchor">
@@ -402,7 +402,7 @@
 <a class="sourceLine" id="cb35-9" data-line-number="9"><span class="kw">c</span>(<span class="dt">lower =</span> p_hat <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(boot),</a>
 <a class="sourceLine" id="cb35-10" data-line-number="10"> <span class="dt">upper =</span> p_hat <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(boot))</a></code></pre></div>
 <pre><code>##     lower     upper 
-## 0.4194756 0.5125244</code></pre>
+## 0.4195101 0.5124899</code></pre>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-diff-in-means-1" class="section level3">
 <h3 class="hasAnchor">
@@ -420,7 +420,7 @@
 <a class="sourceLine" id="cb37-11" data-line-number="11"><span class="kw">c</span>(<span class="dt">lower =</span> d_hat <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(boot), </a>
 <a class="sourceLine" id="cb37-12" data-line-number="12">  <span class="dt">upper =</span> d_hat <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(boot))</a></code></pre></div>
 <pre><code>##     lower     upper 
-## -6.213971  7.704370</code></pre>
+## -6.226432  7.716831</code></pre>
 </div>
 <div id="two-categorical-variables-diff-in-proportions" class="section level3">
 <h3 class="hasAnchor">
@@ -438,7 +438,7 @@
 <a class="sourceLine" id="cb39-11" data-line-number="11"><span class="kw">c</span>(<span class="dt">lower =</span> d_hat <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(boot), </a>
 <a class="sourceLine" id="cb39-12" data-line-number="12">  <span class="dt">upper =</span> d_hat <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(boot))</a></code></pre></div>
 <pre><code>##       lower       upper 
-## -0.11258550  0.07149487</code></pre>
+## -0.11250858  0.07141795</code></pre>
 </div>
 <div id="two-numerical-vars---slr-1" class="section level3">
 <h3 class="hasAnchor">
@@ -456,7 +456,7 @@
 <a class="sourceLine" id="cb41-11" data-line-number="11"><span class="kw">c</span>(<span class="dt">lower =</span> slope_hat <span class="op">-</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(boot), </a>
 <a class="sourceLine" id="cb41-12" data-line-number="12">  <span class="dt">upper =</span> slope_hat <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(boot))   </a></code></pre></div>
 <pre><code>##     lower     upper 
-## 0.9657595 1.0681384</code></pre>
+## 0.9659087 1.0679892</code></pre>
 </div>
 </div>
 </div>
