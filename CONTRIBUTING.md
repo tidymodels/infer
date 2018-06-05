@@ -1,9 +1,11 @@
 # Contributing
 
 Contributions to the `infer` whether in the form of bug fixes, issue reports, new
-code or documentation improvementare encouraged and welcome. We welcome novices
+code or documentation improvements are encouraged and welcome. We welcome novices
 who may have never contributed to a package before as well as friendly
-veterans looking to help us improve the package for users.
+veterans looking to help us improve the package for users. We are eager to include
+and accepting of contributions from everyone that meets our [code of conduct](CONDUCT.md)
+guidelines.
 
 Please use the GitHub issues. For any pull request, please link to or open a
 corresponding issue in GitHub issues. Please ensure that you have notifications

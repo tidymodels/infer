@@ -100,7 +100,7 @@
       <h1>Chi-squared test example using <code>nycflights13</code> <code>flights</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2018-05-12</h4>
+            <h4 class="date">2018-05-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/chisq_test.Rmd"><code>vignettes/chisq_test.Rmd</code></a></small>
       <div class="hidden name"><code>chisq_test.Rmd</code></div>
@@ -181,9 +181,9 @@ chisq_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span cl
 <h2 class="hasAnchor">
 <a href="#calculate-the-randomization-based-p-value" class="anchor"></a>Calculate the randomization-based <span class="math inline">\(p\)</span>-value</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chisq_null_distn <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span>obs_chisq)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(obs_chisq))) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0</code></pre>
+<pre><code>## [1] 0.748</code></pre>
 </div>
 <div id="theoretical-distribution" class="section level2">
 <h2 class="hasAnchor">
