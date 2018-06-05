@@ -252,6 +252,8 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
         - expected) ^ 2 / expected, ...))
     } else {
       # Straight from `specify()`
+      # Have to run through `hypothesize()`
+      # Send message that hypothesize needed
       x %>%
         dplyr::summarize(stat = stats::chisq.test(table(!!(
           attr(x, "response")

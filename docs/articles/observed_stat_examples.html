@@ -75,6 +75,9 @@
   <a href="../CONTRIBUTING.html">How To Contribute</a>
 </li>
 <li>
+  <a href="../CONDUCT.html">Code of Conduct</a>
+</li>
+<li>
   <a href="../TO-DO.html">To-Dos</a>
 </li>
       </ul>
@@ -195,7 +198,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 ## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1      0.</code></pre>
+## 1       0</code></pre>
 </div>
 <div id="one-numerical-variable-median" class="section level3">
 <h3 class="hasAnchor">
@@ -218,7 +221,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 ## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.150</code></pre>
+## 1    0.15</code></pre>
 </div>
 <div id="one-categorical-one-proportion" class="section level3">
 <h3 class="hasAnchor">
@@ -241,7 +244,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 ## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.110</code></pre>
+## 1    0.11</code></pre>
 <p>Logical variables will be coerced to factors:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">day_hour_logical =</span> (day_hour <span class="op">==</span><span class="st"> "morning"</span>)) <span class="op">%&gt;%</span>

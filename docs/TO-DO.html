@@ -101,6 +101,9 @@
   <a href="CONTRIBUTING.html">How To Contribute</a>
 </li>
 <li>
+  <a href="CONDUCT.html">Code of Conduct</a>
+</li>
+<li>
   <a href="TO-DO.html">To-Dos</a>
 </li>
       </ul>
@@ -133,6 +136,7 @@
 <h2 class="hasAnchor">
 <a href="#for-future-cran-releases" class="anchor"></a>For future CRAN releases</h2>
 <ul>
+<li>Implement correlation with bootstrap CI and permutation hypothesis test</li>
 <li>Check that assumptions have been met for the theoretical distribution and <code>"both"</code>
 </li>
 <li>Fix double printing of <code>Response:</code> and <code>Explanatory:</code>
@@ -147,7 +151,7 @@
 </li>
 <li>Consider re-working how p-values can be calculated (both for computational and theoretical)</li>
 <li>Create a <code>determine()</code> function with first argument being either <code>"p value"</code> or <code>"confidence interval"</code>? Maybe check to make sure that p-values don’t exceed 1</li>
-<li>Could have wrapper functions <code>p_value()</code> and <code>conf_inf()</code> as well</li>
+<li>Could have wrapper functions <code><a href="reference/p_value.html">p_value()</a></code> and <code>conf_inf()</code> as well</li>
 <li>Should the wrapper functions like <code><a href="reference/t_test.html">t_test()</a></code> also include a logical <code>conf_int</code> argument?</li>
 <li>Check that <code>stat</code> is calculated appropriately if <code><a href="reference/generate.html">generate()</a></code> is not called</li>
 <li>

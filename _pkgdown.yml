@@ -24,6 +24,8 @@ navbar:
     href: news/index.html
   - text: How To Contribute
     href: CONTRIBUTING.html
+  - text: Code of Conduct
+    href: CONDUCT.html
   - text: To-Dos
     href: TO-DO.html
   right:
