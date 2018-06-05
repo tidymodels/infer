@@ -2,6 +2,7 @@
 
 ## For future CRAN releases
 
+- Implement correlation with bootstrap CI and permutation hypothesis test
 - Check that assumptions have been met for the theoretical distribution and `"both"`
 - Fix double printing of `Response:` and `Explanatory:`
 - Check that `specify() %>% calculate()` works for `stat = "z"` and `stat = "t"`
