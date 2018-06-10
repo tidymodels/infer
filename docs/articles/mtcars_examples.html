@@ -246,19 +246,19 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)</code></pre></div>
 <pre><code>## Response: cyl (factor)
 ## Explanatory: am (factor)
-## # A tibble: 100 x 1
-##     stat
-##    &lt;dbl&gt;
-##  1 1.34 
-##  2 1.63 
-##  3 1.63 
-##  4 2.63 
-##  5 3.90 
-##  6 1.74 
-##  7 0.126
-##  8 1.74 
-##  9 1.34 
-## 10 1.34 
+## # A tibble: 100 x 2
+##    replicate  stat
+##        &lt;int&gt; &lt;dbl&gt;
+##  1         1 1.34 
+##  2         2 1.63 
+##  3         3 1.63 
+##  4         4 2.63 
+##  5         5 3.90 
+##  6         6 1.74 
+##  7         7 0.126
+##  8         8 1.74 
+##  9         9 1.34 
+## 10        10 1.34 
 ## # ... with 90 more rows</code></pre>
 <p>One numerical variable one categorical (2 levels) (diff in means)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>

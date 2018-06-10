@@ -202,9 +202,13 @@ Note the similarities in this plot and the previous one.
 
 **Observed stat**
 
+Note the need to add in the hypothesized values here to compute the observed statistic.
+
 ```{r}
 Chisq_hat <- fli_small %>%
   specify(response = origin) %>%
+  hypothesize(null = "point", 
+              p = c("EWR" = .33, "JFK" = .33, "LGA" = .34)) %>% 
   calculate(stat = "Chisq")
 ```
 

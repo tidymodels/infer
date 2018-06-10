@@ -88,7 +88,7 @@ prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
   # generate() is not needed since we are not doing simulation-based
-  calculate(stat = "t") %>% 
+  calculate(stat = "t", order = c("f", "m")) %>% 
   visualize(method = "theoretical")
 ```
 
