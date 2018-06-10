@@ -82,9 +82,9 @@ calculate <- function(x,
     else if (!(stat %in% c("Chisq", "prop"))){
       # From `hypothesize()` to `calculate()`
       # Catch-all if generate was not called
-      warning(paste("You unexpectantly went from `hypothesize()` to ",
-              "`calculate()` skipping over `generate()`. Your current",
-              "data frame is returned."))
+#      warning(paste("You unexpectantly went from `hypothesize()` to ",
+#              "`calculate()` skipping over `generate()`. Your current",
+#              "data frame is returned."))
       return(x)
     }
   }
