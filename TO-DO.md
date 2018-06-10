@@ -2,6 +2,7 @@
 
 ## For future CRAN releases
 
+- Fix chi-square, one prop, and corresponding z to depend on `params` being set in `hypothesize` with `specify() %>% calculate()` shortcut
 - Implement correlation with bootstrap CI and permutation hypothesis test
 - Check that assumptions have been met for the theoretical distribution and `"both"`
 - Fix double printing of `Response:` and `Explanatory:`
