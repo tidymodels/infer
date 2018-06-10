@@ -30,8 +30,8 @@ specify <- function(x, formula, response = NULL,
     mutate_if(is.character, as.factor) %>%
     mutate_if(is.logical, as.factor)
 
-  if (!methods::hasArg(formula) && !methods::hasArg(response)) {
-    stop("Please specify the `response`` variable.")
+  if ((!methods::hasArg(formula) && !methods::hasArg(response))){
+    stop("Please give the `response` variable.")
   }
   if (methods::hasArg(formula)) {
     if (!rlang::is_formula(formula)) {
@@ -106,10 +106,7 @@ specify <- function(x, formula, response = NULL,
 
   
   # To help determine theoretical distribution to plot
-  if(is.null(attr(x, "response")))
-    attr(x, "response_type") <- NULL
-  else
-    attr(x, "response_type") <- class(response_variable(x))
+  attr(x, "response_type") <- class(response_variable(x))
   
   if(is.null(attr(x, "explanatory")))
     attr(x, "explanatory_type") <- NULL

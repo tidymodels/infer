@@ -53,18 +53,20 @@ hypothesize <- function(x, null, ...) {
   if(null == "point"){
     if(is.factor(response_variable(x))){
       if(!any(grepl("p", attr(attr(x, "params"), "names"))))
-        stop(paste('Testing one categorical variable requires `p`",
-                   "to be used as a parameter.'))
+        stop(paste('Testing one categorical variable requires `p`',
+                   'to be used as a parameter.'))
     }
   }
   
   # Check one numeric test set up correctly
-  if(null == "point"){
-    if(!is.factor(response_variable(x))
-       & !any(grepl("mu|med|sigma", attr(attr(x, "params"), "names"))))
-      stop(paste('Testing one numerical variable requires one of',
-                 '`mu`, `med`, or `sd` to be used as a parameter.'))
-  }
+  ## Not currently able to reach in testing as other checks
+  ## already produce errors
+  # if(null == "point"){
+  #   if(!is.factor(response_variable(x))
+  #      & !any(grepl("mu|med|sigma", attr(attr(x, "params"), "names"))))
+  #     stop(paste('Testing one numerical variable requires one of',
+  #                '`mu`, `med`, or `sd` to be used as a parameter.'))
+  # }
   
   return(as.tbl(x))
 }

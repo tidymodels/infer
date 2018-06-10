@@ -79,10 +79,14 @@ calculate <- function(x,
         )
       )
     
-    else
+    else if (!(stat %in% c("Chisq", "prop"))){
       # From `hypothesize()` to `calculate()`
       # Catch-all if generate was not called
+      warning(paste("You unexpectantly went from `hypothesize()` to ",
+              "`calculate()` skipping over `generate()`. Your current",
+              "data frame is returned."))
       return(x)
+    }
   }
   
   if (stat %in% c("diff in means", "diff in medians", "diff in props")  ||
@@ -241,23 +245,21 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
   ## The following could stand to be cleaned up
   
   if (is.null(attr(x, "explanatory"))) {
+    # Chi-Square Goodness of Fit
     if (!is.null(attr(x, "params"))) {
       # When `hypothesize()` has been called
-      n <- attr(x, "biggest_group_size")
-      expected <- n * attr(x, "params")
       x %>%
-        dplyr::summarize(stat = sum((table(!!(
-          attr(x, "response")
-        ))
-        - expected) ^ 2 / expected, ...))
+       dplyr::summarize(stat = stats::chisq.test(table(!!(
+         attr(x, "response")
+       )), p = attr(x, "params"))$stat)
+      
     } else {
       # Straight from `specify()`
-      # Have to run through `hypothesize()`
-      # Send message that hypothesize needed
-      x %>%
-        dplyr::summarize(stat = stats::chisq.test(table(!!(
-          attr(x, "response")
-        )))$stat)
+        stop(paste("In order to calculate a Chi-Square Goodness of Fit",
+                   "statistic, hypothesized values must be given for the `p`",
+                   "parameter in the `hypothesize()` function prior to",
+                   "using `calculate()`"))
+
     }
     
   } else {
@@ -274,6 +276,7 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
     #                                      !!(attr(x, "explanatory")))
     #                                - expected)^2 / expected, ...))
     
+    # Chi-Square Test of Independence
     
     result <- x %>%
       dplyr::do(broom::tidy(suppressWarnings(stats::chisq.test(table(
@@ -282,8 +285,8 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
       ))))) %>%
       dplyr::ungroup()
     
-    if (!is.null(attr(x, "params")))
-      result <-
+    if (!is.null(attr(x, "generate")))
+       result <-
         result %>% dplyr::select(replicate, stat = statistic)
     else
       result <- result %>% dplyr::select(stat = statistic)

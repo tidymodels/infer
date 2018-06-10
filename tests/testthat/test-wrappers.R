@@ -44,13 +44,14 @@ test_that("_stat functions work", {
   expect_equivalent(another_way, obs_stat_way)
   
   # Goodness of Fit
-  expect_silent(iris3 %>% chisq_stat(Species ~ NULL))
-  another_way <- iris3 %>%
-    chisq_test(Species ~ NULL) %>%
-    dplyr::select(statistic)
-  obs_stat_way <- iris3 %>% 
-    chisq_stat(Species ~ NULL)
-  expect_equivalent(another_way, obs_stat_way)
+  expect_error(iris3 %>% chisq_test(Species ~ NULL))
+  expect_error(iris3 %>% chisq_stat(Species ~ NULL))
+#  another_way <- iris3 %>%
+#    chisq_test(Species ~ NULL) %>%
+#    dplyr::select(statistic)
+#  obs_stat_way <- iris3 %>% 
+#    chisq_stat(Species ~ NULL)
+#  expect_equivalent(another_way, obs_stat_way)
   
   # Two sample t
   expect_silent(iris2 %>% t_stat(Sepal.Width ~ Species, 

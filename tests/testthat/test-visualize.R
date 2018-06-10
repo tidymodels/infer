@@ -302,4 +302,71 @@ test_that("obs_stat as a data.frame works", {
                  calculate(stat = "mean") %>% 
                  visualize(obs_stat = mean_petal_width)
   )
+  mean_df_test <- data.frame(x = c(4.1, 1), y = c(1, 2))
+  expect_warning(iris_tbl %>% 
+                   specify(Petal.Width ~ NULL) %>%
+                   hypothesize(null = "point", mu = 4) %>%
+                   generate(reps = 100, type = "bootstrap") %>%
+                   calculate(stat = "mean") %>% 
+                   visualize(obs_stat = mean_df_test)
+                 )
+  
+})
+
+
+test_that('method = "both" behaves nicely', {
+  # stop(paste0('`generate()` and `calculate()` are both required ', 
+  # 'to be done prior to `visualize(method = "both")`'))
+  expect_error(iris_tbl %>% 
+                 specify(Petal.Width ~ NULL) %>%
+                 hypothesize(null = "point", mu = 4) %>%
+                 generate(reps = 100, type = "bootstrap") %>%
+                 #    calculate(stat = "mean") %>% 
+                 visualize(method = "both"))
+  
+  #  
+  expect_warning(iris_tbl %>% 
+                   specify(Petal.Width ~ Sepal.Length.Group) %>%
+                   hypothesize(null = "point", mu = 4) %>%
+                   generate(reps = 10, type = "bootstrap") %>%
+                   calculate(stat = "t", order = c(">5", "<=5")) %>% 
+                   visualize(method = "both")
+  )  
+})
+
+test_that("Traditional right-tailed tests have warning if not right-tailed", {
+  expect_warning(iris_tbl %>% 
+                   specify(Sepal.Width.Group ~ Species, 
+                           success = "large") %>% 
+                   hypothesize(null = "independence") %>% 
+                   generate(reps = 100, type = "permute") %>% 
+                   calculate(stat = "Chisq") %>% 
+                   visualize(method = "both", obs_stat = 2, direction = "left")
+                 )
+  expect_warning(iris_tbl %>% 
+                   specify(Sepal.Length ~ Species) %>% 
+                   hypothesize(null = "independence") %>% 
+                   generate(reps = 100, type = "permute") %>% 
+                   calculate(stat = "F") %>% 
+                   visualize(method = "both", obs_stat = 2, 
+                             direction = "two_sided")
+  )
+  expect_warning(iris_tbl %>% 
+                   specify(Sepal.Width.Group ~ Species, 
+                           success = "large") %>% 
+                   hypothesize(null = "independence") %>% 
+ #                  generate(reps = 100, type = "permute") %>% 
+                   calculate(stat = "Chisq") %>% 
+                   visualize(method = "theoretical", obs_stat = 2, 
+                             direction = "left")
+  )
+  expect_warning(iris_tbl %>% 
+                   specify(Sepal.Length ~ Species) %>% 
+                   hypothesize(null = "independence") %>% 
+  #                 generate(reps = 100, type = "permute") %>% 
+                   calculate(stat = "F") %>% 
+                   visualize(method = "theoretical", obs_stat = 2, 
+                             direction = "two_sided")
+  )
+  
 })

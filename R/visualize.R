@@ -177,7 +177,7 @@ both_anova_plot <- function(data, deg_freedom_top,
   
   if(!is.null(direction) && !(direction %in% c("greater", "right")))
     warning(paste("F usually corresponds to right-tailed tests. Proceed",
-                  "with caution."))
+                  "with caution."), call. = FALSE)
   
   infer_anova_plot <- shade_density_check(data = data, 
                                           obs_stat = obs_stat,
@@ -235,11 +235,11 @@ theory_chisq_plot <- function(deg_freedom,
 both_chisq_plot <- function(data, deg_freedom, statistic_text = "Chi-Square",
                             dens_color = "black",
                             obs_stat = NULL,
-                            direction = "greater", bins = 15,...){
+                            direction = NULL, bins = 15,...){
   
   if(!is.null(direction) && !(direction %in% c("greater", "right")))
      warning(paste("Chi-square usually corresponds to right-tailed tests.",
-                   "Proceed with caution."))
+                   "Proceed with caution."), call. = FALSE)
   
   infer_chisq_plot <- shade_density_check(data = data,
                                           obs_stat = obs_stat,
@@ -415,9 +415,9 @@ visualize_theoretical <- function(data,
                                     dens_color = dens_color)
   }
   
-  else
-    stop(paste0("'", attr(data, "theory_type"), "' is not implemented",
-                "(possibly yet)."))
+#  else
+#    stop(paste0("'", attr(data, "theory_type"), "' is not implemented",
+#                "(possibly yet)."))
   
   # Move into its own function
   
@@ -527,12 +527,12 @@ visualize_both <- function(data = data, bins = bins,
                                   statistic_text = "Chi-Square", 
                                   dens_color = dens_color,
                                   bins = bins,
-                                  direction = "right",
+                                  direction = direction,
                                   obs_stat = obs_stat) 
   }
   
-  else
-    stop(paste0("'", attr(data, "theory_type"), "' is not implemented yet."))
+#  else
+#    stop(paste0("'", attr(data, "theory_type"), "' is not implemented yet."))
   
   infer_plot
 }
@@ -546,10 +546,11 @@ check_obs_stat <- function(obs_stat){
     if("data.frame" %in% class(obs_stat)){
       assertive::assert_is_data.frame(obs_stat)
       if( (nrow(obs_stat) != 1) || (ncol(obs_stat) != 1) ) 
-        warning("The first row and first column value will be used.")
+        warning(paste("The first row and first column value of the given", 
+                      "`obs_stat` will be used."))
       
       # [[1]] is used in case `stat` is not specified as name of 1x1
-      obs_stat <- obs_stat[[1]]
+      obs_stat <- obs_stat[[1]][[1]]
       assertive::assert_is_numeric(obs_stat)
     }
     else{

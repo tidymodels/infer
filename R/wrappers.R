@@ -109,6 +109,11 @@ t_stat <- function(data, formula, ...){
 chisq_test <- function(data, formula, #response = NULL, explanatory = NULL,
                        ...){
 
+  if(is.null(f_rhs(formula)))
+    stop(paste("`chisq_test()` currently only has functionality for",
+               "Chi-Square Test of Independence, not for Chi-Square",
+               "Goodness of Fit. Use `specify() %>% hypothesize()",
+               " %>% calculate()` instead."))
   ## Only currently working with formula interface
   explanatory_var <- f_rhs(formula)
   response_var <- f_lhs(formula)
@@ -127,7 +132,15 @@ chisq_test <- function(data, formula, #response = NULL, explanatory = NULL,
 #' @export
 
 chisq_stat <- function(data, formula, ...){
-  data %>%
-    specify(formula = formula, ...) %>%
-    calculate(stat = "Chisq")
+  
+  if(is.null(f_rhs(formula))){
+    stop(paste("`chisq_stat()` currently only has functionality for",
+               "Chi-Square Test of Independence, not for Chi-Square",
+               "Goodness of Fit. Use `specify() %>% hypothesize()",
+               " %>% calculate()` instead."))
+  } else {
+    data %>%
+      specify(formula = formula, ...) %>%
+      calculate(stat = "Chisq")
+  }
 }

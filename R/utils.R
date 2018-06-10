@@ -166,16 +166,18 @@ check_point_params <- function(x, stat){
       if ( (!(stat == "median") && ("med" %in% param_names)) )
         stop(paste0('`"med"` does not correspond to `stat = "', stat, '"`.'),
              call. = FALSE)
-      if( (stat == "sigma" && !("sd" %in% param_names)) )
-        stop(paste0('`stat == "sd"` requires `"sigma"`', hyp_text),
-             call. = FALSE)
+      ## Tests unable to get to
+      # if( (stat == "sigma" && !("sd" %in% param_names)) )
+      #   stop(paste0('`stat == "sd"` requires `"sigma"`', hyp_text),
+      #        call. = FALSE)
       if ( (!(stat == "sd") && ("sigma" %in% param_names)) )
         stop(paste0('`"sigma"` does not correspond to `stat = "', stat, '"`.'),
              call. = FALSE)
       
-      if(stat == "prop" && !(any(grepl("p.", param_names))))
-        stop(paste0('`stat == "prop"` requires `"p"`', hyp_text),
-             call. = FALSE)
+      ## Tests unable to get to
+      # if(stat == "prop" && !(any(grepl("p.", param_names))))
+      #   stop(paste0('`stat == "prop"` requires `"p"`', hyp_text),
+      #        call. = FALSE)
     }
   }
 }

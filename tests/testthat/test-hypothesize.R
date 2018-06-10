@@ -11,6 +11,9 @@ one_mean <- mtcars %>%
   specify(response = mpg) %>% # formula alt: mpg ~ NULL
   hypothesize(null = "point", mu = 25)
 
+one_mean_specify <- mtcars %>%
+  specify(response = mpg)
+
 one_median <- mtcars %>%
   specify(response = mpg) %>% # formula alt: mpg ~ NULL
   hypothesize(null = "point", med = 26)
@@ -18,6 +21,9 @@ one_median <- mtcars %>%
 one_prop <- mtcars %>%
   specify(response = am, success = "1") %>% # formula alt: am ~ NULL
   hypothesize(null = "point", p = .25)
+
+one_prop_specify <- mtcars %>%
+  specify(response = am, success = "1")
 
 two_props <- mtcars %>%
   specify(am ~ vs, success = "1") %>% # alt: response = am, explanatory = vs
@@ -84,9 +90,9 @@ test_that("hypothesize arguments function",{
   expect_error(mtcars %>% specify(response = vs) %>% 
                  hypothesize(null = "point", mu = 1))
   
-  expect_error(mtcars %>% specify(response = vs) %>% 
+  expect_error(mtcars %>% specify(response = vs, success = "1") %>% 
                  hypothesize(null = "point", p = 1.1))
-  expect_error(mtcars %>% specify(response = vs) %>% 
+  expect_error(mtcars %>% specify(response = vs, success = "1") %>% 
                  hypothesize(null = "point", p = -23))
   
   expect_error(mtcars_s %>% 
@@ -98,4 +104,11 @@ test_that("hypothesize arguments function",{
                    hypothesize(null = "independence", p = 0.5))
   
   expect_error(mtcars_s %>% hypothesize())
+})
+
+test_that("params correct", {
+  expect_error(hypothesize(one_prop_specify, 
+                           null = "point", mu = 2))
+  expect_error(hypothesize(one_mean_specify,
+                           null = "point", mean = 0.5))
 })
