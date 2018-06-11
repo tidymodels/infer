@@ -1,5 +1,8 @@
 # infer 0.2.1
 
+- Implemented chi-square Goodness of Fit observed stat depending on `params` being set in `hypothesize` with `specify() %>% calculate()` shortcut
+- Removed "standardized" slope $t$ since its formula is different than "standardized" correlation and there is no way currently to give one over the other
+- Implemented correlation with bootstrap CI and permutation hypothesis test
 - Filled the `type` argument automatically in `generate()` based
 on `specify()` and `hypothesize()`
   - Added message if `type` is given differently than expected

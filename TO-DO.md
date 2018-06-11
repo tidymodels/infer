@@ -2,8 +2,7 @@
 
 ## For future CRAN releases
 
-- Implement correlation with bootstrap CI and permutation hypothesis test
-- Check that chi-square, one prop, and corresponding z to depend on `params` being set in `hypothesize` with `specify() %>% calculate()` shortcut
+- Check that corresponding z for one prop depends on `params` being set in `hypothesize` with `specify() %>% calculate()` shortcut
 - Check that assumptions have been met for the theoretical distribution and `"both"`
 - Fix double printing of `Response:` and `Explanatory:`
   - Might have something to do with `infer` class being set in multiple spots?
