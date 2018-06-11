@@ -505,6 +505,27 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 ##  9         9 -0.0556
 ## 10        10 -0.0627
 ## # ... with 90 more rows</code></pre>
+<p>Two numerical vars - correlation</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mtcars <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>hp) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"correlation"</span>)</code></pre></div>
+<pre><code>## Response: mpg (numeric)
+## Explanatory: hp (numeric)
+## # A tibble: 100 x 2
+##    replicate   stat
+##        &lt;int&gt;  &lt;dbl&gt;
+##  1         1 -0.821
+##  2         2 -0.812
+##  3         3 -0.802
+##  4         4 -0.723
+##  5         5 -0.885
+##  6         6 -0.777
+##  7         7 -0.752
+##  8         8 -0.758
+##  9         9 -0.826
+## 10        10 -0.779
+## # ... with 90 more rows</code></pre>
 </div>
 </div>
   </div>

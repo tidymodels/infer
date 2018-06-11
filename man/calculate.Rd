@@ -5,8 +5,8 @@
 \title{Calculate summary statistics}
 \usage{
 calculate(x, stat = c("mean", "median", "sd", "prop", "diff in means",
-  "diff in medians", "diff in props", "Chisq", "F", "slope", "t", "z"),
-  order = NULL, ...)
+  "diff in medians", "diff in props", "Chisq", "F", "slope", "correlation", "t",
+  "z"), order = NULL, ...)
 }
 \arguments{
 \item{x}{the output from \code{\link{generate}} for computation-based
@@ -15,7 +15,8 @@ piped in to here for theory-based inference.}
 
 \item{stat}{a string giving the type of the statistic to calculate. Current
 options include "mean", "median", "sd", "prop", "diff in means",
-"diff in medians", "diff in props", "Chisq", "F", "t", "z", and "slope".}
+"diff in medians", "diff in props", "Chisq", "F", "t", "z", "slope",
+and "correlation".}
 
 \item{order}{a string vector of specifying the order in which the levels of
 the explanatory variable should be ordered for subtraction, where
