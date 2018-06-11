@@ -212,3 +212,12 @@ mtcars %>%
   calculate(stat = "slope")
 ```
 
+Two numerical vars - correlation
+
+```{r}
+mtcars %>%
+  specify(mpg ~ hp) %>% 
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "correlation")
+```
+

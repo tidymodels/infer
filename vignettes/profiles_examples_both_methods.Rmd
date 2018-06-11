@@ -283,11 +283,12 @@ prof_small %>%
   visualize(method = "both")
 ```
 
-## Two numerical vars - SLR 
+## Two numerical vars - t 
 
-Simulation-based approach to $t$-statistic
+Not currently implemented since $t$ could refer to standardized slope or standardized correlation
 
-```{r}
+```{r echo=FALSE, eval=FALSE}
+# Simulation-based approach to $t$-statistic
 prof_small %>%
   specify(age ~ height) %>% # alt: response = age, explanatory = height
   hypothesize(null = "independence") %>%
@@ -296,9 +297,9 @@ prof_small %>%
   visualize()
 ```
 
-Theoretical distribution
 
-```{r}
+```{r echo=FALSE, eval=FALSE}
+#Theoretical distribution
 prof_small %>%
   specify(age ~ height) %>% # alt: response = age, explanatory = height
   hypothesize(null = "independence") %>%
@@ -307,9 +308,9 @@ prof_small %>%
   visualize(method = "theoretical")
 ```
 
-Overlay appropriate $t$ distribution on top of permuted t-statistics
 
-```{r}
+```{r echo=FALSE, eval=FALSE}
+# Overlay appropriate $t$ distribution on top of permuted t-statistics
 prof_small %>%
   specify(age ~ height) %>% # alt: response = age, explanatory = height
   hypothesize(null = "independence") %>%

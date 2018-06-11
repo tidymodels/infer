@@ -57,9 +57,9 @@ fli_small <- flights %>%
 
 **Observed stat**
 ```{r}
-x_bar <- fli_small %>%
+( x_bar <- fli_small %>%
   specify(response = dep_delay) %>%
-  calculate(stat = "mean")
+  calculate(stat = "mean") )
 ```
 
 ```{r}
@@ -77,9 +77,9 @@ null_distn %>%
 
 **Observed stat**
 ```{r}
-t_bar <- fli_small %>%
+( t_bar <- fli_small %>%
   specify(response = dep_delay) %>%
-  calculate(stat = "t")
+  calculate(stat = "t") )
 ```
 
 ```{r}
@@ -99,9 +99,9 @@ null_distn %>%
 **Observed stat**
 
 ```{r}
-x_tilde <- fli_small %>%
+( x_tilde <- fli_small %>%
   specify(response = dep_delay) %>%
-  calculate(stat = "median")
+  calculate(stat = "median") )
 ```
 
 ```{r}
@@ -120,9 +120,9 @@ null_distn %>%
 **Observed stat**
 
 ```{r}
-p_hat <- fli_small %>%
+( p_hat <- fli_small %>%
   specify(response = day_hour, success = "morning") %>%
-  calculate(stat = "prop")  
+  calculate(stat = "prop") )
 ```
 
 ```{r}
@@ -156,9 +156,9 @@ Not yet implemented.
 **Observed stat**
 
 ```{r}
-d_hat <- fli_small %>% 
+( d_hat <- fli_small %>% 
   specify(day_hour ~ season, success = "morning") %>%
-  calculate(stat = "diff in props", order = c("winter", "summer"))
+  calculate(stat = "diff in props", order = c("winter", "summer")) )
 ```
 
 
@@ -179,9 +179,9 @@ null_distn %>%
 **Standardized observed stat**
 
 ```{r}
-z_hat <- fli_small %>% 
+( z_hat <- fli_small %>% 
   specify(day_hour ~ season, success = "morning") %>%
-  calculate(stat = "z", order = c("winter", "summer"))
+  calculate(stat = "z", order = c("winter", "summer")) )
 ```
 
 ```{r}
@@ -205,11 +205,11 @@ Note the similarities in this plot and the previous one.
 Note the need to add in the hypothesized values here to compute the observed statistic.
 
 ```{r}
-Chisq_hat <- fli_small %>%
+( Chisq_hat <- fli_small %>%
   specify(response = origin) %>%
   hypothesize(null = "point", 
               p = c("EWR" = .33, "JFK" = .33, "LGA" = .34)) %>% 
-  calculate(stat = "Chisq")
+  calculate(stat = "Chisq") )
 ```
 
 ```{r}
@@ -230,9 +230,9 @@ null_distn %>%
 **Observed stat**
 
 ```{r}
-Chisq_hat <- fli_small %>%
+( Chisq_hat <- fli_small %>%
   specify(formula = day_hour ~ origin) %>% 
-  calculate(stat = "Chisq")
+  calculate(stat = "Chisq") )
 ```
 
 ```{r}
@@ -252,9 +252,9 @@ null_distn %>%
 **Observed stat**
 
 ```{r}
-d_hat <- fli_small %>% 
+( d_hat <- fli_small %>% 
   specify(dep_delay ~ season) %>% 
-  calculate(stat = "diff in means", order = c("summer", "winter"))
+  calculate(stat = "diff in means", order = c("summer", "winter")) )
 ```
 
 ```{r}
@@ -274,9 +274,9 @@ null_distn %>%
 **Standardized observed stat**
 
 ```{r}
-t_hat <- fli_small %>% 
+( t_hat <- fli_small %>% 
   specify(dep_delay ~ season) %>% 
-  calculate(stat = "t", order = c("summer", "winter"))
+  calculate(stat = "t", order = c("summer", "winter")) )
 ```
 
 ```{r}
@@ -298,9 +298,9 @@ Note the similarities in this plot and the previous one.
 **Observed stat**
 
 ```{r}
-d_hat <- fli_small %>% 
+( d_hat <- fli_small %>% 
   specify(dep_delay ~ season) %>% 
-  calculate(stat = "diff in medians", order = c("summer", "winter"))
+  calculate(stat = "diff in medians", order = c("summer", "winter")) )
 ```
 
 ```{r}
@@ -321,9 +321,9 @@ null_distn %>%
 **Observed stat**
 
 ```{r}
-F_hat <- fli_small %>% 
+( F_hat <- fli_small %>% 
   specify(arr_delay ~ origin) %>%
-  calculate(stat = "F")
+  calculate(stat = "F") )
 ```
 
 ```{r}
@@ -343,9 +343,9 @@ null_distn %>%
 **Observed stat**
 
 ```{r}
-slope_hat <- fli_small %>% 
+( slope_hat <- fli_small %>% 
   specify(arr_delay ~ dep_delay) %>% 
-  calculate(stat = "slope")
+  calculate(stat = "slope") )
 ```
 
 ```{r}
@@ -360,17 +360,42 @@ null_distn %>%
   pull()
 ```
 
-### Two numerical vars - SLR (t)
+### Two numerical vars - correlation
 
-**Standardized bserved stat**
+**Observed stat**
 
 ```{r}
-t_hat <- fli_small %>% 
+( correlation_hat <- fli_small %>% 
   specify(arr_delay ~ dep_delay) %>% 
-  calculate(stat = "t")
+  calculate(stat = "correlation") )
 ```
 
 ```{r}
+null_distn <- fli_small %>%
+   specify(arr_delay ~ dep_delay) %>% 
+   hypothesize(null = "independence") %>%
+   generate(reps = 1000, type = "permute") %>%
+   calculate(stat = "correlation")
+null_distn %>% visualize(obs_stat = correlation_hat)
+null_distn %>% 
+  summarize(p_value = mean(stat >= pull(correlation_hat)) * 2) %>%
+  pull()
+```
+
+
+### Two numerical vars - SLR (t)
+
+Not currently implemented since $t$ could refer to standardized slope or standardized correlation.
+
+
+```{r echo=FALSE, eval=FALSE}
+# **Standardized observed stat**
+( t_hat <- fli_small %>% 
+  specify(arr_delay ~ dep_delay) %>% 
+  calculate(stat = "t") )
+```
+
+```{r echo=FALSE, eval=FALSE}
 null_distn <- fli_small %>%
    specify(arr_delay ~ dep_delay) %>% 
    hypothesize(null = "independence") %>%
@@ -390,9 +415,9 @@ null_distn %>%
 **Point estimate**
 
 ```{r}
-x_bar <- fli_small %>% 
+( x_bar <- fli_small %>% 
   specify(response = arr_delay) %>%
-  calculate(stat = "mean")  
+  calculate(stat = "mean") )
 ```
 
 ```{r}
@@ -410,9 +435,9 @@ c(lower = pull(x_bar) - 2 * sd(pull(boot)),
 **Point estimate**
 
 ```{r}
-t_bar <- fli_small %>% 
+( t_bar <- fli_small %>% 
   specify(response = arr_delay) %>%
-  calculate(stat = "t")  
+  calculate(stat = "t") )
 ```
 
 ```{r}
@@ -431,9 +456,9 @@ c(lower = pull(t_bar) - 2 * sd(pull(boot)),
 **Point estimate**
 
 ```{r}
-p_hat <- fli_small %>% 
+( p_hat <- fli_small %>% 
    specify(response = day_hour, success = "morning") %>%
-   calculate(stat = "prop")
+   calculate(stat = "prop") )
 ```
 
 ```{r}
@@ -455,9 +480,9 @@ Not yet implemented.
 **Point estimate**
 
 ```{r}
-d_hat <- fli_small %>%
+( d_hat <- fli_small %>%
   specify(arr_delay ~ season) %>%
-  calculate(stat = "diff in means", order = c("summer", "winter"))
+  calculate(stat = "diff in means", order = c("summer", "winter")) )
 ```
 
 ```{r}
@@ -475,9 +500,9 @@ c(lower = pull(d_hat) - 2 * sd(pull(boot)),
 **Standardized point estimate**
 
 ```{r}
-t_hat <- fli_small %>%
+( t_hat <- fli_small %>%
   specify(arr_delay ~ season) %>%
-  calculate(stat = "t", order = c("summer", "winter"))
+  calculate(stat = "t", order = c("summer", "winter")) )
 ```
 
 ```{r}
@@ -496,9 +521,9 @@ c(lower = pull(t_hat) - 2 * sd(pull(boot)),
 **Point estimate**
 
 ```{r}
-d_hat <- fli_small %>% 
+( d_hat <- fli_small %>% 
   specify(day_hour ~ season, success = "morning") %>%
-  calculate(stat = "diff in props", order = c("summer", "winter"))
+  calculate(stat = "diff in props", order = c("summer", "winter")) )
 ```
 
 ```{r}
@@ -516,9 +541,9 @@ c(lower = pull(d_hat) - 2 * sd(pull(boot)),
 **Standardized point estimate**
 
 ```{r}
-z_hat <- fli_small %>% 
+( z_hat <- fli_small %>% 
   specify(day_hour ~ season, success = "morning") %>%
-  calculate(stat = "z", order = c("summer", "winter"))
+  calculate(stat = "z", order = c("summer", "winter")) )
 ```
 
 ```{r}
@@ -537,9 +562,9 @@ c(lower = pull(z_hat) - 2 * sd(pull(boot)),
 **Point estimate**
 
 ```{r}
-slope_hat <- fli_small %>% 
+( slope_hat <- fli_small %>% 
   specify(arr_delay ~ dep_delay) %>%
-  calculate(stat = "slope")
+  calculate(stat = "slope") )
 ```
 
 ```{r}
@@ -552,17 +577,40 @@ c(lower = pull(slope_hat) - 2 * sd(pull(boot)),
   upper = pull(slope_hat) + 2 * sd(pull(boot)))   
 ```
 
-### Two numerical vars - t
+### Two numerical vars - correlation
 
 **Point estimate**
 
 ```{r}
-t_hat <- fli_small %>% 
+( correlation_hat <- fli_small %>% 
   specify(arr_delay ~ dep_delay) %>%
-  calculate(stat = "t")
+  calculate(stat = "correlation") )
 ```
 
 ```{r}
+boot <- fli_small %>%
+   specify(arr_delay ~ dep_delay) %>% 
+   generate(reps = 1000, type = "bootstrap") %>%
+   calculate(stat = "correlation")
+visualize(boot)
+c(lower = pull(correlation_hat) - 2 * sd(pull(boot)), 
+  upper = pull(correlation_hat) + 2 * sd(pull(boot)))   
+```
+
+
+### Two numerical vars - t
+
+Not currently implemented since $t$ could refer to standardized slope or standardized correlation.
+
+
+```{r eval=FALSE, echo=FALSE}
+# **Point estimate**
+( t_hat <- fli_small %>% 
+  specify(arr_delay ~ dep_delay) %>%
+  calculate(stat = "t") )
+```
+
+```{r eval=FALSE, echo=FALSE}
 boot <- fli_small %>%
    specify(arr_delay ~ dep_delay) %>% 
    generate(reps = 1000, type = "bootstrap") %>%

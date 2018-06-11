@@ -105,7 +105,7 @@ set_params <- function(x){
        attr(x, "explanatory_type") %in% c("integer", "numeric")){
       response_string <- as.character(attr(x, "response"))
       explanatory_string <- as.character(attr(x, "explanatory"))
-    attr(x, "theory_type") <- "Slope with t"
+    attr(x, "theory_type") <- "Slope/correlation with t"
     attr(x, "distr_param") <- nrow(x) - 2
     }
   }

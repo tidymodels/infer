@@ -4,7 +4,8 @@
 #' piped in to here for theory-based inference.
 #' @param stat a string giving the type of the statistic to calculate. Current
 #' options include "mean", "median", "sd", "prop", "diff in means",
-#' "diff in medians", "diff in props", "Chisq", "F", "t", "z", and "slope".
+#' "diff in medians", "diff in props", "Chisq", "F", "t", "z", "slope",
+#' and "correlation".
 #' @param order a string vector of specifying the order in which the levels of
 #' the explanatory variable should be ordered for subtraction, where
 #' \code{order = c("first", "second")} means \code{("first" - "second")}
@@ -37,6 +38,7 @@ calculate <- function(x,
                         "Chisq",
                         "F",
                         "slope",
+                        "correlation",
                         "t",
                         "z"
                       ),
@@ -67,7 +69,8 @@ calculate <- function(x,
       "diff in means",
       "diff in medians",
       "diff in props",
-      "slope"
+      "slope",
+      "correlation"
     ))
       stop(
         paste0(
@@ -222,9 +225,15 @@ calc_impl.slope <- function(stat, x, order, ...) {
     )))[2])
 }
 
+calc_impl.correlation <- function(stat, x, order, ...) {
+  x %>% 
+    dplyr::summarize(stat = cor(!!attr(x, "explanatory"), 
+                                !!attr(x, "response")))
+}
+
 calc_impl.diff_in_means <- function(stat, x, order, ...) {
   x %>%
-    dplyr::group_by(replicate,!!(attr(x, "explanatory"))) %>%
+    dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
     dplyr::summarize(xbar = mean(!!attr(x, "response"), ...)) %>%
     dplyr::group_by(replicate) %>%
     dplyr::summarize(stat = xbar[!!(attr(x, "explanatory")) == order[1]]
@@ -328,15 +337,31 @@ calc_impl.t <- function(stat, x, order, ...) {
         !!attr(x, "response") ~ !!attr(x, "explanatory"))[["statistic"]])
   }
   
-  # Standardized slope
-  else if (attr(x, "theory_type") == "Slope with t") {
-    explan_string <- as.character(attr(x, "explanatory"))
-    
-    x %>%
-      dplyr::summarize(stat = summary(stats::lm(
-        !!attr(x, "response") ~ !!attr(x, "explanatory")
-      ))[["coefficients"]][explan_string, "t value"])
-  }
+  # Standardized slope and standardized correlation are commented out
+  # since there currently is no way to specify which one and
+  # the standardization formulas are different.
+  # # Standardized slope
+  # else if ( (attr(x, "theory_type") == "Slope/correlation with t") &&
+  #           stat == "slope"){
+  #   explan_string <- as.character(attr(x, "explanatory"))
+  #   
+  #   x %>%
+  #     dplyr::summarize(stat = summary(stats::lm(
+  #       !!attr(x, "response") ~ !!attr(x, "explanatory")
+  #     ))[["coefficients"]][explan_string, "t value"])
+  # }
+  # 
+  # # Standardized correlation
+  # else if ( (attr(x, "theory_type") == "Slope/correlation with t") &&
+  #           stat == "correlation"){
+  # 
+  #   x %>% 
+  #     dplyr::summarize(corr = cor(!!attr(x, "explanatory"), 
+  #                                 !!attr(x, "response"))
+  #                      ) %>% 
+  #     dplyr::mutate(stat = corr * (sqrt(nrow(x) - 2)) / sqrt(1 - corr ^ 2))
+  # }
+  
   # One sample mean
   else if (attr(x, "theory_type") == "One sample t") {
     # For bootstrap
