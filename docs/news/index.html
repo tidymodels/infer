@@ -136,6 +136,9 @@
 <a href="#infer-0-2-1" class="anchor"></a>infer 0.2.1<small> Unreleased </small>
 </h1>
 <ul>
+<li>Implemented chi-square Goodness of Fit observed stat depending on <code>params</code> being set in <code>hypothesize</code> with <code>specify() %&gt;% calculate()</code> shortcut</li>
+<li>Removed “standardized” slope $t$ since its formula is different than “standardized” correlation and there is no way currently to give one over the other</li>
+<li>Implemented correlation with bootstrap CI and permutation hypothesis test</li>
 <li>Filled the <code>type</code> argument automatically in <code><a href="../reference/generate.html">generate()</a></code> based on <code><a href="../reference/specify.html">specify()</a></code> and <code><a href="../reference/hypothesize.html">hypothesize()</a></code>
 </li>
 <li>Added message if <code>type</code> is given differently than expected</li>
