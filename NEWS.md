@@ -5,18 +5,18 @@
 - Implemented correlation with bootstrap CI and permutation hypothesis test
 - Filled the `type` argument automatically in `generate()` based
 on `specify()` and `hypothesize()`
-  - Added message if `type` is given differently than expected
+    - Added message if `type` is given differently than expected
 - Implemented `specify() %>% calculate()` for getting observed
 statistics.
-  - `visualize()` works with either a 1x1 data frame or a vector
+    - `visualize()` works with either a 1x1 data frame or a vector
     for its `obs_stat` argument
-  - Got `stat = "t"` working
+    - Got `stat = "t"` working
 - Refactored `calculate()` into smaller functions to reduce complexity
 - Produced error if `mu` is given in `hypothesize()` but `stat = "median"`
 is provided in `calculate()` and other similar mis-specifications
 - Tweaked `chisq_stat()` and `t_stat()` to match with `specify() %>% calculate()` framework
-  - Both work in the one sample and two sample cases by providing `formula`
-  - Added `order` argument to `t_stat()`
+    - Both work in the one sample and two sample cases by providing `formula`
+    - Added `order` argument to `t_stat()`
 - Added implementation of one sample `t_test()` by passing in the `mu` argument to `t.test`
 from `hypothesize()`
 - Tweaked `pkgdown` page to include ToDo's using [{dplyr}](https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml) example
@@ -37,7 +37,7 @@ use for observed statistics and theoretical density curves
 unique values for generated statistics is small
 - Added shading for `method = "theoretical"` 
 - Implemented shading for simulation methods w/o a traditional distribution
-  - Use percentiles to determine two-tailed shading
+    - Use percentiles to determine two-tailed shading
 - Changed `method = "randomization"` to `method = "simulation"`
 - Added warning when theoretical distribution is used that 
   assumptions should be checked  
@@ -62,7 +62,7 @@ current implementations being
 They now live in `specify()`.
 - Updated documentation with examples
 - Created `pkgdown` site materials
-  - Deployed to https://infer.netlify.com
+    - Deployed to https://infer.netlify.com
 
 
 # infer 0.0.1

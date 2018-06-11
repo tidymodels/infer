@@ -140,18 +140,26 @@
 <li>Removed “standardized” slope $t$ since its formula is different than “standardized” correlation and there is no way currently to give one over the other</li>
 <li>Implemented correlation with bootstrap CI and permutation hypothesis test</li>
 <li>Filled the <code>type</code> argument automatically in <code><a href="../reference/generate.html">generate()</a></code> based on <code><a href="../reference/specify.html">specify()</a></code> and <code><a href="../reference/hypothesize.html">hypothesize()</a></code>
-</li>
+<ul>
 <li>Added message if <code>type</code> is given differently than expected</li>
-<li>Implemented <code>specify() %&gt;% calculate()</code> for getting observed statistics.</li>
+</ul>
+</li>
+<li>Implemented <code>specify() %&gt;% calculate()</code> for getting observed statistics.
+<ul>
 <li>
 <code><a href="../reference/visualize.html">visualize()</a></code> works with either a 1x1 data frame or a vector for its <code>obs_stat</code> argument</li>
 <li>Got <code>stat = "t"</code> working</li>
+</ul>
+</li>
 <li>Refactored <code><a href="../reference/calculate.html">calculate()</a></code> into smaller functions to reduce complexity</li>
 <li>Produced error if <code>mu</code> is given in <code><a href="../reference/hypothesize.html">hypothesize()</a></code> but <code>stat = "median"</code> is provided in <code><a href="../reference/calculate.html">calculate()</a></code> and other similar mis-specifications</li>
-<li>Tweaked <code><a href="../reference/chisq_stat.html">chisq_stat()</a></code> and <code><a href="../reference/t_stat.html">t_stat()</a></code> to match with <code>specify() %&gt;% calculate()</code> framework</li>
+<li>Tweaked <code><a href="../reference/chisq_stat.html">chisq_stat()</a></code> and <code><a href="../reference/t_stat.html">t_stat()</a></code> to match with <code>specify() %&gt;% calculate()</code> framework
+<ul>
 <li>Both work in the one sample and two sample cases by providing <code>formula</code>
 </li>
 <li>Added <code>order</code> argument to <code><a href="../reference/t_stat.html">t_stat()</a></code>
+</li>
+</ul>
 </li>
 <li>Added implementation of one sample <code><a href="../reference/t_test.html">t_test()</a></code> by passing in the <code>mu</code> argument to <code>t.test</code> from <code><a href="../reference/hypothesize.html">hypothesize()</a></code>
 </li>
@@ -174,8 +182,11 @@
 <li>Added check so that a bar graph created with <code><a href="../reference/visualize.html">visualize()</a></code> if number of unique values for generated statistics is small</li>
 <li>Added shading for <code>method = "theoretical"</code>
 </li>
-<li>Implemented shading for simulation methods w/o a traditional distribution</li>
+<li>Implemented shading for simulation methods w/o a traditional distribution
+<ul>
 <li>Use percentiles to determine two-tailed shading</li>
+</ul>
+</li>
 <li>Changed <code>method = "randomization"</code> to <code>method = "simulation"</code>
 </li>
 <li>Added warning when theoretical distribution is used that assumptions should be checked<br>
@@ -212,8 +223,11 @@
 <ul>
 <li>Altered the way that successes are indicated in an infer pipeline. They now live in <code><a href="../reference/specify.html">specify()</a></code>.</li>
 <li>Updated documentation with examples</li>
-<li>Created <code>pkgdown</code> site materials</li>
+<li>Created <code>pkgdown</code> site materials
+<ul>
 <li>Deployed to <a href="https://infer.netlify.com" class="uri">https://infer.netlify.com</a>
+</li>
+</ul>
 </li>
 </ul>
 </div>
