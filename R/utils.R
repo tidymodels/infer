@@ -85,7 +85,7 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
   # but that's not as helpful to beginners with the cryptic error msg
   if (!stat %in% c("mean", "median", "sd", "prop",
                    "diff in means", "diff in medians", "diff in props",
-                   "Chisq", "F", "slope", "t", "z")){
+                   "Chisq", "F", "slope", "correlation", "t", "z")){
     stop(paste("You specified a string for `stat` that is not implemented.",
                "Check your spelling and `?calculate` for current options."),
          call. = FALSE)

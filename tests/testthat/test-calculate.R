@@ -82,7 +82,8 @@ test_that("grouping (explanatory) variable is a factor (two var problems)", {
   expect_error(calculate(gen_iris2, stat = "diff in means"))
   expect_error(calculate(gen_iris2, stat = "diff in medians"))
   # Since shifts to "Slope with t"
-  expect_silent(calculate(gen_iris2, stat = "t"))
+  ## Not implemented
+ # expect_silent(calculate(gen_iris2, stat = "t"))
 })
 
 test_that("grouping (explanatory) variable is numeric (two var problems)", {
@@ -289,12 +290,13 @@ test_that("Permute F test works", {
   expect_silent(calculate(gen_iris13, stat = "F"))
 })
 
-test_that("Permute slope test works", {
+test_that("Permute slope/correlation test works", {
   gen_iris14 <- iris %>%
     specify(Petal.Width ~ Petal.Length) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
   expect_silent(calculate(gen_iris14, stat = "slope"))
+  expect_silent(calculate(gen_iris14, stat = "correlation"))
 })
 
 test_that("order being given when not needed gives warning", {
