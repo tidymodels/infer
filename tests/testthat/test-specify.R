@@ -7,6 +7,13 @@ mtcars <- as.data.frame(mtcars) %>%
                 gear = factor(gear),
                 carb = factor(carb))
 
+test_that("specify"), {
+  
+  expect_is(data.frame)
+  
+})
+
+
 test_that("data argument", {
 
   expect_error(specify(blah ~ cyl))
