@@ -103,7 +103,7 @@
       <h1>Computation of observed statistics using <code>nycflights13</code> <code>flights</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2018-04-15</h4>
+            <h4 class="date">Updated on 2018-06-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/observed_stat_examples.Rmd"><code>vignettes/observed_stat_examples.Rmd</code></a></small>
       <div class="hidden name"><code>observed_stat_examples.Rmd</code></div>
@@ -161,8 +161,7 @@ fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><s
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( x_bar &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>) )</code></pre></div>
-<pre><code>## Response: dep_delay (numeric)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  10.4</code></pre>
@@ -171,16 +170,15 @@ fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><s
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">mu =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>)
-null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> x_bar)</code></pre></div>
+null_distn <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> x_bar, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-4-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(x_bar)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>)</code></pre></div>
-<pre><code>## Response: dep_delay (numeric)
-## Null Hypothesis:  point 
-## # A tibble: 1 x 1
+<span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> x_bar, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.794</code></pre>
+## 1   0.801</code></pre>
 </div>
 <div id="one-numerical-variable-standardized-mean-t" class="section level3">
 <h3 class="hasAnchor">
@@ -190,7 +188,6 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>) )</code></pre></div>
 <pre><code>## Response: dep_delay (numeric)
-## Response: dep_delay (numeric)
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
@@ -200,13 +197,12 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">mu =</span> <span class="dv">8</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>)
-null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> t_bar)</code></pre></div>
+null_distn <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> t_bar, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-6-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(t_bar)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>)</code></pre></div>
-<pre><code>## Response: dep_delay (numeric)
-## Null Hypothesis:  point 
-## # A tibble: 1 x 1
+<span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> t_bar, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
 ## 1       0</code></pre>
@@ -218,8 +214,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( x_tilde &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"median"</span>) )</code></pre></div>
-<pre><code>## Response: dep_delay (numeric)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1    -2</code></pre>
@@ -228,16 +223,15 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">med =</span> <span class="op">-</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"median"</span>)
-null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> x_tilde)</code></pre></div>
+null_distn <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> x_tilde, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&lt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(x_tilde)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>)</code></pre></div>
-<pre><code>## Response: dep_delay (numeric)
-## Null Hypothesis:  point 
-## # A tibble: 1 x 1
+<span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> x_tilde, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1    0.15</code></pre>
+## 1   0.076</code></pre>
 </div>
 <div id="one-categorical-one-proportion" class="section level3">
 <h3 class="hasAnchor">
@@ -246,8 +240,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( p_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>) )</code></pre></div>
-<pre><code>## Response: day_hour (factor)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1 0.466</code></pre>
@@ -256,16 +249,15 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> .<span class="dv">5</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>)
-null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> p_hat)</code></pre></div>
+null_distn <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> p_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-10-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&lt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(p_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>)</code></pre></div>
-<pre><code>## Response: day_hour (factor)
-## Null Hypothesis:  point 
-## # A tibble: 1 x 1
+<span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> p_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1    0.11</code></pre>
+## 1   0.101</code></pre>
 <p>Logical variables will be coerced to factors:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">day_hour_logical =</span> (day_hour <span class="op">==</span><span class="st"> "morning"</span>)) <span class="op">%&gt;%</span>
@@ -286,9 +278,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( d_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"winter"</span>, <span class="st">"summer"</span>)) )</code></pre></div>
-<pre><code>## Response: day_hour (factor)
-## Explanatory: season (factor)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##      stat
 ##     &lt;dbl&gt;
 ## 1 -0.0205</code></pre>
@@ -297,12 +287,15 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"winter"</span>, <span class="st">"summer"</span>))
-null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> d_hat)</code></pre></div>
+null_distn <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&lt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(d_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.708</code></pre>
+<span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1    0.65</code></pre>
 </div>
 <div id="two-categorical-2-level-variables-z" class="section level3">
 <h3 class="hasAnchor">
@@ -311,9 +304,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( z_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"winter"</span>, <span class="st">"summer"</span>)) )</code></pre></div>
-<pre><code>## Response: day_hour (factor)
-## Explanatory: season (factor)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##     stat
 ##    &lt;dbl&gt;
 ## 1 -0.460</code></pre>
@@ -322,12 +313,15 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"winter"</span>, <span class="st">"summer"</span>))
-null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> z_hat)</code></pre></div>
+null_distn <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> z_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-15-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&lt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(z_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.684</code></pre>
+<span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> z_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1   0.633</code></pre>
 <p>Note the similarities in this plot and the previous one.</p>
 </div>
 <div id="one-categorical-2-level---gof" class="section level3">
@@ -342,8 +336,6 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) )</code></pre></div>
 <pre><code>## Response: origin (factor)
 ## Null Hypothesis:  point 
-## Response: origin (factor)
-## Null Hypothesis:  point 
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
@@ -354,12 +346,15 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
               <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"EWR"</span> =<span class="st"> </span>.<span class="dv">33</span>, <span class="st">"JFK"</span> =<span class="st"> </span>.<span class="dv">33</span>, <span class="st">"LGA"</span> =<span class="st"> </span>.<span class="dv">34</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)
-null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> Chisq_hat)</code></pre></div>
+null_distn <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> Chisq_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-17-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(Chisq_hat))) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.005</code></pre>
+<span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> Chisq_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1   0.005</code></pre>
 </div>
 <div id="two-categorical-2-level-variables-1" class="section level3">
 <h3 class="hasAnchor">
@@ -368,21 +363,22 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( Chisq_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">formula =</span> day_hour <span class="op">~</span><span class="st"> </span>origin) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) )</code></pre></div>
-<pre><code>## Response: day_hour (factor)
-## Explanatory: origin (factor)
-##       stat
+<pre><code>##       stat
 ## 1 9.027394</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>origin) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)
-null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> Chisq_hat)</code></pre></div>
+null_distn <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> Chisq_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-19-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(Chisq_hat))) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.007</code></pre>
+<span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> Chisq_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1   0.007</code></pre>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-diff-in-means" class="section level3">
 <h3 class="hasAnchor">
@@ -391,9 +387,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( d_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</code></pre></div>
-<pre><code>## Response: dep_delay (numeric)
-## Explanatory: season (factor)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  2.27</code></pre>
@@ -402,12 +396,15 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))
-null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> d_hat)</code></pre></div>
+null_distn <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-21-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(d_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.488</code></pre>
+<span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1   0.456</code></pre>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-t" class="section level3">
 <h3 class="hasAnchor">
@@ -418,8 +415,6 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</code></pre></div>
 <pre><code>## Response: dep_delay (numeric)
 ## Explanatory: season (factor)
-## Response: dep_delay (numeric)
-## Explanatory: season (factor)
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
@@ -429,12 +424,15 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))
-null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> t_hat)</code></pre></div>
+null_distn <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> t_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-23-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(t_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.49</code></pre>
+<span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> t_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1   0.487</code></pre>
 <p>Note the similarities in this plot and the previous one.</p>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-diff-in-medians" class="section level3">
@@ -444,9 +442,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( d_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in medians"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</code></pre></div>
-<pre><code>## Response: dep_delay (numeric)
-## Explanatory: season (factor)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1     2</code></pre>
@@ -456,12 +452,15 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in medians"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))
-null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> d_hat)</code></pre></div>
+null_distn <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-25-1.png" width="768"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(d_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.084</code></pre>
+<span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1   0.029</code></pre>
 </div>
 <div id="one-numerical-one-categorical-2-levels---anova" class="section level3">
 <h3 class="hasAnchor">
@@ -472,8 +471,6 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>) )</code></pre></div>
 <pre><code>## Response: arr_delay (numeric)
 ## Explanatory: origin (factor)
-## Response: arr_delay (numeric)
-## Explanatory: origin (factor)
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
@@ -483,12 +480,15 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">   </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>)
-null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> F_hat)</code></pre></div>
+null_distn <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> F_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-27-1.png" width="768"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(F_hat))) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0.353</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> F_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1   0.353</code></pre>
 </div>
 <div id="two-numerical-vars---slr" class="section level3">
 <h3 class="hasAnchor">
@@ -499,8 +499,6 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>) )</code></pre></div>
 <pre><code>## Response: arr_delay (numeric)
 ## Explanatory: dep_delay (numeric)
-## Response: arr_delay (numeric)
-## Explanatory: dep_delay (numeric)
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
@@ -510,12 +508,15 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">   </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>)
-null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> slope_hat)</code></pre></div>
+null_distn <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> slope_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-29-1.png" width="768"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(slope_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> slope_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1       0</code></pre>
 </div>
 <div id="two-numerical-vars---correlation" class="section level3">
 <h3 class="hasAnchor">
@@ -526,8 +527,6 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"correlation"</span>) )</code></pre></div>
 <pre><code>## Response: arr_delay (numeric)
 ## Explanatory: dep_delay (numeric)
-## Response: arr_delay (numeric)
-## Explanatory: dep_delay (numeric)
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
@@ -537,12 +536,15 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">   </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"correlation"</span>)
-null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> correlation_hat)</code></pre></div>
+null_distn <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> correlation_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-31-1.png" width="768"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(correlation_hat)) <span class="op">*</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/pull.html">pull</a></span>()</code></pre></div>
-<pre><code>## [1] 0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> correlation_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</code></pre></div>
+<pre><code>## # A tibble: 1 x 1
+##   p_value
+##     &lt;dbl&gt;
+## 1       0</code></pre>
 </div>
 <div id="two-numerical-vars---slr-t" class="section level3">
 <h3 class="hasAnchor">
@@ -559,8 +561,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( x_bar &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>) )</code></pre></div>
-<pre><code>## Response: arr_delay (numeric)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  4.57</code></pre>
@@ -583,7 +584,6 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>) )</code></pre></div>
 <pre><code>## Response: arr_delay (numeric)
-## Response: arr_delay (numeric)
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
@@ -606,8 +606,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( p_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>) )</code></pre></div>
-<pre><code>## Response: day_hour (factor)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1 0.466</code></pre>
@@ -634,9 +633,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( d_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</code></pre></div>
-<pre><code>## Response: arr_delay (numeric)
-## Explanatory: season (factor)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##     stat
 ##    &lt;dbl&gt;
 ## 1 -0.745</code></pre>
@@ -660,8 +657,6 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</code></pre></div>
 <pre><code>## Response: arr_delay (numeric)
 ## Explanatory: season (factor)
-## Response: arr_delay (numeric)
-## Explanatory: season (factor)
 ## # A tibble: 1 x 1
 ##     stat
 ##    &lt;dbl&gt;
@@ -684,9 +679,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( d_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</code></pre></div>
-<pre><code>## Response: day_hour (factor)
-## Explanatory: season (factor)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##     stat
 ##    &lt;dbl&gt;
 ## 1 0.0205</code></pre>
@@ -708,9 +701,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( z_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</code></pre></div>
-<pre><code>## Response: day_hour (factor)
-## Explanatory: season (factor)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1 0.460</code></pre>
@@ -733,8 +724,6 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>) )</code></pre></div>
 <pre><code>## Response: arr_delay (numeric)
-## Explanatory: dep_delay (numeric)
-## Response: arr_delay (numeric)
 ## Explanatory: dep_delay (numeric)
 ## # A tibble: 1 x 1
 ##    stat
@@ -759,8 +748,6 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span><span class="k
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"correlation"</span>) )</code></pre></div>
 <pre><code>## Response: arr_delay (numeric)
-## Explanatory: dep_delay (numeric)
-## Response: arr_delay (numeric)
 ## Explanatory: dep_delay (numeric)
 ## # A tibble: 1 x 1
 ##    stat

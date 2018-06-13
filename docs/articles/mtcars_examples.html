@@ -133,9 +133,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">mu =</span> <span class="dv">25</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>)</code></pre></div>
-<pre><code>## Response: mpg (numeric)
-## Null Hypothesis:  point 
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1  26.6
@@ -155,9 +153,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">med =</span> <span class="dv">26</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"median"</span>)</code></pre></div>
-<pre><code>## Response: mpg (numeric)
-## Null Hypothesis:  point 
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1  28.2
@@ -177,9 +173,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> .<span class="dv">25</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>)</code></pre></div>
-<pre><code>## Response: am (factor)
-## Null Hypothesis:  point 
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate   stat
 ##    &lt;fct&gt;      &lt;dbl&gt;
 ##  1 1         0.375 
@@ -199,10 +193,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</code></pre></div>
-<pre><code>## Response: am (factor)
-## Explanatory: vs (factor)
-## Null Hypothesis:  independence 
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate    stat
 ##        &lt;int&gt;   &lt;dbl&gt;
 ##  1         1 -0.421 
@@ -222,9 +213,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"4"</span> =<span class="st"> </span>.<span class="dv">5</span>, <span class="st">"6"</span> =<span class="st"> </span>.<span class="dv">25</span>, <span class="st">"8"</span> =<span class="st"> </span>.<span class="dv">25</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)</code></pre></div>
-<pre><code>## Response: cyl (factor)
-## Null Hypothesis:  point 
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate  stat
 ##    &lt;fct&gt;     &lt;dbl&gt;
 ##  1 1         6.75 
@@ -244,9 +233,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)</code></pre></div>
-<pre><code>## Response: cyl (factor)
-## Explanatory: am (factor)
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1 1.34 
@@ -266,10 +253,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</code></pre></div>
-<pre><code>## Response: mpg (numeric)
-## Explanatory: am (factor)
-## Null Hypothesis:  independence 
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate   stat
 ##        &lt;int&gt;  &lt;dbl&gt;
 ##  1         1 -1.10 
@@ -289,10 +273,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in medians"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</code></pre></div>
-<pre><code>## Response: mpg (numeric)
-## Explanatory: am (factor)
-## Null Hypothesis:  independence 
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1  0.5 
@@ -312,10 +293,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>)</code></pre></div>
-<pre><code>## Response: mpg (numeric)
-## Explanatory: cyl (factor)
-## Null Hypothesis:  independence 
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1 1.43 
@@ -335,10 +313,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>)</code></pre></div>
-<pre><code>## Response: mpg (numeric)
-## Explanatory: hp (numeric)
-## Null Hypothesis:  independence 
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate     stat
 ##        &lt;int&gt;    &lt;dbl&gt;
 ##  1         1 -0.0151 
@@ -367,8 +342,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>)</code></pre></div>
-<pre><code>## Response: mpg (numeric)
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1  19.6
@@ -387,8 +361,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"median"</span>)</code></pre></div>
-<pre><code>## Response: mpg (numeric)
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1  19.2
@@ -407,8 +380,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> mpg) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"sd"</span>)</code></pre></div>
-<pre><code>## Response: mpg (numeric)
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1  5.28
@@ -427,8 +399,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> am, <span class="dt">success =</span> <span class="st">"1"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>)</code></pre></div>
-<pre><code>## Response: am (factor)
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1 0.375
@@ -447,9 +418,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>am) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</code></pre></div>
-<pre><code>## Response: mpg (numeric)
-## Explanatory: am (factor)
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate   stat
 ##        &lt;int&gt;  &lt;dbl&gt;
 ##  1         1  -9.38
@@ -468,9 +437,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(am <span class="op">~</span><span class="st"> </span>vs, <span class="dt">success =</span> <span class="st">"1"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"0"</span>, <span class="st">"1"</span>))</code></pre></div>
-<pre><code>## Response: am (factor)
-## Explanatory: vs (factor)
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate   stat
 ##        &lt;int&gt;  &lt;dbl&gt;
 ##  1         1 -0.352
@@ -489,9 +456,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>hp) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>)</code></pre></div>
-<pre><code>## Response: mpg (numeric)
-## Explanatory: hp (numeric)
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate    stat
 ##        &lt;int&gt;   &lt;dbl&gt;
 ##  1         1 -0.0850
@@ -510,9 +475,7 @@ mtcars &lt;-<span class="st"> </span>mtcars <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(mpg <span class="op">~</span><span class="st"> </span>hp) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">100</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"correlation"</span>)</code></pre></div>
-<pre><code>## Response: mpg (numeric)
-## Explanatory: hp (numeric)
-## # A tibble: 100 x 2
+<pre><code>## # A tibble: 100 x 2
 ##    replicate   stat
 ##        &lt;int&gt;  &lt;dbl&gt;
 ##  1         1 -0.821

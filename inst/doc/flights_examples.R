@@ -97,7 +97,10 @@ null_distn %>%
 
 ## ------------------------------------------------------------------------
 Chisq_hat <- fli_small %>%
-  chisq_stat(formula = origin ~ NULL)
+  specify(response = origin) %>%
+  hypothesize(null = "point", 
+              p = c("EWR" = .33, "JFK" = .33, "LGA" = .34)) %>% 
+  calculate(stat = "Chisq")
 null_distn <- fli_small %>%
   specify(response = origin) %>%
   hypothesize(null = "point", 

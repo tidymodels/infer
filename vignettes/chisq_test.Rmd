@@ -55,16 +55,25 @@ fli_small <- flights %>%
 
 ## Calculate observed statistic 
 
-Using `chisq_test` in `infer`
+The recommended approach is to use `specify() %>% calculate()`:
+
+```{r}
+obs_chisq <- fli_small %>%
+  specify(origin ~ season) %>% # alt: response = origin, explanatory = season
+  calculate(stat = "Chisq")
+```
+
+The observed $\chi^2$ statistic is `r obs_chisq`.
+
+Or using `chisq_test` in `infer`
 
 ```{r}
 obs_chisq <- fli_small %>% 
   chisq_test(formula = origin ~ season) %>% 
-  dplyr::select(statistic) %>% 
-  dplyr::pull()
+  dplyr::select(statistic)
 ```
 
-The observed $\chi^2$ statistic is `r obs_chisq`.
+Again, the observed $\chi^2$ statistic is `r obs_chisq`.
 
 Or using another shortcut function in `infer`:
 
@@ -73,7 +82,7 @@ obs_chisq <- fli_small %>%
   chisq_stat(formula = origin ~ season)
 ```
 
-The observed $\chi^2$ statistic is `r obs_chisq`.
+Lastly, the observed $\chi^2$ statistic is `r obs_chisq`.
 
 ## Randomization approach to $\chi^2$-statistic
 
@@ -90,8 +99,7 @@ chisq_null_distn %>% visualize(obs_stat = obs_chisq, direction = "greater")
 
 ```{r}
 chisq_null_distn %>% 
-  dplyr::summarize(p_value = mean(stat >= pull(obs_chisq))) %>% 
-  dplyr::pull()
+  get_pvalue(obs_stat = obs_chisq, direction = "greater")
 ```
 
 

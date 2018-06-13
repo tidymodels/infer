@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>p_value — p_value • infer</title>
+<title>Compute the p-value for (currently only) simulation-based methods — p_value • infer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -28,9 +28,9 @@
 
 
 
-<meta property="og:title" content="p_value — p_value" />
+<meta property="og:title" content="Compute the p-value for (currently only) simulation-based methods — p_value" />
 
-<meta property="og:description" content="p_value" />
+<meta property="og:description" content="Compute the p-value for (currently only) simulation-based methods" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,14 +130,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>p_value</h1>
+    <h1>Compute the p-value for (currently only) simulation-based methods</h1>
     <small class="dont-index">Source: <a href='https://github.com/andrewpbray/infer/blob/master/R/p_value.R'><code>R/p_value.R</code></a></small>
     <div class="hidden name"><code>p_value.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>p_value</p>
+    <p>Compute the p-value for (currently only) simulation-based methods</p>
     
     </div>
 
@@ -153,7 +153,7 @@ of theoretical distribution values</p></td>
     </tr>
     <tr>
       <th>obs_stat</th>
-      <td><p>a numeric value (as extreme or more extreme than this)</p></td>
+      <td><p>a numeric value or a 1x1 data frame (as extreme or more extreme than this)</p></td>
     </tr>
     <tr>
       <th>direction</th>
@@ -167,6 +167,22 @@ Can also specify "left", "right", or "both".</p></td>
     <p>a 1x1 data frame with value between 0 and 1</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>mtcars_df</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
+    <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>))
+<span class='no'>d_hat</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars_df</span> <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"diff in means"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>))
+<span class='no'>null_distn</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars_df</span> <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"diff in means"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>))
+<span class='no'>null_distn</span> <span class='kw'>%&gt;%</span>
+    <span class='fu'>p_value</span>(<span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='no'>d_hat</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"right"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 1
+#&gt;   p_value
+#&gt;     &lt;dbl&gt;
+#&gt; 1       0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -174,7 +190,9 @@ Can also specify "left", "right", or "both".</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

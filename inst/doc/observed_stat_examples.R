@@ -23,9 +23,9 @@ fli_small <- flights %>%
          day_hour, origin, carrier)
 
 ## ------------------------------------------------------------------------
-x_bar <- fli_small %>%
+( x_bar <- fli_small %>%
   specify(response = dep_delay) %>%
-  calculate(stat = "mean")
+  calculate(stat = "mean") )
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -38,9 +38,9 @@ null_distn %>%
   summarize(p_value = mean(stat >= pull(x_bar)) * 2)
 
 ## ------------------------------------------------------------------------
-t_bar <- fli_small %>%
+( t_bar <- fli_small %>%
   specify(response = dep_delay) %>%
-  calculate(stat = "t")
+  calculate(stat = "t") )
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -53,9 +53,9 @@ null_distn %>%
   summarize(p_value = mean(stat >= pull(t_bar)) * 2)
 
 ## ------------------------------------------------------------------------
-x_tilde <- fli_small %>%
+( x_tilde <- fli_small %>%
   specify(response = dep_delay) %>%
-  calculate(stat = "median")
+  calculate(stat = "median") )
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -68,9 +68,9 @@ null_distn %>%
   summarize(p_value = mean(stat <= pull(x_tilde)) * 2)
 
 ## ------------------------------------------------------------------------
-p_hat <- fli_small %>%
+( p_hat <- fli_small %>%
   specify(response = day_hour, success = "morning") %>%
-  calculate(stat = "prop")  
+  calculate(stat = "prop") )
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -91,9 +91,9 @@ null_distn <- fli_small %>%
   calculate(stat = "prop")
 
 ## ------------------------------------------------------------------------
-d_hat <- fli_small %>% 
+( d_hat <- fli_small %>% 
   specify(day_hour ~ season, success = "morning") %>%
-  calculate(stat = "diff in props", order = c("winter", "summer"))
+  calculate(stat = "diff in props", order = c("winter", "summer")) )
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -107,9 +107,9 @@ null_distn %>%
   pull()
 
 ## ------------------------------------------------------------------------
-z_hat <- fli_small %>% 
+( z_hat <- fli_small %>% 
   specify(day_hour ~ season, success = "morning") %>%
-  calculate(stat = "z", order = c("winter", "summer"))
+  calculate(stat = "z", order = c("winter", "summer")) )
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -123,9 +123,11 @@ null_distn %>%
   pull()
 
 ## ------------------------------------------------------------------------
-Chisq_hat <- fli_small %>%
+( Chisq_hat <- fli_small %>%
   specify(response = origin) %>%
-  calculate(stat = "Chisq")
+  hypothesize(null = "point", 
+              p = c("EWR" = .33, "JFK" = .33, "LGA" = .34)) %>% 
+  calculate(stat = "Chisq") )
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -140,9 +142,9 @@ null_distn %>%
   pull()
 
 ## ------------------------------------------------------------------------
-Chisq_hat <- fli_small %>%
+( Chisq_hat <- fli_small %>%
   specify(formula = day_hour ~ origin) %>% 
-  calculate(stat = "Chisq")
+  calculate(stat = "Chisq") )
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -156,9 +158,9 @@ null_distn %>%
   pull()
 
 ## ------------------------------------------------------------------------
-d_hat <- fli_small %>% 
+( d_hat <- fli_small %>% 
   specify(dep_delay ~ season) %>% 
-  calculate(stat = "diff in means", order = c("summer", "winter"))
+  calculate(stat = "diff in means", order = c("summer", "winter")) )
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -172,9 +174,9 @@ null_distn %>%
   pull()
 
 ## ------------------------------------------------------------------------
-t_hat <- fli_small %>% 
+( t_hat <- fli_small %>% 
   specify(dep_delay ~ season) %>% 
-  calculate(stat = "t", order = c("summer", "winter"))
+  calculate(stat = "t", order = c("summer", "winter")) )
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -188,9 +190,9 @@ null_distn %>%
   pull()
 
 ## ------------------------------------------------------------------------
-d_hat <- fli_small %>% 
+( d_hat <- fli_small %>% 
   specify(dep_delay ~ season) %>% 
-  calculate(stat = "diff in medians", order = c("summer", "winter"))
+  calculate(stat = "diff in medians", order = c("summer", "winter")) )
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -205,9 +207,9 @@ null_distn %>%
   pull()
 
 ## ------------------------------------------------------------------------
-F_hat <- fli_small %>% 
+( F_hat <- fli_small %>% 
   specify(arr_delay ~ origin) %>%
-  calculate(stat = "F")
+  calculate(stat = "F") )
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -221,9 +223,9 @@ null_distn %>%
   pull()
 
 ## ------------------------------------------------------------------------
-slope_hat <- fli_small %>% 
+( slope_hat <- fli_small %>% 
   specify(arr_delay ~ dep_delay) %>% 
-  calculate(stat = "slope")
+  calculate(stat = "slope") )
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -237,25 +239,42 @@ null_distn %>%
   pull()
 
 ## ------------------------------------------------------------------------
-t_hat <- fli_small %>% 
+( correlation_hat <- fli_small %>% 
   specify(arr_delay ~ dep_delay) %>% 
-  calculate(stat = "t")
+  calculate(stat = "correlation") )
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
    specify(arr_delay ~ dep_delay) %>% 
    hypothesize(null = "independence") %>%
    generate(reps = 1000, type = "permute") %>%
-   calculate(stat = "t")
-null_distn %>% visualize(obs_stat = t_hat)
+   calculate(stat = "correlation")
+null_distn %>% visualize(obs_stat = correlation_hat)
 null_distn %>% 
-  summarize(p_value = mean(stat >= pull(t_hat)) * 2) %>%
+  summarize(p_value = mean(stat >= pull(correlation_hat)) * 2) %>%
   pull()
 
+## ----echo=FALSE, eval=FALSE----------------------------------------------
+#  # **Standardized observed stat**
+#  ( t_hat <- fli_small %>%
+#    specify(arr_delay ~ dep_delay) %>%
+#    calculate(stat = "t") )
+
+## ----echo=FALSE, eval=FALSE----------------------------------------------
+#  null_distn <- fli_small %>%
+#     specify(arr_delay ~ dep_delay) %>%
+#     hypothesize(null = "independence") %>%
+#     generate(reps = 1000, type = "permute") %>%
+#     calculate(stat = "t")
+#  null_distn %>% visualize(obs_stat = t_hat)
+#  null_distn %>%
+#    summarize(p_value = mean(stat >= pull(t_hat)) * 2) %>%
+#    pull()
+
 ## ------------------------------------------------------------------------
-x_bar <- fli_small %>% 
+( x_bar <- fli_small %>% 
   specify(response = arr_delay) %>%
-  calculate(stat = "mean")  
+  calculate(stat = "mean") )
 
 ## ------------------------------------------------------------------------
 boot <- fli_small %>%
@@ -267,9 +286,9 @@ c(lower = pull(x_bar) - 2 * sd(pull(boot)),
   upper = pull(x_bar) + 2 * sd(pull(boot)))
 
 ## ------------------------------------------------------------------------
-t_bar <- fli_small %>% 
+( t_bar <- fli_small %>% 
   specify(response = arr_delay) %>%
-  calculate(stat = "t")  
+  calculate(stat = "t") )
 
 ## ------------------------------------------------------------------------
 boot <- fli_small %>%
@@ -281,9 +300,9 @@ c(lower = pull(t_bar) - 2 * sd(pull(boot)),
   upper = pull(t_bar) + 2 * sd(pull(boot)))
 
 ## ------------------------------------------------------------------------
-p_hat <- fli_small %>% 
+( p_hat <- fli_small %>% 
    specify(response = day_hour, success = "morning") %>%
-   calculate(stat = "prop")
+   calculate(stat = "prop") )
 
 ## ------------------------------------------------------------------------
 boot <- fli_small %>%
@@ -295,9 +314,9 @@ c(lower = pull(p_hat) - 2 * sd(pull(boot)),
  upper = pull(p_hat) + 2 * sd(pull(boot)))
 
 ## ------------------------------------------------------------------------
-d_hat <- fli_small %>%
+( d_hat <- fli_small %>%
   specify(arr_delay ~ season) %>%
-  calculate(stat = "diff in means", order = c("summer", "winter"))
+  calculate(stat = "diff in means", order = c("summer", "winter")) )
 
 ## ------------------------------------------------------------------------
 boot <- fli_small %>%
@@ -309,9 +328,9 @@ c(lower = pull(d_hat) - 2 * sd(pull(boot)),
   upper = pull(d_hat) + 2 * sd(pull(boot)))
 
 ## ------------------------------------------------------------------------
-t_hat <- fli_small %>%
+( t_hat <- fli_small %>%
   specify(arr_delay ~ season) %>%
-  calculate(stat = "t", order = c("summer", "winter"))
+  calculate(stat = "t", order = c("summer", "winter")) )
 
 ## ------------------------------------------------------------------------
 boot <- fli_small %>%
@@ -323,9 +342,9 @@ c(lower = pull(t_hat) - 2 * sd(pull(boot)),
   upper = pull(t_hat) + 2 * sd(pull(boot)))
 
 ## ------------------------------------------------------------------------
-d_hat <- fli_small %>% 
+( d_hat <- fli_small %>% 
   specify(day_hour ~ season, success = "morning") %>%
-  calculate(stat = "diff in props", order = c("summer", "winter"))
+  calculate(stat = "diff in props", order = c("summer", "winter")) )
 
 ## ------------------------------------------------------------------------
 boot <- fli_small %>%
@@ -337,9 +356,9 @@ c(lower = pull(d_hat) - 2 * sd(pull(boot)),
   upper = pull(d_hat) + 2 * sd(pull(boot)))
 
 ## ------------------------------------------------------------------------
-z_hat <- fli_small %>% 
+( z_hat <- fli_small %>% 
   specify(day_hour ~ season, success = "morning") %>%
-  calculate(stat = "z", order = c("summer", "winter"))
+  calculate(stat = "z", order = c("summer", "winter")) )
 
 ## ------------------------------------------------------------------------
 boot <- fli_small %>%
@@ -351,9 +370,9 @@ c(lower = pull(z_hat) - 2 * sd(pull(boot)),
   upper = pull(z_hat) + 2 * sd(pull(boot)))
 
 ## ------------------------------------------------------------------------
-slope_hat <- fli_small %>% 
+( slope_hat <- fli_small %>% 
   specify(arr_delay ~ dep_delay) %>%
-  calculate(stat = "slope")
+  calculate(stat = "slope") )
 
 ## ------------------------------------------------------------------------
 boot <- fli_small %>%
@@ -365,16 +384,31 @@ c(lower = pull(slope_hat) - 2 * sd(pull(boot)),
   upper = pull(slope_hat) + 2 * sd(pull(boot)))   
 
 ## ------------------------------------------------------------------------
-t_hat <- fli_small %>% 
+( correlation_hat <- fli_small %>% 
   specify(arr_delay ~ dep_delay) %>%
-  calculate(stat = "t")
+  calculate(stat = "correlation") )
 
 ## ------------------------------------------------------------------------
 boot <- fli_small %>%
    specify(arr_delay ~ dep_delay) %>% 
    generate(reps = 1000, type = "bootstrap") %>%
-   calculate(stat = "t")
+   calculate(stat = "correlation")
 visualize(boot)
-c(lower = pull(t_hat) - 2 * sd(pull(boot)), 
-  upper = pull(t_hat) + 2 * sd(pull(boot)))   
+c(lower = pull(correlation_hat) - 2 * sd(pull(boot)), 
+  upper = pull(correlation_hat) + 2 * sd(pull(boot)))   
+
+## ----eval=FALSE, echo=FALSE----------------------------------------------
+#  # **Point estimate**
+#  ( t_hat <- fli_small %>%
+#    specify(arr_delay ~ dep_delay) %>%
+#    calculate(stat = "t") )
+
+## ----eval=FALSE, echo=FALSE----------------------------------------------
+#  boot <- fli_small %>%
+#     specify(arr_delay ~ dep_delay) %>%
+#     generate(reps = 1000, type = "bootstrap") %>%
+#     calculate(stat = "t")
+#  visualize(boot)
+#  c(lower = pull(t_hat) - 2 * sd(pull(boot)),
+#    upper = pull(t_hat) + 2 * sd(pull(boot)))
 

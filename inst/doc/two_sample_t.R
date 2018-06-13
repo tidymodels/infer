@@ -21,6 +21,11 @@ fli_small <- flights %>%
          day_hour, origin, carrier)
 
 ## ------------------------------------------------------------------------
+obs_t <- fli_small %>%
+  specify(arr_delay ~ half_year) %>%
+  calculate(stat = "t", order = c("h1", "h2"))
+
+## ------------------------------------------------------------------------
 obs_t <- fli_small %>% 
   t_test(formula = arr_delay ~ half_year, alternative = "two_sided",
          order = c("h1", "h2")) %>% 
@@ -42,8 +47,7 @@ t_null_distn %>% visualize(obs_stat = obs_t, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 t_null_distn %>% 
-  dplyr::summarize(p_value = mean(abs(stat) >= pull(obs_t))) %>% 
-  dplyr::pull()
+  p_value(obs_stat = obs_t, direction = "greater")
 
 ## ------------------------------------------------------------------------
 fli_small %>%

@@ -53,7 +53,17 @@ fli_small <- flights %>%
 
 ## Calculate observed statistic 
 
-Using `t_test` in `infer`
+The recommended approach is to use `specify() %>% calculate()`:
+
+```{r}
+obs_t <- fli_small %>%
+  specify(arr_delay ~ half_year) %>%
+  calculate(stat = "t", order = c("h1", "h2"))
+```
+
+The observed $\chi^2$ statistic is `r obs_chisq`.
+
+Or using `t_test` in `infer`
 
 ```{r}
 obs_t <- fli_small %>% 
@@ -90,8 +100,7 @@ t_null_distn %>% visualize(obs_stat = obs_t, direction = "two_sided")
 
 ```{r}
 t_null_distn %>% 
-  dplyr::summarize(p_value = mean(abs(stat) >= pull(obs_t))) %>% 
-  dplyr::pull()
+  p_value(obs_stat = obs_t, direction = "greater")
 ```
 
 

@@ -12,7 +12,7 @@
 
 <meta name="author" content="Chester Ismay" />
 
-<meta name="date" content="2018-05-13" />
+<meta name="date" content="2018-06-13" />
 
 <title>Two sample t test example using nycflights13 flights data</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Two sample <span class="math inline">\(t\)</span> test example using <code>nycflights13</code> <code>flights</code> data</h1>
 <h4 class="author"><em>Chester Ismay</em></h4>
-<h4 class="date"><em>2018-05-13</em></h4>
+<h4 class="date"><em>2018-06-13</em></h4>
 
 
 
@@ -110,7 +110,28 @@ fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><s
 <h1>One numerical variable, one categorical (2 levels)</h1>
 <div id="calculate-observed-statistic" class="section level2">
 <h2>Calculate observed statistic</h2>
-<p>Using <code>t_test</code> in <code>infer</code></p>
+<p>The recommended approach is to use <code>specify() %&gt;% calculate()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_t &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(arr_delay <span class="op">~</span><span class="st"> </span>half_year) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;t&quot;</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">&quot;h1&quot;</span>, <span class="st">&quot;h2&quot;</span>))</code></pre></div>
+<pre><code>## Warning: Removed 15 rows containing missing values.</code></pre>
+The observed <span class="math inline">\(\chi^2\)</span> statistic is
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="right">stat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.571898</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>.</p>
+<p>Or using <code>t_test</code> in <code>infer</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_t &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">t_test</span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>half_year, <span class="dt">alternative =</span> <span class="st">&quot;two_sided&quot;</span>,
          <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">&quot;h1&quot;</span>, <span class="st">&quot;h2&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
@@ -153,9 +174,21 @@ The observed <span class="math inline">\(t\)</span> statistic is
 <div id="calculate-the-randomization-based-p-value" class="section level2">
 <h2>Calculate the randomization-based <span class="math inline">\(p\)</span>-value</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">t_null_distn <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarize</span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(<span class="kw">abs</span>(stat) <span class="op">&gt;=</span><span class="st"> </span><span class="kw">pull</span>(obs_t))) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">pull</span>()</code></pre></div>
-<pre><code>## [1] 0.42</code></pre>
+<span class="st">  </span><span class="kw">p_value</span>(<span class="dt">obs_stat =</span> obs_t, <span class="dt">direction =</span> <span class="st">&quot;greater&quot;</span>)</code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="right">p_value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.204</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="theoretical-distribution" class="section level2">
 <h2>Theoretical distribution</h2>

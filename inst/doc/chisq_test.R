@@ -23,10 +23,14 @@ fli_small <- flights %>%
          day_hour, origin, carrier)
 
 ## ------------------------------------------------------------------------
+obs_chisq <- fli_small %>%
+  specify(origin ~ season) %>% # alt: response = origin, explanatory = season
+  calculate(stat = "Chisq")
+
+## ------------------------------------------------------------------------
 obs_chisq <- fli_small %>% 
   chisq_test(formula = origin ~ season) %>% 
-  dplyr::select(statistic) %>% 
-  dplyr::pull()
+  dplyr::select(statistic)
 
 ## ------------------------------------------------------------------------
 obs_chisq <- fli_small %>% 
@@ -42,8 +46,7 @@ chisq_null_distn %>% visualize(obs_stat = obs_chisq, direction = "greater")
 
 ## ------------------------------------------------------------------------
 chisq_null_distn %>% 
-  dplyr::summarize(p_value = mean(stat >= pull(obs_chisq))) %>% 
-  dplyr::pull()
+  p_value(obs_stat = obs_chisq, direction = "greater")
 
 ## ------------------------------------------------------------------------
 fli_small %>%

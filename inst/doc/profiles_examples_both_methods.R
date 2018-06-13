@@ -39,7 +39,7 @@ prof_small %>%
   specify(age ~ sex) %>% # alt: response = age, explanatory = sex
   hypothesize(null = "independence") %>%
   # generate() is not needed since we are not doing simulation-based
-  calculate(stat = "t") %>% 
+  calculate(stat = "t", order = c("f", "m")) %>% 
   visualize(method = "theoretical")
 
 ## ------------------------------------------------------------------------
@@ -173,29 +173,32 @@ prof_small %>%
   calculate(stat = "Chisq") %>% 
   visualize(method = "both")
 
-## ------------------------------------------------------------------------
-prof_small %>%
-  specify(age ~ height) %>% # alt: response = age, explanatory = height
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000) %>%
-  calculate(stat = "t") %>% 
-  visualize()
+## ----echo=FALSE, eval=FALSE----------------------------------------------
+#  # Simulation-based approach to $t$-statistic
+#  prof_small %>%
+#    specify(age ~ height) %>% # alt: response = age, explanatory = height
+#    hypothesize(null = "independence") %>%
+#    generate(reps = 1000) %>%
+#    calculate(stat = "t") %>%
+#    visualize()
 
-## ------------------------------------------------------------------------
-prof_small %>%
-  specify(age ~ height) %>% # alt: response = age, explanatory = height
-  hypothesize(null = "independence") %>%
-  # generate() is not needed since we are not doing simulation-based
-  calculate(stat = "t") %>%
-  visualize(method = "theoretical")
+## ----echo=FALSE, eval=FALSE----------------------------------------------
+#  #Theoretical distribution
+#  prof_small %>%
+#    specify(age ~ height) %>% # alt: response = age, explanatory = height
+#    hypothesize(null = "independence") %>%
+#    # generate() is not needed since we are not doing simulation-based
+#    calculate(stat = "t") %>%
+#    visualize(method = "theoretical")
 
-## ------------------------------------------------------------------------
-prof_small %>%
-  specify(age ~ height) %>% # alt: response = age, explanatory = height
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000) %>%
-  calculate(stat = "t") %>% 
-  visualize(method = "both")
+## ----echo=FALSE, eval=FALSE----------------------------------------------
+#  # Overlay appropriate $t$ distribution on top of permuted t-statistics
+#  prof_small %>%
+#    specify(age ~ height) %>% # alt: response = age, explanatory = height
+#    hypothesize(null = "independence") %>%
+#    generate(reps = 1000) %>%
+#    calculate(stat = "t") %>%
+#    visualize(method = "both")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  prof_small %>%

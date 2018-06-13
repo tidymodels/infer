@@ -12,7 +12,7 @@
 
 <meta name="author" content="Chester Ismay" />
 
-<meta name="date" content="2018-05-13" />
+<meta name="date" content="2018-06-13" />
 
 <title>Chi-squared test example using nycflights13 flights data</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Chi-squared test example using <code>nycflights13</code> <code>flights</code> data</h1>
 <h4 class="author"><em>Chester Ismay</em></h4>
-<h4 class="date"><em>2018-05-13</em></h4>
+<h4 class="date"><em>2018-06-13</em></h4>
 
 
 
@@ -112,16 +112,50 @@ fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><s
 <h1>One numerical variable, one categorical (2 levels)</h1>
 <div id="calculate-observed-statistic" class="section level2">
 <h2>Calculate observed statistic</h2>
-<p>Using <code>chisq_test</code> in <code>infer</code></p>
+<p>The recommended approach is to use <code>specify() %&gt;% calculate()</code>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_chisq &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">specify</span>(origin <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = origin, explanatory = season</span>
+<span class="st">  </span><span class="kw">calculate</span>(<span class="dt">stat =</span> <span class="st">&quot;Chisq&quot;</span>)</code></pre></div>
+The observed <span class="math inline">\(\chi^2\)</span> statistic is
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="right">stat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.571898</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>.</p>
+<p>Or using <code>chisq_test</code> in <code>infer</code></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_chisq &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">chisq_test</span>(<span class="dt">formula =</span> origin <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(statistic) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">pull</span>()</code></pre></div>
-<p>The observed <span class="math inline">\(\chi^2\)</span> statistic is 0.571898.</p>
+<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">select</span>(statistic)</code></pre></div>
+Again, the observed <span class="math inline">\(\chi^2\)</span> statistic is
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="right">statistic</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.571898</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>.</p>
 <p>Or using another shortcut function in <code>infer</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_chisq &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">chisq_stat</span>(<span class="dt">formula =</span> origin <span class="op">~</span><span class="st"> </span>season)</code></pre></div>
-The observed <span class="math inline">\(\chi^2\)</span> statistic is
+Lastly, the observed <span class="math inline">\(\chi^2\)</span> statistic is
 <div class="kable-table">
 <table>
 <thead>
@@ -151,9 +185,21 @@ chisq_null_distn <span class="op">%&gt;%</span><span class="st"> </span><span cl
 <div id="calculate-the-randomization-based-p-value" class="section level2">
 <h2>Calculate the randomization-based <span class="math inline">\(p\)</span>-value</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chisq_null_distn <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">summarize</span>(<span class="dt">p_value =</span> <span class="kw">mean</span>(stat <span class="op">&gt;=</span><span class="st"> </span><span class="kw">pull</span>(obs_chisq))) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>dplyr<span class="op">::</span><span class="kw">pull</span>()</code></pre></div>
-<pre><code>## [1] 0.748</code></pre>
+<span class="st">  </span><span class="kw">p_value</span>(<span class="dt">obs_stat =</span> obs_chisq, <span class="dt">direction =</span> <span class="st">&quot;greater&quot;</span>)</code></pre></div>
+<div class="kable-table">
+<table>
+<thead>
+<tr class="header">
+<th align="right">p_value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.748</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="theoretical-distribution" class="section level2">
 <h2>Theoretical distribution</h2>
