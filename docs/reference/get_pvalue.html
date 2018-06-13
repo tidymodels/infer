@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Compute the p-value for (currently only) simulation-based methods — get_pvalue • infer</title>
+<title>Compute the p-value for (currently only) simulation-based methods
+<code>get_pvalue()</code> is an alias of <code>p_value</code> — p_value • infer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -28,9 +29,11 @@
 
 
 
-<meta property="og:title" content="Compute the p-value for (currently only) simulation-based methods — get_pvalue" />
+<meta property="og:title" content="Compute the p-value for (currently only) simulation-based methods
+<code>get_pvalue()</code> is an alias of <code>p_value</code> — p_value" />
 
-<meta property="og:description" content="Compute the p-value for (currently only) simulation-based methods" />
+<meta property="og:description" content="Compute the p-value for (currently only) simulation-based methods
+get_pvalue() is an alias of p_value" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,18 +133,22 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Compute the p-value for (currently only) simulation-based methods</h1>
+    <h1>Compute the p-value for (currently only) simulation-based methods
+<code>get_pvalue()</code> is an alias of <code>p_value</code></h1>
     <small class="dont-index">Source: <a href='https://github.com/andrewpbray/infer/blob/master/R/p_value.R'><code>R/p_value.R</code></a></small>
     <div class="hidden name"><code>get_pvalue.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Compute the p-value for (currently only) simulation-based methods</p>
+    <p>Compute the p-value for (currently only) simulation-based methods
+<code>get_pvalue()</code> is an alias of <code>p_value</code></p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_pvalue</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>p_value</span>(<span class='no'>x</span>, <span class='no'>obs_stat</span>, <span class='no'>direction</span>)
+
+<span class='fu'>get_pvalue</span>(<span class='no'>x</span>, <span class='no'>obs_stat</span>, <span class='no'>direction</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,7 +186,7 @@ Can also specify "left", "right", or "both".</p></td>
     <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"diff in means"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>))
 <span class='no'>null_distn</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'>get_pvalue</span>(<span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='no'>d_hat</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"right"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 1
+    <span class='fu'>p_value</span>(<span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='no'>d_hat</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"right"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 1
 #&gt;   p_value
 #&gt;     &lt;dbl&gt;
 #&gt; 1       0</div></pre>
