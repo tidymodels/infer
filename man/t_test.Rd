@@ -4,7 +4,8 @@
 \alias{t_test}
 \title{A tidier version of t.test for two sample tests}
 \usage{
-t_test(data, formula, order, alternative = "two_sided", mu = 0, ...)
+t_test(data, formula, order = NULL, alternative = "two_sided", mu = 0,
+  ...)
 }
 \arguments{
 \item{data}{a data frame that can be coerced into a \code{\link[tibble]{tibble}}}

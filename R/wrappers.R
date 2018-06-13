@@ -27,7 +27,7 @@
 
 
 t_test <- function(data, formula, #response = NULL, explanatory = NULL,
-                   order,
+                   order = NULL,
                    alternative = "two_sided", mu = 0, 
                    ...){
 
@@ -38,8 +38,6 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
   ### Only currently working with formula interface
 #  if (hasArg(formula)) {
   if(!is.null(f_rhs(formula))){
-    
-#    data <- reorder_explanatory(x = data, order = order)
     
     data[[as.character(f_rhs(formula))]] <-
       factor(data[[as.character(f_rhs(formula))]],
@@ -55,6 +53,9 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
                     alternative)
   } else {
     # One sample case
+    # To fix weird indexing error 
+    # (Error: Can't use matrix or array for column indexing)
+    data <- as.data.frame(data)
     stats::t.test(data[[as.character(f_lhs(formula))]],
                   alternative = alternative,
                   mu = mu, ...) %>% 
