@@ -121,7 +121,7 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
 
 check_for_numeric_stat <- function(x, stat){
   if (stat %in% c("mean", "median", "sd")){
-    col <- setdiff(names(x), "replicate")
+    col <- base::setdiff(names(x), "replicate")
     
     if (!is.numeric(x[[as.character(col)]])){
       stop(paste0("Calculating a ",
@@ -209,7 +209,7 @@ parse_params <- function(dots, x) {
       if(dots$p < 0 || dots$p > 1)
         stop("The value suggested for `p` is not between 0 and 1, inclusive.",
              call. = FALSE)
-      missing_lev <- setdiff(unique(pull(x, !!attr(x, "response"))), 
+      missing_lev <- base::setdiff(unique(pull(x, !!attr(x, "response"))), 
                              attr(x, "success"))
       dots$p <- append(dots$p, 1 - dots$p)
       names(dots$p) <- c(attr(x, "success"), missing_lev)
