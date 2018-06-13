@@ -261,3 +261,35 @@ hypothesize_checks <- function(x, null){
          call. = FALSE)
   }
 }
+
+check_direction <- function(direction = c("less", "greater", "two_sided",
+                                          "left", "right", "both")){
+  assertive::assert_is_character(direction)
+  
+  if(!(direction %in% c("less", "greater", "two_sided",
+                        "left", "right", "both"))){
+    stop(paste('The provided value for `direction` is not appropriate.',
+               'Possible values are "less", "greater", "two_sided"',
+               '"left", "right", or "both".'))
+  }
+}
+
+check_obs_stat <- function(obs_stat){
+  if(!is.null(obs_stat)){
+    if("data.frame" %in% class(obs_stat)){
+      assertive::assert_is_data.frame(obs_stat)
+      if( (nrow(obs_stat) != 1) || (ncol(obs_stat) != 1) ) 
+        warning(paste("The first row and first column value of the given", 
+                      "`obs_stat` will be used."))
+      
+      # [[1]] is used in case `stat` is not specified as name of 1x1
+      obs_stat <- obs_stat[[1]][[1]]
+      assertive::assert_is_numeric(obs_stat)
+    }
+    else{
+      assertive::assert_is_numeric(obs_stat)
+    }
+  }
+  
+  obs_stat
+}

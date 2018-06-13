@@ -1,6 +1,9 @@
 # infer 0.2.1
 
-- Implemented chi-square Goodness of Fit observed stat depending on `params` being set in `hypothesize` with `specify() %>% calculate()` shortcut
+- Implemented `p_value()` function for computing p-value provided a simulation-based method with a `stat` variable
+    - `get_pvalue()` is also implemented that is just a wrapper for `p_value()` with the same arguments
+    - Converted longer p-value calculation code in vignettes to use `get_pvalue()` instead
+- Implemented Chi-square Goodness of Fit observed stat depending on `params` being set in `hypothesize` with `specify() %>% calculate()` shortcut
 - Removed "standardized" slope $t$ since its formula is different than "standardized" correlation and there is no way currently to give one over the other
 - Implemented correlation with bootstrap CI and permutation hypothesis test
 - Filled the `type` argument automatically in `generate()` based

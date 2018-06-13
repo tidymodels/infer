@@ -125,18 +125,10 @@ calculate <- function(x,
       "Your choice of `stat` is invalid for the ",
       "types of variables `specify`ed."
     ))
-  else
-    class(result) <- append("infer", class(result))
+#  else
+#    class(result) <- append("infer", class(result))
   
-  attr(result, "response") <- attr(x, "response")
-  attr(result, "success") <- attr(x, "success")
-  attr(result, "explanatory") <- attr(x, "explanatory")
-  attr(result, "response_type") <- attr(x, "response_type")
-  attr(result, "explanatory_type") <- attr(x, "explanatory_type")
-  attr(result, "params") <- attr(x, "params")
-  attr(result, "distr_param") <- attr(x, "distr_param")
-  attr(result, "distr_param2") <- attr(x, "distr_param2")
-  attr(result, "theory_type") <- attr(x, "theory_type")
+  result <- set_attributes(to = result, from = x)
   attr(result, "stat") <- stat
   
   # For returning a 1x1 observed statistic value
