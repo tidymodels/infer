@@ -144,7 +144,7 @@ calc_impl <-
 
 
 calc_impl.mean <- function(stat, x, order, ...) {
-  col <- setdiff(names(x), "replicate")
+  col <- base::setdiff(names(x), "replicate")
   
   x %>%
     dplyr::group_by(replicate) %>%
@@ -153,7 +153,7 @@ calc_impl.mean <- function(stat, x, order, ...) {
 }
 
 calc_impl.median <- function(stat, x, order, ...) {
-  col <- setdiff(names(x), "replicate")
+  col <- base::setdiff(names(x), "replicate")
   
   x %>%
     dplyr::group_by(replicate) %>%
@@ -161,7 +161,7 @@ calc_impl.median <- function(stat, x, order, ...) {
 }
 
 calc_impl.sd <- function(stat, x, order, ...) {
-  col <- setdiff(names(x), "replicate")
+  col <- base::setdiff(names(x), "replicate")
   
   x %>%
     dplyr::group_by(replicate) %>%
@@ -169,7 +169,7 @@ calc_impl.sd <- function(stat, x, order, ...) {
 }
 
 calc_impl.prop <- function(stat, x, order, ...) {
-  col <- setdiff(names(x), "replicate")
+  col <- base::setdiff(names(x), "replicate")
   
   ## No longer needed with implementation of `check_point_params()`
   # if(!is.factor(x[[col]])){
@@ -219,7 +219,7 @@ calc_impl.slope <- function(stat, x, order, ...) {
 
 calc_impl.correlation <- function(stat, x, order, ...) {
   x %>% 
-    dplyr::summarize(stat = cor(!!attr(x, "explanatory"), 
+    dplyr::summarize(stat = stats::cor(!!attr(x, "explanatory"), 
                                 !!attr(x, "response")))
 }
 
