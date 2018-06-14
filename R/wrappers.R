@@ -53,15 +53,16 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
                     alternative)
   } else {
     # One sample case
-    # To fix weird indexing error 
+    # To fix weird indexing error convert back to data.frame
     # (Error: Can't use matrix or array for column indexing)
     data <- as.data.frame(data)
-    stats::t.test(data[[as.character(f_lhs(formula))]],
+    results <- stats::t.test(data[[as.character(f_lhs(formula))]],
                   alternative = alternative,
                   mu = mu, ...) %>% 
       broom::glance() %>%
       dplyr::select(statistic, t_df = parameter, p_value = p.value,
                     alternative)
+    return(results)
   }
 #  } else {
     # data %>%
