@@ -73,13 +73,6 @@ simulation_based_p_value <- function(x, obs_stat, direction){
 
 two_sided_p_value <- function(x, obs_stat){
   
-  # print(paste("obs_stat is", obs_stat))
-  # print(paste("median is", stats::median(x$stat)))
-  # print(paste("area less than obs_stat is", get_percentile(x$stat, obs_stat)))
-  # print(paste("area >= opp obs_stat is", 
-  #             (1 - get_percentile(x$stat, stats::median(x$stat) + 
-  #                                   stats::median(x$stat) - obs_stat))))
-  # 
   if(stats::median(x$stat) >= obs_stat){
     basic_p_value <- get_percentile(x$stat, obs_stat) +
       (1 - get_percentile(x$stat, stats::median(x$stat) + 
