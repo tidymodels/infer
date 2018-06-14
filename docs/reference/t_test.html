@@ -182,8 +182,8 @@ and the hypothesized difference for a two sample test</p></td>
     <pre class="examples"><div class='input'><span class='co'># t test for comparing mpg against automatic/manual</span>
   <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
     <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'>t_test</span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>), <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"less"</span>)</div><div class='output co'>#&gt;   statistic     t_df   p_value alternative
-#&gt; 1  3.767123 18.33225 0.9993132        less</div></pre>
+    <span class='fu'>t_test</span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>), <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"less"</span>)</div><div class='output co'>#&gt;   statistic t_df p_value alternative
+#&gt; 1       3.8   18       1        less</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

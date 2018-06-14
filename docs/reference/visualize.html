@@ -147,8 +147,9 @@ or the theoretical distribution (or both!)</p>
     </div>
 
     <pre class="usage"><span class='fu'>visualize</span>(<span class='no'>data</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"simulation"</span>, <span class='kw'>dens_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>obs_stat_color</span> <span class='kw'>=</span> <span class='st'>"#e51010"</span>, <span class='kw'>shade_color</span> <span class='kw'>=</span> <span class='st'>"#efb8b8"</span>,
-  <span class='kw'>direction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>obs_stat_color</span> <span class='kw'>=</span> <span class='st'>"red2"</span>, <span class='kw'>pvalue_fill</span> <span class='kw'>=</span> <span class='st'>"pink"</span>,
+  <span class='kw'>direction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>endpoints</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>endpoints_color</span> <span class='kw'>=</span> <span class='st'>"mediumaquamarine"</span>, <span class='kw'>ci_fill</span> <span class='kw'>=</span> <span class='st'>"turquoise"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,27 +175,47 @@ theoretical density curve</p></td>
     </tr>
     <tr>
       <th>obs_stat</th>
-      <td><p>a numeric value or 1x1 data frame corresponding to what the observed 
-statistic is</p></td>
+      <td><p>a numeric value or 1x1 data frame corresponding to what
+the observed statistic is</p></td>
     </tr>
     <tr>
       <th>obs_stat_color</th>
       <td><p>a character or hex string specifying the color of
-the observed statistic</p></td>
+the observed statistic as a vertical line on the plot</p></td>
     </tr>
     <tr>
-      <th>shade_color</th>
-      <td><p>a character or hex string specifying the color to shade</p></td>
+      <th>pvalue_fill</th>
+      <td><p>a character or hex string specifying the color to shade
+the pvalue. In previous versions of the package this was the <code>shade_color</code> 
+argument</p></td>
     </tr>
     <tr>
       <th>direction</th>
       <td><p>a string specifying in which direction the shading 
-should occur. Options are "less", "greater", or "two_sided".
-Can also specify "left", "right", or "both".</p></td>
+should occur. Options are "less", "greater", or "two_sided" for p-value.
+Can also give "left", "right", or "both" for p-value. For confidence 
+intervals, use "between".
+and give the endpoint values in <code>endpoints</code></p></td>
+    </tr>
+    <tr>
+      <th>endpoints</th>
+      <td><p>a 2 element vector or a 1 x 2 data frame containing the
+lower and upper values to be plotted. Most useful for visualizing
+conference intervals.</p></td>
+    </tr>
+    <tr>
+      <th>endpoints_color</th>
+      <td><p>a character or hex string specifying the color of
+the observed statistic as a vertical line on the plot</p></td>
+    </tr>
+    <tr>
+      <th>ci_fill</th>
+      <td><p>a character or hex string specifying the color to shade
+the confidence interval</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>currently ignored</p></td>
+      <td><p>other arguments passed along to ggplot2</p></td>
     </tr>
     </table>
     

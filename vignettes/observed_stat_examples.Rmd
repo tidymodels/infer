@@ -1,12 +1,12 @@
 ---
-title: "Computation of observed statistics using `nycflights13` `flights` data"
+title: "Full infer pipeline examples using `nycflights13` `flights` data"
 author: "Chester Ismay"
-date: "Updated on 2018-06-13"
+date: "Updated on 2018-06-14"
 output: 
   rmarkdown::html_vignette:
     df_print: kable
 vignette: |
-  %\VignetteIndexEntry{flights example}
+  %\VignetteIndexEntry{Full infer pipeline examples}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -15,7 +15,8 @@ editor_options:
 
 
 ```{r include=FALSE}
-knitr::opts_chunk$set(fig.width = 8, fig.height = 3.5) 
+knitr::opts_chunk$set(fig.width = 6, fig.height = 3.5) 
+options(digits = 4)
 ```
 
 ## Data preparation
@@ -429,9 +430,10 @@ boot <- fli_small %>%
    specify(response = arr_delay) %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "mean")
-visualize(boot)
-c(lower = pull(x_bar) - 2 * sd(pull(boot)),
-  upper = pull(x_bar) + 2 * sd(pull(boot)))
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = x_bar) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 ```
 
 ### One numerical (one mean - standardized)
@@ -439,7 +441,7 @@ c(lower = pull(x_bar) - 2 * sd(pull(boot)),
 **Point estimate**
 
 ```{r}
-( t_bar <- fli_small %>% 
+( t_hat <- fli_small %>% 
   specify(response = arr_delay) %>%
   calculate(stat = "t") )
 ```
@@ -449,9 +451,10 @@ boot <- fli_small %>%
    specify(response = arr_delay) %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "t")
-visualize(boot)
-c(lower = pull(t_bar) - 2 * sd(pull(boot)),
-  upper = pull(t_bar) + 2 * sd(pull(boot)))
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = t_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 ```
 
 
@@ -470,9 +473,10 @@ boot <- fli_small %>%
  specify(response = day_hour, success = "morning") %>%
  generate(reps = 1000, type = "bootstrap") %>%
  calculate(stat = "prop")
-visualize(boot)
-c(lower = pull(p_hat) - 2 * sd(pull(boot)),
- upper = pull(p_hat) + 2 * sd(pull(boot)))
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = p_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 ```
 
 ### One categorical variable (standardized proportion $z$)
@@ -494,9 +498,10 @@ boot <- fli_small %>%
    specify(arr_delay ~ season) %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "diff in means", order = c("summer", "winter"))
-visualize(boot)
-c(lower = pull(d_hat) - 2 * sd(pull(boot)), 
-  upper = pull(d_hat) + 2 * sd(pull(boot)))
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = d_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 ```
 
 ### One numerical variable, one categorical (2 levels) (t)
@@ -514,9 +519,10 @@ boot <- fli_small %>%
    specify(arr_delay ~ season) %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "t", order = c("summer", "winter"))
-visualize(boot)
-c(lower = pull(t_hat) - 2 * sd(pull(boot)), 
-  upper = pull(t_hat) + 2 * sd(pull(boot)))
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = t_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 ```
 
 
@@ -535,9 +541,10 @@ boot <- fli_small %>%
   specify(day_hour ~ season, success = "morning") %>%
   generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "diff in props", order = c("summer", "winter"))
-visualize(boot)
-c(lower = pull(d_hat) - 2 * sd(pull(boot)), 
-  upper = pull(d_hat) + 2 * sd(pull(boot)))
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = d_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 ```
 
 ### Two categorical variables (z)
@@ -555,9 +562,10 @@ boot <- fli_small %>%
   specify(day_hour ~ season, success = "morning") %>%
   generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "z", order = c("summer", "winter"))
-visualize(boot)
-c(lower = pull(z_hat) - 2 * sd(pull(boot)), 
-  upper = pull(z_hat) + 2 * sd(pull(boot)))
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = z_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 ```
 
 
@@ -576,9 +584,10 @@ boot <- fli_small %>%
    specify(arr_delay ~ dep_delay) %>% 
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "slope")
-visualize(boot)
-c(lower = pull(slope_hat) - 2 * sd(pull(boot)), 
-  upper = pull(slope_hat) + 2 * sd(pull(boot)))   
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = slope_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between") 
 ```
 
 ### Two numerical vars - correlation
@@ -596,9 +605,11 @@ boot <- fli_small %>%
    specify(arr_delay ~ dep_delay) %>% 
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "correlation")
-visualize(boot)
-c(lower = pull(correlation_hat) - 2 * sd(pull(boot)), 
-  upper = pull(correlation_hat) + 2 * sd(pull(boot)))   
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", 
+                            point_estimate = correlation_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")  
 ```
 
 
@@ -619,7 +630,8 @@ boot <- fli_small %>%
    specify(arr_delay ~ dep_delay) %>% 
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "t")
-visualize(boot)
-c(lower = pull(t_hat) - 2 * sd(pull(boot)), 
-  upper = pull(t_hat) + 2 * sd(pull(boot)))   
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = t_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")  
 ```

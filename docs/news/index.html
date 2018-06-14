@@ -136,10 +136,29 @@
 <a href="#infer-0-2-1" class="anchor"></a>infer 0.2.1<small> Unreleased </small>
 </h1>
 <ul>
+<li>Switched <code>shade_color</code> argument in <code><a href="../reference/visualize.html">visualize()</a></code> to be <code>pvalue_fill</code> instead since fill color for confidence intervals is also added now</li>
+<li>Shading for Confidence Intervals in <code><a href="../reference/visualize.html">visualize()</a></code>
+<ul>
+<li>Green is default color for CI and red for p-values</li>
+<li>
+<code>direction = "between"</code> to get the green shading</li>
+<li>Currently working only for simulation-based methods</li>
+</ul>
+</li>
+<li>Implemented <code><a href="../reference/get_ci.html">conf_int()</a></code> function for computing confidence interval provided a simulation-based method with a <code>stat</code> variable
+<ul>
+<li>
+<code><a href="../reference/get_ci.html">get_ci()</a></code> and <code><a href="../reference/get_ci.html">get_confidence_interval()</a></code> are aliases for <code><a href="../reference/get_ci.html">conf_int()</a></code>
+</li>
+<li>Converted longer confidence interval calculation code in vignettes to use <code><a href="../reference/get_ci.html">get_ci()</a></code> instead<br>
+</li>
+</ul>
+</li>
 <li>Implemented <code><a href="../reference/get_pvalue.html">p_value()</a></code> function for computing p-value provided a simulation-based method with a <code>stat</code> variable
 <ul>
 <li>
-<code><a href="../reference/get_pvalue.html">get_pvalue()</a></code> is also implemented that is just a wrapper for <code><a href="../reference/get_pvalue.html">p_value()</a></code> with the same arguments</li>
+<code><a href="../reference/get_pvalue.html">get_pvalue()</a></code> is an alias for <code><a href="../reference/get_pvalue.html">p_value()</a></code>
+</li>
 <li>Converted longer p-value calculation code in vignettes to use <code><a href="../reference/get_pvalue.html">get_pvalue()</a></code> instead</li>
 </ul>
 </li>

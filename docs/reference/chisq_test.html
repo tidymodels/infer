@@ -165,8 +165,8 @@
     <pre class="examples"><div class='input'><span class='co'># chisq test for comparing number of cylinders against automatic/manual</span>
   <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
     <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>cyl</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>cyl</span>), <span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'>chisq_test</span>(<span class='no'>cyl</span> ~ <span class='no'>am</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='output co'>#&gt;   statistic chisq_df    p_value
-#&gt; 1  8.740733        2 0.01264661</div></pre>
+    <span class='fu'>chisq_test</span>(<span class='no'>cyl</span> ~ <span class='no'>am</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='output co'>#&gt;   statistic chisq_df p_value
+#&gt; 1       8.7        2   0.013</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
