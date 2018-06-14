@@ -86,6 +86,7 @@ test_that("visualize basic tests", {
                   specify(Sepal.Width.Group ~ Sepal.Length.Group,
                           success = "large") %>% 
                   hypothesize(null = "independence") %>% 
+                  calculate(stat = "z", order = c(">5", "<=5")) %>% 
                   visualize(method = "theoretical")
   )
   
@@ -367,6 +368,39 @@ test_that("Traditional right-tailed tests have warning if not right-tailed", {
                    calculate(stat = "F") %>% 
                    visualize(method = "theoretical", obs_stat = 2, 
                              direction = "two_sided")
+  )
+  
+})
+
+test_that("confidence interval plots are working",{
+  
+  iris_boot <- iris_tbl %>% 
+    specify(Sepal.Width.Group ~ Sepal.Length.Group,
+            success = "large") %>% 
+    generate(reps = 100) %>% 
+    calculate(stat = "diff in props", 
+              order = c(">5", "<=5"))
+  
+  df_error <- tibble::tibble(col1 = rnorm(5), col2 = rnorm(5))
+  vec_error <- 1:10
+  
+  perc_ci <- iris_boot %>% get_ci()
+  
+  expect_error(
+    iris_boot %>% visualize(endpoints = df_error) 
+  )
+  
+  expect_warning(
+    iris_boot %>% visualize(endpoints = vec_error) 
+  )
+  
+  expect_silent(
+    iris_boot %>% visualize(endpoints = perc_ci,
+                            direction = "between")
+  )
+  
+  expect_warning(
+    iris_boot %>% visualize(obs_stat = 3, endpoints = perc_ci)
   )
   
 })
