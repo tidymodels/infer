@@ -2,6 +2,8 @@
 
 ## For future CRAN releases
 
+- Shading for Confidence Intervals in `visualize()`
+    - Need to implement for theoretical distributions and `method = "both"`
 - Check that corresponding z for one prop depends on `params` being set in `hypothesize` with `specify() %>% calculate()` shortcut
 - Check that assumptions have been met for the theoretical distribution and `"both"`
 - Fix double printing of `Response:` and `Explanatory:`
@@ -26,9 +28,6 @@
 - Implement theoretical distributions for bootstrap distributions
 - Create `resources.md` with links to slides/talks/workshops given about `infer`
 - Add Lionel's vis checking package ([`vdiffr`](https://github.com/lionel-/vdiffr)) to `visualize()` tests
-- Shading for Confidence Intervals in `visualize()` (Mine would prefer green
-for CI and red for p-values)
-    - `direction = "between"` to get the green shading?
 - Determine whether `calculate()` should be where the `set_params()` function is called
 instead of in `specify()`
 - Need to also add parameters to wrapper functions so that randomization
