@@ -56,8 +56,7 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
     # To fix weird indexing error convert back to data.frame
     # (Error: Can't use matrix or array for column indexing)
     data <- as.data.frame(data)
-    results <- stats::t.test(data[[as.character(f_lhs(formula))]],
-                             data = .,
+    results <- stats::t.test(x = data[[as.character(f_lhs(formula))]],
                   alternative = alternative,
                   mu = mu, ...) %>% 
       broom::glance() %>%
