@@ -2,7 +2,9 @@
 output: github_document
 ---
 
-# Infer
+# infer R Package <img src="https://github.com/andrewpbray/infer/blob/develop/figs/infer_gnome.png?raw=true" align="right" width=125 />
+
+
 
 ------------------------------------------------------------------------
 
