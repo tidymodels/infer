@@ -23,20 +23,21 @@
 #' bootstrap_distn %>% conf_int(level = 0.9)
 #' bootstrap_distn %>% conf_int(type = "se", point_estimate = d_hat)
 
-conf_int <- function(x, level = 0.95, type = "percentile", point_estimate = NULL){
+conf_int <- function(x, level = 0.95, type = "percentile", 
+                     point_estimate = NULL){
   
   check_ci_args(x, level, type, point_estimate)
   
   if(type == "percentile") {
-    ci_vec <- quantile(x[["stat"]], 
+    ci_vec <- stats::quantile(x[["stat"]], 
                       probs = c((1 - level) / 2, level + (1 - level) / 2))
   
     ci <- tibble::tibble(ci_vec[1], ci_vec[2])
     names(ci) <- names(ci_vec)
   } else {
     point_estimate <- check_obs_stat(point_estimate)
-    ci <- tibble::tibble(lower = point_estimate - 2 * sd(x[["stat"]]),
-      upper = point_estimate + 2 * sd(x[["stat"]]))
+    ci <- tibble::tibble(lower = point_estimate - 2 * stats::sd(x[["stat"]]),
+      upper = point_estimate + 2 * stats::sd(x[["stat"]]))
   }
   
   return(ci)
@@ -45,8 +46,8 @@ conf_int <- function(x, level = 0.95, type = "percentile", point_estimate = NULL
 check_ci_args <- function(x, level, type, point_estimate){
   
   if(!is.null(point_estimate)){
-     if(!is.data.frame(point_estimate))
-        assertive::assert_is_numeric(point_estimate)
+    if(!is.data.frame(point_estimate))
+      assertive::assert_is_numeric(point_estimate)
     else
       assertive::assert_is_data.frame(point_estimate)
   }
