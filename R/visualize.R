@@ -113,7 +113,6 @@ visualize <- function(data, bins = 15, method = "simulation",
                                        direction = direction, 
                                        pvalue_fill = pvalue_fill,
                                        endpoints = endpoints, 
-                                       endpoints_color = endpoints_color,
                                        ci_fill = ci_fill,
                                        ...)
     
@@ -126,7 +125,6 @@ visualize <- function(data, bins = 15, method = "simulation",
                                         direction = direction, 
                                         pvalue_fill = pvalue_fill,
                                         endpoints = endpoints, 
-                                        endpoints_color = endpoints_color,
                                         ci_fill = ci_fill,
                                         ...)
     
@@ -150,13 +148,12 @@ visualize <- function(data, bins = 15, method = "simulation",
                                  direction = direction,
                                  pvalue_fill = pvalue_fill,
                                  endpoints = endpoints, 
-                                 endpoints_color = endpoints_color,
                                  ci_fill = ci_fill,
                                  ...)
   } else {
     stop(paste("Provide `method` with one of three options:",
-               "`theoretical`, `both`, or `simulation`",
-               "`simulation` is the default.")
+               '`"theoretical"`, `"both"`, or `"simulation"`',
+               '`"simulation"` is the default.')
     )
   }
   
@@ -218,7 +215,8 @@ both_t_plot <- function(data = data, deg_freedom, statistic_text = "t",
 }
 
 theory_anova_plot <- function(deg_freedom_top, deg_freedom_bottom, 
-                              statistic_text = "F", dens_color = dens_color, ...){
+                              statistic_text = "F", 
+                              dens_color = dens_color, ...){
   ggplot(data.frame(x = c(qf(0.001, deg_freedom_top, deg_freedom_bottom), 
                           qf(0.999, deg_freedom_top, deg_freedom_bottom)))) + 
     stat_function(mapping = aes(x), fun = df, 
@@ -440,8 +438,7 @@ visualize_simulation <- function(data, bins,
                                  obs_stat_color,
                                  direction, 
                                  pvalue_fill,
-                                 endpoints, 
-                                 endpoints_color,
+                                 endpoints,
                                  ci_fill, ...) {
   if(is.null(direction)){
     if(length(unique(data$stat)) >= 10)
@@ -471,7 +468,7 @@ visualize_theoretical <- function(data,
                                   obs_stat_color,
                                   direction, 
                                   pvalue_fill, 
-                                  endpoints, 
+                                  endpoints,
                                   ci_fill, 
                                   ...) {
   
@@ -575,6 +572,8 @@ visualize_theoretical <- function(data,
       }
     }
   }
+  
+  # To implement: plotting of theoretical confidence interval values
   
   infer_plot
 }
