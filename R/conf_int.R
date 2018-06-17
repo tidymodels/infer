@@ -36,8 +36,10 @@ conf_int <- function(x, level = 0.95, type = "percentile",
     names(ci) <- names(ci_vec)
   } else {
     point_estimate <- check_obs_stat(point_estimate)
-    ci <- tibble::tibble(lower = point_estimate - 2 * stats::sd(x[["stat"]]),
-      upper = point_estimate + 2 * stats::sd(x[["stat"]]))
+    multiplier <- stats::qnorm(1 - (1 - level) / 2)
+    ci <- tibble::tibble(
+      lower = point_estimate - multiplier * stats::sd(x[["stat"]]),
+      upper = point_estimate + multiplier * stats::sd(x[["stat"]]))
   }
   
   return(ci)
