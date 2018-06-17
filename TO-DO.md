@@ -4,6 +4,7 @@
 
 - Shading for Confidence Intervals in `visualize()`
     - Need to implement for theoretical distributions and `method = "both"`
+- Allow `visualize()` to specify which `variable` to plot instead of only working with `stat` column
 - Check that corresponding z for one prop depends on `params` being set in `hypothesize` with `specify() %>% calculate()` shortcut
 - Check that assumptions have been met for the theoretical distribution and `"both"`
 - Fix double printing of `Response:` and `Explanatory:`
