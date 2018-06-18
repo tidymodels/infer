@@ -34,7 +34,8 @@ test_that("data argument", {
 
   expect_error(specify(blah ~ cyl))
   expect_error(specify(1:3))
-
+  expect_is(mtcars, "data.frame")
+  expect_error(specify(mtcars, mtcars$mpg))
 })
 
 test_that("response and explanatory arguments", {
