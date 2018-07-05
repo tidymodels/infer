@@ -13,9 +13,8 @@
     - Determine if other wrapper functions should be created 
         - `z_test()`, `mean_stat()`, `diff_in_mean_stat()`, etc.? 
 - Consider re-working how p-values can be calculated (both for computational and theoretical)
-    - Create a `determine()` function with first argument being either `"p value"` or `"confidence interval"`? Maybe check to make sure that p-values don't exceed 1 too
-    - Could have wrapper functions `p_value()` and `conf_inf()` as well
-    - Should the wrapper functions like `t_test()` also include a logical `conf_int` argument?
+    - Maybe check to make sure that p-values don't exceed 1 too
+- Should the wrapper functions like `t_test()` also include a logical `conf_int` argument?
 - Check that `stat` is calculated appropriately if `generate()` is not called
     - `order` of the arguments into the standardized statistics should be checked again
     - May require moving of `set_params()` to be after `specify()`

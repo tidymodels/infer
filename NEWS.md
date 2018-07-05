@@ -1,5 +1,6 @@
 # infer 0.2.1
 
+- Added `conf_int` logical argument and `conf_level` argument to `t_test()`
 - Switched `shade_color` argument in `visualize()` to be `pvalue_fill` instead
 since fill color for confidence intervals is also added now
 - Shading for Confidence Intervals in `visualize()` 

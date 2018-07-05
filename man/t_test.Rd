@@ -5,7 +5,7 @@
 \title{A tidier version of t.test for two sample tests}
 \usage{
 t_test(data, formula, order = NULL, alternative = "two_sided", mu = 0,
-  ...)
+  conf_int = TRUE, conf_level = 0.95, ...)
 }
 \arguments{
 \item{data}{a data frame that can be coerced into a \code{\link[tibble]{tibble}}}
@@ -22,7 +22,11 @@ the explanatory variable should be ordered for subtraction, where
 \item{mu}{a numeric value giving the hypothesized null mean value for a one sample test
 and the hypothesized difference for a two sample test}
 
-\item{...}{currently ignored}
+\item{conf_int}{a logical value for whether to include the confidence interval or not. TRUE by default}
+
+\item{conf_level}{a numeric value between 0 and 1. Default value is 0.95}
+
+\item{...}{for passing in other arguments to \code{stats::t.test}}
 }
 \description{
 A tidier version of t.test for two sample tests

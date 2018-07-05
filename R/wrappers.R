@@ -15,7 +15,9 @@
 #' "\code{two_sided}" (default), "\code{greater}", or "\code{less}".
 #' @param mu a numeric value giving the hypothesized null mean value for a one sample test
 #' and the hypothesized difference for a two sample test
-#' @param ... currently ignored
+#' @param conf_int a logical value for whether to include the confidence interval or not. TRUE by default
+#' @param conf_level a numeric value between 0 and 1. Default value is 0.95 
+#' @param ... for passing in other arguments to \code{stats::t.test}
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
 #' @export
@@ -29,8 +31,12 @@
 t_test <- function(data, formula, #response = NULL, explanatory = NULL,
                    order = NULL,
                    alternative = "two_sided", mu = 0, 
+                   conf_int = TRUE,
+                   conf_level = 0.95,
                    ...){
-
+  
+  check_conf_level(conf_level)
+  
   # Match with old "dot" syntax
   if(alternative == "two_sided")
     alternative <- "two.sided"
@@ -44,26 +50,37 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
              levels = c(order[1], order[2]))
     
     # Two sample case
-    data %>%
+    prelim <- data %>%
       stats::t.test(formula = formula, data = .,
                     alternative = alternative,
-                    mu = mu, ...) %>%
-      broom::glance() %>%
-      dplyr::select(statistic, t_df = parameter, p_value = p.value,
-                    alternative)
+                    mu = mu, 
+                    conf.level = conf_level, ...) %>%
+      broom::glance()
   } else {
     # One sample case
     # To fix weird indexing error convert back to data.frame
     # (Error: Can't use matrix or array for column indexing)
     data <- as.data.frame(data)
-    results <- stats::t.test(x = data[[as.character(f_lhs(formula))]],
+    prelim <- stats::t.test(x = data[[as.character(f_lhs(formula))]],
                   alternative = alternative,
-                  mu = mu, ...) %>% 
-      broom::glance() %>%
+                  mu = mu, 
+                  conf.level = conf_level, ...) %>% 
+      broom::glance()
+  }
+  
+  if(conf_int){
+    results <- prelim %>% 
+      dplyr::select(statistic, t_df = parameter, p_value = p.value,
+                    alternative, 
+                    lower_ci = conf.low,
+                    upper_ci = conf.high)
+  } else {
+    results <- prelim %>% 
       dplyr::select(statistic, t_df = parameter, p_value = p.value,
                     alternative)
-    return(results)
   }
+    
+    return(results)
 #  } else {
     # data %>%
     #   stats::t.test(formula = substitute(response) ~ substitute(explanatory),
@@ -114,8 +131,7 @@ chisq_test <- function(data, formula, #response = NULL, explanatory = NULL,
   if(is.null(f_rhs(formula)))
     stop(paste("`chisq_test()` currently only has functionality for",
                "Chi-Square Test of Independence, not for Chi-Square",
-               "Goodness of Fit. Use `specify() %>% hypothesize()",
-               " %>% calculate()` instead."))
+               "Goodness of Fit."))
   ## Only currently working with formula interface
   explanatory_var <- f_rhs(formula)
   response_var <- f_lhs(formula)
@@ -130,7 +146,7 @@ chisq_test <- function(data, formula, #response = NULL, explanatory = NULL,
 #'
 #' @param data a data frame that can be coerced into a \code{\link[tibble]{tibble}}
 #' @param formula a formula with the response variable on the left and the explanatory on the right
-#' @param ... additional arguments for \code{chisq.test}
+#' @param ... additional arguments for \code{stats::chisq.test}
 #' @export
 
 chisq_stat <- function(data, formula, ...){
@@ -139,10 +155,19 @@ chisq_stat <- function(data, formula, ...){
     stop(paste("`chisq_stat()` currently only has functionality for",
                "Chi-Square Test of Independence, not for Chi-Square",
                "Goodness of Fit. Use `specify() %>% hypothesize()",
-               " %>% calculate()` instead."))
+               "%>% calculate()` instead."))
   } else {
     data %>%
       specify(formula = formula, ...) %>%
       calculate(stat = "Chisq")
   }
+}
+
+
+check_conf_level <- function(conf_level){
+  if(class(conf_level) != "numeric" |
+     conf_level < 0 |
+     conf_level > 1)
+    stop("The `conf_level` argument must be a number between 0 and 1.",
+         call. = FALSE)
 }
