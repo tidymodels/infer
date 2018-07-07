@@ -1,5 +1,6 @@
 ## ----include=FALSE-------------------------------------------------------
-knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
+knitr::opts_chunk$set(fig.width = 6, fig.height = 3.5) 
+options(digits = 4)
 
 ## ----message=FALSE, warning=FALSE----------------------------------------
 library(nycflights13)
@@ -33,9 +34,10 @@ null_distn <- fli_small %>%
   hypothesize(null = "point", mu = 10) %>%
   generate(reps = 1000) %>%
   calculate(stat = "mean")
-null_distn %>% visualize(obs_stat = x_bar)
+null_distn %>% 
+  visualize(obs_stat = x_bar, direction = "two_sided")
 null_distn %>%
-  summarize(p_value = mean(stat >= pull(x_bar)) * 2)
+  get_pvalue(obs_stat = x_bar, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( t_bar <- fli_small %>%
@@ -48,9 +50,10 @@ null_distn <- fli_small %>%
   hypothesize(null = "point", mu = 8) %>%
   generate(reps = 1000) %>%
   calculate(stat = "t")
-null_distn %>% visualize(obs_stat = t_bar)
+null_distn %>% 
+  visualize(obs_stat = t_bar, direction = "two_sided")
 null_distn %>%
-  summarize(p_value = mean(stat >= pull(t_bar)) * 2)
+  get_pvalue(obs_stat = t_bar, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( x_tilde <- fli_small %>%
@@ -63,9 +66,10 @@ null_distn <- fli_small %>%
   hypothesize(null = "point", med = -1) %>% 
   generate(reps = 1000) %>% 
   calculate(stat = "median")
-null_distn %>% visualize(obs_stat = x_tilde)
+null_distn %>% 
+  visualize(obs_stat = x_tilde, direction = "two_sided")
 null_distn %>%
-  summarize(p_value = mean(stat <= pull(x_tilde)) * 2)
+  get_pvalue(obs_stat = x_tilde, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( p_hat <- fli_small %>%
@@ -78,9 +82,10 @@ null_distn <- fli_small %>%
   hypothesize(null = "point", p = .5) %>%
   generate(reps = 1000) %>%
   calculate(stat = "prop")
-null_distn %>% visualize(obs_stat = p_hat)
+null_distn %>% 
+  visualize(obs_stat = p_hat, direction = "two_sided")
 null_distn %>%
-  summarize(p_value = mean(stat <= pull(p_hat)) * 2)
+  get_pvalue(obs_stat = p_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -101,10 +106,10 @@ null_distn <- fli_small %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000) %>% 
   calculate(stat = "diff in props", order = c("winter", "summer"))
-null_distn %>% visualize(obs_stat = d_hat)
+null_distn %>% 
+  visualize(obs_stat = d_hat, direction = "two_sided")
 null_distn %>%
-  summarize(p_value = mean(stat <= pull(d_hat)) * 2) %>%
-  pull()
+  get_pvalue(obs_stat = d_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( z_hat <- fli_small %>% 
@@ -117,10 +122,10 @@ null_distn <- fli_small %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000) %>% 
   calculate(stat = "z", order = c("winter", "summer"))
-null_distn %>% visualize(obs_stat = z_hat)
+null_distn %>% 
+  visualize(obs_stat = z_hat, direction = "two_sided")
 null_distn %>%
-  summarize(p_value = mean(stat <= pull(z_hat)) * 2) %>%
-  pull()
+  get_pvalue(obs_stat = z_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( Chisq_hat <- fli_small %>%
@@ -136,10 +141,10 @@ null_distn <- fli_small %>%
               p = c("EWR" = .33, "JFK" = .33, "LGA" = .34)) %>% 
   generate(reps = 1000, type = "simulate") %>% 
   calculate(stat = "Chisq")
-null_distn %>% visualize(obs_stat = Chisq_hat)
+null_distn %>% 
+  visualize(obs_stat = Chisq_hat, direction = "greater")
 null_distn %>%
-  summarize(p_value = mean(stat >= pull(Chisq_hat))) %>%
-  pull()
+  get_pvalue(obs_stat = Chisq_hat, direction = "greater")
 
 ## ------------------------------------------------------------------------
 ( Chisq_hat <- fli_small %>%
@@ -152,10 +157,10 @@ null_distn <- fli_small %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>% 
   calculate(stat = "Chisq")
-null_distn %>% visualize(obs_stat = Chisq_hat)
+null_distn %>% 
+  visualize(obs_stat = Chisq_hat, direction = "greater")
 null_distn %>%
-  summarize(p_value = mean(stat >= pull(Chisq_hat))) %>%
-  pull()
+  get_pvalue(obs_stat = Chisq_hat, direction = "greater")
 
 ## ------------------------------------------------------------------------
 ( d_hat <- fli_small %>% 
@@ -168,10 +173,10 @@ null_distn <- fli_small %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in means", order = c("summer", "winter"))
-null_distn %>% visualize(obs_stat = d_hat)
+null_distn %>% 
+  visualize(obs_stat = d_hat, direction = "two_sided")
 null_distn %>%
-  summarize(p_value = mean(stat >= pull(d_hat)) * 2) %>%
-  pull()
+  get_pvalue(obs_stat = d_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( t_hat <- fli_small %>% 
@@ -184,10 +189,10 @@ null_distn <- fli_small %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t", order = c("summer", "winter"))
-null_distn %>% visualize(obs_stat = t_hat)
+null_distn %>% 
+  visualize(obs_stat = t_hat, direction = "two_sided")
 null_distn %>%
-  summarize(p_value = mean(stat >= pull(t_hat)) * 2) %>%
-  pull()
+  get_pvalue(obs_stat = t_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( d_hat <- fli_small %>% 
@@ -201,10 +206,10 @@ null_distn <- fli_small %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in medians", order = c("summer", "winter"))
-null_distn %>% visualize(obs_stat = d_hat)
+null_distn %>% 
+  visualize(obs_stat = d_hat, direction = "two_sided")
 null_distn %>%
-  summarize(p_value = mean(stat >= pull(d_hat)) * 2) %>%
-  pull()
+  get_pvalue(obs_stat = d_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( F_hat <- fli_small %>% 
@@ -217,10 +222,10 @@ null_distn <- fli_small %>%
    hypothesize(null = "independence") %>%
    generate(reps = 1000, type = "permute") %>%
    calculate(stat = "F")
-null_distn %>% visualize(obs_stat = F_hat)
 null_distn %>% 
-  summarize(p_value = mean(stat >= pull(F_hat))) %>%
-  pull()
+  visualize(obs_stat = F_hat, direction = "greater")
+null_distn %>%
+  get_pvalue(obs_stat = F_hat, direction = "greater")
 
 ## ------------------------------------------------------------------------
 ( slope_hat <- fli_small %>% 
@@ -233,10 +238,10 @@ null_distn <- fli_small %>%
    hypothesize(null = "independence") %>%
    generate(reps = 1000, type = "permute") %>%
    calculate(stat = "slope")
-null_distn %>% visualize(obs_stat = slope_hat)
 null_distn %>% 
-  summarize(p_value = mean(stat >= pull(slope_hat)) * 2) %>%
-  pull()
+  visualize(obs_stat = slope_hat, direction = "two_sided")
+null_distn %>%
+  get_pvalue(obs_stat = slope_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( correlation_hat <- fli_small %>% 
@@ -249,10 +254,10 @@ null_distn <- fli_small %>%
    hypothesize(null = "independence") %>%
    generate(reps = 1000, type = "permute") %>%
    calculate(stat = "correlation")
-null_distn %>% visualize(obs_stat = correlation_hat)
 null_distn %>% 
-  summarize(p_value = mean(stat >= pull(correlation_hat)) * 2) %>%
-  pull()
+  visualize(obs_stat = correlation_hat, direction = "two_sided")
+null_distn %>%
+  get_pvalue(obs_stat = correlation_hat, direction = "two_sided")
 
 ## ----echo=FALSE, eval=FALSE----------------------------------------------
 #  # **Standardized observed stat**
@@ -266,10 +271,10 @@ null_distn %>%
 #     hypothesize(null = "independence") %>%
 #     generate(reps = 1000, type = "permute") %>%
 #     calculate(stat = "t")
-#  null_distn %>% visualize(obs_stat = t_hat)
 #  null_distn %>%
-#    summarize(p_value = mean(stat >= pull(t_hat)) * 2) %>%
-#    pull()
+#    visualize(obs_stat = t_hat, direction = "two_sided")
+#  null_distn %>%
+#    get_pvalue(obs_stat = t_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( x_bar <- fli_small %>% 
@@ -281,12 +286,13 @@ boot <- fli_small %>%
    specify(response = arr_delay) %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "mean")
-visualize(boot)
-c(lower = pull(x_bar) - 2 * sd(pull(boot)),
-  upper = pull(x_bar) + 2 * sd(pull(boot)))
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = x_bar) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 
 ## ------------------------------------------------------------------------
-( t_bar <- fli_small %>% 
+( t_hat <- fli_small %>% 
   specify(response = arr_delay) %>%
   calculate(stat = "t") )
 
@@ -295,9 +301,10 @@ boot <- fli_small %>%
    specify(response = arr_delay) %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "t")
-visualize(boot)
-c(lower = pull(t_bar) - 2 * sd(pull(boot)),
-  upper = pull(t_bar) + 2 * sd(pull(boot)))
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = t_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 
 ## ------------------------------------------------------------------------
 ( p_hat <- fli_small %>% 
@@ -309,9 +316,10 @@ boot <- fli_small %>%
  specify(response = day_hour, success = "morning") %>%
  generate(reps = 1000, type = "bootstrap") %>%
  calculate(stat = "prop")
-visualize(boot)
-c(lower = pull(p_hat) - 2 * sd(pull(boot)),
- upper = pull(p_hat) + 2 * sd(pull(boot)))
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = p_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 
 ## ------------------------------------------------------------------------
 ( d_hat <- fli_small %>%
@@ -323,9 +331,10 @@ boot <- fli_small %>%
    specify(arr_delay ~ season) %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "diff in means", order = c("summer", "winter"))
-visualize(boot)
-c(lower = pull(d_hat) - 2 * sd(pull(boot)), 
-  upper = pull(d_hat) + 2 * sd(pull(boot)))
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = d_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 
 ## ------------------------------------------------------------------------
 ( t_hat <- fli_small %>%
@@ -337,9 +346,10 @@ boot <- fli_small %>%
    specify(arr_delay ~ season) %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "t", order = c("summer", "winter"))
-visualize(boot)
-c(lower = pull(t_hat) - 2 * sd(pull(boot)), 
-  upper = pull(t_hat) + 2 * sd(pull(boot)))
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = t_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 
 ## ------------------------------------------------------------------------
 ( d_hat <- fli_small %>% 
@@ -351,9 +361,10 @@ boot <- fli_small %>%
   specify(day_hour ~ season, success = "morning") %>%
   generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "diff in props", order = c("summer", "winter"))
-visualize(boot)
-c(lower = pull(d_hat) - 2 * sd(pull(boot)), 
-  upper = pull(d_hat) + 2 * sd(pull(boot)))
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = d_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 
 ## ------------------------------------------------------------------------
 ( z_hat <- fli_small %>% 
@@ -365,9 +376,10 @@ boot <- fli_small %>%
   specify(day_hour ~ season, success = "morning") %>%
   generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "z", order = c("summer", "winter"))
-visualize(boot)
-c(lower = pull(z_hat) - 2 * sd(pull(boot)), 
-  upper = pull(z_hat) + 2 * sd(pull(boot)))
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = z_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 
 ## ------------------------------------------------------------------------
 ( slope_hat <- fli_small %>% 
@@ -379,9 +391,10 @@ boot <- fli_small %>%
    specify(arr_delay ~ dep_delay) %>% 
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "slope")
-visualize(boot)
-c(lower = pull(slope_hat) - 2 * sd(pull(boot)), 
-  upper = pull(slope_hat) + 2 * sd(pull(boot)))   
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", point_estimate = slope_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between") 
 
 ## ------------------------------------------------------------------------
 ( correlation_hat <- fli_small %>% 
@@ -393,9 +406,11 @@ boot <- fli_small %>%
    specify(arr_delay ~ dep_delay) %>% 
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "correlation")
-visualize(boot)
-c(lower = pull(correlation_hat) - 2 * sd(pull(boot)), 
-  upper = pull(correlation_hat) + 2 * sd(pull(boot)))   
+( percentile_ci <- get_ci(boot) )
+boot %>% visualize(endpoints = percentile_ci, direction = "between")
+( standard_error_ci <- get_ci(boot, type = "se", 
+                            point_estimate = correlation_hat) )
+boot %>% visualize(endpoints = standard_error_ci, direction = "between")  
 
 ## ----eval=FALSE, echo=FALSE----------------------------------------------
 #  # **Point estimate**
@@ -408,7 +423,8 @@ c(lower = pull(correlation_hat) - 2 * sd(pull(boot)),
 #     specify(arr_delay ~ dep_delay) %>%
 #     generate(reps = 1000, type = "bootstrap") %>%
 #     calculate(stat = "t")
-#  visualize(boot)
-#  c(lower = pull(t_hat) - 2 * sd(pull(boot)),
-#    upper = pull(t_hat) + 2 * sd(pull(boot)))
+#  ( percentile_ci <- get_ci(boot) )
+#  boot %>% visualize(endpoints = percentile_ci, direction = "between")
+#  ( standard_error_ci <- get_ci(boot, type = "se", point_estimate = t_hat) )
+#  boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 

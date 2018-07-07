@@ -46,7 +46,7 @@ chisq_null_distn %>% visualize(obs_stat = obs_chisq, direction = "greater")
 
 ## ------------------------------------------------------------------------
 chisq_null_distn %>% 
-  p_value(obs_stat = obs_chisq, direction = "greater")
+  get_pvalue(obs_stat = obs_chisq, direction = "greater")
 
 ## ------------------------------------------------------------------------
 fli_small %>%

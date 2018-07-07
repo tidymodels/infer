@@ -20,6 +20,8 @@ editor_options:
 knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
 ```
 
+This vignette is designed to show how to use the {infer} package with {dplyr} syntax. It does not show how to calculate observed statistics or p-values using the {infer} package. To see examples of these, check out the "Computation of observed statistics..." vignette instead.
+
 ## Data preparation
 
 ```{r message=FALSE, warning=FALSE}

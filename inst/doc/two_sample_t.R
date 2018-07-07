@@ -47,7 +47,7 @@ t_null_distn %>% visualize(obs_stat = obs_t, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 t_null_distn %>% 
-  p_value(obs_stat = obs_t, direction = "greater")
+  get_pvalue(obs_stat = obs_t, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 fli_small %>%

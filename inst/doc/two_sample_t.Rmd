@@ -61,7 +61,7 @@ obs_t <- fli_small %>%
   calculate(stat = "t", order = c("h1", "h2"))
 ```
 
-The observed $\chi^2$ statistic is `r obs_chisq`.
+The observed $t$ statistic is `r obs_t`.
 
 Or using `t_test` in `infer`
 
@@ -100,7 +100,7 @@ t_null_distn %>% visualize(obs_stat = obs_t, direction = "two_sided")
 
 ```{r}
 t_null_distn %>% 
-  p_value(obs_stat = obs_t, direction = "greater")
+  get_pvalue(obs_stat = obs_t, direction = "two_sided")
 ```
 
 
