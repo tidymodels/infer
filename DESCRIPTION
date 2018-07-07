@@ -36,8 +36,7 @@ Suggests:
     nycflights13,
     stringr,
     testthat,
-    covr,
-    okcupiddata
+    covr
 URL: https://github.com/andrewpbray/infer
 BugReports: https://github.com/andrewpbray/infer/issues
 RoxygenNote: 6.0.1
