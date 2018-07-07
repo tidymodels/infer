@@ -5,6 +5,7 @@
 #' @return A tibble containing the response (and explanatory, if specified) 
 #' variable data with parameter information stored as well
 #' @importFrom dplyr as.tbl
+#' @return a data frame with attributes set
 #' @export
 #' @examples
 #' # Permutation test similar to ANOVA

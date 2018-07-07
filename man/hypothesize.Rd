@@ -16,6 +16,8 @@ hypothesize(x, null, ...)
 \value{
 A tibble containing the response (and explanatory, if specified) 
 variable data with parameter information stored as well
+
+a data frame with attributes set
 }
 \description{
 Declare a null hypothesis

@@ -121,7 +121,7 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
 
 check_for_numeric_stat <- function(x, stat){
   if (stat %in% c("mean", "median", "sd")){
-    col <- setdiff(names(x), "replicate")
+    col <- base::setdiff(names(x), "replicate")
     
     if (!is.numeric(x[[as.character(col)]])){
       stop(paste0("Calculating a ",
@@ -209,7 +209,7 @@ parse_params <- function(dots, x) {
       if(dots$p < 0 || dots$p > 1)
         stop("The value suggested for `p` is not between 0 and 1, inclusive.",
              call. = FALSE)
-      missing_lev <- setdiff(unique(pull(x, !!attr(x, "response"))), 
+      missing_lev <- base::setdiff(unique(pull(x, !!attr(x, "response"))), 
                              attr(x, "success"))
       dots$p <- append(dots$p, 1 - dots$p)
       names(dots$p) <- c(attr(x, "success"), missing_lev)
@@ -260,4 +260,36 @@ hypothesize_checks <- function(x, null){
                 'a null hypothesis of `"independence"`.'),
          call. = FALSE)
   }
+}
+
+check_direction <- function(direction = c("less", "greater", "two_sided",
+                                          "left", "right", "both")){
+  assertive::assert_is_character(direction)
+  
+  if(!(direction %in% c("less", "greater", "two_sided",
+                        "left", "right", "both"))){
+    stop(paste('The provided value for `direction` is not appropriate.',
+               'Possible values are "less", "greater", "two_sided"',
+               '"left", "right", or "both".'))
+  }
+}
+
+check_obs_stat <- function(obs_stat){
+  if(!is.null(obs_stat)){
+    if("data.frame" %in% class(obs_stat)){
+      assertive::assert_is_data.frame(obs_stat)
+      if( (nrow(obs_stat) != 1) || (ncol(obs_stat) != 1) ) 
+        warning(paste("The first row and first column value of the given", 
+                      "`obs_stat` will be used."))
+      
+      # [[1]] is used in case `stat` is not specified as name of 1x1
+      obs_stat <- obs_stat[[1]][[1]]
+      assertive::assert_is_numeric(obs_stat)
+    }
+    else{
+      assertive::assert_is_numeric(obs_stat)
+    }
+  }
+  
+  obs_stat
 }

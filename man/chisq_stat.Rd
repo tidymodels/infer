@@ -11,7 +11,7 @@ chisq_stat(data, formula, ...)
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
 
-\item{...}{additional arguments for \code{chisq.test}}
+\item{...}{additional arguments for \code{stats::chisq.test}}
 }
 \description{
 A shortcut wrapper function to get the observed test statistic for a chisq test. Uses \code{stats::chisq.test}, which applies a continuity correction.

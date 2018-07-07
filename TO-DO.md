@@ -2,6 +2,9 @@
 
 ## For future CRAN releases
 
+- Shading for Confidence Intervals in `visualize()`
+    - Need to implement for theoretical distributions and `method = "both"`
+- Allow `visualize()` to specify which `variable` to plot instead of only working with `stat` column
 - Check that corresponding z for one prop depends on `params` being set in `hypothesize` with `specify() %>% calculate()` shortcut
 - Check that assumptions have been met for the theoretical distribution and `"both"`
 - Fix double printing of `Response:` and `Explanatory:`
@@ -10,9 +13,8 @@
     - Determine if other wrapper functions should be created 
         - `z_test()`, `mean_stat()`, `diff_in_mean_stat()`, etc.? 
 - Consider re-working how p-values can be calculated (both for computational and theoretical)
-    - Create a `determine()` function with first argument being either `"p value"` or `"confidence interval"`? Maybe check to make sure that p-values don't exceed 1 too
-    - Could have wrapper functions `p_value()` and `conf_inf()` as well
-    - Should the wrapper functions like `t_test()` also include a logical `conf_int` argument?
+    - Maybe check to make sure that p-values don't exceed 1 too
+- Should the wrapper functions like `t_test()` also include a logical `conf_int` argument?
 - Check that `stat` is calculated appropriately if `generate()` is not called
     - `order` of the arguments into the standardized statistics should be checked again
     - May require moving of `set_params()` to be after `specify()`
@@ -26,9 +28,6 @@
 - Implement theoretical distributions for bootstrap distributions
 - Create `resources.md` with links to slides/talks/workshops given about `infer`
 - Add Lionel's vis checking package ([`vdiffr`](https://github.com/lionel-/vdiffr)) to `visualize()` tests
-- Shading for Confidence Intervals in `visualize()` (Mine would prefer green
-for CI and red for p-values)
-    - `direction = "between"` to get the green shading?
 - Determine whether `calculate()` should be where the `set_params()` function is called
 instead of in `specify()`
 - Need to also add parameters to wrapper functions so that randomization

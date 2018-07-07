@@ -6,8 +6,9 @@
 or the theoretical distribution (or both!)}
 \usage{
 visualize(data, bins = 15, method = "simulation", dens_color = "black",
-  obs_stat = NULL, obs_stat_color = "#e51010", shade_color = "#efb8b8",
-  direction = NULL, ...)
+  obs_stat = NULL, obs_stat_color = "red2", pvalue_fill = "pink",
+  direction = NULL, endpoints = NULL,
+  endpoints_color = "mediumaquamarine", ci_fill = "turquoise", ...)
 }
 \arguments{
 \item{data}{the output from \code{\link{calculate}}}
@@ -21,19 +22,33 @@ with "both" corresponding to "simulation" and "theoretical"}
 \item{dens_color}{a character or hex string specifying the color of the
 theoretical density curve}
 
-\item{obs_stat}{a numeric value or 1x1 data frame corresponding to what the observed 
-statistic is}
+\item{obs_stat}{a numeric value or 1x1 data frame corresponding to what
+the observed statistic is}
 
 \item{obs_stat_color}{a character or hex string specifying the color of
-the observed statistic}
+the observed statistic as a vertical line on the plot}
 
-\item{shade_color}{a character or hex string specifying the color to shade}
+\item{pvalue_fill}{a character or hex string specifying the color to shade
+the pvalue. In previous versions of the package this was the \code{shade_color} 
+argument}
 
 \item{direction}{a string specifying in which direction the shading 
-should occur. Options are "less", "greater", or "two_sided".
-Can also specify "left", "right", or "both".}
+should occur. Options are "less", "greater", or "two_sided" for p-value.
+Can also give "left", "right", or "both" for p-value. For confidence 
+intervals, use "between".
+and give the endpoint values in \code{endpoints}}
 
-\item{...}{currently ignored}
+\item{endpoints}{a 2 element vector or a 1 x 2 data frame containing the
+lower and upper values to be plotted. Most useful for visualizing
+conference intervals.}
+
+\item{endpoints_color}{a character or hex string specifying the color of
+the observed statistic as a vertical line on the plot}
+
+\item{ci_fill}{a character or hex string specifying the color to shade
+the confidence interval}
+
+\item{...}{other arguments passed along to ggplot2}
 }
 \value{
 A ggplot object showing the simulation-based distribution as a

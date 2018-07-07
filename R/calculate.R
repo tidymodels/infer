@@ -125,18 +125,10 @@ calculate <- function(x,
       "Your choice of `stat` is invalid for the ",
       "types of variables `specify`ed."
     ))
-  else
-    class(result) <- append("infer", class(result))
+#  else
+#    class(result) <- append("infer", class(result))
   
-  attr(result, "response") <- attr(x, "response")
-  attr(result, "success") <- attr(x, "success")
-  attr(result, "explanatory") <- attr(x, "explanatory")
-  attr(result, "response_type") <- attr(x, "response_type")
-  attr(result, "explanatory_type") <- attr(x, "explanatory_type")
-  attr(result, "params") <- attr(x, "params")
-  attr(result, "distr_param") <- attr(x, "distr_param")
-  attr(result, "distr_param2") <- attr(x, "distr_param2")
-  attr(result, "theory_type") <- attr(x, "theory_type")
+  result <- set_attributes(to = result, from = x)
   attr(result, "stat") <- stat
   
   # For returning a 1x1 observed statistic value
@@ -152,7 +144,7 @@ calc_impl <-
 
 
 calc_impl.mean <- function(stat, x, order, ...) {
-  col <- setdiff(names(x), "replicate")
+  col <- base::setdiff(names(x), "replicate")
   
   x %>%
     dplyr::group_by(replicate) %>%
@@ -161,7 +153,7 @@ calc_impl.mean <- function(stat, x, order, ...) {
 }
 
 calc_impl.median <- function(stat, x, order, ...) {
-  col <- setdiff(names(x), "replicate")
+  col <- base::setdiff(names(x), "replicate")
   
   x %>%
     dplyr::group_by(replicate) %>%
@@ -169,7 +161,7 @@ calc_impl.median <- function(stat, x, order, ...) {
 }
 
 calc_impl.sd <- function(stat, x, order, ...) {
-  col <- setdiff(names(x), "replicate")
+  col <- base::setdiff(names(x), "replicate")
   
   x %>%
     dplyr::group_by(replicate) %>%
@@ -177,7 +169,7 @@ calc_impl.sd <- function(stat, x, order, ...) {
 }
 
 calc_impl.prop <- function(stat, x, order, ...) {
-  col <- setdiff(names(x), "replicate")
+  col <- base::setdiff(names(x), "replicate")
   
   ## No longer needed with implementation of `check_point_params()`
   # if(!is.factor(x[[col]])){
@@ -227,7 +219,7 @@ calc_impl.slope <- function(stat, x, order, ...) {
 
 calc_impl.correlation <- function(stat, x, order, ...) {
   x %>% 
-    dplyr::summarize(stat = cor(!!attr(x, "explanatory"), 
+    dplyr::summarize(stat = stats::cor(!!attr(x, "explanatory"), 
                                 !!attr(x, "response")))
 }
 
