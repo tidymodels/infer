@@ -4,21 +4,25 @@
 \alias{calculate}
 \title{Calculate summary statistics}
 \usage{
-calculate(x, stat, order = NULL, ...)
+calculate(x, stat = c("mean", "median", "sd", "prop", "diff in means",
+  "diff in medians", "diff in props", "Chisq", "F", "slope", "correlation", "t",
+  "z"), order = NULL, ...)
 }
 \arguments{
-\item{x}{the output from \code{\link{generate}} for computation-based 
+\item{x}{the output from \code{\link{generate}} for computation-based
 inference or the output from \code{\link{hypothesize}}
 piped in to here for theory-based inference.}
 
 \item{stat}{a string giving the type of the statistic to calculate. Current
 options include "mean", "median", "sd", "prop", "diff in means",
-"diff in medians", "diff in props", "Chisq", "F", "t", "z", and "slope".}
+"diff in medians", "diff in props", "Chisq", "F", "t", "z", "slope",
+and "correlation".}
 
 \item{order}{a string vector of specifying the order in which the levels of
 the explanatory variable should be ordered for subtraction, where
 \code{order = c("first", "second")} means \code{("first" - "second")}
-Needed for inference on difference in means, medians, or proportions.}
+Needed for inference on difference in means, medians, or proportions and
+t and z statistics.}
 
 \item{...}{to pass options like \code{na.rm = TRUE} into functions like
 mean, sd, etc.}

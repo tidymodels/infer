@@ -1,6 +1,6 @@
 ---
 title: "Examples using `mtcars` data"
-author: "Chester Ismay and Andrew bray"
+author: "Chester Ismay and Andrew Bray"
 date: "2018-01-05"
 output: 
   rmarkdown::html_vignette
@@ -13,6 +13,9 @@ vignette: |
 ```{r include=FALSE}
 knitr::opts_chunk$set(fig.width = 8, fig.height = 5) 
 ```
+
+**Note**: The `type` argument in `generate()` is automatically filled based on the entries for `specify()` and
+`hypothesize()`. It can be removed throughout the examples that follow. It is left in to reiterate the type of generation process being performed.
 
 ## Data preparation
 
@@ -28,7 +31,6 @@ mtcars <- mtcars %>%
 # For reproducibility         
 set.seed(2018)         
 ```
-
 
 ***
 
@@ -208,5 +210,14 @@ mtcars %>%
   specify(mpg ~ hp) %>% 
   generate(reps = 100, type = "bootstrap") %>%
   calculate(stat = "slope")
+```
+
+Two numerical vars - correlation
+
+```{r}
+mtcars %>%
+  specify(mpg ~ hp) %>% 
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "correlation")
 ```
 

@@ -1,0 +1,33 @@
+navbar:
+  type: default
+  left:
+  - text: Articles
+    menu:
+    - text: Chi-square Test Example
+      href: articles/chisq_test.html
+    - text: Two-Sample t-test Example
+      href: articles/two_sample_t.html    
+    - text: Observed Statistic Calculation Examples
+      href: articles/observed_stat_examples.html
+    - text: Simulation-Based `flights` Examples
+      href: articles/flights_examples.html
+    - text: Examples using `mtcars`
+      href: articles/mtcars_examples.html
+# Remove these DEV vignettes when going to master branch/CRAN      
+    - text: (DEV) Simulation-Based `okcupiddata` Examples
+      href: articles/profiles_examples.html
+    - text: (DEV) Simulation-Based and Traditional `okcupiddata` Examples
+      href: articles/profiles_examples_both_methods.html
+  - text: Reference
+    href: reference/index.html      
+  - text: News
+    href: news/index.html
+  - text: How To Contribute
+    href: CONTRIBUTING.html
+  - text: Code of Conduct
+    href: CONDUCT.html
+  - text: To-Dos
+    href: TO-DO.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/andrewpbray/infer

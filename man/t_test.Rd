@@ -4,17 +4,29 @@
 \alias{t_test}
 \title{A tidier version of t.test for two sample tests}
 \usage{
-t_test(data, formula, alternative = "two_sided", ...)
+t_test(data, formula, order = NULL, alternative = "two_sided", mu = 0,
+  conf_int = TRUE, conf_level = 0.95, ...)
 }
 \arguments{
 \item{data}{a data frame that can be coerced into a \code{\link[tibble]{tibble}}}
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
 
-\item{alternative}{character string specifying the direction of the alternative hypothesis. Options are
+\item{order}{#' @param order a string vector of specifying the order in which the levels of
+the explanatory variable should be ordered for subtraction, where
+\code{order = c("first", "second")} means \code{("first" - "second")}}
+
+\item{alternative}{character string giving the direction of the alternative hypothesis. Options are
 "\code{two_sided}" (default), "\code{greater}", or "\code{less}".}
 
-\item{...}{currently ignored}
+\item{mu}{a numeric value giving the hypothesized null mean value for a one sample test
+and the hypothesized difference for a two sample test}
+
+\item{conf_int}{a logical value for whether to include the confidence interval or not. TRUE by default}
+
+\item{conf_level}{a numeric value between 0 and 1. Default value is 0.95}
+
+\item{...}{for passing in other arguments to \code{stats::t.test}}
 }
 \description{
 A tidier version of t.test for two sample tests
@@ -23,5 +35,5 @@ A tidier version of t.test for two sample tests
 # t test for comparing mpg against automatic/manual
   mtcars \%>\%
     dplyr::mutate(am = factor(am)) \%>\%
-    t_test(mpg ~ am, alternative = "less")
+    t_test(mpg ~ am, order = c("1", "0"), alternative = "less")
 }

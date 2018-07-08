@@ -132,3 +132,9 @@ mtcars %>%
   generate(reps = 100, type = "bootstrap") %>%
   calculate(stat = "slope")
 
+## ------------------------------------------------------------------------
+mtcars %>%
+  specify(mpg ~ hp) %>% 
+  generate(reps = 100, type = "bootstrap") %>%
+  calculate(stat = "correlation")
+

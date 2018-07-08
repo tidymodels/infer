@@ -26,6 +26,8 @@ fli_small <- flights %>%
 x_bar <- fli_small %>%
   summarize(mean(dep_delay)) %>%
   pull()
+
+## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
   specify(response = dep_delay) %>%
   hypothesize(null = "point", mu = 10) %>%
@@ -35,7 +37,7 @@ ggplot(data = null_distn, mapping = aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = x_bar, color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat > x_bar) * 2)
+  summarize(p_value = mean(stat >= x_bar) * 2)
 
 ## ------------------------------------------------------------------------
 x_tilde <- fli_small %>%
@@ -43,14 +45,14 @@ x_tilde <- fli_small %>%
   pull()
 null_distn <- fli_small %>%
   specify(response = dep_delay) %>%
-  hypothesize(null = "point", med = 0) %>% 
+  hypothesize(null = "point", med = -1) %>% 
   generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "median")
 ggplot(null_distn, aes(x = stat)) +
   geom_bar() +
   geom_vline(xintercept = x_tilde, color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat < x_tilde) * 2)
+  summarize(p_value = mean(stat <= x_tilde) * 2)
 
 ## ------------------------------------------------------------------------
 p_hat <- fli_small %>%
@@ -65,7 +67,7 @@ ggplot(null_distn, aes(x = stat)) +
   geom_bar() +
   geom_vline(xintercept = p_hat, color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat < p_hat) * 2)
+  summarize(p_value = mean(stat <= p_hat) * 2)
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -85,17 +87,20 @@ null_distn <- fli_small %>%
   specify(day_hour ~ season, success = "morning") %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>% 
-  calculate(stat = "diff in props", order = c("summer", "winter"))
+  calculate(stat = "diff in props", order = c("winter", "summer"))
 ggplot(null_distn, aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = d_hat, color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat < d_hat) * 2) %>%
+  summarize(p_value = mean(stat <= d_hat) * 2) %>%
   pull()
 
 ## ------------------------------------------------------------------------
 Chisq_hat <- fli_small %>%
-  chisq_stat(formula = origin ~ NULL)
+  specify(response = origin) %>%
+  hypothesize(null = "point", 
+              p = c("EWR" = .33, "JFK" = .33, "LGA" = .34)) %>% 
+  calculate(stat = "Chisq")
 null_distn <- fli_small %>%
   specify(response = origin) %>%
   hypothesize(null = "point", 
@@ -104,9 +109,9 @@ null_distn <- fli_small %>%
   calculate(stat = "Chisq")
 ggplot(null_distn, aes(x = stat)) +
   geom_density() +
-  geom_vline(xintercept = Chisq_hat, color = "red")
+  geom_vline(xintercept = pull(Chisq_hat), color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat > Chisq_hat)) %>%
+  summarize(p_value = mean(stat >= pull(Chisq_hat))) %>%
   pull()
 
 ## ------------------------------------------------------------------------
@@ -119,16 +124,17 @@ null_distn <- fli_small %>%
   calculate(stat = "Chisq")
 ggplot(null_distn, aes(x = stat)) +
   geom_density() +
-  geom_vline(xintercept = Chisq_hat, color = "red")
+  geom_vline(xintercept = pull(Chisq_hat), color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat > Chisq_hat)) %>%
+  summarize(p_value = mean(stat >= pull(Chisq_hat))) %>%
   pull()
 
 ## ------------------------------------------------------------------------
 d_hat <- fli_small %>% 
   group_by(season) %>% 
   summarize(mean_stat = mean(dep_delay)) %>% 
-  summarize(diff(mean_stat)) %>% 
+  # Since summer - winter
+  summarize(-diff(mean_stat)) %>% 
   pull()
 null_distn <- fli_small %>%
   specify(dep_delay ~ season) %>% # alt: response = dep_delay, 
@@ -140,14 +146,15 @@ ggplot(null_distn, aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = d_hat, color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat < d_hat) * 2) %>%
+  summarize(p_value = mean(stat <= d_hat) * 2) %>%
   pull()
 
 ## ------------------------------------------------------------------------
 d_hat <- fli_small %>% 
   group_by(season) %>% 
   summarize(median_stat = median(dep_delay)) %>% 
-  summarize(diff(median_stat)) %>% 
+  # Since summer - winter
+  summarize(-diff(median_stat)) %>% 
   pull()
 null_distn <- fli_small %>%
   specify(dep_delay ~ season) %>% # alt: response = dep_delay, 
@@ -159,7 +166,7 @@ ggplot(null_distn, aes(x = stat)) +
   geom_bar() +
   geom_vline(xintercept = d_hat, color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat < d_hat) * 2) %>%
+  summarize(p_value = mean(stat >= d_hat) * 2) %>%
   pull()
 
 ## ------------------------------------------------------------------------
@@ -176,7 +183,7 @@ ggplot(null_distn, aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = F_hat, color = "red")  
 null_distn %>% 
-  summarize(p_value = mean(stat > F_hat)) %>%
+  summarize(p_value = mean(stat >= F_hat)) %>%
   pull()
 
 ## ------------------------------------------------------------------------
@@ -194,7 +201,7 @@ ggplot(null_distn, aes(x = stat)) +
   geom_density() +
   geom_vline(xintercept = slope_hat, color = "red")  
 null_distn %>% 
-  summarize(p_value = mean(stat > slope_hat) * 2) %>%
+  summarize(p_value = mean(stat >= slope_hat) * 2) %>%
   pull()
 
 ## ------------------------------------------------------------------------
@@ -225,7 +232,8 @@ c(lower = p_hat - 2 * sd(boot),
 d_hat <- fli_small %>% 
   group_by(season) %>% 
   summarize(mean_stat = mean(arr_delay)) %>% 
-  summarize(diff(mean_stat)) %>% 
+  # Since summer - winter
+  summarize(-diff(mean_stat)) %>% 
   pull()
 boot <- fli_small %>%
    specify(arr_delay ~ season) %>%
@@ -239,7 +247,8 @@ c(lower = d_hat - 2 * sd(boot),
 d_hat <- fli_small %>%
   group_by(season) %>%
   summarize(prop = mean(day_hour == "morning")) %>%
-  summarize(diff(prop)) %>%
+  # Since summer - winter
+  summarize(-diff(prop)) %>%
   pull()
 boot <- fli_small %>%
   specify(day_hour ~ season, success = "morning") %>%

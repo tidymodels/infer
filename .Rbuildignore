@@ -13,6 +13,8 @@
 ^cran-comments\.md$
 ^_build\.sh$
 ^appveyor\.yml$
-^implement_new_methods\.md
+^\.implement_new_methods\.md
 ^CONTRIBUTING\.md$
 ^TO-DO\.md$
+^\.httr-oauth$
+^_pkgdown.yml

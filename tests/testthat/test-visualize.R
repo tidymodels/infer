@@ -41,7 +41,8 @@ obs_diff_mean <- iris_tbl %>%
   pull()
 
 obs_t <- iris_tbl %>%
-  t_stat(Sepal.Width ~ Sepal.Length.Group)
+  t_stat(Sepal.Width ~ Sepal.Length.Group,
+         order = c(">5", "<=5"))
 
 obs_F <- anova(
     aov(formula = Sepal.Width ~ Species, data = iris_tbl)
@@ -85,6 +86,7 @@ test_that("visualize basic tests", {
                   specify(Sepal.Width.Group ~ Sepal.Length.Group,
                           success = "large") %>% 
                   hypothesize(null = "independence") %>% 
+                  calculate(stat = "z", order = c(">5", "<=5")) %>% 
                   visualize(method = "theoretical")
   )
   
@@ -288,4 +290,117 @@ test_that("visualize basic tests", {
 
 test_that("get_percentile works", {
   expect_equal(get_percentile(1:10, 4), 0.4)
+})
+
+test_that("obs_stat as a data.frame works", {
+  mean_petal_width <- iris_tbl %>% 
+                  specify(Petal.Width ~ NULL) %>%
+                  calculate(stat = "mean")
+  expect_silent(iris_tbl %>% 
+                 specify(Petal.Width ~ NULL) %>%
+                 hypothesize(null = "point", mu = 4) %>%
+                  generate(reps = 100, type = "bootstrap") %>%
+                 calculate(stat = "mean") %>% 
+                 visualize(obs_stat = mean_petal_width)
+  )
+  mean_df_test <- data.frame(x = c(4.1, 1), y = c(1, 2))
+  expect_warning(iris_tbl %>% 
+                   specify(Petal.Width ~ NULL) %>%
+                   hypothesize(null = "point", mu = 4) %>%
+                   generate(reps = 100, type = "bootstrap") %>%
+                   calculate(stat = "mean") %>% 
+                   visualize(obs_stat = mean_df_test)
+                 )
+  
+})
+
+
+test_that('method = "both" behaves nicely', {
+  # stop(paste0('`generate()` and `calculate()` are both required ', 
+  # 'to be done prior to `visualize(method = "both")`'))
+  expect_error(iris_tbl %>% 
+                 specify(Petal.Width ~ NULL) %>%
+                 hypothesize(null = "point", mu = 4) %>%
+                 generate(reps = 100, type = "bootstrap") %>%
+                 #    calculate(stat = "mean") %>% 
+                 visualize(method = "both"))
+  
+  #  
+  expect_warning(iris_tbl %>% 
+                   specify(Petal.Width ~ Sepal.Length.Group) %>%
+                   hypothesize(null = "point", mu = 4) %>%
+                   generate(reps = 10, type = "bootstrap") %>%
+                   calculate(stat = "t", order = c(">5", "<=5")) %>% 
+                   visualize(method = "both")
+  )  
+})
+
+test_that("Traditional right-tailed tests have warning if not right-tailed", {
+  expect_warning(iris_tbl %>% 
+                   specify(Sepal.Width.Group ~ Species, 
+                           success = "large") %>% 
+                   hypothesize(null = "independence") %>% 
+                   generate(reps = 100, type = "permute") %>% 
+                   calculate(stat = "Chisq") %>% 
+                   visualize(method = "both", obs_stat = 2, direction = "left")
+                 )
+  expect_warning(iris_tbl %>% 
+                   specify(Sepal.Length ~ Species) %>% 
+                   hypothesize(null = "independence") %>% 
+                   generate(reps = 100, type = "permute") %>% 
+                   calculate(stat = "F") %>% 
+                   visualize(method = "both", obs_stat = 2, 
+                             direction = "two_sided")
+  )
+  expect_warning(iris_tbl %>% 
+                   specify(Sepal.Width.Group ~ Species, 
+                           success = "large") %>% 
+                   hypothesize(null = "independence") %>% 
+ #                  generate(reps = 100, type = "permute") %>% 
+                   calculate(stat = "Chisq") %>% 
+                   visualize(method = "theoretical", obs_stat = 2, 
+                             direction = "left")
+  )
+  expect_warning(iris_tbl %>% 
+                   specify(Sepal.Length ~ Species) %>% 
+                   hypothesize(null = "independence") %>% 
+  #                 generate(reps = 100, type = "permute") %>% 
+                   calculate(stat = "F") %>% 
+                   visualize(method = "theoretical", obs_stat = 2, 
+                             direction = "two_sided")
+  )
+  
+})
+
+test_that("confidence interval plots are working",{
+  
+  iris_boot <- iris_tbl %>% 
+    specify(Sepal.Width.Group ~ Sepal.Length.Group,
+            success = "large") %>% 
+    generate(reps = 100) %>% 
+    calculate(stat = "diff in props", 
+              order = c(">5", "<=5"))
+  
+  df_error <- tibble::tibble(col1 = rnorm(5), col2 = rnorm(5))
+  vec_error <- 1:10
+  
+  perc_ci <- iris_boot %>% get_ci()
+  
+  expect_error(
+    iris_boot %>% visualize(endpoints = df_error) 
+  )
+  
+  expect_warning(
+    iris_boot %>% visualize(endpoints = vec_error) 
+  )
+  
+  expect_silent(
+    iris_boot %>% visualize(endpoints = perc_ci,
+                            direction = "between")
+  )
+  
+  expect_warning(
+    iris_boot %>% visualize(obs_stat = 3, endpoints = perc_ci)
+  )
+  
 })
