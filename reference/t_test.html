@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -32,6 +34,7 @@
 
 <meta property="og:description" content="A tidier version of t.test for two sample tests" />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -58,22 +61,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
      
@@ -81,21 +75,42 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/chisq_test.html">Chi-squared test example using `nycflights13` `flights` data</a>
+      <a href="../articles/chisq_test.html">Chi-square Test Example</a>
     </li>
     <li>
-      <a href="../articles/flights_examples.html">Randomization Examples using `nycflights13` `flights` data</a>
+      <a href="../articles/two_sample_t.html">Two-Sample t-test Example</a>
     </li>
     <li>
-      <a href="../articles/mtcars_examples.html">Examples using `mtcars` data</a>
+      <a href="../articles/observed_stat_examples.html">Observed Statistic Calculation Examples</a>
     </li>
     <li>
-      <a href="../articles/two_sample_t.html">Two sample $t$ test example using `nycflights13` `flights` data</a>
+      <a href="../articles/flights_examples.html">Simulation-Based `flights` Examples</a>
+    </li>
+    <li>
+      <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
+    </li>
+    <li>
+      <a href="../articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
+    </li>
+    <li>
+      <a href="../articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
+<li>
+  <a href="../CONTRIBUTING.html">How To Contribute</a>
+</li>
+<li>
+  <a href="../CONDUCT.html">Code of Conduct</a>
+</li>
+<li>
+  <a href="../TO-DO.html">To-Dos</a>
 </li>
       </ul>
       
@@ -129,7 +144,8 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>t_test</span>(<span class='no'>data</span>, <span class='no'>formula</span>, <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"two_sided"</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>t_test</span>(<span class='no'>data</span>, <span class='no'>formula</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"two_sided"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>conf_int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>conf_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,13 +159,32 @@
       <td><p>a formula with the response variable on the left and the explanatory on the right</p></td>
     </tr>
     <tr>
+      <th>order</th>
+      <td><p>#' @param order a string vector of specifying the order in which the levels of
+the explanatory variable should be ordered for subtraction, where
+<code>order = c("first", "second")</code> means <code>("first" - "second")</code></p></td>
+    </tr>
+    <tr>
       <th>alternative</th>
-      <td><p>character string specifying the direction of the alternative hypothesis. Options are
+      <td><p>character string giving the direction of the alternative hypothesis. Options are
 "<code>two_sided</code>" (default), "<code>greater</code>", or "<code>less</code>".</p></td>
     </tr>
     <tr>
+      <th>mu</th>
+      <td><p>a numeric value giving the hypothesized null mean value for a one sample test
+and the hypothesized difference for a two sample test</p></td>
+    </tr>
+    <tr>
+      <th>conf_int</th>
+      <td><p>a logical value for whether to include the confidence interval or not. TRUE by default</p></td>
+    </tr>
+    <tr>
+      <th>conf_level</th>
+      <td><p>a numeric value between 0 and 1. Default value is 0.95</p></td>
+    </tr>
+    <tr>
       <th>...</th>
-      <td><p>currently ignored</p></td>
+      <td><p>for passing in other arguments to <code><a href='http://www.rdocumentation.org/packages/stats/topics/t.test'>stats::t.test</a></code></p></td>
     </tr>
     </table>
     
@@ -158,8 +193,8 @@
     <pre class="examples"><div class='input'><span class='co'># t test for comparing mpg against automatic/manual</span>
   <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
     <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'>t_test</span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>, <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"less"</span>)</div><div class='output co'>#&gt;   statistic     t_df      p_value alternative
-#&gt; 1 -3.767123 18.33225 0.0006868192        less</div></pre>
+    <span class='fu'>t_test</span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>), <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"less"</span>)</div><div class='output co'>#&gt;   statistic     t_df   p_value alternative lower_ci upper_ci
+#&gt; 1  3.767123 18.33225 0.9993132        less     -Inf 10.57662</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

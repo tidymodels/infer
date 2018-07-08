@@ -21,9 +21,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -32,6 +34,7 @@
 
 <meta property="og:description" content="Calculate summary statistics" />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -58,22 +61,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
      
@@ -81,21 +75,42 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/chisq_test.html">Chi-squared test example using `nycflights13` `flights` data</a>
+      <a href="../articles/chisq_test.html">Chi-square Test Example</a>
     </li>
     <li>
-      <a href="../articles/flights_examples.html">Randomization Examples using `nycflights13` `flights` data</a>
+      <a href="../articles/two_sample_t.html">Two-Sample t-test Example</a>
     </li>
     <li>
-      <a href="../articles/mtcars_examples.html">Examples using `mtcars` data</a>
+      <a href="../articles/observed_stat_examples.html">Observed Statistic Calculation Examples</a>
     </li>
     <li>
-      <a href="../articles/two_sample_t.html">Two sample $t$ test example using `nycflights13` `flights` data</a>
+      <a href="../articles/flights_examples.html">Simulation-Based `flights` Examples</a>
+    </li>
+    <li>
+      <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
+    </li>
+    <li>
+      <a href="../articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
+    </li>
+    <li>
+      <a href="../articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
+<li>
+  <a href="../CONTRIBUTING.html">How To Contribute</a>
+</li>
+<li>
+  <a href="../CONDUCT.html">Code of Conduct</a>
+</li>
+<li>
+  <a href="../TO-DO.html">To-Dos</a>
 </li>
       </ul>
       
@@ -129,14 +144,16 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>calculate</span>(<span class='no'>x</span>, <span class='no'>stat</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>calculate</span>(<span class='no'>x</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>, <span class='st'>"sd"</span>, <span class='st'>"prop"</span>, <span class='st'>"diff in means"</span>,
+  <span class='st'>"diff in medians"</span>, <span class='st'>"diff in props"</span>, <span class='st'>"Chisq"</span>, <span class='st'>"F"</span>, <span class='st'>"slope"</span>, <span class='st'>"correlation"</span>, <span class='st'>"t"</span>,
+  <span class='st'>"z"</span>), <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>the output from <code><a href='generate.html'>generate</a></code> for computation-based 
+      <td><p>the output from <code><a href='generate.html'>generate</a></code> for computation-based
 inference or the output from <code><a href='hypothesize.html'>hypothesize</a></code>
 piped in to here for theory-based inference.</p></td>
     </tr>
@@ -144,14 +161,16 @@ piped in to here for theory-based inference.</p></td>
       <th>stat</th>
       <td><p>a string giving the type of the statistic to calculate. Current
 options include "mean", "median", "sd", "prop", "diff in means",
-"diff in medians", "diff in props", "Chisq", "F", "t", "z", and "slope".</p></td>
+"diff in medians", "diff in props", "Chisq", "F", "t", "z", "slope",
+and "correlation".</p></td>
     </tr>
     <tr>
       <th>order</th>
       <td><p>a string vector of specifying the order in which the levels of
 the explanatory variable should be ordered for subtraction, where
 <code>order = c("first", "second")</code> means <code>("first" - "second")</code>
-Needed for inference on difference in means, medians, or proportions.</p></td>
+Needed for inference on difference in means, medians, or proportions and
+t and z statistics.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -172,10 +191,7 @@ mean, sd, etc.</p></td>
     <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>am</span> ~ <span class='no'>vs</span>, <span class='kw'>success</span> <span class='kw'>=</span> <span class='st'>"1"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'>calculate</span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"diff in props"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>))</div><div class='output co'>#&gt; Response: am (factor)
-#&gt; Explanatory: vs (factor)
-#&gt; Null Hypothesis:  independence 
-#&gt; # A tibble: 100 x 2
+    <span class='fu'>calculate</span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"diff in props"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>))</div><div class='output co'>#&gt; # A tibble: 100 x 2
 #&gt;    replicate    stat
 #&gt;        &lt;int&gt;   &lt;dbl&gt;
 #&gt;  1         1 -0.0873

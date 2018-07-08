@@ -22,9 +22,11 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
 
 
@@ -35,6 +37,7 @@
 <meta property="og:description" content="Generate resamples, permutations, or simulations based on
 `specify` and (if needed) `hypothesize` inputs" />
 <meta name="twitter:card" content="summary" />
+
 
 
 <!-- mathjax -->
@@ -61,22 +64,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
      
@@ -84,21 +78,42 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/chisq_test.html">Chi-squared test example using `nycflights13` `flights` data</a>
+      <a href="../articles/chisq_test.html">Chi-square Test Example</a>
     </li>
     <li>
-      <a href="../articles/flights_examples.html">Randomization Examples using `nycflights13` `flights` data</a>
+      <a href="../articles/two_sample_t.html">Two-Sample t-test Example</a>
     </li>
     <li>
-      <a href="../articles/mtcars_examples.html">Examples using `mtcars` data</a>
+      <a href="../articles/observed_stat_examples.html">Observed Statistic Calculation Examples</a>
     </li>
     <li>
-      <a href="../articles/two_sample_t.html">Two sample $t$ test example using `nycflights13` `flights` data</a>
+      <a href="../articles/flights_examples.html">Simulation-Based `flights` Examples</a>
+    </li>
+    <li>
+      <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
+    </li>
+    <li>
+      <a href="../articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
+    </li>
+    <li>
+      <a href="../articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
+<li>
+  <a href="../CONTRIBUTING.html">How To Contribute</a>
+</li>
+<li>
+  <a href="../CONDUCT.html">Code of Conduct</a>
+</li>
+<li>
+  <a href="../TO-DO.html">To-Dos</a>
 </li>
       </ul>
       
@@ -134,7 +149,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>generate</span>(<span class='no'>x</span>, <span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>generate</span>(<span class='no'>x</span>, <span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'>attr</span>(<span class='no'>x</span>, <span class='st'>"type"</span>), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NA • infer</title>
+<title>What we’d like to implement • infer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -21,14 +21,17 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script>
 <script src="pkgdown.js"></script>
 
 
 
-<meta property="og:title" content="NA" />
+<meta property="og:title" content="What we’d like to implement" />
+
 
 
 <!-- mathjax -->
@@ -55,22 +58,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li>
-  <a href="index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
      
@@ -78,21 +72,42 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="articles/chisq_test.html">Chi-squared test example using `nycflights13` `flights` data</a>
+      <a href="articles/chisq_test.html">Chi-square Test Example</a>
     </li>
     <li>
-      <a href="articles/flights_examples.html">Randomization Examples using `nycflights13` `flights` data</a>
+      <a href="articles/two_sample_t.html">Two-Sample t-test Example</a>
     </li>
     <li>
-      <a href="articles/mtcars_examples.html">Examples using `mtcars` data</a>
+      <a href="articles/observed_stat_examples.html">Observed Statistic Calculation Examples</a>
     </li>
     <li>
-      <a href="articles/two_sample_t.html">Two sample $t$ test example using `nycflights13` `flights` data</a>
+      <a href="articles/flights_examples.html">Simulation-Based `flights` Examples</a>
+    </li>
+    <li>
+      <a href="articles/mtcars_examples.html">Examples using `mtcars`</a>
+    </li>
+    <li>
+      <a href="articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
+    </li>
+    <li>
+      <a href="articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="news/index.html">Changelog</a>
+  <a href="reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="news/index.html">News</a>
+</li>
+<li>
+  <a href="CONTRIBUTING.html">How To Contribute</a>
+</li>
+<li>
+  <a href="CONDUCT.html">Code of Conduct</a>
+</li>
+<li>
+  <a href="TO-DO.html">To-Dos</a>
 </li>
       </ul>
       
@@ -115,14 +130,46 @@
 <div class="row">
   <div class="contents col-md-9">
     <div class="page-header">
-      <h1>NA</h1>
+      <h1>What we’d like to implement</h1>
     </div>
+
+<div id="what-wed-like-to-implement" class="section level1">
 
 <div id="for-future-cran-releases" class="section level2">
 <h2 class="hasAnchor">
 <a href="#for-future-cran-releases" class="anchor"></a>For future CRAN releases</h2>
 <ul>
-<li>Consider re-working how p-values can be calculated (both for computational and theoretical)</li>
+<li>Shading for Confidence Intervals in <code><a href="reference/visualize.html">visualize()</a></code>
+<ul>
+<li>Need to implement for theoretical distributions and <code>method = "both"</code>
+</li>
+</ul>
+</li>
+<li>Allow <code><a href="reference/visualize.html">visualize()</a></code> to specify which <code>variable</code> to plot instead of only working with <code>stat</code> column</li>
+<li>Check that corresponding z for one prop depends on <code>params</code> being set in <code>hypothesize</code> with <code>specify() %&gt;% calculate()</code> shortcut</li>
+<li>Check that assumptions have been met for the theoretical distribution and <code>"both"</code>
+</li>
+<li>Fix double printing of <code>Response:</code> and <code>Explanatory:</code>
+<ul>
+<li>Might have something to do with <code>infer</code> class being set in multiple spots?</li>
+</ul>
+</li>
+<li>Check that <code>specify() %&gt;% calculate()</code> works for <code>stat = "z"</code> and <code>stat = "t"</code>
+<ul>
+<li>Determine if other wrapper functions should be created
+<ul>
+<li>
+<code>z_test()</code>, <code>mean_stat()</code>, <code>diff_in_mean_stat()</code>, etc.?</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Consider re-working how p-values can be calculated (both for computational and theoretical)
+<ul>
+<li>Maybe check to make sure that p-values don’t exceed 1 too</li>
+</ul>
+</li>
+<li>Should the wrapper functions like <code><a href="reference/t_test.html">t_test()</a></code> also include a logical <code>conf_int</code> argument?</li>
 <li>Check that <code>stat</code> is calculated appropriately if <code><a href="reference/generate.html">generate()</a></code> is not called
 <ul>
 <li>
@@ -133,12 +180,6 @@
 </li>
 </ul>
 </li>
-<li>Get <code>specify() %&gt;% calculate()</code> to work for the observed statistic
-<ul>
-<li>Coerce the argument to <code>xintercept</code> to be a vector in <code>geom_vline()</code> in <code><a href="reference/visualize.html">visualize()</a></code>
-</li>
-</ul>
-</li>
 <li>Add <code>add_obs_stat</code> toggle into <code><a href="reference/visualize.html">visualize()</a></code> and p-value calculation?</li>
 <li>Shift to list-columns in <code><a href="reference/generate.html">generate()</a></code>
 </li>
@@ -146,29 +187,18 @@
 </li>
 <li>Write test to check that bootstrapped values are centered near the hypothesized value in <code><a href="reference/specify.html">specify()</a></code>
 </li>
-<li>Check that assumptions have been met for the theoretical distribution and <code>"both"</code>
-</li>
 <li>Write vignettes on how NOT to use infer (strange errors, funky results, etc.)</li>
 <li>Implement theoretical distributions for bootstrap distributions</li>
-<li>Create <code>references.md</code> with links to slides/talks/workshops given about <code>infer</code>
+<li>Create <code>resources.md</code> with links to slides/talks/workshops given about <code>infer</code>
 </li>
 <li>Add Lionel’s vis checking package (<a href="https://github.com/lionel-/vdiffr"><code>vdiffr</code></a>) to <code><a href="reference/visualize.html">visualize()</a></code> tests</li>
-<li>Produce error if <code>mu</code> is given in <code><a href="reference/specify.html">specify()</a></code> but <code>stat = "median"</code> provided in <code><a href="reference/calculate.html">calculate()</a></code>
-</li>
-<li>Shading for Confidence Intervals in <code><a href="reference/visualize.html">visualize()</a></code> (Mine would prefer green for CI and red for p-values)</li>
 <li>Determine whether <code><a href="reference/calculate.html">calculate()</a></code> should be where the <code><a href="reference/set_params.html">set_params()</a></code> function is called instead of in <code><a href="reference/specify.html">specify()</a></code>
 </li>
 <li>Need to also add parameters to wrapper functions so that randomization methods can be implemented by practitioners looking to skip the longer pipe syntax</li>
-<li>Determine if other wrapper functions should be created
-<ul>
-<li>
-<code>z_test()</code>?</li>
-<li>Add implementation of one sample <code><a href="reference/t_test.html">t_test()</a></code>?</li>
-</ul>
+<li>Find a better word than <code>"simulate"</code> for <code>type</code> in <code><a href="reference/generate.html">generate()</a></code>
 </li>
-<li>Create easy functions to determine observed statistics like the implemented <code>t_stat</code>: e.g., <code>mean_stat</code>?</li>
-<li>Tweak <code>pkgdown</code> page to include ToDo’s. <a href="https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml">{dplyr}</a> example</li>
 </ul>
+</div>
 </div>
 
   </div>
