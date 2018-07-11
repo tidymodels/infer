@@ -1,3 +1,39 @@
+# infer 0.3.0
+
+- Added `conf_int` logical argument and `conf_level` argument to `t_test()`
+- Switched `shade_color` argument in `visualize()` to be `pvalue_fill` instead
+since fill color for confidence intervals is also added now
+- Shading for Confidence Intervals in `visualize()` 
+    - Green is default color for CI and red for p-values
+    - `direction = "between"` to get the green shading
+    - Currently working only for simulation-based methods
+- Implemented `conf_int()` function for computing confidence interval provided a simulation-based method with a `stat` variable
+    - `get_ci()` and `get_confidence_interval()` are aliases for `conf_int()`
+    - Converted longer confidence interval calculation code in vignettes to use `get_ci()` instead    
+- Implemented `p_value()` function for computing p-value provided a simulation-based method with a `stat` variable
+    - `get_pvalue()` is an alias for `p_value()`
+    - Converted longer p-value calculation code in vignettes to use `get_pvalue()` instead
+- Implemented Chi-square Goodness of Fit observed stat depending on `params` being set in `hypothesize` with `specify() %>% calculate()` shortcut
+- Removed "standardized" slope $t$ since its formula is different than "standardized" correlation and there is no way currently to give one over the other
+- Implemented correlation with bootstrap CI and permutation hypothesis test
+- Filled the `type` argument automatically in `generate()` based
+on `specify()` and `hypothesize()`
+    - Added message if `type` is given differently than expected
+- Implemented `specify() %>% calculate()` for getting observed
+statistics.
+    - `visualize()` works with either a 1x1 data frame or a vector
+    for its `obs_stat` argument
+    - Got `stat = "t"` working
+- Refactored `calculate()` into smaller functions to reduce complexity
+- Produced error if `mu` is given in `hypothesize()` but `stat = "median"`
+is provided in `calculate()` and other similar mis-specifications
+- Tweaked `chisq_stat()` and `t_stat()` to match with `specify() %>% calculate()` framework
+    - Both work in the one sample and two sample cases by providing `formula`
+    - Added `order` argument to `t_stat()`
+- Added implementation of one sample `t_test()` by passing in the `mu` argument to `t.test`
+from `hypothesize()`
+- Tweaked `pkgdown` page to include ToDo's using [{dplyr}](https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml) example
+
 # infer 0.2.0
 
 - Switched to `!!` instead of `UQ()` since `UQ()` is deprecated in 
@@ -14,7 +50,7 @@ use for observed statistics and theoretical density curves
 unique values for generated statistics is small
 - Added shading for `method = "theoretical"` 
 - Implemented shading for simulation methods w/o a traditional distribution
-  - Use percentiles to determine two-tailed shading
+    - Use percentiles to determine two-tailed shading
 - Changed `method = "randomization"` to `method = "simulation"`
 - Added warning when theoretical distribution is used that 
   assumptions should be checked  
@@ -39,7 +75,7 @@ current implementations being
 They now live in `specify()`.
 - Updated documentation with examples
 - Created `pkgdown` site materials
-  - Deployed to https://infer.netlify.com
+    - Deployed to https://infer.netlify.com
 
 
 # infer 0.0.1

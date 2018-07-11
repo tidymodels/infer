@@ -5,9 +5,7 @@ set_params <- function(x){
   attr(x, "theory_type") <- NULL
   
   if(!is.null(attr(x, "response"))){
-    num_response_levels <- length(
-        levels(x[[as.character(attr(x, "response"))]])
-      )
+    num_response_levels <- length(levels(response_variable(x)))
   }
   
   # One variable
@@ -20,18 +18,23 @@ set_params <- function(x){
       attr(x, "theory_type") <- "One sample t"
       attr(x, "distr_param") <- x %>% 
         dplyr::summarize(df = stats::t.test(
-            x[[as.character(attr(x, "response"))]])[["parameter"]]
+            response_variable(x))[["parameter"]]
           ) %>% 
         dplyr::pull()
+      attr(x, "type") <- "bootstrap"
     }
     
     # One prop
     else if(attr(x, "response_type") == "factor" && (num_response_levels == 2)){
+      
       # No parameters since standard normal
       attr(x, "theory_type") <- "One sample prop z"
+      # Changed to `"simulate"` when `p` provided in `hypothesize()`
+      attr(x, "type") <- "bootstrap"
     } else {
       attr(x, "theory_type") <- "Chi-square Goodness of Fit"
       attr(x, "distr_param") <- num_response_levels - 1
+      attr(x, "type") <- "simulate"
     }
     
   }
@@ -40,12 +43,15 @@ set_params <- function(x){
   if (!is.null(attr(x, "response")) && !is.null(attr(x, "explanatory")) & 
       !is.null(attr(x, "response_type")) && 
       !is.null(attr(x, "explanatory_type"))){
+    
+    attr(x, "type") <- "bootstrap"
+    
     # Response is numeric, explanatory is categorical
     if(attr(x, "response_type") %in% c("integer", "numeric") &
        attr(x, "explanatory_type") == "factor"){
       
       # Two sample means (t distribution)
-      if(length(levels(x[[as.character(attr(x, "explanatory"))]])) == 2) {
+      if(length(levels(explanatory_variable(x))) == 2) {
         attr(x, "theory_type") <- "Two sample t"
         # Keep track of Satterthwaite degrees of freedom since lost when 
         # in aggregation w/ calculate()/generate()
@@ -75,10 +81,12 @@ set_params <- function(x){
     if(attr(x, "response_type") == "factor" &
        attr(x, "explanatory_type") == "factor"){
       
+      attr(x, "type") <- "bootstrap"
+      
       # Two sample proportions (z distribution) 
       # Parameter(s) not needed since standard normal
-      if(length(levels(x[[as.character(attr(x, "response"))]])) == 2 &
-         length(levels(x[[as.character(attr(x, "explanatory"))]])) == 2){
+      if(length(levels(response_variable(x))) == 2 &
+         length(levels(explanatory_variable(x))) == 2){
         attr(x, "theory_type") <- "Two sample props z"
       }
       # >2 sample proportions (chi-square test of indep)
@@ -86,8 +94,8 @@ set_params <- function(x){
         attr(x, "theory_type") <- "Chi-square test of indep"
         attr(x, "distr_param") <- x %>% 
           dplyr::summarize(df = suppressWarnings(stats::chisq.test(
-            table(x[[as.character(attr(x, "response"))]],
-                  x[[as.character(attr(x, "explanatory"))]]))$parameter)) %>%
+            table(response_variable(x),
+                  explanatory_variable(x)))$parameter)) %>%
           dplyr::pull()
       }
     }
@@ -97,7 +105,7 @@ set_params <- function(x){
        attr(x, "explanatory_type") %in% c("integer", "numeric")){
       response_string <- as.character(attr(x, "response"))
       explanatory_string <- as.character(attr(x, "explanatory"))
-    attr(x, "theory_type") <- "Slope with t"
+    attr(x, "theory_type") <- "Slope/correlation with t"
     attr(x, "distr_param") <- nrow(x) - 2
     }
   }

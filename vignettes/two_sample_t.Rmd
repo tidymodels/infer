@@ -15,6 +15,9 @@ vignette: |
 knitr::opts_chunk$set(fig.width = 8, fig.height = 3) 
 ```
 
+**Note**: The `type` argument in `generate()` is automatically filled based on the entries for `specify()` and
+`hypothesize()`. It can be removed throughout the examples that follow. It is left in to reiterate the type of generation process being performed.
+
 ## Data preparation
 
 ```{r message=FALSE, warning=FALSE}
@@ -50,11 +53,22 @@ fli_small <- flights %>%
 
 ## Calculate observed statistic 
 
-Using `t_test` in `infer`
+The recommended approach is to use `specify() %>% calculate()`:
+
+```{r}
+obs_t <- fli_small %>%
+  specify(arr_delay ~ half_year) %>%
+  calculate(stat = "t", order = c("h1", "h2"))
+```
+
+The observed $t$ statistic is `r obs_t`.
+
+Or using `t_test` in `infer`
 
 ```{r}
 obs_t <- fli_small %>% 
-  t_test(formula = arr_delay ~ half_year) %>% 
+  t_test(formula = arr_delay ~ half_year, alternative = "two_sided",
+         order = c("h1", "h2")) %>% 
   dplyr::select(statistic) %>% 
   dplyr::pull()
 ```
@@ -65,7 +79,7 @@ Or using another shortcut function in `infer`:
 
 ```{r}
 obs_t <- fli_small %>% 
-  t_stat(formula = arr_delay ~ half_year)
+  t_stat(formula = arr_delay ~ half_year, order = c("h1", "h2"))
 ```
 
 The observed $t$ statistic is `r obs_t`.
@@ -86,8 +100,7 @@ t_null_distn %>% visualize(obs_stat = obs_t, direction = "two_sided")
 
 ```{r}
 t_null_distn %>% 
-  dplyr::summarize(p_value = mean(abs(stat) >= obs_t)) %>% 
-  dplyr::pull()
+  get_pvalue(obs_stat = obs_t, direction = "two_sided")
 ```
 
 
@@ -126,7 +139,9 @@ t_null_distn %>%
 
 ```{r}
 fli_small %>% 
-  t_test(formula = arr_delay ~ half_year) %>% 
+  t_test(formula = arr_delay ~ half_year,
+         alternative = "two_sided",
+         order = c("h1", "h2")) %>% 
   dplyr::select(p_value) %>% 
   dplyr::pull()
 ```
