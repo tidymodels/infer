@@ -1,3 +1,7 @@
+# infer 0.3.0.9000
+
+- Fixed `t_stat()` to use `...` so `var.equal` works
+
 # infer 0.3.0
 
 - Added `conf_int` logical argument and `conf_level` argument to `t_test()`

@@ -112,4 +112,16 @@ test_that("conf_int argument works", {
              conf_int = TRUE, conf_level = 1.1)
   )
   
+  # Check that var.equal produces different results
+  set.seed(2018)
+  iris_small <- iris2 %>% sample_n(10)
+  no_var_equal <- iris_small %>% 
+    t_stat(Petal.Width ~ Species, order = c("versicolor", "virginica"))
+  var_equal <- iris_small %>% 
+    t_stat(Petal.Width ~ Species, order = c("versicolor", "virginica"),
+           var.equal = TRUE)
+  expect_false(
+    no_var_equal == var_equal
+  )
+  
 })

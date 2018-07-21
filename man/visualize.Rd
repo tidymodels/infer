@@ -5,9 +5,9 @@
 \title{Visualize the distribution of the simulation-based inferential statistics
 or the theoretical distribution (or both!)}
 \usage{
-visualize(data, bins = 15, method = "simulation", dens_color = "black",
-  obs_stat = NULL, obs_stat_color = "red2", pvalue_fill = "pink",
-  direction = NULL, endpoints = NULL,
+visualize(data, bins = 15, method = "simulation",
+  dens_color = "black", obs_stat = NULL, obs_stat_color = "red2",
+  pvalue_fill = "pink", direction = NULL, endpoints = NULL,
   endpoints_color = "mediumaquamarine", ci_fill = "turquoise", ...)
 }
 \arguments{
