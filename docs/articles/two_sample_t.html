@@ -111,7 +111,7 @@
       <h1>Two sample <span class="math inline">\(t\)</span> test example using <code>nycflights13</code> <code>flights</code> data</h1>
                         <h4 class="author">Chester Ismay</h4>
             
-            <h4 class="date">2018-07-09</h4>
+            <h4 class="date">2018-07-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/two_sample_t.Rmd"><code>vignettes/two_sample_t.Rmd</code></a></small>
       <div class="hidden name"><code>two_sample_t.Rmd</code></div>
@@ -180,7 +180,6 @@ fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><s
 <p>Or using another shortcut function in <code>infer</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs_t &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/t_stat.html">t_stat</a></span>(<span class="dt">formula =</span> arr_delay <span class="op">~</span><span class="st"> </span>half_year, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"h1"</span>, <span class="st">"h2"</span>))</code></pre></div>
-<pre><code>## Warning: Removed 15 rows containing missing values.</code></pre>
 <p>The observed <span class="math inline">\(t\)</span> statistic is 0.8685463.</p>
 </div>
 <div id="randomization-approach-to-t-statistic" class="section level2">
