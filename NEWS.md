@@ -1,6 +1,7 @@
 # infer 0.3.0.9000
 
 - Fixed `t_stat()` to use `...` so `var.equal` works
+- With the help of @echasnovski, fixed `var.equal = TRUE` for ``specify() %>% calculate(stat = "t")`
 
 # infer 0.3.0
 
