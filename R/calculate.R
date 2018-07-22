@@ -44,8 +44,8 @@ calculate <- function(x,
                       ),
                       order = NULL,
                       ...) {
-  assertive::assert_is_tbl(x)
-  assertive::assert_is_a_string(stat)
+  check_type(x, tibble::is_tibble)
+  check_type(stat, rlang::is_string)
   check_for_numeric_stat(x, stat)
   check_for_factor_stat(x, stat, explanatory_variable(x))
   check_args_and_attr(x, explanatory_variable(x), response_variable(x), stat)

@@ -49,12 +49,12 @@ check_ci_args <- function(x, level, type, point_estimate){
   
   if(!is.null(point_estimate)){
     if(!is.data.frame(point_estimate))
-      assertive::assert_is_numeric(point_estimate)
+      check_type(point_estimate, is.numeric)
     else
-      assertive::assert_is_data.frame(point_estimate)
+      check_type(point_estimate, is.data.frame)
   }
-  assertive::assert_is_data.frame(x)
-  assertive::assert_is_numeric(level)
+  check_type(x, is.data.frame)
+  check_type(level, is.numeric)
   if(level <= 0 || level >= 1){
     stop(paste("The value of `level` must be between 0 and 1", 
                   "non-inclusive."))
@@ -69,7 +69,7 @@ check_ci_args <- function(x, level, type, point_estimate){
                'for `type = "se"'))
 
   if(type == "se" && is.vector(point_estimate))
-    assertive::assert_is_numeric(point_estimate)
+    check_type(point_estimate, is.numeric)
 }
 
 
