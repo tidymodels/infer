@@ -13,11 +13,6 @@ navbar:
       href: articles/flights_examples.html
     - text: Examples using `mtcars`
       href: articles/mtcars_examples.html
-# Remove these DEV vignettes when going to master branch/CRAN      
-    - text: (DEV) Simulation-Based `okcupiddata` Examples
-      href: articles/profiles_examples.html
-    - text: (DEV) Simulation-Based and Traditional `okcupiddata` Examples
-      href: articles/profiles_examples_both_methods.html
   - text: Reference
     href: reference/index.html      
   - text: News
