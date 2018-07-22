@@ -326,8 +326,8 @@ calc_impl.t <- function(stat, x, order, ...) {
     
     df_out <- x %>%
       dplyr::summarize(stat = stats::t.test(
-        !!attr(x, "response") ~ !!attr(x, "explanatory"))[["statistic"]],
-        ...)
+        !!attr(x, "response") ~ !!attr(x, "explanatory"), ...
+      )[["statistic"]])
   }
   
   # Standardized slope and standardized correlation are commented out
@@ -360,17 +360,18 @@ calc_impl.t <- function(stat, x, order, ...) {
     # For bootstrap
     if (is.null(attr(x, "null"))) {
       x %>%
-        dplyr::summarize(stat = stats::t.test(!!attr(x, "response")
-                                              )[["statistic"]],
-                         ...)
+        dplyr::summarize(
+          stat = stats::t.test(!!attr(x, "response"),
+                               ...
+                               )[["statistic"]])
     }
     # For hypothesis testing
     else {
       x %>%
         dplyr::summarize(stat = stats::t.test(
           !!attr(x, "response"), 
-          mu = attr(x, "params"))[["statistic"]],
-          ...)
+          mu = attr(x, "params"),
+          ...)[["statistic"]])
     }
   }
 }
