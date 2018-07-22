@@ -384,3 +384,13 @@ test_that("generate not done before calculate", {
   attr(iris_hyp, "generate") <- TRUE
   expect_warning(calculate(iris_hyp, stat = "t", order = c(">5", "<=5")))
 })
+
+test_that("One sample t bootstrap is working", {
+  expect_silent(
+    iris_tbl %>% 
+      specify(Petal.Width ~ NULL) %>% 
+      generate(reps = 10) %>% 
+      calculate(stat = "t")
+  )
+  
+})
