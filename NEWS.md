@@ -1,4 +1,4 @@
-# infer 0.2.1
+# infer 0.3.0
 
 - Added `conf_int` logical argument and `conf_level` argument to `t_test()`
 - Switched `shade_color` argument in `visualize()` to be `pvalue_fill` instead
