@@ -1,7 +1,7 @@
 Package: infer
 Type: Package
 Title: Tidy Statistical Inference
-Version: 0.3.0.9000
+Version: 0.3.1
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
     person("Chester", "Ismay", email = "chester.ismay@gmail.com", role = "aut"),
@@ -20,13 +20,13 @@ License: CC0
 Encoding: UTF-8
 LazyData: true
 Imports:
-    assertive,
     dplyr (>= 0.7.0),
     methods,
     tibble,
     rlang (>= 0.2.0),
     ggplot2,
-    magrittr
+    magrittr,
+    glue
 Depends:
     R (>= 3.1.2)
 Suggests: 

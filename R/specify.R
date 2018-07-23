@@ -23,7 +23,7 @@
 
 specify <- function(x, formula, response = NULL,
                     explanatory = NULL, success = NULL) {
-  assertive::assert_is_data.frame(x)
+  check_type(x, is.data.frame)
 
   # Convert all character and logical variables to be factor variables
   x <- dplyr::as_tibble(x) %>%
