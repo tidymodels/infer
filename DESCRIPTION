@@ -37,7 +37,7 @@ Suggests:
     stringr,
     testthat,
     covr
-URL: https://github.com/andrewpbray/infer
-BugReports: https://github.com/andrewpbray/infer/issues
+URL: https://github.com/tidymodels/infer
+BugReports: https://github.com/tidymodels/infer/issues
 RoxygenNote: 6.0.1
 VignetteBuilder: knitr

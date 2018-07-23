@@ -25,4 +25,4 @@ navbar:
     href: TO-DO.html
   right:
   - icon: fa-github fa-lg
-    href: https://github.com/andrewpbray/infer
+    href: https://github.com/tidymodels/infer
