@@ -33,3 +33,4 @@ instead of in `specify()`
 - Need to also add parameters to wrapper functions so that randomization
 methods can be implemented by practitioners looking to skip the longer pipe syntax
 - Find a better word than `"simulate"` for `type` in `generate()`
+
