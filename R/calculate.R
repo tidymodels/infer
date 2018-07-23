@@ -52,10 +52,9 @@ calculate <- function(x,
   check_point_params(x, stat)
   
   if (!has_response(x))
-    stop(paste(
-      "The response variable is not set.",
-      "Make sure to `specify()` it first."
-    ))
+    stop_glue(
+      "The response variable is not set. Make sure to `specify()` it first."
+    )
   
   if (is.null(attr(x, "generate")) || !attr(x, "generate")) {
     if (is.null(attr(x, "null"))) {
@@ -72,22 +71,18 @@ calculate <- function(x,
       "slope",
       "correlation"
     ))
-      stop(
-        paste0(
-          "Theoretical distributions do not exist (or have not been ",
-          "implemented) for `stat = \"",
-          stat,
-          "\". Are you missing ",
-          "a `generate()` step?"
-        )
+      stop_glue(
+        "Theoretical distributions do not exist (or have not been ",
+        "implemented) for `stat` = \"{stat}\". Are you missing ",
+        "a `generate()` step?"
       )
     
     else if (!(stat %in% c("Chisq", "prop"))){
       # From `hypothesize()` to `calculate()`
       # Catch-all if generate was not called
-#      warning(paste("You unexpectantly went from `hypothesize()` to ",
-#              "`calculate()` skipping over `generate()`. Your current",
-#              "data frame is returned."))
+#      warning_glue("You unexpectantly went from `hypothesize()` to ",
+#                   "`calculate()` skipping over `generate()`. Your current ",
+#                   "data frame is returned.")
       return(x)
     }
   }
@@ -106,12 +101,9 @@ calculate <- function(x,
     )
   )) {
     if (!is.null(order)) {
-      warning(
-        paste(
-          "Statistic is not based on a difference;",
-          "the `order` argument",
-          "is ignored. Check `?calculate` for details."
-        )
+      warning_glue(
+        "Statistic is not based on a difference; the `order` argument ",
+        "is ignored. Check `?calculate` for details."
       )
     }
   }
@@ -121,10 +113,10 @@ calculate <- function(x,
                       x, order, ...)
   
   if ("NULL" %in% class(result))
-    stop(paste0(
+    stop_glue(
       "Your choice of `stat` is invalid for the ",
       "types of variables `specify`ed."
-    ))
+    )
 #  else
 #    class(result) <- append("infer", class(result))
   
@@ -173,19 +165,16 @@ calc_impl.prop <- function(stat, x, order, ...) {
   
   ## No longer needed with implementation of `check_point_params()`
   # if(!is.factor(x[[col]])){
-  #   stop(paste0("Calculating a ",
-  #               stat,
-  #               " here is not appropriate since the `",
-  #               col,
-  #               "` variable is not a factor."))
+  #   stop_glue(
+  #     "Calculating a {stat} here is not appropriate since the `{col}` ",
+  #     "variable is not a factor."
+  #   )
   # }
   
   if (is.null(attr(x, "success")))
-    stop(
-      paste(
-        'To calculate a proportion, the `"success"` argument',
-        'must be provided in `specify()`.'
-      )
+    stop_glue(
+      'To calculate a proportion, the `"success"` argument ',
+      'must be provided in `specify()`.'
     )
   
   success <- attr(x, "success")
@@ -256,10 +245,10 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
       
     } else {
       # Straight from `specify()`
-        stop(paste("In order to calculate a Chi-Square Goodness of Fit",
-                   "statistic, hypothesized values must be given for the `p`",
-                   "parameter in the `hypothesize()` function prior to",
-                   "using `calculate()`"))
+        stop_glue("In order to calculate a Chi-Square Goodness of Fit ",
+                  "statistic, hypothesized values must be given for the `p` ",
+                  "parameter in the `hypothesize()` function prior to ",
+                  "using `calculate()`")
 
     }
     

@@ -316,8 +316,8 @@ test_that("obs_stat as a data.frame works", {
 
 
 test_that('method = "both" behaves nicely', {
-  # stop(paste0('`generate()` and `calculate()` are both required ', 
-  # 'to be done prior to `visualize(method = "both")`'))
+  # stop_glue('`generate()` and `calculate()` are both required ',
+  #           'to be done prior to `visualize(method = "both")`')
   expect_error(iris_tbl %>% 
                  specify(Petal.Width ~ NULL) %>%
                  hypothesize(null = "point", mu = 4) %>%

@@ -85,14 +85,15 @@ visualize <- function(data, bins = 15, method = "simulation",
     check_type(direction, is.character)
   if(is.data.frame(endpoints) && 
      ( (nrow(endpoints) != 1) || (ncol(endpoints) != 2) ) ){
-    stop(paste("Expecting `endpoints` to be a 1 x 2 data frame or 2",
-                  "element vector."))
+    stop_glue(
+      "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector."
+    )
   }
   if(is.vector(endpoints) && ( length(endpoints) != 2) ) {
-    warning(paste("Expecting `endpoints` to be a 1 x 2 data frame or 2", 
-                  "element vector.",
-                  "Using the first two entries as", 
-                  "the `endpoints`."))
+    warning_glue(
+      "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector. ",
+      "Using the first two entries as the `endpoints`."
+    )
     endpoints <- endpoints[1:2]
   }
   if(is.data.frame(endpoints))
@@ -100,9 +101,10 @@ visualize <- function(data, bins = 15, method = "simulation",
   obs_stat <- check_obs_stat(obs_stat)
   if(!is.null(direction) && 
      (is.null(obs_stat) + is.null(endpoints)) != 1)
-    stop(paste("Shading requires either `endpoints` values for a", 
-               "confidence interval or the observed statistic", 
-               "`obs_stat` to be provided."))
+    stop_glue(
+      "Shading requires either `endpoints` values for a confidence interval ",
+      "or the observed statistic `obs_stat` to be provided."
+    )
 
   if(method == "simulation"){
     
@@ -132,14 +134,15 @@ visualize <- function(data, bins = 15, method = "simulation",
   } else if(method == "both"){
     
     if(!("stat" %in% names(data)))
-      stop(paste0('`generate()` and `calculate()` are both required ', 
-                  'to be done prior to `visualize(method = "both")`'))
+      stop_glue('`generate()` and `calculate()` are both required ',
+                'to be done prior to `visualize(method = "both")`')
     
     if(("replicate" %in% names(data)) &&
          length(unique(data$replicate)) < 100)
-      warning(paste("With only", length(unique(data$stat)),
-                    "replicates, it may be difficult to see the",
-                    "relationship between simulation and theory."))
+      warning_glue(
+        "With only {length(unique(data$stat))} replicates, it may be ",
+        "difficult to see the relationship between simulation and theory."
+      )
     
     infer_plot <- visualize_both(data = data, bins = bins, 
                                  dens_color = dens_color,
@@ -151,10 +154,9 @@ visualize <- function(data, bins = 15, method = "simulation",
                                  ci_fill = ci_fill,
                                  ...)
   } else {
-    stop(paste("Provide `method` with one of three options:",
-               '`"theoretical"`, `"both"`, or `"simulation"`',
-               '`"simulation"` is the default.')
-    )
+    stop_glue("Provide `method` with one of three options: ",
+              '`"theoretical"`, `"both"`, or `"simulation"`. ',
+              '`"simulation"` is the default.')
   }
   
   if(!is.null(obs_stat)){#&& !is.null(direction)
@@ -164,8 +166,8 @@ visualize <- function(data, bins = 15, method = "simulation",
   
   if(!is.null(endpoints)){
     if(!is.null(obs_stat))
-      warning(paste("Values for both `endpoints` and `obs_stat` were given",
-                  "when only one should be set. Ignoring `obs_stat` values."))
+      warning_glue("Values for both `endpoints` and `obs_stat` were given ",
+                   "when only one should be set. Ignoring `obs_stat` values.")
     infer_plot <- infer_plot +
       geom_vline(xintercept = endpoints, size = 2, 
                  color = endpoints_color, 
@@ -239,8 +241,9 @@ both_anova_plot <- function(data, deg_freedom_top,
                             ....){
   
   if(!is.null(direction) && !(direction %in% c("greater", "right")))
-    warning(paste("F usually corresponds to right-tailed tests. Proceed",
-                  "with caution."), call. = FALSE)
+    warning_glue(
+      "F usually corresponds to right-tailed tests. Proceed with caution."
+    )
   
   infer_anova_plot <- shade_density_check(data = data, 
                                           obs_stat = obs_stat,
@@ -319,8 +322,8 @@ both_chisq_plot <- function(data, deg_freedom, statistic_text = "Chi-Square",
                             ...){
   
   if(!is.null(direction) && !(direction %in% c("greater", "right")))
-     warning(paste("Chi-square usually corresponds to right-tailed tests.",
-                   "Proceed with caution."), call. = FALSE)
+    warning_glue("Chi-square usually corresponds to right-tailed tests. ",
+                 "Proceed with caution.")
   
   infer_chisq_plot <- shade_density_check(data = data,
                                           obs_stat = obs_stat,
@@ -472,16 +475,17 @@ visualize_theoretical <- function(data,
                                   ci_fill, 
                                   ...) {
   
-  warning(paste("Check to make sure the conditions", 
-                "have been met for",
-                "the theoretical method. `infer` currently does not check",
-                "these for you."), call. = FALSE)
+  warning_glue(
+    "Check to make sure the conditions have been met for the theoretical ",
+    "method. {{infer}} currently does not check these for you."
+  )
   
   if(!is.null(attr(data, "stat")) && 
      !(attr(data, "stat") %in% c("t", "z", "Chisq", "F")))
-    warning(paste("Your `calculate`d statistic and the theoretical", 
-                  "distribution are on different scales. Displaying only", 
-                  "the theoretical distribution."))
+    warning_glue(
+      "Your `calculate`d statistic and the theoretical distribution are on ",
+      "different scales. Displaying only the theoretical distribution."
+    )
   
   if(attr(data, "theory_type") %in% 
      c("Two sample t", "Slope with t", "One sample t")){    
@@ -493,8 +497,9 @@ visualize_theoretical <- function(data,
   else if(attr(data, "theory_type") == "ANOVA"){
     
     if(!is.null(direction) && !(direction %in% c("greater", "right")))
-      warning(paste("F usually corresponds to right-tailed tests. Proceed",
-                    "with caution."))
+      warning_glue(
+        "F usually corresponds to right-tailed tests. Proceed with caution."
+      )
     
     infer_plot <- theory_anova_plot(
       deg_freedom_top = attr(data, "distr_param"), 
@@ -513,8 +518,8 @@ visualize_theoretical <- function(data,
           c("Chi-square test of indep", "Chi-square Goodness of Fit")){   
     
     if(!is.null(direction) && !(direction %in% c("greater", "right")))
-      warning(paste("Chi-square usually corresponds to right-tailed tests.",
-                    "Proceed with caution."))
+      warning_glue("Chi-square usually corresponds to right-tailed tests. ",
+                   "Proceed with caution.")
     
     infer_plot <- theory_chisq_plot(deg_freedom = attr(data, "distr_param"),
                                     statistic_text = "Chi-Square",
@@ -522,8 +527,9 @@ visualize_theoretical <- function(data,
   }
   
 #  else
-#    stop(paste0("'", attr(data, "theory_type"), "' is not implemented",
-#                "(possibly yet)."))
+#    stop_glue(
+#      '"{attr(data, "theory_type")}" is not implemented (possibly yet).'
+#    )
   
   # Move into its own function
   
@@ -587,14 +593,14 @@ visualize_both <- function(data, bins,
                            endpoints, 
                            ci_fill, ...) {
   
-  warning(paste("Check to make sure the conditions", 
-                "have been met for",
-                "the theoretical method. `infer` currently does not check",
-                "these for you."), call. = FALSE)
+  warning_glue(
+    "Check to make sure the conditions have been met for the theoretical ",
+    "method. `infer` currently does not check these for you."
+  )
   
   if(!(attr(data, "stat") %in% c("t", "z", "Chisq", "F")))
-    stop(paste("Your `calculate`d statistic and the theoretical distribution",
-               "are on different scales. Use a standardized `stat` instead."))
+    stop_glue("Your `calculate`d statistic and the theoretical distribution ",
+              "are on different scales. Use a standardized `stat` instead.")
   
   if(attr(data, "theory_type") %in% c("Two sample t", "Slope with t")){
     
@@ -654,7 +660,7 @@ visualize_both <- function(data, bins,
   }
   
 #  else
-#    stop(paste0("'", attr(data, "theory_type"), "' is not implemented yet."))
+#    stop_glue('"{attr(data, "theory_type")}" is not implemented yet.')
   
   infer_plot
 }
