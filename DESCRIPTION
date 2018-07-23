@@ -19,13 +19,13 @@ License: CC0
 Encoding: UTF-8
 LazyData: true
 Imports:
-    assertive,
     dplyr (>= 0.7.0),
     methods,
     tibble,
     rlang (>= 0.2.0),
     ggplot2,
-    magrittr
+    magrittr,
+    glue
 Depends:
     R (>= 3.1.2)
 Suggests: 

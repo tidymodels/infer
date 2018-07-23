@@ -25,7 +25,7 @@
 
 p_value <- function(x, obs_stat, direction){
   
-  assertive::assert_is_data.frame(x)
+  check_type(x, is.data.frame)
   obs_stat <- check_obs_stat(obs_stat)
   check_direction(direction)
   

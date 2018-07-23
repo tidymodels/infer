@@ -75,14 +75,14 @@ visualize <- function(data, bins = 15, method = "simulation",
                       endpoints_color = "mediumaquamarine",
                       ci_fill = "turquoise", ...) {
   
-  assertive::assert_is_data.frame(data)
-  assertive::assert_is_numeric(bins)
-  assertive::assert_is_character(method)
-  assertive::assert_is_character(dens_color)
-  assertive::assert_is_character(obs_stat_color)
-  assertive::assert_is_character(pvalue_fill)
+  check_type(data, is.data.frame)
+  check_type(bins, is.numeric)
+  check_type(method, is.character)
+  check_type(dens_color, is.character)
+  check_type(obs_stat_color, is.character)
+  check_type(pvalue_fill, is.character)
   if(!is.null(direction))
-    assertive::assert_is_character(direction)
+    check_type(direction, is.character)
   if(is.data.frame(endpoints) && 
      ( (nrow(endpoints) != 1) || (ncol(endpoints) != 2) ) ){
     stop(paste("Expecting `endpoints` to be a 1 x 2 data frame or 2",
