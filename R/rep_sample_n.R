@@ -45,12 +45,12 @@
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   n <- nrow(tbl)
 
-  assertive::assert_is_data.frame(tbl)
-  assertive::assert_is_numeric(size)
-  assertive::assert_is_logical(replace)
-  assertive::assert_is_numeric(reps)
+  check_type(tbl, is.data.frame)
+  check_type(size, is.numeric)
+  check_type(replace, is.logical)
+  check_type(reps, is.numeric)
   if(!is.null(prob))
-    assertive::assert_is_numeric(prob)
+    check_type(prob, is.numeric)
 
   # assign non-uniform probabilities
   # there should be a better way!!

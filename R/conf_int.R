@@ -4,7 +4,7 @@
 #' @param x data frame of calculated statistics or containing attributes
 #' of theoretical distribution values. Currently, dependent on statistics being stored in \code{stat} column as created in \code{calculate()} function.
 #' @param level a numerical value between 0 and 1 giving the confidence level. Default value is 0.95.
-#' @param type a string giving which method should be used for creating the confidence interval. The default is \code{"percentile"} with \code{"se"} corresponding to (2 * standard error) as the other option.
+#' @param type a string giving which method should be used for creating the confidence interval. The default is \code{"percentile"} with \code{"se"} corresponding to (multiplier * standard error) as the other option.
 #' @param point_estimate a numeric value or a 1x1 data frame set to NULL by default. Needed to be provided if \code{type = "se"}.
 #'
 #' @return a 2 x 1 tibble with values corresponding to lower and upper values in the confidence interval
@@ -49,12 +49,12 @@ check_ci_args <- function(x, level, type, point_estimate){
   
   if(!is.null(point_estimate)){
     if(!is.data.frame(point_estimate))
-      assertive::assert_is_numeric(point_estimate)
+      check_type(point_estimate, is.numeric)
     else
-      assertive::assert_is_data.frame(point_estimate)
+      check_type(point_estimate, is.data.frame)
   }
-  assertive::assert_is_data.frame(x)
-  assertive::assert_is_numeric(level)
+  check_type(x, is.data.frame)
+  check_type(level, is.numeric)
   if(level <= 0 || level >= 1){
     stop(paste("The value of `level` must be between 0 and 1", 
                   "non-inclusive."))
@@ -69,7 +69,7 @@ check_ci_args <- function(x, level, type, point_estimate){
                'for `type = "se"'))
 
   if(type == "se" && is.vector(point_estimate))
-    assertive::assert_is_numeric(point_estimate)
+    check_type(point_estimate, is.numeric)
 }
 
 

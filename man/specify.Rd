@@ -5,7 +5,8 @@
 \title{Specify the response and explanatory variables with
 \code{specify} also converting character variables chosen to be \code{factor}s}
 \usage{
-specify(x, formula, response = NULL, explanatory = NULL, success = NULL)
+specify(x, formula, response = NULL, explanatory = NULL,
+  success = NULL)
 }
 \arguments{
 \item{x}{a data frame that can be coerced into a \code{\link[tibble]{tibble}}}

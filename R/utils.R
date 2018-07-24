@@ -49,6 +49,14 @@ has_response <- function(x){
   !is.null(attr(x, "response"))
 }
 
+stop_glue <- function(..., .sep = "", .envir = parent.frame(),
+                      call. = FALSE, .domain = NULL) {
+  stop(
+    glue::glue(..., .sep = .sep, .envir = .envir),
+    call. = call., domain = .domain
+  )
+}
+
 check_order <- function(x, explanatory_variable, order){
   unique_explanatory_variable <- unique(explanatory_variable)
   if (length(unique_explanatory_variable) != 2){
@@ -264,7 +272,7 @@ hypothesize_checks <- function(x, null){
 
 check_direction <- function(direction = c("less", "greater", "two_sided",
                                           "left", "right", "both")){
-  assertive::assert_is_character(direction)
+  check_type(direction, is.character)
   
   if(!(direction %in% c("less", "greater", "two_sided",
                         "left", "right", "both"))){
@@ -277,19 +285,72 @@ check_direction <- function(direction = c("less", "greater", "two_sided",
 check_obs_stat <- function(obs_stat){
   if(!is.null(obs_stat)){
     if("data.frame" %in% class(obs_stat)){
-      assertive::assert_is_data.frame(obs_stat)
+      check_type(obs_stat, is.data.frame)
       if( (nrow(obs_stat) != 1) || (ncol(obs_stat) != 1) ) 
         warning(paste("The first row and first column value of the given", 
                       "`obs_stat` will be used."))
       
       # [[1]] is used in case `stat` is not specified as name of 1x1
       obs_stat <- obs_stat[[1]][[1]]
-      assertive::assert_is_numeric(obs_stat)
+      check_type(obs_stat, is.numeric)
     }
     else{
-      assertive::assert_is_numeric(obs_stat)
+      check_type(obs_stat, is.numeric)
     }
   }
   
   obs_stat
+}
+
+#' Check object type
+#' 
+#' Throw an error in case object is not of desired type.
+#' 
+#' @param x an object to check
+#' @param predicate a function to perform check. A good idea is to use function
+#'  named \code{is.*()} or \code{is_*()} with possible \code{<package>::}
+#'  prefix.
+#' @param type a string for desired type. If \code{NULL}, type is taken from
+#'  parsing original name of supplied \code{predicate}: all alphanumeric with
+#'  '_' and '.' characters (until the name end) after the first appearance of
+#'  either \code{is.} or \code{is_}. In case of a doubt supply \code{type}
+#'  explicitly.
+#' @examples
+#' #' \dontrun{
+#' x <- 1
+#' check_type(x, is.numeric)
+#' check_type(x, is.logical)
+#' check_type(x, rlang::is_string, "character of length 1")
+#' }
+#' @noRd
+#' @keywords internal
+check_type <- function(x, predicate, type = NULL) {
+  x_name <- deparse(rlang::enexpr(x))
+  if (is.null(type)) {
+    predicate_name <- deparse(rlang::enexpr(predicate))
+    type <- parse_type(predicate_name)
+  }
+  
+  if (!isTRUE(predicate(x))) {
+    # Not using "must be of type" because of 'tibble' and 'string' cases
+    stop_glue("`{x_name}` must be '{type}', not '{get_type(x)}'.")
+  }
+  
+  x
+}
+
+# This function is needed because `typeof()` on data frame returns "list"
+get_type <- function(x) {
+  if (is.data.frame(x)) {
+    return("data.frame")
+  }
+  
+  typeof(x)
+}
+
+parse_type <- function(f_name) {
+  regmatches(
+    f_name,
+    regexec("is[_\\.]([[:alnum:]_\\.]+)$", f_name)
+  )[[1]][2]
 }
