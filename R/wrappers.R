@@ -54,7 +54,8 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
       stats::t.test(formula = formula, data = .,
                     alternative = alternative,
                     mu = mu, 
-                    conf.level = conf_level, ...) %>%
+                    conf.level = conf_level, 
+                    ...) %>%
       broom::glance()
   } else {
     # One sample case
@@ -64,7 +65,8 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
     prelim <- stats::t.test(x = data[[as.character(f_lhs(formula))]],
                   alternative = alternative,
                   mu = mu, 
-                  conf.level = conf_level, ...) %>% 
+                  conf.level = conf_level, 
+                  ...) %>% 
       broom::glance()
   }
   
@@ -107,8 +109,8 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
 
 t_stat <- function(data, formula, ...){
   data %>% 
-    specify(formula = formula) %>% 
-    calculate(stat = "t", ...)
+    t_test(formula = formula, ...) %>% 
+    dplyr::select(statistic)
 }
 
 #'

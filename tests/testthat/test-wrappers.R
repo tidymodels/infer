@@ -40,7 +40,8 @@ test_that("_stat functions work", {
     )
   another_way <- iris3 %>%
     chisq_test(Sepal.Length.Group ~ Species) %>%
-    dplyr::select(statistic)
+    dplyr::select(statistic) %>% 
+    dplyr::rename(stat = statistic)
   obs_stat_way <- iris3 %>% 
     chisq_stat(Sepal.Length.Group ~ Species)
   one_more <- chisq.test(
@@ -110,6 +111,31 @@ test_that("conf_int argument works", {
     iris2 %>% 
       t_test(Petal.Width ~ Species, order = c("versicolor", "virginica"),
              conf_int = TRUE, conf_level = 1.1)
+  )
+  
+  # Check that var.equal produces different results
+  # Thanks for finding this @EllaKaye!
+  set.seed(2018)
+  iris_small <- iris2 %>% sample_n(10)
+  no_var_equal <- iris_small %>% 
+    t_stat(Petal.Width ~ Species, order = c("versicolor", "virginica"))
+  var_equal <- iris_small %>% 
+    t_stat(Petal.Width ~ Species, order = c("versicolor", "virginica"),
+           var.equal = TRUE)
+  expect_false(
+    no_var_equal == var_equal
+  )
+  
+  shortcut_no_var_equal <- iris_small %>% 
+    specify(Petal.Width ~ Species) %>% 
+    calculate(stat = "t", order = c("versicolor", "virginica"))
+  
+  shortcut_var_equal <- iris_small %>% 
+    specify(Petal.Width ~ Species) %>% 
+    calculate(stat = "t", order = c("versicolor", "virginica"),
+              var.equal = TRUE)
+  expect_false(
+    shortcut_no_var_equal == shortcut_var_equal
   )
   
 })

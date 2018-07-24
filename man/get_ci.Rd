@@ -19,7 +19,7 @@ of theoretical distribution values. Currently, dependent on statistics being sto
 
 \item{level}{a numerical value between 0 and 1 giving the confidence level. Default value is 0.95.}
 
-\item{type}{a string giving which method should be used for creating the confidence interval. The default is \code{"percentile"} with \code{"se"} corresponding to (2 * standard error) as the other option.}
+\item{type}{a string giving which method should be used for creating the confidence interval. The default is \code{"percentile"} with \code{"se"} corresponding to (multiplier * standard error) as the other option.}
 
 \item{point_estimate}{a numeric value or a 1x1 data frame set to NULL by default. Needed to be provided if \code{type = "se"}.}
 }

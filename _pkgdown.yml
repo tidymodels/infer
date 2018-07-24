@@ -1,3 +1,9 @@
+template:
+  params:
+    docsearch:
+      api_key: 33338960d0dcb55ff924a40c2f749a0d
+      index_name: infer
+
 navbar:
   type: default
   left:

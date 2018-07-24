@@ -1,7 +1,7 @@
 Package: infer
 Type: Package
 Title: Tidy Statistical Inference
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
     person("Chester", "Ismay", email = "chester.ismay@gmail.com", role = "aut"),
@@ -13,19 +13,20 @@ Authors@R: c(
     person("Albert", "Kim", email = "albert.ys.kim@gmail.com", role = "ctb"),
     person("Neal", "Fultz", email = "nfultz@gmail.com", role = "ctb"),
     person("Doug", "Friedman", email = "doug.nhp@gmail.com", role = "ctb"),
-    person("Richie", "Cotton", email = "richie@datacamp.com", role = "ctb"))
+    person("Richie", "Cotton", email = "richie@datacamp.com", role = "ctb"),
+    person("Evgeni", "Chasnovski", email = "evgeni.chasnovski@gmail.com", role = "ctb"))
 Description: The objective of this package is to perform inference using an expressive statistical grammar that coheres with the tidy design framework. 
 License: CC0
 Encoding: UTF-8
 LazyData: true
 Imports:
-    assertive,
     dplyr (>= 0.7.0),
     methods,
     tibble,
     rlang (>= 0.2.0),
     ggplot2,
-    magrittr
+    magrittr,
+    glue
 Depends:
     R (>= 3.1.2)
 Suggests: 
@@ -39,5 +40,5 @@ Suggests:
     covr
 URL: https://github.com/tidymodels/infer
 BugReports: https://github.com/tidymodels/infer/issues
-RoxygenNote: 6.0.1
+RoxygenNote: 6.0.1.9000
 VignetteBuilder: knitr

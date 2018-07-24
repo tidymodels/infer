@@ -44,8 +44,8 @@ calculate <- function(x,
                       ),
                       order = NULL,
                       ...) {
-  assertive::assert_is_tbl(x)
-  assertive::assert_is_a_string(stat)
+  check_type(x, tibble::is_tibble)
+  check_type(stat, rlang::is_string)
   check_for_numeric_stat(x, stat)
   check_for_factor_stat(x, stat, explanatory_variable(x))
   check_args_and_attr(x, explanatory_variable(x), response_variable(x), stat)
@@ -326,7 +326,8 @@ calc_impl.t <- function(stat, x, order, ...) {
     
     df_out <- x %>%
       dplyr::summarize(stat = stats::t.test(
-        !!attr(x, "response") ~ !!attr(x, "explanatory"))[["statistic"]])
+        !!attr(x, "response") ~ !!attr(x, "explanatory"), ...
+      )[["statistic"]])
   }
   
   # Standardized slope and standardized correlation are commented out
@@ -359,15 +360,18 @@ calc_impl.t <- function(stat, x, order, ...) {
     # For bootstrap
     if (is.null(attr(x, "null"))) {
       x %>%
-        dplyr::summarize(stat = stats::t.test(!!attr(x, "response")
-                                              )[["statistic"]])
+        dplyr::summarize(
+          stat = stats::t.test(!!attr(x, "response"),
+                               ...
+                               )[["statistic"]])
     }
     # For hypothesis testing
     else {
       x %>%
         dplyr::summarize(stat = stats::t.test(
           !!attr(x, "response"), 
-          mu = attr(x, "params"))[["statistic"]])
+          mu = attr(x, "params"),
+          ...)[["statistic"]])
     }
   }
 }
