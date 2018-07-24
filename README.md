@@ -7,12 +7,12 @@ Infer
 <!--figs/infer.svg-->
 <!--http://www.r-pkg.org/badges/version/infer-->
 <!--figs/master.svg-->
-<!--https://img.shields.io/codecov/c/github/andrewpbray/infer/master.svg-->
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer) [![Travis-CI Build Status](https://travis-ci.org/andrewpbray/infer.svg?branch=master)](https://travis-ci.org/andrewpbray/infer) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/andrewpbray/infer?branch=master&svg=true)](https://ci.appveyor.com/project/andrewpbray/infer) [![Coverage Status](https://img.shields.io/codecov/c/github/andrewpbray/infer/master.svg)](https://codecov.io/github/andrewpbray/infer/?branch=master)
+<!--https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg-->
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer) [![Travis-CI Build Status](https://travis-ci.org/tidymodels/infer.svg?branch=master)](https://travis-ci.org/tidymodels/infer) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/tidymodels/infer?branch=master&svg=true)](https://ci.appveyor.com/project/tidymodels/infer) [![Coverage Status](https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg)](https://codecov.io/github/tidymodels/infer/?branch=master)
 
 The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the `tidyverse` design framework.
 
-![](https://raw.githubusercontent.com/andrewpbray/infer/master/figs/ht-diagram.png)
+![](https://raw.githubusercontent.com/tidymodels/infer/master/figs/ht-diagram.png)
 
 ### Installation
 
@@ -28,14 +28,14 @@ To install the developmental version of `infer`, make sure to install `remotes` 
 
 ``` r
 install.packages("remotes")
-remotes::install_github("andrewpbray/infer")
+remotes::install_github("tidymodels/infer")
 ```
 
 To install the cutting edge version of `infer` (do so at your own risk), make sure to install `remotes` first. This version was last updated on 2018-07-11 12:19:33.
 
 ``` r
 install.packages("remotes")
-remotes::install_github("andrewpbray/infer", ref = "develop")
+remotes::install_github("tidymodels/infer", ref = "develop")
 ```
 
 To see the things we are working on with the package as vignettes/Articles, check out the developmental `pkgdown` site at <https://infer-dev.netlify.com>.
@@ -44,7 +44,7 @@ To see the things we are working on with the package as vignettes/Articles, chec
 
 ------------------------------------------------------------------------
 
-We welcome others helping us make this package as user friendly and efficient as possible. Please review our [contributing](https://github.com/andrewpbray/infer/blob/develop/CONDUCT.md) and [conduct](CONDUCT.md) guidelines. Of particular interest is helping us to write `testthat` tests and help us in building vignettes that show how to (and how NOT to) use the package. By participating in this project you agree to abide by its terms.
+We welcome others helping us make this package as user friendly and efficient as possible. Please review our [contributing](https://github.com/tidymodels/infer/blob/develop/CONDUCT.md) and [conduct](CONDUCT.md) guidelines. Of particular interest is helping us to write `testthat` tests and help us in building vignettes that show how to (and how NOT to) use the package. By participating in this project you agree to abide by its terms.
 
 ### Examples
 
