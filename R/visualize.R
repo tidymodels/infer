@@ -184,8 +184,7 @@ theory_t_plot <- function(deg_freedom, statistic_text = "t",
                           qt(0.999, deg_freedom)))) + 
     stat_function(mapping = aes(x), fun = dt, args = list(df = deg_freedom), 
                   color = dens_color) +
-    ggtitle(paste("Theoretical", statistic_text, 
-                  "Null Distribution")) +
+    ggtitle(glue_null("Theoretical {statistic_text} Null Distribution")) +
     xlab("") +
     ylab("")
 }
@@ -210,8 +209,9 @@ both_t_plot <- function(data = data, deg_freedom, statistic_text = "t",
   infer_t_plot +
     stat_function(fun = dt, args = list(df = deg_freedom), 
                   color = dens_color) +
-    ggtitle(paste("Simulation-Based and Theoretical", 
-                  statistic_text, "Null Distributions")) +
+    ggtitle(glue_null(
+      "Simulation-Based and Theoretical {statistic_text} Null Distributions"
+    )) +
     xlab("tstat") +
     ylab("")
 }
@@ -224,7 +224,7 @@ theory_anova_plot <- function(deg_freedom_top, deg_freedom_bottom,
     stat_function(mapping = aes(x), fun = df, 
                   args = list(df1 = deg_freedom_top, df2 = deg_freedom_bottom),
                   color = dens_color) +
-    ggtitle(paste("Theoretical", statistic_text, "Null Distribution")) +
+    ggtitle(glue_null("Theoretical {statistic_text} Null Distribution")) +
     xlab("") +
     ylab("")
 }
@@ -257,8 +257,9 @@ both_anova_plot <- function(data, deg_freedom_top,
     stat_function(fun = df, 
                   args = list(df1 = deg_freedom_top, df2 = deg_freedom_bottom),
                   color = dens_color) +
-    ggtitle(paste("Simulation-Based and Theoretical", 
-                  statistic_text, "Null Distributions")) +
+    ggtitle(glue_null(
+      "Simulation-Based and Theoretical {statistic_text} Null Distributions"
+    )) +
     xlab("Fstat") +
     ylab("")  
 }
@@ -267,7 +268,7 @@ theory_z_plot <- function(statistic_text = "z", dens_color = dens_color,  ...){
   
   ggplot(data.frame(x = c(qnorm(0.001), qnorm(0.999)))) + 
     stat_function(mapping = aes(x), fun = dnorm, color = dens_color) +
-    ggtitle(paste("Theoretical", statistic_text, "Null Distribution")) +
+    ggtitle(glue_null("Theoretical {statistic_text} Null Distribution")) +
     xlab("") +
     ylab("")
 }
@@ -292,8 +293,9 @@ both_z_plot <- function(data, statistic_text = "z",
   
   infer_z_plot +
     stat_function(fun = dnorm, color = dens_color) +
-    ggtitle(paste("Simulation-Based and Theoretical", 
-                  statistic_text, "Null Distributions")) +
+    ggtitle(glue_null(
+      "Simulation-Based and Theoretical {statistic_text} Null Distributions"
+    )) +
     xlab("zstat") +
     ylab("")
 }
@@ -306,7 +308,7 @@ theory_chisq_plot <- function(deg_freedom,
     stat_function(mapping = aes(x), fun = dchisq, 
                   args = list(df = deg_freedom), 
                   color = dens_color) +
-    ggtitle(paste("Theoretical", statistic_text, "Null Distribution")) +
+    ggtitle(glue_null("Theoretical {statistic_text} Null Distribution")) +
     xlab("") +
     ylab("")
 }
@@ -336,8 +338,9 @@ both_chisq_plot <- function(data, deg_freedom, statistic_text = "Chi-Square",
   infer_chisq_plot +
     stat_function(fun = dchisq, args = list(df = deg_freedom), 
                   color = dens_color) +
-    ggtitle(paste("Simulation-Based and Theoretical", 
-                  statistic_text, "Null Distributions")) +
+    ggtitle(glue_null(
+      "Simulation-Based and Theoretical {statistic_text} Null Distributions"
+    )) +
     xlab("chisqstat") +
     ylab("")
 }
