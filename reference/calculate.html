@@ -29,6 +29,12 @@
 <script src="../pkgdown.js"></script>
 
 
+<!-- docsearch -->
+<script src="../docsearch.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
 
 <meta property="og:title" content="Calculate summary statistics — calculate" />
 
@@ -61,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
       </span>
     </div>
 
@@ -88,12 +94,6 @@
     </li>
     <li>
       <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
-    </li>
-    <li>
-      <a href="../articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
-    </li>
-    <li>
-      <a href="../articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
     </li>
   </ul>
 </li>
@@ -123,6 +123,12 @@
 </li>
       </ul>
       
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -145,8 +151,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>calculate</span>(<span class='no'>x</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>, <span class='st'>"sd"</span>, <span class='st'>"prop"</span>, <span class='st'>"diff in means"</span>,
-  <span class='st'>"diff in medians"</span>, <span class='st'>"diff in props"</span>, <span class='st'>"Chisq"</span>, <span class='st'>"F"</span>, <span class='st'>"slope"</span>, <span class='st'>"correlation"</span>, <span class='st'>"t"</span>,
-  <span class='st'>"z"</span>), <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+  <span class='st'>"diff in medians"</span>, <span class='st'>"diff in props"</span>, <span class='st'>"Chisq"</span>, <span class='st'>"F"</span>, <span class='st'>"slope"</span>, <span class='st'>"correlation"</span>,
+  <span class='st'>"t"</span>, <span class='st'>"z"</span>), <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -232,6 +238,23 @@ mean, sd, etc.</p></td>
    </div>
 
   
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: '33338960d0dcb55ff924a40c2f749a0d',
+    indexName: 'infer',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
   </body>
 </html>

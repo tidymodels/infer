@@ -1,6 +1,6 @@
 pandoc: '2.2'
 pkgdown: 1.1.0.9000
-pkgdown_sha: 98bfe0fdfd59b33ef1a88ef6896cd60f805f0e81
+pkgdown_sha: 982bd327f97b623554b4cca90b86b4fb084aa634
 articles:
   chisq_test: chisq_test.html
   flights_examples: flights_examples.html

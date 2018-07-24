@@ -30,6 +30,12 @@ or the theoretical distribution (or both!) — visualize • infer</title>
 <script src="../pkgdown.js"></script>
 
 
+<!-- docsearch -->
+<script src="../docsearch.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
 
 <meta property="og:title" content="Visualize the distribution of the simulation-based inferential statistics
 or the theoretical distribution (or both!) — visualize" />
@@ -64,7 +70,7 @@ or the theoretical distribution (or both!)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
       </span>
     </div>
 
@@ -91,12 +97,6 @@ or the theoretical distribution (or both!)" />
     </li>
     <li>
       <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
-    </li>
-    <li>
-      <a href="../articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
-    </li>
-    <li>
-      <a href="../articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
     </li>
   </ul>
 </li>
@@ -126,6 +126,12 @@ or the theoretical distribution (or both!)" />
 </li>
       </ul>
       
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -149,9 +155,9 @@ or the theoretical distribution (or both!)</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>visualize</span>(<span class='no'>data</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"simulation"</span>, <span class='kw'>dens_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>obs_stat_color</span> <span class='kw'>=</span> <span class='st'>"red2"</span>, <span class='kw'>pvalue_fill</span> <span class='kw'>=</span> <span class='st'>"pink"</span>,
-  <span class='kw'>direction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>endpoints</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+    <pre class="usage"><span class='fu'>visualize</span>(<span class='no'>data</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"simulation"</span>,
+  <span class='kw'>dens_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>obs_stat_color</span> <span class='kw'>=</span> <span class='st'>"red2"</span>,
+  <span class='kw'>pvalue_fill</span> <span class='kw'>=</span> <span class='st'>"pink"</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>endpoints</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>endpoints_color</span> <span class='kw'>=</span> <span class='st'>"mediumaquamarine"</span>, <span class='kw'>ci_fill</span> <span class='kw'>=</span> <span class='st'>"turquoise"</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -284,6 +290,23 @@ the confidence interval</p></td>
    </div>
 
   
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: '33338960d0dcb55ff924a40c2f749a0d',
+    indexName: 'infer',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
   </body>
 </html>
