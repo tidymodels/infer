@@ -251,3 +251,6 @@ test_that("mismatches lead to error", {
                  generate(reps = 100, type = "other"))
 })
 
+test_that("generate() handles `NULL` value of `type`", {
+  expect_error(generate(hyp_prop, type = NULL), "NULL.*type")
+})

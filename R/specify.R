@@ -47,6 +47,10 @@ specify <- function(x, formula, response = NULL,
     attr(x, "explanatory") <- f_rhs(formula)
   }
   
+  if (is.null(attr(x, "response"))) {
+    stop_glue("Supply not `NULL` response variable.")
+  }
+  
   if (!(as.character(attr(x, "response")) %in% names(x))) {
     stop_glue('The response variable `{attr(x, "response")}` ',
               'cannot be found in this dataframe.')
