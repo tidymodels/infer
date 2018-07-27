@@ -111,7 +111,7 @@ set_params <- function(x){
   }
   
 #  if(is.null(attr(x, "theory_type")))
-#     warning("Theoretical type not yet implemented")
+#     warning_glue("Theoretical type not yet implemented")
   
   x
 }
