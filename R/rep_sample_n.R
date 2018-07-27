@@ -57,8 +57,9 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   # prob needs to be nrow(tbl) -- not just number of factor levels
   if (!is.null(prob)) {
     if (length(prob) != n)
-      stop(paste("The argument `prob` must have length `nrow(tbl)` = ",
-                 nrow(tbl)))
+      stop_glue(
+        "The argument `prob` must have length `nrow(tbl)` = {nrow(tbl)}"
+      )
 
     prob <- dplyr::data_frame(vals = levels(dplyr::pull(tbl, 1))) %>%
       dplyr::mutate(probs = prob) %>%

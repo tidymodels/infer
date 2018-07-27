@@ -23,10 +23,10 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
   
   if(!is.null(auto_type)){
     if(auto_type != type)
-      stop(paste0("You have specified `type = \"",
-                    type, "\"`, but `type` is expected to be `\"",
-                    auto_type, "\"`. Please try again with appropriate ",
-                  "`type` value."))
+      stop_glue(
+        "You have specified `type = \"{type}\"`, but `type` is expected to be ",
+        "`\"{auto_type}\"`. Please try again with appropriate `type` value."
+      )
     else
       type <- auto_type
   }
@@ -35,21 +35,21 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
   
   if (type == "permute" &&
       any(is.null(attr(x, "response")), is.null(attr(x, "explanatory")))) {
-    stop(paste("Please `specify()` an explanatory and a response variable",
-         "when permuting."))
+    stop_glue("Please `specify()` an explanatory and a response variable ",
+              "when permuting.")
   }
 ## Can't get to these anymore with tests
 #  if (type == "simulate" &&
 #      attr(x, "null") != "point" &&
 #      !(length(grep("p.", names(attr(x, "params")))) >= 1)) {
-#    stop("Simulation requires a `point` null hypothesis on proportions.")
+#    stop_glue("Simulation requires a `point` null hypothesis on proportions.")
 #  }
 #  if (type == "bootstrap" &&
 #        !(attr(attr(x, "params"), "names") %in% c("mu", "med", "sigma")) &&
 #        !is.null(attr(x, "null"))
 #      ) {
-#    stop(paste("Bootstrapping is inappropriate in this setting.",
-#          "Consider using `type = permute` or `type = simulate`."))
+#    stop_glue("Bootstrapping is inappropriate in this setting. ",
+#              "Consider using `type = permute` or `type = simulate`.")
 #  }
 
   if (type == "bootstrap") {
@@ -62,8 +62,8 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
     return(simulate(x, reps, ...))
   }
 #  else if (!(type %in% c("bootstrap", "permute", "simulate")))
-#    stop(paste("Choose one of the available options for `type`:",
-#               '`"bootstrap"`, `"permute"`, or `"simulate"`'))
+#    stop_glue("Choose one of the available options for `type`: ",
+#              '`"bootstrap"`, `"permute"`, or `"simulate"`')
 }
 
 bootstrap <- function(x, reps = 1, ...) {
