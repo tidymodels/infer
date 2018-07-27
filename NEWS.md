@@ -4,6 +4,7 @@
 - Fixed `t_stat()` to use `...` so `var.equal` works
 - With the help of @echasnovski, fixed `var.equal = TRUE` for `specify() %>% calculate(stat = "t")`
 - Use custom functions for error, warning, message, and `paste()` handling (#155)
+- Account for `NULL` value in left hand side of formula in `specify()` (#156) and `type` in `generate()` (#157).
 
 # infer 0.3.0
 
