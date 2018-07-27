@@ -22,6 +22,10 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
   auto_type <- attr(x, "type")
   
   if(!is.null(auto_type)){
+    if (is.null(type)) {
+      stop_glue("Supply not `NULL` value of `type`.")
+    }
+    
     if(auto_type != type)
       stop_glue(
         "You have specified `type = \"{type}\"`, but `type` is expected to be ",
