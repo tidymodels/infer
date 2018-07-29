@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>A tidier version of chisq.test for goodness of fit tests and tests of independence. — chisq_test • infer</title>
+<title>Tidy chi-squared test — chisq_test • infer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -36,9 +36,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="A tidier version of chisq.test for goodness of fit tests and tests of independence. — chisq_test" />
+<meta property="og:title" content="Tidy chi-squared test — chisq_test" />
 
-<meta property="og:description" content="A tidier version of chisq.test for goodness of fit tests and tests of independence." />
+<meta property="og:description" content="A tidier version of chisq.test() for goodness of fit
+tests and tests of independence." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -145,14 +146,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>A tidier version of chisq.test for goodness of fit tests and tests of independence.</h1>
+    <h1>Tidy chi-squared test</h1>
     <small class="dont-index">Source: <a href='https://github.com/andrewpbray/infer/blob/master/R/wrappers.R'><code>R/wrappers.R</code></a></small>
     <div class="hidden name"><code>chisq_test.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>A tidier version of chisq.test for goodness of fit tests and tests of independence.</p>
+    <p>A tidier version of <a href='http://www.rdocumentation.org/packages/stats/topics/chisq.test'>chisq.test()</a> for goodness of fit
+tests and tests of independence.</p>
     
     </div>
 
@@ -163,27 +165,29 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>a data frame that can be coerced into a <code><a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a></code></p></td>
+      <td><p>A data frame that can be coerced into a <a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a>.</p></td>
     </tr>
     <tr>
       <th>formula</th>
-      <td><p>a formula with the response variable on the left and the explanatory on the right</p></td>
+      <td><p>A formula with the response variable on the left and the
+explanatory on the right.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional arguments for <code>chisq.test</code></p></td>
+      <td><p>Additional arguments for <a href='http://www.rdocumentation.org/packages/stats/topics/chisq.test'>chisq.test()</a>.</p></td>
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># chisq test for comparing number of cylinders against automatic/manual</span>
-  <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-    <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>cyl</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>cyl</span>), <span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'>chisq_test</span>(<span class='no'>cyl</span> ~ <span class='no'>am</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='output co'>#&gt; # A tibble: 1 x 3
+<span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>cyl</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>cyl</span>), <span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'>chisq_test</span>(<span class='no'>cyl</span> ~ <span class='no'>am</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='output co'>#&gt; # A tibble: 1 x 3
 #&gt;   statistic chisq_df p_value
 #&gt;       &lt;dbl&gt;    &lt;int&gt;   &lt;dbl&gt;
-#&gt; 1      8.74        2  0.0126</div></pre>
+#&gt; 1      8.74        2  0.0126</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
