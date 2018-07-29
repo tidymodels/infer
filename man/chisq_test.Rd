@@ -2,8 +2,7 @@
 % Please edit documentation in R/wrappers.R
 \name{chisq_test}
 \alias{chisq_test}
-\title{A tidier version of chisq.test for goodness of fit tests and tests of
-independence.}
+\title{Tidy chi-squared test}
 \usage{
 chisq_test(data, formula, ...)
 }
@@ -24,4 +23,5 @@ independence.
 mtcars \%>\%
   dplyr::mutate(cyl = factor(cyl), am = factor(am)) \%>\%
   chisq_test(cyl ~ am)
+
 }

@@ -1,5 +1,8 @@
-#' Compute the p-value for (currently only) simulation-based methods
-#' `get_pvalue()` is an alias of `p_value`
+#' Compute p-value
+#' 
+#' Only simulation-based methods are (currently only) supported. `get_pvalue()`
+#' is an alias of `p_value`.
+#' 
 #' @param x data frame of calculated statistics or containing attributes of
 #'   theoretical distribution values
 #' @param obs_stat a numeric value or a 1x1 data frame (as extreme or more
@@ -8,8 +11,7 @@
 #'   "two_sided". Can also specify "left", "right", or "both".
 #'
 #' @return a 1x1 data frame with value between 0 and 1
-#' @export
-#' @rdname get_pvalue
+#' 
 #' @examples
 #' mtcars_df <- mtcars %>%
 #'   dplyr::mutate(am = factor(am))
@@ -23,7 +25,9 @@
 #'   calculate(stat = "diff in means", order = c("1", "0"))
 #' null_distn %>% 
 #'   p_value(obs_stat = d_hat, direction = "right")
-
+#' 
+#' @rdname get_pvalue
+#' @export
 p_value <- function(x, obs_stat, direction){
   
   check_type(x, is.data.frame)
@@ -92,8 +96,8 @@ two_sided_p_value <- function(x, obs_stat){
     return(tibble::tibble(p_value = basic_p_value))
 }
 
-#' @export
 #' @rdname get_pvalue
+#' @export
 get_pvalue <- p_value
 
 # which_distribution <- function(x, theory_type, obs_stat, direction){

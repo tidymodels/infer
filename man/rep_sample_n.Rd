@@ -44,9 +44,11 @@ p_hats <- samples \%>\%
   group_by(replicate) \%>\%
   summarize(prop_hurricane = mean(status == "hurricane"))
 p_hats
+
 # Plot sampling distribution
 ggplot(p_hats, aes(x = prop_hurricane)) +
   geom_density() +
   labs(x = "p_hat", y = "Number of samples",
   title = "Sampling distribution of p_hat from 1000 samples of size 50")
+
 }

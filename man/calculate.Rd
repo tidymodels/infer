@@ -38,4 +38,5 @@ mtcars \%>\%
   hypothesize(null = "independence") \%>\%
   generate(reps = 100, type = "permute") \%>\%
   calculate(stat = "diff in props", order = c("1", "0"))
+
 }

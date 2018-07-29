@@ -1,12 +1,12 @@
 #' Declare a null hypothesis
+#' 
 #' @param x a data frame that can be coerced into a [tbl_df][dplyr::tbl_df]
 #' @param null the null hypothesis. Options include "independence" and "point"
 #' @param ... arguments passed to downstream functions
+#' 
 #' @return A tibble containing the response (and explanatory, if specified)
 #'   variable data with parameter information stored as well
-#' @importFrom dplyr as.tbl
-#' @return a data frame with attributes set
-#' @export
+#' 
 #' @examples
 #' # Permutation test similar to ANOVA
 #' mtcars %>%
@@ -15,7 +15,9 @@
 #'   hypothesize(null = "independence") %>%
 #'   generate(reps = 100, type = "permute") %>%
 #'   calculate(stat = "F")
-
+#' 
+#' @importFrom dplyr as.tbl
+#' @export
 hypothesize <- function(x, null, ...) {
   
   hypothesize_checks(x, null)

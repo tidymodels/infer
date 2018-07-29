@@ -4,7 +4,7 @@
 \alias{conf_int}
 \alias{get_ci}
 \alias{get_confidence_interval}
-\title{Compute the confidence interval for (currently only) simulation-based methods}
+\title{Compute confidence interval}
 \usage{
 conf_int(x, level = 0.95, type = "percentile", point_estimate = NULL)
 
@@ -33,7 +33,8 @@ a 2 x 1 tibble with values corresponding to lower and upper values in
 the confidence interval
 }
 \description{
-\code{get_confidence_interval()} and \code{get_ci()} are both aliases of \code{conf_int()}
+Only simulation-based methods are (currently only) supported.
+\code{get_confidence_interval()} and \code{get_ci()} are both aliases of \code{conf_int()}.
 }
 \examples{
 mtcars_df <- mtcars \%>\%
@@ -47,4 +48,5 @@ bootstrap_distn <- mtcars_df \%>\%
   calculate(stat = "diff in means", order = c("1", "0"))
 bootstrap_distn \%>\% conf_int(level = 0.9)
 bootstrap_distn \%>\% conf_int(type = "se", point_estimate = d_hat)
+
 }

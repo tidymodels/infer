@@ -2,8 +2,7 @@
 % Please edit documentation in R/specify.R
 \name{specify}
 \alias{specify}
-\title{Specify the response and explanatory variables with \code{specify} also converting
-character variables chosen to be \code{factor}s}
+\title{Specify the response and explanatory variables}
 \usage{
 specify(x, formula, response = NULL, explanatory = NULL,
   success = NULL)
@@ -29,8 +28,7 @@ A tibble containing the response (and explanatory, if specified)
 variable data
 }
 \description{
-Specify the response and explanatory variables with \code{specify} also converting
-character variables chosen to be \code{factor}s
+\code{specify()} also converts character variables chosen to be \code{factor}s.
 }
 \examples{
 # Permutation test similar to ANOVA
@@ -40,4 +38,5 @@ mtcars \%>\%
   hypothesize(null = "independence") \%>\%
   generate(reps = 100, type = "permute") \%>\%
   calculate(stat = "F")
+
 }

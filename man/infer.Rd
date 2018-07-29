@@ -13,4 +13,5 @@ with the tidyverse.
 \examples{
 # Example usage:
 library(infer)
+
 }

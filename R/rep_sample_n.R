@@ -9,15 +9,10 @@
 #' @param reps number of samples of size n = `size` to take
 #' @param prob a vector of probability weights for obtaining the elements of the
 #'   vector being sampled.
+#' 
 #' @return A tibble of size `rep` times `size` rows corresponding to `rep`
 #'   samples of size n = `size` from `tbl`.
-#' @importFrom dplyr data_frame
-#' @importFrom dplyr pull
-#' @importFrom dplyr inner_join
-#' @importFrom dplyr as_tibble
-#' @importFrom dplyr group_by
-#'
-#' @export
+#' 
 #' @examples
 #' suppressPackageStartupMessages(library(dplyr))
 #' suppressPackageStartupMessages(library(ggplot2))
@@ -36,12 +31,19 @@
 #'   group_by(replicate) %>%
 #'   summarize(prop_hurricane = mean(status == "hurricane"))
 #' p_hats
-
+#' 
 #' # Plot sampling distribution
 #' ggplot(p_hats, aes(x = prop_hurricane)) +
 #'   geom_density() +
 #'   labs(x = "p_hat", y = "Number of samples",
 #'   title = "Sampling distribution of p_hat from 1000 samples of size 50")
+#' 
+#' @importFrom dplyr data_frame
+#' @importFrom dplyr pull
+#' @importFrom dplyr inner_join
+#' @importFrom dplyr as_tibble
+#' @importFrom dplyr group_by
+#' @export
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   n <- nrow(tbl)
 

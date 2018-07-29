@@ -1,4 +1,5 @@
 #' Calculate summary statistics
+#' 
 #' @param x the output from [generate] for computation-based inference or the
 #'   output from [hypothesize] piped in to here for theory-based inference.
 #' @param stat a string giving the type of the statistic to calculate. Current
@@ -11,10 +12,9 @@
 #'   difference in means, medians, or proportions and t and z statistics.
 #' @param ... to pass options like `na.rm = TRUE` into functions like mean, sd,
 #'   etc.
+#'   
 #' @return A tibble containing a `stat` column of calculated statistics
-#' @importFrom dplyr group_by summarize n
-#' @importFrom rlang !! sym quo enquo eval_tidy
-#' @export
+#'
 #' @examples
 #' # Permutation test for two binary variables
 #' mtcars %>%
@@ -23,7 +23,10 @@
 #'   hypothesize(null = "independence") %>%
 #'   generate(reps = 100, type = "permute") %>%
 #'   calculate(stat = "diff in props", order = c("1", "0"))
-
+#' 
+#' @importFrom dplyr group_by summarize n
+#' @importFrom rlang !! sym quo enquo eval_tidy
+#' @export
 calculate <- function(x,
                       stat = c(
                         "mean",

@@ -1,13 +1,15 @@
-#' Generate resamples, permutations, or simulations based on `specify` and (if
-#' needed) `hypothesize` inputs
+#' Generate resamples, permutations, or simulations
+#' 
+#' Generation is done based on `specify` and (if needed) `hypothesize` inputs.
+#' 
 #' @param x a data frame that can be coerced into a [tbl_df][dplyr::tbl_df]
 #' @param reps the number of resamples to generate
 #' @param type currently either `bootstrap`, `permute`, or `simulate`
 #' @param ... currently ignored
+#' 
 #' @return A tibble containing `rep` generated datasets, indicated by the
 #'   `replicate` column.
-#' @importFrom dplyr group_by
-#' @export
+#' 
 #' @examples
 #' # Permutation test for two binary variables
 #' mtcars %>%
@@ -15,7 +17,9 @@
 #'   specify(am ~ vs, success = "1") %>%
 #'   hypothesize(null = "independence") %>%
 #'   generate(reps = 100, type = "permute")
-
+#' 
+#' @importFrom dplyr group_by
+#' @export
 generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
 
   auto_type <- attr(x, "type")
@@ -151,7 +155,6 @@ permute_once <- function(x, ...) {
 #' @importFrom dplyr pull
 #' @importFrom tibble tibble
 #' @importFrom rlang :=
-
 simulate <- function(x, reps = 1, ...) {
   fct_levels <- as.character(unique(dplyr::pull(x, !! attr(x, "response"))))
 

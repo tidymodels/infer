@@ -1,6 +1,8 @@
-#' Compute the confidence interval for (currently only) simulation-based methods
+#' Compute confidence interval
 #' 
-#' `get_confidence_interval()` and `get_ci()` are both aliases of `conf_int()`
+#' Only simulation-based methods are (currently only) supported.
+#' `get_confidence_interval()` and `get_ci()` are both aliases of `conf_int()`.
+#' 
 #' @param x data frame of calculated statistics or containing attributes of
 #'   theoretical distribution values. Currently, dependent on statistics being
 #'   stored in `stat` column as created in `calculate()` function.
@@ -14,8 +16,7 @@
 #'
 #' @return a 2 x 1 tibble with values corresponding to lower and upper values in
 #'   the confidence interval
-#' @export
-#' @rdname get_ci
+#' 
 #' @examples
 #' mtcars_df <- mtcars %>%
 #'   dplyr::mutate(am = factor(am))
@@ -28,7 +29,9 @@
 #'   calculate(stat = "diff in means", order = c("1", "0"))
 #' bootstrap_distn %>% conf_int(level = 0.9)
 #' bootstrap_distn %>% conf_int(type = "se", point_estimate = d_hat)
-
+#' 
+#' @rdname get_ci
+#' @export
 conf_int <- function(x, level = 0.95, type = "percentile", 
                      point_estimate = NULL){
   
@@ -78,12 +81,10 @@ check_ci_args <- function(x, level, type, point_estimate){
 }
 
 
-#' @export
 #' @rdname get_ci
-
+#' @export
 get_ci <- conf_int
 
-#' @export
 #' @rdname get_ci
-
+#' @export
 get_confidence_interval <- conf_int

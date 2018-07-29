@@ -2,8 +2,7 @@
 % Please edit documentation in R/visualize.R
 \name{visualize}
 \alias{visualize}
-\title{Visualize the distribution of the simulation-based inferential statistics or
-the theoretical distribution (or both!)}
+\title{Visualize statistical inference}
 \usage{
 visualize(data, bins = 15, method = "simulation",
   dens_color = "black", obs_stat = NULL, obs_stat_color = "red2",
@@ -55,7 +54,7 @@ histogram or bar graph. Also used to show the theoretical curves.
 }
 \description{
 Visualize the distribution of the simulation-based inferential statistics or
-the theoretical distribution (or both!)
+the theoretical distribution (or both!).
 }
 \examples{
 # Permutations to create a simulation-based null distribution for 
@@ -88,4 +87,5 @@ mtcars \%>\%
   generate(reps = 100, type = "permute") \%>\%
   calculate(stat = "t", order = c("1", "0")) \%>\%
   visualize(method = "both")
+
 }

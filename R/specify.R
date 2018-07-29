@@ -1,5 +1,7 @@
-#' Specify the response and explanatory variables with `specify` also converting
-#' character variables chosen to be `factor`s
+#' Specify the response and explanatory variables
+#' 
+#' `specify()` also converts character variables chosen to be `factor`s.
+#' 
 #' @param x a data frame that can be coerced into a [tibble][tibble::tibble]
 #' @param formula a formula with the response variable on the left and the
 #'   explanatory on the right
@@ -10,13 +12,10 @@
 #' @param success the level of `response` that will be considered a success, as
 #'   a string. Needed for inference on one proportion, a difference in
 #'   proportions, and corresponding z stats
+#' 
 #' @return A tibble containing the response (and explanatory, if specified)
 #'   variable data
-#' @importFrom rlang f_lhs
-#' @importFrom rlang f_rhs
-#' @importFrom dplyr mutate_if select one_of as_tibble
-#' @importFrom methods hasArg
-#' @export
+#' 
 #' @examples
 #' # Permutation test similar to ANOVA
 #' mtcars %>%
@@ -25,7 +24,12 @@
 #'   hypothesize(null = "independence") %>%
 #'   generate(reps = 100, type = "permute") %>%
 #'   calculate(stat = "F")
-
+#' 
+#' @importFrom rlang f_lhs
+#' @importFrom rlang f_rhs
+#' @importFrom dplyr mutate_if select one_of as_tibble
+#' @importFrom methods hasArg
+#' @export
 specify <- function(x, formula, response = NULL,
                     explanatory = NULL, success = NULL) {
   check_type(x, is.data.frame)

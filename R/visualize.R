@@ -1,5 +1,8 @@
+#' Visualize statistical inference
+#' 
 #' Visualize the distribution of the simulation-based inferential statistics or
-#' the theoretical distribution (or both!)
+#' the theoretical distribution (or both!).
+#' 
 #' @param data the output from [calculate]
 #' @param bins the number of bins in the histogram
 #' @param method a string giving the method to display. Options are
@@ -26,12 +29,10 @@
 #' @param ci_fill a character or hex string specifying the color to shade the
 #'   confidence interval
 #' @param ... other arguments passed along to ggplot2
-#' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle
-#' @importFrom ggplot2 xlab ylab geom_vline geom_rect geom_bar
-#' @importFrom stats dt qt df qf dnorm qnorm dchisq qchisq
+#' 
 #' @return A ggplot object showing the simulation-based distribution as a
 #'   histogram or bar graph. Also used to show the theoretical curves.
-#' @export
+#' 
 #' @examples
 #' # Permutations to create a simulation-based null distribution for 
 #' # one numerical response and one categorical predictor
@@ -63,7 +64,11 @@
 #'   generate(reps = 100, type = "permute") %>%
 #'   calculate(stat = "t", order = c("1", "0")) %>%
 #'   visualize(method = "both")
-
+#' 
+#' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle
+#' @importFrom ggplot2 xlab ylab geom_vline geom_rect geom_bar
+#' @importFrom stats dt qt df qf dnorm qnorm dchisq qchisq
+#' @export
 visualize <- function(data, bins = 15, method = "simulation", 
                       dens_color = "black",
                       obs_stat = NULL, 

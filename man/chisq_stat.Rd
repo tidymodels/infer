@@ -2,8 +2,7 @@
 % Please edit documentation in R/wrappers.R
 \name{chisq_stat}
 \alias{chisq_stat}
-\title{A shortcut wrapper function to get the observed test statistic for a chisq
-test. Uses \link[stats:chisq.test]{stats::chisq.test}, which applies a continuity correction.}
+\title{Tidy chi-squared test statistic}
 \usage{
 chisq_stat(data, formula, ...)
 }

@@ -3,8 +3,7 @@
 \name{p_value}
 \alias{p_value}
 \alias{get_pvalue}
-\title{Compute the p-value for (currently only) simulation-based methods
-\code{get_pvalue()} is an alias of \code{p_value}}
+\title{Compute p-value}
 \usage{
 p_value(x, obs_stat, direction)
 
@@ -24,8 +23,8 @@ extreme than this)}
 a 1x1 data frame with value between 0 and 1
 }
 \description{
-Compute the p-value for (currently only) simulation-based methods
-\code{get_pvalue()} is an alias of \code{p_value}
+Only simulation-based methods are (currently only) supported. \code{get_pvalue()}
+is an alias of \code{p_value}.
 }
 \examples{
 mtcars_df <- mtcars \%>\%
@@ -40,4 +39,5 @@ null_distn <- mtcars_df \%>\%
   calculate(stat = "diff in means", order = c("1", "0"))
 null_distn \%>\% 
   p_value(obs_stat = d_hat, direction = "right")
+
 }

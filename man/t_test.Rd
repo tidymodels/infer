@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrappers.R
 \name{t_test}
 \alias{t_test}
-\title{A tidier version of t.test for two sample tests}
+\title{Tidy t-test}
 \usage{
 t_test(data, formula, order = NULL, alternative = "two_sided",
   mu = 0, conf_int = TRUE, conf_level = 0.95, ...)
@@ -38,4 +38,5 @@ A tidier version of t.test for two sample tests
 mtcars \%>\%
   dplyr::mutate(am = factor(am)) \%>\%
   t_test(mpg ~ am, order = c("1", "0"), alternative = "less")
+
 }

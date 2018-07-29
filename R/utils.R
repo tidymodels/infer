@@ -324,6 +324,7 @@ check_obs_stat <- function(obs_stat){
 #'   original name of supplied `predicate`: all alphanumeric with '_' and '.'
 #'   characters (until the name end) after the first appearance of either `is.`
 #'   or `is_`. In case of a doubt supply `type` explicitly.
+#' 
 #' @examples
 #' \dontrun{
 #' x <- 1
@@ -331,8 +332,9 @@ check_obs_stat <- function(obs_stat){
 #' check_type(x, is.logical)
 #' check_type(x, rlang::is_string, "character of length 1")
 #' }
-#' @noRd
+#' 
 #' @keywords internal
+#' @noRd
 check_type <- function(x, predicate, type = NULL) {
   x_name <- deparse(rlang::enexpr(x))
   if (is.null(type)) {

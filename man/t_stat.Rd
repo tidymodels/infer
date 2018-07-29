@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrappers.R
 \name{t_stat}
 \alias{t_stat}
-\title{A shortcut wrapper function to get the observed test statistic for a t test}
+\title{Tidy t-test statistic}
 \usage{
 t_stat(data, formula, ...)
 }
@@ -15,5 +15,5 @@ explanatory on the right}
 \item{...}{pass in arguments to {infer} functions}
 }
 \description{
-A shortcut wrapper function to get the observed test statistic for a t test
+A shortcut wrapper function to get the observed test statistic for a t test.
 }
