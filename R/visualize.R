@@ -242,7 +242,7 @@ both_anova_plot <- function(data, deg_freedom_top,
                             endpoints,
                             pvalue_fill,
                             ci_fill,
-                            ....){
+                            ...){
   
   if(!is.null(direction) && !(direction %in% c("greater", "right")))
     warning_glue(
