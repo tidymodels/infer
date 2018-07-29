@@ -30,6 +30,9 @@
 #' bootstrap_distn %>% conf_int(level = 0.9)
 #' bootstrap_distn %>% conf_int(type = "se", point_estimate = d_hat)
 #' 
+#' @name get_ci
+NULL
+
 #' @rdname get_ci
 #' @export
 conf_int <- function(x, level = 0.95, type = "percentile", 

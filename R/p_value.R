@@ -26,6 +26,9 @@
 #' null_distn %>% 
 #'   p_value(obs_stat = d_hat, direction = "right")
 #' 
+#' @name get_pvalue
+NULL
+
 #' @rdname get_pvalue
 #' @export
 p_value <- function(x, obs_stat, direction){
