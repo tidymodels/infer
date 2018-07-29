@@ -2,34 +2,33 @@
 % Please edit documentation in R/generate.R
 \name{generate}
 \alias{generate}
-\title{Generate resamples, permutations, or simulations based on
-`specify` and (if needed) `hypothesize` inputs}
+\title{Generate resamples, permutations, or simulations}
 \usage{
 generate(x, reps = 1, type = attr(x, "type"), ...)
 }
 \arguments{
-\item{x}{a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}}
+\item{x}{A data frame that can be coerced into a \link[dplyr:tbl_df]{tbl_df}.}
 
-\item{reps}{the number of resamples to generate}
+\item{reps}{The number of resamples to generate.}
 
-\item{type}{currently either \code{bootstrap}, \code{permute}, 
-or \code{simulate}}
+\item{type}{Currently either \code{bootstrap}, \code{permute}, or \code{simulate}.}
 
-\item{...}{currently ignored}
+\item{...}{Currently ignored.}
 }
 \value{
 A tibble containing \code{rep} generated datasets, indicated by the
 \code{replicate} column.
 }
 \description{
-Generate resamples, permutations, or simulations based on
-`specify` and (if needed) `hypothesize` inputs
+Generation is done based on \code{\link[=specify]{specify()}} and (if needed) \code{\link[=hypothesize]{hypothesize()}}
+inputs.
 }
 \examples{
 # Permutation test for two binary variables
-  mtcars \%>\%
-    dplyr::mutate(am = factor(am), vs = factor(vs)) \%>\%
-    specify(am ~ vs, success = "1") \%>\%
-    hypothesize(null = "independence") \%>\%
-    generate(reps = 100, type = "permute")
+mtcars \%>\%
+  dplyr::mutate(am = factor(am), vs = factor(vs)) \%>\%
+  specify(am ~ vs, success = "1") \%>\%
+  hypothesize(null = "independence") \%>\%
+  generate(reps = 100, type = "permute")
+
 }

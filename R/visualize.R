@@ -1,70 +1,74 @@
-#' Visualize the distribution of the simulation-based inferential statistics
-#' or the theoretical distribution (or both!)
-#' @param data the output from \code{\link{calculate}}
-#' @param bins the number of bins in the histogram
-#' @param method a string giving the method to display. Options are 
-#' "simulation", "theoretical", or "both"
-#' with "both" corresponding to "simulation" and "theoretical"
-#' @param dens_color a character or hex string specifying the color of the
-#'  theoretical density curve
-#' @param obs_stat a numeric value or 1x1 data frame corresponding to what
-#'  the observed statistic is
-#' @param obs_stat_color a character or hex string specifying the color of
-#'  the observed statistic as a vertical line on the plot
-#' @param pvalue_fill a character or hex string specifying the color to shade
-#'  the pvalue. In previous versions of the package this was the \code{shade_color} 
-#'  argument
-#' @param direction a string specifying in which direction the shading 
-#' should occur. Options are "less", "greater", or "two_sided" for p-value.
-#' Can also give "left", "right", or "both" for p-value. For confidence 
-#' intervals, use "between".
-#' and give the endpoint values in \code{endpoints}
-#' @param endpoints a 2 element vector or a 1 x 2 data frame containing the
-#'  lower and upper values to be plotted. Most useful for visualizing
-#'  conference intervals.
-#' @param endpoints_color a character or hex string specifying the color of
-#'  the observed statistic as a vertical line on the plot 
-#' @param ci_fill a character or hex string specifying the color to shade
-#'  the confidence interval
-#' @param ... other arguments passed along to ggplot2
-#' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle  
-#' @importFrom ggplot2 xlab ylab geom_vline geom_rect geom_bar
-#' @importFrom stats dt qt df qf dnorm qnorm dchisq qchisq
+#' Visualize statistical inference
+#' 
+#' Visualize the distribution of the simulation-based inferential statistics or
+#' the theoretical distribution (or both!).
+#' 
+#' @param data The output from [calculate()].
+#' @param bins The number of bins in the histogram.
+#' @param method A string giving the method to display. Options are
+#'   `"simulation"`, `"theoretical"`, or `"both"` with `"both"` corresponding to
+#'   `"simulation"` and `"theoretical"`.
+#' @param dens_color A character or hex string specifying the color of the
+#'   theoretical density curve.
+#' @param obs_stat A numeric value or 1x1 data frame corresponding to what the
+#'   observed statistic is.
+#' @param obs_stat_color A character or hex string specifying the color of the
+#'   observed statistic as a vertical line on the plot.
+#' @param pvalue_fill A character or hex string specifying the color to shade
+#'   the p-value. In previous versions of the package this was the `shade_color`
+#'   argument.
+#' @param direction A string specifying in which direction the shading should
+#'   occur. Options are `"less"`, `"greater"`, or `"two_sided"` for p-value. Can
+#'   also give `"left"`, `"right"`, or `"both"` for p-value. For confidence
+#'   intervals, use `"between"` and give the endpoint values in `endpoints`.
+#' @param endpoints A 2 element vector or a 1 x 2 data frame containing the
+#'   lower and upper values to be plotted. Most useful for visualizing
+#'   conference intervals.
+#' @param endpoints_color A character or hex string specifying the color of the
+#'   observed statistic as a vertical line on the plot.
+#' @param ci_fill A character or hex string specifying the color to shade the
+#'   confidence interval.
+#' @param ... Other arguments passed along to ggplot2.
+#' 
 #' @return A ggplot object showing the simulation-based distribution as a
-#'  histogram or bar graph. Also used to show the theoretical curves.
-#' @export
-#' @examples 
+#'   histogram or bar graph. Also used to show the theoretical curves.
+#' 
+#' @examples
 #' # Permutations to create a simulation-based null distribution for 
 #' # one numerical response and one categorical predictor
 #' # using t statistic
 #' mtcars %>%
-#'     dplyr::mutate(am = factor(am)) %>%
-#'     specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
-#'     hypothesize(null = "independence") %>%
-#'     generate(reps = 100, type = "permute") %>%
-#'     calculate(stat = "t", order = c("1", "0")) %>%
-#'     visualize(method = "simulation") #default method
+#'   dplyr::mutate(am = factor(am)) %>%
+#'   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
+#'   hypothesize(null = "independence") %>%
+#'   generate(reps = 100, type = "permute") %>%
+#'   calculate(stat = "t", order = c("1", "0")) %>%
+#'   visualize(method = "simulation") #default method
 #' 
 #' # Theoretical t distribution for 
 #' # one numerical response and one categorical predictor
 #' # using t statistic
 #' mtcars %>%
-#'     dplyr::mutate(am = factor(am)) %>%
-#'     specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
-#'     hypothesize(null = "independence") %>%
-#'     # generate() is not needed since we are not doing simulation
-#'     calculate(stat = "t", order = c("1", "0")) %>%
-#'     visualize(method = "theoretical")
+#'   dplyr::mutate(am = factor(am)) %>%
+#'   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
+#'   hypothesize(null = "independence") %>%
+#'   # generate() is not needed since we are not doing simulation
+#'   calculate(stat = "t", order = c("1", "0")) %>%
+#'   visualize(method = "theoretical")
 #' 
 #' # Overlay theoretical distribution on top of randomized t-statistics
 #' mtcars %>%
-#'     dplyr::mutate(am = factor(am)) %>%
-#'     specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
-#'     hypothesize(null = "independence") %>%
-#'     generate(reps = 100, type = "permute") %>%
-#'     calculate(stat = "t", order = c("1", "0")) %>%
-#'     visualize(method = "both")
-
+#'   dplyr::mutate(am = factor(am)) %>%
+#'   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
+#'   hypothesize(null = "independence") %>%
+#'   generate(reps = 100, type = "permute") %>%
+#'   calculate(stat = "t", order = c("1", "0")) %>%
+#'   visualize(method = "both")
+#' 
+#' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle
+#' @importFrom ggplot2 xlab ylab geom_vline geom_rect geom_bar
+#' @importFrom stats dt qt df qf dnorm qnorm dchisq qchisq
+#' @export
 visualize <- function(data, bins = 15, method = "simulation", 
                       dens_color = "black",
                       obs_stat = NULL, 

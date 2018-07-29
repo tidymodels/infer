@@ -1,8 +1,9 @@
 #' Print methods
 #'
-#' @param x an object of class \code{infer}, i.e. output from \code{\link{specify}}
-#' or \code{\link{hypothesize}}
-#' @param ... arguments passed to methods
+#' @param x An object of class `infer`, i.e. output from [specify()] or
+#'   [hypothesize()].
+#' @param ... Arguments passed to methods.
+#' 
 #' @export
 print.infer <- function(x, ...) {
   attrs <- names(attributes(x))

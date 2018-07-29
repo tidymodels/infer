@@ -1,28 +1,40 @@
-#' Compute the confidence interval for (currently only) simulation-based methods
+#' Compute confidence interval
 #' 
-#' \code{get_confidence_interval()} and \code{get_ci()} are both aliases of \code{conf_int()}
-#' @param x data frame of calculated statistics or containing attributes
-#' of theoretical distribution values. Currently, dependent on statistics being stored in \code{stat} column as created in \code{calculate()} function.
-#' @param level a numerical value between 0 and 1 giving the confidence level. Default value is 0.95.
-#' @param type a string giving which method should be used for creating the confidence interval. The default is \code{"percentile"} with \code{"se"} corresponding to (multiplier * standard error) as the other option.
-#' @param point_estimate a numeric value or a 1x1 data frame set to NULL by default. Needed to be provided if \code{type = "se"}.
+#' Only simulation-based methods are (currently only) supported.
+#' `get_confidence_interval()` and `get_ci()` are both aliases of `conf_int()`.
+#' 
+#' @param x Data frame of calculated statistics or containing attributes of
+#'   theoretical distribution values. Currently, dependent on statistics being
+#'   stored in `stat` column as created in [calculate()] function.
+#' @param level A numerical value between 0 and 1 giving the confidence level.
+#'   Default value is 0.95.
+#' @param type A string giving which method should be used for creating the
+#'   confidence interval. The default is `"percentile"` with `"se"`
+#'   corresponding to (multiplier * standard error) as the other option.
+#' @param point_estimate A numeric value or a 1x1 data frame set to `NULL` by
+#'   default. Needed to be provided if `type = "se"`.
 #'
-#' @return a 2 x 1 tibble with values corresponding to lower and upper values in the confidence interval
-#' @export
-#' @rdname get_ci
+#' @return A 1 x 2 tibble with values corresponding to lower and upper values in
+#'   the confidence interval.
+#' 
 #' @examples
 #' mtcars_df <- mtcars %>%
-#'     dplyr::mutate(am = factor(am))
+#'   dplyr::mutate(am = factor(am))
 #' d_hat <- mtcars_df %>%
-#'     specify(mpg ~ am) %>%
-#'     calculate(stat = "diff in means", order = c("1", "0"))
+#'   specify(mpg ~ am) %>%
+#'   calculate(stat = "diff in means", order = c("1", "0"))
 #' bootstrap_distn <- mtcars_df %>%
-#'     specify(mpg ~ am) %>%
-#'     generate(reps = 100) %>%
-#'    calculate(stat = "diff in means", order = c("1", "0"))
+#'   specify(mpg ~ am) %>%
+#'   generate(reps = 100) %>%
+#'   calculate(stat = "diff in means", order = c("1", "0"))
 #' bootstrap_distn %>% conf_int(level = 0.9)
 #' bootstrap_distn %>% conf_int(type = "se", point_estimate = d_hat)
+#' 
+#' @name get_ci
+NULL
 
+#' @rdname get_ci
+#' @export
 conf_int <- function(x, level = 0.95, type = "percentile", 
                      point_estimate = NULL){
   
@@ -72,12 +84,10 @@ check_ci_args <- function(x, level, type, point_estimate){
 }
 
 
-#' @export
 #' @rdname get_ci
-
+#' @export
 get_ci <- conf_int
 
-#' @export
 #' @rdname get_ci
-
+#' @export
 get_confidence_interval <- conf_int

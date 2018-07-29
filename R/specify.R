@@ -1,26 +1,35 @@
-#' Specify the response and explanatory variables with
-#' \code{specify} also converting character variables chosen to be \code{factor}s
-#' @param x a data frame that can be coerced into a \code{\link[tibble]{tibble}}
-#' @param formula a formula with the response variable on the left and the explanatory on the right
-#' @param response the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument
-#' @param explanatory the variable name in \code{x} that will serve as the explanatory variable
-#' @param success the level of \code{response} that will be considered a success, as a string.
-#' Needed for inference on one proportion, a difference in proportions, and corresponding z stats
-#' @return A tibble containing the response (and explanatory, if specified) variable data
+#' Specify the response and explanatory variables
+#' 
+#' `specify()` also converts character variables chosen to be `factor`s.
+#' 
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param formula A formula with the response variable on the left and the
+#'   explanatory on the right.
+#' @param response The variable name in `x` that will serve as the response.
+#'   This is alternative to using the `formula` argument.
+#' @param explanatory The variable name in `x` that will serve as the
+#'   explanatory variable.
+#' @param success The level of `response` that will be considered a success, as
+#'   a string. Needed for inference on one proportion, a difference in
+#'   proportions, and corresponding z stats.
+#' 
+#' @return A tibble containing the response (and explanatory, if specified)
+#'   variable data.
+#' 
+#' @examples
+#' # Permutation test similar to ANOVA
+#' mtcars %>%
+#'   dplyr::mutate(cyl = factor(cyl)) %>%
+#'   specify(mpg ~ cyl) %>%
+#'   hypothesize(null = "independence") %>%
+#'   generate(reps = 100, type = "permute") %>%
+#'   calculate(stat = "F")
+#' 
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
 #' @importFrom dplyr mutate_if select one_of as_tibble
 #' @importFrom methods hasArg
 #' @export
-#' @examples
-#' # Permutation test similar to ANOVA
-#'   mtcars %>%
-#'     dplyr::mutate(cyl = factor(cyl)) %>%
-#'     specify(mpg ~ cyl) %>%
-#'     hypothesize(null = "independence") %>%
-#'     generate(reps = 100, type = "permute") %>%
-#'     calculate(stat = "F")
-
 specify <- function(x, formula, response = NULL,
                     explanatory = NULL, success = NULL) {
   check_type(x, is.data.frame)

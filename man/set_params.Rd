@@ -7,7 +7,7 @@
 set_params(x)
 }
 \arguments{
-\item{x}{a data frame that can be coerced into a \code{\link[tibble]{tibble}}}
+\item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 }
 \description{
 To determine which theoretical distribution to fit (if any)

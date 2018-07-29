@@ -9,36 +9,34 @@ calculate(x, stat = c("mean", "median", "sd", "prop", "diff in means",
   "t", "z"), order = NULL, ...)
 }
 \arguments{
-\item{x}{the output from \code{\link{generate}} for computation-based
-inference or the output from \code{\link{hypothesize}}
-piped in to here for theory-based inference.}
+\item{x}{The output from \code{\link[=generate]{generate()}} for computation-based inference or the
+output from \code{\link[=hypothesize]{hypothesize()}} piped in to here for theory-based inference.}
 
-\item{stat}{a string giving the type of the statistic to calculate. Current
-options include "mean", "median", "sd", "prop", "diff in means",
-"diff in medians", "diff in props", "Chisq", "F", "t", "z", "slope",
-and "correlation".}
+\item{stat}{A string giving the type of the statistic to calculate. Current
+options include \code{"mean"}, \code{"median"}, \code{"sd"}, \code{"prop"}, \code{"diff in means"},
+\code{"diff in medians"}, \code{"diff in props"}, \code{"Chisq"}, \code{"F"}, \code{"t"}, \code{"z"},
+\code{"slope"}, and \code{"correlation"}.}
 
-\item{order}{a string vector of specifying the order in which the levels of
-the explanatory variable should be ordered for subtraction, where
-\code{order = c("first", "second")} means \code{("first" - "second")}
-Needed for inference on difference in means, medians, or proportions and
-t and z statistics.}
+\item{order}{A string vector of specifying the order in which the levels of
+the explanatory variable should be ordered for subtraction, where \code{order = c("first", "second")} means \code{("first" - "second")} Needed for inference on
+difference in means, medians, or proportions and t and z statistics.}
 
-\item{...}{to pass options like \code{na.rm = TRUE} into functions like
-mean, sd, etc.}
+\item{...}{To pass options like \code{na.rm = TRUE} into functions like
+\link[base:mean]{mean()}, \link[stats:sd]{sd()}, etc.}
 }
 \value{
-A tibble containing a \code{stat} column of calculated statistics
+A tibble containing a \code{stat} column of calculated statistics.
 }
 \description{
 Calculate summary statistics
 }
 \examples{
 # Permutation test for two binary variables
-  mtcars \%>\%
-    dplyr::mutate(am = factor(am), vs = factor(vs)) \%>\%
-    specify(am ~ vs, success = "1") \%>\%
-    hypothesize(null = "independence") \%>\%
-    generate(reps = 100, type = "permute") \%>\%
-    calculate(stat = "diff in props", order = c("1", "0"))
+mtcars \%>\%
+  dplyr::mutate(am = factor(am), vs = factor(vs)) \%>\%
+  specify(am ~ vs, success = "1") \%>\%
+  hypothesize(null = "independence") \%>\%
+  generate(reps = 100, type = "permute") \%>\%
+  calculate(stat = "diff in props", order = c("1", "0"))
+
 }
