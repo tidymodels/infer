@@ -2,17 +2,20 @@
 % Please edit documentation in R/wrappers.R
 \name{chisq_stat}
 \alias{chisq_stat}
-\title{A shortcut wrapper function to get the observed test statistic for a chisq test. Uses \link[stats:chisq.test]{stats::chisq.test}, which applies a continuity correction.}
+\title{A shortcut wrapper function to get the observed test statistic for a chisq
+test. Uses \link[stats:chisq.test]{stats::chisq.test}, which applies a continuity correction.}
 \usage{
 chisq_stat(data, formula, ...)
 }
 \arguments{
 \item{data}{a data frame that can be coerced into a \link[tibble:tibble]{tibble}}
 
-\item{formula}{a formula with the response variable on the left and the explanatory on the right}
+\item{formula}{a formula with the response variable on the left and the
+explanatory on the right}
 
 \item{...}{additional arguments for \link[stats:chisq.test]{stats::chisq.test}}
 }
 \description{
-A shortcut wrapper function to get the observed test statistic for a chisq test. Uses \link[stats:chisq.test]{stats::chisq.test}, which applies a continuity correction.
+A shortcut wrapper function to get the observed test statistic for a chisq
+test. Uses \link[stats:chisq.test]{stats::chisq.test}, which applies a continuity correction.
 }

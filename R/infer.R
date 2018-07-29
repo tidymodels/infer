@@ -1,8 +1,8 @@
 #' infer: a grammar for statistical inference
 #' 
-#' The objective of this package is to perform statistical inference 
-#' using a grammar that illustrates the underlying
-#' concepts and a format that coheres with the tidyverse.
+#' The objective of this package is to perform statistical inference using a
+#' grammar that illustrates the underlying concepts and a format that coheres
+#' with the tidyverse.
 #'
 #' @docType package
 #' @name infer

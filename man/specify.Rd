@@ -2,8 +2,8 @@
 % Please edit documentation in R/specify.R
 \name{specify}
 \alias{specify}
-\title{Specify the response and explanatory variables with
-\code{specify} also converting character variables chosen to be \code{factor}s}
+\title{Specify the response and explanatory variables with \code{specify} also converting
+character variables chosen to be \code{factor}s}
 \usage{
 specify(x, formula, response = NULL, explanatory = NULL,
   success = NULL)
@@ -11,28 +11,33 @@ specify(x, formula, response = NULL, explanatory = NULL,
 \arguments{
 \item{x}{a data frame that can be coerced into a \link[tibble:tibble]{tibble}}
 
-\item{formula}{a formula with the response variable on the left and the explanatory on the right}
+\item{formula}{a formula with the response variable on the left and the
+explanatory on the right}
 
-\item{response}{the variable name in \code{x} that will serve as the response. This is alternative to using the \code{formula} argument}
+\item{response}{the variable name in \code{x} that will serve as the response.
+This is alternative to using the \code{formula} argument}
 
-\item{explanatory}{the variable name in \code{x} that will serve as the explanatory variable}
+\item{explanatory}{the variable name in \code{x} that will serve as the
+explanatory variable}
 
-\item{success}{the level of \code{response} that will be considered a success, as a string.
-Needed for inference on one proportion, a difference in proportions, and corresponding z stats}
+\item{success}{the level of \code{response} that will be considered a success, as
+a string. Needed for inference on one proportion, a difference in
+proportions, and corresponding z stats}
 }
 \value{
-A tibble containing the response (and explanatory, if specified) variable data
+A tibble containing the response (and explanatory, if specified)
+variable data
 }
 \description{
-Specify the response and explanatory variables with
-\code{specify} also converting character variables chosen to be \code{factor}s
+Specify the response and explanatory variables with \code{specify} also converting
+character variables chosen to be \code{factor}s
 }
 \examples{
 # Permutation test similar to ANOVA
-  mtcars \%>\%
-    dplyr::mutate(cyl = factor(cyl)) \%>\%
-    specify(mpg ~ cyl) \%>\%
-    hypothesize(null = "independence") \%>\%
-    generate(reps = 100, type = "permute") \%>\%
-    calculate(stat = "F")
+mtcars \%>\%
+  dplyr::mutate(cyl = factor(cyl)) \%>\%
+  specify(mpg ~ cyl) \%>\%
+  hypothesize(null = "independence") \%>\%
+  generate(reps = 100, type = "permute") \%>\%
+  calculate(stat = "F")
 }

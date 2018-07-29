@@ -14,31 +14,37 @@ get_confidence_interval(x, level = 0.95, type = "percentile",
   point_estimate = NULL)
 }
 \arguments{
-\item{x}{data frame of calculated statistics or containing attributes
-of theoretical distribution values. Currently, dependent on statistics being stored in \code{stat} column as created in \code{calculate()} function.}
+\item{x}{data frame of calculated statistics or containing attributes of
+theoretical distribution values. Currently, dependent on statistics being
+stored in \code{stat} column as created in \code{calculate()} function.}
 
-\item{level}{a numerical value between 0 and 1 giving the confidence level. Default value is 0.95.}
+\item{level}{a numerical value between 0 and 1 giving the confidence level.
+Default value is 0.95.}
 
-\item{type}{a string giving which method should be used for creating the confidence interval. The default is \code{"percentile"} with \code{"se"} corresponding to (multiplier * standard error) as the other option.}
+\item{type}{a string giving which method should be used for creating the
+confidence interval. The default is \code{"percentile"} with \code{"se"}
+corresponding to (multiplier * standard error) as the other option.}
 
-\item{point_estimate}{a numeric value or a 1x1 data frame set to NULL by default. Needed to be provided if \code{type = "se"}.}
+\item{point_estimate}{a numeric value or a 1x1 data frame set to NULL by
+default. Needed to be provided if \code{type = "se"}.}
 }
 \value{
-a 2 x 1 tibble with values corresponding to lower and upper values in the confidence interval
+a 2 x 1 tibble with values corresponding to lower and upper values in
+the confidence interval
 }
 \description{
 \code{get_confidence_interval()} and \code{get_ci()} are both aliases of \code{conf_int()}
 }
 \examples{
 mtcars_df <- mtcars \%>\%
-    dplyr::mutate(am = factor(am))
+  dplyr::mutate(am = factor(am))
 d_hat <- mtcars_df \%>\%
-    specify(mpg ~ am) \%>\%
-    calculate(stat = "diff in means", order = c("1", "0"))
+  specify(mpg ~ am) \%>\%
+  calculate(stat = "diff in means", order = c("1", "0"))
 bootstrap_distn <- mtcars_df \%>\%
-    specify(mpg ~ am) \%>\%
-    generate(reps = 100) \%>\%
-   calculate(stat = "diff in means", order = c("1", "0"))
+  specify(mpg ~ am) \%>\%
+  generate(reps = 100) \%>\%
+  calculate(stat = "diff in means", order = c("1", "0"))
 bootstrap_distn \%>\% conf_int(level = 0.9)
 bootstrap_distn \%>\% conf_int(type = "se", point_estimate = d_hat)
 }

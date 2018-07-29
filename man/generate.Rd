@@ -2,8 +2,8 @@
 % Please edit documentation in R/generate.R
 \name{generate}
 \alias{generate}
-\title{Generate resamples, permutations, or simulations based on
-\code{specify} and (if needed) \code{hypothesize} inputs}
+\title{Generate resamples, permutations, or simulations based on \code{specify} and (if
+needed) \code{hypothesize} inputs}
 \usage{
 generate(x, reps = 1, type = attr(x, "type"), ...)
 }
@@ -12,8 +12,7 @@ generate(x, reps = 1, type = attr(x, "type"), ...)
 
 \item{reps}{the number of resamples to generate}
 
-\item{type}{currently either \code{bootstrap}, \code{permute},
-or \code{simulate}}
+\item{type}{currently either \code{bootstrap}, \code{permute}, or \code{simulate}}
 
 \item{...}{currently ignored}
 }
@@ -22,14 +21,14 @@ A tibble containing \code{rep} generated datasets, indicated by the
 \code{replicate} column.
 }
 \description{
-Generate resamples, permutations, or simulations based on
-\code{specify} and (if needed) \code{hypothesize} inputs
+Generate resamples, permutations, or simulations based on \code{specify} and (if
+needed) \code{hypothesize} inputs
 }
 \examples{
 # Permutation test for two binary variables
-  mtcars \%>\%
-    dplyr::mutate(am = factor(am), vs = factor(vs)) \%>\%
-    specify(am ~ vs, success = "1") \%>\%
-    hypothesize(null = "independence") \%>\%
-    generate(reps = 100, type = "permute")
+mtcars \%>\%
+  dplyr::mutate(am = factor(am), vs = factor(vs)) \%>\%
+  specify(am ~ vs, success = "1") \%>\%
+  hypothesize(null = "independence") \%>\%
+  generate(reps = 100, type = "permute")
 }

@@ -1,30 +1,28 @@
 #' Calculate summary statistics
-#' @param x the output from [generate] for computation-based
-#' inference or the output from [hypothesize]
-#' piped in to here for theory-based inference.
+#' @param x the output from [generate] for computation-based inference or the
+#'   output from [hypothesize] piped in to here for theory-based inference.
 #' @param stat a string giving the type of the statistic to calculate. Current
-#' options include "mean", "median", "sd", "prop", "diff in means",
-#' "diff in medians", "diff in props", "Chisq", "F", "t", "z", "slope",
-#' and "correlation".
+#'   options include "mean", "median", "sd", "prop", "diff in means", "diff in
+#'   medians", "diff in props", "Chisq", "F", "t", "z", "slope", and
+#'   "correlation".
 #' @param order a string vector of specifying the order in which the levels of
-#' the explanatory variable should be ordered for subtraction, where
-#' `order = c("first", "second")` means `("first" - "second")`
-#' Needed for inference on difference in means, medians, or proportions and
-#' t and z statistics.
-#' @param ... to pass options like `na.rm = TRUE` into functions like
-#'mean, sd, etc.
+#'   the explanatory variable should be ordered for subtraction, where `order =
+#'   c("first", "second")` means `("first" - "second")` Needed for inference on
+#'   difference in means, medians, or proportions and t and z statistics.
+#' @param ... to pass options like `na.rm = TRUE` into functions like mean, sd,
+#'   etc.
 #' @return A tibble containing a `stat` column of calculated statistics
 #' @importFrom dplyr group_by summarize n
 #' @importFrom rlang !! sym quo enquo eval_tidy
 #' @export
 #' @examples
 #' # Permutation test for two binary variables
-#'   mtcars %>%
-#'     dplyr::mutate(am = factor(am), vs = factor(vs)) %>%
-#'     specify(am ~ vs, success = "1") %>%
-#'     hypothesize(null = "independence") %>%
-#'     generate(reps = 100, type = "permute") %>%
-#'     calculate(stat = "diff in props", order = c("1", "0"))
+#' mtcars %>%
+#'   dplyr::mutate(am = factor(am), vs = factor(vs)) %>%
+#'   specify(am ~ vs, success = "1") %>%
+#'   hypothesize(null = "independence") %>%
+#'   generate(reps = 100, type = "permute") %>%
+#'   calculate(stat = "diff in props", order = c("1", "0"))
 
 calculate <- function(x,
                       stat = c(
