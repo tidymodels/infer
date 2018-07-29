@@ -8,7 +8,7 @@ t_test(data, formula, order = NULL, alternative = "two_sided",
   mu = 0, conf_int = TRUE, conf_level = 0.95, ...)
 }
 \arguments{
-\item{data}{a data frame that can be coerced into a \code{\link[tibble]{tibble}}}
+\item{data}{a data frame that can be coerced into a \link[tibble:tibble]{tibble}}
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
 
@@ -26,7 +26,7 @@ and the hypothesized difference for a two sample test}
 
 \item{conf_level}{a numeric value between 0 and 1. Default value is 0.95}
 
-\item{...}{for passing in other arguments to \code{stats::t.test}}
+\item{...}{for passing in other arguments to \link[stats:t.test]{stats::t.test}}
 }
 \description{
 A tidier version of t.test for two sample tests

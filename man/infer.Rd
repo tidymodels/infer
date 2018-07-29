@@ -6,7 +6,7 @@
 \alias{infer-package}
 \title{infer: a grammar for statistical inference}
 \description{
-The objective of this package is to perform statistical inference 
+The objective of this package is to perform statistical inference
 using a grammar that illustrates the underlying
 concepts and a format that coheres with the tidyverse.
 }

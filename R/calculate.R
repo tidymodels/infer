@@ -1,6 +1,6 @@
 #' Calculate summary statistics
-#' @param x the output from \code{\link{generate}} for computation-based
-#' inference or the output from \code{\link{hypothesize}}
+#' @param x the output from [generate] for computation-based
+#' inference or the output from [hypothesize]
 #' piped in to here for theory-based inference.
 #' @param stat a string giving the type of the statistic to calculate. Current
 #' options include "mean", "median", "sd", "prop", "diff in means",
@@ -8,12 +8,12 @@
 #' and "correlation".
 #' @param order a string vector of specifying the order in which the levels of
 #' the explanatory variable should be ordered for subtraction, where
-#' \code{order = c("first", "second")} means \code{("first" - "second")}
+#' `order = c("first", "second")` means `("first" - "second")`
 #' Needed for inference on difference in means, medians, or proportions and
 #' t and z statistics.
-#' @param ... to pass options like \code{na.rm = TRUE} into functions like
+#' @param ... to pass options like `na.rm = TRUE` into functions like
 #'mean, sd, etc.
-#' @return A tibble containing a \code{stat} column of calculated statistics
+#' @return A tibble containing a `stat` column of calculated statistics
 #' @importFrom dplyr group_by summarize n
 #' @importFrom rlang !! sym quo enquo eval_tidy
 #' @export

@@ -40,5 +40,6 @@ Suggests:
     covr
 URL: https://github.com/andrewpbray/infer
 BugReports: https://github.com/andrewpbray/infer/issues
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1.9000
 VignetteBuilder: knitr

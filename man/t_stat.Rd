@@ -7,7 +7,7 @@
 t_stat(data, formula, ...)
 }
 \arguments{
-\item{data}{a data frame that can be coerced into a \code{\link[tibble]{tibble}}}
+\item{data}{a data frame that can be coerced into a \link[tibble:tibble]{tibble}}
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
 

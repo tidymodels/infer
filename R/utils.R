@@ -319,12 +319,12 @@ check_obs_stat <- function(obs_stat){
 #' 
 #' @param x an object to check
 #' @param predicate a function to perform check. A good idea is to use function
-#'  named \code{is.*()} or \code{is_*()} with possible \code{<package>::}
+#'  named `is.*()` or `is_*()` with possible `<package>::`
 #'  prefix.
-#' @param type a string for desired type. If \code{NULL}, type is taken from
-#'  parsing original name of supplied \code{predicate}: all alphanumeric with
+#' @param type a string for desired type. If `NULL`, type is taken from
+#'  parsing original name of supplied `predicate`: all alphanumeric with
 #'  '_' and '.' characters (until the name end) after the first appearance of
-#'  either \code{is.} or \code{is_}. In case of a doubt supply \code{type}
+#'  either `is.` or `is_`. In case of a doubt supply `type`
 #'  explicitly.
 #' @examples
 #' #' \dontrun{

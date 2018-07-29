@@ -1,12 +1,12 @@
 #' Generate resamples, permutations, or simulations based on
 #' `specify` and (if needed) `hypothesize` inputs
-#' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
+#' @param x a data frame that can be coerced into a [tbl_df][dplyr::tbl_df]
 #' @param reps the number of resamples to generate
-#' @param type currently either \code{bootstrap}, \code{permute}, 
-#' or \code{simulate}
+#' @param type currently either `bootstrap`, `permute`, 
+#' or `simulate`
 #' @param ... currently ignored
-#' @return A tibble containing \code{rep} generated datasets, indicated by the
-#' \code{replicate} column.
+#' @return A tibble containing `rep` generated datasets, indicated by the
+#' `replicate` column.
 #' @importFrom dplyr group_by
 #' @export
 #' @examples

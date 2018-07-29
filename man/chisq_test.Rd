@@ -7,11 +7,11 @@
 chisq_test(data, formula, ...)
 }
 \arguments{
-\item{data}{a data frame that can be coerced into a \code{\link[tibble]{tibble}}}
+\item{data}{a data frame that can be coerced into a \link[tibble:tibble]{tibble}}
 
 \item{formula}{a formula with the response variable on the left and the explanatory on the right}
 
-\item{...}{additional arguments for \code{chisq.test}}
+\item{...}{additional arguments for \link{chisq.test}}
 }
 \description{
 A tidier version of chisq.test for goodness of fit tests and tests of independence.

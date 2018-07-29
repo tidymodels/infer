@@ -3,16 +3,16 @@
 \name{generate}
 \alias{generate}
 \title{Generate resamples, permutations, or simulations based on
-`specify` and (if needed) `hypothesize` inputs}
+\code{specify} and (if needed) \code{hypothesize} inputs}
 \usage{
 generate(x, reps = 1, type = attr(x, "type"), ...)
 }
 \arguments{
-\item{x}{a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}}
+\item{x}{a data frame that can be coerced into a \link[dplyr:tbl_df]{tbl_df}}
 
 \item{reps}{the number of resamples to generate}
 
-\item{type}{currently either \code{bootstrap}, \code{permute}, 
+\item{type}{currently either \code{bootstrap}, \code{permute},
 or \code{simulate}}
 
 \item{...}{currently ignored}
@@ -23,7 +23,7 @@ A tibble containing \code{rep} generated datasets, indicated by the
 }
 \description{
 Generate resamples, permutations, or simulations based on
-`specify` and (if needed) `hypothesize` inputs
+\code{specify} and (if needed) \code{hypothesize} inputs
 }
 \examples{
 # Permutation test for two binary variables

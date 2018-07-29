@@ -11,11 +11,11 @@ visualize(data, bins = 15, method = "simulation",
   endpoints_color = "mediumaquamarine", ci_fill = "turquoise", ...)
 }
 \arguments{
-\item{data}{the output from \code{\link{calculate}}}
+\item{data}{the output from \link{calculate}}
 
 \item{bins}{the number of bins in the histogram}
 
-\item{method}{a string giving the method to display. Options are 
+\item{method}{a string giving the method to display. Options are
 "simulation", "theoretical", or "both"
 with "both" corresponding to "simulation" and "theoretical"}
 
@@ -29,12 +29,12 @@ the observed statistic is}
 the observed statistic as a vertical line on the plot}
 
 \item{pvalue_fill}{a character or hex string specifying the color to shade
-the pvalue. In previous versions of the package this was the \code{shade_color} 
+the pvalue. In previous versions of the package this was the \code{shade_color}
 argument}
 
-\item{direction}{a string specifying in which direction the shading 
+\item{direction}{a string specifying in which direction the shading
 should occur. Options are "less", "greater", or "two_sided" for p-value.
-Can also give "left", "right", or "both" for p-value. For confidence 
+Can also give "left", "right", or "both" for p-value. For confidence
 intervals, use "between".
 and give the endpoint values in \code{endpoints}}
 
@@ -52,7 +52,7 @@ the confidence interval}
 }
 \value{
 A ggplot object showing the simulation-based distribution as a
- histogram or bar graph. Also used to show the theoretical curves.
+histogram or bar graph. Also used to show the theoretical curves.
 }
 \description{
 Visualize the distribution of the simulation-based inferential statistics

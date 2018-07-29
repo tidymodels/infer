@@ -9,8 +9,8 @@ calculate(x, stat = c("mean", "median", "sd", "prop", "diff in means",
   "t", "z"), order = NULL, ...)
 }
 \arguments{
-\item{x}{the output from \code{\link{generate}} for computation-based
-inference or the output from \code{\link{hypothesize}}
+\item{x}{the output from \link{generate} for computation-based
+inference or the output from \link{hypothesize}
 piped in to here for theory-based inference.}
 
 \item{stat}{a string giving the type of the statistic to calculate. Current

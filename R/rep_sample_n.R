@@ -6,11 +6,11 @@
 #' @param tbl data frame of population from which to sample
 #' @param size sample size of each sample
 #' @param replace should sampling be with replacement?
-#' @param reps number of samples of size n = \code{size} to take
+#' @param reps number of samples of size n = `size` to take
 #' @param prob a vector of probability weights for obtaining the elements of
 #' the vector being sampled.
-#' @return A tibble of size \code{rep} times \code{size} rows corresponding to
-#' \code{rep} samples of size n = \code{size} from \code{tbl}.
+#' @return A tibble of size `rep` times `size` rows corresponding to
+#' `rep` samples of size n = `size` from `tbl`.
 #' @importFrom dplyr data_frame
 #' @importFrom dplyr pull
 #' @importFrom dplyr inner_join

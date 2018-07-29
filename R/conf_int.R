@@ -1,11 +1,11 @@
 #' Compute the confidence interval for (currently only) simulation-based methods
 #' 
-#' \code{get_confidence_interval()} and \code{get_ci()} are both aliases of \code{conf_int()}
+#' `get_confidence_interval()` and `get_ci()` are both aliases of `conf_int()`
 #' @param x data frame of calculated statistics or containing attributes
-#' of theoretical distribution values. Currently, dependent on statistics being stored in \code{stat} column as created in \code{calculate()} function.
+#' of theoretical distribution values. Currently, dependent on statistics being stored in `stat` column as created in `calculate()` function.
 #' @param level a numerical value between 0 and 1 giving the confidence level. Default value is 0.95.
-#' @param type a string giving which method should be used for creating the confidence interval. The default is \code{"percentile"} with \code{"se"} corresponding to (multiplier * standard error) as the other option.
-#' @param point_estimate a numeric value or a 1x1 data frame set to NULL by default. Needed to be provided if \code{type = "se"}.
+#' @param type a string giving which method should be used for creating the confidence interval. The default is `"percentile"` with `"se"` corresponding to (multiplier * standard error) as the other option.
+#' @param point_estimate a numeric value or a 1x1 data frame set to NULL by default. Needed to be provided if `type = "se"`.
 #'
 #' @return a 2 x 1 tibble with values corresponding to lower and upper values in the confidence interval
 #' @export

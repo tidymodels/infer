@@ -1,6 +1,6 @@
 #' Visualize the distribution of the simulation-based inferential statistics
 #' or the theoretical distribution (or both!)
-#' @param data the output from \code{\link{calculate}}
+#' @param data the output from [calculate]
 #' @param bins the number of bins in the histogram
 #' @param method a string giving the method to display. Options are 
 #' "simulation", "theoretical", or "both"
@@ -12,13 +12,13 @@
 #' @param obs_stat_color a character or hex string specifying the color of
 #'  the observed statistic as a vertical line on the plot
 #' @param pvalue_fill a character or hex string specifying the color to shade
-#'  the pvalue. In previous versions of the package this was the \code{shade_color} 
+#'  the pvalue. In previous versions of the package this was the `shade_color` 
 #'  argument
 #' @param direction a string specifying in which direction the shading 
 #' should occur. Options are "less", "greater", or "two_sided" for p-value.
 #' Can also give "left", "right", or "both" for p-value. For confidence 
 #' intervals, use "between".
-#' and give the endpoint values in \code{endpoints}
+#' and give the endpoint values in `endpoints`
 #' @param endpoints a 2 element vector or a 1 x 2 data frame containing the
 #'  lower and upper values to be plotted. Most useful for visualizing
 #'  conference intervals.

@@ -1,6 +1,6 @@
 #' Pipe
 #'
-#' Like \code{dplyr}, \code{infer} also uses the pipe function, \code{\%>\%}
+#' Like `dplyr`, `infer` also uses the pipe function, \code{\%>\%}
 #' to turn function composition into a series of imperative statements.
 #'
 #' @importFrom magrittr %>%

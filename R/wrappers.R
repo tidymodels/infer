@@ -6,18 +6,18 @@
 #'
 #' A tidier version of t.test for two sample tests
 #'
-#' @param data a data frame that can be coerced into a \code{\link[tibble]{tibble}}
+#' @param data a data frame that can be coerced into a [tibble][tibble::tibble]
 #' @param formula a formula with the response variable on the left and the explanatory on the right
 #' @param order #' @param order a string vector of specifying the order in which the levels of
 #' the explanatory variable should be ordered for subtraction, where
-#' \code{order = c("first", "second")} means \code{("first" - "second")}
+#' `order = c("first", "second")` means `("first" - "second")`
 #' @param alternative character string giving the direction of the alternative hypothesis. Options are
-#' "\code{two_sided}" (default), "\code{greater}", or "\code{less}".
+#' "`two_sided`" (default), "`greater`", or "`less`".
 #' @param mu a numeric value giving the hypothesized null mean value for a one sample test
 #' and the hypothesized difference for a two sample test
 #' @param conf_int a logical value for whether to include the confidence interval or not. TRUE by default
 #' @param conf_level a numeric value between 0 and 1. Default value is 0.95 
-#' @param ... for passing in other arguments to \code{stats::t.test}
+#' @param ... for passing in other arguments to [stats::t.test]
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
 #' @export
@@ -102,7 +102,7 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
 
 #' A shortcut wrapper function to get the observed test statistic for a t test
 #'
-#' @param data a data frame that can be coerced into a \code{\link[tibble]{tibble}}
+#' @param data a data frame that can be coerced into a [tibble][tibble::tibble]
 #' @param formula a formula with the response variable on the left and the explanatory on the right
 #' @param ... pass in arguments to {infer} functions
 #' @export
@@ -116,9 +116,9 @@ t_stat <- function(data, formula, ...){
 #'
 #' A tidier version of chisq.test for goodness of fit tests and tests of independence.
 #'
-#' @param data a data frame that can be coerced into a \code{\link[tibble]{tibble}}
+#' @param data a data frame that can be coerced into a [tibble][tibble::tibble]
 #' @param formula a formula with the response variable on the left and the explanatory on the right
-#' @param ... additional arguments for \code{chisq.test}
+#' @param ... additional arguments for [chisq.test]
 #' @importFrom rlang f_lhs f_rhs
 #' @export
 #' @examples
@@ -145,11 +145,11 @@ chisq_test <- function(data, formula, #response = NULL, explanatory = NULL,
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
 }
 
-#' A shortcut wrapper function to get the observed test statistic for a chisq test. Uses \code{stats::chisq.test}, which applies a continuity correction.
+#' A shortcut wrapper function to get the observed test statistic for a chisq test. Uses [stats::chisq.test], which applies a continuity correction.
 #'
-#' @param data a data frame that can be coerced into a \code{\link[tibble]{tibble}}
+#' @param data a data frame that can be coerced into a [tibble][tibble::tibble]
 #' @param formula a formula with the response variable on the left and the explanatory on the right
-#' @param ... additional arguments for \code{stats::chisq.test}
+#' @param ... additional arguments for [stats::chisq.test]
 #' @export
 
 chisq_stat <- function(data, formula, ...){
