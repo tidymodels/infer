@@ -12,7 +12,7 @@ t_stat(data, formula, ...)
 \item{formula}{A formula with the response variable on the left and the
 explanatory on the right.}
 
-\item{...}{Pass in arguments to {infer} functions.}
+\item{...}{Pass in arguments to \{infer\} functions.}
 }
 \description{
 A shortcut wrapper function to get the observed test statistic for a t test.

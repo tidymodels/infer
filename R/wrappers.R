@@ -110,7 +110,7 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
 #' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
-#' @param ... Pass in arguments to {infer} functions.
+#' @param ... Pass in arguments to \\{infer\\} functions.
 #' 
 #' @export
 t_stat <- function(data, formula, ...){
