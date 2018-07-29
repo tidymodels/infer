@@ -1,11 +1,14 @@
-# infer 0.3.0.9000
+# infer 0.3.1.9000
+
+- Account for `NULL` value in left hand side of formula in `specify()` (#156) and `type` in `generate()` (#157).
+- Update documentation code to follow tidyverse style guide (#159).
+
+# infer 0.3.1
 
 - Stop using package {assertive} in favor of custom type checks (#149)
 - Fixed `t_stat()` to use `...` so `var.equal` works
 - With the help of @echasnovski, fixed `var.equal = TRUE` for `specify() %>% calculate(stat = "t")`
 - Use custom functions for error, warning, message, and `paste()` handling (#155)
-- Account for `NULL` value in left hand side of formula in `specify()` (#156) and `type` in `generate()` (#157).
-- Update documentation code to follow tidyverse style guide (#159).
 
 # infer 0.3.0
 
