@@ -7,12 +7,12 @@
 chisq_test(data, formula, ...)
 }
 \arguments{
-\item{data}{a data frame that can be coerced into a \link[tibble:tibble]{tibble}}
+\item{data}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 
-\item{formula}{a formula with the response variable on the left and the
-explanatory on the right}
+\item{formula}{A formula with the response variable on the left and the
+explanatory on the right.}
 
-\item{...}{additional arguments for \link{chisq.test}}
+\item{...}{Additional arguments for \link{chisq.test}.}
 }
 \description{
 A tidier version of chisq.test for goodness of fit tests and tests of

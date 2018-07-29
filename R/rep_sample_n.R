@@ -1,13 +1,13 @@
 #' Perform repeated sampling
 #'
 #' Perform repeated sampling of samples of size n. Useful for creating sampling
-#' distributions
+#' distributions.
 #'
-#' @param tbl data frame of population from which to sample
-#' @param size sample size of each sample
-#' @param replace should sampling be with replacement?
-#' @param reps number of samples of size n = `size` to take
-#' @param prob a vector of probability weights for obtaining the elements of the
+#' @param tbl Data frame of population from which to sample.
+#' @param size Sample size of each sample.
+#' @param replace Should sampling be with replacement?
+#' @param reps Number of samples of size n = `size` to take.
+#' @param prob A vector of probability weights for obtaining the elements of the
 #'   vector being sampled.
 #' 
 #' @return A tibble of size `rep` times `size` rows corresponding to `rep`

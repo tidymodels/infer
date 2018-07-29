@@ -10,17 +10,17 @@ p_value(x, obs_stat, direction)
 get_pvalue(x, obs_stat, direction)
 }
 \arguments{
-\item{x}{data frame of calculated statistics or containing attributes of
-theoretical distribution values}
+\item{x}{Data frame of calculated statistics or containing attributes of
+theoretical distribution values.}
 
-\item{obs_stat}{a numeric value or a 1x1 data frame (as extreme or more
-extreme than this)}
+\item{obs_stat}{A numeric value or a 1x1 data frame (as extreme or more
+extreme than this).}
 
-\item{direction}{a character string. Options are "less", "greater", or
+\item{direction}{A character string. Options are "less", "greater", or
 "two_sided". Can also specify "left", "right", or "both".}
 }
 \value{
-a 1x1 data frame with value between 0 and 1
+A 1x1 data frame with value between 0 and 1.
 }
 \description{
 Only simulation-based methods are (currently only) supported. \code{get_pvalue()}

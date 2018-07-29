@@ -2,10 +2,10 @@
 #' 
 #' Generation is done based on `specify` and (if needed) `hypothesize` inputs.
 #' 
-#' @param x a data frame that can be coerced into a [tbl_df][dplyr::tbl_df]
-#' @param reps the number of resamples to generate
-#' @param type currently either `bootstrap`, `permute`, or `simulate`
-#' @param ... currently ignored
+#' @param x A data frame that can be coerced into a [tbl_df][dplyr::tbl_df].
+#' @param reps The number of resamples to generate.
+#' @param type Currently either `bootstrap`, `permute`, or `simulate`.
+#' @param ... Currently ignored.
 #' 
 #' @return A tibble containing `rep` generated datasets, indicated by the
 #'   `replicate` column.

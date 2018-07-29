@@ -7,12 +7,12 @@
 t_stat(data, formula, ...)
 }
 \arguments{
-\item{data}{a data frame that can be coerced into a \link[tibble:tibble]{tibble}}
+\item{data}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 
-\item{formula}{a formula with the response variable on the left and the
-explanatory on the right}
+\item{formula}{A formula with the response variable on the left and the
+explanatory on the right.}
 
-\item{...}{pass in arguments to {infer} functions}
+\item{...}{Pass in arguments to {infer} functions.}
 }
 \description{
 A shortcut wrapper function to get the observed test statistic for a t test.

@@ -5,22 +5,22 @@
 
 #' Tidy t-test
 #'
-#' A tidier version of t.test for two sample tests
+#' A tidier version of t.test for two sample tests.
 #'
-#' @param data a data frame that can be coerced into a [tibble][tibble::tibble]
-#' @param formula a formula with the response variable on the left and the
-#'   explanatory on the right
-#' @param order #' @param order a string vector of specifying the order in which
-#'   the levels of the explanatory variable should be ordered for subtraction,
-#'   where `order = c("first", "second")` means `("first" - "second")`
-#' @param alternative character string giving the direction of the alternative
+#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param formula A formula with the response variable on the left and the
+#'   explanatory on the right.
+#' @param order A string vector of specifying the order in which the levels of
+#'   the explanatory variable should be ordered for subtraction, where `order =
+#'   c("first", "second")` means `("first" - "second")`.
+#' @param alternative Character string giving the direction of the alternative
 #'   hypothesis. Options are "`two_sided`" (default), "`greater`", or "`less`".
-#' @param mu a numeric value giving the hypothesized null mean value for a one
-#'   sample test and the hypothesized difference for a two sample test
-#' @param conf_int a logical value for whether to include the confidence
-#'   interval or not. TRUE by default
-#' @param conf_level a numeric value between 0 and 1. Default value is 0.95
-#' @param ... for passing in other arguments to [stats::t.test]
+#' @param mu A numeric value giving the hypothesized null mean value for a one
+#'   sample test and the hypothesized difference for a two sample test.
+#' @param conf_int A logical value for whether to include the confidence
+#'   interval or not. TRUE by default.
+#' @param conf_level A numeric value between 0 and 1. Default value is 0.95.
+#' @param ... For passing in other arguments to [stats::t.test].
 #' 
 #' @examples
 #' # t test for comparing mpg against automatic/manual
@@ -107,10 +107,10 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
 #' 
 #' A shortcut wrapper function to get the observed test statistic for a t test.
 #'
-#' @param data a data frame that can be coerced into a [tibble][tibble::tibble]
-#' @param formula a formula with the response variable on the left and the
-#'   explanatory on the right
-#' @param ... pass in arguments to {infer} functions
+#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param formula A formula with the response variable on the left and the
+#'   explanatory on the right.
+#' @param ... Pass in arguments to {infer} functions.
 #' 
 #' @export
 t_stat <- function(data, formula, ...){
@@ -124,10 +124,10 @@ t_stat <- function(data, formula, ...){
 #' A tidier version of chisq.test for goodness of fit tests and tests of
 #' independence.
 #'
-#' @param data a data frame that can be coerced into a [tibble][tibble::tibble]
-#' @param formula a formula with the response variable on the left and the
-#'   explanatory on the right
-#' @param ... additional arguments for [chisq.test]
+#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param formula A formula with the response variable on the left and the
+#'   explanatory on the right.
+#' @param ... Additional arguments for [chisq.test].
 #' 
 #' @examples
 #' # chisq test for comparing number of cylinders against automatic/manual
@@ -160,10 +160,10 @@ chisq_test <- function(data, formula, #response = NULL, explanatory = NULL,
 #' A shortcut wrapper function to get the observed test statistic for a chisq
 #' test. Uses [stats::chisq.test], which applies a continuity correction.
 #'
-#' @param data a data frame that can be coerced into a [tibble][tibble::tibble]
-#' @param formula a formula with the response variable on the left and the
-#'   explanatory on the right
-#' @param ... additional arguments for [stats::chisq.test]
+#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param formula A formula with the response variable on the left and the
+#'   explanatory on the right.
+#' @param ... Additional arguments for [stats::chisq.test].
 #' 
 #' @export
 chisq_stat <- function(data, formula, ...){

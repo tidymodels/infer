@@ -14,23 +14,23 @@ get_confidence_interval(x, level = 0.95, type = "percentile",
   point_estimate = NULL)
 }
 \arguments{
-\item{x}{data frame of calculated statistics or containing attributes of
+\item{x}{Data frame of calculated statistics or containing attributes of
 theoretical distribution values. Currently, dependent on statistics being
 stored in \code{stat} column as created in \code{calculate()} function.}
 
-\item{level}{a numerical value between 0 and 1 giving the confidence level.
+\item{level}{A numerical value between 0 and 1 giving the confidence level.
 Default value is 0.95.}
 
-\item{type}{a string giving which method should be used for creating the
+\item{type}{A string giving which method should be used for creating the
 confidence interval. The default is \code{"percentile"} with \code{"se"}
 corresponding to (multiplier * standard error) as the other option.}
 
-\item{point_estimate}{a numeric value or a 1x1 data frame set to NULL by
+\item{point_estimate}{A numeric value or a 1x1 data frame set to NULL by
 default. Needed to be provided if \code{type = "se"}.}
 }
 \value{
-a 2 x 1 tibble with values corresponding to lower and upper values in
-the confidence interval
+A 2 x 1 tibble with values corresponding to lower and upper values in
+the confidence interval.
 }
 \description{
 Only simulation-based methods are (currently only) supported.

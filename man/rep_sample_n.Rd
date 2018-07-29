@@ -7,15 +7,15 @@
 rep_sample_n(tbl, size, replace = FALSE, reps = 1, prob = NULL)
 }
 \arguments{
-\item{tbl}{data frame of population from which to sample}
+\item{tbl}{Data frame of population from which to sample.}
 
-\item{size}{sample size of each sample}
+\item{size}{Sample size of each sample.}
 
-\item{replace}{should sampling be with replacement?}
+\item{replace}{Should sampling be with replacement?}
 
-\item{reps}{number of samples of size n = \code{size} to take}
+\item{reps}{Number of samples of size n = \code{size} to take.}
 
-\item{prob}{a vector of probability weights for obtaining the elements of the
+\item{prob}{A vector of probability weights for obtaining the elements of the
 vector being sampled.}
 }
 \value{
@@ -24,7 +24,7 @@ samples of size n = \code{size} from \code{tbl}.
 }
 \description{
 Perform repeated sampling of samples of size n. Useful for creating sampling
-distributions
+distributions.
 }
 \examples{
 suppressPackageStartupMessages(library(dplyr))

@@ -1,11 +1,11 @@
 #' Declare a null hypothesis
 #' 
-#' @param x a data frame that can be coerced into a [tbl_df][dplyr::tbl_df]
-#' @param null the null hypothesis. Options include "independence" and "point"
-#' @param ... arguments passed to downstream functions
+#' @param x A data frame that can be coerced into a [tbl_df][dplyr::tbl_df].
+#' @param null The null hypothesis. Options include "independence" and "point".
+#' @param ... Arguments passed to downstream functions.
 #' 
 #' @return A tibble containing the response (and explanatory, if specified)
-#'   variable data with parameter information stored as well
+#'   variable data with parameter information stored as well.
 #' 
 #' @examples
 #' # Permutation test similar to ANOVA

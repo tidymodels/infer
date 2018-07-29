@@ -317,10 +317,10 @@ check_obs_stat <- function(obs_stat){
 #' 
 #' Throw an error in case object is not of desired type.
 #' 
-#' @param x an object to check
-#' @param predicate a function to perform check. A good idea is to use function
+#' @param x An object to check.
+#' @param predicate A function to perform check. A good idea is to use function
 #'   named `is.*()` or `is_*()` with possible `<package>::` prefix.
-#' @param type a string for desired type. If `NULL`, type is taken from parsing
+#' @param type A string for desired type. If `NULL`, type is taken from parsing
 #'   original name of supplied `predicate`: all alphanumeric with '_' and '.'
 #'   characters (until the name end) after the first appearance of either `is.`
 #'   or `is_`. In case of a doubt supply `type` explicitly.

@@ -8,24 +8,24 @@ specify(x, formula, response = NULL, explanatory = NULL,
   success = NULL)
 }
 \arguments{
-\item{x}{a data frame that can be coerced into a \link[tibble:tibble]{tibble}}
+\item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 
-\item{formula}{a formula with the response variable on the left and the
-explanatory on the right}
+\item{formula}{A formula with the response variable on the left and the
+explanatory on the right.}
 
-\item{response}{the variable name in \code{x} that will serve as the response.
-This is alternative to using the \code{formula} argument}
+\item{response}{The variable name in \code{x} that will serve as the response.
+This is alternative to using the \code{formula} argument.}
 
-\item{explanatory}{the variable name in \code{x} that will serve as the
-explanatory variable}
+\item{explanatory}{The variable name in \code{x} that will serve as the
+explanatory variable.}
 
-\item{success}{the level of \code{response} that will be considered a success, as
+\item{success}{The level of \code{response} that will be considered a success, as
 a string. Needed for inference on one proportion, a difference in
-proportions, and corresponding z stats}
+proportions, and corresponding z stats.}
 }
 \value{
 A tibble containing the response (and explanatory, if specified)
-variable data
+variable data.
 }
 \description{
 \code{specify()} also converts character variables chosen to be \code{factor}s.

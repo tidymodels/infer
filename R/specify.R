@@ -2,19 +2,19 @@
 #' 
 #' `specify()` also converts character variables chosen to be `factor`s.
 #' 
-#' @param x a data frame that can be coerced into a [tibble][tibble::tibble]
-#' @param formula a formula with the response variable on the left and the
-#'   explanatory on the right
-#' @param response the variable name in `x` that will serve as the response.
-#'   This is alternative to using the `formula` argument
-#' @param explanatory the variable name in `x` that will serve as the
-#'   explanatory variable
-#' @param success the level of `response` that will be considered a success, as
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param formula A formula with the response variable on the left and the
+#'   explanatory on the right.
+#' @param response The variable name in `x` that will serve as the response.
+#'   This is alternative to using the `formula` argument.
+#' @param explanatory The variable name in `x` that will serve as the
+#'   explanatory variable.
+#' @param success The level of `response` that will be considered a success, as
 #'   a string. Needed for inference on one proportion, a difference in
-#'   proportions, and corresponding z stats
+#'   proportions, and corresponding z stats.
 #' 
 #' @return A tibble containing the response (and explanatory, if specified)
-#'   variable data
+#'   variable data.
 #' 
 #' @examples
 #' # Permutation test similar to ANOVA

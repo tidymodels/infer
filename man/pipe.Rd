@@ -4,7 +4,7 @@
 \alias{\%>\%}
 \title{Pipe}
 \arguments{
-\item{lhs, rhs}{Inference functions and the initial data frame}
+\item{lhs, rhs}{Inference functions and the initial data frame.}
 }
 \description{
 Like \code{dplyr}, \code{infer} also uses the pipe function, \code{\%>\%} to turn

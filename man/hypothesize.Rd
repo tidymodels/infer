@@ -7,15 +7,15 @@
 hypothesize(x, null, ...)
 }
 \arguments{
-\item{x}{a data frame that can be coerced into a \link[dplyr:tbl_df]{tbl_df}}
+\item{x}{A data frame that can be coerced into a \link[dplyr:tbl_df]{tbl_df}.}
 
-\item{null}{the null hypothesis. Options include "independence" and "point"}
+\item{null}{The null hypothesis. Options include "independence" and "point".}
 
-\item{...}{arguments passed to downstream functions}
+\item{...}{Arguments passed to downstream functions.}
 }
 \value{
 A tibble containing the response (and explanatory, if specified)
-variable data with parameter information stored as well
+variable data with parameter information stored as well.
 }
 \description{
 Declare a null hypothesis

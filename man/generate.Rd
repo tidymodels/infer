@@ -7,13 +7,13 @@
 generate(x, reps = 1, type = attr(x, "type"), ...)
 }
 \arguments{
-\item{x}{a data frame that can be coerced into a \link[dplyr:tbl_df]{tbl_df}}
+\item{x}{A data frame that can be coerced into a \link[dplyr:tbl_df]{tbl_df}.}
 
-\item{reps}{the number of resamples to generate}
+\item{reps}{The number of resamples to generate.}
 
-\item{type}{currently either \code{bootstrap}, \code{permute}, or \code{simulate}}
+\item{type}{Currently either \code{bootstrap}, \code{permute}, or \code{simulate}.}
 
-\item{...}{currently ignored}
+\item{...}{Currently ignored.}
 }
 \value{
 A tibble containing \code{rep} generated datasets, indicated by the

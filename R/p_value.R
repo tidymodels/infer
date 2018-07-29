@@ -3,14 +3,14 @@
 #' Only simulation-based methods are (currently only) supported. `get_pvalue()`
 #' is an alias of `p_value`.
 #' 
-#' @param x data frame of calculated statistics or containing attributes of
-#'   theoretical distribution values
-#' @param obs_stat a numeric value or a 1x1 data frame (as extreme or more
-#'   extreme than this)
-#' @param direction a character string. Options are "less", "greater", or
+#' @param x Data frame of calculated statistics or containing attributes of
+#'   theoretical distribution values.
+#' @param obs_stat A numeric value or a 1x1 data frame (as extreme or more
+#'   extreme than this).
+#' @param direction A character string. Options are "less", "greater", or
 #'   "two_sided". Can also specify "left", "right", or "both".
 #'
-#' @return a 1x1 data frame with value between 0 and 1
+#' @return A 1x1 data frame with value between 0 and 1.
 #' 
 #' @examples
 #' mtcars_df <- mtcars %>%
