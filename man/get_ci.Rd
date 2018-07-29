@@ -29,7 +29,7 @@ corresponding to (multiplier * standard error) as the other option.}
 default. Needed to be provided if \code{type = "se"}.}
 }
 \value{
-A 2 x 1 tibble with values corresponding to lower and upper values in
+A 1 x 2 tibble with values corresponding to lower and upper values in
 the confidence interval.
 }
 \description{

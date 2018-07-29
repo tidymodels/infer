@@ -14,7 +14,7 @@
 #' @param point_estimate A numeric value or a 1x1 data frame set to `NULL` by
 #'   default. Needed to be provided if `type = "se"`.
 #'
-#' @return A 2 x 1 tibble with values corresponding to lower and upper values in
+#' @return A 1 x 2 tibble with values corresponding to lower and upper values in
 #'   the confidence interval.
 #' 
 #' @examples

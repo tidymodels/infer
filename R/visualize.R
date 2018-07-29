@@ -15,7 +15,7 @@
 #' @param obs_stat_color A character or hex string specifying the color of the
 #'   observed statistic as a vertical line on the plot.
 #' @param pvalue_fill A character or hex string specifying the color to shade
-#'   the pvalue. In previous versions of the package this was the `shade_color`
+#'   the p-value. In previous versions of the package this was the `shade_color`
 #'   argument.
 #' @param direction A string specifying in which direction the shading should
 #'   occur. Options are `"less"`, `"greater"`, or `"two_sided"` for p-value. Can

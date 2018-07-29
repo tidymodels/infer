@@ -28,7 +28,7 @@ observed statistic is.}
 observed statistic as a vertical line on the plot.}
 
 \item{pvalue_fill}{A character or hex string specifying the color to shade
-the pvalue. In previous versions of the package this was the \code{shade_color}
+the p-value. In previous versions of the package this was the \code{shade_color}
 argument.}
 
 \item{direction}{A string specifying in which direction the shading should
