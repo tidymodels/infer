@@ -27,10 +27,10 @@ interval or not. \code{TRUE} by default.}
 
 \item{conf_level}{A numeric value between 0 and 1. Default value is 0.95.}
 
-\item{...}{For passing in other arguments to \link[stats:t.test]{stats::t.test}.}
+\item{...}{For passing in other arguments to \link[stats:t.test]{t.test()}.}
 }
 \description{
-A tidier version of t.test for two sample tests.
+A tidier version of \link[stats:t.test]{t.test()} for two sample tests.
 }
 \examples{
 # t test for comparing mpg against automatic/manual

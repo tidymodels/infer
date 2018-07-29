@@ -1,6 +1,7 @@
 #' Generate resamples, permutations, or simulations
 #' 
-#' Generation is done based on `specify` and (if needed) `hypothesize` inputs.
+#' Generation is done based on [specify()] and (if needed) [hypothesize()]
+#' inputs.
 #' 
 #' @param x A data frame that can be coerced into a [tbl_df][dplyr::tbl_df].
 #' @param reps The number of resamples to generate.

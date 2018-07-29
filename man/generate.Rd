@@ -20,7 +20,8 @@ A tibble containing \code{rep} generated datasets, indicated by the
 \code{replicate} column.
 }
 \description{
-Generation is done based on \code{specify} and (if needed) \code{hypothesize} inputs.
+Generation is done based on \code{\link[=specify]{specify()}} and (if needed) \code{\link[=hypothesize]{hypothesize()}}
+inputs.
 }
 \examples{
 # Permutation test for two binary variables

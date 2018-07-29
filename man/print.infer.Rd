@@ -7,8 +7,8 @@
 \method{print}{infer}(x, ...)
 }
 \arguments{
-\item{x}{An object of class \code{infer}, i.e. output from \link{specify} or
-\link{hypothesize}.}
+\item{x}{An object of class \code{infer}, i.e. output from \code{\link[=specify]{specify()}} or
+\code{\link[=hypothesize]{hypothesize()}}.}
 
 \item{...}{Arguments passed to methods.}
 }

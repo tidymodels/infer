@@ -5,7 +5,7 @@
 
 #' Tidy t-test
 #'
-#' A tidier version of t.test for two sample tests.
+#' A tidier version of [t.test()][stats::t.test()] for two sample tests.
 #'
 #' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
@@ -20,7 +20,7 @@
 #' @param conf_int A logical value for whether to include the confidence
 #'   interval or not. `TRUE` by default.
 #' @param conf_level A numeric value between 0 and 1. Default value is 0.95.
-#' @param ... For passing in other arguments to [stats::t.test].
+#' @param ... For passing in other arguments to [t.test()][stats::t.test()].
 #' 
 #' @examples
 #' # t test for comparing mpg against automatic/manual
@@ -121,13 +121,13 @@ t_stat <- function(data, formula, ...){
 
 #' Tidy chi-squared test
 #'
-#' A tidier version of chisq.test for goodness of fit tests and tests of
-#' independence.
+#' A tidier version of [chisq.test()][stats::chisq.test()] for goodness of fit
+#' tests and tests of independence.
 #'
 #' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
-#' @param ... Additional arguments for [chisq.test].
+#' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
 #' 
 #' @examples
 #' # chisq test for comparing number of cylinders against automatic/manual
@@ -158,12 +158,13 @@ chisq_test <- function(data, formula, #response = NULL, explanatory = NULL,
 #' Tidy chi-squared test statistic
 #' 
 #' A shortcut wrapper function to get the observed test statistic for a chisq
-#' test. Uses [stats::chisq.test], which applies a continuity correction.
+#' test. Uses [chisq.test()][stats::chisq.test()], which applies a continuity
+#' correction.
 #'
 #' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
-#' @param ... Additional arguments for [stats::chisq.test].
+#' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
 #' 
 #' @export
 chisq_stat <- function(data, formula, ...){

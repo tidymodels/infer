@@ -1,7 +1,7 @@
 #' Print methods
 #'
-#' @param x An object of class `infer`, i.e. output from [specify] or
-#'   [hypothesize].
+#' @param x An object of class `infer`, i.e. output from [specify()] or
+#'   [hypothesize()].
 #' @param ... Arguments passed to methods.
 #' 
 #' @export

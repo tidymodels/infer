@@ -12,9 +12,10 @@ chisq_stat(data, formula, ...)
 \item{formula}{A formula with the response variable on the left and the
 explanatory on the right.}
 
-\item{...}{Additional arguments for \link[stats:chisq.test]{stats::chisq.test}.}
+\item{...}{Additional arguments for \link[stats:chisq.test]{chisq.test()}.}
 }
 \description{
 A shortcut wrapper function to get the observed test statistic for a chisq
-test. Uses \link[stats:chisq.test]{stats::chisq.test}, which applies a continuity correction.
+test. Uses \link[stats:chisq.test]{chisq.test()}, which applies a continuity
+correction.
 }

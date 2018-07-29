@@ -3,7 +3,7 @@
 #' Visualize the distribution of the simulation-based inferential statistics or
 #' the theoretical distribution (or both!).
 #' 
-#' @param data The output from [calculate].
+#' @param data The output from [calculate()].
 #' @param bins The number of bins in the histogram.
 #' @param method A string giving the method to display. Options are
 #'   `"simulation"`, `"theoretical"`, or `"both"` with `"both"` corresponding to

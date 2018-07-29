@@ -7,6 +7,7 @@
 \item{lhs, rhs}{Inference functions and the initial data frame.}
 }
 \description{
-Like \code{dplyr}, \code{infer} also uses the pipe function, \code{\%>\%} to turn
-function composition into a series of imperative statements.
+Like \code{dplyr}, \code{infer} also uses the pipe function,
+\code{\link[magrittr]{\%>\%}} to turn function composition into a series of
+imperative statements.
 }

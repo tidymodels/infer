@@ -10,7 +10,7 @@ visualize(data, bins = 15, method = "simulation",
   endpoints_color = "mediumaquamarine", ci_fill = "turquoise", ...)
 }
 \arguments{
-\item{data}{The output from \link{calculate}.}
+\item{data}{The output from \code{\link[=calculate]{calculate()}}.}
 
 \item{bins}{The number of bins in the histogram.}
 

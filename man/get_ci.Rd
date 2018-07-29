@@ -16,7 +16,7 @@ get_confidence_interval(x, level = 0.95, type = "percentile",
 \arguments{
 \item{x}{Data frame of calculated statistics or containing attributes of
 theoretical distribution values. Currently, dependent on statistics being
-stored in \code{stat} column as created in \code{calculate()} function.}
+stored in \code{stat} column as created in \code{\link[=calculate]{calculate()}} function.}
 
 \item{level}{A numerical value between 0 and 1 giving the confidence level.
 Default value is 0.95.}

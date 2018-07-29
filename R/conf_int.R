@@ -5,7 +5,7 @@
 #' 
 #' @param x Data frame of calculated statistics or containing attributes of
 #'   theoretical distribution values. Currently, dependent on statistics being
-#'   stored in `stat` column as created in `calculate()` function.
+#'   stored in `stat` column as created in [calculate()] function.
 #' @param level A numerical value between 0 and 1 giving the confidence level.
 #'   Default value is 0.95.
 #' @param type A string giving which method should be used for creating the

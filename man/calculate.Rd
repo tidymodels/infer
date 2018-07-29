@@ -9,8 +9,8 @@ calculate(x, stat = c("mean", "median", "sd", "prop", "diff in means",
   "t", "z"), order = NULL, ...)
 }
 \arguments{
-\item{x}{The output from \link{generate} for computation-based inference or the
-output from \link{hypothesize} piped in to here for theory-based inference.}
+\item{x}{The output from \code{\link[=generate]{generate()}} for computation-based inference or the
+output from \code{\link[=hypothesize]{hypothesize()}} piped in to here for theory-based inference.}
 
 \item{stat}{A string giving the type of the statistic to calculate. Current
 options include \code{"mean"}, \code{"median"}, \code{"sd"}, \code{"prop"}, \code{"diff in means"},
@@ -21,8 +21,8 @@ options include \code{"mean"}, \code{"median"}, \code{"sd"}, \code{"prop"}, \cod
 the explanatory variable should be ordered for subtraction, where \code{order = c("first", "second")} means \code{("first" - "second")} Needed for inference on
 difference in means, medians, or proportions and t and z statistics.}
 
-\item{...}{To pass options like \code{na.rm = TRUE} into functions like \code{mean},
-\code{sd}, etc.}
+\item{...}{To pass options like \code{na.rm = TRUE} into functions like
+\link[base:mean]{mean()}, \link[stats:sd]{sd()}, etc.}
 }
 \value{
 A tibble containing a \code{stat} column of calculated statistics.
