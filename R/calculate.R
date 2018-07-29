@@ -3,15 +3,15 @@
 #' @param x The output from [generate] for computation-based inference or the
 #'   output from [hypothesize] piped in to here for theory-based inference.
 #' @param stat A string giving the type of the statistic to calculate. Current
-#'   options include "mean", "median", "sd", "prop", "diff in means", "diff in
-#'   medians", "diff in props", "Chisq", "F", "t", "z", "slope", and
-#'   "correlation".
+#'   options include `"mean"`, `"median"`, `"sd"`, `"prop"`, `"diff in means"`,
+#'   `"diff in medians"`, `"diff in props"`, `"Chisq"`, `"F"`, `"t"`, `"z"`,
+#'   `"slope"`, and `"correlation"`.
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction, where `order =
 #'   c("first", "second")` means `("first" - "second")` Needed for inference on
 #'   difference in means, medians, or proportions and t and z statistics.
-#' @param ... To pass options like `na.rm = TRUE` into functions like mean, sd,
-#'   etc.
+#' @param ... To pass options like `na.rm = TRUE` into functions like `mean`,
+#'   `sd`, etc.
 #'   
 #' @return A tibble containing a `stat` column of calculated statistics.
 #'

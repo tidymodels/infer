@@ -15,8 +15,8 @@ visualize(data, bins = 15, method = "simulation",
 \item{bins}{The number of bins in the histogram.}
 
 \item{method}{A string giving the method to display. Options are
-"simulation", "theoretical", or "both" with "both" corresponding to
-"simulation" and "theoretical".}
+\code{"simulation"}, \code{"theoretical"}, or \code{"both"} with \code{"both"} corresponding to
+\code{"simulation"} and \code{"theoretical"}.}
 
 \item{dens_color}{A character or hex string specifying the color of the
 theoretical density curve.}
@@ -32,9 +32,9 @@ the pvalue. In previous versions of the package this was the \code{shade_color}
 argument.}
 
 \item{direction}{A string specifying in which direction the shading should
-occur. Options are "less", "greater", or "two_sided" for p-value. Can also
-give "left", "right", or "both" for p-value. For confidence intervals, use
-"between" and give the endpoint values in \code{endpoints}.}
+occur. Options are \code{"less"}, \code{"greater"}, or \code{"two_sided"} for p-value. Can
+also give \code{"left"}, \code{"right"}, or \code{"both"} for p-value. For confidence
+intervals, use \code{"between"} and give the endpoint values in \code{endpoints}.}
 
 \item{endpoints}{A 2 element vector or a 1 x 2 data frame containing the
 lower and upper values to be plotted. Most useful for visualizing

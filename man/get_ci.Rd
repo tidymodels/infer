@@ -25,7 +25,7 @@ Default value is 0.95.}
 confidence interval. The default is \code{"percentile"} with \code{"se"}
 corresponding to (multiplier * standard error) as the other option.}
 
-\item{point_estimate}{A numeric value or a 1x1 data frame set to NULL by
+\item{point_estimate}{A numeric value or a 1x1 data frame set to \code{NULL} by
 default. Needed to be provided if \code{type = "se"}.}
 }
 \value{

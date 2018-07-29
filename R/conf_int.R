@@ -11,7 +11,7 @@
 #' @param type A string giving which method should be used for creating the
 #'   confidence interval. The default is `"percentile"` with `"se"`
 #'   corresponding to (multiplier * standard error) as the other option.
-#' @param point_estimate A numeric value or a 1x1 data frame set to NULL by
+#' @param point_estimate A numeric value or a 1x1 data frame set to `NULL` by
 #'   default. Needed to be provided if `type = "se"`.
 #'
 #' @return A 2 x 1 tibble with values corresponding to lower and upper values in

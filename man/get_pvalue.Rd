@@ -16,8 +16,8 @@ theoretical distribution values.}
 \item{obs_stat}{A numeric value or a 1x1 data frame (as extreme or more
 extreme than this).}
 
-\item{direction}{A character string. Options are "less", "greater", or
-"two_sided". Can also specify "left", "right", or "both".}
+\item{direction}{A character string. Options are \code{"less"}, \code{"greater"}, or
+\code{"two_sided"}. Can also specify \code{"left"}, \code{"right"}, or \code{"both"}.}
 }
 \value{
 A 1x1 data frame with value between 0 and 1.

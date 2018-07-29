@@ -6,8 +6,8 @@
 #' @param data The output from [calculate].
 #' @param bins The number of bins in the histogram.
 #' @param method A string giving the method to display. Options are
-#'   "simulation", "theoretical", or "both" with "both" corresponding to
-#'   "simulation" and "theoretical".
+#'   `"simulation"`, `"theoretical"`, or `"both"` with `"both"` corresponding to
+#'   `"simulation"` and `"theoretical"`.
 #' @param dens_color A character or hex string specifying the color of the
 #'   theoretical density curve.
 #' @param obs_stat A numeric value or 1x1 data frame corresponding to what the
@@ -18,9 +18,9 @@
 #'   the pvalue. In previous versions of the package this was the `shade_color`
 #'   argument.
 #' @param direction A string specifying in which direction the shading should
-#'   occur. Options are "less", "greater", or "two_sided" for p-value. Can also
-#'   give "left", "right", or "both" for p-value. For confidence intervals, use
-#'   "between" and give the endpoint values in `endpoints`.
+#'   occur. Options are `"less"`, `"greater"`, or `"two_sided"` for p-value. Can
+#'   also give `"left"`, `"right"`, or `"both"` for p-value. For confidence
+#'   intervals, use `"between"` and give the endpoint values in `endpoints`.
 #' @param endpoints A 2 element vector or a 1 x 2 data frame containing the
 #'   lower and upper values to be plotted. Most useful for visualizing
 #'   conference intervals.

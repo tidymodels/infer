@@ -17,13 +17,13 @@ explanatory on the right.}
 the explanatory variable should be ordered for subtraction, where \code{order = c("first", "second")} means \code{("first" - "second")}.}
 
 \item{alternative}{Character string giving the direction of the alternative
-hypothesis. Options are "\code{two_sided}" (default), "\code{greater}", or "\code{less}".}
+hypothesis. Options are \code{"two_sided"} (default), \code{"greater"}, or \code{"less"}.}
 
 \item{mu}{A numeric value giving the hypothesized null mean value for a one
 sample test and the hypothesized difference for a two sample test.}
 
 \item{conf_int}{A logical value for whether to include the confidence
-interval or not. TRUE by default.}
+interval or not. \code{TRUE} by default.}
 
 \item{conf_level}{A numeric value between 0 and 1. Default value is 0.95.}
 

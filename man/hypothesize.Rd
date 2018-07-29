@@ -9,7 +9,8 @@ hypothesize(x, null, ...)
 \arguments{
 \item{x}{A data frame that can be coerced into a \link[dplyr:tbl_df]{tbl_df}.}
 
-\item{null}{The null hypothesis. Options include "independence" and "point".}
+\item{null}{The null hypothesis. Options include \code{"independence"} and
+\code{"point"}.}
 
 \item{...}{Arguments passed to downstream functions.}
 }
