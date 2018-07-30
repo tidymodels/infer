@@ -7,7 +7,7 @@
 hypothesize(x, null, ...)
 }
 \arguments{
-\item{x}{A data frame that can be coerced into a \link[dplyr:tbl_df]{tbl_df}.}
+\item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 
 \item{null}{The null hypothesis. Options include \code{"independence"} and
 \code{"point"}.}

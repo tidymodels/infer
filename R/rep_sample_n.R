@@ -38,10 +38,8 @@
 #'   labs(x = "p_hat", y = "Number of samples",
 #'   title = "Sampling distribution of p_hat from 1000 samples of size 50")
 #' 
-#' @importFrom dplyr data_frame
 #' @importFrom dplyr pull
 #' @importFrom dplyr inner_join
-#' @importFrom dplyr as_tibble
 #' @importFrom dplyr group_by
 #' @export
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
@@ -63,7 +61,7 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
         "The argument `prob` must have length `nrow(tbl)` = {nrow(tbl)}"
       )
 
-    prob <- dplyr::data_frame(vals = levels(dplyr::pull(tbl, 1))) %>%
+    prob <- tibble::tibble(vals = levels(dplyr::pull(tbl, 1))) %>%
       dplyr::mutate(probs = prob) %>%
       dplyr::inner_join(tbl) %>%
       dplyr::select(probs) %>%

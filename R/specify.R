@@ -27,7 +27,7 @@
 #' 
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
-#' @importFrom dplyr mutate_if select one_of as_tibble
+#' @importFrom dplyr mutate_if select one_of
 #' @importFrom methods hasArg
 #' @export
 specify <- function(x, formula, response = NULL,
@@ -35,7 +35,7 @@ specify <- function(x, formula, response = NULL,
   check_type(x, is.data.frame)
 
   # Convert all character and logical variables to be factor variables
-  x <- dplyr::as_tibble(x) %>%
+  x <- tibble::as_tibble(x) %>%
     mutate_if(is.character, as.factor) %>%
     mutate_if(is.logical, as.factor)
 
