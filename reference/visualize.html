@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Visualize the distribution of the simulation-based inferential statistics
-or the theoretical distribution (or both!) — visualize • infer</title>
+<title>Visualize statistical inference — visualize • infer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -37,11 +36,10 @@ or the theoretical distribution (or both!) — visualize • infer</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Visualize the distribution of the simulation-based inferential statistics
-or the theoretical distribution (or both!) — visualize" />
+<meta property="og:title" content="Visualize statistical inference — visualize" />
 
-<meta property="og:description" content="Visualize the distribution of the simulation-based inferential statistics
-or the theoretical distribution (or both!)" />
+<meta property="og:description" content="Visualize the distribution of the simulation-based inferential statistics or
+the theoretical distribution (or both!)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -70,7 +68,7 @@ or the theoretical distribution (or both!)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
       </span>
     </div>
 
@@ -98,6 +96,12 @@ or the theoretical distribution (or both!)" />
     <li>
       <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
     </li>
+    <li>
+      <a href="../articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
+    </li>
+    <li>
+      <a href="../articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -119,7 +123,7 @@ or the theoretical distribution (or both!)" />
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/tidymodels/infer">
+  <a href="https://github.com/andrewpbray/infer">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -142,16 +146,15 @@ or the theoretical distribution (or both!)" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Visualize the distribution of the simulation-based inferential statistics
-or the theoretical distribution (or both!)</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/visualize.R'><code>R/visualize.R</code></a></small>
+    <h1>Visualize statistical inference</h1>
+    <small class="dont-index">Source: <a href='https://github.com/andrewpbray/infer/blob/master/R/visualize.R'><code>R/visualize.R</code></a></small>
     <div class="hidden name"><code>visualize.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Visualize the distribution of the simulation-based inferential statistics
-or the theoretical distribution (or both!)</p>
+    <p>Visualize the distribution of the simulation-based inferential statistics or
+the theoretical distribution (or both!).</p>
     
     </div>
 
@@ -165,73 +168,72 @@ or the theoretical distribution (or both!)</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>the output from <code><a href='calculate.html'>calculate</a></code></p></td>
+      <td><p>The output from <code><a href='calculate.html'>calculate()</a></code>.</p></td>
     </tr>
     <tr>
       <th>bins</th>
-      <td><p>the number of bins in the histogram</p></td>
+      <td><p>The number of bins in the histogram.</p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>a string giving the method to display. Options are 
-"simulation", "theoretical", or "both"
-with "both" corresponding to "simulation" and "theoretical"</p></td>
+      <td><p>A string giving the method to display. Options are
+<code>"simulation"</code>, <code>"theoretical"</code>, or <code>"both"</code> with <code>"both"</code> corresponding to
+<code>"simulation"</code> and <code>"theoretical"</code>.</p></td>
     </tr>
     <tr>
       <th>dens_color</th>
-      <td><p>a character or hex string specifying the color of the
-theoretical density curve</p></td>
+      <td><p>A character or hex string specifying the color of the
+theoretical density curve.</p></td>
     </tr>
     <tr>
       <th>obs_stat</th>
-      <td><p>a numeric value or 1x1 data frame corresponding to what
-the observed statistic is</p></td>
+      <td><p>A numeric value or 1x1 data frame corresponding to what the
+observed statistic is.</p></td>
     </tr>
     <tr>
       <th>obs_stat_color</th>
-      <td><p>a character or hex string specifying the color of
-the observed statistic as a vertical line on the plot</p></td>
+      <td><p>A character or hex string specifying the color of the
+observed statistic as a vertical line on the plot.</p></td>
     </tr>
     <tr>
       <th>pvalue_fill</th>
-      <td><p>a character or hex string specifying the color to shade
-the pvalue. In previous versions of the package this was the <code>shade_color</code> 
-argument</p></td>
+      <td><p>A character or hex string specifying the color to shade
+the p-value. In previous versions of the package this was the <code>shade_color</code>
+argument.</p></td>
     </tr>
     <tr>
       <th>direction</th>
-      <td><p>a string specifying in which direction the shading 
-should occur. Options are "less", "greater", or "two_sided" for p-value.
-Can also give "left", "right", or "both" for p-value. For confidence 
-intervals, use "between".
-and give the endpoint values in <code>endpoints</code></p></td>
+      <td><p>A string specifying in which direction the shading should
+occur. Options are <code>"less"</code>, <code>"greater"</code>, or <code>"two_sided"</code> for p-value. Can
+also give <code>"left"</code>, <code>"right"</code>, or <code>"both"</code> for p-value. For confidence
+intervals, use <code>"between"</code> and give the endpoint values in <code>endpoints</code>.</p></td>
     </tr>
     <tr>
       <th>endpoints</th>
-      <td><p>a 2 element vector or a 1 x 2 data frame containing the
+      <td><p>A 2 element vector or a 1 x 2 data frame containing the
 lower and upper values to be plotted. Most useful for visualizing
 conference intervals.</p></td>
     </tr>
     <tr>
       <th>endpoints_color</th>
-      <td><p>a character or hex string specifying the color of
-the observed statistic as a vertical line on the plot</p></td>
+      <td><p>A character or hex string specifying the color of the
+observed statistic as a vertical line on the plot.</p></td>
     </tr>
     <tr>
       <th>ci_fill</th>
-      <td><p>a character or hex string specifying the color to shade
-the confidence interval</p></td>
+      <td><p>A character or hex string specifying the color to shade the
+confidence interval.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other arguments passed along to ggplot2</p></td>
+      <td><p>Other arguments passed along to ggplot2.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A ggplot object showing the simulation-based distribution as a
- histogram or bar graph. Also used to show the theoretical curves.</p>
+histogram or bar graph. Also used to show the theoretical curves.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -239,30 +241,31 @@ the confidence interval</p></td>
 <span class='co'># one numerical response and one categorical predictor</span>
 <span class='co'># using t statistic</span>
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-    <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
-    <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"simulation"</span>) <span class='co'>#default method</span></div><div class='img'><img src='visualize-1.png' alt='' width='700' height='433' /></div><div class='input'>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
+  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"simulation"</span>) <span class='co'>#default method</span></div><div class='img'><img src='visualize-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Theoretical t distribution for </span>
 <span class='co'># one numerical response and one categorical predictor</span>
 <span class='co'># using t statistic</span>
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-    <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
-    <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-    <span class='co'># generate() is not needed since we are not doing simulation</span>
-    <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"theoretical"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.</span></div><div class='img'><img src='visualize-2.png' alt='' width='700' height='433' /></div><div class='input'>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
+  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
+  <span class='co'># generate() is not needed since we are not doing simulation</span>
+  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"theoretical"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.</span></div><div class='img'><img src='visualize-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Overlay theoretical distribution on top of randomized t-statistics</span>
 <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-    <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
-    <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"both"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Check to make sure the conditions have been met for the theoretical method. `infer` currently does not check these for you.</span></div><div class='img'><img src='visualize-3.png' alt='' width='700' height='433' /></div></pre>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
+  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"both"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Check to make sure the conditions have been met for the theoretical method. `infer` currently does not check these for you.</span></div><div class='img'><img src='visualize-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

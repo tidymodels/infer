@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
       </span>
     </div>
 
@@ -59,6 +59,12 @@
     <li>
       <a href="articles/mtcars_examples.html">Examples using `mtcars`</a>
     </li>
+    <li>
+      <a href="articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
+    </li>
+    <li>
+      <a href="articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -79,7 +85,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/tidymodels/infer">
+  <a href="https://github.com/andrewpbray/infer">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -107,12 +113,12 @@
     
 <div id="infer-r-package" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#infer-r-package" class="anchor"></a>infer R Package <img src="https://github.com/tidymodels/infer/blob/develop/figs/infer_gnome.png?raw=true" align="right" width="125">
+<a href="#infer-r-package" class="anchor"></a>infer R Package <img src="https://github.com/andrewpbray/infer/blob/develop/figs/infer_gnome.png?raw=true" align="right" width="125">
 </h1></div>
 <hr>
-<!--figs/infer.svg--><!--http://www.r-pkg.org/badges/version/infer--><!--figs/master.svg--><!--https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg-->
+<!--figs/infer.svg--><!--http://www.r-pkg.org/badges/version/infer--><!--figs/master.svg--><!--https://img.shields.io/codecov/c/github/andrewpbray/infer/master.svg-->
 <p>The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the <code>tidyverse</code> design framework.</p>
-<p><img src="https://raw.githubusercontent.com/tidymodels/infer/master/figs/ht-diagram.png"><!-- --></p>
+<p><img src="https://raw.githubusercontent.com/andrewpbray/infer/master/figs/ht-diagram.png"><!-- --></p>
 <div id="installation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h3>
@@ -121,17 +127,17 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">"infer"</span>)</a></code></pre></div>
 <p>To install the developmental version of <code>infer</code>, make sure to install <code>remotes</code> first. The <code>pkgdown</code> website for this developmental version is at <a href="https://infer.netlify.com" class="uri">https://infer.netlify.com</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"tidymodels/infer"</span>)</a></code></pre></div>
-<p>To install the cutting edge version of <code>infer</code> (do so at your own risk), make sure to install <code>remotes</code> first. This version was last updated on 2018-07-29 17:13:19.</p>
+<a class="sourceLine" id="cb2-2" data-line-number="2">remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"andrewpbray/infer"</span>)</a></code></pre></div>
+<p>To install the cutting edge version of <code>infer</code> (do so at your own risk), make sure to install <code>remotes</code> first. This version was last updated on 2018-08-03 00:31:30.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">"remotes"</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"tidymodels/infer"</span>, <span class="dt">ref =</span> <span class="st">"develop"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb3-2" data-line-number="2">remotes<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"andrewpbray/infer"</span>, <span class="dt">ref =</span> <span class="st">"develop"</span>)</a></code></pre></div>
 <p>To see the things we are working on with the package as vignettes/Articles, check out the developmental <code>pkgdown</code> site at <a href="https://infer-dev.netlify.com" class="uri">https://infer-dev.netlify.com</a>.</p>
 </div>
 <div id="contributing" class="section level3">
 <h3 class="hasAnchor">
 <a href="#contributing" class="anchor"></a>Contributing</h3>
 <hr>
-<p>We welcome others helping us make this package as user friendly and efficient as possible. Please review our <a href="https://github.com/tidymodels/infer/blob/develop/CONDUCT.html">contributing</a> and <a href="CONDUCT.html">conduct</a> guidelines. Of particular interest is helping us to write <code>testthat</code> tests and in building vignettes that show how to (and how NOT to) use the package. By participating in this project you agree to abide by its terms.</p>
+<p>We welcome others helping us make this package as user friendly and efficient as possible. Please review our <a href="https://github.com/andrewpbray/infer/blob/develop/CONDUCT.html">contributing</a> and <a href="CONDUCT.html">conduct</a> guidelines. Of particular interest is helping us to write <code>testthat</code> tests and in building vignettes that show how to (and how NOT to) use the package. By participating in this project you agree to abide by its terms.</p>
 </div>
 <div id="examples" class="section level3">
 <h3 class="hasAnchor">
@@ -167,9 +173,9 @@
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=infer">https://​cloud.r-project.org/​package=infer</a>
 </li>
-<li>Browse source code at <br><a href="https://github.com/tidymodels/infer">https://​github.com/​tidymodels/​infer</a>
+<li>Browse source code at <br><a href="https://github.com/andrewpbray/infer">https://​github.com/​andrewpbray/​infer</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/tidymodels/infer/issues">https://​github.com/​tidymodels/​infer/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/andrewpbray/infer/issues">https://​github.com/​andrewpbray/​infer/​issues</a>
 </li>
 </ul>
 </div>
@@ -194,9 +200,9 @@
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://cran.r-project.org/package=infer"><img src="http://www.r-pkg.org/badges/version/infer" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://travis-ci.org/tidymodels/infer"><img src="https://travis-ci.org/tidymodels/infer.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-<li><a href="https://ci.appveyor.com/project/tidymodels/infer"><img src="https://ci.appveyor.com/api/projects/status/github/tidymodels/infer?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
-<li><a href="https://codecov.io/github/tidymodels/infer/?branch=master"><img src="https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg" alt="Coverage Status"></a></li>
+<li><a href="https://travis-ci.org/andrewpbray/infer"><img src="https://travis-ci.org/andrewpbray/infer.svg?branch=master" alt="Travis-CI Build Status"></a></li>
+<li><a href="https://ci.appveyor.com/project/andrewpbray/infer"><img src="https://ci.appveyor.com/api/projects/status/github/andrewpbray/infer?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
+<li><a href="https://codecov.io/github/andrewpbray/infer/?branch=master"><img src="https://img.shields.io/codecov/c/github/andrewpbray/infer/master.svg" alt="Coverage Status"></a></li>
 </ul>
 </div>
 </div>

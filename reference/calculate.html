@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
       </span>
     </div>
 
@@ -95,6 +95,12 @@
     <li>
       <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
     </li>
+    <li>
+      <a href="../articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
+    </li>
+    <li>
+      <a href="../articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -116,7 +122,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/tidymodels/infer">
+  <a href="https://github.com/andrewpbray/infer">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -140,7 +146,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Calculate summary statistics</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/calculate.R'><code>R/calculate.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/andrewpbray/infer/blob/master/R/calculate.R'><code>R/calculate.R</code></a></small>
     <div class="hidden name"><code>calculate.Rd</code></div>
     </div>
 
@@ -159,45 +165,42 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>the output from <code><a href='generate.html'>generate</a></code> for computation-based
-inference or the output from <code><a href='hypothesize.html'>hypothesize</a></code>
-piped in to here for theory-based inference.</p></td>
+      <td><p>The output from <code><a href='generate.html'>generate()</a></code> for computation-based inference or the
+output from <code><a href='hypothesize.html'>hypothesize()</a></code> piped in to here for theory-based inference.</p></td>
     </tr>
     <tr>
       <th>stat</th>
-      <td><p>a string giving the type of the statistic to calculate. Current
-options include "mean", "median", "sd", "prop", "diff in means",
-"diff in medians", "diff in props", "Chisq", "F", "t", "z", "slope",
-and "correlation".</p></td>
+      <td><p>A string giving the type of the statistic to calculate. Current
+options include <code>"mean"</code>, <code>"median"</code>, <code>"sd"</code>, <code>"prop"</code>, <code>"diff in means"</code>,
+<code>"diff in medians"</code>, <code>"diff in props"</code>, <code>"Chisq"</code>, <code>"F"</code>, <code>"t"</code>, <code>"z"</code>,
+<code>"slope"</code>, and <code>"correlation"</code>.</p></td>
     </tr>
     <tr>
       <th>order</th>
-      <td><p>a string vector of specifying the order in which the levels of
-the explanatory variable should be ordered for subtraction, where
-<code>order = c("first", "second")</code> means <code>("first" - "second")</code>
-Needed for inference on difference in means, medians, or proportions and
-t and z statistics.</p></td>
+      <td><p>A string vector of specifying the order in which the levels of
+the explanatory variable should be ordered for subtraction, where <code>order = c("first", "second")</code> means <code>("first" - "second")</code> Needed for inference on
+difference in means, medians, or proportions and t and z statistics.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>to pass options like <code>na.rm = TRUE</code> into functions like
-mean, sd, etc.</p></td>
+      <td><p>To pass options like <code>na.rm = TRUE</code> into functions like
+<a href='http://www.rdocumentation.org/packages/base/topics/mean'>mean()</a>, <a href='http://www.rdocumentation.org/packages/stats/topics/sd'>sd()</a>, etc.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble containing a <code>stat</code> column of calculated statistics</p>
+    <p>A tibble containing a <code>stat</code> column of calculated statistics.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Permutation test for two binary variables</span>
-  <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-    <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>am</span> ~ <span class='no'>vs</span>, <span class='kw'>success</span> <span class='kw'>=</span> <span class='st'>"1"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'>calculate</span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"diff in props"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>))</div><div class='output co'>#&gt; # A tibble: 100 x 2
+<span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>am</span> ~ <span class='no'>vs</span>, <span class='kw'>success</span> <span class='kw'>=</span> <span class='st'>"1"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>calculate</span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"diff in props"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>))</div><div class='output co'>#&gt; # A tibble: 100 x 2
 #&gt;    replicate    stat
 #&gt;        &lt;int&gt;   &lt;dbl&gt;
 #&gt;  1         1 -0.0873
@@ -210,7 +213,8 @@ mean, sd, etc.</p></td>
 #&gt;  8         8  0.0397
 #&gt;  9         9  0.0397
 #&gt; 10        10  0.167 
-#&gt; # ... with 90 more rows</div></pre>
+#&gt; # ... with 90 more rows</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
