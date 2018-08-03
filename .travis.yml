@@ -35,6 +35,8 @@ deploy:
   keep-history: true
   local-dir: docs
   github_token: $GITHUBTRAVIS
+  on:
+   branch: develop
 
 after_success:
   - Rscript -e 'covr::codecov()'
