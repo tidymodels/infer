@@ -3,7 +3,7 @@
 #' Generation is done based on [specify()] and (if needed) [hypothesize()]
 #' inputs.
 #' 
-#' @param x A data frame that can be coerced into a [tbl_df][dplyr::tbl_df].
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param reps The number of resamples to generate.
 #' @param type Currently either `bootstrap`, `permute`, or `simulate`.
 #' @param ... Currently ignored.
@@ -165,8 +165,10 @@ simulate <- function(x, reps = 1, ...) {
                                               prob = format_params(x)),
                                  simplify = FALSE))
 
-  rep_tbl <- tibble(!! attr(x, "response") := as.factor(col_simmed),
-                   replicate = as.factor(rep(1:reps, rep(nrow(x), reps))))
+  rep_tbl <- tibble::tibble(
+    !! attr(x, "response") := as.factor(col_simmed),
+    replicate = as.factor(rep(1:reps, rep(nrow(x), reps)))
+  )
 
   rep_tbl <- set_attributes(to = rep_tbl, from = x)
   

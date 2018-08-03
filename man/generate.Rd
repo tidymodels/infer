@@ -7,7 +7,7 @@
 generate(x, reps = 1, type = attr(x, "type"), ...)
 }
 \arguments{
-\item{x}{A data frame that can be coerced into a \link[dplyr:tbl_df]{tbl_df}.}
+\item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 
 \item{reps}{The number of resamples to generate.}
 

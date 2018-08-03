@@ -1,6 +1,6 @@
 #' Declare a null hypothesis
 #' 
-#' @param x A data frame that can be coerced into a [tbl_df][dplyr::tbl_df].
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param null The null hypothesis. Options include `"independence"` and
 #'   `"point"`.
 #' @param ... Arguments passed to downstream functions.
@@ -17,7 +17,6 @@
 #'   generate(reps = 100, type = "permute") %>%
 #'   calculate(stat = "F")
 #' 
-#' @importFrom dplyr as.tbl
 #' @export
 hypothesize <- function(x, null, ...) {
   
@@ -72,6 +71,6 @@ hypothesize <- function(x, null, ...) {
   #               '`mu`, `med`, or `sd` to be used as a parameter.')
   # }
   
-  return(as.tbl(x))
+  return(tibble::as_tibble(x))
 }
 

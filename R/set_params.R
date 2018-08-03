@@ -1,6 +1,8 @@
 #' To determine which theoretical distribution to fit (if any)
 #' 
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
+#' 
+#' @noRd
 set_params <- function(x){
 
   attr(x, "theory_type") <- NULL
