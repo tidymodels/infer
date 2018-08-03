@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate resamples, permutations, or simulations — generate • infer</title>
+<title>Generate resamples, permutations, or simulations based on
+`specify` and (if needed) `hypothesize` inputs — generate • infer</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -36,10 +37,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Generate resamples, permutations, or simulations — generate" />
+<meta property="og:title" content="Generate resamples, permutations, or simulations based on
+`specify` and (if needed) `hypothesize` inputs — generate" />
 
-<meta property="og:description" content="Generation is done based on specify() and (if needed) hypothesize()
-inputs." />
+<meta property="og:description" content="Generate resamples, permutations, or simulations based on
+`specify` and (if needed) `hypothesize` inputs" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -68,7 +70,7 @@ inputs." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
       </span>
     </div>
 
@@ -96,12 +98,6 @@ inputs." />
     <li>
       <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
     </li>
-    <li>
-      <a href="../articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
-    </li>
-    <li>
-      <a href="../articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -123,7 +119,7 @@ inputs." />
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/andrewpbray/infer">
+  <a href="https://github.com/tidymodels/infer">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -146,15 +142,16 @@ inputs." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate resamples, permutations, or simulations</h1>
-    <small class="dont-index">Source: <a href='https://github.com/andrewpbray/infer/blob/master/R/generate.R'><code>R/generate.R</code></a></small>
+    <h1>Generate resamples, permutations, or simulations based on
+`specify` and (if needed) `hypothesize` inputs</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/generate.R'><code>R/generate.R</code></a></small>
     <div class="hidden name"><code>generate.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Generation is done based on <code><a href='specify.html'>specify()</a></code> and (if needed) <code><a href='hypothesize.html'>hypothesize()</a></code>
-inputs.</p>
+    <p>Generate resamples, permutations, or simulations based on
+`specify` and (if needed) `hypothesize` inputs</p>
     
     </div>
 
@@ -165,19 +162,20 @@ inputs.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A data frame that can be coerced into a <a href='http://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a>.</p></td>
+      <td><p>a data frame that can be coerced into a <code><a href='http://dplyr.tidyverse.org/reference/tbl_df.html'>tbl_df</a></code></p></td>
     </tr>
     <tr>
       <th>reps</th>
-      <td><p>The number of resamples to generate.</p></td>
+      <td><p>the number of resamples to generate</p></td>
     </tr>
     <tr>
       <th>type</th>
-      <td><p>Currently either <code>bootstrap</code>, <code>permute</code>, or <code>simulate</code>.</p></td>
+      <td><p>currently either <code>bootstrap</code>, <code>permute</code>, 
+or <code>simulate</code></p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Currently ignored.</p></td>
+      <td><p>currently ignored</p></td>
     </tr>
     </table>
     
@@ -189,11 +187,11 @@ inputs.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Permutation test for two binary variables</span>
-<span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>am</span> ~ <span class='no'>vs</span>, <span class='kw'>success</span> <span class='kw'>=</span> <span class='st'>"1"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>)</div><div class='output co'>#&gt; Response: am (factor)
+  <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
+    <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>am</span> ~ <span class='no'>vs</span>, <span class='kw'>success</span> <span class='kw'>=</span> <span class='st'>"1"</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>)</div><div class='output co'>#&gt; Response: am (factor)
 #&gt; Explanatory: vs (factor)
 #&gt; Null Hypothesis: independence
 #&gt; # A tibble: 3,200 x 3
@@ -210,8 +208,7 @@ inputs.</p>
 #&gt;  8 0     1             1
 #&gt;  9 0     1             1
 #&gt; 10 1     1             1
-#&gt; # ... with 3,190 more rows</div><div class='input'>
-</div></pre>
+#&gt; # ... with 3,190 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

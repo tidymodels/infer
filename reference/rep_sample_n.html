@@ -38,8 +38,8 @@
 
 <meta property="og:title" content="Perform repeated sampling — rep_sample_n" />
 
-<meta property="og:description" content="Perform repeated sampling of samples of size n. Useful for creating sampling
-distributions." />
+<meta property="og:description" content="Perform repeated sampling of samples of size n. Useful for creating
+sampling distributions" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -68,7 +68,7 @@ distributions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
       </span>
     </div>
 
@@ -96,12 +96,6 @@ distributions." />
     <li>
       <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
     </li>
-    <li>
-      <a href="../articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
-    </li>
-    <li>
-      <a href="../articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -123,7 +117,7 @@ distributions." />
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/andrewpbray/infer">
+  <a href="https://github.com/tidymodels/infer">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -147,14 +141,14 @@ distributions." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Perform repeated sampling</h1>
-    <small class="dont-index">Source: <a href='https://github.com/andrewpbray/infer/blob/master/R/rep_sample_n.R'><code>R/rep_sample_n.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/rep_sample_n.R'><code>R/rep_sample_n.R</code></a></small>
     <div class="hidden name"><code>rep_sample_n.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Perform repeated sampling of samples of size n. Useful for creating sampling
-distributions.</p>
+    <p>Perform repeated sampling of samples of size n. Useful for creating
+sampling distributions</p>
     
     </div>
 
@@ -165,31 +159,31 @@ distributions.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>tbl</th>
-      <td><p>Data frame of population from which to sample.</p></td>
+      <td><p>data frame of population from which to sample</p></td>
     </tr>
     <tr>
       <th>size</th>
-      <td><p>Sample size of each sample.</p></td>
+      <td><p>sample size of each sample</p></td>
     </tr>
     <tr>
       <th>replace</th>
-      <td><p>Should sampling be with replacement?</p></td>
+      <td><p>should sampling be with replacement?</p></td>
     </tr>
     <tr>
       <th>reps</th>
-      <td><p>Number of samples of size n = <code>size</code> to take.</p></td>
+      <td><p>number of samples of size n = <code>size</code> to take</p></td>
     </tr>
     <tr>
       <th>prob</th>
-      <td><p>A vector of probability weights for obtaining the elements of the
-vector being sampled.</p></td>
+      <td><p>a vector of probability weights for obtaining the elements of
+the vector being sampled.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble of size <code>rep</code> times <code>size</code> rows corresponding to <code>rep</code>
-samples of size n = <code>size</code> from <code>tbl</code>.</p>
+    <p>A tibble of size <code>rep</code> times <code>size</code> rows corresponding to
+<code>rep</code> samples of size n = <code>size</code> from <code>tbl</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -198,11 +192,11 @@ samples of size n = <code>size</code> from <code>tbl</code>.</p>
 
 <span class='co'># A virtual population of N = 10,010, of which 3091 are hurricanes</span>
 <span class='no'>population</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='no'><a href='http://dplyr.tidyverse.org/reference/storms.html'>storms</a></span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>status</span>)
+ <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>status</span>)
 
 <span class='co'># Take samples of size n = 50 storms without replacement; do this 1000 times</span>
 <span class='no'>samples</span> <span class='kw'>&lt;-</span> <span class='no'>population</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>rep_sample_n</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1000</span>)
+ <span class='fu'>rep_sample_n</span>(<span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>50</span>, <span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1000</span>)
 <span class='no'>samples</span></div><div class='output co'>#&gt; # A tibble: 50,000 x 2
 #&gt; # Groups:   replicate [1,000]
 #&gt;    replicate status             
@@ -220,28 +214,26 @@ samples of size n = <code>size</code> from <code>tbl</code>.</p>
 #&gt; # ... with 49,990 more rows</div><div class='input'>
 <span class='co'># Compute p_hats for all 1000 samples = proportion hurricanes</span>
 <span class='no'>p_hats</span> <span class='kw'>&lt;-</span> <span class='no'>samples</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>replicate</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span>(<span class='kw'>prop_hurricane</span> <span class='kw'>=</span> <span class='fu'>mean</span>(<span class='no'>status</span> <span class='kw'>==</span> <span class='st'>"hurricane"</span>))
+ <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>replicate</span>) <span class='kw'>%&gt;%</span>
+ <span class='fu'><a href='http://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span>(<span class='kw'>prop_hurricane</span> <span class='kw'>=</span> <span class='fu'>mean</span>(<span class='no'>status</span> <span class='kw'>==</span> <span class='st'>"hurricane"</span>))
 <span class='no'>p_hats</span></div><div class='output co'>#&gt; # A tibble: 1,000 x 2
 #&gt;    replicate prop_hurricane
 #&gt;        &lt;int&gt;          &lt;dbl&gt;
-#&gt;  1         1          0.380
-#&gt;  2         2          0.280
-#&gt;  3         3          0.320
-#&gt;  4         4          0.300
-#&gt;  5         5          0.420
-#&gt;  6         6          0.320
-#&gt;  7         7          0.380
-#&gt;  8         8          0.340
-#&gt;  9         9          0.260
-#&gt; 10        10          0.300
-#&gt; # ... with 990 more rows</div><div class='input'>
-<span class='co'># Plot sampling distribution</span>
+#&gt;  1         1           0.38
+#&gt;  2         2           0.28
+#&gt;  3         3           0.32
+#&gt;  4         4           0.3 
+#&gt;  5         5           0.42
+#&gt;  6         6           0.32
+#&gt;  7         7           0.38
+#&gt;  8         8           0.34
+#&gt;  9         9           0.26
+#&gt; 10        10           0.3 
+#&gt; # ... with 990 more rows</div><div class='input'><span class='co'># Plot sampling distribution</span>
 <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot</a></span>(<span class='no'>p_hats</span>, <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/aes'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>prop_hurricane</span>)) +
-  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>geom_density</a></span>() +
-  <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"p_hat"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Number of samples"</span>,
-  <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Sampling distribution of p_hat from 1000 samples of size 50"</span>)</div><div class='img'><img src='rep_sample_n-1.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+ <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/geom_density'>geom_density</a></span>() +
+ <span class='fu'><a href='http://www.rdocumentation.org/packages/ggplot2/topics/labs'>labs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='st'>"p_hat"</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='st'>"Number of samples"</span>,
+ <span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Sampling distribution of p_hat from 1000 samples of size 50"</span>)</div><div class='img'><img src='rep_sample_n-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

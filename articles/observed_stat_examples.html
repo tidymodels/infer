@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
       </span>
     </div>
 
@@ -59,12 +59,6 @@
     <li>
       <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
     </li>
-    <li>
-      <a href="../articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
-    </li>
-    <li>
-      <a href="../articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -85,7 +79,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/andrewpbray/infer">
+  <a href="https://github.com/tidymodels/infer">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -113,7 +107,7 @@
             
             <h4 class="date">Updated on 2018-06-14</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/observed_stat_examples.Rmd"><code>vignettes/observed_stat_examples.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/master/vignettes/observed_stat_examples.Rmd"><code>vignettes/observed_stat_examples.Rmd</code></a></small>
       <div class="hidden name"><code>observed_stat_examples.Rmd</code></div>
 
     </div>
@@ -213,7 +207,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1      0.</code></pre>
+## 1       0</code></pre>
 </div>
 <div id="one-numerical-variable-median" class="section level3">
 <h3 class="hasAnchor">
@@ -225,7 +219,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1   -2.</code></pre>
+## 1    -2</code></pre>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">med =</span> <span class="dv">-1</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -239,7 +233,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1  0.0760</code></pre>
+## 1   0.076</code></pre>
 </div>
 <div id="one-categorical-one-proportion" class="section level3">
 <h3 class="hasAnchor">
@@ -303,7 +297,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.650</code></pre>
+## 1    0.65</code></pre>
 </div>
 <div id="two-categorical-2-level-variables-z" class="section level3">
 <h3 class="hasAnchor">
@@ -362,7 +356,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1 0.00500</code></pre>
+## 1   0.005</code></pre>
 </div>
 <div id="two-categorical-2-level-variables-1" class="section level3">
 <h3 class="hasAnchor">
@@ -388,7 +382,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1 0.00700</code></pre>
+## 1   0.007</code></pre>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-diff-in-means" class="section level3">
 <h3 class="hasAnchor">
@@ -455,7 +449,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1    2.</code></pre>
+## 1     2</code></pre>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb55-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = dep_delay, </span></a>
 <a class="sourceLine" id="cb55-3" data-line-number="3"><span class="st">  </span><span class="co"># explanatory = season</span></a>
@@ -470,7 +464,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1  0.0290</code></pre>
+## 1   0.029</code></pre>
 </div>
 <div id="one-numerical-one-categorical-2-levels---anova" class="section level3">
 <h3 class="hasAnchor">
@@ -526,7 +520,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1      0.</code></pre>
+## 1       0</code></pre>
 </div>
 <div id="two-numerical-vars---correlation" class="section level3">
 <h3 class="hasAnchor">
@@ -554,7 +548,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1      0.</code></pre>
+## 1       0</code></pre>
 </div>
 <div id="two-numerical-vars---slr-t" class="section level3">
 <h3 class="hasAnchor">
@@ -644,7 +638,7 @@
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
-## 1  0.420   0.508</code></pre>
+## 1   0.42   0.508</code></pre>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> percentile_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-39-1.png" width="576"></p>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> p_hat) )</a></code></pre></div>

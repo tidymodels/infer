@@ -64,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
       </span>
     </div>
 
@@ -92,12 +92,6 @@
     <li>
       <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
     </li>
-    <li>
-      <a href="../articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
-    </li>
-    <li>
-      <a href="../articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -119,7 +113,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/andrewpbray/infer">
+  <a href="https://github.com/tidymodels/infer">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -171,31 +165,33 @@
         <td>
           <p><code><a href="chisq_stat.html">chisq_stat()</a></code> </p>
         </td>
-        <td><p>Tidy chi-squared test statistic</p></td>
+        <td><p>A shortcut wrapper function to get the observed test statistic for a chisq test. Uses <code>stats::chisq.test</code>, which applies a continuity correction.</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="chisq_test.html">chisq_test()</a></code> </p>
         </td>
-        <td><p>Tidy chi-squared test</p></td>
+        <td><p>A tidier version of chisq.test for goodness of fit tests and tests of independence.</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="generate.html">generate()</a></code> </p>
         </td>
-        <td><p>Generate resamples, permutations, or simulations</p></td>
+        <td><p>Generate resamples, permutations, or simulations based on
+`specify` and (if needed) `hypothesize` inputs</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="get_ci.html">conf_int()</a></code> <code><a href="get_ci.html">get_ci()</a></code> <code><a href="get_ci.html">get_confidence_interval()</a></code> </p>
         </td>
-        <td><p>Compute confidence interval</p></td>
+        <td><p>Compute the confidence interval for (currently only) simulation-based methods</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="get_pvalue.html">p_value()</a></code> <code><a href="get_pvalue.html">get_pvalue()</a></code> </p>
         </td>
-        <td><p>Compute p-value</p></td>
+        <td><p>Compute the p-value for (currently only) simulation-based methods
+<code>get_pvalue()</code> is an alias of <code>p_value</code></p></td>
       </tr><tr>
         
         <td>
@@ -229,27 +225,35 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="set_params.html">set_params()</a></code> </p>
+        </td>
+        <td><p>To determine which theoretical distribution to fit (if any)</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="specify.html">specify()</a></code> </p>
         </td>
-        <td><p>Specify the response and explanatory variables</p></td>
+        <td><p>Specify the response and explanatory variables with
+<code>specify</code> also converting character variables chosen to be <code>factor</code>s</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="t_stat.html">t_stat()</a></code> </p>
         </td>
-        <td><p>Tidy t-test statistic</p></td>
+        <td><p>A shortcut wrapper function to get the observed test statistic for a t test</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="t_test.html">t_test()</a></code> </p>
         </td>
-        <td><p>Tidy t-test</p></td>
+        <td><p>A tidier version of t.test for two sample tests</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="visualize.html">visualize()</a></code> </p>
         </td>
-        <td><p>Visualize statistical inference</p></td>
+        <td><p>Visualize the distribution of the simulation-based inferential statistics
+or the theoretical distribution (or both!)</p></td>
       </tr>
     </tbody>
     </table>
