@@ -675,3 +675,7 @@ visualize_both <- function(data, bins,
 get_percentile <- function(vector, observation) {
   stats::ecdf(vector)(observation)
 }
+
+#' @rdname visualize
+#' @export
+visualise <- visualize

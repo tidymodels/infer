@@ -51,6 +51,10 @@ obs_F <- anova(
 
 test_that("visualize basic tests", {
   expect_silent(visualize(Sepal.Width_resamp))
+  
+  # visualise also works
+  expect_silent(visualise(Sepal.Width_resamp))
+  
   expect_error(
     Sepal.Width_resamp %>% visualize(bins = "yep")
   )
