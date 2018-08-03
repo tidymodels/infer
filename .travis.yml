@@ -35,6 +35,7 @@ deploy:
   keep-history: true
   local-dir: docs
   github_token: $GITHUBTRAVIS
+  target-branch: gh-pages-dev
   on:
    branch: develop
 
