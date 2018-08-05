@@ -24,12 +24,12 @@
 generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
 
   auto_type <- attr(x, "type")
-  
+
   if(!is.null(auto_type)){
     if (is.null(type)) {
       stop_glue("Supply not `NULL` value of `type`.")
     }
-    
+
     if(auto_type != type)
       stop_glue(
         "You have specified `type = \"{type}\"`, but `type` is expected to be ",
@@ -38,9 +38,9 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
     else
       type <- auto_type
   }
-  
+
   attr(x, "generate") <- TRUE
-  
+
   if (type == "permute" &&
       any(is.null(attr(x, "response")), is.null(attr(x, "explanatory")))) {
     stop_glue("Please `specify()` an explanatory and a response variable ",
@@ -80,12 +80,12 @@ bootstrap <- function(x, reps = 1, ...) {
     # If so, shift the variable chosen to have a mean corresponding
     # to that specified in `hypothesize`
     if(attr(attr(x, "params"), "names") == "mu"){
-      
+
       col <- as.character(attr(x, "response"))
 #      if(attr(x, "theory_type") != "One sample t"){
         x[[col]] <- x[[col]] - mean(x[[col]], na.rm = TRUE) + attr(x, "params")
 #      }
-    
+
       # Standardize after centering above
       #####
       # Determining whether or not to implement this t transformation
@@ -119,9 +119,9 @@ bootstrap <- function(x, reps = 1, ...) {
   # Set variables for use in calculate()
   result <- rep_sample_n(x, size = nrow(x), replace = TRUE, reps = reps)
   result <- set_attributes(to = result, from = x)
-  
+
   class(result) <- append("infer", class(result))
-  
+
   return(result)
 }
 
@@ -132,11 +132,11 @@ permute <- function(x, reps = 1, ...) {
     dplyr::bind_rows() %>%
     dplyr::mutate(replicate = rep(1:reps, each = nrow(x))) %>%
     dplyr::group_by(replicate)
-  
+
   df_out <- set_attributes(to = df_out, from = x)
-  
+
   class(df_out) <- append("infer", class(df_out))
-  
+
   return(df_out)
 }
 
@@ -171,10 +171,8 @@ simulate <- function(x, reps = 1, ...) {
   )
 
   rep_tbl <- set_attributes(to = rep_tbl, from = x)
-  
+
   class(rep_tbl) <- append("infer", class(rep_tbl))
 
   return(dplyr::group_by(rep_tbl, replicate))
 }
-
-

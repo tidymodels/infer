@@ -33,13 +33,13 @@
 #' @export
 t_test <- function(data, formula, #response = NULL, explanatory = NULL,
                    order = NULL,
-                   alternative = "two_sided", mu = 0, 
+                   alternative = "two_sided", mu = 0,
                    conf_int = TRUE,
                    conf_level = 0.95,
                    ...){
-  
+
   check_conf_level(conf_level)
-  
+
   # Match with old "dot" syntax
   if(alternative == "two_sided")
     alternative <- "two.sided"
@@ -47,17 +47,17 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
   ### Only currently working with formula interface
 #  if (hasArg(formula)) {
   if(!is.null(f_rhs(formula))){
-    
+
     data[[as.character(f_rhs(formula))]] <-
       factor(data[[as.character(f_rhs(formula))]],
              levels = c(order[1], order[2]))
-    
+
     # Two sample case
     prelim <- data %>%
       stats::t.test(formula = formula, data = .,
                     alternative = alternative,
-                    mu = mu, 
-                    conf.level = conf_level, 
+                    mu = mu,
+                    conf.level = conf_level,
                     ...) %>%
       broom::glance()
   } else {
@@ -67,24 +67,24 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
     data <- as.data.frame(data)
     prelim <- stats::t.test(x = data[[as.character(f_lhs(formula))]],
                   alternative = alternative,
-                  mu = mu, 
-                  conf.level = conf_level, 
-                  ...) %>% 
+                  mu = mu,
+                  conf.level = conf_level,
+                  ...) %>%
       broom::glance()
   }
-  
+
   if(conf_int){
-    results <- prelim %>% 
+    results <- prelim %>%
       dplyr::select(statistic, t_df = parameter, p_value = p.value,
-                    alternative, 
+                    alternative,
                     lower_ci = conf.low,
                     upper_ci = conf.high)
   } else {
-    results <- prelim %>% 
+    results <- prelim %>%
       dplyr::select(statistic, t_df = parameter, p_value = p.value,
                     alternative)
   }
-    
+
     return(results)
 #  } else {
     # data %>%
@@ -114,8 +114,8 @@ t_test <- function(data, formula, #response = NULL, explanatory = NULL,
 #' 
 #' @export
 t_stat <- function(data, formula, ...){
-  data %>% 
-    t_test(formula = formula, ...) %>% 
+  data %>%
+    t_test(formula = formula, ...) %>%
     dplyr::select(statistic)
 }
 
@@ -168,7 +168,7 @@ chisq_test <- function(data, formula, #response = NULL, explanatory = NULL,
 #' 
 #' @export
 chisq_stat <- function(data, formula, ...){
-  
+
   if(is.null(f_rhs(formula))){
     stop_glue(
       "`chisq_stat()` currently only has functionality for ",

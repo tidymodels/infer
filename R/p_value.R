@@ -32,24 +32,24 @@ NULL
 #' @rdname get_pvalue
 #' @export
 p_value <- function(x, obs_stat, direction){
-  
+
   check_type(x, is.data.frame)
   obs_stat <- check_obs_stat(obs_stat)
   check_direction(direction)
-  
+
   is_simulation_based <- !is.null(attr(x, "generate")) &&
     attr(x, "generate")
 
   if(is_simulation_based)
-    pvalue <- simulation_based_p_value(x = x, obs_stat = obs_stat, 
+    pvalue <- simulation_based_p_value(x = x, obs_stat = obs_stat,
                                         direction = direction)
-  
+
   ## Theoretical-based p-value
   # Could be more specific
   # else if(is.null(attr(x, "theory_type")) || is.null(attr(x, "distr_param")))
   #   stop_glue("Attributes have not been set appropriately. ",
   #             "Check your {{infer}} pipeline again.")
-  
+
   # if(!("stat" %in% names(x))){
   #    # Theoretical distribution
   #  which_distribution(x, 
@@ -57,39 +57,39 @@ p_value <- function(x, obs_stat, direction){
   #                     obs_stat = obs_stat,
   #                     direction = direction) 
   # }
-  
+
   return(pvalue)
 }
 
 simulation_based_p_value <- function(x, obs_stat, direction){
-  
+
   if(direction %in% c("less", "left")){
-   p_value <- x %>% 
+   p_value <- x %>%
       dplyr::summarize(p_value = mean(stat <= obs_stat))
   }
   else if(direction %in% c("greater", "right")){
-   p_value <- x %>% 
+   p_value <- x %>%
       dplyr::summarize(p_value = mean(stat >= obs_stat))
   }
   else{
     p_value <- x %>% two_sided_p_value(obs_stat = obs_stat)
   }
-  
+
   p_value
 }
 
 two_sided_p_value <- function(x, obs_stat){
-  
+
   if(stats::median(x$stat) >= obs_stat){
     basic_p_value <- get_percentile(x$stat, obs_stat) +
-      (1 - get_percentile(x$stat, stats::median(x$stat) + 
+      (1 - get_percentile(x$stat, stats::median(x$stat) +
                        stats::median(x$stat) - obs_stat))
   } else {
     basic_p_value <- 1 - get_percentile(x$stat, obs_stat) +
-      (get_percentile(x$stat, stats::median(x$stat) + 
+      (get_percentile(x$stat, stats::median(x$stat) +
                             stats::median(x$stat) - obs_stat))
   }
-  
+
   if(basic_p_value >= 1)
     # Catch all if adding both sides produces a number
     # larger than 1. Should update with test in that
@@ -118,7 +118,7 @@ get_pvalue <- p_value
 # }
 
 #theory_t_pvalue <- 
-  
+
 # set_lower_tail <- function(direction){
 #   if(direction %in% c("greater", "right"))
 #     lower_tail <- FALSE

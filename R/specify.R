@@ -55,11 +55,11 @@ specify <- function(x, formula, response = NULL,
     attr(x, "response")    <- f_lhs(formula)
     attr(x, "explanatory") <- f_rhs(formula)
   }
-  
+
   if (is.null(attr(x, "response"))) {
     stop_glue("Supply not `NULL` response variable.")
   }
-  
+
   if (!(as.character(attr(x, "response")) %in% names(x))) {
     stop_glue('The response variable `{attr(x, "response")}` ',
               'cannot be found in this dataframe.')
@@ -115,15 +115,15 @@ specify <- function(x, formula, response = NULL,
     warning_glue("Removed {sum(!is_complete)} rows containing missing values.")
   }
 
-  
+
   # To help determine theoretical distribution to plot
   attr(x, "response_type") <- class(response_variable(x))
-  
+
   if(is.null(attr(x, "explanatory")))
     attr(x, "explanatory_type") <- NULL
   else
     attr(x, "explanatory_type") <- class(explanatory_variable(x))
-  
+
   if(attr(x, "response_type") == "factor" && is.null(success) &&
      length(levels(response_variable(x))) == 2 &&
      (is.null(attr(x, "explanatory_type")) ||

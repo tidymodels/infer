@@ -35,15 +35,15 @@ NULL
 
 #' @rdname get_ci
 #' @export
-conf_int <- function(x, level = 0.95, type = "percentile", 
+conf_int <- function(x, level = 0.95, type = "percentile",
                      point_estimate = NULL){
-  
+
   check_ci_args(x, level, type, point_estimate)
-  
+
   if(type == "percentile") {
-    ci_vec <- stats::quantile(x[["stat"]], 
+    ci_vec <- stats::quantile(x[["stat"]],
                       probs = c((1 - level) / 2, level + (1 - level) / 2))
-  
+
     ci <- tibble::tibble(ci_vec[1], ci_vec[2])
     names(ci) <- names(ci_vec)
   } else {
@@ -53,12 +53,12 @@ conf_int <- function(x, level = 0.95, type = "percentile",
       lower = point_estimate - multiplier * stats::sd(x[["stat"]]),
       upper = point_estimate + multiplier * stats::sd(x[["stat"]]))
   }
-  
+
   return(ci)
 }
 
 check_ci_args <- function(x, level, type, point_estimate){
-  
+
   if(!is.null(point_estimate)){
     if(!is.data.frame(point_estimate))
       check_type(point_estimate, is.numeric)
@@ -70,7 +70,7 @@ check_ci_args <- function(x, level, type, point_estimate){
   if(level <= 0 || level >= 1){
     stop_glue("The value of `level` must be between 0 and 1 non-inclusive.")
   }
-  
+
   if(!(type %in% c("percentile", "se"))){
     stop_glue('The options for `type` are "percentile" or "se".')
   }

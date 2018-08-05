@@ -77,4 +77,3 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   names(rep_tbl)[-1] <- names(tbl)
   dplyr::group_by(rep_tbl, replicate)
 }
-
