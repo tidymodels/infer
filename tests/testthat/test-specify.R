@@ -31,7 +31,6 @@ test_that("auto `type` works (specify)", {
 })
 
 test_that("data argument", {
-
   expect_error(specify(blah ~ cyl))
   expect_error(specify(1:3))
   expect_is(mtcars, "data.frame")
@@ -39,7 +38,6 @@ test_that("data argument", {
 })
 
 test_that("response and explanatory arguments", {
-
   expect_error(specify(mtcars, response = blah))
   expect_error(specify(mtcars, response = "blah"))
   expect_error(specify(mtcars, formula = mpg ~ blah))
@@ -54,7 +52,6 @@ test_that("response and explanatory arguments", {
 })
 
 test_that("success argument", {
-
   expect_error(specify(mtcars, response = vs, success = 1))
   expect_error(specify(mtcars, response = vs, success = "bogus"))
   expect_error(specify(mtcars, response = mpg, success = "1"))

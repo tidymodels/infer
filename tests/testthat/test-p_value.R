@@ -20,7 +20,7 @@ test_that("direction is appropriate", {
   expect_error(
     test_df %>%
       p_value(obs_stat = 0.5, direction = "righ")
-    )
+  )
 })
 
 test_that("p_value makes sense", {
@@ -29,7 +29,7 @@ test_that("p_value makes sense", {
       p_value(obs_stat = 0.1, direction = "right") %>%
       dplyr::pull(),
     expected = 0.1
-    )
+  )
   expect_gt(
     iris_calc %>%
       p_value(obs_stat = -0.1, direction = "greater") %>%

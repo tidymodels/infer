@@ -10,8 +10,8 @@ test_that("rep_sample_n works", {
   expect_silent(population %>%
                   rep_sample_n(size = 2, reps = 10))
   expect_error(population %>%
-                  rep_sample_n(size = 2, reps = 10,
-                               prob = rep(x = 1/5, times = 100)))
+                 rep_sample_n(size = 2, reps = 10,
+                              prob = rep(x = 1/5, times = 100)))
   expect_error(population %>%
                  rep_sample_n(size = 2, reps = 10,
                               prob = c(1/2, 1/2)))
@@ -21,6 +21,4 @@ test_that("rep_sample_n works", {
   test_rep <- population %>%
     rep_sample_n(size = 2, reps = 10)
   expect_equal(c("replicate", names(population)), names(test_rep))
-
-
 })

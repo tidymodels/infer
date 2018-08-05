@@ -19,7 +19,6 @@
 #'
 #' @export
 hypothesize <- function(x, null, ...) {
-
   hypothesize_checks(x, null)
 
   attr(x, "null") <- null
@@ -49,26 +48,31 @@ hypothesize <- function(x, null, ...) {
 
   }
 
-  if (!is.null(null) && null == "independence")
+  if (!is.null(null) && null == "independence") {
     attr(x, "type") <- "permute"
+  }
 
   # Check one proportion test set up correctly
   if (null == "point") {
     if (is.factor(response_variable(x))) {
-      if (!any(grepl("p", attr(attr(x, "params"), "names"))))
+      if (!any(grepl("p", attr(attr(x, "params"), "names")))) {
         stop_glue('Testing one categorical variable requires `p` ',
                   'to be used as a parameter.')
+      }
     }
   }
 
   # Check one numeric test set up correctly
   ## Not currently able to reach in testing as other checks
   ## already produce errors
-  # if(null == "point"){
-  #   if(!is.factor(response_variable(x))
-  #      & !any(grepl("mu|med|sigma", attr(attr(x, "params"), "names"))))
+  # if (null == "point") {
+  #   if (
+  #     !is.factor(response_variable(x))
+  #     & !any(grepl("mu|med|sigma", attr(attr(x, "params"), "names")))
+  #   ) {
   #     stop_glue('Testing one numerical variable requires one of ',
   #               '`mu`, `med`, or `sd` to be used as a parameter.')
+  #   }
   # }
 
   return(tibble::as_tibble(x))

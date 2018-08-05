@@ -2,10 +2,10 @@ context("hypothesize")
 
 mtcars <- as.data.frame(mtcars) %>%
   dplyr::mutate(cyl = factor(cyl),
-         vs = factor(vs),
-         am = factor(am),
-         gear = factor(gear),
-         carb = factor(carb))
+                vs = factor(vs),
+                am = factor(am),
+                gear = factor(gear),
+                carb = factor(carb))
 
 one_mean <- mtcars %>%
   specify(response = mpg) %>% # formula alt: mpg ~ NULL
@@ -67,7 +67,6 @@ test_that("auto `type` works (hypothesize)", {
 })
 
 test_that("hypothesize arguments function", {
-
   mtcars_f <- dplyr::mutate(mtcars, cyl = factor(cyl))
   mtcars_s <- mtcars_f %>% specify(response = mpg)
   matrix1 <- matrix(data = NA, nrow = 3, ncol = 3)

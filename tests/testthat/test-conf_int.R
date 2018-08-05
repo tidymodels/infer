@@ -13,7 +13,7 @@ iris_calc <- iris_tbl %>%
   generate(reps = 1000) %>%
   calculate(stat = "diff in props", order = c("large", "small"))
 
-obs_diff <-  iris_tbl %>%
+obs_diff <- iris_tbl %>%
   specify(Sepal.Length.Group ~ Sepal.Width.Group,
           success = "<=5") %>%
   calculate(stat = "diff in props", order = c("large", "small"))
@@ -25,7 +25,7 @@ test_that("basics work", {
   expect_silent(
     test_df %>%
       conf_int()
-    )
+  )
   expect_error(
     test_df %>%
       conf_int(type = "other")

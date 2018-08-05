@@ -49,17 +49,19 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   check_type(size, is.numeric)
   check_type(replace, is.logical)
   check_type(reps, is.numeric)
-  if (!is.null(prob))
+  if (!is.null(prob)) {
     check_type(prob, is.numeric)
+  }
 
   # assign non-uniform probabilities
   # there should be a better way!!
   # prob needs to be nrow(tbl) -- not just number of factor levels
   if (!is.null(prob)) {
-    if (length(prob) != n)
+    if (length(prob) != n) {
       stop_glue(
         "The argument `prob` must have length `nrow(tbl)` = {nrow(tbl)}"
       )
+    }
 
     prob <- tibble::tibble(vals = levels(dplyr::pull(tbl, 1))) %>%
       dplyr::mutate(probs = prob) %>%

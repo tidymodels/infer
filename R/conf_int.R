@@ -37,7 +37,6 @@ NULL
 #' @export
 conf_int <- function(x, level = 0.95, type = "percentile",
                      point_estimate = NULL) {
-
   check_ci_args(x, level, type, point_estimate)
 
   if (type == "percentile") {
@@ -58,12 +57,12 @@ conf_int <- function(x, level = 0.95, type = "percentile",
 }
 
 check_ci_args <- function(x, level, type, point_estimate) {
-
   if (!is.null(point_estimate)) {
-    if (!is.data.frame(point_estimate))
+    if (!is.data.frame(point_estimate)) {
       check_type(point_estimate, is.numeric)
-    else
+    } else {
       check_type(point_estimate, is.data.frame)
+    }
   }
   check_type(x, is.data.frame)
   check_type(level, is.numeric)
@@ -75,12 +74,14 @@ check_ci_args <- function(x, level, type, point_estimate) {
     stop_glue('The options for `type` are "percentile" or "se".')
   }
 
-  if (type == "se" && is.null(point_estimate))
+  if (type == "se" && is.null(point_estimate)) {
     stop_glue('A numeric value needs to be given for `point_estimate` ',
               'for `type = "se"')
+  }
 
-  if (type == "se" && is.vector(point_estimate))
+  if (type == "se" && is.vector(point_estimate)) {
     check_type(point_estimate, is.numeric)
+  }
 }
 
 

@@ -37,17 +37,16 @@ t_test <- function(data, formula, # response = NULL, explanatory = NULL,
                    conf_int = TRUE,
                    conf_level = 0.95,
                    ...) {
-
   check_conf_level(conf_level)
 
   # Match with old "dot" syntax
-  if (alternative == "two_sided")
+  if (alternative == "two_sided") {
     alternative <- "two.sided"
+  }
 
   ### Only currently working with formula interface
 #  if (hasArg(formula)) {
   if (!is.null(f_rhs(formula))) {
-
     data[[as.character(f_rhs(formula))]] <-
       factor(data[[as.character(f_rhs(formula))]],
              levels = c(order[1], order[2]))
@@ -139,12 +138,12 @@ t_stat <- function(data, formula, ...) {
 #' @export
 chisq_test <- function(data, formula, # response = NULL, explanatory = NULL,
                        ...) {
-
-  if (is.null(f_rhs(formula)))
+  if (is.null(f_rhs(formula))) {
     stop_glue(
       "`chisq_test()` currently only has functionality for ",
       "Chi-Square Test of Independence, not for Chi-Square Goodness of Fit."
     )
+  }
   ## Only currently working with formula interface
   explanatory_var <- f_rhs(formula)
   response_var <- f_lhs(formula)
@@ -168,7 +167,6 @@ chisq_test <- function(data, formula, # response = NULL, explanatory = NULL,
 #'
 #' @export
 chisq_stat <- function(data, formula, ...) {
-
   if (is.null(f_rhs(formula))) {
     stop_glue(
       "`chisq_stat()` currently only has functionality for ",
@@ -182,10 +180,10 @@ chisq_stat <- function(data, formula, ...) {
   }
 }
 
-
 check_conf_level <- function(conf_level) {
   if (class(conf_level) != "numeric" |
-     conf_level < 0 |
-     conf_level > 1)
+      conf_level < 0 |
+      conf_level > 1) {
     stop_glue("The `conf_level` argument must be a number between 0 and 1.")
+  }
 }

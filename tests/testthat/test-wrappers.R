@@ -47,7 +47,7 @@ test_that("_stat functions work", {
   one_more <- chisq.test(
     table(iris3$Species,
                 iris3$Sepal.Length.Group)
-    )$statistic
+  )$statistic
 
   expect_equivalent(another_way, obs_stat_way)
   expect_equivalent(one_more, dplyr::pull(obs_stat_way))
@@ -66,7 +66,7 @@ test_that("_stat functions work", {
   expect_silent(
     iris2 %>% t_stat(Sepal.Width ~ Species,
                                  order = c("virginica", "versicolor"))
-    )
+  )
   another_way <- iris2 %>%
     t_test(Sepal.Width ~ Species, order = c("virginica", "versicolor")) %>%
     dplyr::select(statistic)
@@ -89,7 +89,7 @@ test_that("conf_int argument works", {
     names(iris2 %>%
       t_test(Sepal.Width ~ Species, order = c("virginica", "versicolor"),
              conf_int = FALSE)),
-      c("statistic", "t_df", "p_value", "alternative")
+    c("statistic", "t_df", "p_value", "alternative")
   )
   expect_equal(
     names(iris2 %>%
@@ -137,5 +137,4 @@ test_that("conf_int argument works", {
   expect_false(
     shortcut_no_var_equal == shortcut_var_equal
   )
-
 })

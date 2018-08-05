@@ -101,22 +101,25 @@ check_order <- function(x, explanatory_variable, order) {
               '`order = c("first", "second")` means `("first" - "second")`. ',
               "Check `?calculate` for details.")
   } else {
-    if (xor(is.na(order[1]), is.na(order[2])))
+    if (xor(is.na(order[1]), is.na(order[2]))) {
       stop_glue(
         "Only one level specified in `order`. Both levels need to be specified."
       )
-    if (length(order) > 2)
+    }
+    if (length(order) > 2) {
       stop_glue("`order` is expecting only two entries.")
-    if (order[1] %in% unique_explanatory_variable == FALSE)
+    }
+    if (order[1] %in% unique_explanatory_variable == FALSE) {
       stop_glue("{order[1]} is not a level of the explanatory variable.")
-    if (order[2] %in% unique_explanatory_variable == FALSE)
+    }
+    if (order[2] %in% unique_explanatory_variable == FALSE) {
       stop_glue("{order[2]} is not a level of the explanatory variable.")
+    }
   }
 }
 
 check_args_and_attr <- function(x, explanatory_variable, response_variable,
                                 stat) {
-
   # Could also do `stat <- match.arg(stat)`
   # but that's not as helpful to beginners with the cryptic error msg
   if (!stat %in% c("mean", "median", "sd", "prop",
@@ -126,9 +129,10 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
               "Check your spelling and `?calculate` for current options.")
   }
 
-  if (!("replicate" %in% names(x)) && !is.null(attr(x, "generate")))
+  if (!("replicate" %in% names(x)) && !is.null(attr(x, "generate"))) {
     warning_glue('A `generate()` step was not performed prior to ',
                  '`calculate()`. Review carefully.')
+  }
 
   if (stat %in% c("F", "slope", "diff in means", "diff in medians")) {
     if (has_explanatory(x) && !is.numeric(response_variable(x))) {
@@ -163,7 +167,6 @@ check_for_numeric_stat <- function(x, stat) {
 }
 
 check_for_factor_stat <- function(x, stat, explanatory_variable) {
-
   if (stat %in% c("diff in means", "diff in medians", "diff in props", "F")) {
     if (!is.factor(explanatory_variable)) {
       stop_glue(
@@ -176,28 +179,34 @@ check_for_factor_stat <- function(x, stat, explanatory_variable) {
 }
 
 check_point_params <- function(x, stat) {
-
   param_names <- attr(attr(x, "params"), "names")
   hyp_text <- 'to be set in `hypothesize()`.'
   if (!is.null(attr(x, "null"))) {
     if (stat %in% c("mean", "median", "sd", "prop")) {
-      if ((stat == "mean" && !("mu" %in% param_names)))
+      if ((stat == "mean" && !("mu" %in% param_names))) {
         stop_glue('`stat == "mean"` requires `"mu"` {hyp_text}')
-      if ((!(stat == "mean") && ("mu" %in% param_names)))
+      }
+      if ((!(stat == "mean") && ("mu" %in% param_names))) {
         stop_glue('`"mu"` does not correspond to `stat = "{stat}"`.')
-      if ((stat == "median" && !("med" %in% param_names)))
+      }
+      if ((stat == "median" && !("med" %in% param_names))) {
         stop_glue('`stat == "median"` requires `"med"` {hyp_text}')
-      if ((!(stat == "median") && ("med" %in% param_names)))
+      }
+      if ((!(stat == "median") && ("med" %in% param_names))) {
         stop_glue('`"med"` does not correspond to `stat = "{stat}"`.')
+      }
       ## Tests unable to get to
-      # if( (stat == "sigma" && !("sd" %in% param_names)) )
+      # if ((stat == "sigma" && !("sd" %in% param_names))) {
       #   stop_glue('`stat == "sd"` requires `"sigma"` {hyp_text}')
-      if ((!(stat == "sd") && ("sigma" %in% param_names)))
+      # }
+      if ((!(stat == "sd") && ("sigma" %in% param_names))) {
         stop_glue('`"sigma"` does not correspond to `stat = "{stat}"`.')
+      }
 
       ## Tests unable to get to
-      # if(stat == "prop" && !(any(grepl("p.", param_names))))
+      # if (stat == "prop" && !(any(grepl("p.", param_names)))) {
       #   stop_glue('`stat == "prop"` requires `"p"` {hyp_text}')
+      # }
     }
   }
 }
@@ -210,7 +219,7 @@ parse_params <- function(dots, x) {
 
   # error: cannot specify more than one of props, means, medians, or sds
   if (length(p_ind) + length(mu_ind) + length(med_ind)
-       + length(sig_ind) != 1) {
+      + length(sig_ind) != 1) {
     stop_glue(
       'Parameter values can be only one of `p`, `mu`, `med`, or `sigma`.'
     )
@@ -221,17 +230,17 @@ parse_params <- function(dots, x) {
   # 0 index of dots
   if (length(p_ind)) {
     if (length(dots[[p_ind]]) == 1) {
-
       if (attr(x, "null") == "point" && is.null(attr(x, "success"))) {
         stop_glue("A point null regarding a proportion requires ",
                   "that `success` be indicated in `specify()`.")
       }
-      if (dots$p < 0 || dots$p > 1)
+      if (dots$p < 0 || dots$p > 1) {
         stop_glue(
           "The value suggested for `p` is not between 0 and 1, inclusive."
         )
+      }
       missing_lev <- base::setdiff(unique(pull(x, !!attr(x, "response"))),
-                             attr(x, "success"))
+                                   attr(x, "success"))
       dots$p <- append(dots$p, 1 - dots$p)
       names(dots$p) <- c(attr(x, "success"), missing_lev)
     } else {
@@ -242,7 +251,7 @@ parse_params <- function(dots, x) {
     }
   }
 
-  # if (sum(dots[[p_ind]]) != 1){
+  # if (sum(dots[[p_ind]]) != 1) {
   #   dots[[p_ind]] <- dots[[p_ind]]/sum(dots[[p_ind]])
   #   warning_glue("Proportions do not sum to 1, normalizing automatically.")
   # }
@@ -263,10 +272,10 @@ hypothesize_checks <- function(x, null) {
     )
   }
 
-  #  if (length(null) != 1) {
-  #    stop_glue('Choose between either `"independence"` or `"point"` ',
-  #              'for `null` argument.')
-  #  }
+   # if (length(null) != 1) {
+   #   stop_glue('Choose between either `"independence"` or `"point"` ',
+   #             'for `null` argument.')
+   # }
 
   if (!has_response(x)) {
     stop_glue(
@@ -297,15 +306,15 @@ check_obs_stat <- function(obs_stat) {
   if (!is.null(obs_stat)) {
     if ("data.frame" %in% class(obs_stat)) {
       check_type(obs_stat, is.data.frame)
-      if ((nrow(obs_stat) != 1) || (ncol(obs_stat) != 1))
+      if ((nrow(obs_stat) != 1) || (ncol(obs_stat) != 1)) {
         warning_glue("The first row and first column value of the given ",
                      "`obs_stat` will be used.")
+      }
 
       # [[1]] is used in case `stat` is not specified as name of 1x1
       obs_stat <- obs_stat[[1]][[1]]
       check_type(obs_stat, is.numeric)
-    }
-    else {
+    } else {
       check_type(obs_stat, is.numeric)
     }
   }

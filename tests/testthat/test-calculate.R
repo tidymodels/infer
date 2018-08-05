@@ -226,7 +226,6 @@ test_that("chi-square matches chisq.test value", {
                                             p = c(0.8, 0.1, 0.1)))) %>%
     dplyr::select(replicate, stat = statistic)
   expect_equal(infer_way, trad_way)
-
 })
 
 test_that("`order` is working", {
@@ -256,7 +255,6 @@ test_that("`order` is working", {
                          order = c(">5", "<=4", ">4")))
   # order not given
   expect_error(calculate(gen_iris11, stat = "diff in means"))
-
 })
 
 test_that('success is working for stat = "prop"', {
@@ -270,7 +268,6 @@ test_that('success is working for stat = "prop"', {
                   calculate(stat = "prop"))
   expect_silent(gen_iris12 %>%
                   calculate(stat = "z"))
-
 })
 
 test_that("NULL response gives error", {
@@ -348,11 +345,9 @@ test_that("One sample t hypothesis test is working", {
       generate(reps = 10) %>%
       calculate(stat = "t")
   )
-
 })
 
 test_that("specify done before calculate", {
-
   iris_mean <- iris_tbl %>%
     dplyr::select(stat = Sepal.Width)
   expect_error(calculate(iris_mean, stat = "mean"))
@@ -392,5 +387,4 @@ test_that("One sample t bootstrap is working", {
       generate(reps = 10) %>%
       calculate(stat = "t")
   )
-
 })

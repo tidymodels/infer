@@ -22,7 +22,6 @@
 #' @importFrom dplyr group_by
 #' @export
 generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
-
   auto_type <- attr(x, "type")
 
   if (!is.null(auto_type)) {
@@ -30,13 +29,14 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
       stop_glue("Supply not `NULL` value of `type`.")
     }
 
-    if (auto_type != type)
+    if (auto_type != type) {
       stop_glue(
         "You have specified `type = \"{type}\"`, but `type` is expected to be ",
         "`\"{auto_type}\"`. Please try again with appropriate `type` value."
       )
-    else
+    } else {
       type <- auto_type
+    }
   }
 
   attr(x, "generate") <- TRUE
@@ -62,16 +62,14 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
 
   if (type == "bootstrap") {
     return(bootstrap(x, reps, ...))
-  }
-  else if (type == "permute") {
+  } else if (type == "permute") {
     return(permute(x, reps, ...))
-  }
-  else if (type == "simulate") {
+  } else if (type == "simulate") {
     return(simulate(x, reps, ...))
-  }
-#  else if (!(type %in% c("bootstrap", "permute", "simulate")))
-#    stop_glue("Choose one of the available options for `type`: ",
-#              '`"bootstrap"`, `"permute"`, or `"simulate"`')
+  } # else if (!(type %in% c("bootstrap", "permute", "simulate"))) {
+    # stop_glue("Choose one of the available options for `type`: ",
+    #           '`"bootstrap"`, `"permute"`, or `"simulate"`')
+  # }
 }
 
 bootstrap <- function(x, reps = 1, ...) {
@@ -80,21 +78,20 @@ bootstrap <- function(x, reps = 1, ...) {
     # If so, shift the variable chosen to have a mean corresponding
     # to that specified in `hypothesize`
     if (attr(attr(x, "params"), "names") == "mu") {
-
       col <- as.character(attr(x, "response"))
-#      if(attr(x, "theory_type") != "One sample t"){
-        x[[col]] <- x[[col]] - mean(x[[col]], na.rm = TRUE) + attr(x, "params")
+#      if (attr(x, "theory_type") != "One sample t") {
+      x[[col]] <- x[[col]] - mean(x[[col]], na.rm = TRUE) + attr(x, "params")
 #      }
 
       # Standardize after centering above
       #####
       # Determining whether or not to implement this t transformation
       #####
-#      else {
-#        std_error <- stats::sd(x[[col]], na.rm = TRUE) /
-#                        sqrt(length(x[[col]]))
-#        x[[col]] <- ( x[[col]] - mean(x[[col]], na.rm = TRUE) ) / std_error
-#      }
+      # else {
+      #   std_error <- stats::sd(x[[col]], na.rm = TRUE) /
+      #     sqrt(length(x[[col]]))
+      #   x[[col]] <- (x[[col]] - mean(x[[col]], na.rm = TRUE)) / std_error
+      # }
     }
 
     # Similarly for median
@@ -109,7 +106,7 @@ bootstrap <- function(x, reps = 1, ...) {
 
     # Similarly for sd
     ## Temporarily removed since this implementation does not scale correctly
-    # else if(attr(attr(x, "params"), "names") == "sigma"){
+    # else if (attr(attr(x, "params"), "names") == "sigma") {
     #   col <- as.character(attr(x, "response"))
     #   x[[col]] <- x[[col]] -
     #     stats::sd(x[[col]], na.rm = TRUE) + attr(x, "params")
@@ -126,7 +123,6 @@ bootstrap <- function(x, reps = 1, ...) {
 }
 
 #' @importFrom dplyr bind_rows group_by
-
 permute <- function(x, reps = 1, ...) {
   df_out <- replicate(reps, permute_once(x), simplify = FALSE) %>%
     dplyr::bind_rows() %>%
@@ -150,7 +146,6 @@ permute_once <- function(x, ...) {
     x[as.character(attr(x, "response"))] <- y_prime
     return(x)
   }
-
 }
 
 #' @importFrom dplyr pull

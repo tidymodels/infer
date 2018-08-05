@@ -119,20 +119,22 @@ specify <- function(x, formula, response = NULL,
   # To help determine theoretical distribution to plot
   attr(x, "response_type") <- class(response_variable(x))
 
-  if (is.null(attr(x, "explanatory")))
+  if (is.null(attr(x, "explanatory"))) {
     attr(x, "explanatory_type") <- NULL
-  else
+  } else {
     attr(x, "explanatory_type") <- class(explanatory_variable(x))
+  }
 
   if (attr(x, "response_type") == "factor" && is.null(success) &&
-     length(levels(response_variable(x))) == 2 &&
-     (is.null(attr(x, "explanatory_type")) ||
-     (!is.null(attr(x, "explanatory_type")) &&
-     length(levels(explanatory_variable(x))) == 2)))
+      length(levels(response_variable(x))) == 2 &&
+      (is.null(attr(x, "explanatory_type")) ||
+      (!is.null(attr(x, "explanatory_type")) &&
+      length(levels(explanatory_variable(x))) == 2))) {
     stop_glue(
       'A level of the response variable `{attr(x, "response")}` ',
       'needs to be specified for the `success` argument in `specify()`.'
     )
+  }
 
   # Determine appropriate parameters for theoretical distribution fit
   x <- set_params(x)
