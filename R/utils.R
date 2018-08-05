@@ -195,28 +195,28 @@ check_point_params <- function(x, stat) {
   hyp_text <- 'to be set in `hypothesize()`.'
   if (!is.null(attr(x, "null"))) {
     if (stat %in% c("mean", "median", "sd", "prop")) {
-      if ((stat == "mean" && !("mu" %in% param_names))) {
+      if ((stat == "mean") && !("mu" %in% param_names)) {
         stop_glue('`stat == "mean"` requires `"mu"` {hyp_text}')
       }
-      if ((!(stat == "mean") && ("mu" %in% param_names))) {
+      if (!(stat == "mean") && ("mu" %in% param_names)) {
         stop_glue('`"mu"` does not correspond to `stat = "{stat}"`.')
       }
-      if ((stat == "median" && !("med" %in% param_names))) {
+      if ((stat == "median") && !("med" %in% param_names)) {
         stop_glue('`stat == "median"` requires `"med"` {hyp_text}')
       }
-      if ((!(stat == "median") && ("med" %in% param_names))) {
+      if (!(stat == "median") && ("med" %in% param_names)) {
         stop_glue('`"med"` does not correspond to `stat = "{stat}"`.')
       }
       ## Tests unable to get to
-      # if ((stat == "sigma" && !("sd" %in% param_names))) {
+      # if ((stat == "sigma") && !("sd" %in% param_names)) {
       #   stop_glue('`stat == "sd"` requires `"sigma"` {hyp_text}')
       # }
-      if ((!(stat == "sd") && ("sigma" %in% param_names))) {
+      if (!(stat == "sd") && ("sigma" %in% param_names)) {
         stop_glue('`"sigma"` does not correspond to `stat = "{stat}"`.')
       }
 
       ## Tests unable to get to
-      # if (stat == "prop" && !(any(grepl("p.", param_names)))) {
+      # if ((stat == "prop") && !any(grepl("p.", param_names))) {
       #   stop_glue('`stat == "prop"` requires `"p"` {hyp_text}')
       # }
     }
@@ -243,13 +243,13 @@ parse_params <- function(dots, x) {
   # 0 index of dots
   if (length(p_ind)) {
     if (length(dots[[p_ind]]) == 1) {
-      if (attr(x, "null") == "point" && is.null(attr(x, "success"))) {
+      if ((attr(x, "null") == "point") && is.null(attr(x, "success"))) {
         stop_glue(
           "A point null regarding a proportion requires that `success` ",
           "be indicated in `specify()`."
         )
       }
-      if (dots$p < 0 || dots$p > 1) {
+      if ((dots$p < 0) || (dots$p > 1)) {
         stop_glue(
           "The value suggested for `p` is not between 0 and 1, inclusive."
         )
@@ -304,7 +304,7 @@ hypothesize_checks <- function(x, null) {
     )
   }
 
-  if (null == "independence" && !has_explanatory(x)) {
+  if ((null == "independence") && !has_explanatory(x)) {
     stop_glue(
       'Please `specify()` an explanatory and a response variable when ',
       'testing\n',

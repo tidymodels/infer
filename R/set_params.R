@@ -13,8 +13,7 @@ set_params <- function(x) {
   # One variable
   if (
     !is.null(attr(x, "response")) && is.null(attr(x, "explanatory")) &&
-    !is.null(attr(x, "response_type")) &&
-    is.null(attr(x, "explanatory_type"))
+    !is.null(attr(x, "response_type")) && is.null(attr(x, "explanatory_type"))
   ) {
 
     # One mean
@@ -29,7 +28,7 @@ set_params <- function(x) {
     } else if (
       
       # One prop
-      attr(x, "response_type") == "factor" && (num_response_levels == 2)
+      (attr(x, "response_type") == "factor") && (num_response_levels == 2)
     ) {
       # No parameters since standard normal
       attr(x, "theory_type") <- "One sample prop z"
@@ -45,15 +44,14 @@ set_params <- function(x) {
   # Two variables
   if (
     !is.null(attr(x, "response")) && !is.null(attr(x, "explanatory")) &
-    !is.null(attr(x, "response_type")) &&
-    !is.null(attr(x, "explanatory_type"))
+    !is.null(attr(x, "response_type")) && !is.null(attr(x, "explanatory_type"))
   ) {
     attr(x, "type") <- "bootstrap"
 
     # Response is numeric, explanatory is categorical
     if (
-      attr(x, "response_type") %in% c("integer", "numeric") &
-      attr(x, "explanatory_type") == "factor"
+      (attr(x, "response_type") %in% c("integer", "numeric")) &
+      (attr(x, "explanatory_type") == "factor")
     ) {
       
       # Two sample means (t distribution)
@@ -92,16 +90,16 @@ set_params <- function(x) {
 
     # Response is categorical, explanatory is categorical
     if (
-      attr(x, "response_type") == "factor" &
-      attr(x, "explanatory_type") == "factor"
+      (attr(x, "response_type") == "factor") &
+      (attr(x, "explanatory_type") == "factor")
     ) {
       attr(x, "type") <- "bootstrap"
 
       # Two sample proportions (z distribution)
       # Parameter(s) not needed since standard normal
       if (
-        length(levels(response_variable(x))) == 2 &
-        length(levels(explanatory_variable(x))) == 2
+        (length(levels(response_variable(x))) == 2) &
+        (length(levels(explanatory_variable(x))) == 2)
       ) {
         attr(x, "theory_type") <- "Two sample props z"
       } else {
@@ -122,8 +120,8 @@ set_params <- function(x) {
 
     # Response is numeric, explanatory is numeric
     if (
-      attr(x, "response_type") %in% c("integer", "numeric") &
-      attr(x, "explanatory_type") %in% c("integer", "numeric")
+      (attr(x, "response_type") %in% c("integer", "numeric")) &
+      (attr(x, "explanatory_type") %in% c("integer", "numeric"))
     ) {
       response_string <- as.character(attr(x, "response"))
       explanatory_string <- as.character(attr(x, "explanatory"))

@@ -42,7 +42,7 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
   attr(x, "generate") <- TRUE
 
   if (
-    type == "permute" &&
+    (type == "permute") &&
     any(is.null(attr(x, "response")), is.null(attr(x, "explanatory")))
   ) {
     stop_glue(
@@ -52,14 +52,14 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
   }
 ## Can't get to these anymore with tests
 #   if (
-#     type == "simulate" &&
-#     attr(x, "null") != "point" &&
+#     (type == "simulate") &&
+#     (attr(x, "null") != "point") &&
 #     !(length(grep("p.", names(attr(x, "params")))) >= 1)
 #   ) {
 #     stop_glue("Simulation requires a `point` null hypothesis on proportions.")
 #   }
 #   if (
-#     type == "bootstrap" &&
+#     (type == "bootstrap") &&
 #     !(attr(attr(x, "params"), "names") %in% c("mu", "med", "sigma")) &&
 #     !is.null(attr(x, "null"))
 #   ) {

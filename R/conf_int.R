@@ -69,7 +69,7 @@ check_ci_args <- function(x, level, type, point_estimate) {
   }
   check_type(x, is.data.frame)
   check_type(level, is.numeric)
-  if (level <= 0 || level >= 1) {
+  if ((level <= 0) || (level >= 1)) {
     stop_glue("The value of `level` must be between 0 and 1 non-inclusive.")
   }
 
@@ -77,13 +77,13 @@ check_ci_args <- function(x, level, type, point_estimate) {
     stop_glue('The options for `type` are "percentile" or "se".')
   }
 
-  if (type == "se" && is.null(point_estimate)) {
+  if ((type == "se") && is.null(point_estimate)) {
     stop_glue(
       'A numeric value needs to be given for `point_estimate` for `type = "se"'
     )
   }
 
-  if (type == "se" && is.vector(point_estimate)) {
+  if ((type == "se") && is.vector(point_estimate)) {
     check_type(point_estimate, is.numeric)
   }
 }

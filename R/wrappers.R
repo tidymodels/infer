@@ -191,7 +191,7 @@ chisq_stat <- function(data, formula, ...) {
 
 check_conf_level <- function(conf_level) {
   if (
-    class(conf_level) != "numeric" | conf_level < 0 | conf_level > 1
+    (class(conf_level) != "numeric") | (conf_level < 0) | (conf_level > 1)
   ) {
     stop_glue("The `conf_level` argument must be a number between 0 and 1.")
   }

@@ -109,7 +109,7 @@ visualize <- function(data, bins = 15, method = "simulation",
   obs_stat <- check_obs_stat(obs_stat)
   if (
     !is.null(direction) &&
-    (is.null(obs_stat) + is.null(endpoints)) != 1
+    (is.null(obs_stat) + is.null(endpoints) != 1)
   ) {
     stop_glue(
       "Shading requires either `endpoints` values for a confidence interval ",
@@ -151,7 +151,7 @@ visualize <- function(data, bins = 15, method = "simulation",
     }
 
     if (
-      ("replicate" %in% names(data)) && length(unique(data$replicate)) < 100
+      ("replicate" %in% names(data)) && (length(unique(data$replicate)) < 100)
     ) {
       warning_glue(
         "With only {length(unique(data$stat))} replicates, it may be ",
@@ -440,8 +440,8 @@ shade_density_check <- function(data,
       }
 
       if (
-        direction %in% c("two_sided", "both") &&
-        obs_stat >= stats::median(data$stat)
+        (direction %in% c("two_sided", "both")) &&
+        (obs_stat >= stats::median(data$stat))
       ) {
         gg_plot <- gg_plot +
           geom_rect(
@@ -464,8 +464,8 @@ shade_density_check <- function(data,
       }
 
       if (
-        direction %in% c("two_sided", "both") &&
-        obs_stat < stats::median(data$stat)
+        (direction %in% c("two_sided", "both")) &&
+        (obs_stat < stats::median(data$stat))
       ) {
         gg_plot <- gg_plot +
           geom_rect(
@@ -632,7 +632,7 @@ visualize_theoretical <- function(data,
 
       # Assuming two-tailed shading will only happen with theoretical
       # distributions centered at 0
-      if (direction %in% c("two_sided", "both") && obs_stat >= 0) {
+      if ((direction %in% c("two_sided", "both")) && (obs_stat >= 0)) {
         infer_plot <- infer_plot +
           geom_rect(
             data = data.frame(obs_stat),
@@ -648,7 +648,7 @@ visualize_theoretical <- function(data,
           )
       }
 
-      if (direction %in% c("two_sided", "both") && obs_stat < 0) {
+      if ((direction %in% c("two_sided", "both")) && (obs_stat < 0)) {
         infer_plot <- infer_plot +
           geom_rect(
             data = data.frame(obs_stat),

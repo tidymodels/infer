@@ -73,15 +73,17 @@ calculate <- function(x,
   }
   
   if (
-    stat %in% c("diff in means", "diff in medians", "diff in props") ||
-    (!is.null(attr(x, "theory_type")) &&
-    attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))
+    (stat %in% c("diff in means", "diff in medians", "diff in props")) ||
+    (
+      !is.null(attr(x, "theory_type")) &&
+      (attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))
+    )
   ) {
     check_order(x, explanatory_variable(x), order)
   }
 
   if (!(
-    stat %in% c("diff in means", "diff in medians", "diff in props") ||
+    (stat %in% c("diff in means", "diff in medians", "diff in props")) ||
     (
       !is.null(attr(x, "theory_type")) &&
       attr(x, "theory_type") %in% c("Two sample props z", "Two sample t")
@@ -327,7 +329,8 @@ calc_impl.t <- function(stat, x, order, ...) {
   # the standardization formulas are different.
   # # Standardized slope
   # else if (
-  #   (attr(x, "theory_type") == "Slope/correlation with t") && stat == "slope"
+  #   (attr(x, "theory_type") == "Slope/correlation with t") &&
+  #   (stat == "slope")
   # ) {
   #   explan_string <- as.character(attr(x, "explanatory"))
   # 
@@ -342,7 +345,7 @@ calc_impl.t <- function(stat, x, order, ...) {
   # # Standardized correlation
   # else if (
   #   (attr(x, "theory_type") == "Slope/correlation with t") &&
-  #   stat == "correlation"
+  #   (stat == "correlation")
   # ) {
   #   x %>%
   #     dplyr::summarize(

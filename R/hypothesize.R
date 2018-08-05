@@ -52,7 +52,7 @@ hypothesize <- function(x, null, ...) {
 
   }
 
-  if (!is.null(null) && null == "independence") {
+  if (!is.null(null) && (null == "independence")) {
     attr(x, "type") <- "permute"
   }
 

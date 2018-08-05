@@ -39,7 +39,7 @@ specify <- function(x, formula, response = NULL,
     mutate_if(is.character, as.factor) %>%
     mutate_if(is.logical, as.factor)
 
-  if ((!methods::hasArg(formula) && !methods::hasArg(response))) {
+  if (!methods::hasArg(formula) && !methods::hasArg(response)) {
     stop_glue("Please give the `response` variable.")
   }
   if (methods::hasArg(formula)) {
@@ -137,12 +137,14 @@ specify <- function(x, formula, response = NULL,
   }
 
   if (
-    attr(x, "response_type") == "factor" && is.null(success) &&
-    length(levels(response_variable(x))) == 2 &&
+    (attr(x, "response_type") == "factor") && is.null(success) &&
+    (length(levels(response_variable(x))) == 2) &&
     (
       is.null(attr(x, "explanatory_type")) ||
-      (!is.null(attr(x, "explanatory_type")) &&
-       length(levels(explanatory_variable(x))) == 2)
+      (
+        !is.null(attr(x, "explanatory_type")) &&
+        (length(levels(explanatory_variable(x))) == 2)
+      )
     )
   ) {
     stop_glue(
