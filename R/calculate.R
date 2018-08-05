@@ -1,5 +1,5 @@
 #' Calculate summary statistics
-#' 
+#'
 #' @param x The output from [generate()] for computation-based inference or the
 #'   output from [hypothesize()] piped in to here for theory-based inference.
 #' @param stat A string giving the type of the statistic to calculate. Current
@@ -12,7 +12,7 @@
 #'   difference in means, medians, or proportions and t and z statistics.
 #' @param ... To pass options like `na.rm = TRUE` into functions like
 #'   [mean()][base::mean()], [sd()][stats::sd()], etc.
-#'   
+#'
 #' @return A tibble containing a `stat` column of calculated statistics.
 #'
 #' @examples
@@ -23,7 +23,7 @@
 #'   hypothesize(null = "independence") %>%
 #'   generate(reps = 100, type = "permute") %>%
 #'   calculate(stat = "diff in props", order = c("1", "0"))
-#' 
+#'
 #' @importFrom dplyr group_by summarize n
 #' @importFrom rlang !! sym quo enquo eval_tidy
 #' @export
@@ -78,7 +78,7 @@ calculate <- function(x,
         "a `generate()` step?"
       )
 
-    else if (!(stat %in% c("Chisq", "prop"))){
+    else if (!(stat %in% c("Chisq", "prop"))) {
       # From `hypothesize()` to `calculate()`
       # Catch-all if generate was not called
 #      warning_glue("You unexpectantly went from `hypothesize()` to ",
@@ -182,7 +182,7 @@ calc_impl.prop <- function(stat, x, order, ...) {
   x %>%
     dplyr::group_by(replicate) %>%
     dplyr::summarize(stat = mean(!!sym(col) == success,
-           #rlang::eval_tidy(col) == rlang::eval_tidy(success),
+           # rlang::eval_tidy(col) == rlang::eval_tidy(success),
                                  ...))
 }
 
@@ -224,7 +224,7 @@ calc_impl.diff_in_means <- function(stat, x, order, ...) {
 
 calc_impl.diff_in_medians <- function(stat, x, order, ...) {
   x %>%
-    dplyr::group_by(replicate,!!(attr(x, "explanatory"))) %>%
+    dplyr::group_by(replicate, !!(attr(x, "explanatory"))) %>%
     dplyr::summarize(xtilde =
                        stats::median(!!attr(x, "response"), ...)) %>%
     dplyr::group_by(replicate) %>%
@@ -301,7 +301,7 @@ calc_impl.diff_in_props <- function(stat, x, order, ...) {
   success <- attr(x, "success")
 
   x %>%
-    dplyr::group_by(replicate,!!attr(x, "explanatory")) %>%
+    dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
     dplyr::summarize(prop = mean(!!sym(col) == success, ...)) %>%
     dplyr::summarize(stat = prop[!!attr(x, "explanatory") == order[1]]
                      - prop[!!attr(x, "explanatory") == order[2]])
@@ -327,21 +327,21 @@ calc_impl.t <- function(stat, x, order, ...) {
   # else if ( (attr(x, "theory_type") == "Slope/correlation with t") &&
   #           stat == "slope"){
   #   explan_string <- as.character(attr(x, "explanatory"))
-  #   
+  #
   #   x %>%
   #     dplyr::summarize(stat = summary(stats::lm(
   #       !!attr(x, "response") ~ !!attr(x, "explanatory")
   #     ))[["coefficients"]][explan_string, "t value"])
   # }
-  # 
+  #
   # # Standardized correlation
   # else if ( (attr(x, "theory_type") == "Slope/correlation with t") &&
   #           stat == "correlation"){
-  # 
-  #   x %>% 
-  #     dplyr::summarize(corr = cor(!!attr(x, "explanatory"), 
+  #
+  #   x %>%
+  #     dplyr::summarize(corr = cor(!!attr(x, "explanatory"),
   #                                 !!attr(x, "response"))
-  #                      ) %>% 
+  #                      ) %>%
   #     dplyr::mutate(stat = corr * (sqrt(nrow(x) - 2)) / sqrt(1 - corr ^ 2))
   # }
 
@@ -397,7 +397,7 @@ calc_impl.z <- function(stat, x, order, ...) {
                      + p_hat * (1 - p_hat) / n2),
         stat = diff_prop / denom
       ) %>%
-      dplyr::select(-total_suc,-n1,-n2)
+      dplyr::select(-total_suc, -n1, -n2)
 
     df_out
 

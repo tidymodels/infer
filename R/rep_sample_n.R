@@ -9,10 +9,10 @@
 #' @param reps Number of samples of size n = `size` to take.
 #' @param prob A vector of probability weights for obtaining the elements of the
 #'   vector being sampled.
-#' 
+#'
 #' @return A tibble of size `rep` times `size` rows corresponding to `rep`
 #'   samples of size n = `size` from `tbl`.
-#' 
+#'
 #' @examples
 #' suppressPackageStartupMessages(library(dplyr))
 #' suppressPackageStartupMessages(library(ggplot2))
@@ -31,13 +31,13 @@
 #'   group_by(replicate) %>%
 #'   summarize(prop_hurricane = mean(status == "hurricane"))
 #' p_hats
-#' 
+#'
 #' # Plot sampling distribution
 #' ggplot(p_hats, aes(x = prop_hurricane)) +
 #'   geom_density() +
 #'   labs(x = "p_hat", y = "Number of samples",
 #'   title = "Sampling distribution of p_hat from 1000 samples of size 50")
-#' 
+#'
 #' @importFrom dplyr pull
 #' @importFrom dplyr inner_join
 #' @importFrom dplyr group_by
@@ -49,7 +49,7 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   check_type(size, is.numeric)
   check_type(replace, is.logical)
   check_type(reps, is.numeric)
-  if(!is.null(prob))
+  if (!is.null(prob))
     check_type(prob, is.numeric)
 
   # assign non-uniform probabilities

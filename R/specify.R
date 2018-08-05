@@ -1,7 +1,7 @@
 #' Specify the response and explanatory variables
-#' 
+#'
 #' `specify()` also converts character variables chosen to be `factor`s.
-#' 
+#'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
@@ -12,10 +12,10 @@
 #' @param success The level of `response` that will be considered a success, as
 #'   a string. Needed for inference on one proportion, a difference in
 #'   proportions, and corresponding z stats.
-#' 
+#'
 #' @return A tibble containing the response (and explanatory, if specified)
 #'   variable data.
-#' 
+#'
 #' @examples
 #' # Permutation test similar to ANOVA
 #' mtcars %>%
@@ -24,7 +24,7 @@
 #'   hypothesize(null = "independence") %>%
 #'   generate(reps = 100, type = "permute") %>%
 #'   calculate(stat = "F")
-#' 
+#'
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
 #' @importFrom dplyr mutate_if select one_of
@@ -39,7 +39,7 @@ specify <- function(x, formula, response = NULL,
     mutate_if(is.character, as.factor) %>%
     mutate_if(is.logical, as.factor)
 
-  if ((!methods::hasArg(formula) && !methods::hasArg(response))){
+  if ((!methods::hasArg(formula) && !methods::hasArg(response))) {
     stop_glue("Please give the `response` variable.")
   }
   if (methods::hasArg(formula)) {
@@ -68,18 +68,18 @@ specify <- function(x, formula, response = NULL,
   response_col <- rlang::eval_tidy(attr(x, "response"), x)
 
   # if there's an explanatory var
-  if(has_explanatory(x)) {
-    if(!as.character(attr(x, "explanatory")) %in% names(x)) {
+  if (has_explanatory(x)) {
+    if (!as.character(attr(x, "explanatory")) %in% names(x)) {
       stop_glue('The explanatory variable `{attr(x, "explanatory")}` ',
                 'cannot be found in this dataframe.')
     }
-    if(identical(as.character(attr(x, "response")),
+    if (identical(as.character(attr(x, "response")),
                   as.character(attr(x, "explanatory")))) {
       stop_glue("The response and explanatory variables must be different ",
                 "from one another.")
     }
     explanatory_col <- rlang::eval_tidy(attr(x, "explanatory"), x)
-    if(is.character(explanatory_col)) {
+    if (is.character(explanatory_col)) {
       explanatory_col <- as.factor(explanatory_col)
     }
   }
@@ -119,16 +119,16 @@ specify <- function(x, formula, response = NULL,
   # To help determine theoretical distribution to plot
   attr(x, "response_type") <- class(response_variable(x))
 
-  if(is.null(attr(x, "explanatory")))
+  if (is.null(attr(x, "explanatory")))
     attr(x, "explanatory_type") <- NULL
   else
     attr(x, "explanatory_type") <- class(explanatory_variable(x))
 
-  if(attr(x, "response_type") == "factor" && is.null(success) &&
+  if (attr(x, "response_type") == "factor" && is.null(success) &&
      length(levels(response_variable(x))) == 2 &&
      (is.null(attr(x, "explanatory_type")) ||
      (!is.null(attr(x, "explanatory_type")) &&
-     length(levels(explanatory_variable(x))) == 2)) )
+     length(levels(explanatory_variable(x))) == 2)))
     stop_glue(
       'A level of the response variable `{attr(x, "response")}` ',
       'needs to be specified for the `success` argument in `specify()`.'

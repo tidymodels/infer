@@ -66,7 +66,7 @@ test_that("auto `type` works (hypothesize)", {
   expect_equal(attr(slopes, "type"), "permute")
 })
 
-test_that("hypothesize arguments function",{
+test_that("hypothesize arguments function", {
 
   mtcars_f <- dplyr::mutate(mtcars, cyl = factor(cyl))
   mtcars_s <- mtcars_f %>% specify(response = mpg)
@@ -81,7 +81,7 @@ test_that("hypothesize arguments function",{
   expect_error(mtcars_s %>% hypothesize(null = "independence"))
   expect_error(mtcars_s %>% hypothesize(null = "point"))
   # Produces error on win-build
-#  expect_warning(mtcars_s %>% 
+#  expect_warning(mtcars_s %>%
 #                   hypothesize(null = c("point", "independence"), mu = 3))
 
   expect_error(mtcars %>% dplyr::select(vs) %>%

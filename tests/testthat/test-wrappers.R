@@ -58,7 +58,7 @@ test_that("_stat functions work", {
 #  another_way <- iris3 %>%
 #    chisq_test(Species ~ NULL) %>%
 #    dplyr::select(statistic)
-#  obs_stat_way <- iris3 %>% 
+#  obs_stat_way <- iris3 %>%
 #    chisq_stat(Species ~ NULL)
 #  expect_equivalent(another_way, obs_stat_way)
 

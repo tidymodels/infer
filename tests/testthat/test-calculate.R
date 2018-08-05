@@ -186,7 +186,7 @@ test_that("chi-square matches chisq.test value", {
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
   infer_way <- calculate(gen_iris8, stat = "Chisq")
-  #chisq.test way
+  # chisq.test way
   trad_way <- gen_iris8 %>%
     dplyr::group_by(replicate) %>%
     dplyr::do(broom::tidy(stats::chisq.test(table(.$Petal.Length.Group,
@@ -204,7 +204,7 @@ test_that("chi-square matches chisq.test value", {
                       "virginica" = 1/3)) %>%
     generate(reps = 10, type = "simulate")
   infer_way <- calculate(gen_iris9, stat = "Chisq")
-  #chisq.test way
+  # chisq.test way
   trad_way <- gen_iris9 %>%
     dplyr::group_by(replicate) %>%
     dplyr::do(broom::tidy(stats::chisq.test(table(.$Species)))) %>%
@@ -219,7 +219,7 @@ test_that("chi-square matches chisq.test value", {
                       "virginica" = 0.1)) %>%
     generate(reps = 10, type = "simulate")
   infer_way <- calculate(gen_iris9a, stat = "Chisq")
-  #chisq.test way
+  # chisq.test way
   trad_way <- gen_iris9a %>%
     dplyr::group_by(replicate) %>%
     dplyr::do(broom::tidy(stats::chisq.test(table(.$Species),
@@ -312,16 +312,16 @@ test_that("order being given when not needed gives warning", {
 
 ## Breaks oldrel build. Commented out for now.
 # test_that("warning given if calculate without generate", {
-#   expect_warning(iris %>% 
-#                    specify(Species ~ NULL) %>% 
-#                    hypothesize(null = "point", 
+#   expect_warning(iris %>%
+#                    specify(Species ~ NULL) %>%
+#                    hypothesize(null = "point",
 #                                p = c("setosa" = 0.4,
 #                                      "versicolor" = 0.4,
-#                                      "virginica" = 0.2)) %>% 
-#                    #generate(reps = 10, type = "simulate") %>% 
+#                                      "virginica" = 0.2)) %>%
+#                    #generate(reps = 10, type = "simulate") %>%
 #                    calculate(stat = "Chisq")
 #   )
-#   
+#
 # })
 
 test_that("specify() %>% calculate() works", {

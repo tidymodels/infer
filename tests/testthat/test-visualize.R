@@ -61,7 +61,7 @@ test_that("visualize basic tests", {
                   calculate(stat = "slope") %>%
                   visualize(obs_stat = obs_slope, direction = "right"))
 
-  #obs_stat not specified
+  # obs_stat not specified
   expect_error(iris_tbl %>%
                   specify(Sepal.Width.Group ~ Sepal.Length.Group,
                           success = "large") %>%
@@ -138,7 +138,7 @@ test_that("visualize basic tests", {
                   specify(Sepal.Length ~ Sepal.Width.Group) %>%
                   hypothesize(null = "independence") %>%
                   generate(reps = 100, type = "permute") %>%
-                  calculate(stat = "t", order = c("small", "large") ) %>%
+                  calculate(stat = "t", order = c("small", "large")) %>%
                   visualize(method = "both", direction = "left",
                             obs_stat = -obs_t)
   )
@@ -146,8 +146,8 @@ test_that("visualize basic tests", {
   expect_warning(iris_tbl %>%
                   specify(Sepal.Length ~ Sepal.Width.Group) %>%
                   hypothesize(null = "independence") %>%
- #                 generate(reps = 100, type = "permute") %>% 
-                  calculate(stat = "t", order = c("small", "large") ) %>%
+ #                 generate(reps = 100, type = "permute") %>%
+                  calculate(stat = "t", order = c("small", "large")) %>%
                   visualize(method = "theoretical", direction = "left",
                             obs_stat = -obs_t)
   )
@@ -196,7 +196,7 @@ test_that("visualize basic tests", {
                   specify(Sepal.Width.Group ~ Species,
                           success = "large") %>%
                   hypothesize(null = "independence") %>%
-                  #calculate(stat = "Chisq") %>% 
+                  # calculate(stat = "Chisq") %>%
                   visualize(method = "theoretical", obs_stat = obs_F,
                             direction = "right")
   )
@@ -212,15 +212,15 @@ test_that("visualize basic tests", {
                   visualize(method = "both")
   )
 
-  #traditional instead of theoretical
+  # traditional instead of theoretical
   expect_error(iris_tbl %>%
                   specify(Species ~ NULL) %>%
                   hypothesize(null = "point",
                               p = c("setosa" = 0.4,
                                     "versicolor" = 0.4,
                                     "virginica" = 0.2)) %>%
-#                  generate(reps = 100, type = "simulate") %>% 
-#                  calculate(stat = "Chisq") %>% 
+#                  generate(reps = 100, type = "simulate") %>%
+#                  calculate(stat = "Chisq") %>%
                   visualize(method = "traditional")
   )
 
@@ -230,8 +230,8 @@ test_that("visualize basic tests", {
                              p = c("setosa" = 0.4,
                                    "versicolor" = 0.4,
                                    "virginica" = 0.2)) %>%
-                 #generate(reps = 100, type = "simulate") %>% 
-                 #calculate(stat = "Chisq") %>% 
+                 # generate(reps = 100, type = "simulate") %>%
+                 # calculate(stat = "Chisq") %>%
                  visualize(method = "theoretical")
   )
 
@@ -269,8 +269,8 @@ test_that("visualize basic tests", {
   expect_warning(iris_tbl %>%
                   specify(Sepal.Width.Group ~ NULL, success = "small") %>%
                   hypothesize(null = "point", p = 0.8) %>%
-#                 generate(reps = 100, type = "simulate") %>% 
-#                  calculate(stat = "z") %>% 
+#                 generate(reps = 100, type = "simulate") %>%
+#                  calculate(stat = "z") %>%
                   visualize(method = "theoretical",
                             obs_stat = 2, # Should probably update
                             direction = "both")
@@ -322,10 +322,10 @@ test_that('method = "both" behaves nicely', {
                  specify(Petal.Width ~ NULL) %>%
                  hypothesize(null = "point", mu = 4) %>%
                  generate(reps = 100, type = "bootstrap") %>%
-                 #    calculate(stat = "mean") %>% 
+                 #    calculate(stat = "mean") %>%
                  visualize(method = "both"))
 
-  #  
+  #
   expect_warning(iris_tbl %>%
                    specify(Petal.Width ~ Sepal.Length.Group) %>%
                    hypothesize(null = "point", mu = 4) %>%
@@ -356,7 +356,7 @@ test_that("Traditional right-tailed tests have warning if not right-tailed", {
                    specify(Sepal.Width.Group ~ Species,
                            success = "large") %>%
                    hypothesize(null = "independence") %>%
- #                  generate(reps = 100, type = "permute") %>% 
+ #                  generate(reps = 100, type = "permute") %>%
                    calculate(stat = "Chisq") %>%
                    visualize(method = "theoretical", obs_stat = 2,
                              direction = "left")
@@ -364,7 +364,7 @@ test_that("Traditional right-tailed tests have warning if not right-tailed", {
   expect_warning(iris_tbl %>%
                    specify(Sepal.Length ~ Species) %>%
                    hypothesize(null = "independence") %>%
-  #                 generate(reps = 100, type = "permute") %>% 
+  #                 generate(reps = 100, type = "permute") %>%
                    calculate(stat = "F") %>%
                    visualize(method = "theoretical", obs_stat = 2,
                              direction = "two_sided")
@@ -372,7 +372,7 @@ test_that("Traditional right-tailed tests have warning if not right-tailed", {
 
 })
 
-test_that("confidence interval plots are working",{
+test_that("confidence interval plots are working", {
 
   iris_boot <- iris_tbl %>%
     specify(Sepal.Width.Group ~ Sepal.Length.Group,
