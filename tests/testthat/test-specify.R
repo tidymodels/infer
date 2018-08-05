@@ -50,6 +50,7 @@ test_that("response and explanatory arguments", {
   expect_error(specify(mtcars, formula = mpg ~ "cyl"))
   expect_silent(specify(mtcars, formula = mpg ~ cyl))
 
+  expect_error(specify(mtcars, formula = NULL ~ cyl), "NULL.*response")
 })
 
 test_that("success argument", {

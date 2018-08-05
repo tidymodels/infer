@@ -2,17 +2,18 @@
 % Please edit documentation in R/wrappers.R
 \name{t_stat}
 \alias{t_stat}
-\title{A shortcut wrapper function to get the observed test statistic for a t test}
+\title{Tidy t-test statistic}
 \usage{
 t_stat(data, formula, ...)
 }
 \arguments{
-\item{data}{a data frame that can be coerced into a \code{\link[tibble]{tibble}}}
+\item{data}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 
-\item{formula}{a formula with the response variable on the left and the explanatory on the right}
+\item{formula}{A formula with the response variable on the left and the
+explanatory on the right.}
 
-\item{...}{pass in arguments to {infer} functions}
+\item{...}{Pass in arguments to \{infer\} functions.}
 }
 \description{
-A shortcut wrapper function to get the observed test statistic for a t test
+A shortcut wrapper function to get the observed test statistic for a t test.
 }

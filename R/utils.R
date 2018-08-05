@@ -317,24 +317,24 @@ check_obs_stat <- function(obs_stat){
 #' 
 #' Throw an error in case object is not of desired type.
 #' 
-#' @param x an object to check
-#' @param predicate a function to perform check. A good idea is to use function
-#'  named \code{is.*()} or \code{is_*()} with possible \code{<package>::}
-#'  prefix.
-#' @param type a string for desired type. If \code{NULL}, type is taken from
-#'  parsing original name of supplied \code{predicate}: all alphanumeric with
-#'  '_' and '.' characters (until the name end) after the first appearance of
-#'  either \code{is.} or \code{is_}. In case of a doubt supply \code{type}
-#'  explicitly.
+#' @param x An object to check.
+#' @param predicate A function to perform check. A good idea is to use function
+#'   named `is.*()` or `is_*()` with possible `<package>::` prefix.
+#' @param type A string for desired type. If `NULL`, type is taken from parsing
+#'   original name of supplied `predicate`: all alphanumeric with '_' and '.'
+#'   characters (until the name end) after the first appearance of either `is.`
+#'   or `is_`. In case of a doubt supply `type` explicitly.
+#' 
 #' @examples
-#' #' \dontrun{
+#' \dontrun{
 #' x <- 1
 #' check_type(x, is.numeric)
 #' check_type(x, is.logical)
 #' check_type(x, rlang::is_string, "character of length 1")
 #' }
-#' @noRd
+#' 
 #' @keywords internal
+#' @noRd
 check_type <- function(x, predicate, type = NULL) {
   x_name <- deparse(rlang::enexpr(x))
   if (is.null(type)) {

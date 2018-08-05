@@ -1,47 +1,47 @@
 #' Perform repeated sampling
 #'
-#' Perform repeated sampling of samples of size n. Useful for creating
-#' sampling distributions
+#' Perform repeated sampling of samples of size n. Useful for creating sampling
+#' distributions.
 #'
-#' @param tbl data frame of population from which to sample
-#' @param size sample size of each sample
-#' @param replace should sampling be with replacement?
-#' @param reps number of samples of size n = \code{size} to take
-#' @param prob a vector of probability weights for obtaining the elements of
-#' the vector being sampled.
-#' @return A tibble of size \code{rep} times \code{size} rows corresponding to
-#' \code{rep} samples of size n = \code{size} from \code{tbl}.
-#' @importFrom dplyr data_frame
-#' @importFrom dplyr pull
-#' @importFrom dplyr inner_join
-#' @importFrom dplyr as_tibble
-#' @importFrom dplyr group_by
-#'
-#' @export
+#' @param tbl Data frame of population from which to sample.
+#' @param size Sample size of each sample.
+#' @param replace Should sampling be with replacement?
+#' @param reps Number of samples of size n = `size` to take.
+#' @param prob A vector of probability weights for obtaining the elements of the
+#'   vector being sampled.
+#' 
+#' @return A tibble of size `rep` times `size` rows corresponding to `rep`
+#'   samples of size n = `size` from `tbl`.
+#' 
 #' @examples
 #' suppressPackageStartupMessages(library(dplyr))
 #' suppressPackageStartupMessages(library(ggplot2))
 #'
 #' # A virtual population of N = 10,010, of which 3091 are hurricanes
 #' population <- dplyr::storms %>%
-#'  select(status)
+#'   select(status)
 #'
 #' # Take samples of size n = 50 storms without replacement; do this 1000 times
-#'samples <- population %>%
-#'  rep_sample_n(size = 50, reps = 1000)
-#'samples
+#' samples <- population %>%
+#'   rep_sample_n(size = 50, reps = 1000)
+#' samples
 #'
-#'# Compute p_hats for all 1000 samples = proportion hurricanes
-#'p_hats <- samples %>%
-#'  group_by(replicate) %>%
-#'  summarize(prop_hurricane = mean(status == "hurricane"))
-#'p_hats
-
-#'# Plot sampling distribution
-#'ggplot(p_hats, aes(x = prop_hurricane)) +
-#'  geom_density() +
-#'  labs(x = "p_hat", y = "Number of samples",
-#'  title = "Sampling distribution of p_hat from 1000 samples of size 50")
+#' # Compute p_hats for all 1000 samples = proportion hurricanes
+#' p_hats <- samples %>%
+#'   group_by(replicate) %>%
+#'   summarize(prop_hurricane = mean(status == "hurricane"))
+#' p_hats
+#' 
+#' # Plot sampling distribution
+#' ggplot(p_hats, aes(x = prop_hurricane)) +
+#'   geom_density() +
+#'   labs(x = "p_hat", y = "Number of samples",
+#'   title = "Sampling distribution of p_hat from 1000 samples of size 50")
+#' 
+#' @importFrom dplyr pull
+#' @importFrom dplyr inner_join
+#' @importFrom dplyr group_by
+#' @export
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   n <- nrow(tbl)
 
@@ -61,7 +61,7 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
         "The argument `prob` must have length `nrow(tbl)` = {nrow(tbl)}"
       )
 
-    prob <- dplyr::data_frame(vals = levels(dplyr::pull(tbl, 1))) %>%
+    prob <- tibble::tibble(vals = levels(dplyr::pull(tbl, 1))) %>%
       dplyr::mutate(probs = prob) %>%
       dplyr::inner_join(tbl) %>%
       dplyr::select(probs) %>%

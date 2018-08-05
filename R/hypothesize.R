@@ -1,21 +1,23 @@
 #' Declare a null hypothesis
-#' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
-#' @param null the null hypothesis. Options include "independence" and "point"
-#' @param ... arguments passed to downstream functions
-#' @return A tibble containing the response (and explanatory, if specified) 
-#' variable data with parameter information stored as well
-#' @importFrom dplyr as.tbl
-#' @return a data frame with attributes set
-#' @export
+#' 
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param null The null hypothesis. Options include `"independence"` and
+#'   `"point"`.
+#' @param ... Arguments passed to downstream functions.
+#' 
+#' @return A tibble containing the response (and explanatory, if specified)
+#'   variable data with parameter information stored as well.
+#' 
 #' @examples
 #' # Permutation test similar to ANOVA
-#'   mtcars %>%
-#'     dplyr::mutate(cyl = factor(cyl)) %>%
-#'     specify(mpg ~ cyl) %>%
-#'     hypothesize(null = "independence") %>%
-#'     generate(reps = 100, type = "permute") %>%
-#'     calculate(stat = "F")
-
+#' mtcars %>%
+#'   dplyr::mutate(cyl = factor(cyl)) %>%
+#'   specify(mpg ~ cyl) %>%
+#'   hypothesize(null = "independence") %>%
+#'   generate(reps = 100, type = "permute") %>%
+#'   calculate(stat = "F")
+#' 
+#' @export
 hypothesize <- function(x, null, ...) {
   
   hypothesize_checks(x, null)
@@ -69,6 +71,6 @@ hypothesize <- function(x, null, ...) {
   #               '`mu`, `med`, or `sd` to be used as a parameter.')
   # }
   
-  return(as.tbl(x))
+  return(tibble::as_tibble(x))
 }
 

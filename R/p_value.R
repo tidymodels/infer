@@ -1,28 +1,36 @@
-#' Compute the p-value for (currently only) simulation-based methods
-#' \code{get_pvalue()} is an alias of \code{p_value}
-#' @param x data frame of calculated statistics or containing attributes
-#' of theoretical distribution values
-#' @param obs_stat a numeric value or a 1x1 data frame (as extreme or more extreme than this)
-#' @param direction a character string. Options are "less", "greater", or "two_sided".
-#' Can also specify "left", "right", or "both".
+#' Compute p-value
+#' 
+#' Only simulation-based methods are (currently only) supported. `get_pvalue()`
+#' is an alias of `p_value`.
+#' 
+#' @param x Data frame of calculated statistics or containing attributes of
+#'   theoretical distribution values.
+#' @param obs_stat A numeric value or a 1x1 data frame (as extreme or more
+#'   extreme than this).
+#' @param direction A character string. Options are `"less"`, `"greater"`, or
+#'   `"two_sided"`. Can also specify `"left"`, `"right"`, or `"both"`.
 #'
-#' @return a 1x1 data frame with value between 0 and 1
-#' @export
-#' @rdname get_pvalue
+#' @return A 1x1 data frame with value between 0 and 1.
+#' 
 #' @examples
 #' mtcars_df <- mtcars %>%
-#'     dplyr::mutate(am = factor(am))
+#'   dplyr::mutate(am = factor(am))
 #' d_hat <- mtcars_df %>%
-#'     specify(mpg ~ am) %>%
-#'     calculate(stat = "diff in means", order = c("1", "0"))
+#'   specify(mpg ~ am) %>%
+#'   calculate(stat = "diff in means", order = c("1", "0"))
 #' null_distn <- mtcars_df %>%
-#'     specify(mpg ~ am) %>% 
-#'     hypothesize(null = "independence") %>%
-#'     generate(reps = 100) %>%
-#'     calculate(stat = "diff in means", order = c("1", "0"))
+#'   specify(mpg ~ am) %>% 
+#'   hypothesize(null = "independence") %>%
+#'   generate(reps = 100) %>%
+#'   calculate(stat = "diff in means", order = c("1", "0"))
 #' null_distn %>% 
-#'     p_value(obs_stat = d_hat, direction = "right")
+#'   p_value(obs_stat = d_hat, direction = "right")
+#' 
+#' @name get_pvalue
+NULL
 
+#' @rdname get_pvalue
+#' @export
 p_value <- function(x, obs_stat, direction){
   
   check_type(x, is.data.frame)
@@ -91,8 +99,8 @@ two_sided_p_value <- function(x, obs_stat){
     return(tibble::tibble(p_value = basic_p_value))
 }
 
-#' @export
 #' @rdname get_pvalue
+#' @export
 get_pvalue <- p_value
 
 # which_distribution <- function(x, theory_type, obs_stat, direction){

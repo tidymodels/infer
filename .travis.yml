@@ -33,8 +33,11 @@ deploy:
   keep-history: true
   local-dir: docs
   github_token: $GITHUBTRAVIS
+  target-branch: gh-pages-dev
+# target-branch: gh-pages
   on:
-    branch: master
+   branch: develop
+#  branch: master
 
 after_success:
   - Rscript -e 'covr::codecov()'

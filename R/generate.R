@@ -1,27 +1,35 @@
-#' Generate resamples, permutations, or simulations based on
-#' `specify` and (if needed) `hypothesize` inputs
-#' @param x a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}
-#' @param reps the number of resamples to generate
-#' @param type currently either \code{bootstrap}, \code{permute}, 
-#' or \code{simulate}
-#' @param ... currently ignored
-#' @return A tibble containing \code{rep} generated datasets, indicated by the
-#' \code{replicate} column.
-#' @importFrom dplyr group_by
-#' @export
+#' Generate resamples, permutations, or simulations
+#' 
+#' Generation is done based on [specify()] and (if needed) [hypothesize()]
+#' inputs.
+#' 
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param reps The number of resamples to generate.
+#' @param type Currently either `bootstrap`, `permute`, or `simulate`.
+#' @param ... Currently ignored.
+#' 
+#' @return A tibble containing `rep` generated datasets, indicated by the
+#'   `replicate` column.
+#' 
 #' @examples
 #' # Permutation test for two binary variables
-#'   mtcars %>%
-#'     dplyr::mutate(am = factor(am), vs = factor(vs)) %>%
-#'     specify(am ~ vs, success = "1") %>%
-#'     hypothesize(null = "independence") %>%
-#'     generate(reps = 100, type = "permute")
-
+#' mtcars %>%
+#'   dplyr::mutate(am = factor(am), vs = factor(vs)) %>%
+#'   specify(am ~ vs, success = "1") %>%
+#'   hypothesize(null = "independence") %>%
+#'   generate(reps = 100, type = "permute")
+#' 
+#' @importFrom dplyr group_by
+#' @export
 generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
 
   auto_type <- attr(x, "type")
   
   if(!is.null(auto_type)){
+    if (is.null(type)) {
+      stop_glue("Supply not `NULL` value of `type`.")
+    }
+    
     if(auto_type != type)
       stop_glue(
         "You have specified `type = \"{type}\"`, but `type` is expected to be ",
@@ -148,7 +156,6 @@ permute_once <- function(x, ...) {
 #' @importFrom dplyr pull
 #' @importFrom tibble tibble
 #' @importFrom rlang :=
-
 simulate <- function(x, reps = 1, ...) {
   fct_levels <- as.character(unique(dplyr::pull(x, !! attr(x, "response"))))
 
@@ -158,8 +165,10 @@ simulate <- function(x, reps = 1, ...) {
                                               prob = format_params(x)),
                                  simplify = FALSE))
 
-  rep_tbl <- tibble(!! attr(x, "response") := as.factor(col_simmed),
-                   replicate = as.factor(rep(1:reps, rep(nrow(x), reps))))
+  rep_tbl <- tibble::tibble(
+    !! attr(x, "response") := as.factor(col_simmed),
+    replicate = as.factor(rep(1:reps, rep(nrow(x), reps)))
+  )
 
   rep_tbl <- set_attributes(to = rep_tbl, from = x)
   

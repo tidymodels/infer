@@ -7,27 +7,27 @@
 hypothesize(x, null, ...)
 }
 \arguments{
-\item{x}{a data frame that can be coerced into a \code{\link[dplyr]{tbl_df}}}
+\item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 
-\item{null}{the null hypothesis. Options include "independence" and "point"}
+\item{null}{The null hypothesis. Options include \code{"independence"} and
+\code{"point"}.}
 
-\item{...}{arguments passed to downstream functions}
+\item{...}{Arguments passed to downstream functions.}
 }
 \value{
-A tibble containing the response (and explanatory, if specified) 
-variable data with parameter information stored as well
-
-a data frame with attributes set
+A tibble containing the response (and explanatory, if specified)
+variable data with parameter information stored as well.
 }
 \description{
 Declare a null hypothesis
 }
 \examples{
 # Permutation test similar to ANOVA
-  mtcars \%>\%
-    dplyr::mutate(cyl = factor(cyl)) \%>\%
-    specify(mpg ~ cyl) \%>\%
-    hypothesize(null = "independence") \%>\%
-    generate(reps = 100, type = "permute") \%>\%
-    calculate(stat = "F")
+mtcars \%>\%
+  dplyr::mutate(cyl = factor(cyl)) \%>\%
+  specify(mpg ~ cyl) \%>\%
+  hypothesize(null = "independence") \%>\%
+  generate(reps = 100, type = "permute") \%>\%
+  calculate(stat = "F")
+
 }
