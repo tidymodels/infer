@@ -56,7 +56,7 @@ conf_int <- function(x, level = 0.95, type = "percentile",
     )
   }
 
-  return(ci)
+  ci
 }
 
 check_ci_args <- function(x, level, type, point_estimate) {

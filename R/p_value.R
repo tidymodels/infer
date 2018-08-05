@@ -65,7 +65,7 @@ p_value <- function(x, obs_stat, direction) {
   #   )
   # }
 
-  return(pvalue)
+  pvalue
 }
 
 simulation_based_p_value <- function(x, obs_stat, direction) {
@@ -100,9 +100,9 @@ two_sided_p_value <- function(x, obs_stat) {
     # Catch all if adding both sides produces a number
     # larger than 1. Should update with test in that
     # scenario instead of using >=
-    return(tibble::tibble(p_value = 1))
+    tibble::tibble(p_value = 1)
   } else {
-    return(tibble::tibble(p_value = basic_p_value))
+    tibble::tibble(p_value = basic_p_value)
   }
 }
 

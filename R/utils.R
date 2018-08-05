@@ -1,12 +1,12 @@
 format_params <- function(x) {
   par_levels <- get_par_levels(x)
   fct_levels <- as.character(unique(dplyr::pull(x, !!attr(x, "response"))))
-  return(attr(x, "params")[match(fct_levels, par_levels)])
+  attr(x, "params")[match(fct_levels, par_levels)]
 }
 
 get_par_levels <- function(x) {
   par_names <- names(attr(x, "params"))
-  return(gsub("^.\\.", "", par_names))
+  gsub("^.\\.", "", par_names)
 }
 
 set_attributes <- function(to, from = x) {
@@ -23,7 +23,7 @@ set_attributes <- function(to, from = x) {
   attr(to, "generate") <- attr(from, "generate")
   attr(to, "type") <- attr(from, "type")
 
-  return(to)
+  to
 }
 
 explanatory_variable <- function(x) {
@@ -275,7 +275,7 @@ parse_params <- function(dots, x) {
   #   warning_glue("Proportions do not sum to 1, normalizing automatically.")
   # }
 
-  return(unlist(dots))
+  unlist(dots)
 }
 
 hypothesize_checks <- function(x, null) {

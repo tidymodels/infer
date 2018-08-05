@@ -157,5 +157,5 @@ specify <- function(x, formula, response = NULL,
   # add "infer" class
   class(x) <- append("infer", class(x))
 
-  return(x)
+  x
 }

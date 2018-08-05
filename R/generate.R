@@ -70,11 +70,11 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
 #  }
 
   if (type == "bootstrap") {
-    return(bootstrap(x, reps, ...))
+    bootstrap(x, reps, ...)
   } else if (type == "permute") {
-    return(permute(x, reps, ...))
+    permute(x, reps, ...)
   } else if (type == "simulate") {
-    return(simulate(x, reps, ...))
+    simulate(x, reps, ...)
   } # else if (!(type %in% c("bootstrap", "permute", "simulate"))) {
     # stop_glue(
     #   "Choose one of the available options for `type`: ",
@@ -130,7 +130,7 @@ bootstrap <- function(x, reps = 1, ...) {
 
   class(result) <- append("infer", class(result))
 
-  return(result)
+  result
 }
 
 #' @importFrom dplyr bind_rows group_by
@@ -144,7 +144,7 @@ permute <- function(x, reps = 1, ...) {
 
   class(df_out) <- append("infer", class(df_out))
 
-  return(df_out)
+  df_out
 }
 
 permute_once <- function(x, ...) {
@@ -180,5 +180,5 @@ simulate <- function(x, reps = 1, ...) {
 
   class(rep_tbl) <- append("infer", class(rep_tbl))
 
-  return(dplyr::group_by(rep_tbl, replicate))
+  dplyr::group_by(rep_tbl, replicate)
 }

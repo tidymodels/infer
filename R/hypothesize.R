@@ -83,5 +83,5 @@ hypothesize <- function(x, null, ...) {
   #   }
   # }
 
-  return(tibble::as_tibble(x))
+  tibble::as_tibble(x)
 }

@@ -117,7 +117,7 @@ calculate <- function(x,
     result <- select(result, stat)
   }
 
-  return(result)
+  result
 }
 
 calc_impl <- function(type, x, order, ...) {

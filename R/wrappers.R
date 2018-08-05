@@ -89,7 +89,7 @@ t_test <- function(data, formula, # response = NULL, explanatory = NULL,
       )
   }
 
-    return(results)
+  results
 #   } else {
 #     data %>%
 #       stats::t.test(
