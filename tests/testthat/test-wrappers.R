@@ -5,48 +5,47 @@ iris2 <- iris %>%
   droplevels(.$Species)
 
 iris3 <- iris %>%
-  dplyr::mutate(Sepal.Length.Group =
-                  dplyr::if_else(Sepal.Length > 5, ">5", "<=5"))
+  dplyr::mutate(
+    Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")
+  )
 
 test_that("t_test works", {
   # order is missing
   expect_error(iris2 %>% t_test(Sepal.Width ~ Species))
 
-  expect_error(iris2 %>% t_test(response = "Sepal.Width",
-                                explanatory = "Species"))
+  expect_error(
+    iris2 %>% t_test(response = "Sepal.Width", explanatory = "Species")
+  )
 ## Not implemented
-#  expect_silent(iris2 %>% t_test(response = Sepal.Width,
-#                                 explanatory = Species))
+#   expect_silent(
+#     iris2 %>% t_test(response = Sepal.Width, explanatory = Species)
+#   )
 })
 
 test_that("chisq_test works", {
   expect_silent(iris3 %>% chisq_test(Sepal.Length.Group ~ Species))
   new_way <- iris3 %>% chisq_test(Sepal.Length.Group ~ Species)
-  old_way <- chisq.test(x = table(iris3$Species,
-                                  iris3$Sepal.Length.Group)) %>%
+  old_way <- chisq.test(x = table(iris3$Species, iris3$Sepal.Length.Group)) %>%
     broom::glance() %>%
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
 
   expect_equal(new_way, old_way)
   ## Not implemented
-  #  expect_silent(iris3 %>% chisq_test(response = Sepal.Length.Group,
-  #                                 explanatory = Species))
+  # expect_silent(
+  #   iris3 %>% chisq_test(response = Sepal.Length.Group, explanatory = Species)
+  # )
 })
 
 test_that("_stat functions work", {
   # Test of independence
-  expect_silent(
-    iris3 %>% chisq_stat(Sepal.Length.Group ~ Species)
-    )
+  expect_silent(iris3 %>% chisq_stat(Sepal.Length.Group ~ Species))
   another_way <- iris3 %>%
     chisq_test(Sepal.Length.Group ~ Species) %>%
     dplyr::select(statistic) %>%
     dplyr::rename(stat = statistic)
-  obs_stat_way <- iris3 %>%
-    chisq_stat(Sepal.Length.Group ~ Species)
+  obs_stat_way <- iris3 %>% chisq_stat(Sepal.Length.Group ~ Species)
   one_more <- chisq.test(
-    table(iris3$Species,
-                iris3$Sepal.Length.Group)
+    table(iris3$Species, iris3$Sepal.Length.Group)
   )$statistic
 
   expect_equivalent(another_way, obs_stat_way)
@@ -64,8 +63,9 @@ test_that("_stat functions work", {
 
   # Two sample t
   expect_silent(
-    iris2 %>% t_stat(Sepal.Width ~ Species,
-                                 order = c("virginica", "versicolor"))
+    iris2 %>% t_stat(
+      Sepal.Width ~ Species, order = c("virginica", "versicolor")
+    )
   )
   another_way <- iris2 %>%
     t_test(Sepal.Width ~ Species, order = c("virginica", "versicolor")) %>%
@@ -86,31 +86,43 @@ test_that("_stat functions work", {
 
 test_that("conf_int argument works", {
   expect_equal(
-    names(iris2 %>%
-      t_test(Sepal.Width ~ Species, order = c("virginica", "versicolor"),
-             conf_int = FALSE)),
+    names(
+      iris2 %>%
+        t_test(
+          Sepal.Width ~ Species, order = c("virginica", "versicolor"),
+          conf_int = FALSE
+        )
+    ),
     c("statistic", "t_df", "p_value", "alternative")
   )
   expect_equal(
-    names(iris2 %>%
-            t_test(Sepal.Width ~ Species, order = c("virginica", "versicolor"),
-                   conf_int = TRUE)),
+    names(
+      iris2 %>%
+        t_test(
+          Sepal.Width ~ Species, order = c("virginica", "versicolor"),
+          conf_int = TRUE
+        )
+    ),
     c("statistic", "t_df", "p_value", "alternative", "lower_ci", "upper_ci")
   )
 
   ci_test <- iris2 %>%
-    t_test(Sepal.Width ~ Species, order = c("versicolor", "virginica"),
-           conf_int = TRUE, conf_level = 0.9)
-  old_way <- t.test(formula = Sepal.Width ~ Species,
-                    data = iris2,
-                    conf.level = 0.9)[["conf.int"]]
+    t_test(
+      Sepal.Width ~ Species, order = c("versicolor", "virginica"),
+      conf_int = TRUE, conf_level = 0.9
+    )
+  old_way <- t.test(
+    formula = Sepal.Width ~ Species, data = iris2, conf.level = 0.9
+  )[["conf.int"]]
   expect_equal(ci_test$lower_ci[1], old_way[1])
   expect_equal(ci_test$upper_ci[1], old_way[2])
 
   expect_error(
     iris2 %>%
-      t_test(Petal.Width ~ Species, order = c("versicolor", "virginica"),
-             conf_int = TRUE, conf_level = 1.1)
+      t_test(
+        Petal.Width ~ Species, order = c("versicolor", "virginica"),
+        conf_int = TRUE, conf_level = 1.1
+      )
   )
 
   # Check that var.equal produces different results
@@ -120,11 +132,11 @@ test_that("conf_int argument works", {
   no_var_equal <- iris_small %>%
     t_stat(Petal.Width ~ Species, order = c("versicolor", "virginica"))
   var_equal <- iris_small %>%
-    t_stat(Petal.Width ~ Species, order = c("versicolor", "virginica"),
-           var.equal = TRUE)
-  expect_false(
-    no_var_equal == var_equal
-  )
+    t_stat(
+      Petal.Width ~ Species, order = c("versicolor", "virginica"),
+      var.equal = TRUE
+    )
+  expect_false(no_var_equal == var_equal)
 
   shortcut_no_var_equal <- iris_small %>%
     specify(Petal.Width ~ Species) %>%
@@ -132,9 +144,9 @@ test_that("conf_int argument works", {
 
   shortcut_var_equal <- iris_small %>%
     specify(Petal.Width ~ Species) %>%
-    calculate(stat = "t", order = c("versicolor", "virginica"),
-              var.equal = TRUE)
-  expect_false(
-    shortcut_no_var_equal == shortcut_var_equal
-  )
+    calculate(
+      stat = "t", order = c("versicolor", "virginica"),
+      var.equal = TRUE
+    )
+  expect_false(shortcut_no_var_equal == shortcut_var_equal)
 })

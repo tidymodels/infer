@@ -47,59 +47,68 @@ t_test <- function(data, formula, # response = NULL, explanatory = NULL,
   ### Only currently working with formula interface
 #  if (hasArg(formula)) {
   if (!is.null(f_rhs(formula))) {
-    data[[as.character(f_rhs(formula))]] <-
-      factor(data[[as.character(f_rhs(formula))]],
-             levels = c(order[1], order[2]))
+    data[[as.character(f_rhs(formula))]] <- factor(
+      data[[as.character(f_rhs(formula))]], levels = c(order[1], order[2])
+    )
 
     # Two sample case
     prelim <- data %>%
-      stats::t.test(formula = formula, data = .,
-                    alternative = alternative,
-                    mu = mu,
-                    conf.level = conf_level,
-                    ...) %>%
+      stats::t.test(
+        formula = formula, data = .,
+        alternative = alternative,
+        mu = mu,
+        conf.level = conf_level,
+        ...
+      ) %>%
       broom::glance()
   } else {
     # One sample case
     # To fix weird indexing error convert back to data.frame
     # (Error: Can't use matrix or array for column indexing)
     data <- as.data.frame(data)
-    prelim <- stats::t.test(x = data[[as.character(f_lhs(formula))]],
-                  alternative = alternative,
-                  mu = mu,
-                  conf.level = conf_level,
-                  ...) %>%
+    prelim <- stats::t.test(
+      x = data[[as.character(f_lhs(formula))]],
+      alternative = alternative,
+      mu = mu,
+      conf.level = conf_level,
+      ...
+    ) %>%
       broom::glance()
   }
 
   if (conf_int) {
     results <- prelim %>%
-      dplyr::select(statistic, t_df = parameter, p_value = p.value,
-                    alternative,
-                    lower_ci = conf.low,
-                    upper_ci = conf.high)
+      dplyr::select(
+        statistic, t_df = parameter, p_value = p.value, alternative,
+        lower_ci = conf.low, upper_ci = conf.high
+      )
   } else {
     results <- prelim %>%
-      dplyr::select(statistic, t_df = parameter, p_value = p.value,
-                    alternative)
+      dplyr::select(
+        statistic, t_df = parameter, p_value = p.value, alternative
+      )
   }
 
     return(results)
-#  } else {
-    # data %>%
-    #   stats::t.test(formula = substitute(response) ~ substitute(explanatory),
-    #                 data = .,
-    #                 alternative = alternative) %>%
-    #   broom::glance() %>%
-    #   dplyr::select(statistic, t_df = parameter, p_value = p.value,
-    #                 alternative)
-
-#     t.test(y = data[[as.character(substitute(response))]],
-#            x = data[[as.character(substitute(explanatory))]],
-#            alternative = alternative) %>%
-#     broom::glance() %>%
-#     select(statistic, t_df = parameter, p_value = p.value, alternative)
-# }
+#   } else {
+#     data %>%
+#       stats::t.test(
+#        formula = substitute(response) ~ substitute(explanatory), data = .,
+#         alternative = alternative
+#       ) %>%
+#       broom::glance() %>%
+#       dplyr::select(
+#         statistic, t_df = parameter, p_value = p.value, alternative
+#       )
+#
+#     t.test(
+#       y = data[[as.character(substitute(response))]],
+#       x = data[[as.character(substitute(explanatory))]],
+#       alternative = alternative
+#     ) %>%
+#       broom::glance() %>%
+#       select(statistic, t_df = parameter, p_value = p.value, alternative)
+#   }
 }
 
 #' Tidy t-test statistic
@@ -181,9 +190,9 @@ chisq_stat <- function(data, formula, ...) {
 }
 
 check_conf_level <- function(conf_level) {
-  if (class(conf_level) != "numeric" |
-      conf_level < 0 |
-      conf_level > 1) {
+  if (
+    class(conf_level) != "numeric" | conf_level < 0 | conf_level > 1
+  ) {
     stop_glue("The `conf_level` argument must be a number between 0 and 1.")
   }
 }

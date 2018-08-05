@@ -26,13 +26,17 @@ hypothesize <- function(x, null, ...) {
   dots <- list(...)
 
   if ((null == "point") && (length(dots) == 0)) {
-    stop_glue("Provide a parameter and a value to check such as `mu = 30` ",
-              "for the point hypothesis.")
+    stop_glue(
+      "Provide a parameter and a value to check such as `mu = 30` for the ",
+      "point hypothesis."
+    )
   }
 
   if ((null == "independence") && (length(dots) > 0)) {
-    warning_glue("Parameter values are not specified when testing that two ",
-                 "variables are independent.")
+    warning_glue(
+      "Parameter values are not specified when testing that two variables are ",
+      "independent."
+    )
   }
 
   if ((length(dots) > 0) && (null == "point")) {
@@ -56,8 +60,10 @@ hypothesize <- function(x, null, ...) {
   if (null == "point") {
     if (is.factor(response_variable(x))) {
       if (!any(grepl("p", attr(attr(x, "params"), "names")))) {
-        stop_glue('Testing one categorical variable requires `p` ',
-                  'to be used as a parameter.')
+        stop_glue(
+          'Testing one categorical variable requires `p` to be used as a ',
+          'parameter.'
+        )
       }
     }
   }
@@ -70,8 +76,10 @@ hypothesize <- function(x, null, ...) {
   #     !is.factor(response_variable(x))
   #     & !any(grepl("mu|med|sigma", attr(attr(x, "params"), "names")))
   #   ) {
-  #     stop_glue('Testing one numerical variable requires one of ',
-  #               '`mu`, `med`, or `sd` to be used as a parameter.')
+  #     stop_glue(
+  #       'Testing one numerical variable requires one of ',
+  #       '`mu`, `med`, or `sd` to be used as a parameter.'
+  #     )
   #   }
   # }
 

@@ -1,11 +1,10 @@
 context("generate")
 
 mtcars <- as.data.frame(mtcars) %>%
-  dplyr::mutate(cyl = factor(cyl),
-                vs = factor(vs),
-                am = factor(am),
-                gear = factor(gear),
-                carb = factor(carb))
+  dplyr::mutate(
+    cyl = factor(cyl), vs = factor(vs), am = factor(am), gear = factor(gear),
+    carb = factor(carb)
+  )
 
 hyp_prop <- mtcars %>%
   specify(response = am, success = "1") %>%
@@ -72,19 +71,19 @@ test_that("cohesion with type argument", {
 })
 
 test_that("sensible output", {
-  expect_equal(nrow(mtcars) * 500,
-               nrow(generate(hyp_prop, reps = 500, type = "simulate")))
+  expect_equal(
+    nrow(mtcars) * 500, nrow(generate(hyp_prop, reps = 500, type = "simulate"))
+  )
   expect_silent(generate(hyp_mean, reps = 1, type = "bootstrap"))
   expect_error(generate(hyp_mean, reps = 1, type = "other"))
 })
 
 test_that("auto `type` works (generate)", {
   mtcars <- as.data.frame(mtcars) %>%
-    dplyr::mutate(cyl = factor(cyl),
-                  vs = factor(vs),
-                  am = factor(am),
-                  gear = factor(gear),
-                  carb = factor(carb))
+    dplyr::mutate(
+      cyl = factor(cyl), vs = factor(vs), am = factor(am), gear = factor(gear),
+      carb = factor(carb)
+    )
 
   one_mean <- mtcars %>%
     specify(response = mpg) %>% # formula alt: mpg ~ NULL
@@ -169,36 +168,43 @@ test_that("auto `type` works (generate)", {
   expect_error(mtcars %>%
     specify(response = mpg) %>% # formula alt: mpg ~ NULL
     hypothesize(null = "point", mu = 25) %>%
-    generate(reps = 100, type = "permute"))
+    generate(reps = 100, type = "permute")
+  )
 
   expect_error(mtcars %>%
     specify(response = mpg) %>%
-    generate(reps = 100, type = "simulate"))
+    generate(reps = 100, type = "simulate")
+  )
 
   expect_error(mtcars %>%
     specify(response = mpg) %>% # formula alt: mpg ~ NULL
     hypothesize(null = "point", med = 26) %>%
-    generate(reps = 100, type = "permute"))
+    generate(reps = 100, type = "permute")
+  )
 
   expect_error(mtcars %>%
     specify(response = am, success = "1") %>% # formula alt: am ~ NULL
     hypothesize(null = "point", p = .25) %>%
-    generate(reps = 100, type = "bootstrap"))
+    generate(reps = 100, type = "bootstrap")
+  )
 
   expect_error(mtcars %>%
     specify(am ~ vs, success = "1") %>% # alt: response = am, explanatory = vs
     hypothesize(null = "independence") %>%
-    generate(reps = 100, type = "bootstrap"))
+    generate(reps = 100, type = "bootstrap")
+  )
 
   expect_error(mtcars %>%
     specify(cyl ~ NULL) %>% # alt: response = cyl
     hypothesize(null = "point", p = c("4" = .5, "6" = .25, "8" = .25)) %>%
-    generate(reps = 100, type = "bootstrap"))
+    generate(reps = 100, type = "bootstrap")
+  )
 
   expect_error(mtcars %>%
     specify(cyl ~ am) %>% # alt: response = cyl, explanatory = am
     hypothesize(null = "independence") %>%
-    generate(reps = 100, type = "simulate"))
+    generate(reps = 100, type = "simulate")
+  )
 
   expect_error(mtcars %>%
     specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
@@ -208,43 +214,54 @@ test_that("auto `type` works (generate)", {
   expect_error(mtcars %>%
     specify(mpg ~ cyl) %>% # alt: response = mpg, explanatory = cyl
     hypothesize(null = "independence") %>%
-    generate(reps = 100, type = "simulate"))
+    generate(reps = 100, type = "simulate")
+  )
 
   expect_error(mtcars %>%
     specify(mpg ~ hp) %>% # alt: response = mpg, explanatory = cyl
     hypothesize(null = "independence") %>%
-    generate(reps = 100, type = "bootstrap"))
+    generate(reps = 100, type = "bootstrap")
+  )
 
   expect_error(mtcars %>%
     specify(response = am, success = "1") %>%
-    generate(reps = 100, type = "simulate"))
+    generate(reps = 100, type = "simulate")
+  )
 
   expect_error(mtcars %>%
     specify(mpg ~ am) %>%
-    generate(reps = 100, type = "permute"))
+    generate(reps = 100, type = "permute")
+  )
 
   expect_error(mtcars %>%
     specify(am ~ vs, success = "1") %>%
-    generate(reps = 100, type = "simulate"))
+    generate(reps = 100, type = "simulate")
+  )
 
   expect_error(mtcars %>%
     specify(mpg ~ hp) %>%
-    generate(reps = 100, type = "simulate"))
+    generate(reps = 100, type = "simulate")
+  )
 })
 
 test_that("mismatches lead to error", {
   expect_error(mtcars %>% generate(reps = 10, type = "permute"))
-  expect_error(mtcars %>% specify(am ~ NULL, success = "1") %>%
-                 hypothesize(null = "independence", p = c("1" = 0.5)) %>%
-                 generate(reps = 100, type = "simulate"))
-  expect_error(mtcars %>%
-                 specify(cyl ~ NULL) %>% # alt: response = cyl
-                 hypothesize(null = "point", p = c("4" = .5, "6" = .25,
-                                                   "8" = .25)) %>%
-                 generate(reps = 100, type = "bootstrap"))
-  expect_error(mtcars %>%
-                 specify(mpg ~ hp) %>%
-                 generate(reps = 100, type = "other"))
+  expect_error(
+    mtcars %>%
+      specify(am ~ NULL, success = "1") %>%
+      hypothesize(null = "independence", p = c("1" = 0.5)) %>%
+      generate(reps = 100, type = "simulate")
+  )
+  expect_error(
+    mtcars %>%
+      specify(cyl ~ NULL) %>% # alt: response = cyl
+      hypothesize(
+        null = "point", p = c("4" = .5, "6" = .25, "8" = .25)
+      ) %>%
+      generate(reps = 100, type = "bootstrap"))
+  expect_error(
+    mtcars %>% specify(mpg ~ hp) %>% generate(reps = 100, type = "other")
+  )
 })
 
 test_that("generate() handles `NULL` value of `type`", {

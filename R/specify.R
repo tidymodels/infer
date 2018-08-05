@@ -61,8 +61,10 @@ specify <- function(x, formula, response = NULL,
   }
 
   if (!(as.character(attr(x, "response")) %in% names(x))) {
-    stop_glue('The response variable `{attr(x, "response")}` ',
-              'cannot be found in this dataframe.')
+    stop_glue(
+      'The response variable `{attr(x, "response")}` cannot be found in this ',
+      'dataframe.'
+    )
   }
 
   response_col <- rlang::eval_tidy(attr(x, "response"), x)
@@ -70,13 +72,20 @@ specify <- function(x, formula, response = NULL,
   # if there's an explanatory var
   if (has_explanatory(x)) {
     if (!as.character(attr(x, "explanatory")) %in% names(x)) {
-      stop_glue('The explanatory variable `{attr(x, "explanatory")}` ',
-                'cannot be found in this dataframe.')
+      stop_glue(
+        'The explanatory variable `{attr(x, "explanatory")}` cannot be found ',
+        'in this dataframe.'
+      )
     }
-    if (identical(as.character(attr(x, "response")),
-                  as.character(attr(x, "explanatory")))) {
-      stop_glue("The response and explanatory variables must be different ",
-                "from one another.")
+    if (
+      identical(
+        as.character(attr(x, "response")), as.character(attr(x, "explanatory"))
+      )
+    ) {
+      stop_glue(
+        "The response and explanatory variables must be different from one ",
+        "another."
+      )
     }
     explanatory_col <- rlang::eval_tidy(attr(x, "explanatory"), x)
     if (is.character(explanatory_col)) {
@@ -91,22 +100,25 @@ specify <- function(x, formula, response = NULL,
       stop_glue("`success` must be a string.")
     }
     if (!is.factor(response_col)) {
-      stop_glue("`success` should only be specified if the response is ",
-                "a categorical variable.")
+      stop_glue(
+        "`success` should only be specified if the response is a categorical ",
+        "variable."
+      )
     }
     if (!(success %in% levels(response_col))) {
       stop_glue('{success} is not a valid level of {attr(x, "response")}.')
     }
     if (sum(table(response_col) > 0) > 2) {
-      stop_glue("`success` can only be used if the response has two levels. ",
-                "`filter()` can reduce a variable to two levels.")
+      stop_glue(
+        "`success` can only be used if the response has two levels. ",
+        "`filter()` can reduce a variable to two levels."
+      )
     }
   }
 
   x <- x %>%
     select(one_of(c(
-      as.character((attr(x, "response"))),
-      as.character(attr(x, "explanatory"))
+      as.character((attr(x, "response"))), as.character(attr(x, "explanatory"))
     )))
 
   is_complete <- stats::complete.cases(x)
@@ -114,7 +126,6 @@ specify <- function(x, formula, response = NULL,
     x <- dplyr::filter(x, is_complete)
     warning_glue("Removed {sum(!is_complete)} rows containing missing values.")
   }
-
 
   # To help determine theoretical distribution to plot
   attr(x, "response_type") <- class(response_variable(x))
@@ -125,14 +136,18 @@ specify <- function(x, formula, response = NULL,
     attr(x, "explanatory_type") <- class(explanatory_variable(x))
   }
 
-  if (attr(x, "response_type") == "factor" && is.null(success) &&
-      length(levels(response_variable(x))) == 2 &&
-      (is.null(attr(x, "explanatory_type")) ||
+  if (
+    attr(x, "response_type") == "factor" && is.null(success) &&
+    length(levels(response_variable(x))) == 2 &&
+    (
+      is.null(attr(x, "explanatory_type")) ||
       (!is.null(attr(x, "explanatory_type")) &&
-      length(levels(explanatory_variable(x))) == 2))) {
+       length(levels(explanatory_variable(x))) == 2)
+    )
+  ) {
     stop_glue(
-      'A level of the response variable `{attr(x, "response")}` ',
-      'needs to be specified for the `success` argument in `specify()`.'
+      'A level of the response variable `{attr(x, "response")}` needs to be ',
+      'specified for the `success` argument in `specify()`.'
     )
   }
 

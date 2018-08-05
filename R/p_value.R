@@ -36,12 +36,12 @@ p_value <- function(x, obs_stat, direction) {
   obs_stat <- check_obs_stat(obs_stat)
   check_direction(direction)
 
-  is_simulation_based <- !is.null(attr(x, "generate")) &&
-    attr(x, "generate")
+  is_simulation_based <- !is.null(attr(x, "generate")) && attr(x, "generate")
 
   if (is_simulation_based) {
-    pvalue <- simulation_based_p_value(x = x, obs_stat = obs_stat,
-                                       direction = direction)
+    pvalue <- simulation_based_p_value(
+      x = x, obs_stat = obs_stat, direction = direction
+    )
   }
 
   ## Theoretical-based p-value
@@ -49,16 +49,20 @@ p_value <- function(x, obs_stat, direction) {
   # else if (
   #   is.null(attr(x, "theory_type")) || is.null(attr(x, "distr_param"))
   # ) {
-  #   stop_glue("Attributes have not been set appropriately. ",
-  #             "Check your {{infer}} pipeline again.")
+  #   stop_glue(
+  #     "Attributes have not been set appropriately. ",
+  #     "Check your {{infer}} pipeline again."
+  #   )
   # }
-
+  #
   # if (!("stat" %in% names(x))) {
-  #    # Theoretical distribution
-  #  which_distribution(x,
-  #                     theory_type <- attr(x, "theory_type"),
-  #                     obs_stat = obs_stat,
-  #                     direction = direction)
+  #   # Theoretical distribution
+  #   which_distribution(
+  #     x,
+  #     theory_type = attr(x, "theory_type"),
+  #     obs_stat = obs_stat,
+  #     direction = direction
+  #   )
   # }
 
   return(pvalue)
@@ -81,12 +85,15 @@ simulation_based_p_value <- function(x, obs_stat, direction) {
 two_sided_p_value <- function(x, obs_stat) {
   if (stats::median(x$stat) >= obs_stat) {
     basic_p_value <- get_percentile(x$stat, obs_stat) +
-      (1 - get_percentile(x$stat, stats::median(x$stat) +
-                            stats::median(x$stat) - obs_stat))
+      (1 - get_percentile(
+        x$stat, stats::median(x$stat) + stats::median(x$stat) - obs_stat
+        )
+      )
   } else {
     basic_p_value <- 1 - get_percentile(x$stat, obs_stat) +
-      (get_percentile(x$stat, stats::median(x$stat) +
-                        stats::median(x$stat) - obs_stat))
+      get_percentile(
+        x$stat, stats::median(x$stat) + stats::median(x$stat) - obs_stat
+      )
   }
 
   if (basic_p_value >= 1) {
@@ -110,9 +117,8 @@ get_pvalue <- p_value
 #   }
 # 
 #   if (theory_type == "Two sample t") {
-#     return(pt(q = obs_stat,
-#               df = param,
-#               lower.tail = set_lower_tail(direction))
+#     return(
+#       pt(q = obs_stat, df = param, lower.tail = set_lower_tail(direction))
 #     )
 #   }
 # }

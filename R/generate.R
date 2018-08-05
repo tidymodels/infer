@@ -41,23 +41,32 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
 
   attr(x, "generate") <- TRUE
 
-  if (type == "permute" &&
-      any(is.null(attr(x, "response")), is.null(attr(x, "explanatory")))) {
-    stop_glue("Please `specify()` an explanatory and a response variable ",
-              "when permuting.")
+  if (
+    type == "permute" &&
+    any(is.null(attr(x, "response")), is.null(attr(x, "explanatory")))
+  ) {
+    stop_glue(
+      "Please `specify()` an explanatory and a response variable when ",
+      "permuting."
+    )
   }
 ## Can't get to these anymore with tests
-#  if (type == "simulate" &&
-#      attr(x, "null") != "point" &&
-#      !(length(grep("p.", names(attr(x, "params")))) >= 1)) {
-#    stop_glue("Simulation requires a `point` null hypothesis on proportions.")
-#  }
-#  if (type == "bootstrap" &&
-#        !(attr(attr(x, "params"), "names") %in% c("mu", "med", "sigma")) &&
-#        !is.null(attr(x, "null"))
-#      ) {
-#    stop_glue("Bootstrapping is inappropriate in this setting. ",
-#              "Consider using `type = permute` or `type = simulate`.")
+#   if (
+#     type == "simulate" &&
+#     attr(x, "null") != "point" &&
+#     !(length(grep("p.", names(attr(x, "params")))) >= 1)
+#   ) {
+#     stop_glue("Simulation requires a `point` null hypothesis on proportions.")
+#   }
+#   if (
+#     type == "bootstrap" &&
+#     !(attr(attr(x, "params"), "names") %in% c("mu", "med", "sigma")) &&
+#     !is.null(attr(x, "null"))
+#   ) {
+#     stop_glue(
+#       "Bootstrapping is inappropriate in this setting. ",
+#       "Consider using `type = permute` or `type = simulate`."
+#     )
 #  }
 
   if (type == "bootstrap") {
@@ -67,8 +76,10 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
   } else if (type == "simulate") {
     return(simulate(x, reps, ...))
   } # else if (!(type %in% c("bootstrap", "permute", "simulate"))) {
-    # stop_glue("Choose one of the available options for `type`: ",
-    #           '`"bootstrap"`, `"permute"`, or `"simulate"`')
+    # stop_glue(
+    #   "Choose one of the available options for `type`: ",
+    #   '`"bootstrap"`, `"permute"`, or `"simulate"`'
+    # )
   # }
 }
 
@@ -154,11 +165,11 @@ permute_once <- function(x, ...) {
 simulate <- function(x, reps = 1, ...) {
   fct_levels <- as.character(unique(dplyr::pull(x, !!attr(x, "response"))))
 
-  col_simmed <- unlist(replicate(reps, sample(fct_levels,
-                                              size = nrow(x),
-                                              replace = TRUE,
-                                              prob = format_params(x)),
-                                 simplify = FALSE))
+  col_simmed <- unlist(replicate(
+    reps,
+    sample(fct_levels, size = nrow(x), replace = TRUE, prob = format_params(x)),
+    simplify = FALSE
+  ))
 
   rep_tbl <- tibble::tibble(
     !!attr(x, "response") := as.factor(col_simmed),

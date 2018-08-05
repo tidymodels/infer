@@ -35,9 +35,10 @@ response_variable <- function(x) {
 }
 
 reorder_explanatory <- function(x, order) {
-  x[[as.character(attr(x, "explanatory"))]] <-
-    factor(x[[as.character(attr(x, "explanatory"))]],
-           levels = c(order[1], order[2]))
+  x[[as.character(attr(x, "explanatory"))]] <- factor(
+    x[[as.character(attr(x, "explanatory"))]],
+    levels = c(order[1], order[2])
+  )
   x
 }
 
@@ -92,14 +93,18 @@ null_transformer <- function(text, envir) {
 check_order <- function(x, explanatory_variable, order) {
   unique_explanatory_variable <- unique(explanatory_variable)
   if (length(unique_explanatory_variable) != 2) {
-    stop_glue("Statistic is based on a difference; the explanatory variable ",
-              "should have two levels.")
+    stop_glue(
+      "Statistic is based on a difference; the explanatory variable should ",
+      "have two levels."
+    )
   }
   if (is.null(order)) {
-    stop_glue("Statistic is based on a difference; specify the `order` in ",
-              "which to subtract the levels of the explanatory variable. ",
-              '`order = c("first", "second")` means `("first" - "second")`. ',
-              "Check `?calculate` for details.")
+    stop_glue(
+      "Statistic is based on a difference; specify the `order` in which to ",
+      "subtract the levels of the explanatory variable. ",
+      '`order = c("first", "second")` means `("first" - "second")`. ',
+      "Check `?calculate` for details."
+    )
   } else {
     if (xor(is.na(order[1]), is.na(order[2]))) {
       stop_glue(
@@ -122,16 +127,23 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
                                 stat) {
   # Could also do `stat <- match.arg(stat)`
   # but that's not as helpful to beginners with the cryptic error msg
-  if (!stat %in% c("mean", "median", "sd", "prop",
-                   "diff in means", "diff in medians", "diff in props",
-                   "Chisq", "F", "slope", "correlation", "t", "z")) {
-    stop_glue("You specified a string for `stat` that is not implemented. ",
-              "Check your spelling and `?calculate` for current options.")
+  if (
+    !stat %in% c(
+      "mean", "median", "sd", "prop", "diff in means", "diff in medians",
+      "diff in props", "Chisq", "F", "slope", "correlation", "t", "z"
+    )
+  ) {
+    stop_glue(
+      "You specified a string for `stat` that is not implemented. ",
+      "Check your spelling and `?calculate` for current options."
+    )
   }
 
   if (!("replicate" %in% names(x)) && !is.null(attr(x, "generate"))) {
-    warning_glue('A `generate()` step was not performed prior to ',
-                 '`calculate()`. Review carefully.')
+    warning_glue(
+      'A `generate()` step was not performed prior to `calculate()`. ',
+      'Review carefully.'
+    )
   }
 
   if (stat %in% c("F", "slope", "diff in means", "diff in medians")) {
@@ -218,8 +230,9 @@ parse_params <- function(dots, x) {
   sig_ind <- grep("sigma", names(dots))
 
   # error: cannot specify more than one of props, means, medians, or sds
-  if (length(p_ind) + length(mu_ind) + length(med_ind)
-      + length(sig_ind) != 1) {
+  if (
+    length(p_ind) + length(mu_ind) + length(med_ind) + length(sig_ind) != 1
+  ) {
     stop_glue(
       'Parameter values can be only one of `p`, `mu`, `med`, or `sigma`.'
     )
@@ -231,22 +244,28 @@ parse_params <- function(dots, x) {
   if (length(p_ind)) {
     if (length(dots[[p_ind]]) == 1) {
       if (attr(x, "null") == "point" && is.null(attr(x, "success"))) {
-        stop_glue("A point null regarding a proportion requires ",
-                  "that `success` be indicated in `specify()`.")
+        stop_glue(
+          "A point null regarding a proportion requires that `success` ",
+          "be indicated in `specify()`."
+        )
       }
       if (dots$p < 0 || dots$p > 1) {
         stop_glue(
           "The value suggested for `p` is not between 0 and 1, inclusive."
         )
       }
-      missing_lev <- base::setdiff(unique(pull(x, !!attr(x, "response"))),
-                                   attr(x, "success"))
+      missing_lev <- base::setdiff(
+        unique(dplyr::pull(x, !!attr(x, "response"))),
+        attr(x, "success")
+      )
       dots$p <- append(dots$p, 1 - dots$p)
       names(dots$p) <- c(attr(x, "success"), missing_lev)
     } else {
       if (sum(dots$p) != 1) {
-        stop_glue("Make sure the hypothesized values for the `p` parameters ",
-                  "sum to 1. Please try again.")
+        stop_glue(
+          "Make sure the hypothesized values for the `p` parameters sum to 1. ",
+          "Please try again."
+        )
       }
     }
   }
@@ -273,8 +292,10 @@ hypothesize_checks <- function(x, null) {
   }
 
    # if (length(null) != 1) {
-   #   stop_glue('Choose between either `"independence"` or `"point"` ',
-   #             'for `null` argument.')
+   #   stop_glue(
+   #     'Choose between either `"independence"` or `"point"` for `null` ',
+   #     'argument.'
+   #    )
    # }
 
   if (!has_response(x)) {
@@ -284,9 +305,11 @@ hypothesize_checks <- function(x, null) {
   }
 
   if (null == "independence" && !has_explanatory(x)) {
-    stop_glue('Please `specify()` an explanatory and a response variable ',
-              'when testing\n',
-              'a null hypothesis of `"independence"`.')
+    stop_glue(
+      'Please `specify()` an explanatory and a response variable when ',
+      'testing\n',
+      'a null hypothesis of `"independence"`.'
+    )
   }
 }
 
@@ -294,11 +317,13 @@ check_direction <- function(direction = c("less", "greater", "two_sided",
                                           "left", "right", "both")) {
   check_type(direction, is.character)
 
-  if (!(direction %in% c("less", "greater", "two_sided",
-                        "left", "right", "both"))) {
-    stop_glue('The provided value for `direction` is not appropriate. ',
-              'Possible values are "less", "greater", "two_sided", ',
-              '"left", "right", or "both".')
+  if (
+    !(direction %in% c("less", "greater", "two_sided", "left", "right", "both"))
+  ) {
+    stop_glue(
+      'The provided value for `direction` is not appropriate. Possible values ',
+      'are "less", "greater", "two_sided", "left", "right", or "both".'
+    )
   }
 }
 
@@ -307,8 +332,10 @@ check_obs_stat <- function(obs_stat) {
     if ("data.frame" %in% class(obs_stat)) {
       check_type(obs_stat, is.data.frame)
       if ((nrow(obs_stat) != 1) || (ncol(obs_stat) != 1)) {
-        warning_glue("The first row and first column value of the given ",
-                     "`obs_stat` will be used.")
+        warning_glue(
+          "The first row and first column value of the given `obs_stat` will ",
+          "be used."
+        )
       }
 
       # [[1]] is used in case `stat` is not specified as name of 1x1

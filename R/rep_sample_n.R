@@ -70,11 +70,15 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
       dplyr::pull()
   }
 
-  i <- unlist(replicate(reps, sample.int(n, size, replace = replace,
-                                         prob = prob),
-                        simplify = FALSE))
-  rep_tbl <- cbind(replicate = rep(1:reps, rep(size, reps)),
-                   tbl[i, ])
+  i <- unlist(replicate(
+    reps,
+    sample.int(n, size, replace = replace, prob = prob),
+    simplify = FALSE
+  ))
+  rep_tbl <- cbind(
+    replicate = rep(1:reps, rep(size, reps)),
+    tbl[i, ]
+  )
   rep_tbl <- tibble::as_tibble(rep_tbl)
   names(rep_tbl)[-1] <- names(tbl)
   dplyr::group_by(rep_tbl, replicate)

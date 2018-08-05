@@ -40,8 +40,10 @@ conf_int <- function(x, level = 0.95, type = "percentile",
   check_ci_args(x, level, type, point_estimate)
 
   if (type == "percentile") {
-    ci_vec <- stats::quantile(x[["stat"]],
-                      probs = c((1 - level) / 2, level + (1 - level) / 2))
+    ci_vec <- stats::quantile(
+      x[["stat"]],
+      probs = c((1 - level) / 2, level + (1 - level) / 2)
+    )
 
     ci <- tibble::tibble(ci_vec[1], ci_vec[2])
     names(ci) <- names(ci_vec)
@@ -50,7 +52,8 @@ conf_int <- function(x, level = 0.95, type = "percentile",
     multiplier <- stats::qnorm(1 - (1 - level) / 2)
     ci <- tibble::tibble(
       lower = point_estimate - multiplier * stats::sd(x[["stat"]]),
-      upper = point_estimate + multiplier * stats::sd(x[["stat"]]))
+      upper = point_estimate + multiplier * stats::sd(x[["stat"]])
+    )
   }
 
   return(ci)
@@ -75,8 +78,9 @@ check_ci_args <- function(x, level, type, point_estimate) {
   }
 
   if (type == "se" && is.null(point_estimate)) {
-    stop_glue('A numeric value needs to be given for `point_estimate` ',
-              'for `type = "se"')
+    stop_glue(
+      'A numeric value needs to be given for `point_estimate` for `type = "se"'
+    )
   }
 
   if (type == "se" && is.vector(point_estimate)) {
