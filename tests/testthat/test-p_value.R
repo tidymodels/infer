@@ -53,8 +53,7 @@ test_that("p_value makes sense", {
   expect_equal(
     iris_calc %>%
       get_pvalue(obs_stat = median(iris_calc$stat) + 1, 
-        direction = "two_sided"
-        ) %>%
+        direction = "two_sided") %>%
       dplyr::pull(),
     expected = 0
   )
