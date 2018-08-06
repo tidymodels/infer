@@ -33,11 +33,11 @@ d_hat <- mtcars_df \%>\%
   specify(mpg ~ am) \%>\%
   calculate(stat = "diff in means", order = c("1", "0"))
 null_distn <- mtcars_df \%>\%
-  specify(mpg ~ am) \%>\% 
+  specify(mpg ~ am) \%>\%
   hypothesize(null = "independence") \%>\%
   generate(reps = 100) \%>\%
   calculate(stat = "diff in means", order = c("1", "0"))
-null_distn \%>\% 
+null_distn \%>\%
   p_value(obs_stat = d_hat, direction = "right")
 
 }
