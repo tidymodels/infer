@@ -18,3 +18,5 @@
 ^TO-DO\.md$
 ^\.httr-oauth$
 ^_pkgdown.yml
+^_pkgdown\.yml$
+^docs$
