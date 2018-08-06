@@ -233,10 +233,13 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
     # Chi-Square Goodness of Fit
     if (!is.null(attr(x, "params"))) {
       # When `hypothesize()` has been called
+      p_levels <- get_par_levels(x)
       x %>%
         dplyr::summarize(
           stat = stats::chisq.test(
-            table(!!(attr(x, "response"))), p = attr(x, "params")
+            # Ensure correct ordering of parameters
+            table(!!(attr(x, "response")))[p_levels],
+            p = attr(x, "params")
           )$stat
         )
     } else {
