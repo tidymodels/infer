@@ -409,3 +409,20 @@ test_that("One sample t bootstrap is working", {
       calculate(stat = "t")
   )
 })
+
+test_that("calculate doesn't depend on order of `p` (#122)", {
+  calc_chisq <- function(p) {
+    set.seed(111)
+    
+    iris %>%
+      specify(Species ~ NULL) %>%
+      hypothesize(null = "point", p = p) %>%
+      generate(reps = 10, type = "simulate") %>%
+      calculate("Chisq")
+  }
+  
+  expect_equal(
+    calc_chisq(c("versicolor" = 0.25, "setosa" = 0.5, "virginica" = 0.25)),
+    calc_chisq(c("virginica" = 0.25, "versicolor" = 0.25, "setosa" = 0.5))
+  )
+})
