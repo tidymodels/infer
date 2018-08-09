@@ -1,26 +1,20 @@
 context("specify")
 
 mtcars <- as.data.frame(mtcars) %>%
-  dplyr::mutate(cyl = factor(cyl),
-                vs = factor(vs),
-                am = factor(am),
-                gear = factor(gear),
-                carb = factor(carb))
+  dplyr::mutate(
+    cyl = factor(cyl), vs = factor(vs), am = factor(am), gear = factor(gear),
+    carb = factor(carb)
+  )
 
-one_nonshift_mean <- mtcars %>%
-  specify(response = mpg)
+one_nonshift_mean <- mtcars %>% specify(response = mpg)
 
-one_nonshift_prop <- mtcars %>%
-  specify(response = am, success = "1")
+one_nonshift_prop <- mtcars %>% specify(response = am, success = "1")
 
-two_means_boot <- mtcars %>%
-  specify(mpg ~ am)
+two_means_boot <- mtcars %>% specify(mpg ~ am)
 
-two_props_boot <- mtcars %>%
-  specify(am ~ vs, success = "1")
+two_props_boot <- mtcars %>% specify(am ~ vs, success = "1")
 
-slope_boot <- mtcars %>%
-  specify(mpg ~ hp)
+slope_boot <- mtcars %>% specify(mpg ~ hp)
 
 test_that("auto `type` works (specify)", {
   expect_equal(attr(one_nonshift_mean, "type"), "bootstrap")
@@ -31,7 +25,6 @@ test_that("auto `type` works (specify)", {
 })
 
 test_that("data argument", {
-
   expect_error(specify(blah ~ cyl))
   expect_error(specify(1:3))
   expect_is(mtcars, "data.frame")
@@ -39,7 +32,6 @@ test_that("data argument", {
 })
 
 test_that("response and explanatory arguments", {
-
   expect_error(specify(mtcars, response = blah))
   expect_error(specify(mtcars, response = "blah"))
   expect_error(specify(mtcars, formula = mpg ~ blah))
@@ -54,7 +46,6 @@ test_that("response and explanatory arguments", {
 })
 
 test_that("success argument", {
-
   expect_error(specify(mtcars, response = vs, success = 1))
   expect_error(specify(mtcars, response = vs, success = "bogus"))
   expect_error(specify(mtcars, response = mpg, success = "1"))

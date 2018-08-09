@@ -4,6 +4,7 @@
 - Update documentation code to follow tidyverse style guide (#159).
 - Remove help page for internal `set_params()` (#165).
 - Fully use {tibble} (#166).
+- Fix `calculate()` to not depend on order of `p` for `type = "simulate"` (#122).
 
 # infer 0.3.1
 

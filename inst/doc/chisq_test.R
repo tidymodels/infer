@@ -58,7 +58,7 @@ fli_small %>%
 
 ## ----eval=FALSE----------------------------------------------------------
 #  fli_small %>%
-#    specify(origin ~ season) %>%  %>% # alt: response = origin, explanatory = season
+#    specify(origin ~ season) %>% # alt: response = origin, explanatory = season
 #    hypothesize(null = "independence") %>%
 #    generate(reps = 1000, type = "permute") %>%
 #    calculate(stat = "Chisq") %>%

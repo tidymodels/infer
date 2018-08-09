@@ -3,7 +3,7 @@
 #' @param x An object of class `infer`, i.e. output from [specify()] or
 #'   [hypothesize()].
 #' @param ... Arguments passed to methods.
-#' 
+#'
 #' @export
 print.infer <- function(x, ...) {
   attrs <- names(attributes(x))
@@ -21,9 +21,9 @@ print.infer <- function(x, ...) {
   if ("null" %in% attrs) {
     header[3] <- glue_null('Null Hypothesis: {attr(x, "null")}')
   }
-  
+
   cat(glue::glue_collapse(header[header != ""], sep = "\n"))
   cat("\n")
-  
+
   NextMethod()
 }

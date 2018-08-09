@@ -63,7 +63,7 @@ Visualize the distribution of the simulation-based inferential statistics or
 the theoretical distribution (or both!).
 }
 \examples{
-# Permutations to create a simulation-based null distribution for 
+# Permutations to create a simulation-based null distribution for
 # one numerical response and one categorical predictor
 # using t statistic
 mtcars \%>\%
@@ -74,7 +74,7 @@ mtcars \%>\%
   calculate(stat = "t", order = c("1", "0")) \%>\%
   visualize(method = "simulation") #default method
 
-# Theoretical t distribution for 
+# Theoretical t distribution for
 # one numerical response and one categorical predictor
 # using t statistic
 mtcars \%>\%
