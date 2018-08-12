@@ -43,7 +43,7 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
 
   if (
     (type == "permute") &&
-    any(is.null(attr(x, "response")), is.null(attr(x, "explanatory")))
+    any(is_nuat(x, "response"), is_nuat(x, "explanatory"))
   ) {
     stop_glue(
       "Please `specify()` an explanatory and a response variable when ",
@@ -61,7 +61,7 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
 #   if (
 #     (type == "bootstrap") &&
 #     !(attr(attr(x, "params"), "names") %in% c("mu", "med", "sigma")) &&
-#     !is.null(attr(x, "null"))
+#     !is_nuat(x, "null")
 #   ) {
 #     stop_glue(
 #       "Bootstrapping is inappropriate in this setting. ",
@@ -85,7 +85,7 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
 
 bootstrap <- function(x, reps = 1, ...) {
   # Check if hypothesis test chosen
-  if (!is.null(attr(x, "null"))) {
+  if (!is_nuat(x, "null")) {
     # If so, shift the variable chosen to have a mean corresponding
     # to that specified in `hypothesize`
     if (attr(attr(x, "params"), "names") == "mu") {

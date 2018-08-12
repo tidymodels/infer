@@ -549,7 +549,7 @@ visualize_theoretical <- function(data,
   )
 
   if (
-    !is.null(attr(data, "stat")) &&
+    !is_nuat(data, "stat") &&
     !(attr(data, "stat") %in% c("t", "z", "Chisq", "F"))
   ) {
     warning_glue(

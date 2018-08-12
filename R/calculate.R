@@ -48,8 +48,8 @@ calculate <- function(x,
     )
   }
 
-  if (is.null(attr(x, "generate")) || !attr(x, "generate")) {
-    if (is.null(attr(x, "null"))) {
+  if (is_nuat(x, "generate") || !attr(x, "generate")) {
+    if (is_nuat(x, "null")) {
       x$replicate <- 1L
     } else if (
       stat %in% c(
@@ -75,7 +75,7 @@ calculate <- function(x,
   if (
     (stat %in% c("diff in means", "diff in medians", "diff in props")) ||
     (
-      !is.null(attr(x, "theory_type")) &&
+      !is_nuat(x, "theory_type") &&
       (attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))
     )
   ) {
@@ -85,7 +85,7 @@ calculate <- function(x,
   if (!(
     (stat %in% c("diff in means", "diff in medians", "diff in props")) ||
     (
-      !is.null(attr(x, "theory_type")) &&
+      !is_nuat(x, "theory_type") &&
       attr(x, "theory_type") %in% c("Two sample props z", "Two sample t")
     )
   )) {
@@ -161,7 +161,7 @@ calc_impl.prop <- function(stat, x, order, ...) {
   #   )
   # }
 
-  if (is.null(attr(x, "success"))) {
+  if (is_nuat(x, "success")) {
     stop_glue(
       'To calculate a proportion, the `"success"` argument must be provided ',
       'in `specify()`.'
@@ -229,9 +229,9 @@ calc_impl.diff_in_medians <- function(stat, x, order, ...) {
 calc_impl.Chisq <- function(stat, x, order, ...) {
   ## The following could stand to be cleaned up
 
-  if (is.null(attr(x, "explanatory"))) {
+  if (is_nuat(x, "explanatory")) {
     # Chi-Square Goodness of Fit
-    if (!is.null(attr(x, "params"))) {
+    if (!is_nuat(x, "params")) {
       # When `hypothesize()` has been called
       p_levels <- get_par_levels(x)
       x %>%
@@ -280,7 +280,7 @@ calc_impl.Chisq <- function(stat, x, order, ...) {
       ) %>%
       dplyr::ungroup()
 
-    if (!is.null(attr(x, "generate"))) {
+    if (!is_nuat(x, "generate")) {
       result <- result %>% dplyr::select(replicate, stat = statistic)
     } else {
       result <- result %>% dplyr::select(stat = statistic)
@@ -360,7 +360,7 @@ calc_impl.t <- function(stat, x, order, ...) {
   # One sample mean
   else if (attr(x, "theory_type") == "One sample t") {
     # For bootstrap
-    if (is.null(attr(x, "null"))) {
+    if (is_nuat(x, "null")) {
       x %>%
         dplyr::summarize(
           stat = stats::t.test(!!attr(x, "response"), ...)[["statistic"]]

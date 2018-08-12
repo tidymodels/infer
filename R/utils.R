@@ -26,6 +26,10 @@ set_attributes <- function(to, from = x) {
   to
 }
 
+is_nuat <- function(x, at) {
+  is.null(attr(x, at))
+}
+
 explanatory_variable <- function(x) {
   x[[as.character(attr(x, "explanatory"))]]
 }
@@ -43,11 +47,11 @@ reorder_explanatory <- function(x, order) {
 }
 
 has_explanatory <- function(x) {
-  !is.null(attr(x, "explanatory"))
+  !is_nuat(x, "explanatory")
 }
 
 has_response <- function(x) {
-  !is.null(attr(x, "response"))
+  !is_nuat(x, "response")
 }
 
 stop_glue <- function(..., .sep = "", .envir = parent.frame(),
@@ -139,7 +143,7 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
     )
   }
 
-  if (!("replicate" %in% names(x)) && !is.null(attr(x, "generate"))) {
+  if (!("replicate" %in% names(x)) && !is_nuat(x, "generate")) {
     warning_glue(
       'A `generate()` step was not performed prior to `calculate()`. ',
       'Review carefully.'
@@ -193,7 +197,7 @@ check_for_factor_stat <- function(x, stat, explanatory_variable) {
 check_point_params <- function(x, stat) {
   param_names <- attr(attr(x, "params"), "names")
   hyp_text <- 'to be set in `hypothesize()`.'
-  if (!is.null(attr(x, "null"))) {
+  if (!is_nuat(x, "null")) {
     if (stat %in% c("mean", "median", "sd", "prop")) {
       if ((stat == "mean") && !("mu" %in% param_names)) {
         stop_glue('`stat == "mean"` requires `"mu"` {hyp_text}')
@@ -243,7 +247,7 @@ parse_params <- function(dots, x) {
   # 0 index of dots
   if (length(p_ind)) {
     if (length(dots[[p_ind]]) == 1) {
-      if ((attr(x, "null") == "point") && is.null(attr(x, "success"))) {
+      if ((attr(x, "null") == "point") && is_nuat(x, "success")) {
         stop_glue(
           "A point null regarding a proportion requires that `success` ",
           "be indicated in `specify()`."

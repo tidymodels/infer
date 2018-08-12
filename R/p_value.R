@@ -36,7 +36,7 @@ p_value <- function(x, obs_stat, direction) {
   obs_stat <- check_obs_stat(obs_stat)
   check_direction(direction)
 
-  is_simulation_based <- !is.null(attr(x, "generate")) && attr(x, "generate")
+  is_simulation_based <- !is_nuat(x, "generate") && attr(x, "generate")
 
   if (is_simulation_based) {
     pvalue <- simulation_based_p_value(
@@ -47,7 +47,7 @@ p_value <- function(x, obs_stat, direction) {
   ## Theoretical-based p-value
   # Could be more specific
   # else if (
-  #   is.null(attr(x, "theory_type")) || is.null(attr(x, "distr_param"))
+  #   is_nuat(x, "theory_type") || is_nuat(x, "distr_param")
   # ) {
   #   stop_glue(
   #     "Attributes have not been set appropriately. ",
@@ -112,7 +112,7 @@ get_pvalue <- p_value
 
 # which_distribution <- function(x, theory_type, obs_stat, direction) {
 #   param <- attr(x, "distr_param")
-#   if (!is.null(attr(x, "distr_param2"))) {
+#   if (!is_nuat(x, "distr_param2")) {
 #     param2 <- attr(x, "distr_param2")
 #   }
 # 
