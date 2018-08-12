@@ -267,79 +267,30 @@ shade_density_check <- function(data,
           geom_histogram(bins = bins, color = "white", ...)
       }
 
-      if (direction %in% c("less", "left")) {
+      if (direction %in% c("less", "left", "greater", "right")) {
         gg_plot <- gg_plot +
-          geom_rect(
-            fill = pvalue_fill, alpha = 0.01,
-            aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf),
-            ...
-          )
+          geom_tail(direction, obs_stat, pvalue_fill)
       }
-      if (direction %in% c("greater", "right")) {
+      
+      if (direction %in% c("two_sided", "both")) {
         gg_plot <- gg_plot +
-          geom_rect(
-            fill = pvalue_fill, alpha = 0.01,
-            aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf),
-            ...
+          geom_both_tails(
+            border_1 = obs_stat,
+            border_2 = mirror_obs_stat(data$stat, obs_stat),
+            fill = pvalue_fill
           )
       }
 
-      if (
-        (direction %in% c("two_sided", "both")) &&
-        (obs_stat >= stats::median(data$stat))
-      ) {
+      if (direction == "between") {
         gg_plot <- gg_plot +
           geom_rect(
-            fill = pvalue_fill, alpha = 0.01,
-            mapping = aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf),
+            data = data.frame(endpoints[1]),
+            fill = ci_fill, alpha = 0.6,
+            aes(xmin = endpoints[1], xmax = endpoints[2], ymin = 0, ymax = Inf),
+            inherit.aes = FALSE,
             ...
-          ) +
-          geom_rect(
-            fill = pvalue_fill, alpha = 0.01,
-            mapping = aes(
-              xmin = -Inf,
-              xmax = stats::quantile(
-                data$stat, probs = 1 - get_percentile(data$stat, obs_stat)
-              ),
-              ymin = 0,
-              ymax = Inf,
-              ...
-            )
           )
       }
-
-      if (
-        (direction %in% c("two_sided", "both")) &&
-        (obs_stat < stats::median(data$stat))
-      ) {
-        gg_plot <- gg_plot +
-          geom_rect(
-            fill = pvalue_fill, alpha = 0.01,
-            mapping = aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf),
-            ...
-          ) +
-          geom_rect(
-            fill = pvalue_fill, alpha = 0.01,
-            mapping = aes(
-              xmin = stats::quantile(
-                data$stat, probs = 1 - get_percentile(data$stat, obs_stat)
-              ),
-              xmax = Inf,
-              ymin = 0,
-              ymax = Inf,
-              ...
-            )
-          )
-      }
-    }
-
-    if (direction == "between") {
-      gg_plot <- gg_plot +
-        geom_rect(
-          fill = ci_fill, alpha = 0.01,
-          aes(xmin = endpoints[1], xmax = endpoints[2], ymin = 0, ymax = Inf),
-          ...
-        )
     }
   }
   gg_plot
@@ -453,61 +404,17 @@ visualize_theoretical <- function(data,
     # )
   # }
 
-  # Move into its own function
-  if (!is.null(obs_stat)) {
-    if (!is.null(direction)) {
-      if (direction %in% c("less", "left")) {
-        infer_plot <- infer_plot +
-          geom_rect(
-            data = data.frame(obs_stat),
-            fill = pvalue_fill, alpha = 0.6,
-            aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf),
-            ...
-          )
-      }
-      if (direction %in% c("greater", "right")) {
-        infer_plot <- infer_plot +
-          geom_rect(
-            data = data.frame(obs_stat),
-            fill = pvalue_fill, alpha = 0.6,
-            aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf),
-            ...
-          )
-      }
-
-      # Assuming two-tailed shading will only happen with theoretical
-      # distributions centered at 0
-      if ((direction %in% c("two_sided", "both")) && (obs_stat >= 0)) {
-        infer_plot <- infer_plot +
-          geom_rect(
-            data = data.frame(obs_stat),
-            fill = pvalue_fill, alpha = 0.6,
-            aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf),
-            ...
-          ) +
-          geom_rect(
-            data = data.frame(obs_stat),
-            fill = pvalue_fill, alpha = 0.6,
-            aes(xmin = -Inf, xmax = -obs_stat, ymin = 0, ymax = Inf),
-            ...
-          )
-      }
-
-      if ((direction %in% c("two_sided", "both")) && (obs_stat < 0)) {
-        infer_plot <- infer_plot +
-          geom_rect(
-            data = data.frame(obs_stat),
-            fill = pvalue_fill, alpha = 0.6,
-            aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf),
-            ...
-          ) +
-          geom_rect(
-            data = data.frame(obs_stat),
-            fill = pvalue_fill, alpha = 0.6,
-            aes(xmin = -obs_stat, xmax = Inf, ymin = 0, ymax = Inf),
-            ...
-          )
-      }
+  # Plot tails
+  if (!is.null(obs_stat) && !is.null(direction)) {
+    if (direction %in% c("less", "left", "greater", "right")) {
+      infer_plot <- infer_plot +
+        geom_tail(direction, obs_stat, pvalue_fill, ...)
+    }
+    # Assuming two-tailed shading will only happen with theoretical
+    # distributions centered at 0
+    if (direction %in% c("two_sided", "both")) {
+      infer_plot <- infer_plot +
+        geom_both_tails(obs_stat, -obs_stat, pvalue_fill, ...)
     }
   }
 
@@ -616,6 +523,12 @@ get_percentile <- function(vector, observation) {
   stats::ecdf(vector)(observation)
 }
 
+mirror_obs_stat <- function(vector, observation) {
+  obs_percentile <- get_percentile(vector, observation)
+  
+  stats::quantile(vector, probs = 1 - obs_percentile)
+}
+
 warn_right_tail_test <- function(direction, stat_name) {
   if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
     warning_glue(
@@ -625,4 +538,32 @@ warn_right_tail_test <- function(direction, stat_name) {
   }
   
   TRUE
+}
+
+geom_tail <- function(dir, border, fill, ...) {
+  if (dir %in% c("less", "left")) {
+    x_range <- c(-Inf, border)
+  } else if (dir %in% c("greater", "right")) {
+    x_range <- c(border, Inf)
+  }
+  
+  list(
+    geom_rect(
+      data = data.frame(border),
+      aes(xmin = x_range[1], xmax = x_range[2], ymin = 0, ymax = Inf),
+      fill = fill, alpha = 0.6,
+      inherit.aes = FALSE,
+      ...
+    )
+  )
+}
+
+geom_both_tails <- function(border_1, border_2, fill, ...) {
+  left_border <- min(border_1, border_2)
+  right_border <- max(border_1, border_2)
+  
+  c(
+    geom_tail("left", left_border, fill, ...),
+    geom_tail("right", right_border, fill, ...)
+  )
 }
