@@ -138,6 +138,15 @@ test_that("visualize basic tests", {
       calculate(stat = "t", order = c("small", "large")) %>%
       visualize(method = "theoretical", direction = "left", obs_stat = -obs_t)
   )
+  
+  expect_warning(
+    iris_tbl %>%
+      specify(Petal.Width ~ NULL) %>%
+      hypothesize(null = "point", mu = 1) %>%
+      generate(reps = 100) %>%
+      calculate(stat = "t") %>%
+      visualize(method = "both")
+  )
 
   expect_warning(
     iris_tbl %>%

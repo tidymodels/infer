@@ -353,19 +353,17 @@ visualize_theoretical <- function(data,
       "different scales. Displaying only the theoretical distribution."
     )
   }
+  
+  theory_type <- short_theory_type(data)
 
-  if (
-    attr(data, "theory_type") %in% c(
-      "Two sample t", "Slope with t", "One sample t"
-    )
-  ) {
+  if (theory_type == "t") {
     infer_plot <- theory_plot(
       d_fun = dt, q_fun = qt,
       args_list = list(df = attr(data, "distr_param")),
       stat_name = "t",
       dens_color = dens_color
     )
-  } else if (attr(data, "theory_type") == "ANOVA") {
+  } else if (theory_type == "F") {
     warn_right_tail_test(direction, "F")
 
     infer_plot <- theory_plot(
@@ -376,21 +374,15 @@ visualize_theoretical <- function(data,
       stat_name = "F",
       dens_color = dens_color
     )
-  } else if (
-    attr(data, "theory_type") %in% c("One sample prop z", "Two sample props z")
-  ) {
+  } else if (theory_type == "z") {
     infer_plot <- theory_plot(
       d_fun = dnorm, q_fun = qnorm,
       args_list = list(),
       stat_name = "z",
       dens_color = dens_color
     )
-  } else if (
-    attr(data, "theory_type") %in% c(
-      "Chi-square test of indep", "Chi-square Goodness of Fit"
-    )
-  ) {
-    warn_right_tail_test(direction, "Chi-square")
+  } else if (theory_type == "Chi-Square") {
+    warn_right_tail_test(direction, "Chi-Square")
 
     infer_plot <- theory_plot(
       d_fun = dchisq, q_fun = qchisq,
@@ -444,7 +436,9 @@ visualize_both <- function(data, bins,
     )
   }
 
-  if (attr(data, "theory_type") %in% c("Two sample t", "Slope with t")) {
+  theory_type <- short_theory_type(data)
+  
+  if (theory_type == "t") {
     infer_plot <- both_plot(
       data = data,
       d_fun = dt,
@@ -458,7 +452,7 @@ visualize_both <- function(data, bins,
       endpoints = endpoints,
       ci_fill = ci_fill
     )
-  } else if (attr(data, "theory_type") == "ANOVA") {
+  } else if (theory_type == "F") {
     warn_right_tail_test(direction, "F")
     
     infer_plot <- both_plot(
@@ -476,9 +470,7 @@ visualize_both <- function(data, bins,
       endpoints = endpoints,
       ci_fill = ci_fill
     )
-  } else if (
-    attr(data, "theory_type") %in% c("One sample prop z", "Two sample props z")
-  ) {
+  } else if (theory_type == "z") {
     infer_plot <- both_plot(
       data = data,
       d_fun = dnorm,
@@ -492,12 +484,8 @@ visualize_both <- function(data, bins,
       endpoints = endpoints,
       ci_fill = ci_fill
     )
-  } else if (
-    attr(data, "theory_type") %in% c(
-      "Chi-square test of indep", "Chi-square Goodness of Fit"
-    )
-  ) {
-    warn_right_tail_test(direction, "Chi-square")
+  } else if (theory_type == "Chi-Square") {
+    warn_right_tail_test(direction, "Chi-Square")
     
     infer_plot <- both_plot(
       data = data,
@@ -527,6 +515,20 @@ mirror_obs_stat <- function(vector, observation) {
   obs_percentile <- get_percentile(vector, observation)
   
   stats::quantile(vector, probs = 1 - obs_percentile)
+}
+
+short_theory_type <- function(x) {
+  theory_attr <- attr(x, "theory_type")
+  theory_types <- list(
+    t = c("Two sample t", "Slope with t", "One sample t"),
+    `F` = "ANOVA",
+    z = c("One sample prop z", "Two sample props z"),
+    `Chi-Square` = c("Chi-square test of indep", "Chi-square Goodness of Fit")
+  )
+  
+  is_type <- vapply(theory_types, function(x) {theory_attr %in% x}, logical(1))
+  
+  names(theory_types)[which(is_type)[1]]
 }
 
 warn_right_tail_test <- function(direction, stat_name) {
