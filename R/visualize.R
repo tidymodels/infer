@@ -210,16 +210,10 @@ theory_plot <- function(d_fun, q_fun, args_list, stat_name, dens_color) {
     xlab("") + ylab("")
 }
 
-both_t_plot <- function(data = data, deg_freedom, statistic_text = "t",
-                        dens_color,
-                        obs_stat,
-                        direction,
-                        bins,
-                        pvalue_fill,
-                        endpoints,
-                        ci_fill,
-                        ...) {
-  infer_t_plot <- shade_density_check(
+both_plot <- function(data, d_fun, args_list, stat_name, stat_label, dens_color,
+                      obs_stat, direction, bins, pvalue_fill, endpoints,
+                      ci_fill, ...) {
+  infer_plot <- shade_density_check(
     data = data,
     obs_stat = obs_stat,
     direction = direction,
@@ -228,117 +222,15 @@ both_t_plot <- function(data = data, deg_freedom, statistic_text = "t",
     pvalue_fill = pvalue_fill,
     ci_fill = ci_fill
   )
-
-  infer_t_plot +
+  
+  infer_plot +
     stat_function(
-      fun = dt, args = list(df = deg_freedom), color = dens_color
+      fun = d_fun, args = args_list, color = dens_color
     ) +
     ggtitle(glue_null(
-      "Simulation-Based and Theoretical {statistic_text} Null Distributions"
+      "Simulation-Based and Theoretical {stat_name} Null Distributions"
     )) +
-    xlab("tstat") +
-    ylab("")
-}
-
-both_anova_plot <- function(data, deg_freedom_top,
-                            deg_freedom_bottom, statistic_text = "F",
-                            dens_color,
-                            obs_stat,
-                            direction,
-                            bins,
-                            endpoints,
-                            pvalue_fill,
-                            ci_fill,
-                            ...) {
-  if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
-    warning_glue(
-      "F usually corresponds to right-tailed tests. Proceed with caution."
-    )
-  }
-
-  infer_anova_plot <- shade_density_check(
-    data = data,
-    obs_stat = obs_stat,
-    direction = direction,
-    bins = bins,
-    endpoints = endpoints,
-    pvalue_fill = pvalue_fill,
-    ci_fill = ci_fill
-  )
-
-  infer_anova_plot <- infer_anova_plot +
-    stat_function(
-      fun = df,
-      args = list(df1 = deg_freedom_top, df2 = deg_freedom_bottom),
-      color = dens_color
-    ) +
-    ggtitle(glue_null(
-      "Simulation-Based and Theoretical {statistic_text} Null Distributions"
-    )) +
-    xlab("Fstat") +
-    ylab("")
-}
-
-both_z_plot <- function(data, statistic_text = "z",
-                        dens_color,
-                        obs_stat,
-                        direction,
-                        pvalue_fill,
-                        bins,
-                        endpoints,
-                        ci_fill,
-                        ...) {
-  infer_z_plot <- shade_density_check(
-    data = data,
-    obs_stat = obs_stat,
-    direction = direction,
-    bins = bins,
-    endpoints = endpoints,
-    pvalue_fill = pvalue_fill,
-    ci_fill = ci_fill
-  )
-  infer_z_plot +
-    stat_function(fun = dnorm, color = dens_color) +
-    ggtitle(glue_null(
-      "Simulation-Based and Theoretical {statistic_text} Null Distributions"
-    )) +
-    xlab("zstat") +
-    ylab("")
-}
-
-both_chisq_plot <- function(data, deg_freedom, statistic_text = "Chi-Square",
-                            dens_color,
-                            obs_stat,
-                            direction,
-                            bins,
-                            endpoints,
-                            pvalue_fill = pvalue_fill,
-                            ci_fill = ci_fill,
-                            ...) {
-  if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
-    warning_glue("Chi-square usually corresponds to right-tailed tests. ",
-                 "Proceed with caution.")
-  }
-
-  infer_chisq_plot <- shade_density_check(
-    data = data,
-    obs_stat = obs_stat,
-    direction = direction,
-    bins = bins,
-    endpoints = endpoints,
-    pvalue_fill = pvalue_fill,
-    ci_fill = ci_fill
-  )
-
-  infer_chisq_plot +
-    stat_function(
-      fun = dchisq, args = list(df = deg_freedom), color = dens_color
-    ) +
-    ggtitle(glue_null(
-      "Simulation-Based and Theoretical {statistic_text} Null Distributions"
-    )) +
-    xlab("chisqstat") +
-    ylab("")
+    xlab(stat_label) + ylab("")
 }
 
 shade_density_check <- function(data,
@@ -655,10 +547,11 @@ visualize_both <- function(data, bins,
   }
 
   if (attr(data, "theory_type") %in% c("Two sample t", "Slope with t")) {
-    infer_plot <- both_t_plot(
+    infer_plot <- both_plot(
       data = data,
-      deg_freedom = attr(data, "distr_param"),
-      statistic_text = "t",
+      d_fun = dt,
+      args_list = list(df = attr(data, "distr_param")),
+      stat_name = "t", stat_label = "tstat",
       dens_color = dens_color,
       bins = bins,
       direction = direction,
@@ -668,11 +561,19 @@ visualize_both <- function(data, bins,
       ci_fill = ci_fill
     )
   } else if (attr(data, "theory_type") == "ANOVA") {
-    infer_plot <- both_anova_plot(
+    if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
+      warning_glue(
+        "F usually corresponds to right-tailed tests. Proceed with caution."
+      )
+    }
+    
+    infer_plot <- both_plot(
       data = data,
-      deg_freedom_top = attr(data, "distr_param"),
-      deg_freedom_bottom = attr(data, "distr_param2"),
-      statistic_text = "F",
+      d_fun = df,
+      args_list = list(
+        df1 = attr(data, "distr_param"), df2 = attr(data, "distr_param2")
+      ),
+      stat_name = "F", stat_label = "Fstat",
       dens_color = dens_color,
       bins = bins,
       direction = direction,
@@ -684,9 +585,11 @@ visualize_both <- function(data, bins,
   } else if (
     attr(data, "theory_type") %in% c("One sample prop z", "Two sample props z")
   ) {
-    infer_plot <- both_z_plot(
+    infer_plot <- both_plot(
       data = data,
-      statistic_text = "z",
+      d_fun = dnorm,
+      args_list = list(),
+      stat_name = "z", stat_label = "zstat",
       dens_color = dens_color,
       bins = bins,
       direction = direction,
@@ -700,10 +603,18 @@ visualize_both <- function(data, bins,
       "Chi-square test of indep", "Chi-square Goodness of Fit"
     )
   ) {
-    infer_plot <- both_chisq_plot(
+    if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
+      warning_glue(
+        "Chi-square usually corresponds to right-tailed tests. ",
+        "Proceed with caution."
+      )
+    }
+    
+    infer_plot <- both_plot(
       data = data,
-      deg_freedom = attr(data, "distr_param"),
-      statistic_text = "Chi-Square",
+      d_fun = dchisq,
+      args_list = list(df = attr(data, "distr_param")),
+      stat_name = "Chi-Square", stat_label = "chisqstat",
       dens_color = dens_color,
       bins = bins,
       direction = direction,
