@@ -5,6 +5,9 @@
 - Remove help page for internal `set_params()` (#165).
 - Fully use {tibble} (#166).
 - Fix `calculate()` to not depend on order of `p` for `type = "simulate"` (#122).
+- Reduce code duplication (#173).
+- Make transparancy in `visualize()` to not depend on method and data volume.
+- Make `visualize()` work for "One sample t" theoretical type with `method = "both"`.
 
 # infer 0.3.1
 
