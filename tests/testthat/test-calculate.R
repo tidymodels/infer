@@ -2,12 +2,6 @@ context("calculate")
 
 iris_df <- tibble::as_tibble(iris)
 
-iris_tbl <- iris_df %>%
-  dplyr::mutate(
-    Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5"),
-    Sepal.Width.Group = dplyr::if_else(Sepal.Width > 3, "large", "small")
-  )
-
 # calculate arguments
 test_that("x is a tibble", {
   vec <- 1:10

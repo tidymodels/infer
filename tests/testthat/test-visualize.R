@@ -8,12 +8,6 @@ Sepal.Width_resamp <- iris %>%
   generate(reps = 10, type = "bootstrap") %>%
   calculate(stat = "median")
 
-iris_tbl <- tibble::as_tibble(iris) %>%
-  dplyr::mutate(
-    Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5"),
-    Sepal.Width.Group = dplyr::if_else(Sepal.Width > 3, "large", "small")
-  )
-
 obs_slope <- lm(Sepal.Length ~ Sepal.Width, data = iris_tbl) %>%
   broom::tidy() %>%
   dplyr::filter(term == "Sepal.Width") %>%

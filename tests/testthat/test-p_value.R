@@ -1,17 +1,5 @@
 context("p_value")
 
-iris_tbl <- iris %>%
-  dplyr::mutate(
-    Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5"),
-    Sepal.Width.Group = dplyr::if_else(Sepal.Width > 3, "large", "small")
-  )
-
-iris_calc <- iris_tbl %>%
-  specify(Sepal.Length.Group ~ Sepal.Width.Group, success = "<=5") %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000) %>%
-  calculate(stat = "diff in props", order = c("large", "small"))
-
 set.seed(2018)
 test_df <- tibble::tibble(stat = rnorm(100))
 
