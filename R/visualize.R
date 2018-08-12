@@ -199,20 +199,15 @@ visualize <- function(data, bins = 15, method = "simulation",
   infer_plot
 }
 
-theory_t_plot <- function(deg_freedom, statistic_text = "t",
-                          dens_color = dens_color,
-                          ...) {
-  ggplot(data.frame(x = c(qt(0.001, deg_freedom),
-                          qt(0.999, deg_freedom)))) +
+theory_plot <- function(d_fun, q_fun, args_list, stat_name, dens_color) {
+  x_range <- do.call(q_fun, c(p = list(c(0.001, 0.999)), args_list))
+  
+  ggplot(data.frame(x = x_range)) +
     stat_function(
-      mapping = aes(x),
-      fun = dt,
-      args = list(df = deg_freedom),
-      color = dens_color
+      mapping = aes(x), fun = d_fun, args = args_list, color = dens_color
     ) +
-    ggtitle(glue_null("Theoretical {statistic_text} Null Distribution")) +
-    xlab("") +
-    ylab("")
+    ggtitle(glue_null("Theoretical {stat_name} Null Distribution")) +
+    xlab("") + ylab("")
 }
 
 both_t_plot <- function(data = data, deg_freedom, statistic_text = "t",
@@ -242,23 +237,6 @@ both_t_plot <- function(data = data, deg_freedom, statistic_text = "t",
       "Simulation-Based and Theoretical {statistic_text} Null Distributions"
     )) +
     xlab("tstat") +
-    ylab("")
-}
-
-theory_anova_plot <- function(deg_freedom_top, deg_freedom_bottom,
-                              statistic_text = "F",
-                              dens_color = dens_color,
-                              ...) {
-  ggplot(data.frame(x = c(qf(0.001, deg_freedom_top, deg_freedom_bottom),
-                          qf(0.999, deg_freedom_top, deg_freedom_bottom)))) +
-    stat_function(
-      mapping = aes(x),
-      fun = df,
-      args = list(df1 = deg_freedom_top, df2 = deg_freedom_bottom),
-      color = dens_color
-    ) +
-    ggtitle(glue_null("Theoretical {statistic_text} Null Distribution")) +
-    xlab("") +
     ylab("")
 }
 
@@ -301,14 +279,6 @@ both_anova_plot <- function(data, deg_freedom_top,
     ylab("")
 }
 
-theory_z_plot <- function(statistic_text = "z", dens_color = dens_color, ...) {
-  ggplot(data.frame(x = c(qnorm(0.001), qnorm(0.999)))) +
-    stat_function(mapping = aes(x), fun = dnorm, color = dens_color) +
-    ggtitle(glue_null("Theoretical {statistic_text} Null Distribution")) +
-    xlab("") +
-    ylab("")
-}
-
 both_z_plot <- function(data, statistic_text = "z",
                         dens_color,
                         obs_stat,
@@ -333,23 +303,6 @@ both_z_plot <- function(data, statistic_text = "z",
       "Simulation-Based and Theoretical {statistic_text} Null Distributions"
     )) +
     xlab("zstat") +
-    ylab("")
-}
-
-theory_chisq_plot <- function(deg_freedom,
-                              statistic_text = "Chi-Square",
-                              dens_color = dens_color,
-                              ...) {
-  ggplot(data.frame(x = c(qchisq(0.001, deg_freedom),
-                          qchisq(0.999, deg_freedom)))) +
-    stat_function(
-      mapping = aes(x),
-      fun = dchisq,
-      args = list(df = deg_freedom),
-      color = dens_color
-    ) +
-    ggtitle(glue_null("Theoretical {statistic_text} Null Distribution")) +
-    xlab("") +
     ylab("")
 }
 
@@ -563,9 +516,10 @@ visualize_theoretical <- function(data,
       "Two sample t", "Slope with t", "One sample t"
     )
   ) {
-    infer_plot <- theory_t_plot(
-      deg_freedom = attr(data, "distr_param"),
-      statistic_text = "t",
+    infer_plot <- theory_plot(
+      d_fun = dt, q_fun = qt,
+      args_list = list(df = attr(data, "distr_param")),
+      stat_name = "t",
       dens_color = dens_color
     )
   } else if (attr(data, "theory_type") == "ANOVA") {
@@ -575,16 +529,23 @@ visualize_theoretical <- function(data,
       )
     }
 
-    infer_plot <- theory_anova_plot(
-      deg_freedom_top = attr(data, "distr_param"),
-      deg_freedom_bottom = attr(data, "distr_param2"),
-      statistic_text = "F",
+    infer_plot <- theory_plot(
+      d_fun = df, q_fun = qf,
+      args_list = list(
+        df1 = attr(data, "distr_param"), df2 = attr(data, "distr_param2")
+      ),
+      stat_name = "F",
       dens_color = dens_color
     )
   } else if (
     attr(data, "theory_type") %in% c("One sample prop z", "Two sample props z")
   ) {
-    infer_plot <- theory_z_plot(statistic_text = "z", dens_color = dens_color)
+    infer_plot <- theory_plot(
+      d_fun = dnorm, q_fun = qnorm,
+      args_list = list(),
+      stat_name = "z",
+      dens_color = dens_color
+    )
   } else if (
     attr(data, "theory_type") %in% c(
       "Chi-square test of indep", "Chi-square Goodness of Fit"
@@ -597,9 +558,10 @@ visualize_theoretical <- function(data,
       )
     }
 
-    infer_plot <- theory_chisq_plot(
-      deg_freedom = attr(data, "distr_param"),
-      statistic_text = "Chi-Square",
+    infer_plot <- theory_plot(
+      d_fun = dchisq, q_fun = qchisq,
+      args_list = list(df = attr(data, "distr_param")),
+      stat_name = "Chi-Square",
       dens_color = dens_color
     )
   } # else {
