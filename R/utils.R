@@ -9,20 +9,16 @@ get_par_levels <- function(x) {
   gsub("^.\\.", "", par_names)
 }
 
-set_attributes <- function(to, from = x) {
-  attr(to, "response") <- attr(from, "response")
-  attr(to, "success") <- attr(from, "success")
-  attr(to, "explanatory") <- attr(from, "explanatory")
-  attr(to, "response_type") <- attr(from, "response_type")
-  attr(to, "explanatory_type") <- attr(from, "explanatory_type")
-  attr(to, "distr_param") <- attr(from, "distr_param")
-  attr(to, "distr_param2") <- attr(from, "distr_param2")
-  attr(to, "null") <- attr(from, "null")
-  attr(to, "params") <- attr(from, "params")
-  attr(to, "theory_type") <- attr(from, "theory_type")
-  attr(to, "generate") <- attr(from, "generate")
-  attr(to, "type") <- attr(from, "type")
-
+copy_attrs <- function(to, from,
+                       attrs = c(
+                         "response", "success", "explanatory", "response_type",
+                         "explanatory_type", "distr_param", "distr_param2",
+                         "null", "params", "theory_type", "generate", "type"
+                       )) {
+  for (at in attrs) {
+    attr(to, at) <- attr(from, at)
+  }
+  
   to
 }
 
