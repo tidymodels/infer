@@ -426,3 +426,11 @@ test_that("calculate doesn't depend on order of `p` (#122)", {
     calc_chisq(c("virginica" = 0.25, "versicolor" = 0.25, "setosa" = 0.5))
   )
 })
+
+test_that("calc_impl_one_f works", {
+  expect_true(is.function(calc_impl_one_f(mean)))
+})
+
+test_that("calc_impl_diff_f works", {
+  expect_true(is.function(calc_impl_diff_f(mean)))
+})
