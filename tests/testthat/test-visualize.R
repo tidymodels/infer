@@ -206,7 +206,8 @@ test_that("visualize basic tests", {
       ) %>%
       generate(reps = 100, type = "simulate") %>%
       calculate(stat = "Chisq") %>%
-      visualize(method = "both"))
+      visualize(method = "both")
+  )
 
   # traditional instead of theoretical
   expect_error(
