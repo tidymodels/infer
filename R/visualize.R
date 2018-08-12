@@ -415,11 +415,7 @@ visualize_theoretical <- function(data,
       dens_color = dens_color
     )
   } else if (attr(data, "theory_type") == "ANOVA") {
-    if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
-      warning_glue(
-        "F usually corresponds to right-tailed tests. Proceed with caution."
-      )
-    }
+    warn_right_tail_test(direction, "F")
 
     infer_plot <- theory_plot(
       d_fun = df, q_fun = qf,
@@ -443,12 +439,7 @@ visualize_theoretical <- function(data,
       "Chi-square test of indep", "Chi-square Goodness of Fit"
     )
   ) {
-    if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
-      warning_glue(
-        "Chi-square usually corresponds to right-tailed tests. ",
-        "Proceed with caution."
-      )
-    }
+    warn_right_tail_test(direction, "Chi-square")
 
     infer_plot <- theory_plot(
       d_fun = dchisq, q_fun = qchisq,
@@ -561,11 +552,7 @@ visualize_both <- function(data, bins,
       ci_fill = ci_fill
     )
   } else if (attr(data, "theory_type") == "ANOVA") {
-    if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
-      warning_glue(
-        "F usually corresponds to right-tailed tests. Proceed with caution."
-      )
-    }
+    warn_right_tail_test(direction, "F")
     
     infer_plot <- both_plot(
       data = data,
@@ -603,12 +590,7 @@ visualize_both <- function(data, bins,
       "Chi-square test of indep", "Chi-square Goodness of Fit"
     )
   ) {
-    if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
-      warning_glue(
-        "Chi-square usually corresponds to right-tailed tests. ",
-        "Proceed with caution."
-      )
-    }
+    warn_right_tail_test(direction, "Chi-square")
     
     infer_plot <- both_plot(
       data = data,
@@ -632,4 +614,15 @@ visualize_both <- function(data, bins,
 
 get_percentile <- function(vector, observation) {
   stats::ecdf(vector)(observation)
+}
+
+warn_right_tail_test <- function(direction, stat_name) {
+  if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
+    warning_glue(
+      "{stat_name} usually corresponds to right-tailed tests. ",
+      "Proceed with caution."
+    )
+  }
+  
+  TRUE
 }
