@@ -2,12 +2,6 @@ context("calculate")
 
 iris_df <- tibble::as_tibble(iris)
 
-iris_tbl <- iris_df %>%
-  dplyr::mutate(
-    Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5"),
-    Sepal.Width.Group = dplyr::if_else(Sepal.Width > 3, "large", "small")
-  )
-
 # calculate arguments
 test_that("x is a tibble", {
   vec <- 1:10
@@ -425,4 +419,12 @@ test_that("calculate doesn't depend on order of `p` (#122)", {
     calc_chisq(c("versicolor" = 0.25, "setosa" = 0.5, "virginica" = 0.25)),
     calc_chisq(c("virginica" = 0.25, "versicolor" = 0.25, "setosa" = 0.5))
   )
+})
+
+test_that("calc_impl_one_f works", {
+  expect_true(is.function(calc_impl_one_f(mean)))
+})
+
+test_that("calc_impl_diff_f works", {
+  expect_true(is.function(calc_impl_diff_f(mean)))
 })

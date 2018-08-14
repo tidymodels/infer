@@ -56,7 +56,7 @@ specify <- function(x, formula, response = NULL,
     attr(x, "explanatory") <- f_rhs(formula)
   }
 
-  if (is.null(attr(x, "response"))) {
+  if (is_nuat(x, "response")) {
     stop_glue("Supply not `NULL` response variable.")
   }
 
@@ -130,7 +130,7 @@ specify <- function(x, formula, response = NULL,
   # To help determine theoretical distribution to plot
   attr(x, "response_type") <- class(response_variable(x))
 
-  if (is.null(attr(x, "explanatory"))) {
+  if (is_nuat(x, "explanatory")) {
     attr(x, "explanatory_type") <- NULL
   } else {
     attr(x, "explanatory_type") <- class(explanatory_variable(x))
@@ -140,9 +140,9 @@ specify <- function(x, formula, response = NULL,
     (attr(x, "response_type") == "factor") && is.null(success) &&
     (length(levels(response_variable(x))) == 2) &&
     (
-      is.null(attr(x, "explanatory_type")) ||
+      is_nuat(x, "explanatory_type") ||
       (
-        !is.null(attr(x, "explanatory_type")) &&
+        !is_nuat(x, "explanatory_type") &&
         (length(levels(explanatory_variable(x))) == 2)
       )
     )

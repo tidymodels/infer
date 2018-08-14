@@ -8,12 +8,6 @@ Sepal.Width_resamp <- iris %>%
   generate(reps = 10, type = "bootstrap") %>%
   calculate(stat = "median")
 
-iris_tbl <- tibble::as_tibble(iris) %>%
-  dplyr::mutate(
-    Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5"),
-    Sepal.Width.Group = dplyr::if_else(Sepal.Width > 3, "large", "small")
-  )
-
 obs_slope <- lm(Sepal.Length ~ Sepal.Width, data = iris_tbl) %>%
   broom::tidy() %>%
   dplyr::filter(term == "Sepal.Width") %>%
@@ -149,6 +143,15 @@ test_that("visualize basic tests", {
       calculate(stat = "t", order = c("small", "large")) %>%
       visualize(method = "theoretical", direction = "left", obs_stat = -obs_t)
   )
+  
+  expect_warning(
+    iris_tbl %>%
+      specify(Petal.Width ~ NULL) %>%
+      hypothesize(null = "point", mu = 1) %>%
+      generate(reps = 100) %>%
+      calculate(stat = "t") %>%
+      visualize(method = "both")
+  )
 
   expect_warning(
     iris_tbl %>%
@@ -208,7 +211,8 @@ test_that("visualize basic tests", {
       ) %>%
       generate(reps = 100, type = "simulate") %>%
       calculate(stat = "Chisq") %>%
-      visualize(method = "both"))
+      visualize(method = "both")
+  )
 
   # traditional instead of theoretical
   expect_error(

@@ -43,7 +43,7 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
 
   if (
     (type == "permute") &&
-    any(is.null(attr(x, "response")), is.null(attr(x, "explanatory")))
+    any(is_nuat(x, "response"), is_nuat(x, "explanatory"))
   ) {
     stop_glue(
       "Please `specify()` an explanatory and a response variable when ",
@@ -61,7 +61,7 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
 #   if (
 #     (type == "bootstrap") &&
 #     !(attr(attr(x, "params"), "names") %in% c("mu", "med", "sigma")) &&
-#     !is.null(attr(x, "null"))
+#     !is_nuat(x, "null")
 #   ) {
 #     stop_glue(
 #       "Bootstrapping is inappropriate in this setting. ",
@@ -85,7 +85,7 @@ generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
 
 bootstrap <- function(x, reps = 1, ...) {
   # Check if hypothesis test chosen
-  if (!is.null(attr(x, "null"))) {
+  if (!is_nuat(x, "null")) {
     # If so, shift the variable chosen to have a mean corresponding
     # to that specified in `hypothesize`
     if (attr(attr(x, "params"), "names") == "mu") {
@@ -126,7 +126,7 @@ bootstrap <- function(x, reps = 1, ...) {
 
   # Set variables for use in calculate()
   result <- rep_sample_n(x, size = nrow(x), replace = TRUE, reps = reps)
-  result <- set_attributes(to = result, from = x)
+  result <- copy_attrs(to = result, from = x)
 
   class(result) <- append("infer", class(result))
 
@@ -140,7 +140,7 @@ permute <- function(x, reps = 1, ...) {
     dplyr::mutate(replicate = rep(1:reps, each = nrow(x))) %>%
     dplyr::group_by(replicate)
 
-  df_out <- set_attributes(to = df_out, from = x)
+  df_out <- copy_attrs(to = df_out, from = x)
 
   class(df_out) <- append("infer", class(df_out))
 
@@ -176,7 +176,7 @@ simulate <- function(x, reps = 1, ...) {
     replicate = as.factor(rep(1:reps, rep(nrow(x), reps)))
   )
 
-  rep_tbl <- set_attributes(to = rep_tbl, from = x)
+  rep_tbl <- copy_attrs(to = rep_tbl, from = x)
 
   class(rep_tbl) <- append("infer", class(rep_tbl))
 

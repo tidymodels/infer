@@ -199,32 +199,21 @@ visualize <- function(data, bins = 15, method = "simulation",
   infer_plot
 }
 
-theory_t_plot <- function(deg_freedom, statistic_text = "t",
-                          dens_color = dens_color,
-                          ...) {
-  ggplot(data.frame(x = c(qt(0.001, deg_freedom),
-                          qt(0.999, deg_freedom)))) +
+theory_plot <- function(d_fun, q_fun, args_list, stat_name, dens_color) {
+  x_range <- do.call(q_fun, c(p = list(c(0.001, 0.999)), args_list))
+  
+  ggplot(data.frame(x = x_range)) +
     stat_function(
-      mapping = aes(x),
-      fun = dt,
-      args = list(df = deg_freedom),
-      color = dens_color
+      mapping = aes(x), fun = d_fun, args = args_list, color = dens_color
     ) +
-    ggtitle(glue_null("Theoretical {statistic_text} Null Distribution")) +
-    xlab("") +
-    ylab("")
+    ggtitle(glue_null("Theoretical {stat_name} Null Distribution")) +
+    xlab("") + ylab("")
 }
 
-both_t_plot <- function(data = data, deg_freedom, statistic_text = "t",
-                        dens_color,
-                        obs_stat,
-                        direction,
-                        bins,
-                        pvalue_fill,
-                        endpoints,
-                        ci_fill,
-                        ...) {
-  infer_t_plot <- shade_density_check(
+both_plot <- function(data, d_fun, args_list, stat_name, stat_label, dens_color,
+                      obs_stat, direction, bins, pvalue_fill, endpoints,
+                      ci_fill, ...) {
+  infer_plot <- shade_density_check(
     data = data,
     obs_stat = obs_stat,
     direction = direction,
@@ -233,159 +222,15 @@ both_t_plot <- function(data = data, deg_freedom, statistic_text = "t",
     pvalue_fill = pvalue_fill,
     ci_fill = ci_fill
   )
-
-  infer_t_plot +
+  
+  infer_plot +
     stat_function(
-      fun = dt, args = list(df = deg_freedom), color = dens_color
+      fun = d_fun, args = args_list, color = dens_color
     ) +
     ggtitle(glue_null(
-      "Simulation-Based and Theoretical {statistic_text} Null Distributions"
+      "Simulation-Based and Theoretical {stat_name} Null Distributions"
     )) +
-    xlab("tstat") +
-    ylab("")
-}
-
-theory_anova_plot <- function(deg_freedom_top, deg_freedom_bottom,
-                              statistic_text = "F",
-                              dens_color = dens_color,
-                              ...) {
-  ggplot(data.frame(x = c(qf(0.001, deg_freedom_top, deg_freedom_bottom),
-                          qf(0.999, deg_freedom_top, deg_freedom_bottom)))) +
-    stat_function(
-      mapping = aes(x),
-      fun = df,
-      args = list(df1 = deg_freedom_top, df2 = deg_freedom_bottom),
-      color = dens_color
-    ) +
-    ggtitle(glue_null("Theoretical {statistic_text} Null Distribution")) +
-    xlab("") +
-    ylab("")
-}
-
-both_anova_plot <- function(data, deg_freedom_top,
-                            deg_freedom_bottom, statistic_text = "F",
-                            dens_color,
-                            obs_stat,
-                            direction,
-                            bins,
-                            endpoints,
-                            pvalue_fill,
-                            ci_fill,
-                            ...) {
-  if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
-    warning_glue(
-      "F usually corresponds to right-tailed tests. Proceed with caution."
-    )
-  }
-
-  infer_anova_plot <- shade_density_check(
-    data = data,
-    obs_stat = obs_stat,
-    direction = direction,
-    bins = bins,
-    endpoints = endpoints,
-    pvalue_fill = pvalue_fill,
-    ci_fill = ci_fill
-  )
-
-  infer_anova_plot <- infer_anova_plot +
-    stat_function(
-      fun = df,
-      args = list(df1 = deg_freedom_top, df2 = deg_freedom_bottom),
-      color = dens_color
-    ) +
-    ggtitle(glue_null(
-      "Simulation-Based and Theoretical {statistic_text} Null Distributions"
-    )) +
-    xlab("Fstat") +
-    ylab("")
-}
-
-theory_z_plot <- function(statistic_text = "z", dens_color = dens_color, ...) {
-  ggplot(data.frame(x = c(qnorm(0.001), qnorm(0.999)))) +
-    stat_function(mapping = aes(x), fun = dnorm, color = dens_color) +
-    ggtitle(glue_null("Theoretical {statistic_text} Null Distribution")) +
-    xlab("") +
-    ylab("")
-}
-
-both_z_plot <- function(data, statistic_text = "z",
-                        dens_color,
-                        obs_stat,
-                        direction,
-                        pvalue_fill,
-                        bins,
-                        endpoints,
-                        ci_fill,
-                        ...) {
-  infer_z_plot <- shade_density_check(
-    data = data,
-    obs_stat = obs_stat,
-    direction = direction,
-    bins = bins,
-    endpoints = endpoints,
-    pvalue_fill = pvalue_fill,
-    ci_fill = ci_fill
-  )
-  infer_z_plot +
-    stat_function(fun = dnorm, color = dens_color) +
-    ggtitle(glue_null(
-      "Simulation-Based and Theoretical {statistic_text} Null Distributions"
-    )) +
-    xlab("zstat") +
-    ylab("")
-}
-
-theory_chisq_plot <- function(deg_freedom,
-                              statistic_text = "Chi-Square",
-                              dens_color = dens_color,
-                              ...) {
-  ggplot(data.frame(x = c(qchisq(0.001, deg_freedom),
-                          qchisq(0.999, deg_freedom)))) +
-    stat_function(
-      mapping = aes(x),
-      fun = dchisq,
-      args = list(df = deg_freedom),
-      color = dens_color
-    ) +
-    ggtitle(glue_null("Theoretical {statistic_text} Null Distribution")) +
-    xlab("") +
-    ylab("")
-}
-
-both_chisq_plot <- function(data, deg_freedom, statistic_text = "Chi-Square",
-                            dens_color,
-                            obs_stat,
-                            direction,
-                            bins,
-                            endpoints,
-                            pvalue_fill = pvalue_fill,
-                            ci_fill = ci_fill,
-                            ...) {
-  if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
-    warning_glue("Chi-square usually corresponds to right-tailed tests. ",
-                 "Proceed with caution.")
-  }
-
-  infer_chisq_plot <- shade_density_check(
-    data = data,
-    obs_stat = obs_stat,
-    direction = direction,
-    bins = bins,
-    endpoints = endpoints,
-    pvalue_fill = pvalue_fill,
-    ci_fill = ci_fill
-  )
-
-  infer_chisq_plot +
-    stat_function(
-      fun = dchisq, args = list(df = deg_freedom), color = dens_color
-    ) +
-    ggtitle(glue_null(
-      "Simulation-Based and Theoretical {statistic_text} Null Distributions"
-    )) +
-    xlab("chisqstat") +
-    ylab("")
+    xlab(stat_label) + ylab("")
 }
 
 shade_density_check <- function(data,
@@ -422,79 +267,30 @@ shade_density_check <- function(data,
           geom_histogram(bins = bins, color = "white", ...)
       }
 
-      if (direction %in% c("less", "left")) {
+      if (direction %in% c("less", "left", "greater", "right")) {
         gg_plot <- gg_plot +
-          geom_rect(
-            fill = pvalue_fill, alpha = 0.01,
-            aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf),
-            ...
-          )
+          geom_tail(direction, obs_stat, pvalue_fill)
       }
-      if (direction %in% c("greater", "right")) {
+      
+      if (direction %in% c("two_sided", "both")) {
         gg_plot <- gg_plot +
-          geom_rect(
-            fill = pvalue_fill, alpha = 0.01,
-            aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf),
-            ...
+          geom_both_tails(
+            border_1 = obs_stat,
+            border_2 = mirror_obs_stat(data$stat, obs_stat),
+            fill = pvalue_fill
           )
       }
 
-      if (
-        (direction %in% c("two_sided", "both")) &&
-        (obs_stat >= stats::median(data$stat))
-      ) {
+      if (direction == "between") {
         gg_plot <- gg_plot +
           geom_rect(
-            fill = pvalue_fill, alpha = 0.01,
-            mapping = aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf),
+            data = data.frame(endpoints[1]),
+            fill = ci_fill, alpha = 0.6,
+            aes(xmin = endpoints[1], xmax = endpoints[2], ymin = 0, ymax = Inf),
+            inherit.aes = FALSE,
             ...
-          ) +
-          geom_rect(
-            fill = pvalue_fill, alpha = 0.01,
-            mapping = aes(
-              xmin = -Inf,
-              xmax = stats::quantile(
-                data$stat, probs = 1 - get_percentile(data$stat, obs_stat)
-              ),
-              ymin = 0,
-              ymax = Inf,
-              ...
-            )
           )
       }
-
-      if (
-        (direction %in% c("two_sided", "both")) &&
-        (obs_stat < stats::median(data$stat))
-      ) {
-        gg_plot <- gg_plot +
-          geom_rect(
-            fill = pvalue_fill, alpha = 0.01,
-            mapping = aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf),
-            ...
-          ) +
-          geom_rect(
-            fill = pvalue_fill, alpha = 0.01,
-            mapping = aes(
-              xmin = stats::quantile(
-                data$stat, probs = 1 - get_percentile(data$stat, obs_stat)
-              ),
-              xmax = Inf,
-              ymin = 0,
-              ymax = Inf,
-              ...
-            )
-          )
-      }
-    }
-
-    if (direction == "between") {
-      gg_plot <- gg_plot +
-        geom_rect(
-          fill = ci_fill, alpha = 0.01,
-          aes(xmin = endpoints[1], xmax = endpoints[2], ymin = 0, ymax = Inf),
-          ...
-        )
     }
   }
   gg_plot
@@ -549,7 +345,7 @@ visualize_theoretical <- function(data,
   )
 
   if (
-    !is.null(attr(data, "stat")) &&
+    !is_nuat(data, "stat") &&
     !(attr(data, "stat") %in% c("t", "z", "Chisq", "F"))
   ) {
     warning_glue(
@@ -557,49 +353,41 @@ visualize_theoretical <- function(data,
       "different scales. Displaying only the theoretical distribution."
     )
   }
+  
+  theory_type <- short_theory_type(data)
 
-  if (
-    attr(data, "theory_type") %in% c(
-      "Two sample t", "Slope with t", "One sample t"
-    )
-  ) {
-    infer_plot <- theory_t_plot(
-      deg_freedom = attr(data, "distr_param"),
-      statistic_text = "t",
+  if (theory_type == "t") {
+    infer_plot <- theory_plot(
+      d_fun = dt, q_fun = qt,
+      args_list = list(df = attr(data, "distr_param")),
+      stat_name = "t",
       dens_color = dens_color
     )
-  } else if (attr(data, "theory_type") == "ANOVA") {
-    if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
-      warning_glue(
-        "F usually corresponds to right-tailed tests. Proceed with caution."
-      )
-    }
+  } else if (theory_type == "F") {
+    warn_right_tail_test(direction, "F")
 
-    infer_plot <- theory_anova_plot(
-      deg_freedom_top = attr(data, "distr_param"),
-      deg_freedom_bottom = attr(data, "distr_param2"),
-      statistic_text = "F",
+    infer_plot <- theory_plot(
+      d_fun = df, q_fun = qf,
+      args_list = list(
+        df1 = attr(data, "distr_param"), df2 = attr(data, "distr_param2")
+      ),
+      stat_name = "F",
       dens_color = dens_color
     )
-  } else if (
-    attr(data, "theory_type") %in% c("One sample prop z", "Two sample props z")
-  ) {
-    infer_plot <- theory_z_plot(statistic_text = "z", dens_color = dens_color)
-  } else if (
-    attr(data, "theory_type") %in% c(
-      "Chi-square test of indep", "Chi-square Goodness of Fit"
+  } else if (theory_type == "z") {
+    infer_plot <- theory_plot(
+      d_fun = dnorm, q_fun = qnorm,
+      args_list = list(),
+      stat_name = "z",
+      dens_color = dens_color
     )
-  ) {
-    if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
-      warning_glue(
-        "Chi-square usually corresponds to right-tailed tests. ",
-        "Proceed with caution."
-      )
-    }
+  } else if (theory_type == "Chi-Square") {
+    warn_right_tail_test(direction, "Chi-Square")
 
-    infer_plot <- theory_chisq_plot(
-      deg_freedom = attr(data, "distr_param"),
-      statistic_text = "Chi-Square",
+    infer_plot <- theory_plot(
+      d_fun = dchisq, q_fun = qchisq,
+      args_list = list(df = attr(data, "distr_param")),
+      stat_name = "Chi-Square",
       dens_color = dens_color
     )
   } # else {
@@ -608,61 +396,17 @@ visualize_theoretical <- function(data,
     # )
   # }
 
-  # Move into its own function
-  if (!is.null(obs_stat)) {
-    if (!is.null(direction)) {
-      if (direction %in% c("less", "left")) {
-        infer_plot <- infer_plot +
-          geom_rect(
-            data = data.frame(obs_stat),
-            fill = pvalue_fill, alpha = 0.6,
-            aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf),
-            ...
-          )
-      }
-      if (direction %in% c("greater", "right")) {
-        infer_plot <- infer_plot +
-          geom_rect(
-            data = data.frame(obs_stat),
-            fill = pvalue_fill, alpha = 0.6,
-            aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf),
-            ...
-          )
-      }
-
-      # Assuming two-tailed shading will only happen with theoretical
-      # distributions centered at 0
-      if ((direction %in% c("two_sided", "both")) && (obs_stat >= 0)) {
-        infer_plot <- infer_plot +
-          geom_rect(
-            data = data.frame(obs_stat),
-            fill = pvalue_fill, alpha = 0.6,
-            aes(xmin = obs_stat, xmax = Inf, ymin = 0, ymax = Inf),
-            ...
-          ) +
-          geom_rect(
-            data = data.frame(obs_stat),
-            fill = pvalue_fill, alpha = 0.6,
-            aes(xmin = -Inf, xmax = -obs_stat, ymin = 0, ymax = Inf),
-            ...
-          )
-      }
-
-      if ((direction %in% c("two_sided", "both")) && (obs_stat < 0)) {
-        infer_plot <- infer_plot +
-          geom_rect(
-            data = data.frame(obs_stat),
-            fill = pvalue_fill, alpha = 0.6,
-            aes(xmin = -Inf, xmax = obs_stat, ymin = 0, ymax = Inf),
-            ...
-          ) +
-          geom_rect(
-            data = data.frame(obs_stat),
-            fill = pvalue_fill, alpha = 0.6,
-            aes(xmin = -obs_stat, xmax = Inf, ymin = 0, ymax = Inf),
-            ...
-          )
-      }
+  # Plot tails
+  if (!is.null(obs_stat) && !is.null(direction)) {
+    if (direction %in% c("less", "left", "greater", "right")) {
+      infer_plot <- infer_plot +
+        geom_tail(direction, obs_stat, pvalue_fill, ...)
+    }
+    # Assuming two-tailed shading will only happen with theoretical
+    # distributions centered at 0
+    if (direction %in% c("two_sided", "both")) {
+      infer_plot <- infer_plot +
+        geom_both_tails(obs_stat, -obs_stat, pvalue_fill, ...)
     }
   }
 
@@ -692,11 +436,14 @@ visualize_both <- function(data, bins,
     )
   }
 
-  if (attr(data, "theory_type") %in% c("Two sample t", "Slope with t")) {
-    infer_plot <- both_t_plot(
+  theory_type <- short_theory_type(data)
+  
+  if (theory_type == "t") {
+    infer_plot <- both_plot(
       data = data,
-      deg_freedom = attr(data, "distr_param"),
-      statistic_text = "t",
+      d_fun = dt,
+      args_list = list(df = attr(data, "distr_param")),
+      stat_name = "t", stat_label = "tstat",
       dens_color = dens_color,
       bins = bins,
       direction = direction,
@@ -705,12 +452,16 @@ visualize_both <- function(data, bins,
       endpoints = endpoints,
       ci_fill = ci_fill
     )
-  } else if (attr(data, "theory_type") == "ANOVA") {
-    infer_plot <- both_anova_plot(
+  } else if (theory_type == "F") {
+    warn_right_tail_test(direction, "F")
+    
+    infer_plot <- both_plot(
       data = data,
-      deg_freedom_top = attr(data, "distr_param"),
-      deg_freedom_bottom = attr(data, "distr_param2"),
-      statistic_text = "F",
+      d_fun = df,
+      args_list = list(
+        df1 = attr(data, "distr_param"), df2 = attr(data, "distr_param2")
+      ),
+      stat_name = "F", stat_label = "Fstat",
       dens_color = dens_color,
       bins = bins,
       direction = direction,
@@ -719,12 +470,12 @@ visualize_both <- function(data, bins,
       endpoints = endpoints,
       ci_fill = ci_fill
     )
-  } else if (
-    attr(data, "theory_type") %in% c("One sample prop z", "Two sample props z")
-  ) {
-    infer_plot <- both_z_plot(
+  } else if (theory_type == "z") {
+    infer_plot <- both_plot(
       data = data,
-      statistic_text = "z",
+      d_fun = dnorm,
+      args_list = list(),
+      stat_name = "z", stat_label = "zstat",
       dens_color = dens_color,
       bins = bins,
       direction = direction,
@@ -733,15 +484,14 @@ visualize_both <- function(data, bins,
       endpoints = endpoints,
       ci_fill = ci_fill
     )
-  } else if (
-    attr(data, "theory_type") %in% c(
-      "Chi-square test of indep", "Chi-square Goodness of Fit"
-    )
-  ) {
-    infer_plot <- both_chisq_plot(
+  } else if (theory_type == "Chi-Square") {
+    warn_right_tail_test(direction, "Chi-Square")
+    
+    infer_plot <- both_plot(
       data = data,
-      deg_freedom = attr(data, "distr_param"),
-      statistic_text = "Chi-Square",
+      d_fun = dchisq,
+      args_list = list(df = attr(data, "distr_param")),
+      stat_name = "Chi-Square", stat_label = "chisqstat",
       dens_color = dens_color,
       bins = bins,
       direction = direction,
@@ -759,6 +509,65 @@ visualize_both <- function(data, bins,
 
 get_percentile <- function(vector, observation) {
   stats::ecdf(vector)(observation)
+}
+
+mirror_obs_stat <- function(vector, observation) {
+  obs_percentile <- get_percentile(vector, observation)
+  
+  stats::quantile(vector, probs = 1 - obs_percentile)
+}
+
+short_theory_type <- function(x) {
+  theory_attr <- attr(x, "theory_type")
+  theory_types <- list(
+    t = c("Two sample t", "Slope with t", "One sample t"),
+    `F` = "ANOVA",
+    z = c("One sample prop z", "Two sample props z"),
+    `Chi-Square` = c("Chi-square test of indep", "Chi-square Goodness of Fit")
+  )
+  
+  is_type <- vapply(theory_types, function(x) {theory_attr %in% x}, logical(1))
+  
+  names(theory_types)[which(is_type)[1]]
+}
+
+warn_right_tail_test <- function(direction, stat_name) {
+  if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
+    warning_glue(
+      "{stat_name} usually corresponds to right-tailed tests. ",
+      "Proceed with caution."
+    )
+  }
+  
+  TRUE
+}
+
+geom_tail <- function(dir, border, fill, ...) {
+  if (dir %in% c("less", "left")) {
+    x_range <- c(-Inf, border)
+  } else if (dir %in% c("greater", "right")) {
+    x_range <- c(border, Inf)
+  }
+  
+  list(
+    geom_rect(
+      data = data.frame(border),
+      aes(xmin = x_range[1], xmax = x_range[2], ymin = 0, ymax = Inf),
+      fill = fill, alpha = 0.6,
+      inherit.aes = FALSE,
+      ...
+    )
+  )
+}
+
+geom_both_tails <- function(border_1, border_2, fill, ...) {
+  left_border <- min(border_1, border_2)
+  right_border <- max(border_1, border_2)
+  
+  c(
+    geom_tail("left", left_border, fill, ...),
+    geom_tail("right", right_border, fill, ...)
+  )
 }
 
 #' @rdname visualize

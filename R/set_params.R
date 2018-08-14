@@ -6,14 +6,14 @@
 set_params <- function(x) {
   attr(x, "theory_type") <- NULL
 
-  if (!is.null(attr(x, "response"))) {
+  if (!is_nuat(x, "response")) {
     num_response_levels <- length(levels(response_variable(x)))
   }
 
   # One variable
   if (
-    !is.null(attr(x, "response")) && is.null(attr(x, "explanatory")) &&
-    !is.null(attr(x, "response_type")) && is.null(attr(x, "explanatory_type"))
+    !is_nuat(x, "response") && is_nuat(x, "explanatory") &&
+    !is_nuat(x, "response_type") && is_nuat(x, "explanatory_type")
   ) {
 
     # One mean
@@ -43,8 +43,8 @@ set_params <- function(x) {
 
   # Two variables
   if (
-    !is.null(attr(x, "response")) && !is.null(attr(x, "explanatory")) &
-    !is.null(attr(x, "response_type")) && !is.null(attr(x, "explanatory_type"))
+    !is_nuat(x, "response") && !is_nuat(x, "explanatory") &
+    !is_nuat(x, "response_type") && !is_nuat(x, "explanatory_type")
   ) {
     attr(x, "type") <- "bootstrap"
 
@@ -130,7 +130,7 @@ set_params <- function(x) {
     }
   }
 
-#  if(is.null(attr(x, "theory_type")))
+#  if(is_nuat(x, "theory_type"))
 #     warning_glue("Theoretical type not yet implemented")
 
   x
