@@ -569,3 +569,7 @@ geom_both_tails <- function(border_1, border_2, fill, ...) {
     geom_tail("right", right_border, fill, ...)
   )
 }
+
+#' @rdname visualize
+#' @export
+visualise <- visualize
