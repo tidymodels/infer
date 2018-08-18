@@ -428,3 +428,22 @@ test_that("calc_impl_one_f works", {
 test_that("calc_impl_diff_f works", {
   expect_true(is.function(calc_impl_diff_f(mean)))
 })
+
+test_that("calc_impl.sum works", {
+  expect_equal(
+    iris_tbl %>%
+      specify(Petal.Width ~ NULL) %>%
+      calculate(stat = "sum") %>%
+      `[[`(1),
+    sum(iris_tbl$Petal.Width)
+  )
+  
+  gen_iris16 <- iris_tbl %>%
+    specify(Petal.Width ~ NULL) %>%
+    generate(10)
+  
+  expect_equal(
+    gen_iris16 %>% calculate(stat = "sum"),
+    gen_iris16 %>% dplyr::summarise(stat = sum(Petal.Width))
+  )
+})

@@ -3,9 +3,9 @@
 #' @param x The output from [generate()] for computation-based inference or the
 #'   output from [hypothesize()] piped in to here for theory-based inference.
 #' @param stat A string giving the type of the statistic to calculate. Current
-#'   options include `"mean"`, `"median"`, `"sd"`, `"prop"`, `"diff in means"`,
-#'   `"diff in medians"`, `"diff in props"`, `"Chisq"`, `"F"`, `"t"`, `"z"`,
-#'   `"slope"`, and `"correlation"`.
+#'   options include `"mean"`, `"median"`, `"sum"`, `"sd"`, `"prop"`, `"diff in
+#'   means"`, `"diff in medians"`, `"diff in props"`, `"Chisq"`, `"F"`, `"t"`,
+#'   `"z"`, `"slope"`, and `"correlation"`.
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction, where `order =
 #'   c("first", "second")` means `("first" - "second")` Needed for inference on
@@ -29,7 +29,7 @@
 #' @export
 calculate <- function(x,
                       stat = c(
-                        "mean", "median", "sd", "prop", "diff in means",
+                        "mean", "median", "sum", "sd", "prop", "diff in means",
                         "diff in medians", "diff in props", "Chisq", "F",
                         "slope", "correlation", "t", "z"
                       ),
@@ -53,8 +53,8 @@ calculate <- function(x,
       x$replicate <- 1L
     } else if (
       stat %in% c(
-        "mean", "median", "sd", "prop", "diff in means", "diff in medians",
-        "diff in props", "slope", "correlation"
+        "mean", "median", "sum", "sd", "prop", "diff in means",
+        "diff in medians", "diff in props", "slope", "correlation"
       )
     ) {
       stop_glue(
@@ -139,6 +139,8 @@ calc_impl_one_f <- function(f) {
 calc_impl.mean <- calc_impl_one_f(mean)
 
 calc_impl.median <- calc_impl_one_f(stats::median)
+
+calc_impl.sum <- calc_impl_one_f(sum)
 
 calc_impl.sd <- calc_impl_one_f(stats::sd)
 
