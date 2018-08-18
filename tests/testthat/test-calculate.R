@@ -275,14 +275,15 @@ test_that("`order` is working", {
   expect_error(calculate(gen_iris11, stat = "diff in means"))
 })
 
+gen_iris12 <- iris %>%
+  dplyr::mutate(
+    Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")
+  ) %>%
+  specify(Sepal.Length.Group ~ NULL, success = ">5") %>%
+  hypothesize(null = "point", p = 0.3) %>%
+  generate(reps = 10, type = "simulate")
+
 test_that('success is working for stat = "prop"', {
-  gen_iris12 <- iris %>%
-    dplyr::mutate(
-      Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")
-    ) %>%
-    specify(Sepal.Length.Group ~ NULL, success = ">5") %>%
-    hypothesize(null = "point", p = 0.3) %>%
-    generate(reps = 10, type = "simulate")
   expect_silent(gen_iris12 %>% calculate(stat = "prop"))
   expect_silent(gen_iris12 %>% calculate(stat = "z"))
 })
@@ -372,6 +373,7 @@ test_that("specify done before calculate", {
   iris_prop <- iris_tbl %>% dplyr::select(Sepal.Length.Group)
   attr(iris_prop, "response") <- "Sepal.Length.Group"
   expect_error(calculate(iris_prop, stat = "prop"))
+  expect_error(calculate(iris_prop, stat = "count"))
 })
 
 test_that("chisq GoF has params specified for observed stat", {
@@ -445,5 +447,29 @@ test_that("calc_impl.sum works", {
   expect_equal(
     gen_iris16 %>% calculate(stat = "sum"),
     gen_iris16 %>% dplyr::summarise(stat = sum(Petal.Width))
+  )
+})
+
+test_that("calc_impl_success_f works", {
+  expect_true(
+    is.function(calc_impl_success_f(
+      f = function(response, success, ...) {mean(response == success, ...)},
+      output_name = "proportion"
+    ))
+  )
+})
+
+test_that("calc_impl.count works", {
+  expect_equal(
+    iris_tbl %>%
+      specify(Sepal.Length.Group ~ NULL, success = ">5") %>%
+      calculate(stat = "count") %>%
+      `[[`(1),
+    sum(iris_tbl$Sepal.Length.Group == ">5")
+  )
+  
+  expect_equal(
+    gen_iris12 %>% calculate(stat = "count"),
+    gen_iris12 %>% dplyr::summarise(stat = sum(Sepal.Length.Group == ">5"))
   )
 })

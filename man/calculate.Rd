@@ -4,7 +4,7 @@
 \alias{calculate}
 \title{Calculate summary statistics}
 \usage{
-calculate(x, stat = c("mean", "median", "sum", "sd", "prop",
+calculate(x, stat = c("mean", "median", "sum", "sd", "prop", "count",
   "diff in means", "diff in medians", "diff in props", "Chisq", "F",
   "slope", "correlation", "t", "z"), order = NULL, ...)
 }
@@ -13,8 +13,9 @@ calculate(x, stat = c("mean", "median", "sum", "sd", "prop",
 output from \code{\link[=hypothesize]{hypothesize()}} piped in to here for theory-based inference.}
 
 \item{stat}{A string giving the type of the statistic to calculate. Current
-options include \code{"mean"}, \code{"median"}, \code{"sum"}, \code{"sd"}, \code{"prop"}, \code{"diff in means"}, \code{"diff in medians"}, \code{"diff in props"}, \code{"Chisq"}, \code{"F"}, \code{"t"},
-\code{"z"}, \code{"slope"}, and \code{"correlation"}.}
+options include \code{"mean"}, \code{"median"}, \code{"sum"}, \code{"sd"}, \code{"prop"}, \code{"count"},
+\code{"diff in means"}, \code{"diff in medians"}, \code{"diff in props"}, \code{"Chisq"},
+\code{"F"}, \code{"t"}, \code{"z"}, \code{"slope"}, and \code{"correlation"}.}
 
 \item{order}{A string vector of specifying the order in which the levels of
 the explanatory variable should be ordered for subtraction, where \code{order = c("first", "second")} means \code{("first" - "second")} Needed for inference on

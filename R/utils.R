@@ -129,8 +129,9 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
   # but that's not as helpful to beginners with the cryptic error msg
   if (
     !stat %in% c(
-      "mean", "median", "sum", "sd", "prop", "diff in means", "diff in medians",
-      "diff in props", "Chisq", "F", "slope", "correlation", "t", "z"
+      "mean", "median", "sum", "sd", "prop", "count", "diff in means",
+      "diff in medians", "diff in props", "Chisq", "F", "slope", "correlation",
+      "t", "z"
     )
   ) {
     stop_glue(
