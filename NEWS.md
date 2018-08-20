@@ -8,6 +8,7 @@
 - Reduce code duplication (#173).
 - Make transparancy in `visualize()` to not depend on method and data volume.
 - Make `visualize()` work for "One sample t" theoretical type with `method = "both"`.
+- Add `stat = "sum"` and `stat = "count"` options to `calculate()` (#50).
 
 # infer 0.3.1
 

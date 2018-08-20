@@ -3,9 +3,9 @@
 #' @param x The output from [generate()] for computation-based inference or the
 #'   output from [hypothesize()] piped in to here for theory-based inference.
 #' @param stat A string giving the type of the statistic to calculate. Current
-#'   options include `"mean"`, `"median"`, `"sd"`, `"prop"`, `"diff in means"`,
-#'   `"diff in medians"`, `"diff in props"`, `"Chisq"`, `"F"`, `"t"`, `"z"`,
-#'   `"slope"`, and `"correlation"`.
+#'   options include `"mean"`, `"median"`, `"sum"`, `"sd"`, `"prop"`, `"count"`,
+#'   `"diff in means"`, `"diff in medians"`, `"diff in props"`, `"Chisq"`,
+#'   `"F"`, `"t"`, `"z"`, `"slope"`, and `"correlation"`.
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction, where `order =
 #'   c("first", "second")` means `("first" - "second")` Needed for inference on
@@ -29,9 +29,9 @@
 #' @export
 calculate <- function(x,
                       stat = c(
-                        "mean", "median", "sd", "prop", "diff in means",
-                        "diff in medians", "diff in props", "Chisq", "F",
-                        "slope", "correlation", "t", "z"
+                        "mean", "median", "sum", "sd", "prop", "count",
+                        "diff in means", "diff in medians", "diff in props",
+                        "Chisq", "F", "slope", "correlation", "t", "z"
                       ),
                       order = NULL,
                       ...) {
@@ -53,8 +53,8 @@ calculate <- function(x,
       x$replicate <- 1L
     } else if (
       stat %in% c(
-        "mean", "median", "sd", "prop", "diff in means", "diff in medians",
-        "diff in props", "slope", "correlation"
+        "mean", "median", "sum", "sd", "prop", "count", "diff in means",
+        "diff in medians", "diff in props", "slope", "correlation"
       )
     ) {
       stop_glue(
@@ -62,7 +62,7 @@ calculate <- function(x,
         "implemented) for `stat` = \"{stat}\". Are you missing ",
         "a `generate()` step?"
       )
-    } else if (!(stat %in% c("Chisq", "prop"))) {
+    } else if (!(stat %in% c("Chisq", "prop", "count"))) {
       # From `hypothesize()` to `calculate()`
       # Catch-all if generate was not called
 #      warning_glue("You unexpectantly went from `hypothesize()` to ",
@@ -140,36 +140,45 @@ calc_impl.mean <- calc_impl_one_f(mean)
 
 calc_impl.median <- calc_impl_one_f(stats::median)
 
+calc_impl.sum <- calc_impl_one_f(sum)
+
 calc_impl.sd <- calc_impl_one_f(stats::sd)
 
-calc_impl.prop <- function(type, x, order, ...) {
-  col <- base::setdiff(names(x), "replicate")
-
-  ## No longer needed with implementation of `check_point_params()`
-  # if (!is.factor(x[[col]])) {
-  #   stop_glue(
-  #     "Calculating a {stat} here is not appropriate since the `{col}` ",
-  #     "variable is not a factor."
-  #   )
-  # }
-
-  if (is_nuat(x, "success")) {
-    stop_glue(
-      'To calculate a proportion, the `"success"` argument must be provided ',
-      'in `specify()`.'
-    )
-  }
-
-  success <- attr(x, "success")
-  x %>%
-    dplyr::group_by(replicate) %>%
-    dplyr::summarize(
-      stat = mean(
-        # rlang::eval_tidy(col) == rlang::eval_tidy(success), ...
-        !!sym(col) == success, ...
+calc_impl_success_f <- function(f, output_name) {
+  function(type, x, order, ...) {
+    col <- base::setdiff(names(x), "replicate")
+    
+    ## No longer needed with implementation of `check_point_params()`
+    # if (!is.factor(x[[col]])) {
+    #   stop_glue(
+    #     "Calculating a {stat} here is not appropriate since the `{col}` ",
+    #     "variable is not a factor."
+    #   )
+    # }
+    
+    if (is_nuat(x, "success")) {
+      stop_glue(
+        'To calculate a {output_name}, the `"success"` argument must be ',
+        'provided in `specify()`.'
       )
-    )
+    }
+    
+    success <- attr(x, "success")
+    x %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize(stat = f(!!sym(col), success))
+  }
 }
+
+calc_impl.prop <- calc_impl_success_f(
+  f = function(response, success, ...) {mean(response == success, ...)},
+  output_name = "proportion"
+)
+
+calc_impl.count <- calc_impl_success_f(
+  f = function(response, success, ...) {sum(response == success, ...)},
+  output_name = "count"
+)
 
 calc_impl.F <- function(type, x, order, ...) {
   x %>%
