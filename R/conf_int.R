@@ -30,12 +30,12 @@
 #' bootstrap_distn %>% conf_int(level = 0.9)
 #' bootstrap_distn %>% conf_int(type = "se", point_estimate = d_hat)
 #' 
-#' @name get_ci
+#' @name get_confidence_interval
 NULL
 
-#' @rdname get_ci
+#' @rdname get_confidence_interval
 #' @export
-conf_int <- function(x, level = 0.95, type = "percentile", 
+get_confidence_interval <- function(x, level = 0.95, type = "percentile", 
                      point_estimate = NULL){
   
   check_ci_args(x, level, type, point_estimate)
@@ -86,8 +86,21 @@ check_ci_args <- function(x, level, type, point_estimate){
 
 #' @rdname get_ci
 #' @export
-get_ci <- conf_int
+conf_int <- function(x, level = 0.95, type = "percentile", 
+                     point_estimate = NULL) {
+  .Deprecated("get_confidence_interval")
+  get_confidence_interval(
+    x, level = level, type = type, point_estimate = point_estimate
+  )
+}
 
 #' @rdname get_ci
 #' @export
-get_confidence_interval <- conf_int
+get_ci <- function(x, level = 0.95, type = "percentile", 
+                     point_estimate = NULL) {
+  .Deprecated("get_confidence_interval")
+  get_confidence_interval(
+    x, level = level, type = type, point_estimate = point_estimate
+  )
+}
+
