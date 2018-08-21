@@ -31,7 +31,7 @@ NULL
 
 #' @rdname get_pvalue
 #' @export
-p_value <- function(x, obs_stat, direction){
+get_p_value <- function(x, obs_stat, direction){
   
   check_type(x, is.data.frame)
   obs_stat <- check_obs_stat(obs_stat)
@@ -101,7 +101,10 @@ two_sided_p_value <- function(x, obs_stat){
 
 #' @rdname get_pvalue
 #' @export
-get_pvalue <- p_value
+p_value <- function(x, obs_stat, direction) {
+  .Deprecated("get_p_value")  
+  get_p_value(x = x, obs_stat = obs_stat, direction = direction)
+}
 
 # which_distribution <- function(x, theory_type, obs_stat, direction){
 #   
