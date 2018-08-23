@@ -22,7 +22,7 @@ r_packages:
   
 r_github_packages:
   - hadley/pkgdown
-  - andrewpbray/infer
+  - tidymodels/infer
 
 before_deploy:
   - Rscript -e 'pkgdown::build_site()'
@@ -33,11 +33,11 @@ deploy:
   keep-history: true
   local-dir: docs
   github_token: $GITHUBTRAVIS
-  target-branch: gh-pages-dev
-# target-branch: gh-pages
+#  target-branch: gh-pages-dev
+  target-branch: gh-pages
   on:
-   branch: develop
-#  branch: master
+#   branch: develop
+    branch: master
 
 after_success:
   - Rscript -e 'covr::codecov()'
