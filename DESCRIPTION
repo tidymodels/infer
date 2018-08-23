@@ -26,7 +26,7 @@ Imports:
     rlang (>= 0.2.0),
     ggplot2,
     magrittr,
-    glue
+    glue (>= 1.3.0)
 Depends:
     R (>= 3.1.2)
 Suggests: 
