@@ -3,6 +3,7 @@
 #' @param x An object of class `infer`, i.e. output from [specify()] or
 #'   [hypothesize()].
 #' @param ... Arguments passed to methods.
+#' @importFrom glue glue_collapse
 #'
 #' @export
 print.infer <- function(x, ...) {
