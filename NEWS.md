@@ -1,3 +1,15 @@
+# infer 0.3.1.9000
+
+- Account for `NULL` value in left hand side of formula in `specify()` (#156) and `type` in `generate()` (#157).
+- Update documentation code to follow tidyverse style guide (#159).
+- Remove help page for internal `set_params()` (#165).
+- Fully use {tibble} (#166).
+- Fix `calculate()` to not depend on order of `p` for `type = "simulate"` (#122).
+- Reduce code duplication (#173).
+- Make transparancy in `visualize()` to not depend on method and data volume.
+- Make `visualize()` work for "One sample t" theoretical type with `method = "both"`.
+- Add `stat = "sum"` and `stat = "count"` options to `calculate()` (#50).
+
 # infer 0.3.1
 
 - Stop using package {assertive} in favor of custom type checks (#149)

@@ -2,9 +2,15 @@
 % Please edit documentation in R/visualize.R
 \name{visualize}
 \alias{visualize}
+\alias{visualise}
 \title{Visualize statistical inference}
 \usage{
 visualize(data, bins = 15, method = "simulation",
+  dens_color = "black", obs_stat = NULL, obs_stat_color = "red2",
+  pvalue_fill = "pink", direction = NULL, endpoints = NULL,
+  endpoints_color = "mediumaquamarine", ci_fill = "turquoise", ...)
+
+visualise(data, bins = 15, method = "simulation",
   dens_color = "black", obs_stat = NULL, obs_stat_color = "red2",
   pvalue_fill = "pink", direction = NULL, endpoints = NULL,
   endpoints_color = "mediumaquamarine", ci_fill = "turquoise", ...)
@@ -57,7 +63,7 @@ Visualize the distribution of the simulation-based inferential statistics or
 the theoretical distribution (or both!).
 }
 \examples{
-# Permutations to create a simulation-based null distribution for 
+# Permutations to create a simulation-based null distribution for
 # one numerical response and one categorical predictor
 # using t statistic
 mtcars \%>\%
@@ -68,7 +74,7 @@ mtcars \%>\%
   calculate(stat = "t", order = c("1", "0")) \%>\%
   visualize(method = "simulation") #default method
 
-# Theoretical t distribution for 
+# Theoretical t distribution for
 # one numerical response and one categorical predictor
 # using t statistic
 mtcars \%>\%

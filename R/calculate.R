@@ -1,18 +1,18 @@
 #' Calculate summary statistics
-#' 
+#'
 #' @param x The output from [generate()] for computation-based inference or the
 #'   output from [hypothesize()] piped in to here for theory-based inference.
 #' @param stat A string giving the type of the statistic to calculate. Current
-#'   options include `"mean"`, `"median"`, `"sd"`, `"prop"`, `"diff in means"`,
-#'   `"diff in medians"`, `"diff in props"`, `"Chisq"`, `"F"`, `"t"`, `"z"`,
-#'   `"slope"`, and `"correlation"`.
+#'   options include `"mean"`, `"median"`, `"sum"`, `"sd"`, `"prop"`, `"count"`,
+#'   `"diff in means"`, `"diff in medians"`, `"diff in props"`, `"Chisq"`,
+#'   `"F"`, `"t"`, `"z"`, `"slope"`, and `"correlation"`.
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction, where `order =
 #'   c("first", "second")` means `("first" - "second")` Needed for inference on
 #'   difference in means, medians, or proportions and t and z statistics.
 #' @param ... To pass options like `na.rm = TRUE` into functions like
 #'   [mean()][base::mean()], [sd()][stats::sd()], etc.
-#'   
+#'
 #' @return A tibble containing a `stat` column of calculated statistics.
 #'
 #' @examples
@@ -23,25 +23,15 @@
 #'   hypothesize(null = "independence") %>%
 #'   generate(reps = 100, type = "permute") %>%
 #'   calculate(stat = "diff in props", order = c("1", "0"))
-#' 
+#'
 #' @importFrom dplyr group_by summarize n
 #' @importFrom rlang !! sym quo enquo eval_tidy
 #' @export
 calculate <- function(x,
                       stat = c(
-                        "mean",
-                        "median",
-                        "sd",
-                        "prop",
-                        "diff in means",
-                        "diff in medians",
-                        "diff in props",
-                        "Chisq",
-                        "F",
-                        "slope",
-                        "correlation",
-                        "t",
-                        "z"
+                        "mean", "median", "sum", "sd", "prop", "count",
+                        "diff in means", "diff in medians", "diff in props",
+                        "Chisq", "F", "slope", "correlation", "t", "z"
                       ),
                       order = NULL,
                       ...) {
@@ -51,34 +41,28 @@ calculate <- function(x,
   check_for_factor_stat(x, stat, explanatory_variable(x))
   check_args_and_attr(x, explanatory_variable(x), response_variable(x), stat)
   check_point_params(x, stat)
-  
-  if (!has_response(x))
+
+  if (!has_response(x)) {
     stop_glue(
       "The response variable is not set. Make sure to `specify()` it first."
     )
-  
-  if (is.null(attr(x, "generate")) || !attr(x, "generate")) {
-    if (is.null(attr(x, "null"))) {
+  }
+
+  if (is_nuat(x, "generate") || !attr(x, "generate")) {
+    if (is_nuat(x, "null")) {
       x$replicate <- 1L
-    }
-    else if (stat %in% c(
-      "mean",
-      "median",
-      "sd",
-      "prop",
-      "diff in means",
-      "diff in medians",
-      "diff in props",
-      "slope",
-      "correlation"
-    ))
+    } else if (
+      stat %in% c(
+        "mean", "median", "sum", "sd", "prop", "count", "diff in means",
+        "diff in medians", "diff in props", "slope", "correlation"
+      )
+    ) {
       stop_glue(
         "Theoretical distributions do not exist (or have not been ",
         "implemented) for `stat` = \"{stat}\". Are you missing ",
         "a `generate()` step?"
       )
-    
-    else if (!(stat %in% c("Chisq", "prop"))){
+    } else if (!(stat %in% c("Chisq", "prop", "count"))) {
       # From `hypothesize()` to `calculate()`
       # Catch-all if generate was not called
 #      warning_glue("You unexpectantly went from `hypothesize()` to ",
@@ -88,16 +72,20 @@ calculate <- function(x,
     }
   }
   
-  if (stat %in% c("diff in means", "diff in medians", "diff in props")  ||
-      (!is.null(attr(x, "theory_type")) &&
-       attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))) {
+  if (
+    (stat %in% c("diff in means", "diff in medians", "diff in props")) ||
+    (
+      !is_nuat(x, "theory_type") &&
+      (attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))
+    )
+  ) {
     check_order(x, explanatory_variable(x), order)
   }
-  
+
   if (!(
-    stat %in% c("diff in means", "diff in medians", "diff in props") ||
+    (stat %in% c("diff in means", "diff in medians", "diff in props")) ||
     (
-      !is.null(attr(x, "theory_type")) &&
+      !is_nuat(x, "theory_type") &&
       attr(x, "theory_type") %in% c("Two sample props z", "Two sample t")
     )
   )) {
@@ -108,321 +96,336 @@ calculate <- function(x,
       )
     }
   }
-  
+
   # Use S3 method to match correct calculation
-  result <- calc_impl(structure(stat, class = gsub(" ", "_", stat)), 
-                      x, order, ...)
-  
-  if ("NULL" %in% class(result))
+  result <- calc_impl(
+    structure(stat, class = gsub(" ", "_", stat)), x, order, ...
+  )
+
+  if ("NULL" %in% class(result)) {
     stop_glue(
-      "Your choice of `stat` is invalid for the ",
-      "types of variables `specify`ed."
+      "Your choice of `stat` is invalid for the types of variables `specify`ed."
     )
-#  else
-#    class(result) <- append("infer", class(result))
-  
-  result <- set_attributes(to = result, from = x)
+  }
+#   else {
+#     class(result) <- append("infer", class(result))
+#   }
+
+  result <- copy_attrs(to = result, from = x)
   attr(result, "stat") <- stat
-  
+
   # For returning a 1x1 observed statistic value
-  if (nrow(result) == 1)
+  if (nrow(result) == 1) {
     result <- select(result, stat)
-  
-  return(result)
+  }
+
+  result
 }
 
-calc_impl <-
-  function(type, x, order, ...)
-    UseMethod("calc_impl", type)
-
-
-calc_impl.mean <- function(stat, x, order, ...) {
-  col <- base::setdiff(names(x), "replicate")
-  
-  x %>%
-    dplyr::group_by(replicate) %>%
-    dplyr::summarize(stat = mean(!!(sym(col)), ...))
-  
+calc_impl <- function(type, x, order, ...) {
+  UseMethod("calc_impl", type)
 }
 
-calc_impl.median <- function(stat, x, order, ...) {
-  col <- base::setdiff(names(x), "replicate")
-  
-  x %>%
-    dplyr::group_by(replicate) %>%
-    dplyr::summarize(stat = stats::median(!!(sym(col)), ...))
+calc_impl_one_f <- function(f) {
+  function(type, x, order, ...) {
+    col <- base::setdiff(names(x), "replicate")
+    
+    x %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize(stat = f(!!(sym(col)), ...))
+  }
 }
 
-calc_impl.sd <- function(stat, x, order, ...) {
-  col <- base::setdiff(names(x), "replicate")
-  
-  x %>%
-    dplyr::group_by(replicate) %>%
-    dplyr::summarize(stat = stats::sd(!!(sym(col)), ...))
-}
+calc_impl.mean <- calc_impl_one_f(mean)
 
-calc_impl.prop <- function(stat, x, order, ...) {
-  col <- base::setdiff(names(x), "replicate")
-  
-  ## No longer needed with implementation of `check_point_params()`
-  # if(!is.factor(x[[col]])){
-  #   stop_glue(
-  #     "Calculating a {stat} here is not appropriate since the `{col}` ",
-  #     "variable is not a factor."
-  #   )
-  # }
-  
-  if (is.null(attr(x, "success")))
-    stop_glue(
-      'To calculate a proportion, the `"success"` argument ',
-      'must be provided in `specify()`.'
-    )
-  
-  success <- attr(x, "success")
-  x %>%
-    dplyr::group_by(replicate) %>%
-    dplyr::summarize(stat = mean(!!sym(col) == success,
-           #rlang::eval_tidy(col) == rlang::eval_tidy(success),
-                                 ...))
-}
+calc_impl.median <- calc_impl_one_f(stats::median)
 
+calc_impl.sum <- calc_impl_one_f(sum)
 
-calc_impl.F <- function(stat, x, order, ...) {
-  x %>%
-    dplyr::summarize(stat = stats::anova(stats::lm(!!(
-      attr(x, "response")
-    ) ~ !!(
-      attr(x, "explanatory")
-    )))$`F value`[1])
-}
+calc_impl.sd <- calc_impl_one_f(stats::sd)
 
-
-
-calc_impl.slope <- function(stat, x, order, ...) {
-  x %>%
-    dplyr::summarize(stat = stats::coef(stats::lm(!!(
-      attr(x, "response")
-    ) ~ !!(
-      attr(x, "explanatory")
-    )))[2])
-}
-
-calc_impl.correlation <- function(stat, x, order, ...) {
-  x %>% 
-    dplyr::summarize(stat = stats::cor(!!attr(x, "explanatory"), 
-                                !!attr(x, "response")))
-}
-
-calc_impl.diff_in_means <- function(stat, x, order, ...) {
-  x %>%
-    dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
-    dplyr::summarize(xbar = mean(!!attr(x, "response"), ...)) %>%
-    dplyr::group_by(replicate) %>%
-    dplyr::summarize(stat = xbar[!!(attr(x, "explanatory")) == order[1]]
-                     - xbar[!!(attr(x, "explanatory")) == order[2]])
-}
-
-calc_impl.diff_in_medians <- function(stat, x, order, ...) {
-  x %>%
-    dplyr::group_by(replicate,!!(attr(x, "explanatory"))) %>%
-    dplyr::summarize(xtilde =
-                       stats::median(!!attr(x, "response"), ...)) %>%
-    dplyr::group_by(replicate) %>%
-    dplyr::summarize(stat = xtilde[!!(attr(x, "explanatory")) == order[1]]
-                     - xtilde[!!(attr(x, "explanatory")) == order[2]])
-}
-
-calc_impl.Chisq <- function(stat, x, order, ...) {
-  ## The following could stand to be cleaned up
-  
-  if (is.null(attr(x, "explanatory"))) {
-    # Chi-Square Goodness of Fit
-    if (!is.null(attr(x, "params"))) {
-      # When `hypothesize()` has been called
-      x %>%
-       dplyr::summarize(stat = stats::chisq.test(table(!!(
-         attr(x, "response")
-       )), p = attr(x, "params"))$stat)
-      
-    } else {
-      # Straight from `specify()`
-        stop_glue("In order to calculate a Chi-Square Goodness of Fit ",
-                  "statistic, hypothesized values must be given for the `p` ",
-                  "parameter in the `hypothesize()` function prior to ",
-                  "using `calculate()`")
-
+calc_impl_success_f <- function(f, output_name) {
+  function(type, x, order, ...) {
+    col <- base::setdiff(names(x), "replicate")
+    
+    ## No longer needed with implementation of `check_point_params()`
+    # if (!is.factor(x[[col]])) {
+    #   stop_glue(
+    #     "Calculating a {stat} here is not appropriate since the `{col}` ",
+    #     "variable is not a factor."
+    #   )
+    # }
+    
+    if (is_nuat(x, "success")) {
+      stop_glue(
+        'To calculate a {output_name}, the `"success"` argument must be ',
+        'provided in `specify()`.'
+      )
     }
     
+    success <- attr(x, "success")
+    x %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize(stat = f(!!sym(col), success))
+  }
+}
+
+calc_impl.prop <- calc_impl_success_f(
+  f = function(response, success, ...) {mean(response == success, ...)},
+  output_name = "proportion"
+)
+
+calc_impl.count <- calc_impl_success_f(
+  f = function(response, success, ...) {sum(response == success, ...)},
+  output_name = "count"
+)
+
+calc_impl.F <- function(type, x, order, ...) {
+  x %>%
+    dplyr::summarize(
+      stat = stats::anova(
+        stats::lm(!!(attr(x, "response")) ~ !!(attr(x, "explanatory")))
+      )$`F value`[1]
+    )
+}
+
+calc_impl.slope <- function(type, x, order, ...) {
+  x %>%
+    dplyr::summarize(
+      stat = stats::coef(
+        stats::lm(!!(attr(x, "response")) ~ !!(attr(x, "explanatory")))
+      )[2]
+    )
+}
+
+calc_impl.correlation <- function(type, x, order, ...) {
+  x %>%
+    dplyr::summarize(
+      stat = stats::cor(!!attr(x, "explanatory"), !!attr(x, "response"))
+    )
+}
+
+calc_impl_diff_f <- function(f) {
+  function(type, x, order, ...) {
+    x %>%
+      dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
+      dplyr::summarize(value = f(!!attr(x, "response"), ...)) %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::summarize(
+        stat = value[!!(attr(x, "explanatory")) == order[1]] -
+          value[!!(attr(x, "explanatory")) == order[2]]
+      )
+  }
+}
+
+calc_impl.diff_in_means <- calc_impl_diff_f(mean)
+
+calc_impl.diff_in_medians <- calc_impl_diff_f(stats::median)
+
+calc_impl.Chisq <- function(type, x, order, ...) {
+  ## The following could stand to be cleaned up
+
+  if (is_nuat(x, "explanatory")) {
+    # Chi-Square Goodness of Fit
+    if (!is_nuat(x, "params")) {
+      # When `hypothesize()` has been called
+      p_levels <- get_par_levels(x)
+      x %>%
+        dplyr::summarize(
+          stat = stats::chisq.test(
+            # Ensure correct ordering of parameters
+            table(!!(attr(x, "response")))[p_levels],
+            p = attr(x, "params")
+          )$stat
+        )
+    } else {
+      # Straight from `specify()`
+      stop_glue(
+        "In order to calculate a Chi-Square Goodness of Fit statistic, ",
+        "hypothesized values must be given for the `p` parameter in the ",
+        "`hypothesize()` function prior to using `calculate()`"
+      )
+    }
   } else {
     # This is not matching with chisq.test
     # obs_tab <- x %>%
     #   dplyr::filter(replicate == 1) %>%
     #   dplyr::ungroup() %>%
-    #   dplyr::select(!!attr(x, "response"),
-    #                 !!(attr(x, "explanatory"))) %>%
+    #   dplyr::select(!!attr(x, "response"), !!(attr(x, "explanatory"))) %>%
     #   table()
     # expected <- outer(rowSums(obs_tab), colSums(obs_tab)) / n
     # df_out <- x %>%
-    #   dplyr::summarize(stat = sum((table(!!(attr(x, "response")),
-    #                                      !!(attr(x, "explanatory")))
-    #                                - expected)^2 / expected, ...))
-    
+    #   dplyr::summarize(
+    #     stat = sum(
+    #       (table(!!(attr(x, "response")), !!(attr(x, "explanatory"))) -
+    #          expected)^2 / expected,
+    #       ...)
+    #   )
+
     # Chi-Square Test of Independence
-    
     result <- x %>%
-      dplyr::do(broom::tidy(suppressWarnings(stats::chisq.test(table(
-        .[[as.character(attr(x, "response"))]],
-        .[[as.character(attr(x, "explanatory"))]]
-      ))))) %>%
+      dplyr::do(
+        broom::tidy(
+          suppressWarnings(stats::chisq.test(
+            table(
+              .[[as.character(attr(x, "response"))]],
+              .[[as.character(attr(x, "explanatory"))]]
+            )
+          ))
+        )
+      ) %>%
       dplyr::ungroup()
-    
-    if (!is.null(attr(x, "generate")))
-       result <-
-        result %>% dplyr::select(replicate, stat = statistic)
-    else
+
+    if (!is_nuat(x, "generate")) {
+      result <- result %>% dplyr::select(replicate, stat = statistic)
+    } else {
       result <- result %>% dplyr::select(stat = statistic)
-    
-    attr(result, "response") <- attr(x, "response")
-    attr(result, "success") <- attr(x, "success")
-    attr(result, "explanatory") <- attr(x, "explanatory")
-    attr(result, "response_type") <- attr(x, "response_type")
-    attr(result, "explanatory_type") <- attr(x, "explanatory_type")
-    attr(result, "distr_param") <- attr(x, "distr_param")
-    attr(result, "distr_param2") <- attr(x, "distr_param2")
-    attr(result, "theory_type") <- attr(x, "theory_type")
-    
-    result
-    
+    }
+
+    copy_attrs(
+      to = result, from = x,
+      attrs = c(
+        "response", "success", "explanatory", "response_type",
+        "explanatory_type", "distr_param", "distr_param2", "theory_type"
+      )
+    )
   }
 }
 
-calc_impl.diff_in_props <- function(stat, x, order, ...) {
+calc_impl.diff_in_props <- function(type, x, order, ...) {
   col <- attr(x, "response")
   success <- attr(x, "success")
-  
+
   x %>%
-    dplyr::group_by(replicate,!!attr(x, "explanatory")) %>%
+    dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
     dplyr::summarize(prop = mean(!!sym(col) == success, ...)) %>%
-    dplyr::summarize(stat = prop[!!attr(x, "explanatory") == order[1]]
-                     - prop[!!attr(x, "explanatory") == order[2]])
+    dplyr::summarize(
+      stat = prop[!!attr(x, "explanatory") == order[1]] -
+        prop[!!attr(x, "explanatory") == order[2]]
+    )
 }
 
-calc_impl.t <- function(stat, x, order, ...) {
+calc_impl.t <- function(type, x, order, ...) {
   # Two sample means
-  
+
   if (attr(x, "theory_type") == "Two sample t") {
     # Re-order levels
     x <- reorder_explanatory(x, order)
-    
+
     df_out <- x %>%
-      dplyr::summarize(stat = stats::t.test(
-        !!attr(x, "response") ~ !!attr(x, "explanatory"), ...
-      )[["statistic"]])
+      dplyr::summarize(
+        stat = stats::t.test(
+          !!attr(x, "response") ~ !!attr(x, "explanatory"), ...
+        )[["statistic"]]
+      )
   }
-  
+
   # Standardized slope and standardized correlation are commented out
   # since there currently is no way to specify which one and
   # the standardization formulas are different.
   # # Standardized slope
-  # else if ( (attr(x, "theory_type") == "Slope/correlation with t") &&
-  #           stat == "slope"){
+  # else if (
+  #   (attr(x, "theory_type") == "Slope/correlation with t") &&
+  #   (stat == "slope")
+  # ) {
   #   explan_string <- as.character(attr(x, "explanatory"))
-  #   
+  # 
   #   x %>%
-  #     dplyr::summarize(stat = summary(stats::lm(
-  #       !!attr(x, "response") ~ !!attr(x, "explanatory")
-  #     ))[["coefficients"]][explan_string, "t value"])
+  #     dplyr::summarize(
+  #       stat = summary(stats::lm(
+  #         !!attr(x, "response") ~ !!attr(x, "explanatory")
+  #       ))[["coefficients"]][explan_string, "t value"]
+  #     )
   # }
   # 
   # # Standardized correlation
-  # else if ( (attr(x, "theory_type") == "Slope/correlation with t") &&
-  #           stat == "correlation"){
-  # 
-  #   x %>% 
-  #     dplyr::summarize(corr = cor(!!attr(x, "explanatory"), 
-  #                                 !!attr(x, "response"))
-  #                      ) %>% 
+  # else if (
+  #   (attr(x, "theory_type") == "Slope/correlation with t") &&
+  #   (stat == "correlation")
+  # ) {
+  #   x %>%
+  #     dplyr::summarize(
+  #       corr = cor(!!attr(x, "explanatory"), !!attr(x, "response"))
+  #     ) %>%
   #     dplyr::mutate(stat = corr * (sqrt(nrow(x) - 2)) / sqrt(1 - corr ^ 2))
   # }
-  
+
   # One sample mean
   else if (attr(x, "theory_type") == "One sample t") {
     # For bootstrap
-    if (is.null(attr(x, "null"))) {
+    if (is_nuat(x, "null")) {
       x %>%
         dplyr::summarize(
-          stat = stats::t.test(!!attr(x, "response"),
-                               ...
-                               )[["statistic"]])
-    }
-    # For hypothesis testing
-    else {
+          stat = stats::t.test(!!attr(x, "response"), ...)[["statistic"]]
+        )
+    } else {
+      # For hypothesis testing
       x %>%
-        dplyr::summarize(stat = stats::t.test(
-          !!attr(x, "response"), 
-          mu = attr(x, "params"),
-          ...)[["statistic"]])
+        dplyr::summarize(
+          stat = stats::t.test(
+            !!attr(x, "response"), mu = attr(x, "params"), ...
+          )[["statistic"]]
+        )
     }
   }
 }
 
-calc_impl.z <- function(stat, x, order, ...) {
+calc_impl.z <- function(type, x, order, ...) {
   # Two sample proportions
   if (attr(x, "theory_type") == "Two sample props z") {
     col <- attr(x, "response")
     success <- attr(x, "success")
-    
-    x$explan <- factor(explanatory_variable(x),
-                       levels = c(order[1], order[2]))
-    
+
+    x$explan <- factor(
+      explanatory_variable(x), levels = c(order[1], order[2])
+    )
+
     aggregated <- x %>%
       dplyr::group_by(replicate, explan) %>%
       dplyr::summarize(
         group_num = n(),
-        prop = mean(rlang::eval_tidy(col) ==
-                      rlang::eval_tidy(success)),
-        num_suc = sum(rlang::eval_tidy(col) ==
-                        rlang::eval_tidy(success))
+        prop = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success)),
+        num_suc = sum(rlang::eval_tidy(col) == rlang::eval_tidy(success))
       )
-    
+
     df_out <- aggregated %>%
       dplyr::summarize(
-        diff_prop = prop[explan == order[1]]
-                  - prop[explan == order[2]],
+        diff_prop = prop[explan == order[1]] - prop[explan == order[2]],
         total_suc = sum(num_suc),
         n1 = group_num[1],
         n2 = group_num[2],
         p_hat = total_suc / (n1 + n2),
-        denom = sqrt(p_hat * (1 - p_hat) / n1
-                     + p_hat * (1 - p_hat) / n2),
+        denom = sqrt(p_hat * (1 - p_hat) / n1 + p_hat * (1 - p_hat) / n2),
         stat = diff_prop / denom
       ) %>%
-      dplyr::select(-total_suc,-n1,-n2)
-    
+      dplyr::select(-total_suc, -n1, -n2)
+
     df_out
-    
-  } else
+  } else if (attr(x, "theory_type") == "One sample prop z") {
     # One sample proportion
-    if (attr(x, "theory_type") == "One sample prop z") {
-      # When `hypothesize()` has been called
-      success <- attr(x, "success")
-      
-      p0 <- attr(x, "params")[1]
-      num_rows <- nrow(x) / length(unique(x$replicate))
-      
-      col <- attr(x, "response")
-      #    if(is.null(success))
-      #      success <- quo(get_par_levels(x)[1])
-      # Error given instead
-      
-      df_out <- x %>%
-        dplyr::summarize(stat = (mean(
-          rlang::eval_tidy(col) == rlang::eval_tidy(success), ...
-        ) - p0) / sqrt((p0 * (1 - p0)) / num_rows))
-      
-      df_out
-      
-      # Straight from `specify()` doesn't make sense
-      # since standardizing requires a hypothesized value
-    }
+    
+    # When `hypothesize()` has been called
+    success <- attr(x, "success")
+
+    p0 <- attr(x, "params")[1]
+    num_rows <- nrow(x) / length(unique(x$replicate))
+
+    col <- attr(x, "response")
+#     if (is.null(success)) {
+#       success <- quo(get_par_levels(x)[1])
+#     }
+#     Error given instead
+
+    df_out <- x %>%
+      dplyr::summarize(
+        stat = (
+          mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...) - p0
+        ) / sqrt((p0 * (1 - p0)) / num_rows)
+      )
+
+    df_out
+
+    # Straight from `specify()` doesn't make sense
+    # since standardizing requires a hypothesized value
+  }
 }
