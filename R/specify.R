@@ -44,7 +44,9 @@ specify <- function(x, formula, response = NULL,
   }
   if (methods::hasArg(formula)) {
     if (!rlang::is_formula(formula)) {
-      stop_glue("The `formula` argument is not recognized as a formula.")
+      stop_glue("The first unnamed argument must be a formula.
+                * You passed in '{get_type(formula)}'.
+                * Did you forget to name one or more aguments?")
     }
   }
 
