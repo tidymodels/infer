@@ -57,6 +57,10 @@ test_that("sensible output", {
 
 test_that("formula argument is a formula", {
   expect_error(specify(mtcars_df, formula = "vs", success = 1))
+
+  # Issue #110: https://github.com/tidymodels/infer/issues/110
+  expect_error(specify(mtcars, am, success = "1"))
+  expect_error(specify(mtcars, response = am, "1"))
 })
 
 test_that("is_complete works", {
