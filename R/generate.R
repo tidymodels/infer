@@ -70,13 +70,15 @@ compare_type_vs_auto_type <- function(type, auto_type) {
 }
 
 use_auto_type <- function(auto_type) {
-  if(is.null(auto_type)) {
-    stop_glue(
-      "There is no default `type`;",
-      "please set it to one of {toString(shQuote(GENERATION_TYPES))}.",
-      .sep = " "
-    )
-  }
+  ## Commented out since no way to currently get to this
+  ## All variable types specified have an auto_type set 
+  # if(is.null(auto_type)) {
+  #   stop_glue(
+  #     "There is no default `type`;",
+  #     "please set it to one of {toString(shQuote(GENERATION_TYPES))}.",
+  #     .sep = " "
+  #   )
+  # }
   message_glue('Setting `type = "{auto_type}"`.')
   auto_type
 }
