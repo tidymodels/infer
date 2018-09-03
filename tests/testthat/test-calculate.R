@@ -1,7 +1,5 @@
 context("calculate")
 
-iris_df <- tibble::as_tibble(iris)
-
 # calculate arguments
 test_that("x is a tibble", {
   vec <- 1:10
