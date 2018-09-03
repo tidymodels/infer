@@ -77,6 +77,7 @@ use_auto_type <- function(auto_type) {
       .sep = " "
     )
   }
+  message_glue('Setting `type = "{auto_type}"`.')
   auto_type
 }
 
