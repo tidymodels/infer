@@ -16,3 +16,10 @@ mtcars_df <- mtcars %>%
     cyl = factor(cyl), vs = factor(vs), am = factor(am), gear = factor(gear),
     carb = factor(carb)
   )
+
+obs_diff <- iris_tbl %>%
+  specify(Sepal.Length.Group ~ Sepal.Width.Group, success = "<=5") %>%
+  calculate(stat = "diff in props", order = c("large", "small"))
+
+set.seed(2018)
+test_df <- tibble::tibble(stat = rnorm(100))

@@ -47,3 +47,4 @@ test_that("get_p_value makes sense", {
     expected = 0
   )
 })
+
