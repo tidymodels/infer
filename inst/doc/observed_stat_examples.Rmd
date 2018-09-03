@@ -72,7 +72,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = x_bar, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = x_bar, direction = "two_sided")
+  get_p_value(obs_stat = x_bar, direction = "two_sided")
 ```
 
 ### One numerical variable (standardized mean $t$)
@@ -93,7 +93,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = t_bar, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = t_bar, direction = "two_sided")
+  get_p_value(obs_stat = t_bar, direction = "two_sided")
 ```
 
 
@@ -116,7 +116,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = x_tilde, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = x_tilde, direction = "two_sided")
+  get_p_value(obs_stat = x_tilde, direction = "two_sided")
 ```
 
 ### One categorical (one proportion)
@@ -138,7 +138,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = p_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = p_hat, direction = "two_sided")
+  get_p_value(obs_stat = p_hat, direction = "two_sided")
 ```
 
 Logical variables will be coerced to factors:
@@ -176,7 +176,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = d_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = d_hat, direction = "two_sided")
+  get_p_value(obs_stat = d_hat, direction = "two_sided")
 ```
 
 ### Two categorical (2 level) variables (z)
@@ -198,7 +198,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = z_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = z_hat, direction = "two_sided")
+  get_p_value(obs_stat = z_hat, direction = "two_sided")
 ```
 
 Note the similarities in this plot and the previous one.
@@ -227,7 +227,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = Chisq_hat, direction = "greater")
 null_distn %>%
-  get_pvalue(obs_stat = Chisq_hat, direction = "greater")
+  get_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
 ### Two categorical (>2 level) variables
@@ -249,7 +249,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = Chisq_hat, direction = "greater")
 null_distn %>%
-  get_pvalue(obs_stat = Chisq_hat, direction = "greater")
+  get_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
 ### One numerical variable, one categorical (2 levels) (diff in means)
@@ -271,7 +271,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = d_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = d_hat, direction = "two_sided")
+  get_p_value(obs_stat = d_hat, direction = "two_sided")
 ```
 
 ### One numerical variable, one categorical (2 levels) (t)
@@ -293,7 +293,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = t_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = t_hat, direction = "two_sided")
+  get_p_value(obs_stat = t_hat, direction = "two_sided")
 ```
 
 Note the similarities in this plot and the previous one.
@@ -318,7 +318,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = d_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = d_hat, direction = "two_sided")
+  get_p_value(obs_stat = d_hat, direction = "two_sided")
 ```
 
 ### One numerical, one categorical (>2 levels) -  ANOVA
@@ -340,7 +340,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = F_hat, direction = "greater")
 null_distn %>%
-  get_pvalue(obs_stat = F_hat, direction = "greater")
+  get_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
 ### Two numerical vars - SLR 
@@ -362,7 +362,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = slope_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = slope_hat, direction = "two_sided")
+  get_p_value(obs_stat = slope_hat, direction = "two_sided")
 ```
 
 ### Two numerical vars - correlation
@@ -384,7 +384,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = correlation_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = correlation_hat, direction = "two_sided")
+  get_p_value(obs_stat = correlation_hat, direction = "two_sided")
 ```
 
 
@@ -409,7 +409,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = t_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = t_hat, direction = "two_sided")
+  get_p_value(obs_stat = t_hat, direction = "two_sided")
 ```
 
 

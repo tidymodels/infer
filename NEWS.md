@@ -9,6 +9,8 @@
 - Make transparancy in `visualize()` to not depend on method and data volume.
 - Make `visualize()` work for "One sample t" theoretical type with `method = "both"`.
 - Add `stat = "sum"` and `stat = "count"` options to `calculate()` (#50).
+- Deprecated `p_value()` (use `get_p_value()` instead) (#180).
+- Deprecated `cont_int()` (use `get_confidence_interval()` instead) (#180).
 
 # infer 0.3.1
 
