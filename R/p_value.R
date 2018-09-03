@@ -1,6 +1,6 @@
 #' Compute p-value
 #'
-#' Only simulation-based methods are (currently only) supported.
+#' Simulation-based methods are (currently only) supported.
 #'
 #' @param x Data frame of calculated statistics or containing attributes of
 #'   theoretical distribution values.
