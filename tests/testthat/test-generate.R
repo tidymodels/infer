@@ -37,9 +37,9 @@ hyp_anova <- mtcars_df %>%
   hypothesize(null = "independence")
 
 test_that("cohesion with type argument", {
-  expect_error(generate(hyp_prop, type = "bootstrap"))
+  expect_warning(generate(hyp_prop, type = "bootstrap"))
   expect_error(generate(hyp_diff_in_props, type = "bootstrap"))
-  expect_error(generate(hyp_chisq_gof, type = "bootstrap"))
+  expect_warning(generate(hyp_chisq_gof, type = "bootstrap"))
   expect_error(generate(hyp_chisq_ind, type = "bootstrap"))
   expect_silent(generate(hyp_mean, type = "bootstrap"))
   expect_silent(generate(hyp_median, type = "bootstrap"))
@@ -48,12 +48,12 @@ test_that("cohesion with type argument", {
   expect_error(generate(hyp_anova, type = "bootstrap"))
 
   expect_silent(generate(hyp_prop, type = "simulate"))
-  expect_error(generate(hyp_diff_in_props, type = "simulate"))
+  expect_warning(generate(hyp_diff_in_props, type = "simulate"))
   expect_silent(generate(hyp_chisq_gof, type = "simulate"))
-  expect_error(generate(hyp_chisq_ind, type = "simulate"))
+  expect_warning(generate(hyp_chisq_ind, type = "simulate"))
   expect_error(generate(hyp_mean, type = "simulate"))
-  expect_error(generate(hyp_diff_in_means, type = "simulate"))
-  expect_error(generate(hyp_anova, type = "simulate"))
+  expect_warning(generate(hyp_diff_in_means, type = "simulate"))
+  expect_warning(generate(hyp_anova, type = "simulate"))
 
   expect_error(generate(hyp_prop, type = "permute"))
   expect_silent(generate(hyp_diff_in_props, type = "permute"))
@@ -160,7 +160,7 @@ test_that("auto `type` works (generate)", {
     generate(reps = 100, type = "permute")
   )
 
-  expect_error(mtcars_df %>%
+  expect_warning(mtcars_df %>%
     specify(response = mpg) %>%
     generate(reps = 100, type = "simulate")
   )
@@ -171,7 +171,7 @@ test_that("auto `type` works (generate)", {
     generate(reps = 100, type = "permute")
   )
 
-  expect_error(mtcars_df %>%
+  expect_warning(mtcars_df %>%
     specify(response = am, success = "1") %>% # formula alt: am ~ NULL
     hypothesize(null = "point", p = .25) %>%
     generate(reps = 100, type = "bootstrap")
@@ -183,13 +183,13 @@ test_that("auto `type` works (generate)", {
     generate(reps = 100, type = "bootstrap")
   )
 
-  expect_error(mtcars_df %>%
+  expect_warning(mtcars_df %>%
     specify(cyl ~ NULL) %>% # alt: response = cyl
     hypothesize(null = "point", p = c("4" = .5, "6" = .25, "8" = .25)) %>%
     generate(reps = 100, type = "bootstrap")
   )
 
-  expect_error(mtcars_df %>%
+  expect_warning(mtcars_df %>%
     specify(cyl ~ am) %>% # alt: response = cyl, explanatory = am
     hypothesize(null = "independence") %>%
     generate(reps = 100, type = "simulate")
@@ -200,7 +200,7 @@ test_that("auto `type` works (generate)", {
     hypothesize(null = "independence") %>%
     generate(reps = 100, type = "bootstrap"))
 
-  expect_error(mtcars_df %>%
+  expect_warning(mtcars_df %>%
     specify(mpg ~ cyl) %>% # alt: response = mpg, explanatory = cyl
     hypothesize(null = "independence") %>%
     generate(reps = 100, type = "simulate")
@@ -212,7 +212,7 @@ test_that("auto `type` works (generate)", {
     generate(reps = 100, type = "bootstrap")
   )
 
-  expect_error(mtcars_df %>%
+  expect_warning(mtcars_df %>%
     specify(response = am, success = "1") %>%
     generate(reps = 100, type = "simulate")
   )
@@ -222,12 +222,12 @@ test_that("auto `type` works (generate)", {
     generate(reps = 100, type = "permute")
   )
 
-  expect_error(mtcars_df %>%
+  expect_warning(mtcars_df %>%
     specify(am ~ vs, success = "1") %>%
     generate(reps = 100, type = "simulate")
   )
 
-  expect_error(mtcars_df %>%
+  expect_warning(mtcars_df %>%
     specify(mpg ~ hp) %>%
     generate(reps = 100, type = "simulate")
   )
@@ -241,7 +241,7 @@ test_that("mismatches lead to error", {
       hypothesize(null = "independence", p = c("1" = 0.5)) %>%
       generate(reps = 100, type = "simulate")
   )
-  expect_error(
+  expect_warning(
     mtcars_df %>%
       specify(cyl ~ NULL) %>% # alt: response = cyl
       hypothesize(
@@ -254,5 +254,9 @@ test_that("mismatches lead to error", {
 })
 
 test_that("generate() handles `NULL` value of `type`", {
-  expect_error(generate(hyp_prop, type = NULL), "NULL.*type")
+  expect_message(
+    generate(hyp_prop, type = NULL),
+    'Setting `type = "simulate"`.',
+    fixed = TRUE
+  )
 })
