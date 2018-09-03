@@ -60,8 +60,8 @@ compare_type_vs_auto_type <- function(type, auto_type) {
   if (auto_type != type) {
     # User is overriding the default, so warn of potential stupidity.
     warning_glue(
-      "You have specified `type = \"{type}\"`, but `type` is expected",
-      "to be`\"{auto_type}\"`. This workflow is untested and",
+      "You have given `type = \"{type}\"`, but `type` is expected",
+      "to be `\"{auto_type}\"`. This workflow is untested and",
       "the results may not mean what you think they mean.",
       .sep = " "
     )
@@ -79,7 +79,7 @@ use_auto_type <- function(auto_type) {
   #     .sep = " "
   #   )
   # }
-  message_glue('Setting `type = "{auto_type}"`.')
+  message_glue('Setting `type = "{auto_type}"` in `generate()`.')
   auto_type
 }
 
@@ -98,10 +98,11 @@ bootstrap <- function(x, reps = 1, ...) {
   if (!is_nuat(x, "null")) {
     # If so, shift the variable chosen to have a mean corresponding
     # to that specified in `hypothesize`
-    if (attr(attr(x, "params"), "names") == "mu") {
-      col <- as.character(attr(x, "response"))
+    if (!is.null(attr(attr(x, "params"), "names"))){
+      if (attr(attr(x, "params"), "names") == "mu") {
+        col <- as.character(attr(x, "response"))
 #      if (attr(x, "theory_type") != "One sample t") {
-      x[[col]] <- x[[col]] - mean(x[[col]], na.rm = TRUE) + attr(x, "params")
+        x[[col]] <- x[[col]] - mean(x[[col]], na.rm = TRUE) + attr(x, "params")
 #      }
 
       # Standardize after centering above
@@ -116,11 +117,11 @@ bootstrap <- function(x, reps = 1, ...) {
     }
 
     # Similarly for median
-    else if (attr(attr(x, "params"), "names") == "med") {
-      col <- as.character(attr(x, "response"))
-      x[[col]] <- x[[col]] -
-        stats::median(x[[col]], na.rm = TRUE) + attr(x, "params")
-    }
+      else if (attr(attr(x, "params"), "names") == "med") {
+        col <- as.character(attr(x, "response"))
+        x[[col]] <- x[[col]] -
+          stats::median(x[[col]], na.rm = TRUE) + attr(x, "params")
+      }
 
     # Implement confidence interval for bootstrapped proportions?
     # Implement z transformation?
@@ -132,6 +133,7 @@ bootstrap <- function(x, reps = 1, ...) {
     #   x[[col]] <- x[[col]] -
     #     stats::sd(x[[col]], na.rm = TRUE) + attr(x, "params")
     # }
+    }
   }
 
   # Set variables for use in calculate()
