@@ -122,11 +122,12 @@ two_sided_p_value <- function(x, obs_stat){
 #     param2 <- attr(x, "distr_param2")
 #
 #   if(theory_type == "Two sample t")
-#     return(pt(q = obs_stat,
-#                              df = param,
-#                              lower.tail = set_lower_tail(direction))
-#          )
-#
+#     return(
+#       pt(q = obs_stat,
+#          df = param,
+#          lower.tail = set_lower_tail(direction)
+#         )
+#     )
 # }
 
 #theory_t_pvalue <-
