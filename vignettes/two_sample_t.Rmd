@@ -100,7 +100,7 @@ t_null_distn %>% visualize(obs_stat = obs_t, direction = "two_sided")
 
 ```{r}
 t_null_distn %>% 
-  get_pvalue(obs_stat = obs_t, direction = "two_sided")
+  get_p_value(obs_stat = obs_t, direction = "two_sided")
 ```
 
 
