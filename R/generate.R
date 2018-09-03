@@ -21,66 +21,73 @@
 #'
 #' @importFrom dplyr group_by
 #' @export
-generate <- function(x, reps = 1, type = attr(x, "type"), ...) {
-  auto_type <- attr(x, "type")
-
-  if (!is.null(auto_type)) {
-    if (is.null(type)) {
-      stop_glue("Supply not `NULL` value of `type`.")
-    }
-
-    if (auto_type != type) {
-      stop_glue(
-        "You have specified `type = \"{type}\"`, but `type` is expected to be ",
-        "`\"{auto_type}\"`. Please try again with appropriate `type` value."
-      )
-    } else {
-      type <- auto_type
-    }
+generate <- function(x, reps = 1, type = NULL, ...) {
+  type <- sanitize_generation_type(type)
+  auto_type <- sanitize_generation_type(attr(x, "type"))
+  type <- if(!is.null(type)) { # User specifies type
+    compare_type_vs_auto_type(type, auto_type)
+  } else { # Use default
+    use_auto_type(auto_type)
   }
 
   attr(x, "generate") <- TRUE
 
-  if (
-    (type == "permute") &&
-    any(is_nuat(x, "response"), is_nuat(x, "explanatory"))
-  ) {
-    stop_glue(
-      "Please `specify()` an explanatory and a response variable when ",
-      "permuting."
+  switch(
+    type,
+    bootstrap = bootstrap(x, reps, ...),
+    permute = {
+      check_permutation_attributes(x)
+      permute(x, reps, ...)
+    },
+    simulate = simulate(x, reps, ...)
+  )
+}
+
+#' @rdname generate
+#' @export
+GENERATION_TYPES <- c("bootstrap", "permute",  "simulate")
+
+sanitize_generation_type <- function(x) {
+  if(is.null(x)) return(x)
+  match.arg(x, GENERATION_TYPES)
+}
+
+compare_type_vs_auto_type <- function(type, auto_type) {
+  if(is.null(auto_type)) {
+    # No default; use whatever they specified.
+    return(type)
+  }
+  if (auto_type != type) {
+    # User is overriding the default, so warn of potential stupidity.
+    warning_glue(
+      "You have specified `type = \"{type}\"`, but `type` is expected",
+      "to be`\"{auto_type}\"`. This workflow is untested and",
+      "the results may not mean what you think they mean.",
+      .sep = " "
     )
   }
-## Can't get to these anymore with tests
-#   if (
-#     (type == "simulate") &&
-#     (attr(x, "null") != "point") &&
-#     !(length(grep("p.", names(attr(x, "params")))) >= 1)
-#   ) {
-#     stop_glue("Simulation requires a `point` null hypothesis on proportions.")
-#   }
-#   if (
-#     (type == "bootstrap") &&
-#     !(attr(attr(x, "params"), "names") %in% c("mu", "med", "sigma")) &&
-#     !is_nuat(x, "null")
-#   ) {
-#     stop_glue(
-#       "Bootstrapping is inappropriate in this setting. ",
-#       "Consider using `type = permute` or `type = simulate`."
-#     )
-#  }
+  type
+}
 
-  if (type == "bootstrap") {
-    bootstrap(x, reps, ...)
-  } else if (type == "permute") {
-    permute(x, reps, ...)
-  } else if (type == "simulate") {
-    simulate(x, reps, ...)
-  } # else if (!(type %in% c("bootstrap", "permute", "simulate"))) {
-    # stop_glue(
-    #   "Choose one of the available options for `type`: ",
-    #   '`"bootstrap"`, `"permute"`, or `"simulate"`'
-    # )
-  # }
+use_auto_type <- function(auto_type) {
+  if(is.null(auto_type)) {
+    stop_glue(
+      "There is no default `type`;",
+      "please set it to one of {toString(shQuote(GENERATION_TYPES))}.",
+      .sep = " "
+    )
+  }
+  auto_type
+}
+
+check_permutation_attributes <- function(x, attr) {
+  if (any(is_nuat(x, "response"), is_nuat(x, "explanatory"))) {
+    stop_glue(
+      "Please `specify()` an explanatory and a response variable",
+      "when permuting.",
+      .sep = " "
+    )
+  }
 }
 
 bootstrap <- function(x, reps = 1, ...) {
