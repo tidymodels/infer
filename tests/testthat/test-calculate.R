@@ -77,7 +77,7 @@ test_that("grouping (explanatory) variable is a factor (two var problems)", {
   expect_error(calculate(gen_iris2, stat = "diff in medians"))
   # Since shifts to "Slope with t"
   ## Not implemented
- # expect_silent(calculate(gen_iris2, stat = "t"))
+  # expect_silent(calculate(gen_iris2, stat = "t"))
 })
 
 test_that("grouping (explanatory) variable is numeric (two var problems)", {
@@ -356,7 +356,7 @@ test_that("specify() %>% calculate() works", {
 })
 
 test_that("One sample t hypothesis test is working", {
-  expect_silent(
+  expect_message(
     iris_tbl %>%
       specify(Petal.Width ~ NULL) %>%
       hypothesize(null = "point", mu = 1) %>%
@@ -398,7 +398,7 @@ test_that("generate not done before calculate", {
 })
 
 test_that("One sample t bootstrap is working", {
-  expect_silent(
+  expect_message(
     iris_tbl %>%
       specify(Petal.Width ~ NULL) %>%
       generate(reps = 10) %>%
@@ -409,14 +409,14 @@ test_that("One sample t bootstrap is working", {
 test_that("calculate doesn't depend on order of `p` (#122)", {
   calc_chisq <- function(p) {
     set.seed(111)
-    
+
     iris %>%
       specify(Species ~ NULL) %>%
       hypothesize(null = "point", p = p) %>%
       generate(reps = 10, type = "simulate") %>%
       calculate("Chisq")
   }
-  
+
   expect_equal(
     calc_chisq(c("versicolor" = 0.25, "setosa" = 0.5, "virginica" = 0.25)),
     calc_chisq(c("virginica" = 0.25, "versicolor" = 0.25, "setosa" = 0.5))
@@ -439,11 +439,11 @@ test_that("calc_impl.sum works", {
       `[[`(1),
     sum(iris_tbl$Petal.Width)
   )
-  
+
   gen_iris16 <- iris_tbl %>%
     specify(Petal.Width ~ NULL) %>%
     generate(10)
-  
+
   expect_equal(
     gen_iris16 %>% calculate(stat = "sum"),
     gen_iris16 %>% dplyr::summarise(stat = sum(Petal.Width))
@@ -467,7 +467,7 @@ test_that("calc_impl.count works", {
       `[[`(1),
     sum(iris_tbl$Sepal.Length.Group == ">5")
   )
-  
+
   expect_equal(
     gen_iris12 %>% calculate(stat = "count"),
     gen_iris12 %>% dplyr::summarise(stat = sum(Sepal.Length.Group == ">5"))
