@@ -45,8 +45,8 @@ specify <- function(x, formula, response = NULL,
   if (methods::hasArg(formula)) {
 
     tryCatch(
-       formula_arg_is_formula <- rlang::is_formula(formula)
-      , error = function(e) {
+       formula_arg_is_formula <- rlang::is_formula(formula), 
+      error = function(e) {
         stop_glue("The argument you passed in for the formula does not exist.
                   * Were you trying to pass in an unquoted column name?
                   * Did you forget to name one or more arguments?")
