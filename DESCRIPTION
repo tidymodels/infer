@@ -15,8 +15,7 @@ Authors@R: c(
     person("Neal", "Fultz", email = "nfultz@gmail.com", role = "ctb"),
     person("Doug", "Friedman", email = "doug.nhp@gmail.com", role = "ctb"),
     person("Richie", "Cotton", email = "richie@datacamp.com", role = "ctb"),
-    person("Brian", "Fannon", email = "captain@pirategrunt.com", role = "ctb")
-)
+    person("Brian", "Fannon", email = "captain@pirategrunt.com", role = "ctb"))
 Description: The objective of this package is to perform inference using an expressive statistical grammar that coheres with the tidy design framework. 
 License: CC0
 Encoding: UTF-8
