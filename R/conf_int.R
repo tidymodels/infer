@@ -17,7 +17,7 @@
 #'   the confidence interval.
 #' @section Aliases:
 #' `get_ci()` is an alias of `get_confidence_interval()`.
-#' `conf_int` is a deprecated alias of `get_confidence_interval()`.
+#' `conf_int()` is a deprecated alias of `get_confidence_interval()`.
 #'
 #' @examples
 #' # Prepare the dataset
