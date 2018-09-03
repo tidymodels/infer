@@ -2,10 +2,13 @@
 % Please edit documentation in R/conf_int.R
 \name{get_confidence_interval}
 \alias{get_confidence_interval}
+\alias{get_ci}
 \title{Compute confidence interval}
 \usage{
 get_confidence_interval(x, level = 0.95, type = "percentile",
   point_estimate = NULL)
+
+get_ci(x, level = 0.95, type = "percentile", point_estimate = NULL)
 }
 \arguments{
 \item{x}{Data frame of calculated statistics or containing attributes of
@@ -31,7 +34,8 @@ Only simulation-based methods are (currently only) supported.
 }
 \section{Aliases}{
 
-\code{conf_int()} and \code{get_ci()} are deprecated aliases of \code{get_confidence_interval()}.
+\code{get_ci()} is an alias of \code{get_confidence_interval()}.
+\code{conf_int} is a deprecated alias of \code{get_confidence_interval()}.
 }
 
 \examples{

@@ -12,7 +12,8 @@
 #' @return A 1x1 data frame with value between 0 and 1.
 #'
 #' @section Aliases:
-#' `p_value` and `get_pvalue()` are deprecated aliases of `get_p_value()`.
+#' `get_pvalue()` is an alias of `get_p_value()`.
+#' `p_value` is a deprecated alias of `get_p_value()`.
 #'
 #' @examples
 #' # Prepare the dataset
@@ -68,6 +69,12 @@ get_p_value <- function(x, obs_stat, direction){
   # }
 
   return(pvalue)
+}
+
+#' @rdname get_p_value
+#' @export
+get_pvalue <- function(x, obs_stat, direction) {
+  get_p_value(x = x, obs_stat = obs_stat, direction = direction)
 }
 
 simulation_based_p_value <- function(x, obs_stat, direction){

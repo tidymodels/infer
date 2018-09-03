@@ -2,9 +2,12 @@
 % Please edit documentation in R/p_value.R
 \name{get_p_value}
 \alias{get_p_value}
+\alias{get_pvalue}
 \title{Compute p-value}
 \usage{
 get_p_value(x, obs_stat, direction)
+
+get_pvalue(x, obs_stat, direction)
 }
 \arguments{
 \item{x}{Data frame of calculated statistics or containing attributes of
@@ -24,7 +27,8 @@ Only simulation-based methods are (currently only) supported.
 }
 \section{Aliases}{
 
-\code{p_value} and \code{get_pvalue()} are deprecated aliases of \code{get_p_value()}.
+\code{get_pvalue()} is an alias of \code{get_p_value()}.
+\code{p_value} is a deprecated alias of \code{get_p_value()}.
 }
 
 \examples{

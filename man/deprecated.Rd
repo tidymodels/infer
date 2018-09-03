@@ -3,18 +3,12 @@
 \name{deprecated}
 \alias{deprecated}
 \alias{conf_int}
-\alias{get_ci}
 \alias{p_value}
-\alias{get_pvalue}
 \title{Deprecated functions}
 \usage{
 conf_int(x, level = 0.95, type = "percentile", point_estimate = NULL)
 
-get_ci(x, level = 0.95, type = "percentile", point_estimate = NULL)
-
 p_value(x, obs_stat, direction)
-
-get_pvalue(x, obs_stat, direction)
 }
 \arguments{
 \item{x}{See the non-deprecated function.}

@@ -16,7 +16,8 @@
 #' @return A 1 x 2 tibble with values corresponding to lower and upper values in
 #'   the confidence interval.
 #' @section Aliases:
-#' `conf_int()` and `get_ci()` are deprecated aliases of `get_confidence_interval()`.
+#' `get_ci()` is an alias of `get_confidence_interval()`.
+#' `conf_int` is a deprecated alias of `get_confidence_interval()`.
 #'
 #' @examples
 #' # Prepare the dataset
@@ -63,6 +64,15 @@ get_confidence_interval <- function(x, level = 0.95, type = "percentile",
   }
 
   return(ci)
+}
+
+#' @rdname get_confidence_interval
+#' @export
+get_ci <- function(x, level = 0.95, type = "percentile",
+  point_estimate = NULL) {
+  get_confidence_interval(
+    x, level = level, type = type, point_estimate = point_estimate
+  )
 }
 
 check_ci_args <- function(x, level, type, point_estimate){
