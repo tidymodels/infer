@@ -37,7 +37,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = x_bar, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = x_bar, direction = "two_sided")
+  get_p_value(obs_stat = x_bar, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( t_bar <- fli_small %>%
@@ -53,7 +53,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = t_bar, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = t_bar, direction = "two_sided")
+  get_p_value(obs_stat = t_bar, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( x_tilde <- fli_small %>%
@@ -69,7 +69,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = x_tilde, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = x_tilde, direction = "two_sided")
+  get_p_value(obs_stat = x_tilde, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( p_hat <- fli_small %>%
@@ -85,7 +85,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = p_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = p_hat, direction = "two_sided")
+  get_p_value(obs_stat = p_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 null_distn <- fli_small %>%
@@ -109,7 +109,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = d_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = d_hat, direction = "two_sided")
+  get_p_value(obs_stat = d_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( z_hat <- fli_small %>% 
@@ -125,7 +125,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = z_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = z_hat, direction = "two_sided")
+  get_p_value(obs_stat = z_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( Chisq_hat <- fli_small %>%
@@ -144,7 +144,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = Chisq_hat, direction = "greater")
 null_distn %>%
-  get_pvalue(obs_stat = Chisq_hat, direction = "greater")
+  get_p_value(obs_stat = Chisq_hat, direction = "greater")
 
 ## ------------------------------------------------------------------------
 ( Chisq_hat <- fli_small %>%
@@ -160,7 +160,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = Chisq_hat, direction = "greater")
 null_distn %>%
-  get_pvalue(obs_stat = Chisq_hat, direction = "greater")
+  get_p_value(obs_stat = Chisq_hat, direction = "greater")
 
 ## ------------------------------------------------------------------------
 ( d_hat <- fli_small %>% 
@@ -176,7 +176,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = d_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = d_hat, direction = "two_sided")
+  get_p_value(obs_stat = d_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( t_hat <- fli_small %>% 
@@ -192,7 +192,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = t_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = t_hat, direction = "two_sided")
+  get_p_value(obs_stat = t_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( d_hat <- fli_small %>% 
@@ -209,7 +209,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = d_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = d_hat, direction = "two_sided")
+  get_p_value(obs_stat = d_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( F_hat <- fli_small %>% 
@@ -225,7 +225,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = F_hat, direction = "greater")
 null_distn %>%
-  get_pvalue(obs_stat = F_hat, direction = "greater")
+  get_p_value(obs_stat = F_hat, direction = "greater")
 
 ## ------------------------------------------------------------------------
 ( slope_hat <- fli_small %>% 
@@ -241,7 +241,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = slope_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = slope_hat, direction = "two_sided")
+  get_p_value(obs_stat = slope_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( correlation_hat <- fli_small %>% 
@@ -257,7 +257,7 @@ null_distn <- fli_small %>%
 null_distn %>% 
   visualize(obs_stat = correlation_hat, direction = "two_sided")
 null_distn %>%
-  get_pvalue(obs_stat = correlation_hat, direction = "two_sided")
+  get_p_value(obs_stat = correlation_hat, direction = "two_sided")
 
 ## ----echo=FALSE, eval=FALSE----------------------------------------------
 #  # **Standardized observed stat**
@@ -274,7 +274,7 @@ null_distn %>%
 #  null_distn %>%
 #    visualize(obs_stat = t_hat, direction = "two_sided")
 #  null_distn %>%
-#    get_pvalue(obs_stat = t_hat, direction = "two_sided")
+#    get_p_value(obs_stat = t_hat, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 ( x_bar <- fli_small %>% 

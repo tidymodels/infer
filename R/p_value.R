@@ -1,7 +1,6 @@
 #' Compute p-value
 #'
-#' Only simulation-based methods are (currently only) supported. `get_pvalue()`
-#' is an alias of `p_value`.
+#' Only simulation-based methods are (currently only) supported.
 #'
 #' @param x Data frame of calculated statistics or containing attributes of
 #'   theoretical distribution values.
@@ -12,125 +11,124 @@
 #'
 #' @return A 1x1 data frame with value between 0 and 1.
 #'
+#' @section Aliases:
+#' `p_value` and `get_pvalue()` are deprecated aliases of `get_p_value()`.
+#'
 #' @examples
+#' # Prepare the dataset
 #' mtcars_df <- mtcars %>%
 #'   dplyr::mutate(am = factor(am))
+#'
+#' # Calculate the difference in means in the dataset
 #' d_hat <- mtcars_df %>%
 #'   specify(mpg ~ am) %>%
 #'   calculate(stat = "diff in means", order = c("1", "0"))
+#'
+#' # Same calculation on 100 permutation replicates
 #' null_distn <- mtcars_df %>%
 #'   specify(mpg ~ am) %>%
 #'   hypothesize(null = "independence") %>%
 #'   generate(reps = 100) %>%
 #'   calculate(stat = "diff in means", order = c("1", "0"))
-#' null_distn %>%
-#'   p_value(obs_stat = d_hat, direction = "right")
 #'
-#' @name get_pvalue
+#' # What proportion of replicates had a difference
+#' # in means more extreme than in the dataset?
+#' null_distn %>%
+#'   get_p_value(obs_stat = d_hat, direction = "right")
+#' @name get_p_value
 NULL
 
-#' @rdname get_pvalue
+#' @rdname get_p_value
 #' @export
-p_value <- function(x, obs_stat, direction) {
+get_p_value <- function(x, obs_stat, direction){
+
   check_type(x, is.data.frame)
   obs_stat <- check_obs_stat(obs_stat)
   check_direction(direction)
 
-  is_simulation_based <- !is_nuat(x, "generate") && attr(x, "generate")
+  is_simulation_based <- !is.null(attr(x, "generate")) &&
+    attr(x, "generate")
 
-  if (is_simulation_based) {
-    pvalue <- simulation_based_p_value(
-      x = x, obs_stat = obs_stat, direction = direction
-    )
-  }
+  if(is_simulation_based)
+    pvalue <- simulation_based_p_value(x = x, obs_stat = obs_stat,
+      direction = direction)
 
   ## Theoretical-based p-value
   # Could be more specific
-  # else if (
-  #   is_nuat(x, "theory_type") || is_nuat(x, "distr_param")
-  # ) {
-  #   stop_glue(
-  #     "Attributes have not been set appropriately. ",
-  #     "Check your {{infer}} pipeline again."
-  #   )
-  # }
-  #
-  # if (!("stat" %in% names(x))) {
-  #   # Theoretical distribution
-  #   which_distribution(
-  #     x,
-  #     theory_type = attr(x, "theory_type"),
-  #     obs_stat = obs_stat,
-  #     direction = direction
-  #   )
+  # else if(is.null(attr(x, "theory_type")) || is.null(attr(x, "distr_param")))
+  #   stop_glue("Attributes have not been set appropriately. ",
+  #             "Check your {{infer}} pipeline again.")
+
+  # if(!("stat" %in% names(x))){
+  #    # Theoretical distribution
+  #  which_distribution(x,
+  #                     theory_type <- attr(x, "theory_type"),
+  #                     obs_stat = obs_stat,
+  #                     direction = direction)
   # }
 
-  pvalue
+  return(pvalue)
 }
 
-simulation_based_p_value <- function(x, obs_stat, direction) {
-  if (direction %in% c("less", "left")) {
+simulation_based_p_value <- function(x, obs_stat, direction){
+
+  if(direction %in% c("less", "left")){
     p_value <- x %>%
       dplyr::summarize(p_value = mean(stat <= obs_stat))
-  } else if (direction %in% c("greater", "right")) {
+  }
+  else if(direction %in% c("greater", "right")){
     p_value <- x %>%
       dplyr::summarize(p_value = mean(stat >= obs_stat))
-  } else {
+  }
+  else{
     p_value <- x %>% two_sided_p_value(obs_stat = obs_stat)
   }
 
   p_value
 }
 
-two_sided_p_value <- function(x, obs_stat) {
-  if (stats::median(x$stat) >= obs_stat) {
+two_sided_p_value <- function(x, obs_stat){
+
+  if(stats::median(x$stat) >= obs_stat){
     basic_p_value <- get_percentile(x$stat, obs_stat) +
-      (1 - get_percentile(
-        x$stat, stats::median(x$stat) + stats::median(x$stat) - obs_stat
-        )
-      )
+      (1 - get_percentile(x$stat, stats::median(x$stat) +
+          stats::median(x$stat) - obs_stat))
   } else {
     basic_p_value <- 1 - get_percentile(x$stat, obs_stat) +
-      get_percentile(
-        x$stat, stats::median(x$stat) + stats::median(x$stat) - obs_stat
-      )
+      (get_percentile(x$stat, stats::median(x$stat) +
+          stats::median(x$stat) - obs_stat))
   }
 
-  if (basic_p_value >= 1) {
+  if(basic_p_value >= 1)
     # Catch all if adding both sides produces a number
     # larger than 1. Should update with test in that
     # scenario instead of using >=
-    tibble::tibble(p_value = 1)
-  } else {
-    tibble::tibble(p_value = basic_p_value)
-  }
+    return(tibble::tibble(p_value = 1))
+  else
+    return(tibble::tibble(p_value = basic_p_value))
 }
 
-#' @rdname get_pvalue
-#' @export
-get_pvalue <- p_value
-
-# which_distribution <- function(x, theory_type, obs_stat, direction) {
+# which_distribution <- function(x, theory_type, obs_stat, direction){
+#
 #   param <- attr(x, "distr_param")
-#   if (!is_nuat(x, "distr_param2")) {
+#   if(!is.null(attr(x, "distr_param2")))
 #     param2 <- attr(x, "distr_param2")
-#   }
-# 
-#   if (theory_type == "Two sample t") {
-#     return(
-#       pt(q = obs_stat, df = param, lower.tail = set_lower_tail(direction))
-#     )
-#   }
+#
+#   if(theory_type == "Two sample t")
+#     return(pt(q = obs_stat,
+#                              df = param,
+#                              lower.tail = set_lower_tail(direction))
+#          )
+#
 # }
 
-# theory_t_pvalue <-
+#theory_t_pvalue <-
 
-# set_lower_tail <- function(direction) {
-#   if (direction %in% c("greater", "right")) {
+# set_lower_tail <- function(direction){
+#   if(direction %in% c("greater", "right"))
 #     lower_tail <- FALSE
-#   } else {
+#   else
 #     lower_tail <- TRUE
-#   }
-# 
+#
 #   lower_tail
 # }
