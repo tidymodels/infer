@@ -8,6 +8,10 @@ test_that("direction is appropriate", {
 })
 
 test_that("get_p_value makes sense", {
+  expect_silent(
+    test_df %>% 
+      get_p_value(obs_stat = 0.7, direction = "right")
+    )
   expect_lt(
     iris_calc %>%
       get_p_value(obs_stat = 0.1, direction = "right") %>%

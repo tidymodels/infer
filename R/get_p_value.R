@@ -43,7 +43,7 @@ NULL
 get_p_value <- function(x, obs_stat, direction){
 
   check_type(x, is.data.frame)
-  if(!is_generated(x)) {
+  if(!is_generated(x) & is_hypothesized(x)) {
     stop_glue(
       "Theoretical p-values are not yet supported.",
       "`x` should be the result of calling `generate()`.",
@@ -121,6 +121,10 @@ two_sided_p_value <- function(x, obs_stat){
 
 is_generated <- function(x) {
   !is.null(attr(x, "generate")) && attr(x, "generate")
+}
+
+is_hypothesized <- function(x){
+  !is.null(attr(x, "null"))
 }
 
 # which_distribution <- function(x, theory_type, obs_stat, direction){
