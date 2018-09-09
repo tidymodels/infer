@@ -25,3 +25,4 @@ obs_diff <- iris_tbl %>%
 
 set.seed(2018)
 test_df <- tibble::tibble(stat = rnorm(100))
+
