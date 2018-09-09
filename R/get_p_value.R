@@ -2,12 +2,11 @@
 #'
 #' Simulation-based methods are (currently only) supported.
 #'
-#' @param x Data frame of calculated statistics or containing attributes of
-#'   theoretical distribution values.
+#' @param x Data frame of calculated statistics as returned by [generate()]
 #' @param obs_stat A numeric value or a 1x1 data frame (as extreme or more
 #'   extreme than this).
 #' @param direction A character string. Options are `"less"`, `"greater"`, or
-#'   `"two_sided"`. Can also specify `"left"`, `"right"`, or `"both"`.
+#'   `"two_sided"`. Can also use `"left"`, `"right"`, or `"both"`.
 #'
 #' @return A 1x1 data frame with value between 0 and 1.
 #'
@@ -44,15 +43,20 @@ NULL
 get_p_value <- function(x, obs_stat, direction){
 
   check_type(x, is.data.frame)
+  if(!is_generated(x) & is_hypothesized(x)) {
+    stop_glue(
+      "Theoretical p-values are not yet supported.",
+      "`x` should be the result of calling `generate()`.",
+      .sep = " "
+    )
+  }
   obs_stat <- check_obs_stat(obs_stat)
   check_direction(direction)
 
-  is_simulation_based <- !is.null(attr(x, "generate")) &&
-    attr(x, "generate")
-
-  if(is_simulation_based)
-    pvalue <- simulation_based_p_value(x = x, obs_stat = obs_stat,
-      direction = direction)
+  pvalue <- simulation_based_p_value(
+    x = x, 
+    obs_stat = obs_stat,
+    direction = direction)
 
   ## Theoretical-based p-value
   # Could be more specific
@@ -113,6 +117,14 @@ two_sided_p_value <- function(x, obs_stat){
     return(tibble::tibble(p_value = 1))
   else
     return(tibble::tibble(p_value = basic_p_value))
+}
+
+is_generated <- function(x) {
+  !is.null(attr(x, "generate")) && attr(x, "generate")
+}
+
+is_hypothesized <- function(x){
+  !is.null(attr(x, "null"))
 }
 
 # which_distribution <- function(x, theory_type, obs_stat, direction){

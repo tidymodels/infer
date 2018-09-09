@@ -8,6 +8,10 @@ test_that("direction is appropriate", {
 })
 
 test_that("get_p_value makes sense", {
+  expect_silent(
+    test_df %>% 
+      get_p_value(obs_stat = 0.7, direction = "right")
+    )
   expect_lt(
     iris_calc %>%
       get_p_value(obs_stat = 0.1, direction = "right") %>%
@@ -46,5 +50,24 @@ test_that("get_p_value makes sense", {
       dplyr::pull(),
     expected = 0
   )
+  expect_error(
+    iris_calc %>%
+      get_p_value(
+        obs_stat = median(iris_calc$stat) + 1, direction = "wrong"
+      )
+  )
 })
 
+test_that("theoretical p-value not supported error", {
+  obs_F <- iris_tbl %>% 
+    specify(Sepal.Width ~ Species) %>%
+    calculate(stat = "F") 
+  expect_error(
+    iris_tbl %>% 
+      specify(Sepal.Width ~ Species) %>%
+      hypothesize(null = "independence") %>% 
+      calculate(stat = "F") %>% 
+      get_p_value(obs_stat = obs_F, direction = "right")
+  )
+  
+})
