@@ -193,7 +193,7 @@ warn_depricated_args <- function(obs_stat, endpoints) {
     warning_glue(
       "`visualize()` shouldn't be used to plot p-value. Arguments `obs_stat`, ",
       "`obs_stat_color`, `pvalue_fill`, and `direction` are deprecated. ",
-      "Use `add_p_value()` instead."
+      "Use `shade_p_value()` instead."
     )
   }
   
@@ -201,7 +201,7 @@ warn_depricated_args <- function(obs_stat, endpoints) {
     warning_glue(
       "`visualize()` shouldn't be used to plot confidence interval. Arguments ",
       "`endpoints`, `endpoints_color`, and `ci_fill` are deprecated. ",
-      "Use `add_ci()` instead."
+      "Use `shade_confidence_interval()` instead."
     )
   }
   
