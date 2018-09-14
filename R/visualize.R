@@ -98,7 +98,7 @@ visualize <- function(data, bins = 15, method = "simulation",
     pvalue_fill, direction, endpoints, endpoints_color, ci_fill
   )
   warn_depricated_args(obs_stat, endpoints)
-  endpoints <- impute_enpoints(endpoints)
+  endpoints <- impute_endpoints(endpoints)
   obs_stat <- impute_obs_stat(obs_stat, direction, endpoints)
   
   # Add `method` to `data` attributes to enable later possibility of
@@ -208,7 +208,7 @@ warn_depricated_args <- function(obs_stat, endpoints) {
   TRUE
 }
 
-impute_enpoints <- function(endpoints) {
+impute_endpoints <- function(endpoints) {
   if (is.vector(endpoints) && (length(endpoints) != 2)) {
     warning_glue(
       "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector. ",
@@ -216,7 +216,14 @@ impute_enpoints <- function(endpoints) {
     )
     endpoints <- endpoints[1:2]
   }
+  
   if (is.data.frame(endpoints)) {
+    if ((nrow(endpoints) != 1) || (ncol(endpoints) != 2)) {
+      stop_glue(
+        "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector."
+      )
+    }
+    
     endpoints <- unlist(endpoints)
   }
   
@@ -411,6 +418,9 @@ NULL
 #' @export
 shade_p_value <- function(obs_stat, direction,
                           color = "red2", fill = "pink", ...) {
+  obs_stat <- check_obs_stat(obs_stat)
+  check_shade_p_value_args(obs_stat, direction, color, fill)
+  
   res <- list()
   if (is.null(obs_stat)) {
     return(res)
@@ -443,6 +453,19 @@ shade_p_value <- function(obs_stat, direction,
 #' @rdname shade_p_value
 #' @export
 shade_pvalue <- shade_p_value
+
+check_shade_p_value_args <- function(obs_stat, direction, color, fill) {
+  if (!is.null(obs_stat)) {
+    check_type(obs_stat, is.numeric)
+  }
+  if (!is.null(direction)) {
+    check_type(direction, is.character)
+  }
+  check_type(color, is_color_string, "color string")
+  check_type(fill, is_color_string, "color string")
+  
+  TRUE
+}
 
 #' Add information about confidence interval
 #' 
@@ -482,6 +505,9 @@ NULL
 #' @export
 shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
                                       fill = "turquoise", ...) {
+  endpoints <- impute_endpoints(endpoints)
+  check_shade_confidence_interval_args(color, fill)
+  
   res <- list()
   if (is.null(endpoints)) {
     return(res)
@@ -509,6 +535,13 @@ shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
 #' @rdname shade_confidence_interval
 #' @export
 shade_ci <- shade_confidence_interval
+
+check_shade_confidence_interval_args <- function(color, fill) {
+  check_type(color, is_color_string, "color string")
+  if (!is.null(fill)) {
+    check_type(fill, is_color_string, "color string")
+  }
+}
 
 get_percentile <- function(vector, observation) {
   stats::ecdf(vector)(observation)

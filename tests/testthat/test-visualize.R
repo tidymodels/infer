@@ -439,6 +439,13 @@ test_that("shade_p_value works", {
   expect_silent_pval(iris_viz_both)
 })
 
+test_that("shade_p_value throws errors", {
+  expect_error(iris_viz_sim + shade_p_value("a", "right"), "numeric")
+  expect_error(iris_viz_sim + shade_p_value(1, 1), "character")
+  expect_error(iris_viz_sim + shade_p_value(1, "right", color = "x"), "color")
+  expect_error(iris_viz_sim + shade_p_value(1, "right", fill = "x"), "color")
+})
+
 test_that("shade_confidence_interval works", {
   expect_silent_ci <- function(viz_obj) {
     expect_silent(viz_obj + shade_confidence_interval(c(-1, 1)))
@@ -449,6 +456,22 @@ test_that("shade_confidence_interval works", {
   expect_silent_ci(iris_viz_sim)
   expect_silent_ci(iris_viz_theor)
   expect_silent_ci(iris_viz_both)
+})
+
+test_that("shade_confidence_interval throws errors and warnings", {
+  expect_warning(iris_viz_sim + shade_confidence_interval(c(1, 2, 3)), "2")
+  expect_error(
+    iris_viz_sim + shade_confidence_interval(data.frame(x = 1)),
+    "1 x 2"
+  )
+  expect_error(
+    iris_viz_sim + shade_confidence_interval(c(-1, 1), color = "x"),
+    "color"
+  )
+  expect_error(
+    iris_viz_sim + shade_confidence_interval(c(-1, 1), fill = "x"),
+    "color"
+  )
 })
 
 test_that("two_tail_data works", {

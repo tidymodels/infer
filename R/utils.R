@@ -50,6 +50,11 @@ has_response <- function(x) {
   !is_nuat(x, "response")
 }
 
+is_color_string <- function(x) {
+  rlang::is_string(x) &&
+    tryCatch(is.matrix(grDevices::col2rgb(x)), error = function(e) {FALSE})
+}
+
 stop_glue <- function(..., .sep = "", .envir = parent.frame(),
                       call. = FALSE, .domain = NULL) {
   stop(
