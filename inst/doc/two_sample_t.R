@@ -43,7 +43,9 @@ t_null_distn <- fli_small %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t", order = c("h1", "h2"))
-t_null_distn %>% visualize(obs_stat = obs_t, direction = "two_sided")
+t_null_distn %>%
+  visualize() +
+    shade_p_value(obs_stat = obs_t, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 t_null_distn %>% 
@@ -56,7 +58,8 @@ fli_small %>%
   hypothesize(null = "independence") %>%
   # generate() ## Not used for theoretical
   calculate(stat = "t", order = c("h1", "h2")) %>%
-  visualize(method = "theoretical", obs_stat = obs_t, direction = "two_sided")
+  visualize(method = "theoretical") +
+    shade_p_value(obs_stat = obs_t, direction = "two_sided")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  fli_small %>%
@@ -65,12 +68,14 @@ fli_small %>%
 #    hypothesize(null = "independence") %>%
 #    generate(reps = 1000, type = "permute") %>%
 #    calculate(stat = "t", order = c("h1", "h2")) %>%
-#    visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
+#    visualize(method = "both") +
+#      shade_p_value(obs_stat = obs_t, direction = "two_sided")
 
 ## ----echo=FALSE----------------------------------------------------------
 # To use same distribution calculated above
 t_null_distn %>% 
-  visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
+  visualize(method = "both") +
+    shade_p_value(obs_stat = obs_t, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 fli_small %>% 

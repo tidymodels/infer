@@ -42,7 +42,9 @@ chisq_null_distn <- fli_small %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "Chisq")
-chisq_null_distn %>% visualize(obs_stat = obs_chisq, direction = "greater")
+chisq_null_distn %>%
+  visualize() +
+    shade_p_value(obs_stat = obs_chisq, direction = "greater")
 
 ## ------------------------------------------------------------------------
 chisq_null_distn %>% 
@@ -54,7 +56,8 @@ fli_small %>%
   hypothesize(null = "independence") %>%
   # generate() ## Not used for theoretical
   calculate(stat = "Chisq") %>%
-  visualize(method = "theoretical", obs_stat = obs_chisq, direction = "right")
+  visualize(method = "theoretical") +
+    shade_p_value(obs_stat = obs_chisq, direction = "right")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  fli_small %>%
@@ -62,12 +65,14 @@ fli_small %>%
 #    hypothesize(null = "independence") %>%
 #    generate(reps = 1000, type = "permute") %>%
 #    calculate(stat = "Chisq") %>%
-#    visualize(method = "both", obs_stat = obs_chisq, direction = "right")
+#    visualize(method = "both") +
+#      shade_p_value(obs_stat = obs_chisq, direction = "right")
 
 ## ----echo=FALSE----------------------------------------------------------
 # To use same distribution calculated above
 chisq_null_distn %>% 
-  visualize(method = "both", obs_stat = obs_chisq, direction = "right")
+  visualize(method = "both") +
+    shade_p_value(obs_stat = obs_chisq, direction = "right")
 
 ## ------------------------------------------------------------------------
 fli_small %>% 

@@ -35,7 +35,8 @@ null_distn <- fli_small %>%
   generate(reps = 1000) %>%
   calculate(stat = "mean")
 null_distn %>% 
-  visualize(obs_stat = x_bar, direction = "two_sided")
+  visualize() +
+    shade_p_value(obs_stat = x_bar, direction = "two_sided")
 null_distn %>%
   get_p_value(obs_stat = x_bar, direction = "two_sided")
 
@@ -51,7 +52,8 @@ null_distn <- fli_small %>%
   generate(reps = 1000) %>%
   calculate(stat = "t")
 null_distn %>% 
-  visualize(obs_stat = t_bar, direction = "two_sided")
+  visualize() +
+    shade_p_value(obs_stat = t_bar, direction = "two_sided")
 null_distn %>%
   get_p_value(obs_stat = t_bar, direction = "two_sided")
 
@@ -67,7 +69,8 @@ null_distn <- fli_small %>%
   generate(reps = 1000) %>% 
   calculate(stat = "median")
 null_distn %>% 
-  visualize(obs_stat = x_tilde, direction = "two_sided")
+  visualize() +
+    shade_p_value(obs_stat = x_tilde, direction = "two_sided")
 null_distn %>%
   get_p_value(obs_stat = x_tilde, direction = "two_sided")
 
@@ -83,7 +86,8 @@ null_distn <- fli_small %>%
   generate(reps = 1000) %>%
   calculate(stat = "prop")
 null_distn %>% 
-  visualize(obs_stat = p_hat, direction = "two_sided")
+  visualize() +
+    shade_p_value(obs_stat = p_hat, direction = "two_sided")
 null_distn %>%
   get_p_value(obs_stat = p_hat, direction = "two_sided")
 
@@ -107,7 +111,8 @@ null_distn <- fli_small %>%
   generate(reps = 1000) %>% 
   calculate(stat = "diff in props", order = c("winter", "summer"))
 null_distn %>% 
-  visualize(obs_stat = d_hat, direction = "two_sided")
+  visualize() +
+    shade_p_value(obs_stat = d_hat, direction = "two_sided")
 null_distn %>%
   get_p_value(obs_stat = d_hat, direction = "two_sided")
 
@@ -123,7 +128,8 @@ null_distn <- fli_small %>%
   generate(reps = 1000) %>% 
   calculate(stat = "z", order = c("winter", "summer"))
 null_distn %>% 
-  visualize(obs_stat = z_hat, direction = "two_sided")
+  visualize() +
+    shade_p_value(obs_stat = z_hat, direction = "two_sided")
 null_distn %>%
   get_p_value(obs_stat = z_hat, direction = "two_sided")
 
@@ -142,7 +148,8 @@ null_distn <- fli_small %>%
   generate(reps = 1000, type = "simulate") %>% 
   calculate(stat = "Chisq")
 null_distn %>% 
-  visualize(obs_stat = Chisq_hat, direction = "greater")
+  visualize() +
+    shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 null_distn %>%
   get_p_value(obs_stat = Chisq_hat, direction = "greater")
 
@@ -158,7 +165,8 @@ null_distn <- fli_small %>%
   generate(reps = 1000, type = "permute") %>% 
   calculate(stat = "Chisq")
 null_distn %>% 
-  visualize(obs_stat = Chisq_hat, direction = "greater")
+  visualize() +
+    shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 null_distn %>%
   get_p_value(obs_stat = Chisq_hat, direction = "greater")
 
@@ -174,7 +182,8 @@ null_distn <- fli_small %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in means", order = c("summer", "winter"))
 null_distn %>% 
-  visualize(obs_stat = d_hat, direction = "two_sided")
+  visualize() +
+    shade_p_value(obs_stat = d_hat, direction = "two_sided")
 null_distn %>%
   get_p_value(obs_stat = d_hat, direction = "two_sided")
 
@@ -190,7 +199,8 @@ null_distn <- fli_small %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t", order = c("summer", "winter"))
 null_distn %>% 
-  visualize(obs_stat = t_hat, direction = "two_sided")
+  visualize() +
+    shade_p_value(obs_stat = t_hat, direction = "two_sided")
 null_distn %>%
   get_p_value(obs_stat = t_hat, direction = "two_sided")
 
@@ -207,7 +217,8 @@ null_distn <- fli_small %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in medians", order = c("summer", "winter"))
 null_distn %>% 
-  visualize(obs_stat = d_hat, direction = "two_sided")
+  visualize() +
+    shade_p_value(obs_stat = d_hat, direction = "two_sided")
 null_distn %>%
   get_p_value(obs_stat = d_hat, direction = "two_sided")
 
@@ -223,7 +234,8 @@ null_distn <- fli_small %>%
    generate(reps = 1000, type = "permute") %>%
    calculate(stat = "F")
 null_distn %>% 
-  visualize(obs_stat = F_hat, direction = "greater")
+  visualize() +
+    shade_p_value(obs_stat = F_hat, direction = "greater")
 null_distn %>%
   get_p_value(obs_stat = F_hat, direction = "greater")
 
@@ -239,7 +251,8 @@ null_distn <- fli_small %>%
    generate(reps = 1000, type = "permute") %>%
    calculate(stat = "slope")
 null_distn %>% 
-  visualize(obs_stat = slope_hat, direction = "two_sided")
+  visualize() +
+    shade_p_value(obs_stat = slope_hat, direction = "two_sided")
 null_distn %>%
   get_p_value(obs_stat = slope_hat, direction = "two_sided")
 
@@ -255,7 +268,8 @@ null_distn <- fli_small %>%
    generate(reps = 1000, type = "permute") %>%
    calculate(stat = "correlation")
 null_distn %>% 
-  visualize(obs_stat = correlation_hat, direction = "two_sided")
+  visualize() +
+    shade_p_value(obs_stat = correlation_hat, direction = "two_sided")
 null_distn %>%
   get_p_value(obs_stat = correlation_hat, direction = "two_sided")
 
@@ -272,7 +286,8 @@ null_distn %>%
 #     generate(reps = 1000, type = "permute") %>%
 #     calculate(stat = "t")
 #  null_distn %>%
-#    visualize(obs_stat = t_hat, direction = "two_sided")
+#    visualize() +
+#      shade_p_value(obs_stat = t_hat, direction = "two_sided")
 #  null_distn %>%
 #    get_p_value(obs_stat = t_hat, direction = "two_sided")
 
@@ -287,9 +302,13 @@ boot <- fli_small %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "mean")
 ( percentile_ci <- get_ci(boot) )
-boot %>% visualize(endpoints = percentile_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = percentile_ci)
 ( standard_error_ci <- get_ci(boot, type = "se", point_estimate = x_bar) )
-boot %>% visualize(endpoints = standard_error_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = standard_error_ci)
 
 ## ------------------------------------------------------------------------
 ( t_hat <- fli_small %>% 
@@ -302,9 +321,13 @@ boot <- fli_small %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "t")
 ( percentile_ci <- get_ci(boot) )
-boot %>% visualize(endpoints = percentile_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = percentile_ci)
 ( standard_error_ci <- get_ci(boot, type = "se", point_estimate = t_hat) )
-boot %>% visualize(endpoints = standard_error_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = standard_error_ci)
 
 ## ------------------------------------------------------------------------
 ( p_hat <- fli_small %>% 
@@ -317,9 +340,13 @@ boot <- fli_small %>%
  generate(reps = 1000, type = "bootstrap") %>%
  calculate(stat = "prop")
 ( percentile_ci <- get_ci(boot) )
-boot %>% visualize(endpoints = percentile_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = percentile_ci)
 ( standard_error_ci <- get_ci(boot, type = "se", point_estimate = p_hat) )
-boot %>% visualize(endpoints = standard_error_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = standard_error_ci)
 
 ## ------------------------------------------------------------------------
 ( d_hat <- fli_small %>%
@@ -332,9 +359,13 @@ boot <- fli_small %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "diff in means", order = c("summer", "winter"))
 ( percentile_ci <- get_ci(boot) )
-boot %>% visualize(endpoints = percentile_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = percentile_ci)
 ( standard_error_ci <- get_ci(boot, type = "se", point_estimate = d_hat) )
-boot %>% visualize(endpoints = standard_error_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = standard_error_ci)
 
 ## ------------------------------------------------------------------------
 ( t_hat <- fli_small %>%
@@ -347,9 +378,13 @@ boot <- fli_small %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "t", order = c("summer", "winter"))
 ( percentile_ci <- get_ci(boot) )
-boot %>% visualize(endpoints = percentile_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = percentile_ci)
 ( standard_error_ci <- get_ci(boot, type = "se", point_estimate = t_hat) )
-boot %>% visualize(endpoints = standard_error_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = standard_error_ci)
 
 ## ------------------------------------------------------------------------
 ( d_hat <- fli_small %>% 
@@ -362,9 +397,13 @@ boot <- fli_small %>%
   generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "diff in props", order = c("summer", "winter"))
 ( percentile_ci <- get_ci(boot) )
-boot %>% visualize(endpoints = percentile_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = percentile_ci)
 ( standard_error_ci <- get_ci(boot, type = "se", point_estimate = d_hat) )
-boot %>% visualize(endpoints = standard_error_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = standard_error_ci)
 
 ## ------------------------------------------------------------------------
 ( z_hat <- fli_small %>% 
@@ -377,9 +416,13 @@ boot <- fli_small %>%
   generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "z", order = c("summer", "winter"))
 ( percentile_ci <- get_ci(boot) )
-boot %>% visualize(endpoints = percentile_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = percentile_ci)
 ( standard_error_ci <- get_ci(boot, type = "se", point_estimate = z_hat) )
-boot %>% visualize(endpoints = standard_error_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = standard_error_ci)
 
 ## ------------------------------------------------------------------------
 ( slope_hat <- fli_small %>% 
@@ -392,9 +435,13 @@ boot <- fli_small %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "slope")
 ( percentile_ci <- get_ci(boot) )
-boot %>% visualize(endpoints = percentile_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = percentile_ci)
 ( standard_error_ci <- get_ci(boot, type = "se", point_estimate = slope_hat) )
-boot %>% visualize(endpoints = standard_error_ci, direction = "between") 
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = standard_error_ci)
 
 ## ------------------------------------------------------------------------
 ( correlation_hat <- fli_small %>% 
@@ -407,10 +454,14 @@ boot <- fli_small %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "correlation")
 ( percentile_ci <- get_ci(boot) )
-boot %>% visualize(endpoints = percentile_ci, direction = "between")
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = percentile_ci)
 ( standard_error_ci <- get_ci(boot, type = "se", 
                             point_estimate = correlation_hat) )
-boot %>% visualize(endpoints = standard_error_ci, direction = "between")  
+boot %>%
+  visualize() +
+    shade_confidence_interval(endpoints = standard_error_ci)
 
 ## ----eval=FALSE, echo=FALSE----------------------------------------------
 #  # **Point estimate**
@@ -424,7 +475,11 @@ boot %>% visualize(endpoints = standard_error_ci, direction = "between")
 #     generate(reps = 1000, type = "bootstrap") %>%
 #     calculate(stat = "t")
 #  ( percentile_ci <- get_ci(boot) )
-#  boot %>% visualize(endpoints = percentile_ci, direction = "between")
+#  boot %>%
+#    visualize() +
+#      shade_confidence_interval(endpoints = percentile_ci)
 #  ( standard_error_ci <- get_ci(boot, type = "se", point_estimate = t_hat) )
-#  boot %>% visualize(endpoints = standard_error_ci, direction = "between")
+#  boot %>%
+#    visualize() +
+#      shade_confidence_interval(endpoints = standard_error_ci)
 
