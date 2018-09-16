@@ -1,5 +1,18 @@
 # infer 0.3.1.9000
 
+## Deprecation changes
+
+- Deprecated `p_value()` (use `get_p_value()` instead) (#180).
+- Deprecated `conf_int()` (use `get_confidence_interval()` instead) (#180).
+- Deprecated (via warnings) plotting p-value and confidence interval in `visualize()` (use new functions `shade_p_value()` and `shade_confidence_interval()` instead) (#178).
+
+## New functions
+
+- `shade_p_value()` - {ggplot2}-like layer function to add information about p-value region to `visualize()` output. Has alias `shade_pvalue()`.
+- `shade_confidence_interval()` - {ggplot2}-like layer function to add information about confidence interval region to `visualize()` output. Has alias `shade_ci()`.
+
+## Other
+
 - Account for `NULL` value in left hand side of formula in `specify()` (#156) and `type` in `generate()` (#157).
 - Update documentation code to follow tidyverse style guide (#159).
 - Remove help page for internal `set_params()` (#165).
@@ -9,8 +22,6 @@
 - Make transparancy in `visualize()` to not depend on method and data volume.
 - Make `visualize()` work for "One sample t" theoretical type with `method = "both"`.
 - Add `stat = "sum"` and `stat = "count"` options to `calculate()` (#50).
-- Deprecated `p_value()` (use `get_p_value()` instead) (#180).
-- Deprecated `cont_int()` (use `get_confidence_interval()` instead) (#180).
 
 # infer 0.3.1
 
