@@ -180,11 +180,6 @@ check_visualize_args <- function(data, bins, method, dens_color,
     )
   }
   
-  theory_type <- short_theory_type(data)
-  if (theory_type %in% c("F", "Chi-Square")) {
-    warn_right_tail_test(direction, theory_type)
-  }
-  
   TRUE
 }
 
@@ -433,7 +428,7 @@ shade_p_value <- function(obs_stat, direction,
       
       res <- c(res, list(geom_tail(tail_data, fill, ...)))
     } else if (direction %in% c("two_sided", "both")) {
-      tail_data <- two_tail_data(obs_stat)
+      tail_data <- two_tail_data(obs_stat, direction)
       
       res <- c(res, list(geom_tail(tail_data, fill, ...)))
     } else {
@@ -568,7 +563,8 @@ short_theory_type <- function(x) {
 }
 
 warn_right_tail_test <- function(direction, stat_name) {
-  if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
+  if (!is.null(direction) && !(direction %in% c("greater", "right")) &&
+      (stat_name %in% c("F", "Chi-Square"))) {
     warning_glue(
       "{stat_name} usually corresponds to right-tailed tests. ",
       "Proceed with caution."
@@ -591,19 +587,28 @@ geom_tail <- function(tail_data, fill, ...) {
 }
 
 one_tail_data <- function(obs_stat, direction) {
-  if (direction %in% c("less", "left")) {
-    data.frame(x_min = -Inf, x_max = obs_stat)
-  } else if (direction %in% c("greater", "right")) {
-    data.frame(x_min = obs_stat, x_max = Inf)
+  # Take advantage of {ggplot2} functionality to accept function as `data`.
+  # Needed to warn about incorrect usage of right tail tests.
+  function(data) {
+    warn_right_tail_test(direction, short_theory_type(data))
+    
+    if (direction %in% c("less", "left")) {
+      data.frame(x_min = -Inf, x_max = obs_stat)
+    } else if (direction %in% c("greater", "right")) {
+      data.frame(x_min = obs_stat, x_max = Inf)
+    }
   }
 }
 
-two_tail_data <- function(obs_stat) {
-  # Take advantage of {ggplot2} functionality to accept function as `data`
+two_tail_data <- function(obs_stat, direction) {
+  # Take advantage of {ggplot2} functionality to accept function as `data`.
   # This is needed to make possible existence of `shade_p_value()` in case of
   # `direction = "both"`, as it depends on actual `data` but adding it as
   # argument to `shade_p_value()` is very bad.
+  # Also needed to warn about incorrect usage of right tail tests.
   function(data) {
+    warn_right_tail_test(direction, short_theory_type(data))
+    
     if (get_viz_method(data) == "theoretical") {
       second_border <- -obs_stat
     } else {
