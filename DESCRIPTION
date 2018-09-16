@@ -11,7 +11,7 @@ Authors@R: c(
     person("Ted", "Laderas", email = "tedladeras@gmail.com", role = "ctb"),
     person("Nick", "Solomon", email = "nick.solomon@datacamp.com", role = "ctb"),
     person("Johanna", "Hardin", email = "Jo.Hardin@pomona.edu", role = "ctb"),
-    person("Albert", "Kim", email = "albert.ys.kim@gmail.com", role = "ctb"),
+    person("Albert Y.", "Kim", email = "albert.ys.kim@gmail.com", role = "ctb"),
     person("Neal", "Fultz", email = "nfultz@gmail.com", role = "ctb"),
     person("Doug", "Friedman", email = "doug.nhp@gmail.com", role = "ctb"),
     person("Richie", "Cotton", email = "richie@datacamp.com", role = "ctb"),
