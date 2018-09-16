@@ -116,7 +116,7 @@ visualize <- function(data, bins = 15, method = "simulation",
   
   if (!is.null(direction) && (direction == "between")) {
     infer_plot <- infer_plot +
-      shade_ci(endpoints, endpoints_color, ci_fill, ...)
+      shade_confidence_interval(endpoints, endpoints_color, ci_fill, ...)
   }
   
   infer_plot
