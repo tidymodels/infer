@@ -68,7 +68,7 @@ distributions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
       </span>
     </div>
 
@@ -96,12 +96,6 @@ distributions." />
     <li>
       <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
     </li>
-    <li>
-      <a href="../articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
-    </li>
-    <li>
-      <a href="../articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -123,7 +117,7 @@ distributions." />
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/andrewpbray/infer">
+  <a href="https://github.com/tidymodels/infer">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -147,7 +141,7 @@ distributions." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Perform repeated sampling</h1>
-    <small class="dont-index">Source: <a href='https://github.com/andrewpbray/infer/blob/master/R/rep_sample_n.R'><code>R/rep_sample_n.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/rep_sample_n.R'><code>R/rep_sample_n.R</code></a></small>
     <div class="hidden name"><code>rep_sample_n.Rd</code></div>
     </div>
 
@@ -194,8 +188,7 @@ samples of size n = <code>size</code> from <code>tbl</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>suppressPackageStartupMessages</span>(<span class='fu'>library</span>(<span class='no'>dplyr</span>))
-<span class='fu'>suppressPackageStartupMessages</span>(<span class='fu'>library</span>(<span class='no'>ggplot2</span>))
-
+<span class='fu'>suppressPackageStartupMessages</span>(<span class='fu'>library</span>(<span class='no'>ggplot2</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: package 'ggplot2' was built under R version 3.5.1</span></div><div class='input'>
 <span class='co'># A virtual population of N = 10,010, of which 3091 are hurricanes</span>
 <span class='no'>population</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='no'><a href='http://dplyr.tidyverse.org/reference/storms.html'>storms</a></span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='http://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>status</span>)
