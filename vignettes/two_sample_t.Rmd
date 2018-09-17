@@ -69,8 +69,7 @@ Or using `t_test` in `infer`
 obs_t <- fli_small %>% 
   t_test(formula = arr_delay ~ half_year, alternative = "two_sided",
          order = c("h1", "h2")) %>% 
-  dplyr::select(statistic) %>% 
-  dplyr::pull()
+  dplyr::pull(statistic)
 ```
 
 The observed $t$ statistic is `r obs_t`.
@@ -142,7 +141,6 @@ fli_small %>%
   t_test(formula = arr_delay ~ half_year,
          alternative = "two_sided",
          order = c("h1", "h2")) %>% 
-  dplyr::select(p_value) %>% 
-  dplyr::pull()
+  dplyr::pull(p_value)
 ```
 

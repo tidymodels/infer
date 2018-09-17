@@ -137,7 +137,6 @@ chisq_null_distn %>%
 ```{r}
 fli_small %>% 
   chisq_test(formula = origin ~ season) %>% 
-  dplyr::select(p_value) %>% 
-  dplyr::pull()
+  dplyr::pull(p_value)
 ```
 
