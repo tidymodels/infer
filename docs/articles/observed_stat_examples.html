@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1.9000</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.3.1</span>
       </span>
     </div>
 
@@ -59,12 +59,6 @@
     <li>
       <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
     </li>
-    <li>
-      <a href="../articles/profiles_examples.html">(DEV) Simulation-Based `okcupiddata` Examples</a>
-    </li>
-    <li>
-      <a href="../articles/profiles_examples_both_methods.html">(DEV) Simulation-Based and Traditional `okcupiddata` Examples</a>
-    </li>
   </ul>
 </li>
 <li>
@@ -85,7 +79,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/andrewpbray/infer">
+  <a href="https://github.com/tidymodels/infer">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -113,7 +107,7 @@
             
             <h4 class="date">Updated on 2018-06-14</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/andrewpbray/infer/blob/master/vignettes/observed_stat_examples.Rmd"><code>vignettes/observed_stat_examples.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/master/vignettes/observed_stat_examples.Rmd"><code>vignettes/observed_stat_examples.Rmd</code></a></small>
       <div class="hidden name"><code>observed_stat_examples.Rmd</code></div>
 
     </div>
@@ -131,16 +125,16 @@
 <span class="kw">set.seed</span>(<span class="dv">2017</span>)
 fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">na.omit</span>() <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(<span class="dt">size =</span> <span class="dv">500</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">season =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span>(
+<span class="st">  </span><span class="kw">sample_n</span>(<span class="dt">size =</span> <span class="dv">500</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">season =</span> <span class="kw">case_when</span>(
     month <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span><span class="op">:</span><span class="dv">12</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) <span class="op">~</span><span class="st"> "winter"</span>,
     month <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span><span class="op">:</span><span class="dv">9</span>) <span class="op">~</span><span class="st"> "summer"</span>
   )) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">day_hour =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span>(
-    <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(hour, <span class="dv">1</span>, <span class="dv">12</span>) <span class="op">~</span><span class="st"> "morning"</span>,
-    <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(hour, <span class="dv">13</span>, <span class="dv">24</span>) <span class="op">~</span><span class="st"> "not morning"</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">day_hour =</span> <span class="kw">case_when</span>(
+    <span class="kw">between</span>(hour, <span class="dv">1</span>, <span class="dv">12</span>) <span class="op">~</span><span class="st"> "morning"</span>,
+    <span class="kw">between</span>(hour, <span class="dv">13</span>, <span class="dv">24</span>) <span class="op">~</span><span class="st"> "not morning"</span>
   )) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/select.html">select</a></span>(arr_delay, dep_delay, season, 
+<span class="st">  </span><span class="kw">select</span>(arr_delay, dep_delay, season, 
          day_hour, origin, carrier)</code></pre></div>
 <ul>
 <li>Two numeric - <code>arr_delay</code>, <code>dep_delay</code>
@@ -195,8 +189,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( t_bar &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>) )</code></pre></div>
-<pre><code>## Response: dep_delay (numeric)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  6.93</code></pre>
@@ -268,7 +261,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span>
 ## 1   0.101</code></pre>
 <p>Logical variables will be coerced to factors:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">day_hour_logical =</span> (day_hour <span class="op">==</span><span class="st"> "morning"</span>)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">day_hour_logical =</span> (day_hour <span class="op">==</span><span class="st"> "morning"</span>)) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour_logical, <span class="dt">success =</span> <span class="st">"TRUE"</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> .<span class="dv">5</span>) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span>
@@ -342,9 +335,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, 
               <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"EWR"</span> =<span class="st"> </span>.<span class="dv">33</span>, <span class="st">"JFK"</span> =<span class="st"> </span>.<span class="dv">33</span>, <span class="st">"LGA"</span> =<span class="st"> </span>.<span class="dv">34</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) )</code></pre></div>
-<pre><code>## Response: origin (factor)
-## Null Hypothesis: point
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  10.4</code></pre>
@@ -423,9 +414,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( t_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</code></pre></div>
-<pre><code>## Response: dep_delay (numeric)
-## Explanatory: season (factor)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1 0.754</code></pre>
@@ -479,9 +468,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( F_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>origin) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>) )</code></pre></div>
-<pre><code>## Response: arr_delay (numeric)
-## Explanatory: origin (factor)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  1.08</code></pre>
@@ -507,9 +494,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( slope_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>) )</code></pre></div>
-<pre><code>## Response: arr_delay (numeric)
-## Explanatory: dep_delay (numeric)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  1.02</code></pre>
@@ -535,9 +520,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( correlation_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"correlation"</span>) )</code></pre></div>
-<pre><code>## Response: arr_delay (numeric)
-## Explanatory: dep_delay (numeric)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1 0.894</code></pre>
@@ -601,8 +584,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( t_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>) )</code></pre></div>
-<pre><code>## Response: arr_delay (numeric)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  2.68</code></pre>
@@ -697,9 +679,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( t_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</code></pre></div>
-<pre><code>## Response: arr_delay (numeric)
-## Explanatory: season (factor)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##     stat
 ##    &lt;dbl&gt;
 ## 1 -0.218</code></pre>
@@ -789,9 +769,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( slope_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>) )</code></pre></div>
-<pre><code>## Response: arr_delay (numeric)
-## Explanatory: dep_delay (numeric)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  1.02</code></pre>
@@ -821,9 +799,7 @@ null_distn <span class="op">%&gt;%</span><span class="st"> </span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">( correlation_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"correlation"</span>) )</code></pre></div>
-<pre><code>## Response: arr_delay (numeric)
-## Explanatory: dep_delay (numeric)
-## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1 0.894</code></pre>
