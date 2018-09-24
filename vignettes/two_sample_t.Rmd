@@ -86,13 +86,13 @@ The observed $t$ statistic is `r obs_t`.
 ## Randomization approach to t-statistic
 
 ```{r}
-t_null_distn <- fli_small %>%
+t_null_perm <- fli_small %>%
   # alt: response = arr_delay, explanatory = half_year
   specify(arr_delay ~ half_year) %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t", order = c("h1", "h2"))
-t_null_distn %>%
+t_null_perm %>%
   visualize() +
     shade_p_value(obs_stat = obs_t, direction = "two_sided")
 ```
@@ -100,7 +100,7 @@ t_null_distn %>%
 ## Calculate the randomization-based $p$-value
 
 ```{r}
-t_null_distn %>% 
+t_null_perm %>% 
   get_p_value(obs_stat = obs_t, direction = "two_sided")
 ```
 
@@ -108,36 +108,24 @@ t_null_distn %>%
 ## Theoretical distribution
 
 ```{r }
-fli_small %>%
+t_null_theor <- fli_small %>%
   # alt: response = arr_delay, explanatory = half_year
   specify(arr_delay ~ half_year) %>%
   hypothesize(null = "independence") %>%
   # generate() ## Not used for theoretical
-  calculate(stat = "t", order = c("h1", "h2")) %>%
+  calculate(stat = "t", order = c("h1", "h2"))
+t_null_theor %>%
   visualize(method = "theoretical") +
     shade_p_value(obs_stat = obs_t, direction = "two_sided")
 ```
 
 ## Overlay appropriate $t$ distribution on top of permuted t-statistics
 
-```{r eval=FALSE}
-fli_small %>%
-  # alt: response = arr_delay, explanatory = half_year
-  specify(arr_delay ~ half_year) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "t", order = c("h1", "h2")) %>% 
+```{r}
+t_null_perm %>% 
   visualize(method = "both") +
     shade_p_value(obs_stat = obs_t, direction = "two_sided")
 ```
-
-```{r echo=FALSE}
-# To use same distribution calculated above
-t_null_distn %>% 
-  visualize(method = "both") +
-    shade_p_value(obs_stat = obs_t, direction = "two_sided")
-```
-
 
 ## Compute theoretical p-value
 
