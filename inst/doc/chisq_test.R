@@ -37,46 +37,36 @@ obs_chisq <- fli_small %>%
   chisq_stat(formula = origin ~ season)
 
 ## ------------------------------------------------------------------------
-chisq_null_distn <- fli_small %>%
+chisq_null_perm <- fli_small %>%
   specify(origin ~ season) %>% # alt: response = origin, explanatory = season
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "Chisq")
-chisq_null_distn %>%
+chisq_null_perm %>%
   visualize() +
     shade_p_value(obs_stat = obs_chisq, direction = "greater")
 
 ## ------------------------------------------------------------------------
-chisq_null_distn %>% 
+chisq_null_perm %>% 
   get_p_value(obs_stat = obs_chisq, direction = "greater")
 
 ## ------------------------------------------------------------------------
-fli_small %>%
+chisq_null_theor <- fli_small %>%
   specify(origin ~ season) %>% 
   hypothesize(null = "independence") %>%
   # generate() ## Not used for theoretical
-  calculate(stat = "Chisq") %>%
+  calculate(stat = "Chisq")
+chisq_null_theor %>%
   visualize(method = "theoretical") +
     shade_p_value(obs_stat = obs_chisq, direction = "right")
 
-## ----eval=FALSE----------------------------------------------------------
-#  fli_small %>%
-#    specify(origin ~ season) %>% # alt: response = origin, explanatory = season
-#    hypothesize(null = "independence") %>%
-#    generate(reps = 1000, type = "permute") %>%
-#    calculate(stat = "Chisq") %>%
-#    visualize(method = "both") +
-#      shade_p_value(obs_stat = obs_chisq, direction = "right")
-
-## ----echo=FALSE----------------------------------------------------------
-# To use same distribution calculated above
-chisq_null_distn %>% 
+## ------------------------------------------------------------------------
+chisq_null_perm %>% 
   visualize(method = "both") +
     shade_p_value(obs_stat = obs_chisq, direction = "right")
 
 ## ------------------------------------------------------------------------
 fli_small %>% 
   chisq_test(formula = origin ~ season) %>% 
-  dplyr::select(p_value) %>% 
-  dplyr::pull()
+  dplyr::pull(p_value)
 

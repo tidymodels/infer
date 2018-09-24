@@ -343,8 +343,7 @@ null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">slope_hat &lt;-<span class="st"> </span><span class="kw">lm</span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay, <span class="dt">data =</span> fli_small) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(term <span class="op">==</span><span class="st"> &quot;dep_delay&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">select</span>(estimate) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">pull</span>()
+<span class="st">  </span><span class="kw">pull</span>(estimate)
 null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw">specify</span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">   </span><span class="kw">hypothesize</span>(<span class="dt">null =</span> <span class="st">&quot;independence&quot;</span>) <span class="op">%&gt;%</span>
@@ -432,8 +431,7 @@ boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">slope_hat &lt;-<span class="st"> </span><span class="kw">lm</span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay, <span class="dt">data =</span> fli_small) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span>broom<span class="op">::</span><span class="kw">tidy</span>() <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">filter</span>(term <span class="op">==</span><span class="st"> &quot;dep_delay&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">select</span>(estimate) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">pull</span>()
+<span class="st">  </span><span class="kw">pull</span>(estimate)
 boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span>
 <span class="st">   </span><span class="kw">specify</span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">   </span><span class="kw">generate</span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">&quot;bootstrap&quot;</span>) <span class="op">%&gt;%</span>
