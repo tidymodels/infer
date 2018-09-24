@@ -18,9 +18,9 @@ if (getRversion() >= "2.15.1") {
   utils::globalVariables(
     c(
       "prop", "stat", "value", "x", "..density..", "statistic", ".",
-      "parameter", "p.value", "xmin", "xmax", "density", "denom", "diff_prop",
-      "group_num", "n1", "n2", "num_suc", "p_hat", "total_suc", "explan",
-      "probs", "conf.low", "conf.high"
+      "parameter", "p.value", "xmin", "x_min", "xmax", "x_max", "density",
+      "denom", "diff_prop", "group_num", "n1", "n2", "num_suc", "p_hat",
+      "total_suc", "explan", "probs", "conf.low", "conf.high"
     )
   )
 }

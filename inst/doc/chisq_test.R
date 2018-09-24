@@ -37,41 +37,35 @@ obs_chisq <- fli_small %>%
   chisq_stat(formula = origin ~ season)
 
 ## ------------------------------------------------------------------------
-chisq_null_distn <- fli_small %>%
+chisq_null_perm <- fli_small %>%
   specify(origin ~ season) %>% # alt: response = origin, explanatory = season
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "Chisq")
-chisq_null_distn %>% visualize(obs_stat = obs_chisq, direction = "greater")
+
+visualize(chisq_null_perm) +
+  shade_p_value(obs_stat = obs_chisq, direction = "greater")
 
 ## ------------------------------------------------------------------------
-chisq_null_distn %>% 
+chisq_null_perm %>% 
   get_p_value(obs_stat = obs_chisq, direction = "greater")
 
 ## ------------------------------------------------------------------------
-fli_small %>%
+chisq_null_theor <- fli_small %>%
   specify(origin ~ season) %>% 
   hypothesize(null = "independence") %>%
   # generate() ## Not used for theoretical
-  calculate(stat = "Chisq") %>%
-  visualize(method = "theoretical", obs_stat = obs_chisq, direction = "right")
+  calculate(stat = "Chisq")
 
-## ----eval=FALSE----------------------------------------------------------
-#  fli_small %>%
-#    specify(origin ~ season) %>% # alt: response = origin, explanatory = season
-#    hypothesize(null = "independence") %>%
-#    generate(reps = 1000, type = "permute") %>%
-#    calculate(stat = "Chisq") %>%
-#    visualize(method = "both", obs_stat = obs_chisq, direction = "right")
+visualize(chisq_null_theor, method = "theoretical") +
+  shade_p_value(obs_stat = obs_chisq, direction = "right")
 
-## ----echo=FALSE----------------------------------------------------------
-# To use same distribution calculated above
-chisq_null_distn %>% 
-  visualize(method = "both", obs_stat = obs_chisq, direction = "right")
+## ------------------------------------------------------------------------
+visualize(chisq_null_perm, method = "both") +
+  shade_p_value(obs_stat = obs_chisq, direction = "right")
 
 ## ------------------------------------------------------------------------
 fli_small %>% 
   chisq_test(formula = origin ~ season) %>% 
-  dplyr::select(p_value) %>% 
-  dplyr::pull()
+  dplyr::pull(p_value)
 

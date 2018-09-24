@@ -11,27 +11,41 @@
 #' @param dens_color A character or hex string specifying the color of the
 #'   theoretical density curve.
 #' @param obs_stat A numeric value or 1x1 data frame corresponding to what the
-#'   observed statistic is.
+#'   observed statistic is. **Deprecated (see Details)**.
 #' @param obs_stat_color A character or hex string specifying the color of the
-#'   observed statistic as a vertical line on the plot.
+#'   observed statistic as a vertical line on the plot. **Deprecated (see
+#'   Details)**.
 #' @param pvalue_fill A character or hex string specifying the color to shade
 #'   the p-value. In previous versions of the package this was the `shade_color`
-#'   argument.
+#'   argument. **Deprecated (see Details)**.
 #' @param direction A string specifying in which direction the shading should
 #'   occur. Options are `"less"`, `"greater"`, or `"two_sided"` for p-value. Can
 #'   also give `"left"`, `"right"`, or `"both"` for p-value. For confidence
 #'   intervals, use `"between"` and give the endpoint values in `endpoints`.
+#'   **Deprecated (see Details)**.
 #' @param endpoints A 2 element vector or a 1 x 2 data frame containing the
 #'   lower and upper values to be plotted. Most useful for visualizing
-#'   conference intervals.
+#'   conference intervals. **Deprecated (see Details)**.
 #' @param endpoints_color A character or hex string specifying the color of the
-#'   observed statistic as a vertical line on the plot.
+#'   observed statistic as a vertical line on the plot. **Deprecated (see
+#'   Details)**.
 #' @param ci_fill A character or hex string specifying the color to shade the
-#'   confidence interval.
-#' @param ... Other arguments passed along to ggplot2.
+#'   confidence interval. **Deprecated (see Details)**.
+#' @param ... Other arguments passed along to \\{ggplot2\\} functions.
 #'
+#' @details In order to make visualization workflow more straightforward and
+#' explicit `visualize()` now only should be used to plot statistics directly.
+#' That is why arguments not related to this task are deprecated and will be
+#' removed in a future release of \\{infer\\}.
+#' 
+#' To add to plot information related to p-value use [shade_p_value()]. To add
+#' to plot information related to confidence interval use
+#' [shade_confidence_interval()].
+#' 
 #' @return A ggplot object showing the simulation-based distribution as a
 #'   histogram or bar graph. Also used to show the theoretical curves.
+#'
+#' @seealso [shade_p_value()], [shade_confidence_interval()].
 #'
 #' @examples
 #' # Permutations to create a simulation-based null distribution for
@@ -79,6 +93,43 @@ visualize <- function(data, bins = 15, method = "simulation",
                       endpoints_color = "mediumaquamarine",
                       ci_fill = "turquoise",
                       ...) {
+  check_visualize_args(
+    data, bins, method, dens_color, obs_stat, obs_stat_color,
+    pvalue_fill, direction, endpoints, endpoints_color, ci_fill
+  )
+  warn_depricated_args(obs_stat, endpoints)
+  endpoints <- impute_endpoints(endpoints)
+  obs_stat <- impute_obs_stat(obs_stat, direction, endpoints)
+  
+  # Add `method` to `data` attributes to enable later possibility of
+  # complicated computation of p-value regions (in case `direction = "both"`)
+  # in `shade_p_value()`.
+  attr(data, "viz_method") <- method
+  
+  infer_plot <- ggplot(data) +
+    simulation_layer(data, bins, ...) +
+    theoretical_layer(data, dens_color, ...) +
+    title_labels_layer(data) +
+    shade_p_value(
+      obs_stat, direction, obs_stat_color, pvalue_fill, ...
+    )
+  
+  if (!is.null(direction) && (direction == "between")) {
+    infer_plot <- infer_plot +
+      shade_confidence_interval(endpoints, endpoints_color, ci_fill, ...)
+  }
+  
+  infer_plot
+}
+
+#' @rdname visualize
+#' @export
+visualise <- visualize
+
+check_visualize_args <- function(data, bins, method, dens_color,
+                                 obs_stat, obs_stat_color,
+                                 pvalue_fill, direction,
+                                 endpoints, endpoints_color, ci_fill) {
   check_type(data, is.data.frame)
   check_type(bins, is.numeric)
   check_type(method, is.character)
@@ -96,6 +147,63 @@ visualize <- function(data, bins = 15, method = "simulation",
       "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector."
     )
   }
+  
+  if (!(method %in% c("simulation", "theoretical", "both"))) {
+    stop_glue(
+      'Provide `method` with one of three options: `"theoretical"`, `"both"`, ',
+      'or `"simulation"`. `"simulation"` is the default.'
+    )
+  }
+  
+  if (method == "both") {
+    if (!("stat" %in% names(data))) {
+      stop_glue(
+        '`generate()` and `calculate()` are both required to be done prior ',
+        'to `visualize(method = "both")`'
+      )
+    }
+    
+    if (
+      ("replicate" %in% names(data)) && (length(unique(data$replicate)) < 100)
+    ) {
+      warning_glue(
+        "With only {length(unique(data$replicate))} replicates, it may be ",
+        "difficult to see the relationship between simulation and theory."
+      )
+    }
+  }
+  
+  if (!is.null(obs_stat) && !is.null(endpoints)) {
+    warning_glue(
+      "Values for both `endpoints` and `obs_stat` were given when only one ",
+      "should be set. Ignoring `obs_stat` values."
+    )
+  }
+  
+  TRUE
+}
+
+warn_depricated_args <- function(obs_stat, endpoints) {
+  if (!is.null(obs_stat)) {
+    warning_glue(
+      "`visualize()` shouldn't be used to plot p-value. Arguments `obs_stat`, ",
+      "`obs_stat_color`, `pvalue_fill`, and `direction` are deprecated. ",
+      "Use `shade_p_value()` instead."
+    )
+  }
+  
+  if (!is.null(endpoints)) {
+    warning_glue(
+      "`visualize()` shouldn't be used to plot confidence interval. Arguments ",
+      "`endpoints`, `endpoints_color`, and `ci_fill` are deprecated. ",
+      "Use `shade_confidence_interval()` instead."
+    )
+  }
+  
+  TRUE
+}
+
+impute_endpoints <- function(endpoints) {
   if (is.vector(endpoints) && (length(endpoints) != 2)) {
     warning_glue(
       "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector. ",
@@ -103,10 +211,23 @@ visualize <- function(data, bins = 15, method = "simulation",
     )
     endpoints <- endpoints[1:2]
   }
+  
   if (is.data.frame(endpoints)) {
+    if ((nrow(endpoints) != 1) || (ncol(endpoints) != 2)) {
+      stop_glue(
+        "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector."
+      )
+    }
+    
     endpoints <- unlist(endpoints)
   }
+  
+  endpoints
+}
+
+impute_obs_stat <- function(obs_stat, direction, endpoints) {
   obs_stat <- check_obs_stat(obs_stat)
+  
   if (
     !is.null(direction) &&
     (is.null(obs_stat) + is.null(endpoints) != 1)
@@ -116,395 +237,305 @@ visualize <- function(data, bins = 15, method = "simulation",
       "or the observed statistic `obs_stat` to be provided."
     )
   }
+  
+  obs_stat
+}
 
+simulation_layer <- function(data, bins, ...) {
+  method <- get_viz_method(data)
+  
+  if (method == "theoretical") {
+    return(list())
+  }
+  
   if (method == "simulation") {
-    infer_plot <- visualize_simulation(
-      data = data,
-      bins = bins,
-      dens_color = dens_color,
-      obs_stat = obs_stat,
-      obs_stat_color = obs_stat_color,
-      direction = direction,
-      pvalue_fill = pvalue_fill,
-      endpoints = endpoints,
-      ci_fill = ci_fill,
-      ...
-    )
-  } else if (method == "theoretical") {
-    infer_plot <- visualize_theoretical(
-      data = data,
-      dens_color = dens_color,
-      obs_stat = obs_stat,
-      obs_stat_color = obs_stat_color,
-      direction = direction,
-      pvalue_fill = pvalue_fill,
-      endpoints = endpoints,
-      ci_fill = ci_fill,
-      ...
-    )
-  } else if (method == "both") {
-    if (!("stat" %in% names(data))) {
-      stop_glue(
-        '`generate()` and `calculate()` are both required to be done prior ',
-        'to `visualize(method = "both")`'
-      )
-    }
-
-    if (
-      ("replicate" %in% names(data)) && (length(unique(data$replicate)) < 100)
-    ) {
-      warning_glue(
-        "With only {length(unique(data$stat))} replicates, it may be ",
-        "difficult to see the relationship between simulation and theory."
-      )
-    }
-
-    infer_plot <- visualize_both(
-      data = data,
-      bins = bins,
-      dens_color = dens_color,
-      obs_stat = obs_stat,
-      obs_stat_color = obs_stat_color,
-      direction = direction,
-      pvalue_fill = pvalue_fill,
-      endpoints = endpoints,
-      ci_fill = ci_fill,
-      ...
-    )
-  } else {
-    stop_glue(
-      'Provide `method` with one of three options: `"theoretical"`, `"both"`, ',
-      'or `"simulation"`. `"simulation"` is the default.'
-    )
-  }
-
-  if (!is.null(obs_stat)) { # && !is.null(direction)
-    infer_plot <- infer_plot +
-      geom_vline(xintercept = obs_stat, size = 2, color = obs_stat_color, ...)
-  }
-
-  if (!is.null(endpoints)) {
-    if (!is.null(obs_stat)) {
-      warning_glue(
-        "Values for both `endpoints` and `obs_stat` were given when only one ",
-        "should be set. Ignoring `obs_stat` values."
-      )
-    }
-    infer_plot <- infer_plot +
-      geom_vline(
-        xintercept = endpoints, size = 2, color = endpoints_color, ...
-      )
-  }
-
-  infer_plot
-}
-
-theory_plot <- function(d_fun, q_fun, args_list, stat_name, dens_color) {
-  x_range <- do.call(q_fun, c(p = list(c(0.001, 0.999)), args_list))
-  
-  ggplot(data.frame(x = x_range)) +
-    stat_function(
-      mapping = aes(x), fun = d_fun, args = args_list, color = dens_color
-    ) +
-    ggtitle(glue_null("Theoretical {stat_name} Null Distribution")) +
-    xlab("") + ylab("")
-}
-
-both_plot <- function(data, d_fun, args_list, stat_name, stat_label, dens_color,
-                      obs_stat, direction, bins, pvalue_fill, endpoints,
-                      ci_fill, ...) {
-  infer_plot <- shade_density_check(
-    data = data,
-    obs_stat = obs_stat,
-    direction = direction,
-    bins = bins,
-    endpoints = endpoints,
-    pvalue_fill = pvalue_fill,
-    ci_fill = ci_fill
-  )
-  
-  infer_plot +
-    stat_function(
-      fun = d_fun, args = args_list, color = dens_color
-    ) +
-    ggtitle(glue_null(
-      "Simulation-Based and Theoretical {stat_name} Null Distributions"
-    )) +
-    xlab(stat_label) + ylab("")
-}
-
-shade_density_check <- function(data,
-                                obs_stat,
-                                direction,
-                                bins,
-                                density = TRUE,
-                                pvalue_fill,
-                                endpoints,
-                                ci_fill,
-                                ...) {
-  if (is.null(direction) || is.null(obs_stat)) {
-    if (density) {
-      gg_plot <- ggplot(data = data, mapping = aes(x = stat)) +
-        geom_histogram(
-          bins = bins, color = "white", mapping = aes(y = ..density..), ...
-        )
-    } # else {
-      # Not sure if needed? Can't get tests to find it
-      # gg_plot <- ggplot(data = data, mapping = aes(x = stat)) +
-      #  geom_histogram(bins = bins, color = "white", ...)
-    # }
-  }
-
-  if (xor(!is.null(obs_stat), !is.null(endpoints))) {
-    if (!is.null(direction)) {
-      if (density) {
-        gg_plot <- ggplot(data = data, mapping = aes(x = stat)) +
-          geom_histogram(
-            bins = bins, color = "white", mapping = aes(y = ..density..), ...
-          )
-      } else {
-        gg_plot <- ggplot(data = data, mapping = aes(x = stat)) +
-          geom_histogram(bins = bins, color = "white", ...)
-      }
-
-      if (direction %in% c("less", "left", "greater", "right")) {
-        gg_plot <- gg_plot +
-          geom_tail(direction, obs_stat, pvalue_fill)
-      }
-      
-      if (direction %in% c("two_sided", "both")) {
-        gg_plot <- gg_plot +
-          geom_both_tails(
-            border_1 = obs_stat,
-            border_2 = mirror_obs_stat(data$stat, obs_stat),
-            fill = pvalue_fill
-          )
-      }
-
-      if (direction == "between") {
-        gg_plot <- gg_plot +
-          geom_rect(
-            data = data.frame(endpoints[1]),
-            fill = ci_fill, alpha = 0.6,
-            aes(xmin = endpoints[1], xmax = endpoints[2], ymin = 0, ymax = Inf),
-            inherit.aes = FALSE,
-            ...
-          )
-      }
-    }
-  }
-  gg_plot
-}
-
-visualize_simulation <- function(data, bins,
-                                 method = "simulation",
-                                 dens_color,
-                                 obs_stat,
-                                 obs_stat_color,
-                                 direction,
-                                 pvalue_fill,
-                                 endpoints,
-                                 ci_fill,
-                                 ...) {
-  if (is.null(direction)) {
     if (length(unique(data$stat)) >= 10) {
-      infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
-        geom_histogram(bins = bins, color = "white", ...)
+      res <- list(
+        geom_histogram(
+          mapping = aes(x = stat), bins = bins, color = "white", ...
+        )
+      )
     } else {
-      infer_plot <- ggplot(data = data, mapping = aes(x = stat)) +
-        geom_bar(...) +
-        xlab("stat")
+      res <- list(geom_bar(mapping = aes(x = stat), ...))
     }
-  } else {
-    infer_plot <- shade_density_check(
-      data = data,
-      obs_stat = obs_stat,
-      direction = direction,
-      bins = bins,
-      density = FALSE,
-      pvalue_fill = pvalue_fill,
-      endpoints = endpoints,
-      ci_fill = ci_fill
+  } else if (method == "both") {
+    res <- list(
+      geom_histogram(
+        mapping = aes(x = stat, y = ..density..), bins = bins,
+        color = "white", ...
+      )
     )
   }
-  infer_plot
+  
+  res
 }
 
-visualize_theoretical <- function(data,
-                                  dens_color,
-                                  obs_stat,
-                                  obs_stat_color,
-                                  direction,
-                                  pvalue_fill,
-                                  endpoints,
-                                  ci_fill,
-                                  ...) {
+theoretical_layer <- function(data, dens_color, ...) {
+  method <- get_viz_method(data)
+  
+  if (method == "simulation") {
+    return(list())
+  }
+  
+  warn_theoretical_layer(data)
+  
+  theory_type <- short_theory_type(data)
+  
+  switch(
+    theory_type,
+    t = theory_curve(
+      method, dt, qt, list(df = attr(data, "distr_param")), dens_color
+    ),
+    `F` = theory_curve(
+      method, df, qf,
+      list(
+        df1 = attr(data, "distr_param"), df2 = attr(data, "distr_param2")
+      ),
+      dens_color = dens_color
+    ),
+    z = theory_curve(method, dnorm, qnorm, list(), dens_color),
+    `Chi-Square` = theory_curve(
+      method, dchisq, qchisq, list(df = attr(data, "distr_param")), dens_color
+    )
+  )
+}
+
+warn_theoretical_layer <- function(data) {
+  method <- get_viz_method(data)
+  
   warning_glue(
     "Check to make sure the conditions have been met for the theoretical ",
     "method. {{infer}} currently does not check these for you."
   )
-
+  
   if (
     !is_nuat(data, "stat") &&
     !(attr(data, "stat") %in% c("t", "z", "Chisq", "F"))
   ) {
-    warning_glue(
-      "Your `calculate`d statistic and the theoretical distribution are on ",
-      "different scales. Displaying only the theoretical distribution."
-    )
-  }
-  
-  theory_type <- short_theory_type(data)
-
-  if (theory_type == "t") {
-    infer_plot <- theory_plot(
-      d_fun = dt, q_fun = qt,
-      args_list = list(df = attr(data, "distr_param")),
-      stat_name = "t",
-      dens_color = dens_color
-    )
-  } else if (theory_type == "F") {
-    warn_right_tail_test(direction, "F")
-
-    infer_plot <- theory_plot(
-      d_fun = df, q_fun = qf,
-      args_list = list(
-        df1 = attr(data, "distr_param"), df2 = attr(data, "distr_param2")
-      ),
-      stat_name = "F",
-      dens_color = dens_color
-    )
-  } else if (theory_type == "z") {
-    infer_plot <- theory_plot(
-      d_fun = dnorm, q_fun = qnorm,
-      args_list = list(),
-      stat_name = "z",
-      dens_color = dens_color
-    )
-  } else if (theory_type == "Chi-Square") {
-    warn_right_tail_test(direction, "Chi-Square")
-
-    infer_plot <- theory_plot(
-      d_fun = dchisq, q_fun = qchisq,
-      args_list = list(df = attr(data, "distr_param")),
-      stat_name = "Chi-Square",
-      dens_color = dens_color
-    )
-  } # else {
-    # stop_glue(
-    #   '"{attr(data, "theory_type")}" is not implemented (possibly yet).'
-    # )
-  # }
-
-  # Plot tails
-  if (!is.null(obs_stat) && !is.null(direction)) {
-    if (direction %in% c("less", "left", "greater", "right")) {
-      infer_plot <- infer_plot +
-        geom_tail(direction, obs_stat, pvalue_fill, ...)
-    }
-    # Assuming two-tailed shading will only happen with theoretical
-    # distributions centered at 0
-    if (direction %in% c("two_sided", "both")) {
-      infer_plot <- infer_plot +
-        geom_both_tails(obs_stat, -obs_stat, pvalue_fill, ...)
+    if (method == "theoretical") {
+      warning_glue(
+        "Your `calculate`d statistic and the theoretical distribution are on ",
+        "different scales. Displaying only the theoretical distribution."
+      )
+    } else if (method == "both") {
+      stop_glue(
+        "Your `calculate`d statistic and the theoretical distribution are on ",
+        "different scales. Use a standardized `stat` instead."
+      )
     }
   }
-
-  # To implement: plotting of theoretical confidence interval values
-
-  infer_plot
 }
 
-visualize_both <- function(data, bins,
-                           dens_color,
-                           obs_stat,
-                           obs_stat_color,
-                           direction,
-                           pvalue_fill,
-                           endpoints,
-                           ci_fill,
-                           ...) {
-  warning_glue(
-    "Check to make sure the conditions have been met for the theoretical ",
-    "method. `infer` currently does not check these for you."
-  )
-
-  if (!(attr(data, "stat") %in% c("t", "z", "Chisq", "F"))) {
-    stop_glue(
-      "Your `calculate`d statistic and the theoretical distribution are on ",
-      "different scales. Use a standardized `stat` instead."
+theory_curve <- function(method, d_fun, q_fun, args_list, dens_color) {
+  if (method == "theoretical") {
+    x_range <- do.call(q_fun, c(p = list(c(0.001, 0.999)), args_list))
+    
+    res <- list(
+      stat_function(
+        data = data.frame(x = x_range), mapping = aes(x),
+        fun = d_fun, args = args_list, color = dens_color
+      )
+    )
+  } else if (method == "both") {
+    res <- list(
+      stat_function(
+        mapping = aes(x = stat), fun = d_fun, args = args_list,
+        color = dens_color
+      )
     )
   }
+  
+  res
+}
 
+title_labels_layer <- function(data) {
+  method <- get_viz_method(data)
   theory_type <- short_theory_type(data)
   
-  if (theory_type == "t") {
-    infer_plot <- both_plot(
-      data = data,
-      d_fun = dt,
-      args_list = list(df = attr(data, "distr_param")),
-      stat_name = "t", stat_label = "tstat",
-      dens_color = dens_color,
-      bins = bins,
-      direction = direction,
-      obs_stat = obs_stat,
-      pvalue_fill = pvalue_fill,
-      endpoints = endpoints,
-      ci_fill = ci_fill
-    )
-  } else if (theory_type == "F") {
-    warn_right_tail_test(direction, "F")
-    
-    infer_plot <- both_plot(
-      data = data,
-      d_fun = df,
-      args_list = list(
-        df1 = attr(data, "distr_param"), df2 = attr(data, "distr_param2")
-      ),
-      stat_name = "F", stat_label = "Fstat",
-      dens_color = dens_color,
-      bins = bins,
-      direction = direction,
-      obs_stat = obs_stat,
-      pvalue_fill = pvalue_fill,
-      endpoints = endpoints,
-      ci_fill = ci_fill
-    )
-  } else if (theory_type == "z") {
-    infer_plot <- both_plot(
-      data = data,
-      d_fun = dnorm,
-      args_list = list(),
-      stat_name = "z", stat_label = "zstat",
-      dens_color = dens_color,
-      bins = bins,
-      direction = direction,
-      obs_stat = obs_stat,
-      pvalue_fill = pvalue_fill,
-      endpoints = endpoints,
-      ci_fill = ci_fill
-    )
-  } else if (theory_type == "Chi-Square") {
-    warn_right_tail_test(direction, "Chi-Square")
-    
-    infer_plot <- both_plot(
-      data = data,
-      d_fun = dchisq,
-      args_list = list(df = attr(data, "distr_param")),
-      stat_name = "Chi-Square", stat_label = "chisqstat",
-      dens_color = dens_color,
-      bins = bins,
-      direction = direction,
-      obs_stat = obs_stat,
-      pvalue_fill = pvalue_fill,
-      endpoints = endpoints,
-      ci_fill = ci_fill
-    )
-  } # else {
-    # stop_glue('"{attr(data, "theory_type")}" is not implemented yet.')
-  # }
+  title_string <- switch(
+    method,
+    simulation = "Simulation-Based Null Distribution",
+    theoretical = "Theoretical {theory_type} Null Distribution",
+    both = "Simulation-Based and Theoretical {theory_type} Null Distributions"
+  )
+  
+  x_lab <- switch(method, simulation = "stat", "{theory_type} stat")
+  y_lab <- switch(method, simulation = "count", "density")
+  
+  list(
+    ggtitle(glue_null(title_string)),
+    xlab(glue_null(x_lab)),
+    ylab(glue_null(y_lab))
+  )
+}
 
-  infer_plot
+#' Add information about p-value region(s)
+#' 
+#' `shade_p_value()` plots p-value region(s) on top of the [visualize()] output.
+#' It should be used as \\{ggplot2\\} layer function (see examples).
+#' `shade_pvalue()` is its alias.
+#' 
+#' @param obs_stat A numeric value or 1x1 data frame corresponding to what the
+#'   observed statistic is.
+#' @param direction A string specifying in which direction the shading should
+#'   occur. Options are `"less"`, `"greater"`, or `"two_sided"`. Can
+#'   also give `"left"`, `"right"`, or `"both"`. If `NULL` then no shading is
+#'   actually done.
+#' @param color A character or hex string specifying the color of the observed
+#'   statistic as a vertical line on the plot.
+#' @param fill A character or hex string specifying the color to shade the
+#'   p-value region. If `NULL` then no shading is actually done.
+#' @param ... Other arguments passed along to \\{ggplot2\\} functions.
+#'
+#' @return A list of \\{ggplot2\\} objects to be added to the `visualize()`
+#'   output.
+#'   
+#' @seealso [shade_confidence_interval()] to add information about confidence
+#'   interval.
+#'
+#' @examples
+#' viz_plot <- mtcars %>%
+#'   dplyr::mutate(am = factor(am)) %>%
+#'   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
+#'   hypothesize(null = "independence") %>%
+#'   generate(reps = 100, type = "permute") %>%
+#'   calculate(stat = "t", order = c("1", "0")) %>%
+#'   visualize(method = "both")
+#' 
+#' viz_plot + shade_p_value(1.5, direction = "right")
+#' viz_plot + shade_p_value(1.5, direction = "both")
+#' viz_plot + shade_p_value(1.5, direction = NULL)
+#' 
+#' @name shade_p_value
+NULL
+
+#' @rdname shade_p_value
+#' @export
+shade_p_value <- function(obs_stat, direction,
+                          color = "red2", fill = "pink", ...) {
+  obs_stat <- check_obs_stat(obs_stat)
+  check_shade_p_value_args(obs_stat, direction, color, fill)
+  
+  res <- list()
+  if (is.null(obs_stat)) {
+    return(res)
+  }
+  
+  # Add shading
+  if (!is.null(direction) && !is.null(fill)) {
+    if (direction %in% c("less", "left", "greater", "right")) {
+      tail_data <- one_tail_data(obs_stat, direction)
+      
+      res <- c(res, list(geom_tail(tail_data, fill, ...)))
+    } else if (direction %in% c("two_sided", "both")) {
+      tail_data <- two_tail_data(obs_stat, direction)
+      
+      res <- c(res, list(geom_tail(tail_data, fill, ...)))
+    } else {
+      warning_glue(
+        '`direction` should be one of `"less"`, `"left"`, `"greater"`, ",
+        "`"right"`, `"two_sided"`, `"both"`.'
+      )
+    }
+  }
+  
+  # Add vertical line at `obs_stat`
+  c(
+    res, list(geom_vline(xintercept = obs_stat, size = 2, color = color, ...))
+  )
+}
+
+#' @rdname shade_p_value
+#' @export
+shade_pvalue <- shade_p_value
+
+check_shade_p_value_args <- function(obs_stat, direction, color, fill) {
+  if (!is.null(obs_stat)) {
+    check_type(obs_stat, is.numeric)
+  }
+  if (!is.null(direction)) {
+    check_type(direction, is.character)
+  }
+  check_type(color, is_color_string, "color string")
+  check_type(fill, is_color_string, "color string")
+  
+  TRUE
+}
+
+#' Add information about confidence interval
+#' 
+#' `shade_confidence_interval()` plots confidence interval region on top of the
+#' [visualize()] output. It should be used as \\{ggplot2\\} layer function (see
+#' examples). `shade_ci()` is its alias.
+#' 
+#' @param endpoints A 2 element vector or a 1 x 2 data frame containing the
+#'   lower and upper values to be plotted. Most useful for visualizing
+#'   conference intervals.
+#' @param color A character or hex string specifying the color of the
+#'   end points as a vertical lines on the plot.
+#' @param fill A character or hex string specifying the color to shade the
+#'   confidence interval. If `NULL` then no shading is actually done.
+#' @param ... Other arguments passed along to \\{ggplot2\\} functions.
+#' @return A list of \\{ggplot2\\} objects to be added to the `visualize()`
+#'   output.
+#'   
+#' @seealso [shade_p_value()] to add information about p-value region.
+#'
+#' @examples
+#' viz_plot <- mtcars %>%
+#'   dplyr::mutate(am = factor(am)) %>%
+#'   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
+#'   hypothesize(null = "independence") %>%
+#'   generate(reps = 100, type = "permute") %>%
+#'   calculate(stat = "t", order = c("1", "0")) %>%
+#'   visualize(method = "both")
+#' 
+#' viz_plot + shade_confidence_interval(c(-1.5, 1.5))
+#' viz_plot + shade_confidence_interval(c(-1.5, 1.5), fill = NULL)
+#' 
+#' @name shade_confidence_interval
+NULL
+
+#' @rdname shade_confidence_interval
+#' @export
+shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
+                                      fill = "turquoise", ...) {
+  endpoints <- impute_endpoints(endpoints)
+  check_shade_confidence_interval_args(color, fill)
+  
+  res <- list()
+  if (is.null(endpoints)) {
+    return(res)
+  }
+  
+  if (!is.null(fill)) {
+    res <- c(
+      res, list(
+        geom_rect(
+          data = data.frame(endpoints[1]),
+          fill = fill, alpha = 0.6,
+          aes(xmin = endpoints[1], xmax = endpoints[2], ymin = 0, ymax = Inf),
+          inherit.aes = FALSE,
+          ...
+        )
+      )
+    )
+  }
+  
+  c(
+    res, list(geom_vline(xintercept = endpoints, size = 2, color = color, ...))
+  )
+}
+
+#' @rdname shade_confidence_interval
+#' @export
+shade_ci <- shade_confidence_interval
+
+check_shade_confidence_interval_args <- function(color, fill) {
+  check_type(color, is_color_string, "color string")
+  if (!is.null(fill)) {
+    check_type(fill, is_color_string, "color string")
+  }
 }
 
 get_percentile <- function(vector, observation) {
@@ -532,7 +563,8 @@ short_theory_type <- function(x) {
 }
 
 warn_right_tail_test <- function(direction, stat_name) {
-  if (!is.null(direction) && !(direction %in% c("greater", "right"))) {
+  if (!is.null(direction) && !(direction %in% c("greater", "right")) &&
+      (stat_name %in% c("F", "Chi-Square"))) {
     warning_glue(
       "{stat_name} usually corresponds to right-tailed tests. ",
       "Proceed with caution."
@@ -542,17 +574,11 @@ warn_right_tail_test <- function(direction, stat_name) {
   TRUE
 }
 
-geom_tail <- function(dir, border, fill, ...) {
-  if (dir %in% c("less", "left")) {
-    x_range <- c(-Inf, border)
-  } else if (dir %in% c("greater", "right")) {
-    x_range <- c(border, Inf)
-  }
-  
+geom_tail <- function(tail_data, fill, ...) {
   list(
     geom_rect(
-      data = data.frame(border),
-      aes(xmin = x_range[1], xmax = x_range[2], ymin = 0, ymax = Inf),
+      data = tail_data,
+      aes(xmin = x_min, xmax = x_max, ymin = 0, ymax = Inf),
       fill = fill, alpha = 0.6,
       inherit.aes = FALSE,
       ...
@@ -560,16 +586,42 @@ geom_tail <- function(dir, border, fill, ...) {
   )
 }
 
-geom_both_tails <- function(border_1, border_2, fill, ...) {
-  left_border <- min(border_1, border_2)
-  right_border <- max(border_1, border_2)
-  
-  c(
-    geom_tail("left", left_border, fill, ...),
-    geom_tail("right", right_border, fill, ...)
-  )
+one_tail_data <- function(obs_stat, direction) {
+  # Take advantage of {ggplot2} functionality to accept function as `data`.
+  # Needed to warn about incorrect usage of right tail tests.
+  function(data) {
+    warn_right_tail_test(direction, short_theory_type(data))
+    
+    if (direction %in% c("less", "left")) {
+      data.frame(x_min = -Inf, x_max = obs_stat)
+    } else if (direction %in% c("greater", "right")) {
+      data.frame(x_min = obs_stat, x_max = Inf)
+    }
+  }
 }
 
-#' @rdname visualize
-#' @export
-visualise <- visualize
+two_tail_data <- function(obs_stat, direction) {
+  # Take advantage of {ggplot2} functionality to accept function as `data`.
+  # This is needed to make possible existence of `shade_p_value()` in case of
+  # `direction = "both"`, as it depends on actual `data` but adding it as
+  # argument to `shade_p_value()` is very bad.
+  # Also needed to warn about incorrect usage of right tail tests.
+  function(data) {
+    warn_right_tail_test(direction, short_theory_type(data))
+    
+    if (get_viz_method(data) == "theoretical") {
+      second_border <- -obs_stat
+    } else {
+      second_border <- mirror_obs_stat(data$stat, obs_stat)
+    }
+    
+    data.frame(
+      x_min = c(-Inf, max(obs_stat, second_border)),
+      x_max = c(min(obs_stat, second_border), Inf)
+    )
+  }
+}
+
+get_viz_method <- function(data) {
+  attr(data, "viz_method")
+}

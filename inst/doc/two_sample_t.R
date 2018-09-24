@@ -29,54 +29,46 @@ obs_t <- fli_small %>%
 obs_t <- fli_small %>% 
   t_test(formula = arr_delay ~ half_year, alternative = "two_sided",
          order = c("h1", "h2")) %>% 
-  dplyr::select(statistic) %>% 
-  dplyr::pull()
+  dplyr::pull(statistic)
 
 ## ------------------------------------------------------------------------
 obs_t <- fli_small %>% 
   t_stat(formula = arr_delay ~ half_year, order = c("h1", "h2"))
 
 ## ------------------------------------------------------------------------
-t_null_distn <- fli_small %>%
+t_null_perm <- fli_small %>%
   # alt: response = arr_delay, explanatory = half_year
   specify(arr_delay ~ half_year) %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t", order = c("h1", "h2"))
-t_null_distn %>% visualize(obs_stat = obs_t, direction = "two_sided")
+
+visualize(t_null_perm) +
+  shade_p_value(obs_stat = obs_t, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
-t_null_distn %>% 
+t_null_perm %>% 
   get_p_value(obs_stat = obs_t, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
-fli_small %>%
+t_null_theor <- fli_small %>%
   # alt: response = arr_delay, explanatory = half_year
   specify(arr_delay ~ half_year) %>%
   hypothesize(null = "independence") %>%
   # generate() ## Not used for theoretical
-  calculate(stat = "t", order = c("h1", "h2")) %>%
-  visualize(method = "theoretical", obs_stat = obs_t, direction = "two_sided")
+  calculate(stat = "t", order = c("h1", "h2"))
 
-## ----eval=FALSE----------------------------------------------------------
-#  fli_small %>%
-#    # alt: response = arr_delay, explanatory = half_year
-#    specify(arr_delay ~ half_year) %>%
-#    hypothesize(null = "independence") %>%
-#    generate(reps = 1000, type = "permute") %>%
-#    calculate(stat = "t", order = c("h1", "h2")) %>%
-#    visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
+visualize(t_null_theor, method = "theoretical") +
+  shade_p_value(obs_stat = obs_t, direction = "two_sided")
 
-## ----echo=FALSE----------------------------------------------------------
-# To use same distribution calculated above
-t_null_distn %>% 
-  visualize(method = "both", obs_stat = obs_t, direction = "two_sided")
+## ------------------------------------------------------------------------
+visualize(t_null_perm, method = "both") +
+  shade_p_value(obs_stat = obs_t, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 fli_small %>% 
   t_test(formula = arr_delay ~ half_year,
          alternative = "two_sided",
          order = c("h1", "h2")) %>% 
-  dplyr::select(p_value) %>% 
-  dplyr::pull()
+  dplyr::pull(p_value)
 

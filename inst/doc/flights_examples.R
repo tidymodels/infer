@@ -190,8 +190,7 @@ null_distn %>%
 slope_hat <- lm(arr_delay ~ dep_delay, data = fli_small) %>% 
   broom::tidy() %>% 
   filter(term == "dep_delay") %>% 
-  select(estimate) %>% 
-  pull()
+  pull(estimate)
 null_distn <- fli_small %>%
    specify(arr_delay ~ dep_delay) %>% 
    hypothesize(null = "independence") %>%
@@ -262,8 +261,7 @@ c(lower = d_hat - 2 * sd(boot),
 slope_hat <- lm(arr_delay ~ dep_delay, data = fli_small) %>% 
   broom::tidy() %>% 
   filter(term == "dep_delay") %>% 
-  select(estimate) %>% 
-  pull()
+  pull(estimate)
 boot <- fli_small %>%
    specify(arr_delay ~ dep_delay) %>% 
    generate(reps = 1000, type = "bootstrap") %>%
