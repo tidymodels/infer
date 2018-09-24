@@ -42,9 +42,9 @@ t_null_perm <- fli_small %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t", order = c("h1", "h2"))
-t_null_perm %>%
-  visualize() +
-    shade_p_value(obs_stat = obs_t, direction = "two_sided")
+
+visualize(t_null_perm) +
+  shade_p_value(obs_stat = obs_t, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 t_null_perm %>% 
@@ -57,14 +57,13 @@ t_null_theor <- fli_small %>%
   hypothesize(null = "independence") %>%
   # generate() ## Not used for theoretical
   calculate(stat = "t", order = c("h1", "h2"))
-t_null_theor %>%
-  visualize(method = "theoretical") +
-    shade_p_value(obs_stat = obs_t, direction = "two_sided")
+
+visualize(t_null_theor, method = "theoretical") +
+  shade_p_value(obs_stat = obs_t, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
-t_null_perm %>% 
-  visualize(method = "both") +
-    shade_p_value(obs_stat = obs_t, direction = "two_sided")
+visualize(t_null_perm, method = "both") +
+  shade_p_value(obs_stat = obs_t, direction = "two_sided")
 
 ## ------------------------------------------------------------------------
 fli_small %>% 

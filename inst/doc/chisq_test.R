@@ -42,9 +42,9 @@ chisq_null_perm <- fli_small %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "Chisq")
-chisq_null_perm %>%
-  visualize() +
-    shade_p_value(obs_stat = obs_chisq, direction = "greater")
+
+visualize(chisq_null_perm) +
+  shade_p_value(obs_stat = obs_chisq, direction = "greater")
 
 ## ------------------------------------------------------------------------
 chisq_null_perm %>% 
@@ -56,14 +56,13 @@ chisq_null_theor <- fli_small %>%
   hypothesize(null = "independence") %>%
   # generate() ## Not used for theoretical
   calculate(stat = "Chisq")
-chisq_null_theor %>%
-  visualize(method = "theoretical") +
-    shade_p_value(obs_stat = obs_chisq, direction = "right")
+
+visualize(chisq_null_theor, method = "theoretical") +
+  shade_p_value(obs_stat = obs_chisq, direction = "right")
 
 ## ------------------------------------------------------------------------
-chisq_null_perm %>% 
-  visualize(method = "both") +
-    shade_p_value(obs_stat = obs_chisq, direction = "right")
+visualize(chisq_null_perm, method = "both") +
+  shade_p_value(obs_stat = obs_chisq, direction = "right")
 
 ## ------------------------------------------------------------------------
 fli_small %>% 

@@ -92,9 +92,9 @@ chisq_null_perm <- fli_small %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "Chisq")
-chisq_null_perm %>%
-  visualize() +
-    shade_p_value(obs_stat = obs_chisq, direction = "greater")
+
+visualize(chisq_null_perm) +
+  shade_p_value(obs_stat = obs_chisq, direction = "greater")
 ```
 
 ## Calculate the randomization-based $p$-value
@@ -113,17 +113,16 @@ chisq_null_theor <- fli_small %>%
   hypothesize(null = "independence") %>%
   # generate() ## Not used for theoretical
   calculate(stat = "Chisq")
-chisq_null_theor %>%
-  visualize(method = "theoretical") +
-    shade_p_value(obs_stat = obs_chisq, direction = "right")
+
+visualize(chisq_null_theor, method = "theoretical") +
+  shade_p_value(obs_stat = obs_chisq, direction = "right")
 ```
 
 ## Overlay appropriate $\chi^2$ distribution on top of permuted statistics
 
 ```{r}
-chisq_null_perm %>% 
-  visualize(method = "both") +
-    shade_p_value(obs_stat = obs_chisq, direction = "right")
+visualize(chisq_null_perm, method = "both") +
+  shade_p_value(obs_stat = obs_chisq, direction = "right")
 ```
 
 ## Compute theoretical p-value
