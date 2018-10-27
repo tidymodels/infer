@@ -538,16 +538,6 @@ check_shade_confidence_interval_args <- function(color, fill) {
   }
 }
 
-get_percentile <- function(vector, observation) {
-  stats::ecdf(vector)(observation)
-}
-
-mirror_obs_stat <- function(vector, observation) {
-  obs_percentile <- get_percentile(vector, observation)
-  
-  stats::quantile(vector, probs = 1 - obs_percentile)
-}
-
 short_theory_type <- function(x) {
   theory_attr <- attr(x, "theory_type")
   theory_types <- list(
@@ -620,6 +610,12 @@ two_tail_data <- function(obs_stat, direction) {
       x_max = c(min(obs_stat, second_border), Inf)
     )
   }
+}
+
+mirror_obs_stat <- function(vector, observation) {
+  obs_percentile <- stats::ecdf(vector)(observation)
+  
+  stats::quantile(vector, probs = 1 - obs_percentile)
 }
 
 get_viz_method <- function(data) {

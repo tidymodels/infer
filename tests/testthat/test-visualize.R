@@ -297,8 +297,8 @@ test_that("visualize basic tests", {
   )
 })
 
-test_that("get_percentile works", {
-  expect_equal(get_percentile(1:10, 4), 0.4)
+test_that("mirror_obs_stat works", {
+  expect_equal(mirror_obs_stat(1:10, 4), c(`60%` = 6.4))
 })
 
 test_that("obs_stat as a data.frame works", {
