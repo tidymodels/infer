@@ -42,7 +42,7 @@ NULL
 #' @export
 get_p_value <- function(x, obs_stat, direction) {
   check_type(x, is.data.frame)
-  if(!is_generated(x) & is_hypothesized(x)) {
+  if (!is_generated(x) & is_hypothesized(x)) {
     stop_glue(
       "Theoretical p-values are not yet supported.",
       "`x` should be the result of calling `generate()`.",
@@ -52,11 +52,7 @@ get_p_value <- function(x, obs_stat, direction) {
   obs_stat <- check_obs_stat(obs_stat)
   check_direction(direction)
 
-  pvalue <- simulation_based_p_value(
-    x = x, 
-    obs_stat = obs_stat,
-    direction = direction
-  )
+  simulation_based_p_value(x = x, obs_stat = obs_stat, direction = direction)
 
   ## Theoretical-based p-value
   # Could be more specific
@@ -71,8 +67,6 @@ get_p_value <- function(x, obs_stat, direction) {
   #                     obs_stat = obs_stat,
   #                     direction = direction)
   # }
-
-  return(pvalue)
 }
 
 #' @rdname get_p_value
