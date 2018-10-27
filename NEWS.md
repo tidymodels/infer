@@ -1,5 +1,9 @@
 # infer 0.3.1.9000
 
+## Breaking changes
+
+- Changed method of computing two-sided p-value to a more conventional one. It also makes `get_pvalue()` and `visualize()` more aligned (#205).
+
 ## Deprecation changes
 
 - Deprecated `p_value()` (use `get_p_value()` instead) (#180).
