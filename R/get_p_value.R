@@ -8,7 +8,7 @@
 #' @param direction A character string. Options are `"less"`, `"greater"`, or
 #'   `"two_sided"`. Can also use `"left"`, `"right"`, or `"both"`.
 #'
-#' @return A 1x1 data frame with value between 0 and 1.
+#' @return A 1x1 [tibble][tibble::tibble] with value between 0 and 1.
 #'
 #' @section Aliases:
 #' `get_pvalue()` is an alias of `get_p_value()`.
@@ -83,37 +83,30 @@ get_pvalue <- function(x, obs_stat, direction) {
 
 simulation_based_p_value <- function(x, obs_stat, direction) {
   if (direction %in% c("less", "left")) {
-    p_value <- x %>%
-      dplyr::summarize(p_value = mean(stat <= obs_stat))
+    pval <- left_p_value(x[["stat"]], obs_stat)
   } else if (direction %in% c("greater", "right")) {
-    p_value <- x %>%
-      dplyr::summarize(p_value = mean(stat >= obs_stat))
+    pval <- right_p_value(x[["stat"]], obs_stat)
   } else {
-    p_value <- x %>% two_sided_p_value(obs_stat = obs_stat)
+    pval <- two_sided_p_value(x[["stat"]], obs_stat)
   }
 
-  p_value
+  tibble::tibble(p_value = pval)
 }
 
-two_sided_p_value <- function(x, obs_stat) {
-  if (stats::median(x$stat) >= obs_stat) {
-    basic_p_value <- get_percentile(x$stat, obs_stat) +
-      (1 - get_percentile(x$stat, stats::median(x$stat) +
-          stats::median(x$stat) - obs_stat))
-  } else {
-    basic_p_value <- 1 - get_percentile(x$stat, obs_stat) +
-      (get_percentile(x$stat, stats::median(x$stat) +
-          stats::median(x$stat) - obs_stat))
-  }
+left_p_value <- function(vec, obs_stat) {
+  mean(vec <= obs_stat)
+}
 
-  if (basic_p_value >= 1) {
-    # Catch all if adding both sides produces a number
-    # larger than 1. Should update with test in that
-    # scenario instead of using >=
-    return(tibble::tibble(p_value = 1))
-  } else {
-    return(tibble::tibble(p_value = basic_p_value))
-  }
+right_p_value <- function(vec, obs_stat) {
+  mean(vec >= obs_stat)
+}
+
+two_sided_p_value <- function(vec, obs_stat) {
+  left_pval <- left_p_value(vec, obs_stat)
+  right_pval <- right_p_value(vec, obs_stat)
+  raw_res <- 2 * min(left_pval, right_pval)
+  
+  min(raw_res, 1)
 }
 
 is_generated <- function(x) {
