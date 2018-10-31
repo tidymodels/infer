@@ -68,11 +68,12 @@ the theoretical distribution (or both!).
 \details{
 In order to make visualization workflow more straightforward and
 explicit \code{visualize()} now only should be used to plot statistics directly.
-That is why arguments, not related to this task, are deprecated and will be
+That is why arguments not related to this task are deprecated and will be
 removed in a future release of \{infer\}.
 
-To add information related to p-value use \code{\link[=shade_p_value]{shade_p_value()}}. To add
-information related to confidence interval use \code{\link[=shade_confidence_interval]{shade_confidence_interval()}}.
+To add to plot information related to p-value use \code{\link[=shade_p_value]{shade_p_value()}}. To add
+to plot information related to confidence interval use
+\code{\link[=shade_confidence_interval]{shade_confidence_interval()}}.
 }
 \examples{
 # Permutations to create a simulation-based null distribution for

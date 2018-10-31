@@ -19,7 +19,7 @@ extreme than this).}
 \code{"two_sided"}. Can also use \code{"left"}, \code{"right"}, or \code{"both"}.}
 }
 \value{
-A 1x1 data frame with value between 0 and 1.
+A 1x1 \link[tibble:tibble]{tibble} with value between 0 and 1.
 }
 \description{
 Simulation-based methods are (currently only) supported.
