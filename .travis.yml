@@ -19,7 +19,7 @@ notifications:
 
 r_packages:
   - devtools
-  
+
 r_github_packages:
   - hadley/pkgdown
   - tidymodels/infer
@@ -33,8 +33,8 @@ deploy:
   keep-history: true
   local-dir: docs
   github_token: $GITHUBTRAVIS
-  target-branch: gh-pages-dev
-#  target-branch: gh-pages
+#  target-branch: gh-pages-dev
+  target-branch: gh-pages
 
 after_success:
   - Rscript -e 'covr::codecov()'
