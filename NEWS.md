@@ -1,4 +1,4 @@
-# infer 0.3.1.9000
+# infer 0.4.0
 
 ## Breaking changes
 
