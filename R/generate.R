@@ -99,7 +99,7 @@ bootstrap <- function(x, reps = 1, ...) {
     # If so, shift the variable chosen to have a mean corresponding
     # to that specified in `hypothesize`
     if (!is.null(attr(attr(x, "params"), "names"))){
-      if (attr(attr(x, "params"), "names") == "mu") {
+      if (identical(attr(attr(x, "params"), "names"), "mu")) {
         col <- as.character(attr(x, "response"))
 #      if (attr(x, "theory_type") != "One sample t") {
         x[[col]] <- x[[col]] - mean(x[[col]], na.rm = TRUE) + attr(x, "params")
@@ -117,7 +117,7 @@ bootstrap <- function(x, reps = 1, ...) {
     }
 
     # Similarly for median
-      else if (attr(attr(x, "params"), "names") == "med") {
+      else if (identical(attr(attr(x, "params"), "names"), "med")) {
         col <- as.character(attr(x, "response"))
         x[[col]] <- x[[col]] -
           stats::median(x[[col]], na.rm = TRUE) + attr(x, "params")
@@ -128,7 +128,7 @@ bootstrap <- function(x, reps = 1, ...) {
 
     # Similarly for sd
     ## Temporarily removed since this implementation does not scale correctly
-    # else if (attr(attr(x, "params"), "names") == "sigma") {
+    # else if (identical(attr(attr(x, "params"), "names"), "sigma")) {
     #   col <- as.character(attr(x, "response"))
     #   x[[col]] <- x[[col]] -
     #     stats::sd(x[[col]], na.rm = TRUE) + attr(x, "params")
