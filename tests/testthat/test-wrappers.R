@@ -29,7 +29,7 @@ test_that("chisq_test works", {
     broom::glance() %>%
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
 
-  expect_equal(new_way, old_way)
+  expect_equal(new_way, old_way, tolerance = 1e-5)
   ## Not implemented
   # expect_silent(
   #   iris3 %>% chisq_test(response = Sepal.Length.Group, explanatory = Species)
@@ -93,7 +93,8 @@ test_that("conf_int argument works", {
           conf_int = FALSE
         )
     ),
-    c("statistic", "t_df", "p_value", "alternative")
+    c("statistic", "t_df", "p_value", "alternative"), 
+    tolerance = 1e-5
   )
   expect_equal(
     names(
@@ -103,7 +104,8 @@ test_that("conf_int argument works", {
           conf_int = TRUE
         )
     ),
-    c("statistic", "t_df", "p_value", "alternative", "lower_ci", "upper_ci")
+    c("statistic", "t_df", "p_value", "alternative", "lower_ci", "upper_ci"),
+    tolerance = 1e-5
   )
 
   ci_test <- iris2 %>%
@@ -114,8 +116,8 @@ test_that("conf_int argument works", {
   old_way <- t.test(
     formula = Sepal.Width ~ Species, data = iris2, conf.level = 0.9
   )[["conf.int"]]
-  expect_equal(ci_test$lower_ci[1], old_way[1])
-  expect_equal(ci_test$upper_ci[1], old_way[2])
+  expect_equal(ci_test$lower_ci[1], old_way[1], tolerance = 1e-5)
+  expect_equal(ci_test$upper_ci[1], old_way[2], tolerance = 1e-5)
 
   expect_error(
     iris2 %>%
