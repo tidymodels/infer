@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Specify the response and explanatory variables — specify • infer</title>
+<title>Compute p-value — get_p_value • infer</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,9 +36,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Specify the response and explanatory variables — specify" />
+<meta property="og:title" content="Compute p-value — get_p_value" />
 
-<meta property="og:description" content="specify() also converts character variables chosen to be factors." />
+<meta property="og:description" content="Simulation-based methods are (currently only) supported." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -140,78 +140,74 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Specify the response and explanatory variables</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/specify.R'><code>R/specify.R</code></a></small>
-    <div class="hidden name"><code>specify.Rd</code></div>
+    <h1>Compute p-value</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/get_p_value.R'><code>R/get_p_value.R</code></a></small>
+    <div class="hidden name"><code>get_p_value.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>specify()</code> also converts character variables chosen to be <code>factor</code>s.</p>
+    <p>Simulation-based methods are (currently only) supported.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>specify</span>(<span class='no'>x</span>, <span class='no'>formula</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>explanatory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>success</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>get_p_value</span>(<span class='no'>x</span>, <span class='no'>obs_stat</span>, <span class='no'>direction</span>)
+
+<span class='fu'>get_pvalue</span>(<span class='no'>x</span>, <span class='no'>obs_stat</span>, <span class='no'>direction</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A data frame that can be coerced into a <a href='https://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a>.</p></td>
+      <td><p>Data frame of calculated statistics as returned by <code><a href='generate.html'>generate()</a></code></p></td>
     </tr>
     <tr>
-      <th>formula</th>
-      <td><p>A formula with the response variable on the left and the
-explanatory on the right.</p></td>
+      <th>obs_stat</th>
+      <td><p>A numeric value or a 1x1 data frame (as extreme or more
+extreme than this).</p></td>
     </tr>
     <tr>
-      <th>response</th>
-      <td><p>The variable name in <code>x</code> that will serve as the response.
-This is alternative to using the <code>formula</code> argument.</p></td>
-    </tr>
-    <tr>
-      <th>explanatory</th>
-      <td><p>The variable name in <code>x</code> that will serve as the
-explanatory variable.</p></td>
-    </tr>
-    <tr>
-      <th>success</th>
-      <td><p>The level of <code>response</code> that will be considered a success, as
-a string. Needed for inference on one proportion, a difference in
-proportions, and corresponding z stats.</p></td>
+      <th>direction</th>
+      <td><p>A character string. Options are <code>"less"</code>, <code>"greater"</code>, or
+<code>"two_sided"</code>. Can also use <code>"left"</code>, <code>"right"</code>, or <code>"both"</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble containing the response (and explanatory, if specified)
-variable data.</p>
+    <p>A 1x1 <a href='https://www.rdocumentation.org/packages/tibble/topics/tibble'>tibble</a> with value between 0 and 1.</p>
+    
+    <h2 class="hasAnchor" id="aliases"><a class="anchor" href="#aliases"></a>Aliases</h2>
+
+    
+    <p><code>get_pvalue()</code> is an alias of <code>get_p_value()</code>.
+<code>p_value</code> is a deprecated alias of <code>get_p_value()</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Permutation test similar to ANOVA</span>
-<span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>cyl</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='no'>cyl</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>specify</span>(<span class='no'>mpg</span> ~ <span class='no'>cyl</span>) <span class='kw'>%&gt;%</span>
+    <pre class="examples"><div class='input'><span class='co'># Prepare the dataset</span>
+<span class='no'>mtcars_df</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='no'>am</span>))
+
+<span class='co'># Calculate the difference in means in the dataset</span>
+<span class='no'>d_hat</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars_df</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"diff in means"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>))
+
+<span class='co'># Same calculation on 100 permutation replicates</span>
+<span class='no'>null_distn</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars_df</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"F"</span>)</div><div class='output co'>#&gt; # A tibble: 100 x 2
-#&gt;    replicate  stat
-#&gt;        &lt;int&gt; &lt;dbl&gt;
-#&gt;  1         1 0.975
-#&gt;  2         2 0.854
-#&gt;  3         3 0.414
-#&gt;  4         4 1.28 
-#&gt;  5         5 0.912
-#&gt;  6         6 0.719
-#&gt;  7         7 1.24 
-#&gt;  8         8 1.25 
-#&gt;  9         9 0.643
-#&gt; 10        10 0.275
-#&gt; # ... with 90 more rows</div><div class='input'>
-</div></pre>
+  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"diff in means"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>))</div><div class='output co'>#&gt; <span class='message'>Setting `type = "permute"` in `generate()`.</span></div><div class='input'>
+<span class='co'># What proportion of replicates had a difference</span>
+<span class='co'># in means more extreme than in the dataset?</span>
+<span class='no'>null_distn</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>get_p_value</span>(<span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='no'>d_hat</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"right"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 1
+#&gt;   p_value
+#&gt;     &lt;dbl&gt;
+#&gt; 1       0</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -219,6 +215,8 @@ variable data.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#aliases">Aliases</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

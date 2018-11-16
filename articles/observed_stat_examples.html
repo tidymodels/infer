@@ -6,15 +6,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Full infer pipeline examples using <code>nycflights13</code> <code>flights</code> data • infer</title>
-<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.1/clipboard.min.js" integrity="sha256-hIvIxeqhGZF+VVeM55k0mJvWpQ6gTkWk3Emc+NmowYA=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Full infer pipeline examples using &lt;code&gt;nycflights13&lt;/code&gt; &lt;code&gt;flights&lt;/code&gt; data">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
-<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -108,7 +108,7 @@
             
             <h4 class="date">Updated on 2018-06-14</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/master/vignettes/observed_stat_examples.Rmd"><code>vignettes/observed_stat_examples.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/master/vignettes/observed_stat_examples.Rmd"><code><a href="https://www.rdocumentation.org/packages/base/topics/Arithmetic">vignettes/observed_stat_examples.Rmd</a></code></a></small>
       <div class="hidden name"><code>observed_stat_examples.Rmd</code></div>
 
     </div>
@@ -118,18 +118,18 @@
 <div id="data-preparation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-preparation" class="anchor"></a>Data preparation</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(nycflights13)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(dplyr)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">library</span>(stringr)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">library</span>(infer)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw">set.seed</span>(<span class="dv">2017</span>)</a>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(nycflights13)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(stringr)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(infer)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">2017</span>)</a>
 <a class="sourceLine" id="cb1-7" data-line-number="7">fli_small &lt;-<span class="st"> </span>flights <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="st">  </span><span class="kw">na.omit</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/na.fail">na.omit</a></span>() <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb1-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/sample.html">sample_n</a></span>(<span class="dt">size =</span> <span class="dv">500</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb1-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">season =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span>(</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">    month <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span><span class="op">:</span><span class="dv">12</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) <span class="op">~</span><span class="st"> "winter"</span>,</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">    month <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">4</span><span class="op">:</span><span class="dv">9</span>) <span class="op">~</span><span class="st"> "summer"</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">    month <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">10</span><span class="op">:</span><span class="dv">12</span>, <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) <span class="op">~</span><span class="st"> "winter"</span>,</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">    month <span class="op">%in%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">4</span><span class="op">:</span><span class="dv">9</span>) <span class="op">~</span><span class="st"> "summer"</span></a>
 <a class="sourceLine" id="cb1-13" data-line-number="13">  )) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb1-14" data-line-number="14"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">day_hour =</span> <span class="kw"><a href="http://dplyr.tidyverse.org/reference/case_when.html">case_when</a></span>(</a>
 <a class="sourceLine" id="cb1-15" data-line-number="15">    <span class="kw"><a href="http://dplyr.tidyverse.org/reference/between.html">between</a></span>(hour, <span class="dv">1</span>, <span class="dv">12</span>) <span class="op">~</span><span class="st"> "morning"</span>,</a>
@@ -172,39 +172,41 @@
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">mu =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>)</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> x_bar, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>)</a></code></pre></div>
+<pre><code>## Setting `type = "bootstrap"` in `generate()`.</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(null_distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> x_bar, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-4-1.png" width="576"></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> x_bar, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="dt">obs_stat =</span> x_bar, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.801</code></pre>
+## 1   0.794</code></pre>
 </div>
 <div id="one-numerical-variable-standardized-mean-t" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-numerical-variable-standardized-mean-t" class="anchor"></a>One numerical variable (standardized mean <span class="math inline">\(t\)</span>)</h3>
 <p><strong>Observed stat</strong></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">( t_bar &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>) )</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">( t_bar &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>) )</a></code></pre></div>
 <pre><code>## Response: dep_delay (numeric)
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  6.93</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">mu =</span> <span class="dv">8</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>)</a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> t_bar, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">mu =</span> <span class="dv">8</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>)</a></code></pre></div>
+<pre><code>## Setting `type = "bootstrap"` in `generate()`.</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(null_distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> t_bar, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> t_bar, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="dt">obs_stat =</span> t_bar, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
@@ -214,60 +216,63 @@
 <h3 class="hasAnchor">
 <a href="#one-numerical-variable-median" class="anchor"></a>One numerical variable (median)</h3>
 <p><strong>Observed stat</strong></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">( x_tilde &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"median"</span>) )</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">( x_tilde &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"median"</span>) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1    -2</code></pre>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">med =</span> <span class="dv">-1</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"median"</span>)</a>
-<a class="sourceLine" id="cb14-6" data-line-number="6">null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> x_tilde, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">med =</span> <span class="dv">-1</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"median"</span>)</a></code></pre></div>
+<pre><code>## Setting `type = "bootstrap"` in `generate()`.</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(null_distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> x_tilde, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-8-1.png" width="576"></p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> x_tilde, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="dt">obs_stat =</span> x_tilde, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.076</code></pre>
+## 1    0.15</code></pre>
 </div>
 <div id="one-categorical-one-proportion" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-categorical-one-proportion" class="anchor"></a>One categorical (one proportion)</h3>
 <p><strong>Observed stat</strong></p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1">( p_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>) )</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">( p_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1 0.466</code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb19-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb19-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> <span class="fl">.5</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb19-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb19-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>)</a>
-<a class="sourceLine" id="cb19-6" data-line-number="6">null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb19-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> p_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> <span class="fl">.5</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb25-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>)</a></code></pre></div>
+<pre><code>## Setting `type = "simulate"` in `generate()`.</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(null_distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb27-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> p_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-10-1.png" width="576"></p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb20-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> p_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="dt">obs_stat =</span> p_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.101</code></pre>
+## 1    0.11</code></pre>
 <p>Logical variables will be coerced to factors:</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb22-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">day_hour_logical =</span> (day_hour <span class="op">==</span><span class="st"> "morning"</span>)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb22-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour_logical, <span class="dt">success =</span> <span class="st">"TRUE"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> <span class="fl">.5</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb22-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb22-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="http://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">day_hour_logical =</span> (day_hour <span class="op">==</span><span class="st"> "morning"</span>)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour_logical, <span class="dt">success =</span> <span class="st">"TRUE"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb30-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> <span class="fl">.5</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb30-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb30-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>)</a></code></pre></div>
+<pre><code>## Setting `type = "simulate"` in `generate()`.</code></pre>
 </div>
 <div id="one-categorical-variable-standardized-proportion-z" class="section level3">
 <h3 class="hasAnchor">
@@ -278,53 +283,55 @@
 <h3 class="hasAnchor">
 <a href="#two-categorical-2-level-variables" class="anchor"></a>Two categorical (2 level) variables</h3>
 <p><strong>Observed stat</strong></p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">( d_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb23-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb23-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"winter"</span>, <span class="st">"summer"</span>)) )</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">( d_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb32-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"winter"</span>, <span class="st">"summer"</span>)) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##      stat
 ##     &lt;dbl&gt;
 ## 1 -0.0205</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb25-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb25-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb25-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb25-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"winter"</span>, <span class="st">"summer"</span>))</a>
-<a class="sourceLine" id="cb25-6" data-line-number="6">null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb25-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb34-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb34-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"winter"</span>, <span class="st">"summer"</span>))</a></code></pre></div>
+<pre><code>## Setting `type = "permute"` in `generate()`.</code></pre>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(null_distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-13-1.png" width="576"></p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb37-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1    0.65</code></pre>
+## 1   0.708</code></pre>
 </div>
 <div id="two-categorical-2-level-variables-z" class="section level3">
 <h3 class="hasAnchor">
 <a href="#two-categorical-2-level-variables-z" class="anchor"></a>Two categorical (2 level) variables (z)</h3>
 <p><strong>Standardized observed stat</strong></p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">( z_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb28-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb28-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"winter"</span>, <span class="st">"summer"</span>)) )</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">( z_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb39-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb39-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"winter"</span>, <span class="st">"summer"</span>)) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##     stat
 ##    &lt;dbl&gt;
 ## 1 -0.460</code></pre>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb30-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb30-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"winter"</span>, <span class="st">"summer"</span>))</a>
-<a class="sourceLine" id="cb30-6" data-line-number="6">null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb30-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> z_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb41-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb41-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb41-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb41-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"winter"</span>, <span class="st">"summer"</span>))</a></code></pre></div>
+<pre><code>## Setting `type = "permute"` in `generate()`.</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(null_distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb43-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> z_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-15-1.png" width="576"></p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb31-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> z_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb44-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="dt">obs_stat =</span> z_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.633</code></pre>
+## 1   0.684</code></pre>
 <p>Note the similarities in this plot and the previous one.</p>
 </div>
 <div id="one-categorical-2-level---gof" class="section level3">
@@ -332,28 +339,29 @@
 <a href="#one-categorical-2-level---gof" class="anchor"></a>One categorical (&gt;2 level) - GoF</h3>
 <p><strong>Observed stat</strong></p>
 <p>Note the need to add in the hypothesized values here to compute the observed statistic.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1">( Chisq_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb33-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> origin) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb33-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, </a>
-<a class="sourceLine" id="cb33-4" data-line-number="4">              <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"EWR"</span> =<span class="st"> </span><span class="fl">.33</span>, <span class="st">"JFK"</span> =<span class="st"> </span><span class="fl">.33</span>, <span class="st">"LGA"</span> =<span class="st"> </span><span class="fl">.34</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb33-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) )</a></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">( Chisq_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb46-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> origin) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb46-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, </a>
+<a class="sourceLine" id="cb46-4" data-line-number="4">              <span class="dt">p =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"EWR"</span> =<span class="st"> </span><span class="fl">.33</span>, <span class="st">"JFK"</span> =<span class="st"> </span><span class="fl">.33</span>, <span class="st">"LGA"</span> =<span class="st"> </span><span class="fl">.34</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb46-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) )</a></code></pre></div>
 <pre><code>## Response: origin (factor)
 ## Null Hypothesis: point
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  10.4</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb35-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> origin) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb35-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, </a>
-<a class="sourceLine" id="cb35-4" data-line-number="4">              <span class="dt">p =</span> <span class="kw">c</span>(<span class="st">"EWR"</span> =<span class="st"> </span><span class="fl">.33</span>, <span class="st">"JFK"</span> =<span class="st"> </span><span class="fl">.33</span>, <span class="st">"LGA"</span> =<span class="st"> </span><span class="fl">.34</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb35-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb35-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)</a>
-<a class="sourceLine" id="cb35-7" data-line-number="7">null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb35-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> Chisq_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb48-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> origin) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb48-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, </a>
+<a class="sourceLine" id="cb48-4" data-line-number="4">              <span class="dt">p =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"EWR"</span> =<span class="st"> </span><span class="fl">.33</span>, <span class="st">"JFK"</span> =<span class="st"> </span><span class="fl">.33</span>, <span class="st">"LGA"</span> =<span class="st"> </span><span class="fl">.34</span>)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb48-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"simulate"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb48-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)</a>
+<a class="sourceLine" id="cb48-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb48-8" data-line-number="8"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(null_distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb48-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> Chisq_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-17-1.png" width="576"></p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> Chisq_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb49-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="dt">obs_stat =</span> Chisq_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
@@ -363,23 +371,24 @@
 <h3 class="hasAnchor">
 <a href="#two-categorical-2-level-variables-1" class="anchor"></a>Two categorical (&gt;2 level) variables</h3>
 <p><strong>Observed stat</strong></p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">( Chisq_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb38-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">formula =</span> day_hour <span class="op">~</span><span class="st"> </span>origin) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb38-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) )</a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">( Chisq_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb51-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">formula =</span> day_hour <span class="op">~</span><span class="st"> </span>origin) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb51-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  9.03</code></pre>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb40-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>origin) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb40-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb40-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb40-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)</a>
-<a class="sourceLine" id="cb40-6" data-line-number="6">null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb40-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> Chisq_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb53-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>origin) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb53-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb53-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb53-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)</a>
+<a class="sourceLine" id="cb53-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb53-7" data-line-number="7"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(null_distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb53-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> Chisq_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-19-1.png" width="576"></p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb41-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> Chisq_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb54-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="dt">obs_stat =</span> Chisq_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
@@ -389,107 +398,111 @@
 <h3 class="hasAnchor">
 <a href="#one-numerical-variable-one-categorical-2-levels-diff-in-means" class="anchor"></a>One numerical variable, one categorical (2 levels) (diff in means)</h3>
 <p><strong>Observed stat</strong></p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" data-line-number="1">( d_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb43-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb43-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1">( d_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb56-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb56-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  2.27</code></pre>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb45-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))</a>
-<a class="sourceLine" id="cb45-6" data-line-number="6">null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb45-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb58-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb58-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb58-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb58-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))</a>
+<a class="sourceLine" id="cb58-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb58-7" data-line-number="7"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(null_distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb58-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-21-1.png" width="576"></p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb46-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb59-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb59-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.456</code></pre>
+## 1   0.488</code></pre>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-t" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-numerical-variable-one-categorical-2-levels-t" class="anchor"></a>One numerical variable, one categorical (2 levels) (t)</h3>
 <p><strong>Standardized observed stat</strong></p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">( t_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb48-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb48-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1">( t_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb61-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb61-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
 <pre><code>## Response: dep_delay (numeric)
 ## Explanatory: season (factor)
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1 0.754</code></pre>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb50-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb50-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb50-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb50-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb50-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))</a>
-<a class="sourceLine" id="cb50-6" data-line-number="6">null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb50-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> t_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb63-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb63-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb63-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb63-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))</a>
+<a class="sourceLine" id="cb63-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb63-7" data-line-number="7"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(null_distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb63-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> t_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-23-1.png" width="576"></p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb51-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb51-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> t_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb64-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="dt">obs_stat =</span> t_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.487</code></pre>
+## 1    0.49</code></pre>
 <p>Note the similarities in this plot and the previous one.</p>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-diff-in-medians" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-numerical-variable-one-categorical-2-levels-diff-in-medians" class="anchor"></a>One numerical variable, one categorical (2 levels) (diff in medians)</h3>
 <p><strong>Observed stat</strong></p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">( d_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb53-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb53-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in medians"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">( d_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb66-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb66-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in medians"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1     2</code></pre>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb55-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb55-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = dep_delay, </span></a>
-<a class="sourceLine" id="cb55-3" data-line-number="3"><span class="st">  </span><span class="co"># explanatory = season</span></a>
-<a class="sourceLine" id="cb55-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb55-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb55-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in medians"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))</a>
-<a class="sourceLine" id="cb55-7" data-line-number="7">null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb55-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb68-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = dep_delay, </span></a>
+<a class="sourceLine" id="cb68-3" data-line-number="3"><span class="st">  </span><span class="co"># explanatory = season</span></a>
+<a class="sourceLine" id="cb68-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb68-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb68-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in medians"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))</a>
+<a class="sourceLine" id="cb68-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb68-8" data-line-number="8"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(null_distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb68-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-25-1.png" width="576"></p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb56-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb56-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb69-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="dt">obs_stat =</span> d_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.029</code></pre>
+## 1   0.084</code></pre>
 </div>
 <div id="one-numerical-one-categorical-2-levels---anova" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-numerical-one-categorical-2-levels---anova" class="anchor"></a>One numerical, one categorical (&gt;2 levels) - ANOVA</h3>
 <p><strong>Observed stat</strong></p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">( F_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb58-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>origin) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb58-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>) )</a></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1">( F_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb71-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>origin) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb71-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>) )</a></code></pre></div>
 <pre><code>## Response: arr_delay (numeric)
 ## Explanatory: origin (factor)
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  1.08</code></pre>
-<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb60-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb60-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>origin) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb60-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb60-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb60-5" data-line-number="5"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>)</a>
-<a class="sourceLine" id="cb60-6" data-line-number="6">null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb60-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> F_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb73-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>origin) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb73-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb73-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb73-5" data-line-number="5"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"F"</span>)</a>
+<a class="sourceLine" id="cb73-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb73-7" data-line-number="7"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(null_distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb73-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> F_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-27-1.png" width="576"></p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb61-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb61-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> F_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb74-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="dt">obs_stat =</span> F_hat, <span class="dt">direction =</span> <span class="st">"greater"</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
@@ -499,25 +512,26 @@
 <h3 class="hasAnchor">
 <a href="#two-numerical-vars---slr" class="anchor"></a>Two numerical vars - SLR</h3>
 <p><strong>Observed stat</strong></p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">( slope_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb63-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb63-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>) )</a></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1">( slope_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb76-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb76-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>) )</a></code></pre></div>
 <pre><code>## Response: arr_delay (numeric)
 ## Explanatory: dep_delay (numeric)
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  1.02</code></pre>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb65-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb65-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb65-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb65-5" data-line-number="5"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>)</a>
-<a class="sourceLine" id="cb65-6" data-line-number="6">null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb65-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> slope_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb78-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb78-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb78-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb78-5" data-line-number="5"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>)</a>
+<a class="sourceLine" id="cb78-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb78-7" data-line-number="7"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(null_distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb78-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> slope_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-29-1.png" width="576"></p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb66-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> slope_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb79-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb79-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="dt">obs_stat =</span> slope_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
@@ -527,25 +541,26 @@
 <h3 class="hasAnchor">
 <a href="#two-numerical-vars---correlation" class="anchor"></a>Two numerical vars - correlation</h3>
 <p><strong>Observed stat</strong></p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">( correlation_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb68-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb68-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"correlation"</span>) )</a></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1">( correlation_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb81-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb81-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"correlation"</span>) )</a></code></pre></div>
 <pre><code>## Response: arr_delay (numeric)
 ## Explanatory: dep_delay (numeric)
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1 0.894</code></pre>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb70-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb70-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb70-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb70-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb70-5" data-line-number="5"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"correlation"</span>)</a>
-<a class="sourceLine" id="cb70-6" data-line-number="6">null_distn <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb70-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">obs_stat =</span> correlation_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb83-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb83-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb83-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb83-5" data-line-number="5"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"correlation"</span>)</a>
+<a class="sourceLine" id="cb83-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb83-7" data-line-number="7"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(null_distn) <span class="op">+</span></a>
+<a class="sourceLine" id="cb83-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> correlation_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-31-1.png" width="576"></p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb71-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_pvalue.html">get_pvalue</a></span>(<span class="dt">obs_stat =</span> correlation_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb84-1" data-line-number="1">null_distn <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb84-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="dt">obs_stat =</span> correlation_hat, <span class="dt">direction =</span> <span class="st">"two_sided"</span>)</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
@@ -563,91 +578,97 @@
 <h3 class="hasAnchor">
 <a href="#one-numerical-one-mean" class="anchor"></a>One numerical (one mean)</h3>
 <p><strong>Point estimate</strong></p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">( x_bar &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb73-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb73-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>) )</a></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1">( x_bar &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb86-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb86-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  4.57</code></pre>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb75-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb75-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb75-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>)</a>
-<a class="sourceLine" id="cb75-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot) )</a></code></pre></div>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb88-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb88-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb88-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"mean"</span>)</a>
+<a class="sourceLine" id="cb88-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
 ## 1   1.44    7.82</code></pre>
-<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb77-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> percentile_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb90-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-35-1.png" width="576"></p>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> x_bar) )</a></code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> x_bar) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   lower upper
 ##   &lt;dbl&gt; &lt;dbl&gt;
 ## 1  1.27  7.88</code></pre>
-<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb80-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> standard_error_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb93-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-35-2.png" width="576"></p>
 </div>
 <div id="one-numerical-one-mean---standardized" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-numerical-one-mean---standardized" class="anchor"></a>One numerical (one mean - standardized)</h3>
 <p><strong>Point estimate</strong></p>
-<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb81-1" data-line-number="1">( t_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb81-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb81-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>) )</a></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1">( t_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb94-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb94-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>) )</a></code></pre></div>
 <pre><code>## Response: arr_delay (numeric)
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  2.68</code></pre>
-<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb83-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb83-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb83-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>)</a>
-<a class="sourceLine" id="cb83-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot) )</a></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb96-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb96-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb96-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>)</a>
+<a class="sourceLine" id="cb96-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
 ## 1  0.934    4.36</code></pre>
-<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb85-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> percentile_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb98-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-37-1.png" width="576"></p>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb86-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> t_hat) )</a></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> t_hat) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   lower upper
 ##   &lt;dbl&gt; &lt;dbl&gt;
 ## 1 0.914  4.44</code></pre>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> standard_error_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb101-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-37-2.png" width="576"></p>
 </div>
 <div id="one-categorical-one-proportion-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-categorical-one-proportion-1" class="anchor"></a>One categorical (one proportion)</h3>
 <p><strong>Point estimate</strong></p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb89-1" data-line-number="1">( p_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb89-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb89-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>) )</a></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" data-line-number="1">( p_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb102-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb102-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1 0.466</code></pre>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb91-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb91-2" data-line-number="2"><span class="st"> </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb91-3" data-line-number="3"><span class="st"> </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb91-4" data-line-number="4"><span class="st"> </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>)</a>
-<a class="sourceLine" id="cb91-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot) )</a></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb104-2" data-line-number="2"><span class="st"> </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb104-3" data-line-number="3"><span class="st"> </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb104-4" data-line-number="4"><span class="st"> </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"prop"</span>)</a>
+<a class="sourceLine" id="cb104-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
 ## 1   0.42   0.508</code></pre>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> percentile_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb106-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-39-1.png" width="576"></p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb94-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> p_hat) )</a></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> p_hat) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   lower upper
 ##   &lt;dbl&gt; &lt;dbl&gt;
 ## 1 0.422 0.510</code></pre>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> standard_error_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb109-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-39-2.png" width="576"></p>
 </div>
 <div id="one-categorical-variable-standardized-proportion-z-1" class="section level3">
@@ -659,187 +680,199 @@
 <h3 class="hasAnchor">
 <a href="#one-numerical-variable-one-categorical-2-levels-diff-in-means-1" class="anchor"></a>One numerical variable, one categorical (2 levels) (diff in means)</h3>
 <p><strong>Point estimate</strong></p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb97-1" data-line-number="1">( d_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb97-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb97-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" data-line-number="1">( d_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb110-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb110-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##     stat
 ##    &lt;dbl&gt;
 ## 1 -0.745</code></pre>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb99-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb99-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb99-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb99-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))</a>
-<a class="sourceLine" id="cb99-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot) )</a></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb112-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb112-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb112-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))</a>
+<a class="sourceLine" id="cb112-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
 ## 1  -7.17    6.08</code></pre>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> percentile_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb114-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-41-1.png" width="576"></p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb102-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> d_hat) )</a></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> d_hat) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   lower upper
 ##   &lt;dbl&gt; &lt;dbl&gt;
 ## 1 -7.30  5.81</code></pre>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> standard_error_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb117-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-41-2.png" width="576"></p>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-t-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#one-numerical-variable-one-categorical-2-levels-t-1" class="anchor"></a>One numerical variable, one categorical (2 levels) (t)</h3>
 <p><strong>Standardized point estimate</strong></p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb105-1" data-line-number="1">( t_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb105-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb105-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb118-1" data-line-number="1">( t_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb118-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb118-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
 <pre><code>## Response: arr_delay (numeric)
 ## Explanatory: season (factor)
 ## # A tibble: 1 x 1
 ##     stat
 ##    &lt;dbl&gt;
 ## 1 -0.218</code></pre>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb107-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb107-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb107-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb107-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))</a>
-<a class="sourceLine" id="cb107-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot) )</a></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb120-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb120-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb120-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))</a>
+<a class="sourceLine" id="cb120-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
 ## 1  -2.24    1.72</code></pre>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> percentile_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb122-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-43-1.png" width="576"></p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb110-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> t_hat) )</a></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> t_hat) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   lower upper
 ##   &lt;dbl&gt; &lt;dbl&gt;
 ## 1 -2.18  1.75</code></pre>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> standard_error_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb125-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-43-2.png" width="576"></p>
 </div>
 <div id="two-categorical-variables-diff-in-proportions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#two-categorical-variables-diff-in-proportions" class="anchor"></a>Two categorical variables (diff in proportions)</h3>
 <p><strong>Point estimate</strong></p>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" data-line-number="1">( d_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb113-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb113-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb126-1" data-line-number="1">( d_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb126-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb126-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##     stat
 ##    &lt;dbl&gt;
 ## 1 0.0205</code></pre>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb115-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb115-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb115-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))</a>
-<a class="sourceLine" id="cb115-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot) )</a></code></pre></div>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb128-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb128-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb128-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb128-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))</a>
+<a class="sourceLine" id="cb128-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##    `2.5%` `97.5%`
 ##     &lt;dbl&gt;   &lt;dbl&gt;
 ## 1 -0.0648   0.108</code></pre>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> percentile_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb130-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb130-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-45-1.png" width="576"></p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb118-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> d_hat) )</a></code></pre></div>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> d_hat) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##     lower upper
 ##     &lt;dbl&gt; &lt;dbl&gt;
 ## 1 -0.0676 0.109</code></pre>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> standard_error_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb133-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-45-2.png" width="576"></p>
 </div>
 <div id="two-categorical-variables-z" class="section level3">
 <h3 class="hasAnchor">
 <a href="#two-categorical-variables-z" class="anchor"></a>Two categorical variables (z)</h3>
 <p><strong>Standardized point estimate</strong></p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" data-line-number="1">( z_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb121-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb121-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" data-line-number="1">( z_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb134-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb134-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1 0.460</code></pre>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb123-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb123-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb123-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw">c</span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))</a>
-<a class="sourceLine" id="cb123-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot) )</a></code></pre></div>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb136-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb136-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb136-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>))</a>
+<a class="sourceLine" id="cb136-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
 ## 1  -1.48    2.50</code></pre>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> percentile_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb138-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-47-1.png" width="576"></p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb126-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> z_hat) )</a></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> z_hat) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   lower upper
 ##   &lt;dbl&gt; &lt;dbl&gt;
 ## 1 -1.52  2.44</code></pre>
-<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb128-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> standard_error_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb141-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-47-2.png" width="576"></p>
 </div>
 <div id="two-numerical-vars---slr-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#two-numerical-vars---slr-1" class="anchor"></a>Two numerical vars - SLR</h3>
 <p><strong>Point estimate</strong></p>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" data-line-number="1">( slope_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb129-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb129-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>) )</a></code></pre></div>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb142-1" data-line-number="1">( slope_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb142-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb142-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>) )</a></code></pre></div>
 <pre><code>## Response: arr_delay (numeric)
 ## Explanatory: dep_delay (numeric)
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  1.02</code></pre>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb131-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb131-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb131-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>)</a>
-<a class="sourceLine" id="cb131-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot) )</a></code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb144-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb144-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb144-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"slope"</span>)</a>
+<a class="sourceLine" id="cb144-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
 ## 1  0.973    1.07</code></pre>
-<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> percentile_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb146-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb146-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-49-1.png" width="576"></p>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> slope_hat) )</a></code></pre></div>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb147-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> slope_hat) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   lower upper
 ##   &lt;dbl&gt; &lt;dbl&gt;
 ## 1 0.965  1.07</code></pre>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> standard_error_ci, <span class="dt">direction =</span> <span class="st">"between"</span>) </a></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb149-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb149-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-49-2.png" width="576"></p>
 </div>
 <div id="two-numerical-vars---correlation-1" class="section level3">
 <h3 class="hasAnchor">
 <a href="#two-numerical-vars---correlation-1" class="anchor"></a>Two numerical vars - correlation</h3>
 <p><strong>Point estimate</strong></p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb137-1" data-line-number="1">( correlation_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb137-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb137-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"correlation"</span>) )</a></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb150-1" data-line-number="1">( correlation_hat &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb150-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb150-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"correlation"</span>) )</a></code></pre></div>
 <pre><code>## Response: arr_delay (numeric)
 ## Explanatory: dep_delay (numeric)
 ## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
 ## 1 0.894</code></pre>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb139-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb139-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb139-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"correlation"</span>)</a>
-<a class="sourceLine" id="cb139-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot) )</a></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb152-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb152-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb152-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb152-4" data-line-number="4"><span class="st">   </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"correlation"</span>)</a>
+<a class="sourceLine" id="cb152-5" data-line-number="5">( percentile_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
 ## 1  0.850   0.922</code></pre>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> percentile_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb154-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb154-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-51-1.png" width="576"></p>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb142-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_ci.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, </a>
-<a class="sourceLine" id="cb142-2" data-line-number="2">                            <span class="dt">point_estimate =</span> correlation_hat) )</a></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb155-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, </a>
+<a class="sourceLine" id="cb155-2" data-line-number="2">                            <span class="dt">point_estimate =</span> correlation_hat) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
 ##   lower upper
 ##   &lt;dbl&gt; &lt;dbl&gt;
 ## 1 0.858 0.931</code></pre>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" data-line-number="1">boot <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(<span class="dt">endpoints =</span> standard_error_ci, <span class="dt">direction =</span> <span class="st">"between"</span>)  </a></code></pre></div>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb157-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
+<a class="sourceLine" id="cb157-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-51-2.png" width="576"></p>
 </div>
 <div id="two-numerical-vars---t" class="section level3">
@@ -874,7 +907,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
