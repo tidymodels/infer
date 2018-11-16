@@ -1,3 +1,4 @@
+^CRAN-RELEASE$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
@@ -18,3 +19,5 @@
 ^TO-DO\.md$
 ^\.httr-oauth$
 ^_pkgdown.yml
+^_pkgdown\.yml$
+^docs$

@@ -2,9 +2,15 @@
 % Please edit documentation in R/visualize.R
 \name{visualize}
 \alias{visualize}
+\alias{visualise}
 \title{Visualize statistical inference}
 \usage{
 visualize(data, bins = 15, method = "simulation",
+  dens_color = "black", obs_stat = NULL, obs_stat_color = "red2",
+  pvalue_fill = "pink", direction = NULL, endpoints = NULL,
+  endpoints_color = "mediumaquamarine", ci_fill = "turquoise", ...)
+
+visualise(data, bins = 15, method = "simulation",
   dens_color = "black", obs_stat = NULL, obs_stat_color = "red2",
   pvalue_fill = "pink", direction = NULL, endpoints = NULL,
   endpoints_color = "mediumaquamarine", ci_fill = "turquoise", ...)
@@ -22,31 +28,34 @@ visualize(data, bins = 15, method = "simulation",
 theoretical density curve.}
 
 \item{obs_stat}{A numeric value or 1x1 data frame corresponding to what the
-observed statistic is.}
+observed statistic is. \strong{Deprecated (see Details)}.}
 
 \item{obs_stat_color}{A character or hex string specifying the color of the
-observed statistic as a vertical line on the plot.}
+observed statistic as a vertical line on the plot. \strong{Deprecated (see
+Details)}.}
 
 \item{pvalue_fill}{A character or hex string specifying the color to shade
 the p-value. In previous versions of the package this was the \code{shade_color}
-argument.}
+argument. \strong{Deprecated (see Details)}.}
 
 \item{direction}{A string specifying in which direction the shading should
 occur. Options are \code{"less"}, \code{"greater"}, or \code{"two_sided"} for p-value. Can
 also give \code{"left"}, \code{"right"}, or \code{"both"} for p-value. For confidence
-intervals, use \code{"between"} and give the endpoint values in \code{endpoints}.}
+intervals, use \code{"between"} and give the endpoint values in \code{endpoints}.
+\strong{Deprecated (see Details)}.}
 
 \item{endpoints}{A 2 element vector or a 1 x 2 data frame containing the
 lower and upper values to be plotted. Most useful for visualizing
-conference intervals.}
+conference intervals. \strong{Deprecated (see Details)}.}
 
 \item{endpoints_color}{A character or hex string specifying the color of the
-observed statistic as a vertical line on the plot.}
+observed statistic as a vertical line on the plot. \strong{Deprecated (see
+Details)}.}
 
 \item{ci_fill}{A character or hex string specifying the color to shade the
-confidence interval.}
+confidence interval. \strong{Deprecated (see Details)}.}
 
-\item{...}{Other arguments passed along to ggplot2.}
+\item{...}{Other arguments passed along to \{ggplot2\} functions.}
 }
 \value{
 A ggplot object showing the simulation-based distribution as a
@@ -56,8 +65,18 @@ histogram or bar graph. Also used to show the theoretical curves.
 Visualize the distribution of the simulation-based inferential statistics or
 the theoretical distribution (or both!).
 }
+\details{
+In order to make visualization workflow more straightforward and
+explicit \code{visualize()} now only should be used to plot statistics directly.
+That is why arguments not related to this task are deprecated and will be
+removed in a future release of \{infer\}.
+
+To add to plot information related to p-value use \code{\link[=shade_p_value]{shade_p_value()}}. To add
+to plot information related to confidence interval use
+\code{\link[=shade_confidence_interval]{shade_confidence_interval()}}.
+}
 \examples{
-# Permutations to create a simulation-based null distribution for 
+# Permutations to create a simulation-based null distribution for
 # one numerical response and one categorical predictor
 # using t statistic
 mtcars \%>\%
@@ -68,7 +87,7 @@ mtcars \%>\%
   calculate(stat = "t", order = c("1", "0")) \%>\%
   visualize(method = "simulation") #default method
 
-# Theoretical t distribution for 
+# Theoretical t distribution for
 # one numerical response and one categorical predictor
 # using t statistic
 mtcars \%>\%
@@ -88,4 +107,7 @@ mtcars \%>\%
   calculate(stat = "t", order = c("1", "0")) \%>\%
   visualize(method = "both")
 
+}
+\seealso{
+\code{\link[=shade_p_value]{shade_p_value()}}, \code{\link[=shade_confidence_interval]{shade_confidence_interval()}}.
 }

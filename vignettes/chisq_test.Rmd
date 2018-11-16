@@ -87,57 +87,49 @@ Lastly, the observed $\chi^2$ statistic is `r obs_chisq`.
 ## Randomization approach to $\chi^2$-statistic
 
 ```{r}
-chisq_null_distn <- fli_small %>%
+chisq_null_perm <- fli_small %>%
   specify(origin ~ season) %>% # alt: response = origin, explanatory = season
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "Chisq")
-chisq_null_distn %>% visualize(obs_stat = obs_chisq, direction = "greater")
+
+visualize(chisq_null_perm) +
+  shade_p_value(obs_stat = obs_chisq, direction = "greater")
 ```
 
 ## Calculate the randomization-based $p$-value
 
 ```{r}
-chisq_null_distn %>% 
-  get_pvalue(obs_stat = obs_chisq, direction = "greater")
+chisq_null_perm %>% 
+  get_p_value(obs_stat = obs_chisq, direction = "greater")
 ```
 
 
 ## Theoretical distribution
 
 ```{r }
-fli_small %>%
+chisq_null_theor <- fli_small %>%
   specify(origin ~ season) %>% 
   hypothesize(null = "independence") %>%
   # generate() ## Not used for theoretical
-  calculate(stat = "Chisq") %>%
-  visualize(method = "theoretical", obs_stat = obs_chisq, direction = "right")
+  calculate(stat = "Chisq")
+
+visualize(chisq_null_theor, method = "theoretical") +
+  shade_p_value(obs_stat = obs_chisq, direction = "right")
 ```
 
 ## Overlay appropriate $\chi^2$ distribution on top of permuted statistics
 
-```{r eval=FALSE}
-fli_small %>%
-  specify(origin ~ season) %>% # alt: response = origin, explanatory = season
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "Chisq") %>% 
-  visualize(method = "both", obs_stat = obs_chisq, direction = "right")
+```{r}
+visualize(chisq_null_perm, method = "both") +
+  shade_p_value(obs_stat = obs_chisq, direction = "right")
 ```
-
-```{r echo=FALSE}
-# To use same distribution calculated above
-chisq_null_distn %>% 
-  visualize(method = "both", obs_stat = obs_chisq, direction = "right")
-```
-
 
 ## Compute theoretical p-value
 
 ```{r}
 fli_small %>% 
   chisq_test(formula = origin ~ season) %>% 
-  dplyr::select(p_value) %>% 
-  dplyr::pull()
+  dplyr::pull(p_value)
 ```
 
