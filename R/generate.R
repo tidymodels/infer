@@ -140,9 +140,7 @@ bootstrap <- function(x, reps = 1, ...) {
   result <- rep_sample_n(x, size = nrow(x), replace = TRUE, reps = reps)
   result <- copy_attrs(to = result, from = x)
 
-  class(result) <- append("infer", class(result))
-
-  result
+  append_infer_class(result)
 }
 
 #' @importFrom dplyr bind_rows group_by
@@ -154,9 +152,7 @@ permute <- function(x, reps = 1, ...) {
 
   df_out <- copy_attrs(to = df_out, from = x)
 
-  class(df_out) <- append("infer", class(df_out))
-
-  df_out
+  append_infer_class(df_out)
 }
 
 permute_once <- function(x, ...) {
@@ -190,7 +186,7 @@ simulate <- function(x, reps = 1, ...) {
 
   rep_tbl <- copy_attrs(to = rep_tbl, from = x)
 
-  class(rep_tbl) <- append("infer", class(rep_tbl))
-
-  dplyr::group_by(rep_tbl, replicate)
+  rep_tbl <- dplyr::group_by(rep_tbl, replicate)
+  
+  append_infer_class(rep_tbl)
 }

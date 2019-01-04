@@ -117,3 +117,7 @@ test_that("params correct", {
   expect_error(hypothesize(one_prop_specify, null = "point", mu = 2))
   expect_error(hypothesize(one_mean_specify, null = "point", mean = 0.5))
 })
+
+test_that("sensible output", {
+  expect_equal(class(one_mean)[1], "infer")
+})

@@ -79,6 +79,7 @@ test_that("sensible output", {
   )
   expect_silent(generate(hyp_mean, reps = 1, type = "bootstrap"))
   expect_error(generate(hyp_mean, reps = 1, type = "other"))
+  expect_equal(class(generate(hyp_mean, type = "bootstrap"))[1], "infer")
 })
 
 test_that("auto `type` works (generate)", {

@@ -108,7 +108,7 @@ calculate <- function(x,
     )
   }
 #   else {
-#     class(result) <- append("infer", class(result))
+#     result <- append_infer_class(result)
 #   }
 
   result <- copy_attrs(to = result, from = x)
