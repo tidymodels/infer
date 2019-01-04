@@ -83,5 +83,5 @@ hypothesize <- function(x, null, ...) {
   #   }
   # }
 
-  tibble::as_tibble(x)
+  append_infer_class(tibble::as_tibble(x))
 }

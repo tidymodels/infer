@@ -1,5 +1,16 @@
 context("utils")
 
+test_that("append_infer_class works", {
+  expect_equal(
+    class(append_infer_class(structure("a", class = "b"))),
+    c("infer", "b")
+  )
+  expect_equal(
+    class(append_infer_class(structure("a", class = c("infer", "b")))),
+    c("infer", "b")
+  )
+})
+
 null_val <- NULL
 
 test_that("stop_glue handles `NULL`", {

@@ -1,3 +1,12 @@
+append_infer_class <- function(x) {
+  x_cl <- class(x)
+  if (x_cl[1] != "infer") {
+    class(x) <- c("infer", x_cl)
+  }
+  
+  x
+}
+
 format_params <- function(x) {
   par_levels <- get_par_levels(x)
   fct_levels <- as.character(unique(dplyr::pull(x, !!attr(x, "response"))))

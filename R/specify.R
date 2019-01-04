@@ -168,7 +168,5 @@ specify <- function(x, formula, response = NULL,
   x <- set_params(x)
 
   # add "infer" class
-  class(x) <- append("infer", class(x))
-
-  x
+  append_infer_class(x)
 }
