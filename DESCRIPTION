@@ -39,7 +39,8 @@ Suggests:
     nycflights13,
     stringr,
     testthat,
-    covr
+    covr,
+    vdiffr
 URL: https://github.com/tidymodels/infer
 BugReports: https://github.com/tidymodels/infer/issues
 Roxygen: list(markdown = TRUE)
