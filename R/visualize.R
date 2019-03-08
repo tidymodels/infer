@@ -105,9 +105,10 @@ visualize <- function(data, bins = 15, method = "simulation",
   # complicated computation of p-value regions (in case `direction = "both"`)
   # in `shade_p_value()`.
   attr(data, "viz_method") <- method
+  attr(data, "viz_bins") <- bins
 
   infer_plot <- ggplot(data) +
-    simulation_layer(data, bins, ...) +
+    simulation_layer(data, ...) +
     theoretical_layer(data, dens_color, ...) +
     title_labels_layer(data) +
     shade_p_value(
@@ -241,28 +242,35 @@ impute_obs_stat <- function(obs_stat, direction, endpoints) {
   obs_stat
 }
 
-simulation_layer <- function(data, bins, ...) {
+simulation_layer <- function(data, ...) {
   method <- get_viz_method(data)
+  bins <- get_viz_bins(data)
 
   if (method == "theoretical") {
     return(list())
   }
+  
+  # Manual computation of breaks is needed to fix histogram shape in future plot
+  # buildings, e.g. after adding p-value areas.
+  bin_breaks <- compute_bin_breaks(data, bins)
 
   if (method == "simulation") {
     if (length(unique(data$stat)) >= 10) {
       res <- list(
-        geom_histogram(
-          mapping = aes(x = stat), bins = bins, color = "white", ...
+        ggplot2::stat_bin(
+          mapping = aes(x = stat), bins = bins, color = "white", ...,
+          breaks = bin_breaks
         )
       )
     } else {
+      # Probably should be removed
       res <- list(geom_bar(mapping = aes(x = stat), ...))
     }
   } else if (method == "both") {
     res <- list(
-      geom_histogram(
+      ggplot2::stat_bin(
         mapping = aes(x = stat, y = ..density..), bins = bins,
-        color = "white", ...
+        color = "white", ..., breaks = bin_breaks
       )
     )
   }
@@ -270,14 +278,21 @@ simulation_layer <- function(data, bins, ...) {
   res
 }
 
-theoretical_layer <- function(data, dens_color, ...) {
+compute_bin_breaks <- function(data, bins) {
+  g <- ggplot(data) + ggplot2::stat_bin(aes(stat), bins = bins)
+  g_tbl <- ggplot2::ggplot_build(g)[["data"]][[1]]
+  
+  c(g_tbl[["xmin"]][1], g_tbl[["xmax"]])
+}
+
+theoretical_layer <- function(data, dens_color, ..., do_warn = TRUE) {
   method <- get_viz_method(data)
 
   if (method == "simulation") {
     return(list())
   }
 
-  warn_theoretical_layer(data)
+  warn_theoretical_layer(data, do_warn)
 
   theory_type <- short_theory_type(data)
 
@@ -300,7 +315,11 @@ theoretical_layer <- function(data, dens_color, ...) {
   )
 }
 
-warn_theoretical_layer <- function(data) {
+warn_theoretical_layer <- function(data, do_warn = TRUE) {
+  if (!do_warn) {
+    return(TRUE)
+  }
+  
   method <- get_viz_method(data)
 
   warning_glue(
@@ -367,99 +386,6 @@ title_labels_layer <- function(data) {
     xlab(glue_null(x_lab)),
     ylab(glue_null(y_lab))
   )
-}
-
-#' Add information about p-value region(s)
-#'
-#' `shade_p_value()` plots p-value region(s) on top of the [visualize()] output.
-#' It should be used as \\{ggplot2\\} layer function (see examples).
-#' `shade_pvalue()` is its alias.
-#'
-#' @param obs_stat A numeric value or 1x1 data frame corresponding to what the
-#'   observed statistic is.
-#' @param direction A string specifying in which direction the shading should
-#'   occur. Options are `"less"`, `"greater"`, or `"two_sided"`. Can
-#'   also give `"left"`, `"right"`, or `"both"`. If `NULL` then no shading is
-#'   actually done.
-#' @param color A character or hex string specifying the color of the observed
-#'   statistic as a vertical line on the plot.
-#' @param fill A character or hex string specifying the color to shade the
-#'   p-value region. If `NULL` then no shading is actually done.
-#' @param ... Other arguments passed along to \\{ggplot2\\} functions.
-#'
-#' @return A list of \\{ggplot2\\} objects to be added to the `visualize()`
-#'   output.
-#'
-#' @seealso [shade_confidence_interval()] to add information about confidence
-#'   interval.
-#'
-#' @examples
-#' viz_plot <- mtcars %>%
-#'   dplyr::mutate(am = factor(am)) %>%
-#'   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
-#'   hypothesize(null = "independence") %>%
-#'   generate(reps = 100, type = "permute") %>%
-#'   calculate(stat = "t", order = c("1", "0")) %>%
-#'   visualize(method = "both")
-#'
-#' viz_plot + shade_p_value(1.5, direction = "right")
-#' viz_plot + shade_p_value(1.5, direction = "both")
-#' viz_plot + shade_p_value(1.5, direction = NULL)
-#'
-#' @name shade_p_value
-NULL
-
-#' @rdname shade_p_value
-#' @export
-shade_p_value <- function(obs_stat, direction,
-                          color = "red2", fill = "pink", ...) {
-  obs_stat <- check_obs_stat(obs_stat)
-  check_shade_p_value_args(obs_stat, direction, color, fill)
-
-  res <- list()
-  if (is.null(obs_stat)) {
-    return(res)
-  }
-
-  # Add shading
-  if (!is.null(direction) && !is.null(fill)) {
-    if (direction %in% c("less", "left", "greater", "right")) {
-      tail_data <- one_tail_data(obs_stat, direction)
-
-      res <- c(res, list(geom_tail(tail_data, fill, ...)))
-    } else if (direction %in% c("two_sided", "both")) {
-      tail_data <- two_tail_data(obs_stat, direction)
-
-      res <- c(res, list(geom_tail(tail_data, fill, ...)))
-    } else {
-      warning_glue(
-        '`direction` should be one of `"less"`, `"left"`, `"greater"`, ",
-        "`"right"`, `"two_sided"`, `"both"`.'
-      )
-    }
-  }
-
-  # Add vertical line at `obs_stat`
-  c(
-    res, list(geom_vline(xintercept = obs_stat, size = 2, color = color, ...))
-  )
-}
-
-#' @rdname shade_p_value
-#' @export
-shade_pvalue <- shade_p_value
-
-check_shade_p_value_args <- function(obs_stat, direction, color, fill) {
-  if (!is.null(obs_stat)) {
-    check_type(obs_stat, is.numeric)
-  }
-  if (!is.null(direction)) {
-    check_type(direction, is.character)
-  }
-  check_type(color, is_color_string, "color string")
-  check_type(fill, is_color_string, "color string")
-
-  TRUE
 }
 
 #' Add information about confidence interval
@@ -552,72 +478,10 @@ short_theory_type <- function(x) {
   names(theory_types)[which(is_type)[1]]
 }
 
-warn_right_tail_test <- function(direction, stat_name) {
-  if (!is.null(direction) && !(direction %in% c("greater", "right")) &&
-      (stat_name %in% c("F", "Chi-Square"))) {
-    warning_glue(
-      "{stat_name} usually corresponds to right-tailed tests. ",
-      "Proceed with caution."
-    )
-  }
-
-  TRUE
-}
-
-geom_tail <- function(tail_data, fill, ...) {
-  list(
-    geom_rect(
-      data = tail_data,
-      aes(xmin = x_min, xmax = x_max, ymin = 0, ymax = Inf),
-      fill = fill, alpha = 0.6,
-      inherit.aes = FALSE,
-      ...
-    )
-  )
-}
-
-one_tail_data <- function(obs_stat, direction) {
-  # Take advantage of {ggplot2} functionality to accept function as `data`.
-  # Needed to warn about incorrect usage of right tail tests.
-  function(data) {
-    warn_right_tail_test(direction, short_theory_type(data))
-
-    if (direction %in% c("less", "left")) {
-      data.frame(x_min = -Inf, x_max = obs_stat)
-    } else if (direction %in% c("greater", "right")) {
-      data.frame(x_min = obs_stat, x_max = Inf)
-    }
-  }
-}
-
-two_tail_data <- function(obs_stat, direction) {
-  # Take advantage of {ggplot2} functionality to accept function as `data`.
-  # This is needed to make possible existence of `shade_p_value()` in case of
-  # `direction = "both"`, as it depends on actual `data` but adding it as
-  # argument to `shade_p_value()` is very bad.
-  # Also needed to warn about incorrect usage of right tail tests.
-  function(data) {
-    warn_right_tail_test(direction, short_theory_type(data))
-
-    if (get_viz_method(data) == "theoretical") {
-      second_border <- -obs_stat
-    } else {
-      second_border <- mirror_obs_stat(data$stat, obs_stat)
-    }
-
-    data.frame(
-      x_min = c(-Inf, max(obs_stat, second_border)),
-      x_max = c(min(obs_stat, second_border), Inf)
-    )
-  }
-}
-
-mirror_obs_stat <- function(vector, observation) {
-  obs_percentile <- stats::ecdf(vector)(observation)
-
-  stats::quantile(vector, probs = 1 - obs_percentile)
-}
-
 get_viz_method <- function(data) {
   attr(data, "viz_method")
+}
+
+get_viz_bins <- function(data) {
+  attr(data, "viz_bins")
 }

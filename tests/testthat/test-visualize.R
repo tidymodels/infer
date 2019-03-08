@@ -628,21 +628,3 @@ test_that("warn_right_tail_test works", {
   expect_warn_right_tail("F")
   expect_warn_right_tail("Chi-Square")
 })
-
-test_that("one_tail_data works", {
-  fun_output_left <- one_tail_data(1, "left")
-  expect_equal(colnames(fun_output_left(iris_permute)), c("x_min", "x_max"))
-  
-  fun_output_right <- one_tail_data(1, "right")
-  expect_equal(colnames(fun_output_right(iris_permute)), c("x_min", "x_max"))
-})
-
-test_that("two_tail_data works", {
-  fun_output <- two_tail_data(1, "two_sided")
-  
-  attr(iris_permute, "viz_method") <- "both"
-  expect_equal(colnames(fun_output(iris_permute)), c("x_min", "x_max"))
-  
-  attr(iris_permute, "viz_method") <- "theoretical"
-  expect_equal(colnames(fun_output(iris_permute)), c("x_min", "x_max"))
-})
