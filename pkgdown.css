@@ -58,9 +58,14 @@ img {
   max-width: 100%;
 }
 
+/* Fix bug in bootstrap (only seen in firefox) */
+summary {
+  display: list-item;
+}
+
 /* Typographic tweaking ---------------------------------*/
 
-.contents h1.page-header {
+.contents .page-header {
   margin-top: calc(-60px + 1em);
 }
 
@@ -228,4 +233,10 @@ mark {
 /* vertical spacing after htmlwidgets */
 .html-widget {
   margin-bottom: 10px;
+}
+
+/* fontawesome ------------------------ */
+
+.fab {
+    font-family: "Font Awesome 5 Brands" !important;
 }
