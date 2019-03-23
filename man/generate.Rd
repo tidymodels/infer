@@ -16,7 +16,8 @@ GENERATION_TYPES
 
 \item{reps}{The number of resamples to generate.}
 
-\item{type}{Currently either \code{bootstrap}, \code{permute}, or \code{simulate}.}
+\item{type}{Currently either \code{bootstrap}, \code{permute}, or \code{simulate} as defined
+in the \code{GENERATION_TYPES} vector.}
 
 \item{...}{Currently ignored.}
 }
@@ -29,6 +30,9 @@ Generation is done based on \code{\link[=specify]{specify()}} and (if needed) \c
 inputs.
 }
 \examples{
+# Different `type` options
+GENERATION_TYPES   
+ 
 # Permutation test for two binary variables
 mtcars \%>\%
   dplyr::mutate(am = factor(am), vs = factor(vs)) \%>\%
