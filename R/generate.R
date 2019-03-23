@@ -43,6 +43,13 @@ generate <- function(x, reps = 1, type = NULL, ...) {
   )
 }
 
+#' The different arguments available for `generate()`
+#'
+#' `"bootstrap"` is most frequently used with confidence intervals
+#' and some hypothesis tests. `"permute"` is used for tests of independence
+#' between two variables. `"simulate"` is used for generating types similar
+#' to flipping a coin or other statistical processes.
+#'
 #' @rdname generate
 #' @export
 GENERATION_TYPES <- c("bootstrap", "permute",  "simulate")
