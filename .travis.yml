@@ -22,6 +22,7 @@ r_packages:
 
 r_github_packages:
   - r-lib/pkgbuild
+  - r-lib/callr
   - hadley/pkgdown
   - tidymodels/infer
 
