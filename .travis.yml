@@ -21,8 +21,8 @@ r_packages:
   - devtools
 
 r_github_packages:
-  - r-lib/pkgbuild
   - r-lib/callr
+  - r-lib/pkgbuild
   - hadley/pkgdown
   - tidymodels/infer
 
