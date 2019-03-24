@@ -132,23 +132,27 @@ test_that("conf_int argument works", {
   set.seed(2018)
   iris_small <- iris2 %>% sample_n(10)
   no_var_equal <- iris_small %>%
-    t_stat(Petal.Width ~ Species, order = c("versicolor", "virginica"))
+    t_stat(Petal.Width ~ Species, order = c("versicolor", "virginica")) %>% 
+    pull()
   var_equal <- iris_small %>%
     t_stat(
       Petal.Width ~ Species, order = c("versicolor", "virginica"),
       var.equal = TRUE
-    )
+    ) %>% 
+    dplyr::pull()
   expect_false(no_var_equal == var_equal)
 
   shortcut_no_var_equal <- iris_small %>%
     specify(Petal.Width ~ Species) %>%
-    calculate(stat = "t", order = c("versicolor", "virginica"))
+    calculate(stat = "t", order = c("versicolor", "virginica")) %>% 
+    pull()
 
   shortcut_var_equal <- iris_small %>%
     specify(Petal.Width ~ Species) %>%
     calculate(
       stat = "t", order = c("versicolor", "virginica"),
       var.equal = TRUE
-    )
+    ) %>% 
+    dplyr::pull()
   expect_false(shortcut_no_var_equal == shortcut_var_equal)
 })
