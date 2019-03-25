@@ -129,8 +129,8 @@ test_that("conf_int argument works", {
 
   # Check that var.equal produces different results
   # Thanks for finding this @EllaKaye!
-  set.seed(2018)
-  iris_small <- iris2 %>% sample_n(10)
+#  set.seed(2018)
+  iris_small <- iris2 %>% slice(1:6, 90:100)
   no_var_equal <- iris_small %>%
     t_stat(Petal.Width ~ Species, order = c("versicolor", "virginica")) %>% 
     pull()
