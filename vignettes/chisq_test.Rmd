@@ -193,8 +193,6 @@ visualize(chisq_null_perm, method = "both") +
 ### Calculate $p-$value
 
 ```{r}
-fli_small %>% 
-  chisq_test(formula = origin ~ season) %>% 
-  dplyr::pull(p_value)
+#TBA
 ```
 
