@@ -1,6 +1,6 @@
 ---
-title: "Chi-squared test example using `nycflights13` `flights` data"
-author: "Chester Ismay"
+title: "Chi-squared test: Independence and Goodness of Fit"
+author: "Chester Ismay and Andrew Bray"
 date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
@@ -51,9 +51,14 @@ fli_small <- flights %>%
 
 ***
 
-# One numerical variable, one categorical (2 levels)
+## A test of independence
 
-## Calculate observed statistic 
+Say we wish to assess whether flights out of the three NYC airports have a seasonal
+component; whether La Guardia gets relatively more winter traffic, say, than JFK.
+This could be formulated as a test of independence between the `origin` (airport) and
+`season` variables.
+
+### Calculate observed statistic 
 
 The recommended approach is to use `specify() %>% calculate()`:
 
@@ -65,26 +70,17 @@ obs_chisq <- fli_small %>%
 
 The observed $\chi^2$ statistic is `r obs_chisq`.
 
-Or using `chisq_test` in `infer`
-
-```{r}
-obs_chisq <- fli_small %>% 
-  chisq_test(formula = origin ~ season) %>% 
-  dplyr::select(statistic)
-```
-
-Again, the observed $\chi^2$ statistic is `r obs_chisq`.
-
-Or using another shortcut function in `infer`:
+There also exists a shortcut:
 
 ```{r}
 obs_chisq <- fli_small %>% 
   chisq_stat(formula = origin ~ season)
 ```
 
-Lastly, the observed $\chi^2$ statistic is `r obs_chisq`.
+### Sampling distribution under null (via simulation)
 
-## Randomization approach to $\chi^2$-statistic
+Under the null hypothesis that `origin` is independent of `season`, we can simulate
+the distribution of $\chi^2$ statistics.
 
 ```{r}
 chisq_null_perm <- fli_small %>%
@@ -97,7 +93,7 @@ visualize(chisq_null_perm) +
   shade_p_value(obs_stat = obs_chisq, direction = "greater")
 ```
 
-## Calculate the randomization-based $p$-value
+### Calculate $p$-value
 
 ```{r}
 chisq_null_perm %>% 
@@ -105,7 +101,7 @@ chisq_null_perm %>%
 ```
 
 
-## Theoretical distribution
+### Sampling distribution under null (via approximation)
 
 ```{r }
 chisq_null_theor <- fli_small %>%
@@ -118,14 +114,83 @@ visualize(chisq_null_theor, method = "theoretical") +
   shade_p_value(obs_stat = obs_chisq, direction = "right")
 ```
 
-## Overlay appropriate $\chi^2$ distribution on top of permuted statistics
+We can also overlay the appropriate $\chi^2$ distribution on top of permuted statistics.
 
 ```{r}
 visualize(chisq_null_perm, method = "both") +
   shade_p_value(obs_stat = obs_chisq, direction = "right")
 ```
 
-## Compute theoretical p-value
+### Calculate $p-$value
+
+```{r}
+fli_small %>% 
+  chisq_test(formula = origin ~ season) %>% 
+  dplyr::pull(p_value)
+```
+
+
+## Goodness of fit test
+
+The $\chi^2$ is also useful for determining how different the observed distribution
+of a single categorical variable is from a proposed theoretical distribution. 
+Let's test the (trivial) null hypothesis that there is no variability in number of
+flights that leave from the three NYC area airports. Said another way, we hypothesize
+that a flat distribution over the airports is a good fit for our data.
+
+### Calculate observed statistic 
+
+```{r}
+obs_chisq <- fli_small %>%
+  specify(response = origin) %>%
+  hypothesize(null = "point", 
+              p = c("EWR" = .33, "JFK" = .33, "LGA" = .34)) %>% 
+  calculate(stat = "Chisq")
+```
+
+### Sampling distribution under null (via simulation)
+
+```{r}
+chisq_null_perm <- fli_small %>%
+  specify(response = origin) %>%
+  hypothesize(null = "point", 
+              p = c("EWR" = .33, "JFK" = .33, "LGA" = .34)) %>% 
+  generate(reps = 1000, type = "simulate") %>% 
+  calculate(stat = "Chisq")
+
+visualize(chisq_null_perm) +
+  shade_p_value(obs_stat = obs_chisq, direction = "greater")
+```
+
+### Calculate $p$-value
+
+```{r}
+chisq_null_perm %>% 
+  get_p_value(obs_stat = obs_chisq, direction = "greater")
+```
+
+
+### Sampling distribution under null (via approximation)
+
+```{r }
+chisq_null_theor <- fli_small %>%
+  specify(response = origin) %>%
+  hypothesize(null = "point", 
+              p = c("EWR" = .33, "JFK" = .33, "LGA" = .34)) %>% 
+  calculate(stat = "Chisq")
+
+visualize(chisq_null_theor, method = "theoretical") +
+  shade_p_value(obs_stat = obs_chisq, direction = "right")
+```
+
+We can also overlay the appropriate $\chi^2$ distribution on top of permuted statistics.
+
+```{r}
+visualize(chisq_null_perm, method = "both") +
+  shade_p_value(obs_stat = obs_chisq, direction = "right")
+```
+
+### Calculate $p-$value
 
 ```{r}
 fli_small %>% 
