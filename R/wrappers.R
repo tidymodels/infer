@@ -7,7 +7,7 @@
 #'
 #' A tidier version of [t.test()][stats::t.test()] for two sample tests.
 #'
-#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
 #' @param order A string vector of specifying the order in which the levels of
@@ -31,7 +31,7 @@
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
 #' @export
-t_test <- function(data, formula, # response = NULL, explanatory = NULL,
+t_test <- function(x, formula, # response = NULL, explanatory = NULL,
                    order = NULL,
                    alternative = "two_sided", mu = 0,
                    conf_int = TRUE,
@@ -47,14 +47,14 @@ t_test <- function(data, formula, # response = NULL, explanatory = NULL,
   ### Only currently working with formula interface
 #  if (hasArg(formula)) {
   if (!is.null(f_rhs(formula))) {
-    data[[as.character(f_rhs(formula))]] <- factor(
-      data[[as.character(f_rhs(formula))]], levels = c(order[1], order[2])
+    x[[as.character(f_rhs(formula))]] <- factor(
+      x[[as.character(f_rhs(formula))]], levels = c(order[1], order[2])
     )
 
     # Two sample case
-    prelim <- data %>%
+    prelim <- x %>%
       stats::t.test(
-        formula = formula, data = .,
+        formula = formula, x = .,
         alternative = alternative,
         mu = mu,
         conf.level = conf_level,
@@ -65,9 +65,9 @@ t_test <- function(data, formula, # response = NULL, explanatory = NULL,
     # One sample case
     # To fix weird indexing error convert back to data.frame
     # (Error: Can't use matrix or array for column indexing)
-    data <- as.data.frame(data)
+    x <- as.data.frame(x)
     prelim <- stats::t.test(
-      x = data[[as.character(f_lhs(formula))]],
+      x = x[[as.character(f_lhs(formula))]],
       alternative = alternative,
       mu = mu,
       conf.level = conf_level,
@@ -115,14 +115,14 @@ t_test <- function(data, formula, # response = NULL, explanatory = NULL,
 #'
 #' A shortcut wrapper function to get the observed test statistic for a t test.
 #'
-#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
 #' @param ... Pass in arguments to \\{infer\\} functions.
 #'
 #' @export
-t_stat <- function(data, formula, ...) {
-  data %>%
+t_stat <- function(x, formula, ...) {
+  x %>%
     t_test(formula = formula, ...) %>%
     dplyr::select(statistic)
 }
@@ -132,7 +132,7 @@ t_stat <- function(data, formula, ...) {
 #' A tidier version of [chisq.test()][stats::chisq.test()] for goodness of fit
 #' tests and tests of independence.
 #'
-#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
 #' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
@@ -145,19 +145,12 @@ t_stat <- function(data, formula, ...) {
 #'
 #' @importFrom rlang f_lhs f_rhs
 #' @export
-chisq_test <- function(data, formula, # response = NULL, explanatory = NULL,
-                       ...) {
-  if (is.null(f_rhs(formula))) {
-    stop_glue(
-      "`chisq_test()` currently only has functionality for ",
-      "Chi-Square Test of Independence, not for Chi-Square Goodness of Fit."
-    )
-  }
-  ## Only currently working with formula interface
-  explanatory_var <- f_rhs(formula)
-  response_var <- f_lhs(formula)
+chisq_test <- function(x, formula, response = NULL, 
+                       explanatory = NULL, p = NULL, ...) {
+  
+  x <- parse_variables(data, formula, response, explanatory)
 
-  df <- data[, as.character(c(response_var, explanatory_var))]
+  df <- x[, as.character(c(response_var, explanatory_var))]
   stats::chisq.test(table(df), ...) %>%
     broom::glance() %>%
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
@@ -169,13 +162,13 @@ chisq_test <- function(data, formula, # response = NULL, explanatory = NULL,
 #' test. Uses [chisq.test()][stats::chisq.test()], which applies a continuity
 #' correction.
 #'
-#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
 #' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
 #'
 #' @export
-chisq_stat <- function(data, formula, ...) {
+chisq_stat <- function(x, formula, ...) {
   if (is.null(f_rhs(formula))) {
     stop_glue(
       "`chisq_stat()` currently only has functionality for ",
@@ -183,7 +176,7 @@ chisq_stat <- function(data, formula, ...) {
       "Use `specify() %>% hypothesize() %>% calculate()` instead."
     )
   } else {
-    data %>%
+    x %>%
       specify(formula = formula, ...) %>%
       calculate(stat = "Chisq")
   }
