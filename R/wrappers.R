@@ -171,21 +171,18 @@ chisq_test <- function(x, formula, response = NULL,
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
+#' @param response The variable name in `x` that will serve as the response.
+#'   This is alternative to using the `formula` argument.
+#' @param explanatory The variable name in `x` that will serve as the
+#'   explanatory variable.
 #' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
 #'
 #' @export
-chisq_stat <- function(x, formula, ...) {
-  if (is.null(f_rhs(formula))) {
-    stop_glue(
-      "`chisq_stat()` currently only has functionality for ",
-      "Chi-Square Test of Independence, not for Chi-Square Goodness of Fit. ",
-      "Use `specify() %>% hypothesize() %>% calculate()` instead."
-    )
-  } else {
-    x %>%
-      specify(formula = formula, ...) %>%
-      calculate(stat = "Chisq")
-  }
+chisq_stat <- function(x, formula, response = NULL, 
+                       explanatory = NULL, ...) {
+  x %>%
+    chisq_test(formula, explanatory, response, ...) %>%
+    dplyr::select(statistic)
 }
 
 check_conf_level <- function(conf_level) {
