@@ -135,6 +135,10 @@ t_stat <- function(x, formula, ...) {
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
+#' @param response The variable name in `x` that will serve as the response.
+#'   This is alternative to using the `formula` argument.
+#' @param explanatory The variable name in `x` that will serve as the
+#'   explanatory variable.
 #' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
 #'
 #' @examples
@@ -143,14 +147,16 @@ t_stat <- function(x, formula, ...) {
 #'   dplyr::mutate(cyl = factor(cyl), am = factor(am)) %>%
 #'   chisq_test(cyl ~ am)
 #'
-#' @importFrom rlang f_lhs f_rhs
 #' @export
 chisq_test <- function(x, formula, response = NULL, 
-                       explanatory = NULL, p = NULL, ...) {
-  
-  x <- parse_variables(data, formula, response, explanatory)
-
-  df <- x[, as.character(c(response_var, explanatory_var))]
+                       explanatory = NULL, ...) {
+  df <- parse_variables(x, formula, response, explanatory)
+  # TODO add stops for non-factors
+  df <- df %>%
+    select(one_of(c(
+      as.character((attr(df, "response"))), as.character(attr(df, "explanatory"))
+    )))
+  # TODO allow for named p-vectors and reorder them for chisq.test
   stats::chisq.test(table(df), ...) %>%
     broom::glance() %>%
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
