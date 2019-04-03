@@ -38,74 +38,13 @@ specify <- function(x, formula, response = NULL,
   x <- tibble::as_tibble(x) %>%
     mutate_if(is.character, as.factor) %>%
     mutate_if(is.logical, as.factor)
+  
+  # Parse response and explanatory variables
+  x <- parse_variables(x)
 
-  if (!methods::hasArg(formula) && !methods::hasArg(response)) {
-    stop_glue("Please give the `response` variable.")
-  }
-  if (methods::hasArg(formula)) {
-
-    tryCatch(
-       formula_arg_is_formula <- rlang::is_formula(formula), 
-      error = function(e) {
-        stop_glue("The argument you passed in for the formula does not exist.
-                  * Were you trying to pass in an unquoted column name?
-                  * Did you forget to name one or more arguments?")
-      }
-    )
-    if (!formula_arg_is_formula) {
-      stop_glue("The first unnamed argument must be a formula.
-                * You passed in '{get_type(formula)}'.
-                * Did you forget to name one or more arguments?")
-    }
-  }
-
-  attr(x, "response")    <- substitute(response)
-  attr(x, "explanatory") <- substitute(explanatory)
-
-  if (methods::hasArg(formula)) {
-    attr(x, "response")    <- f_lhs(formula)
-    attr(x, "explanatory") <- f_rhs(formula)
-  }
-
-  if (is_nuat(x, "response")) {
-    stop_glue("Supply not `NULL` response variable.")
-  }
-
-  if (!(as.character(attr(x, "response")) %in% names(x))) {
-    stop_glue(
-      'The response variable `{attr(x, "response")}` cannot be found in this ',
-      'dataframe.'
-    )
-  }
-
-  response_col <- rlang::eval_tidy(attr(x, "response"), x)
-
-  # if there's an explanatory var
-  if (has_explanatory(x)) {
-    if (!as.character(attr(x, "explanatory")) %in% names(x)) {
-      stop_glue(
-        'The explanatory variable `{attr(x, "explanatory")}` cannot be found ',
-        'in this dataframe.'
-      )
-    }
-    if (
-      identical(
-        as.character(attr(x, "response")), as.character(attr(x, "explanatory"))
-      )
-    ) {
-      stop_glue(
-        "The response and explanatory variables must be different from one ",
-        "another."
-      )
-    }
-    explanatory_col <- rlang::eval_tidy(attr(x, "explanatory"), x)
-    if (is.character(explanatory_col)) {
-      explanatory_col <- as.factor(explanatory_col)
-    }
-  }
-
-  attr(x, "success") <- success
-
+  # Process "success" arg
+  response_col <- response_variable(x)
+  
   if (!is.null(success)) {
     if (!is.character(success)) {
       stop_glue("`success` must be a string.")
@@ -126,27 +65,18 @@ specify <- function(x, formula, response = NULL,
       )
     }
   }
-
-  x <- x %>%
-    select(one_of(c(
-      as.character((attr(x, "response"))), as.character(attr(x, "explanatory"))
-    )))
-
-  is_complete <- stats::complete.cases(x)
-  if (!all(is_complete)) {
-    x <- dplyr::filter(x, is_complete)
-    warning_glue("Removed {sum(!is_complete)} rows containing missing values.")
-  }
-
+  
+  attr(x, "success") <- success
+  
   # To help determine theoretical distribution to plot
   attr(x, "response_type") <- class(response_variable(x))
-
+  
   if (is_nuat(x, "explanatory")) {
     attr(x, "explanatory_type") <- NULL
   } else {
     attr(x, "explanatory_type") <- class(explanatory_variable(x))
   }
-
+  
   if (
     (attr(x, "response_type") == "factor") && is.null(success) &&
     (length(levels(response_variable(x))) == 2) &&
@@ -163,10 +93,84 @@ specify <- function(x, formula, response = NULL,
       'specified for the `success` argument in `specify()`.'
     )
   }
-
-  # Determine appropriate parameters for theoretical distribution fit
+  
+  # Determine params for theoretical fit
   x <- set_params(x)
 
-  # add "infer" class
+  # Select variables
+  x <- x %>%
+    select(one_of(c(
+      as.character((attr(x, "response"))), as.character(attr(x, "explanatory"))
+    )))
+
+  is_complete <- stats::complete.cases(x)
+  if (!all(is_complete)) {
+    x <- dplyr::filter(x, is_complete)
+    warning_glue("Removed {sum(!is_complete)} rows containing missing values.")
+  }
+
+  # Add "infer" class
   append_infer_class(x)
+}
+
+parse_variables <- function(x, formula, response = NULL,
+                            explanatory = NULL) {
+  if (!methods::hasArg(formula) && !methods::hasArg(response)) {
+    stop_glue("Please give the `response` variable.")
+  }
+  if (methods::hasArg(formula)) {
+    tryCatch(
+      formula_arg_is_formula <- rlang::is_formula(formula), 
+      error = function(e) {
+        stop_glue("The argument you passed in for the formula does not exist.
+                  * Were you trying to pass in an unquoted column name?
+                  * Did you forget to name one or more arguments?")
+      }
+        )
+    if (!formula_arg_is_formula) {
+      stop_glue("The first unnamed argument must be a formula.
+                * You passed in '{get_type(formula)}'.
+                * Did you forget to name one or more arguments?")
+    }
+    }
+  
+  attr(x, "response")    <- substitute(response)
+  attr(x, "explanatory") <- substitute(explanatory)
+  
+  if (methods::hasArg(formula)) {
+    attr(x, "response")    <- f_lhs(formula)
+    attr(x, "explanatory") <- f_rhs(formula)
+  }
+  
+  if (is_nuat(x, "response")) {
+    stop_glue("Supply not `NULL` response variable.")
+  }
+  
+  if (!(as.character(attr(x, "response")) %in% names(x))) {
+    stop_glue(
+      'The response variable `{attr(x, "response")}` cannot be found in this ',
+      'dataframe.'
+    )
+  }
+  
+  # If there's an explanatory var
+  if (has_explanatory(x)) {
+    if (!as.character(attr(x, "explanatory")) %in% names(x)) {
+      stop_glue(
+        'The explanatory variable `{attr(x, "explanatory")}` cannot be found ',
+        'in this dataframe.'
+      )
+    }
+    if (
+      identical(
+        as.character(attr(x, "response")), as.character(attr(x, "explanatory"))
+      )
+    ) {
+      stop_glue(
+        "The response and explanatory variables must be different from one ",
+        "another."
+      )
+    }
+  }
+  return(x)
 }
