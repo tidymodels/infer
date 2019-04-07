@@ -31,9 +31,9 @@ A list of \{ggplot2\} objects to be added to the \code{visualize()}
 output.
 }
 \description{
-\code{shade_p_value()} plots p-value region(s) on top of the \code{\link[=visualize]{visualize()}} output.
-It should be used as \{ggplot2\} layer function (see examples).
-\code{shade_pvalue()} is its alias.
+\code{shade_p_value()} plots p-value region(s) (using "area under the curve"
+approach) on top of the \code{\link[=visualize]{visualize()}} output. It should be used as
+\{ggplot2\} layer function (see examples). \code{shade_pvalue()} is its alias.
 }
 \examples{
 set.seed(505)

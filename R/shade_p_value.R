@@ -1,8 +1,8 @@
 #' Add information about p-value region(s)
 #'
-#' `shade_p_value()` plots p-value region(s) on top of the [visualize()] output.
-#' It should be used as \\{ggplot2\\} layer function (see examples).
-#' `shade_pvalue()` is its alias.
+#' `shade_p_value()` plots p-value region(s) (using "area under the curve"
+#' approach) on top of the [visualize()] output. It should be used as
+#' \\{ggplot2\\} layer function (see examples). `shade_pvalue()` is its alias.
 #'
 #' @param obs_stat A numeric value or 1x1 data frame corresponding to what the
 #'   observed statistic is.
