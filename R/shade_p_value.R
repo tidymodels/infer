@@ -159,7 +159,7 @@ theor_area <- function(data, obs_stat, direction, n_grid = 1001) {
   g <- ggplot(data) + theoretical_layer(data, "black", do_warn = FALSE)
   g_data <- ggplot2::ggplot_build(g)[["data"]][[1]]
   
-  curve_fun <- approxfun(
+  curve_fun <- stats::approxfun(
     x = g_data[["x"]], y = g_data[["y"]], yleft = 0, yright = 0
   )
   
@@ -200,7 +200,10 @@ hist_area <- function(data, obs_stat, direction, yval) {
   # input `x` as consequtive semi-open intervals. To achieve effect of closed
   # intervals, `pmax()` trick is used.
   curve_fun <- function(t) {
-    pmax(stepfun(x, y, right = FALSE)(t), stepfun(x, y, right = TRUE)(t))
+    pmax(
+      stats::stepfun(x, y, right = FALSE)(t),
+      stats::stepfun(x, y, right = TRUE)(t)
+    )
   }
   
   # "True" left and right "x" coordinates of histogram bars are added to achieve

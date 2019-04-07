@@ -1,5 +1,7 @@
 context("shade_p_value")
 
+library(vdiffr)
+
 test_that("shade_p_value works", {
   # Adding `shade_p_value()` to simulation plot
   expect_doppelganger(
