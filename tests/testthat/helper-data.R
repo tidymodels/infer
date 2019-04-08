@@ -26,3 +26,19 @@ obs_diff <- iris_tbl %>%
 set.seed(2018)
 test_df <- tibble::tibble(stat = rnorm(100))
 
+# Data for visualization tests
+set.seed(4242)
+
+iris_permute <- iris_tbl %>%
+  specify(Sepal.Width.Group ~ Sepal.Length.Group, success = "large") %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute") %>%
+  calculate(stat = "z", order = c(">5", "<=5"))
+iris_viz_sim <- iris_permute %>% visualize(method = "simulation")
+# Warnings are about checking conditions for the theoretical method.
+iris_viz_theor <- suppressWarnings(
+  iris_permute %>% visualize(method = "theoretical")
+)
+iris_viz_both <- suppressWarnings(
+  iris_permute %>% visualize(method = "both")
+)
