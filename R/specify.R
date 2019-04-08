@@ -113,8 +113,7 @@ specify <- function(x, formula, response = NULL,
   append_infer_class(x)
 }
 
-parse_variables <- function(x, formula, response = NULL,
-                            explanatory = NULL) {
+parse_variables <- function(x, formula, response, explanatory) {
   if (!methods::hasArg(formula) && !methods::hasArg(response)) {
     stop_glue("Please give the `response` variable.")
   }
