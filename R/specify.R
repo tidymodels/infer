@@ -40,7 +40,11 @@ specify <- function(x, formula, response = NULL,
     mutate_if(is.logical, as.factor)
   
   # Parse response and explanatory variables
-  x <- parse_variables(x)
+  response <- enquo(response)
+  explanatory <- enquo(explanatory)
+  
+  x <- parse_variables(x = x, formula = formula, 
+                       response = response, explanatory = explanatory)
 
   # Process "success" arg
   response_col <- response_variable(x)
@@ -113,7 +117,9 @@ specify <- function(x, formula, response = NULL,
   append_infer_class(x)
 }
 
-parse_variables <- function(x, formula, response, explanatory) {
+#' @importFrom rlang get_expr
+parse_variables <- function(x, formula, response = NULL,
+                            explanatory = NULL) {
   if (!methods::hasArg(formula) && !methods::hasArg(response)) {
     stop_glue("Please give the `response` variable.")
   }
@@ -133,8 +139,8 @@ parse_variables <- function(x, formula, response, explanatory) {
     }
     }
   
-  attr(x, "response")    <- substitute(response)
-  attr(x, "explanatory") <- substitute(explanatory)
+  attr(x, "response")    <- get_expr(response)
+  attr(x, "explanatory") <- get_expr(explanatory)
   
   if (methods::hasArg(formula)) {
     attr(x, "response")    <- f_lhs(formula)
