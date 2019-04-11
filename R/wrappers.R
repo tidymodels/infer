@@ -150,7 +150,8 @@ t_stat <- function(x, formula, ...) {
 #' @export
 chisq_test <- function(x, formula, response = NULL, 
                        explanatory = NULL, ...) {
-  df <- parse_variables(x, formula, response, explanatory)
+  df <- parse_variables(x = x, formula = formula, 
+                        response = response, explanatory = explanatory)
   # TODO add stops for non-factors
   df <- df %>%
     select(one_of(c(
