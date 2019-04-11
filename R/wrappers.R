@@ -10,6 +10,10 @@
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
+#' @param response The variable name in `x` that will serve as the response.
+#'   This is alternative to using the `formula` argument.
+#' @param explanatory The variable name in `x` that will serve as the
+#'   explanatory variable.
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction, where `order =
 #'   c("first", "second")` means `("first" - "second")`.
@@ -31,51 +35,55 @@
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
 #' @export
-t_test <- function(x, formula, # response = NULL, explanatory = NULL,
+t_test <- function(x, formula, 
+                   response = NULL, 
+                   explanatory = NULL,
                    order = NULL,
                    alternative = "two_sided", mu = 0,
                    conf_int = TRUE,
                    conf_level = 0.95,
                    ...) {
   check_conf_level(conf_level)
-
-  # Match with old "dot" syntax
+  
+  # convert all character and logical variables to be factor variables
+  x <- tibble::as_tibble(x) %>%
+    mutate_if(is.character, as.factor) %>%
+    mutate_if(is.logical, as.factor)
+  
+  # parse response and explanatory variables
+  response <- enquo(response)
+  explanatory <- enquo(explanatory)
+  x <- parse_variables(x = x, formula = formula, 
+                       response = response, explanatory = explanatory)
+  
+  # match with old "dot" syntax in t.test
   if (alternative == "two_sided") {
     alternative <- "two.sided"
   }
-
-  ### Only currently working with formula interface
-#  if (hasArg(formula)) {
-  if (!is.null(f_rhs(formula))) {
-    x[[as.character(f_rhs(formula))]] <- factor(
-      x[[as.character(f_rhs(formula))]], levels = c(order[1], order[2])
-    )
-
-    # Two sample case
-    prelim <- x %>%
-      stats::t.test(
-        formula = formula, x = .,
-        alternative = alternative,
-        mu = mu,
-        conf.level = conf_level,
-        ...
-      ) %>%
+  
+  # two sample
+  if (has_explanatory(x)) {
+    x[[as.character(attr(x, "explanatory"))]] <- factor(explanatory_variable(x), 
+                                                        levels = c(order[1], 
+                                                                   order[2]),
+                                                        ordered = TRUE)
+    prelim <- stats::t.test(formula = formula(paste0(attr(x, "response"),
+                                                     " ~ ",
+                                                     attr(x, "explanatory"))),
+                            data = x,
+                            alternative = alternative,
+                            mu = mu,
+                            conf.level = conf_level,
+                            ...) %>%
       broom::glance()
-  } else {
-    # One sample case
-    # To fix weird indexing error convert back to data.frame
-    # (Error: Can't use matrix or array for column indexing)
-    x <- as.data.frame(x)
-    prelim <- stats::t.test(
-      x = x[[as.character(f_lhs(formula))]],
-      alternative = alternative,
-      mu = mu,
-      conf.level = conf_level,
-      ...
-    ) %>%
+  } else { # one sample
+    prelim <- stats::t.test(response_variable(x),
+                            alternative = alternative,
+                            mu = mu,
+                            conf.level = conf_level) %>%
       broom::glance()
   }
-
+  
   if (conf_int) {
     results <- prelim %>%
       dplyr::select(
@@ -90,25 +98,6 @@ t_test <- function(x, formula, # response = NULL, explanatory = NULL,
   }
 
   results
-#   } else {
-#     data %>%
-#       stats::t.test(
-#        formula = substitute(response) ~ substitute(explanatory), data = .,
-#         alternative = alternative
-#       ) %>%
-#       broom::glance() %>%
-#       dplyr::select(
-#         statistic, t_df = parameter, p_value = p.value, alternative
-#       )
-#
-#     t.test(
-#       y = data[[as.character(substitute(response))]],
-#       x = data[[as.character(substitute(explanatory))]],
-#       alternative = alternative
-#     ) %>%
-#       broom::glance() %>%
-#       select(statistic, t_df = parameter, p_value = p.value, alternative)
-#   }
 }
 
 #' Tidy t-test statistic
@@ -150,15 +139,15 @@ t_stat <- function(x, formula, ...) {
 #' @export
 chisq_test <- function(x, formula, response = NULL, 
                        explanatory = NULL, ...) {
-  df <- parse_variables(x = x, formula = formula, 
+  x <- parse_variables(x = x, formula = formula, 
                         response = response, explanatory = explanatory)
   # TODO add stops for non-factors
-  df <- df %>%
+  x <- x %>%
     select(one_of(c(
-      as.character((attr(df, "response"))), as.character(attr(df, "explanatory"))
+      as.character((attr(x, "response"))), as.character(attr(x, "explanatory"))
     )))
   # TODO allow for named p-vectors and reorder them for chisq.test
-  stats::chisq.test(table(df), ...) %>%
+  stats::chisq.test(table(x), ...) %>%
     broom::glance() %>%
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
 }
