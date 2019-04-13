@@ -5,10 +5,10 @@ Infer
 ------------------------------------------------------------------------
 
 <!--figs/infer.svg-->
-<!--http://www.r-pkg.org/badges/version/infer-->
+<!--https://www.r-pkg.org/badges/version/infer-->
 <!--figs/master.svg-->
 <!--https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg-->
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer) [![Travis-CI Build Status](https://travis-ci.org/tidymodels/infer.svg?branch=master)](https://travis-ci.org/tidymodels/infer) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/tidymodels/infer?branch=master&svg=true)](https://ci.appveyor.com/project/tidymodels/infer) [![Coverage Status](https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg)](https://codecov.io/github/tidymodels/infer/?branch=master)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer) [![Travis-CI Build Status](https://travis-ci.org/tidymodels/infer.svg?branch=master)](https://travis-ci.org/tidymodels/infer) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/tidymodels/infer?branch=master&svg=true)](https://ci.appveyor.com/project/tidymodels/infer) [![Coverage Status](https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg)](https://codecov.io/github/tidymodels/infer/?branch=master)
 
 The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the `tidyverse` design framework.
 
