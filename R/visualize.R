@@ -437,7 +437,7 @@ shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
   if (!is.null(fill)) {
     res <- c(
       res, list(
-        geom_rect(
+        ggplot2::geom_rect(
           data = data.frame(endpoints[1]),
           fill = fill, alpha = 0.6,
           aes(xmin = endpoints[1], xmax = endpoints[2], ymin = 0, ymax = Inf),
@@ -449,7 +449,15 @@ shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
   }
 
   c(
-    res, list(geom_vline(xintercept = endpoints, size = 2, color = color, ...))
+    res,
+    list(
+      ggplot2::geom_segment(
+        data = data.frame(x = endpoints),
+        aes(x = x, xend = x, y = 0, yend = Inf),
+        colour = color, size = 2,
+        inherit.aes = FALSE
+      )
+    )
   )
 }
 
