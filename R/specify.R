@@ -40,9 +40,8 @@ specify <- function(x, formula, response = NULL,
     mutate_if(is.logical, as.factor)
   
   # Parse response and explanatory variables
-  response <- enquo(response)
-  explanatory <- enquo(explanatory)
-  
+  response    <- if (!is.null(response)) {enquo(response)}
+  explanatory <- if (!is.null(explanatory)) {enquo(explanatory)}
   x <- parse_variables(x = x, formula = formula, 
                        response = response, explanatory = explanatory)
 
