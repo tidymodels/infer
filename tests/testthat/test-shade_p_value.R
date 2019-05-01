@@ -56,11 +56,13 @@ test_that("shade_p_value works", {
 
 test_that("shade_p_value accepts synonyms for 'direction'", {
   expect_doppelganger(
-    "pval-sim-right", iris_viz_sim + shade_p_value(1, "greater")
+    "pval-direction-right", iris_viz_sim + shade_p_value(1, "greater")
   )
-  expect_doppelganger("pval-sim-left", iris_viz_sim + shade_p_value(1, "less"))
   expect_doppelganger(
-    "pval-sim-both", iris_viz_sim + shade_p_value(1, "two_sided")
+    "pval-direction-left", iris_viz_sim + shade_p_value(1, "less")
+  )
+  expect_doppelganger(
+    "pval-direction-both", iris_viz_sim + shade_p_value(1, "two_sided")
   )
 })
 
