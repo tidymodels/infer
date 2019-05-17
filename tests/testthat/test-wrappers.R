@@ -16,13 +16,14 @@ test_that("t_test works", {
   expect_error(
     iris2 %>% t_test(response = "Sepal.Width", explanatory = "Species")
   )
-## Not implemented
-#   expect_silent(
-#     iris2 %>% t_test(response = Sepal.Width, explanatory = Species)
-#   )
+  
+  expect_silent(
+    iris2 %>% t_test(response = Sepal.Width, explanatory = Species)
+  )
 })
 
 test_that("chisq_test works", {
+  # Independence
   expect_silent(iris3 %>% chisq_test(Sepal.Length.Group ~ Species))
   new_way <- iris3 %>% chisq_test(Sepal.Length.Group ~ Species)
   old_way <- chisq.test(x = table(iris3$Species, iris3$Sepal.Length.Group)) %>%
@@ -30,10 +31,14 @@ test_that("chisq_test works", {
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
 
   expect_equal(new_way, old_way, tolerance = 1e-5)
-  ## Not implemented
-  # expect_silent(
-  #   iris3 %>% chisq_test(response = Sepal.Length.Group, explanatory = Species)
-  # )
+  expect_silent(
+    iris3 %>% chisq_test(response = Sepal.Length.Group, explanatory = Species)
+  )
+  # Goodness of Fit
+  expect_silent(
+    iris3 %>% chisq_test(response = Species, p = c(.3, .4, .3))
+  )
+  
 })
 
 test_that("_stat functions work", {
@@ -41,8 +46,7 @@ test_that("_stat functions work", {
   expect_silent(iris3 %>% chisq_stat(Sepal.Length.Group ~ Species))
   another_way <- iris3 %>%
     chisq_test(Sepal.Length.Group ~ Species) %>%
-    dplyr::select(statistic) %>%
-    dplyr::rename(stat = statistic)
+    dplyr::select(statistic)
   obs_stat_way <- iris3 %>% chisq_stat(Sepal.Length.Group ~ Species)
   one_more <- chisq.test(
     table(iris3$Species, iris3$Sepal.Length.Group)
@@ -52,14 +56,12 @@ test_that("_stat functions work", {
   expect_equivalent(one_more, dplyr::pull(obs_stat_way))
 
   # Goodness of Fit
-  expect_error(iris3 %>% chisq_test(Species ~ NULL))
-  expect_error(iris3 %>% chisq_stat(Species ~ NULL))
-#  another_way <- iris3 %>%
-#    chisq_test(Species ~ NULL) %>%
-#    dplyr::select(statistic)
-#  obs_stat_way <- iris3 %>%
-#    chisq_stat(Species ~ NULL)
-#  expect_equivalent(another_way, obs_stat_way)
+ another_way <- iris3 %>%
+   chisq_test(Species ~ NULL) %>%
+   dplyr::select(statistic)
+ obs_stat_way <- iris3 %>%
+   chisq_stat(Species ~ NULL)
+ expect_equivalent(another_way, obs_stat_way)
 
   # Two sample t
   expect_silent(
