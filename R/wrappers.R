@@ -52,8 +52,8 @@ t_test <- function(x, formula,
     mutate_if(is.logical, as.factor)
   
   # parse response and explanatory variables
-  #response <- enquo(response)
-  #explanatory <- enquo(explanatory)
+  response <- enquo(response)
+  explanatory <- enquo(explanatory)
   x <- parse_variables(x = x, formula = formula, 
                        response = response, explanatory = explanatory)
   
@@ -64,12 +64,13 @@ t_test <- function(x, formula,
   
   # two sample
   if (has_explanatory(x)) {
-    if (!is.null(order)) {
-      x[[as.character(attr(x, "explanatory"))]] <- factor(explanatory_variable(x), 
-                                                          levels = c(order[1], 
-                                                                     order[2]),
-                                                          ordered = TRUE)
-    }
+    # if (!is.null(order)) {
+    #   x[[as.character(attr(x, "explanatory"))]] <- factor(explanatory_variable(x), 
+    #                                                       levels = c(order[1], 
+    #                                                                  order[2]),
+    #                                                       ordered = TRUE)
+    # }
+    check_order(x, explanatory_variable(x), order)
     prelim <- stats::t.test(formula = formula(paste0(attr(x, "response"),
                                                      " ~ ",
                                                      attr(x, "explanatory"))),
@@ -158,8 +159,10 @@ t_stat <- function(x, formula,
 chisq_test <- function(x, formula, response = NULL, 
                        explanatory = NULL, ...) {
   # Parse response and explanatory variables
-  response    <- if (!is.null(response)) {enquo(response)}
-  explanatory <- if (!is.null(explanatory)) {enquo(explanatory)}
+  #response    <- if (!is.null(response)) {enquo(response)}
+  #explanatory <- if (!is.null(explanatory)) {enquo(explanatory)}
+  response    <- enquo(response)
+  explanatory <- enquo(explanatory)
   x <- parse_variables(x = x, formula = formula, 
                         response = response, explanatory = explanatory)
   
