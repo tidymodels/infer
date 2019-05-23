@@ -4,8 +4,8 @@
 \alias{t_test}
 \title{Tidy t-test}
 \usage{
-t_test(data, formula, order = NULL, alternative = "two_sided",
-  mu = 0, conf_int = TRUE, conf_level = 0.95, ...)
+t_test(data, formula, order = NULL, alternative = "two_sided", mu = 0,
+  conf_int = TRUE, conf_level = 0.95, ...)
 }
 \arguments{
 \item{data}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}

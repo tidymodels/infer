@@ -2,6 +2,7 @@
 % Please edit documentation in R/shade_p_value.R
 \name{shade_p_value}
 \alias{shade_p_value}
+\alias{shade_p_value}
 \alias{shade_pvalue}
 \title{Add information about p-value region(s)}
 \usage{
