@@ -16,10 +16,6 @@ test_that("t_test works", {
   expect_error(
     iris2 %>% t_test(response = "Sepal.Width", explanatory = "Species")
   )
-  
-  expect_silent(
-    iris2 %>% t_test(response = Sepal.Width, explanatory = Species)
-  )
 })
 
 test_that("chisq_test works", {
