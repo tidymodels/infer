@@ -4,13 +4,26 @@
 \alias{t_stat}
 \title{Tidy t-test statistic}
 \usage{
-t_stat(data, formula, ...)
+t_stat(x, formula, response = NULL, explanatory = NULL, order = NULL,
+  mu = 0, ...)
 }
 \arguments{
-\item{data}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
+\item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 
 \item{formula}{A formula with the response variable on the left and the
 explanatory on the right.}
+
+\item{response}{The variable name in \code{x} that will serve as the response.
+This is alternative to using the \code{formula} argument.}
+
+\item{explanatory}{The variable name in \code{x} that will serve as the
+explanatory variable.}
+
+\item{order}{A string vector of specifying the order in which the levels of
+the explanatory variable should be ordered for subtraction, where \code{order = c("first", "second")} means \code{("first" - "second")}.}
+
+\item{mu}{A numeric value giving the hypothesized null mean value for a one
+sample test and the hypothesized difference for a two sample test.}
 
 \item{...}{Pass in arguments to \{infer\} functions.}
 }

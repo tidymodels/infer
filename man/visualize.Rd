@@ -5,14 +5,14 @@
 \alias{visualise}
 \title{Visualize statistical inference}
 \usage{
-visualize(data, bins = 15, method = "simulation",
-  dens_color = "black", obs_stat = NULL, obs_stat_color = "red2",
-  pvalue_fill = "pink", direction = NULL, endpoints = NULL,
+visualize(data, bins = 15, method = "simulation", dens_color = "black",
+  obs_stat = NULL, obs_stat_color = "red2", pvalue_fill = "pink",
+  direction = NULL, endpoints = NULL,
   endpoints_color = "mediumaquamarine", ci_fill = "turquoise", ...)
 
-visualise(data, bins = 15, method = "simulation",
-  dens_color = "black", obs_stat = NULL, obs_stat_color = "red2",
-  pvalue_fill = "pink", direction = NULL, endpoints = NULL,
+visualise(data, bins = 15, method = "simulation", dens_color = "black",
+  obs_stat = NULL, obs_stat_color = "red2", pvalue_fill = "pink",
+  direction = NULL, endpoints = NULL,
   endpoints_color = "mediumaquamarine", ci_fill = "turquoise", ...)
 }
 \arguments{
