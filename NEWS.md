@@ -1,3 +1,10 @@
+# Development version
+
+## Breaking changes
+
+- `shade_confidence_interval()` now plots vertical lines starting from zero (previously - from the bottom of a plot).
+- `shade_p_value()` now uses "area under the curve" approach to shading.
+
 # infer 0.4.0
 
 ## Breaking changes
