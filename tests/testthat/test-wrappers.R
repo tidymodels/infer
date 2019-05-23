@@ -21,20 +21,28 @@ test_that("t_test works", {
 test_that("chisq_test works", {
   # Independence
   expect_silent(iris3 %>% chisq_test(Sepal.Length.Group ~ Species))
-  new_way <- iris3 %>% chisq_test(Sepal.Length.Group ~ Species)
+  new_way <- iris3 %>% 
+    chisq_test(Sepal.Length.Group ~ Species)
+  new_way_alt <- iris3 %>% 
+    chisq_test(response = Sepal.Length.Group, explanatory = Species)
   old_way <- chisq.test(x = table(iris3$Species, iris3$Sepal.Length.Group)) %>%
     broom::glance() %>%
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
 
+  expect_equal(new_way, new_way_alt, tolerance = 1e-5)
   expect_equal(new_way, old_way, tolerance = 1e-5)
-  expect_silent(
-    iris3 %>% chisq_test(response = Sepal.Length.Group, explanatory = Species)
-  )
-  # Goodness of Fit
-  expect_silent(
-    iris3 %>% chisq_test(response = Species, p = c(.3, .4, .3))
-  )
   
+  # Goodness of Fit
+  expect_silent(iris3 %>% 
+                  chisq_test(response = Species, p = c(.3, .4, .3)))
+  new_way <- iris3 %>% 
+    chisq_test(Species ~ NULL, p = c(.3, .4, .3))
+  new_way_alt <- iris3 %>% 
+    chisq_test(response = Species, p = c(.3, .4, .3))
+  old_way <- chisq.test(iris3$Species, p = c(.3, .4, .3))
+  
+  expect_equal(new_way, new_way_alt, tolerance = 1e-5)
+  expect_equal(new_way, old_way, tolerance = 1e-5)
 })
 
 test_that("_stat functions work", {
