@@ -33,11 +33,23 @@ test_that("t_test works", {
   expect_equal(new_way, old_way, tolerance = 1e-5)
   
   # One Sample
+  new_way <- iris2 %>%
+    t_test(Sepal.Width ~ NULL, mu = 0)
+  new_way_alt <- iris2 %>%
+    t_test(response = Sepal.Width, mu = 0)
+  old_way <- t.test(x = iris2$Sepal.Width, mu = 0) %>%
+    broom::glance() %>%
+    dplyr::select(statistic, t_df = parameter, p_value = p.value, 
+                  alternative, lower_ci = conf.low, upper_ci = conf.high)
+  
+  expect_equal(new_way, new_way_alt, tolerance = 1e-5)
+  expect_equal(new_way, old_way, tolerance = 1e-5)
 })
 
 test_that("chisq_test works", {
   # Independence
-  expect_silent(iris3 %>% chisq_test(Sepal.Length.Group ~ Species))
+  expect_silent(iris3 %>% 
+                  chisq_test(Sepal.Length.Group ~ Species))
   new_way <- iris3 %>% 
     chisq_test(Sepal.Length.Group ~ Species)
   new_way_alt <- iris3 %>% 
@@ -79,12 +91,23 @@ test_that("_stat functions work", {
   expect_equivalent(one_more, dplyr::pull(obs_stat_way))
 
   # Goodness of Fit
- another_way <- iris3 %>%
+ new_way <- iris3 %>%
    chisq_test(Species ~ NULL) %>%
    dplyr::select(statistic)
  obs_stat_way <- iris3 %>%
    chisq_stat(Species ~ NULL)
+ obs_stat_way_alt <- iris3 %>%
+   chisq_stat(response = Species)
+ 
  expect_equivalent(another_way, obs_stat_way)
+ expect_equivalent(another_way, obs_stat_way_alt)
+ 
+ unordered_p <- iris3 %>%
+   chisq_test(response = Species, p = c(.2, .3, .5))
+ ordered_p <- iris3 %>%
+   chisq_test(response = Species, p = c(virginica = .5, versicolor = .3, setosa = .2))
+ 
+ expect_equivalent(unordered_p, ordered_p)
 
   # Two sample t
   expect_silent(
