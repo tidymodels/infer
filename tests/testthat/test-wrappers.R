@@ -10,12 +10,29 @@ iris3 <- iris %>%
   )
 
 test_that("t_test works", {
-  # order is missing
+  # Two Sample
   expect_error(iris2 %>% t_test(Sepal.Width ~ Species))
 
   expect_error(
     iris2 %>% t_test(response = "Sepal.Width", explanatory = "Species")
   )
+  
+  new_way <- t_test(iris2, 
+                    Sepal.Width ~ Species, 
+                    order = c("versicolor", "virginica"))
+  new_way_alt <- t_test(iris2, 
+                    response = Sepal.Width,
+                    explanatory = Species,
+                    order = c("versicolor", "virginica"))
+  old_way <- t.test(Sepal.Width ~ Species, data = iris2) %>%
+    broom::glance() %>%
+    dplyr::select(statistic, t_df = parameter, p_value = p.value, 
+                  alternative, lower_ci = conf.low, upper_ci = conf.high)
+  
+  expect_equal(new_way, new_way_alt, tolerance = 1e-5)
+  expect_equal(new_way, old_way, tolerance = 1e-5)
+  
+  # One Sample
 })
 
 test_that("chisq_test works", {
@@ -39,7 +56,9 @@ test_that("chisq_test works", {
     chisq_test(Species ~ NULL, p = c(.3, .4, .3))
   new_way_alt <- iris3 %>% 
     chisq_test(response = Species, p = c(.3, .4, .3))
-  old_way <- chisq.test(iris3$Species, p = c(.3, .4, .3))
+  old_way <- chisq.test(x = table(iris3$Species), p = c(.3, .4, .3)) %>%
+    broom::glance() %>%
+    dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
   
   expect_equal(new_way, new_way_alt, tolerance = 1e-5)
   expect_equal(new_way, old_way, tolerance = 1e-5)
