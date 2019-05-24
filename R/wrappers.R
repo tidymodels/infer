@@ -7,12 +7,12 @@
 #'
 #' A tidier version of [t.test()][stats::t.test()] for two sample tests.
 #'
-#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
-#' @param response The variable name in `data` that will serve as the response.
+#' @param response The variable name in `x` that will serve as the response.
 #'   This is alternative to using the `formula` argument.
-#' @param explanatory The variable name in `data` that will serve as the
+#' @param explanatory The variable name in `x` that will serve as the
 #'   explanatory variable.
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction, where `order =
@@ -35,7 +35,7 @@
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
 #' @export
-t_test <- function(data, formula, 
+t_test <- function(x, formula, 
                    response = NULL, 
                    explanatory = NULL,
                    order = NULL,
@@ -47,14 +47,14 @@ t_test <- function(data, formula,
   check_conf_level(conf_level)
   
   # convert all character and logical variables to be factor variables
-  data <- tibble::as_tibble(data) %>%
+  x <- tibble::as_tibble(x) %>%
     mutate_if(is.character, as.factor) %>%
     mutate_if(is.logical, as.factor)
   
   # parse response and explanatory variables
   response    <- enquo(response)
   explanatory <- enquo(explanatory)
-  data <- parse_variables(data = data, formula = formula, 
+  x <- parse_variables(x = x, formula = formula, 
                        response = response, explanatory = explanatory)
   
   # match with old "dot" syntax in t.test
@@ -63,25 +63,25 @@ t_test <- function(data, formula,
   }
   
   # two sample
-  if (has_explanatory(data)) {
+  if (has_explanatory(x)) {
     # if (!is.null(order)) {
-    #   data[[as.character(attr(data, "explanatory"))]] <- factor(explanatory_variable(data), 
+    #   x[[as.character(attr(x, "explanatory"))]] <- factor(explanatory_variable(x), 
     #                                                       levels = c(order[1], 
     #                                                                  order[2]),
     #                                                       ordered = TRUE)
     # }
-    check_order(data, explanatory_variable(data), order)
-    prelim <- stats::t.test(formula = as.formula(paste0(attr(data, "response"),
+    check_order(x, explanatory_variable(x), order)
+    prelim <- stats::t.test(formula = as.formula(paste0(attr(x, "response"),
                                                      " ~ ",
-                                                     attr(data, "explanatory"))),
-                            data = data,
+                                                     attr(x, "explanatory"))),
+                            x = x,
                             alternative = alternative,
                             mu = mu,
                             conf.level = conf_level,
                             ...) %>%
       broom::glance()
   } else { # one sample
-    prelim <- stats::t.test(response_variable(data),
+    prelim <- stats::t.test(response_variable(x),
                             alternative = alternative,
                             mu = mu,
                             conf.level = conf_level) %>%
@@ -108,12 +108,12 @@ t_test <- function(data, formula,
 #'
 #' A shortcut wrapper function to get the observed test statistic for a t test.
 #'
-#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
-#' @param response The variable name in `data` that will serve as the response.
+#' @param response The variable name in `x` that will serve as the response.
 #'   This is alternative to using the `formula` argument.
-#' @param explanatory The variable name in `data` that will serve as the
+#' @param explanatory The variable name in `x` that will serve as the
 #'   explanatory variable.
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction, where `order =
@@ -123,13 +123,13 @@ t_test <- function(data, formula,
 #' @param ... Pass in arguments to \\{infer\\} functions.
 #'
 #' @export
-t_stat <- function(data, formula, 
+t_stat <- function(x, formula, 
                    response = NULL, 
                    explanatory = NULL,
                    order = NULL,
                    mu = 0,
                    ...) {
-  data %>%
+  x %>%
     t_test(formula = formula, response = response, explanatory = explanatory,
            order = order, mu = mu, ...) %>%
     dplyr::select(statistic)
@@ -140,12 +140,12 @@ t_stat <- function(data, formula,
 #' A tidier version of [chisq.test()][stats::chisq.test()] for goodness of fit
 #' tests and tests of independence.
 #'
-#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
-#' @param response The variable name in `data` that will serve as the response.
+#' @param response The variable name in `x` that will serve as the response.
 #'   This is alternative to using the `formula` argument.
-#' @param explanatory The variable name in `data` that will serve as the
+#' @param explanatory The variable name in `x` that will serve as the
 #'   explanatory variable.
 #' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
 #'
@@ -156,24 +156,27 @@ t_stat <- function(data, formula,
 #'   chisq_test(cyl ~ am)
 #'
 #' @export
-chisq_test <- function(data, formula, response = NULL, 
+chisq_test <- function(x, formula, response = NULL, 
                        explanatory = NULL, ...) {
   # Parse response and explanatory variables
   response    <- enquo(response)
   explanatory <- enquo(explanatory)
-  data <- parse_variables(data = data, formula = formula, 
+  x <- parse_variables(x = x, formula = formula, 
                         response = response, explanatory = explanatory)
   
-  # TODO add stops for non-factors
-  data <- data %>%
+  x <- x %>%
     select(one_of(c(
-      as.character((attr(data, "response"))), as.character(attr(data, "explanatory"))
+      as.character((attr(x, "response"))), as.character(attr(x, "explanatory"))
     ))) %>%
     mutate_if(is.character, as.factor) %>%
     mutate_if(is.logical, as.factor)
   
-  # TODO allow for named p-vectors and reorder them for chisq.test
-  stats::chisq.test(table(data), ...) %>%
+  check_args_and_attr(x, 
+                      explanatory_variable(x),
+                      response_variable(x), 
+                      stat = "Chisq")
+  
+  stats::chisq.test(table(x), ...) %>%
     broom::glance() %>%
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
 }
@@ -184,21 +187,41 @@ chisq_test <- function(data, formula, response = NULL,
 #' test. Uses [chisq.test()][stats::chisq.test()], which applies a continuity
 #' correction.
 #'
-#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
-#' @param response The variable name in `data` that will serve as the response.
+#' @param response The variable name in `x` that will serve as the response.
 #'   This is alternative to using the `formula` argument.
-#' @param explanatory The variable name in `data` that will serve as the
+#' @param explanatory The variable name in `x` that will serve as the
 #'   explanatory variable.
 #' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
 #'
 #' @export
-chisq_stat <- function(data, formula, response = NULL, 
+chisq_stat <- function(x, formula, response = NULL, 
                        explanatory = NULL, ...) {
-  data %>%
-    chisq_test(formula, explanatory, response, ...) %>%
-    dplyr::select(statistic)
+
+  # Parse response and explanatory variables
+  response    <- enquo(response)
+  explanatory <- enquo(explanatory)
+  x <- parse_variables(x = x, formula = formula, 
+                          response = response, explanatory = explanatory)
+  
+  x <- x %>%
+    select(one_of(c(
+      as.character((attr(x, "response"))), as.character(attr(x, "explanatory"))
+    ))) %>%
+    mutate_if(is.character, as.factor) %>%
+    mutate_if(is.logical, as.factor)
+  
+  check_args_and_attr(x, 
+                      explanatory_variable(x),
+                      response_variable(x), 
+                      stat = "Chisq")
+  
+  stats::chisq.test(table(x), ...) %>%
+    broom::glance() %>%
+    dplyr::select(statistic) %>%
+    pull()
 }
 
 check_conf_level <- function(conf_level) {
