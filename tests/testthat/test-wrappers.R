@@ -102,6 +102,7 @@ test_that("_stat functions work", {
  expect_equivalent(dplyr::pull(new_way), obs_stat_way)
  expect_equivalent(dplyr::pull(new_way), obs_stat_way_alt)
  
+ # robust to the named vector
  unordered_p <- iris3 %>%
    chisq_test(response = Species, p = c(.2, .3, .5))
  ordered_p <- iris3 %>%
@@ -117,19 +118,31 @@ test_that("_stat functions work", {
   )
   another_way <- iris2 %>%
     t_test(Sepal.Width ~ Species, order = c("virginica", "versicolor")) %>%
-    dplyr::select(statistic)
+    dplyr::select(statistic) %>%
+    pull()
   obs_stat_way <- iris2 %>%
     t_stat(Sepal.Width ~ Species, order = c("virginica", "versicolor"))
+  obs_stat_way_alt <- iris2 %>%
+    t_stat(response = Sepal.Width,
+           explanatory = Species, 
+           order = c("virginica", "versicolor"))
+  
   expect_equivalent(another_way, obs_stat_way)
+  expect_equivalent(another_way, obs_stat_way_alt)
 
   # One sample t
   expect_silent(iris2 %>% t_stat(Sepal.Width ~ NULL))
   another_way <- iris2 %>%
     t_test(Sepal.Width ~ NULL) %>%
-    dplyr::select(statistic)
+    dplyr::select(statistic) %>%
+    pull()
   obs_stat_way <- iris2 %>%
     t_stat(Sepal.Width ~ NULL)
+  obs_stat_way_alt <- iris2 %>%
+    t_stat(response = Sepal.Width)
+  
   expect_equivalent(another_way, obs_stat_way)
+  expect_equivalent(another_way, obs_stat_way_alt)
 })
 
 test_that("conf_int argument works", {
