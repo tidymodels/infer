@@ -171,16 +171,10 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
   }
 
   if (stat %in% c("diff in props", "Chisq")) {
-    if (!is.factor(response_variable(x))) {
+    if (has_explanatory(x) && !is.factor(response_variable(x))) {
       stop_glue(
         'The response variable of `{attr(x, "response")}` is not appropriate\n',
         "since '{stat}' is expecting the response variable to be a factor."
-      )
-    }
-    if (has_explanatory(x) && !is.factor(explanatory_variable(x))) {
-      stop_glue(
-        'The explanatory variable of `{attr(x, "explanatory")}` is not appropriate\n',
-        "since '{stat}' is expecting the explanatory variable to be a factor."
       )
     }
   }
