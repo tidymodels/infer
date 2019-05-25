@@ -72,8 +72,8 @@ t_test <- function(x, formula,
     # }
     check_order(x, explanatory_variable(x), order)
     prelim <- stats::t.test(formula = as.formula(paste0(attr(x, "response"),
-                                                     " ~ ",
-                                                     attr(x, "explanatory"))),
+                                                        " ~ ",
+                                                        attr(x, "explanatory"))),
                             data = x,
                             alternative = alternative,
                             mu = mu,
@@ -100,7 +100,7 @@ t_test <- function(x, formula,
         statistic, t_df = parameter, p_value = p.value, alternative
       )
   }
-
+  
   results
 }
 
@@ -127,12 +127,71 @@ t_stat <- function(x, formula,
                    response = NULL, 
                    explanatory = NULL,
                    order = NULL,
+                   alternative = "two_sided", 
                    mu = 0,
+                   conf_int = FALSE,
+                   conf_level = 0.95,
                    ...) {
-  x %>%
-    t_test(formula = formula, response = response, explanatory = explanatory,
-           order = order, mu = mu, ...) %>%
-    dplyr::select(statistic)
+  check_conf_level(conf_level)
+  
+  # convert all character and logical variables to be factor variables
+  x <- tibble::as_tibble(x) %>%
+    mutate_if(is.character, as.factor) %>%
+    mutate_if(is.logical, as.factor)
+  
+  # parse response and explanatory variables
+  response    <- enquo(response)
+  explanatory <- enquo(explanatory)
+  x <- parse_variables(x = x, formula = formula, 
+                       response = response, explanatory = explanatory)
+  
+  # match with old "dot" syntax in t.test
+  if (alternative == "two_sided") {
+    alternative <- "two.sided"
+  }
+  
+  # two sample
+  if (has_explanatory(x)) {
+    # if (!is.null(order)) {
+    #   x[[as.character(attr(x, "explanatory"))]] <- factor(explanatory_variable(x), 
+    #                                                       levels = c(order[1], 
+    #                                                                  order[2]),
+    #                                                       ordered = TRUE)
+    # }
+    check_order(x, explanatory_variable(x), order)
+    prelim <- stats::t.test(formula = as.formula(paste0(attr(x, "response"),
+                                                        " ~ ",
+                                                        attr(x, "explanatory"))),
+                            data = x,
+                            alternative = alternative,
+                            mu = mu,
+                            conf.level = conf_level,
+                            ...) %>%
+      broom::glance()
+  } else { # one sample
+    prelim <- stats::t.test(response_variable(x),
+                            alternative = alternative,
+                            mu = mu,
+                            conf.level = conf_level) %>%
+      broom::glance()
+  }
+  
+  if (conf_int) {
+    results <- prelim %>%
+      dplyr::select(
+        statistic, t_df = parameter, p_value = p.value, alternative,
+        lower_ci = conf.low, upper_ci = conf.high
+      )
+  } else {
+    results <- prelim %>%
+      dplyr::select(
+        statistic, t_df = parameter, p_value = p.value, alternative
+      )
+  }
+  
+  results %>%
+    dplyr::select(statistic) %>%
+    pull()
 }
 
 #' Tidy chi-squared test
@@ -162,7 +221,7 @@ chisq_test <- function(x, formula, response = NULL,
   response    <- enquo(response)
   explanatory <- enquo(explanatory)
   x <- parse_variables(x = x, formula = formula, 
-                        response = response, explanatory = explanatory)
+                       response = response, explanatory = explanatory)
   
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
