@@ -74,7 +74,7 @@ t_test <- function(x, formula,
     prelim <- stats::t.test(formula = as.formula(paste0(attr(x, "response"),
                                                      " ~ ",
                                                      attr(x, "explanatory"))),
-                            x = x,
+                            data = x,
                             alternative = alternative,
                             mu = mu,
                             conf.level = conf_level,
@@ -164,17 +164,26 @@ chisq_test <- function(x, formula, response = NULL,
   x <- parse_variables(x = x, formula = formula, 
                         response = response, explanatory = explanatory)
   
+  if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
+    stop_glue(
+      'The response variable of `{attr(x, "response")}` is not appropriate\n',
+      "since '{stat}' is expecting the response variable to be categorical."
+    )
+  }
+  if (has_explanatory(x) && 
+      !(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
+    stop_glue(
+      'The explanatory variable of `{attr(x, "explanatory")}` is not appropriate\n',
+      "since '{stat}' is expecting the explanatory variable to be categorical."
+    )
+  }
+  
   x <- x %>%
     select(one_of(c(
       as.character((attr(x, "response"))), as.character(attr(x, "explanatory"))
     ))) %>%
     mutate_if(is.character, as.factor) %>%
     mutate_if(is.logical, as.factor)
-  
-  check_args_and_attr(x, 
-                      explanatory_variable(x),
-                      response_variable(x), 
-                      stat = "Chisq")
   
   stats::chisq.test(table(x), ...) %>%
     broom::glance() %>%
@@ -199,12 +208,25 @@ chisq_test <- function(x, formula, response = NULL,
 #' @export
 chisq_stat <- function(x, formula, response = NULL, 
                        explanatory = NULL, ...) {
-
   # Parse response and explanatory variables
   response    <- enquo(response)
   explanatory <- enquo(explanatory)
   x <- parse_variables(x = x, formula = formula, 
-                          response = response, explanatory = explanatory)
+                       response = response, explanatory = explanatory)
+  
+  if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
+    stop_glue(
+      'The response variable of `{attr(x, "response")}` is not appropriate\n',
+      "since '{stat}' is expecting the response variable to be categorical."
+    )
+  }
+  if (has_explanatory(x) && 
+      !(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
+    stop_glue(
+      'The explanatory variable of `{attr(x, "explanatory")}` is not appropriate\n',
+      "since '{stat}' is expecting the explanatory variable to be categorical."
+    )
+  }
   
   x <- x %>%
     select(one_of(c(
@@ -212,11 +234,6 @@ chisq_stat <- function(x, formula, response = NULL,
     ))) %>%
     mutate_if(is.character, as.factor) %>%
     mutate_if(is.logical, as.factor)
-  
-  check_args_and_attr(x, 
-                      explanatory_variable(x),
-                      response_variable(x), 
-                      stat = "Chisq")
   
   stats::chisq.test(table(x), ...) %>%
     broom::glance() %>%
