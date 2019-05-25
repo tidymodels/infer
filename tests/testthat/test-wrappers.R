@@ -87,8 +87,8 @@ test_that("_stat functions work", {
     table(iris3$Species, iris3$Sepal.Length.Group)
   )$statistic
 
-  expect_equivalent(another_way, obs_stat_way)
-  expect_equivalent(one_more, dplyr::pull(obs_stat_way))
+  expect_equivalent(dplyr::pull(another_way), obs_stat_way)
+  expect_equivalent(one_more, obs_stat_way)
 
   # Goodness of Fit
  new_way <- iris3 %>%
@@ -99,8 +99,8 @@ test_that("_stat functions work", {
  obs_stat_way_alt <- iris3 %>%
    chisq_stat(response = Species)
  
- expect_equivalent(another_way, obs_stat_way)
- expect_equivalent(another_way, obs_stat_way_alt)
+ expect_equivalent(dplyr::pull(new_way), obs_stat_way)
+ expect_equivalent(dplyr::pull(new_way), obs_stat_way_alt)
  
  unordered_p <- iris3 %>%
    chisq_test(response = Species, p = c(.2, .3, .5))
@@ -135,11 +135,9 @@ test_that("_stat functions work", {
 test_that("conf_int argument works", {
   expect_equal(
     names(
-      iris2 %>%
-        t_test(
-          Sepal.Width ~ Species, order = c("virginica", "versicolor"),
-          conf_int = FALSE
-        )
+      iris2 %>% 
+        t_test(Sepal.Width ~ Species, 
+               order = c("virginica", "versicolor"), conf_int = FALSE)
     ),
     c("statistic", "t_df", "p_value", "alternative"), 
     tolerance = 1e-5
