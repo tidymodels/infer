@@ -3,6 +3,8 @@ context("visualize")
 library(dplyr)
 library(vdiffr)
 
+set.seed(42)
+
 Sepal.Width_resamp <- iris %>%
   specify(Sepal.Width ~ NULL) %>%
   hypothesize(null = "point", med = 3) %>%

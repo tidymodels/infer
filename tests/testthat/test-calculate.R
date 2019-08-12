@@ -22,7 +22,7 @@ test_that("stat argument is appropriate", {
 
 test_that("response attribute has been set", {
   expect_error(
-    tibble::as.tibble(iris) %>% calculate(stat = "median")
+    tibble::as_tibble(iris) %>% calculate(stat = "median")
   )
 })
 
