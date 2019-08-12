@@ -2,7 +2,6 @@
 % Please edit documentation in R/get_p_value.R
 \name{get_p_value}
 \alias{get_p_value}
-\alias{get_p_value}
 \alias{get_pvalue}
 \title{Compute p-value}
 \usage{

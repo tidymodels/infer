@@ -5,7 +5,8 @@
 \title{Tidy t-test statistic}
 \usage{
 t_stat(x, formula, response = NULL, explanatory = NULL, order = NULL,
-  mu = 0, ...)
+  alternative = "two_sided", mu = 0, conf_int = FALSE,
+  conf_level = 0.95, ...)
 }
 \arguments{
 \item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}

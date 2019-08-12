@@ -5,8 +5,8 @@
 \title{Calculate summary statistics}
 \usage{
 calculate(x, stat = c("mean", "median", "sum", "sd", "prop", "count",
-  "diff in means", "diff in medians", "diff in props", "Chisq", "F", "slope",
-  "correlation", "t", "z"), order = NULL, ...)
+  "diff in means", "diff in medians", "diff in props", "Chisq", "F",
+  "slope", "correlation", "t", "z"), order = NULL, ...)
 }
 \arguments{
 \item{x}{The output from \code{\link[=generate]{generate()}} for computation-based inference or the
