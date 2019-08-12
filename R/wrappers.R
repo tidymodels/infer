@@ -34,6 +34,7 @@
 #'
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
+#' @importFrom stats as.formula
 #' @export
 t_test <- function(x, formula, 
                    response = NULL, 
@@ -118,8 +119,13 @@ t_test <- function(x, formula,
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction, where `order =
 #'   c("first", "second")` means `("first" - "second")`.
+#' @param alternative Character string giving the direction of the alternative
+#'   hypothesis. Options are `"two_sided"` (default), `"greater"`, or `"less"`.
 #' @param mu A numeric value giving the hypothesized null mean value for a one
 #'   sample test and the hypothesized difference for a two sample test.
+#' @param conf_int A logical value for whether to include the confidence
+#'   interval or not. `TRUE` by default.
+#' @param conf_level A numeric value between 0 and 1. Default value is 0.95.
 #' @param ... Pass in arguments to \\{infer\\} functions.
 #'
 #' @export
