@@ -28,12 +28,13 @@
 #' @importFrom purrr compact
 #' @export
 hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) {
-  hypothesize_checks(x, null)
 
   # Custom logic, because using match.arg() would give a default value when
   # the user didn't specify anything.
   null <- match_null_hypothesis(null)
   attr(x, "null") <- null
+
+  hypothesize_checks(x, null)
 
   dots <- compact(list(p = p, mu = mu, med = med, sigma = sigma))
 

@@ -322,20 +322,6 @@ hypothesize_checks <- function(x, null) {
     stop_glue("x must be a data.frame or tibble")
   }
 
-  # error: null not found
-  if (!(null %in% c("independence", "point"))) {
-    stop_glue(
-      "Choice of null is not supported. Check `?hypothesize` for options."
-    )
-  }
-
-   # if (length(null) != 1) {
-   #   stop_glue(
-   #     'Choose between either `"independence"` or `"point"` for `null` ',
-   #     'argument.'
-   #    )
-   # }
-
   if (!has_response(x)) {
     stop_glue(
       "The response variable is not set. Make sure to `specify()` it first."
