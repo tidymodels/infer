@@ -3,7 +3,7 @@ append_infer_class <- function(x) {
   if (x_cl[1] != "infer") {
     class(x) <- c("infer", x_cl)
   }
-  
+
   x
 }
 
@@ -27,7 +27,7 @@ copy_attrs <- function(to, from,
   for (at in attrs) {
     attr(to, at) <- attr(from, at)
   }
-  
+
   to
 }
 
@@ -39,13 +39,16 @@ explanatory_variable <- function(x) {
   x[[as.character(attr(x, "explanatory"))]]
 }
 
+# Other places in the code use
+# dplyr::pull(x, !!attr(x, "response"))
+# which seems to do the same thing
 response_variable <- function(x) {
   x[[as.character(attr(x, "response"))]]
 }
 
 reorder_explanatory <- function(x, order) {
   x[[as.character(attr(x, "explanatory"))]] <- factor(
-    x[[as.character(attr(x, "explanatory"))]],
+    explanatory_variable(x),
     levels = c(order[1], order[2])
   )
   x
@@ -238,59 +241,78 @@ check_point_params <- function(x, stat) {
   }
 }
 
-parse_params <- function(dots, x) {
-  p_ind <- grep("p", names(dots))
-  mu_ind <- grep("mu", names(dots))
-  med_ind <- grep("med", names(dots))
-  sig_ind <- grep("sigma", names(dots))
+# Helpers for hypothesize() -----------------------------------------------
 
-  # error: cannot specify more than one of props, means, medians, or sds
-  if (
-    length(p_ind) + length(mu_ind) + length(med_ind) + length(sig_ind) != 1
-  ) {
-    stop_glue(
-      'Parameter values can be only one of `p`, `mu`, `med`, or `sigma`.'
+match_null_hypothesis <- function(null) {
+  NULL_HYPOTHESIS_TYPES <- c("point", "independence")
+  if(length(null) != 1) {
+    stop_glue('You should specify exacly one type of null hypothesis.')
+  }
+  i <- pmatch(null, NULL_HYPOTHESIS_TYPES)
+  if(is.na(null)) {
+    stop_glue('`null` should be either "point" or "independence".')
+  }
+  NULL_HYPOTHESIS_TYPES[i]
+}
+
+sanitize_hypothesis_params_independence <- function(dots) {
+  if (length(dots) > 0) {
+    warning_glue(
+      "Parameter values are not specified when testing that two variables are ",
+      "independent."
     )
   }
+  NULL
+}
 
-  # add in 1 - p if it's missing
-  # Outside if() is needed to ensure an error does not occur in referencing the
-  # 0 index of dots
-  if (length(p_ind)) {
-    if (length(dots[[p_ind]]) == 1) {
-      if ((attr(x, "null") == "point") && is_nuat(x, "success")) {
-        stop_glue(
-          "A point null regarding a proportion requires that `success` ",
-          "be indicated in `specify()`."
-        )
-      }
-      if ((dots$p < 0) || (dots$p > 1)) {
-        stop_glue(
-          "The value suggested for `p` is not between 0 and 1, inclusive."
-        )
-      }
-      missing_lev <- base::setdiff(
-        unique(dplyr::pull(x, !!attr(x, "response"))),
-        attr(x, "success")
+sanitize_hypothesis_params_point <- function(dots) {
+  if(length(dots) != 1) {
+    stop_glue("You must specify exactly one of `p`, `mu`, `med`, or `sigma`.")
+  }
+  if (!is.null(dots$p)) {
+    dots$p <- sanitize_hypothesis_params_proportion(p, x)
+  }
+}
+
+sanitize_hypothesis_params_proportion <- function(p, x) {
+  if(anyNA(p)) {
+    stop_glue('`p` should not contain missing values.')
+  }
+  if(any(p < 0 | p > 1)) {
+    stop_glue('`p` should only contain values between zero and one.')
+  }
+  if(length(p) == 1) {
+    if(is_nuat(attr(x, "success"))) {
+      stop_glue(
+        "A point null regarding a proportion requires that `success` ",
+        "be indicated in `specify()`."
       )
-      dots$p <- append(dots$p, 1 - dots$p)
-      names(dots$p) <- c(attr(x, "success"), missing_lev)
-    } else {
-      if (sum(dots$p) != 1) {
-        stop_glue(
-          "Make sure the hypothesized values for the `p` parameters sum to 1. ",
-          "Please try again."
-        )
-      }
+    }
+    p <- c(p, 1 - p)
+    names(p) <- get_success_then_response_levels(x)
+  } else {
+    if (sum(p) != 1) {
+      stop_glue(
+        "Make sure the hypothesized values for the `p` parameters sum to 1. ",
+        "Please try again."
+      )
     }
   }
+  p
+}
 
-  # if (sum(dots[[p_ind]]) != 1) {
-  #   dots[[p_ind]] <- dots[[p_ind]]/sum(dots[[p_ind]])
-  #   warning_glue("Proportions do not sum to 1, normalizing automatically.")
-  # }
 
-  unlist(dots)
+get_response_levels <- function(x) {
+  as.character(unique(response_variable(x)))
+}
+
+get_success_then_response_levels <- function(x) {
+  success_attr <- attr(x, "success")
+  response_levels <- setdiff(
+    get_response_levels(x),
+    success_attr
+  )
+  c(success_attr, response_levels)
 }
 
 hypothesize_checks <- function(x, null) {
