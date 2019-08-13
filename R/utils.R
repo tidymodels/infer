@@ -249,7 +249,7 @@ match_null_hypothesis <- function(null) {
     stop_glue('You should specify exacly one type of null hypothesis.')
   }
   i <- pmatch(null, NULL_HYPOTHESIS_TYPES)
-  if(is.na(null)) {
+  if(is.na(i)) {
     stop_glue('`null` should be either "point" or "independence".')
   }
   NULL_HYPOTHESIS_TYPES[i]
