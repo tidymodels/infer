@@ -265,13 +265,14 @@ sanitize_hypothesis_params_independence <- function(dots) {
   NULL
 }
 
-sanitize_hypothesis_params_point <- function(dots) {
+sanitize_hypothesis_params_point <- function(dots, x) {
   if(length(dots) != 1) {
     stop_glue("You must specify exactly one of `p`, `mu`, `med`, or `sigma`.")
   }
   if (!is.null(dots$p)) {
-    dots$p <- sanitize_hypothesis_params_proportion(p, x)
+    dots$p <- sanitize_hypothesis_params_proportion(dots$p, x)
   }
+  dots
 }
 
 sanitize_hypothesis_params_proportion <- function(p, x) {
@@ -282,7 +283,7 @@ sanitize_hypothesis_params_proportion <- function(p, x) {
     stop_glue('`p` should only contain values between zero and one.')
   }
   if(length(p) == 1) {
-    if(is_nuat(attr(x, "success"))) {
+    if(is_nuat(x, "success")) {
       stop_glue(
         "A point null regarding a proportion requires that `success` ",
         "be indicated in `specify()`."
