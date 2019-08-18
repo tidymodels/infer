@@ -1,13 +1,13 @@
 Package: infer
 Type: Package
 Title: Tidy Statistical Inference
-Version: 0.4.0
+Version: 0.4.1.9000
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
     person("Chester", "Ismay", email = "chester.ismay@gmail.com", role = "aut"),
     person("Ben", "Baumer", email = "ben.baumer@gmail.com", role = "aut"),
     person("Mine", "Cetinkaya-Rundel", email = "mine@stat.duke.edu", role = "aut"),
-    person("Evgeni", "Chasnovski", email = "evgeni.chasnovski@gmail.com", role = "ctb"),
+    person("Evgeni", "Chasnovski", email = "evgeni.chasnovski@gmail.com", role = "aut"),
     person("Ted", "Laderas", email = "tedladeras@gmail.com", role = "ctb"),
     person("Nick", "Solomon", email = "nick.solomon@datacamp.com", role = "ctb"),
     person("Johanna", "Hardin", email = "Jo.Hardin@pomona.edu", role = "ctb"),
