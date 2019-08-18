@@ -222,13 +222,13 @@ the confidence interval.</p>
   <span class='fu'>get_confidence_interval</span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 2
 #&gt;    `5%` `95%`
 #&gt;   &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1  3.46  10.4</div><div class='input'>
+#&gt; 1  4.27  10.1</div><div class='input'>
 <span class='co'># To calculate std error, set the type and point estimate</span>
 <span class='no'>bootstrap_distn</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>get_confidence_interval</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"se"</span>, <span class='kw'>point_estimate</span> <span class='kw'>=</span> <span class='no'>d_hat</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 2
 #&gt;   lower upper
 #&gt;   &lt;dbl&gt; &lt;dbl&gt;
-#&gt; 1  3.04  11.5</div></pre>
+#&gt; 1  3.56  10.9</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
