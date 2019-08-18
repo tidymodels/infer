@@ -178,6 +178,7 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
       )
     }
   }
+
 }
 
 check_for_numeric_stat <- function(x, stat) {

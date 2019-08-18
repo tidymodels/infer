@@ -3,6 +3,8 @@ context("visualize")
 library(dplyr)
 library(vdiffr)
 
+set.seed(42)
+
 Sepal.Width_resamp <- iris %>%
   specify(Sepal.Width ~ NULL) %>%
   hypothesize(null = "point", med = 3) %>%
@@ -153,7 +155,7 @@ test_that("visualize basic tests", {
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
         calculate(stat = "t", order = c("small", "large")) %>%
-        visualize(method = "both", direction = "left", obs_stat = -obs_t)
+        visualize(method = "both", direction = "left", obs_stat = obs_t)
     )
   )
 
@@ -165,7 +167,7 @@ test_that("visualize basic tests", {
         hypothesize(null = "independence") %>%
 #         generate(reps = 100, type = "permute") %>%
         calculate(stat = "t", order = c("small", "large")) %>%
-        visualize(method = "theoretical", direction = "left", obs_stat = -obs_t)
+        visualize(method = "theoretical", direction = "left", obs_stat = obs_t)
     )
   )
   

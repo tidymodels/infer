@@ -4,13 +4,19 @@
 \alias{chisq_stat}
 \title{Tidy chi-squared test statistic}
 \usage{
-chisq_stat(data, formula, ...)
+chisq_stat(x, formula, response = NULL, explanatory = NULL, ...)
 }
 \arguments{
-\item{data}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
+\item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 
 \item{formula}{A formula with the response variable on the left and the
 explanatory on the right.}
+
+\item{response}{The variable name in \code{x} that will serve as the response.
+This is alternative to using the \code{formula} argument.}
+
+\item{explanatory}{The variable name in \code{x} that will serve as the
+explanatory variable.}
 
 \item{...}{Additional arguments for \link[stats:chisq.test]{chisq.test()}.}
 }

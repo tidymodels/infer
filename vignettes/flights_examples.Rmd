@@ -181,9 +181,9 @@ null_distn <- fli_small %>%
   calculate(stat = "Chisq")
 ggplot(null_distn, aes(x = stat)) +
   geom_density() +
-  geom_vline(xintercept = pull(Chisq_hat), color = "red")
+  geom_vline(xintercept = Chisq_hat, color = "red")
 null_distn %>%
-  summarize(p_value = mean(stat >= pull(Chisq_hat))) %>%
+  summarize(p_value = mean(stat >= Chisq_hat)) %>%
   pull()
 ```
 
