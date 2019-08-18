@@ -1,3 +1,7 @@
+# infer 0.4.1
+
+- Added Evgeni Chasnovski as author for his incredible work on refactoring the package and providing excellent support.
+
 # infer 0.4.0
 
 ## Breaking changes
