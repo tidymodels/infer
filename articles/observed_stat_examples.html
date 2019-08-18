@@ -169,7 +169,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1  10.4</code></pre>
+## 1  11.5</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">mu =</span> <span class="dv">10</span>) <span class="op">%&gt;%</span></a>
@@ -184,7 +184,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.794</code></pre>
+## 1   0.356</code></pre>
 </div>
 <div id="one-numerical-variable-standardized-mean-t" class="section level3">
 <h3 class="hasAnchor">
@@ -196,7 +196,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1  6.93</code></pre>
+## 1  6.83</code></pre>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> dep_delay) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">mu =</span> <span class="dv">8</span>) <span class="op">%&gt;%</span></a>
@@ -238,7 +238,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1    0.15</code></pre>
+## 1   0.018</code></pre>
 </div>
 <div id="one-categorical-one-proportion" class="section level3">
 <h3 class="hasAnchor">
@@ -250,7 +250,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1 0.466</code></pre>
+## 1 0.452</code></pre>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb25-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb25-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, <span class="dt">p =</span> <span class="fl">.5</span>) <span class="op">%&gt;%</span></a>
@@ -265,7 +265,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1    0.11</code></pre>
+## 1   0.036</code></pre>
 <p>Logical variables will be coerced to factors:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb30-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">day_hour_logical =</span> (day_hour <span class="op">==</span><span class="st"> "morning"</span>)) <span class="op">%&gt;%</span></a>
@@ -290,7 +290,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##      stat
 ##     &lt;dbl&gt;
-## 1 -0.0205</code></pre>
+## 1 0.00438</code></pre>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb34-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb34-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -305,7 +305,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.708</code></pre>
+## 1   0.954</code></pre>
 </div>
 <div id="two-categorical-2-level-variables-z" class="section level3">
 <h3 class="hasAnchor">
@@ -317,7 +317,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##     stat
 ##    &lt;dbl&gt;
-## 1 -0.460</code></pre>
+## 1 0.0985</code></pre>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb41-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb41-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -332,7 +332,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.684</code></pre>
+## 1    0.95</code></pre>
 <p>Note the similarities in this plot and the previous one.</p>
 </div>
 <div id="one-categorical-2-level---gof" class="section level3">
@@ -348,7 +348,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1  10.4</code></pre>
+## 1  7.01</code></pre>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb48-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> origin) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb48-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"point"</span>, </a>
@@ -364,7 +364,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.005</code></pre>
+## 1   0.037</code></pre>
 </div>
 <div id="two-categorical-2-level-variables-1" class="section level3">
 <h3 class="hasAnchor">
@@ -376,7 +376,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1  9.03</code></pre>
+## 1 0.528</code></pre>
 <div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb53-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>origin) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb53-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -391,7 +391,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.007</code></pre>
+## 1    0.77</code></pre>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-diff-in-means" class="section level3">
 <h3 class="hasAnchor">
@@ -403,7 +403,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1  2.27</code></pre>
+## 1     3</code></pre>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb58-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb58-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb58-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
@@ -418,7 +418,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.488</code></pre>
+## 1   0.338</code></pre>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-t" class="section level3">
 <h3 class="hasAnchor">
@@ -430,7 +430,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1 0.754</code></pre>
+## 1 0.891</code></pre>
 <div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb63-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb63-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
@@ -445,7 +445,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1    0.49</code></pre>
+## 1     0.4</code></pre>
 <p>Note the similarities in this plot and the previous one.</p>
 </div>
 <div id="one-numerical-variable-one-categorical-2-levels-diff-in-medians" class="section level3">
@@ -458,7 +458,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1     2</code></pre>
+## 1     1</code></pre>
 <div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb68-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(dep_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = dep_delay, </span></a>
 <a class="sourceLine" id="cb68-3" data-line-number="3"><span class="st">  </span><span class="co"># explanatory = season</span></a>
@@ -474,7 +474,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.084</code></pre>
+## 1    0.64</code></pre>
 </div>
 <div id="one-numerical-one-categorical-2-levels---anova" class="section level3">
 <h3 class="hasAnchor">
@@ -486,7 +486,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1  1.08</code></pre>
+## 1 0.686</code></pre>
 <div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb73-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>origin) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb73-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
@@ -501,7 +501,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.353</code></pre>
+## 1   0.529</code></pre>
 </div>
 <div id="two-numerical-vars---slr" class="section level3">
 <h3 class="hasAnchor">
@@ -513,7 +513,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1  1.02</code></pre>
+## 1 0.992</code></pre>
 <div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb78-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb78-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb78-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
@@ -540,7 +540,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1 0.894</code></pre>
+## 1 0.895</code></pre>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb83-1" data-line-number="1">null_distn &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb83-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb83-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="dt">null =</span> <span class="st">"independence"</span>) <span class="op">%&gt;%</span></a>
@@ -575,7 +575,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1  4.57</code></pre>
+## 1  6.15</code></pre>
 <div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb88-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb88-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb88-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
@@ -584,7 +584,7 @@
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
-## 1   1.44    7.82</code></pre>
+## 1   2.61    9.60</code></pre>
 <div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb90-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb90-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-35-1.png" width="576"></p>
@@ -592,7 +592,7 @@
 <pre><code>## # A tibble: 1 x 2
 ##   lower upper
 ##   &lt;dbl&gt; &lt;dbl&gt;
-## 1  1.27  7.88</code></pre>
+## 1  2.61  9.70</code></pre>
 <div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb93-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb93-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-35-2.png" width="576"></p>
@@ -607,7 +607,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1  2.68</code></pre>
+## 1  3.30</code></pre>
 <div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb96-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb96-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> arr_delay) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb96-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
@@ -616,7 +616,7 @@
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
-## 1  0.934    4.36</code></pre>
+## 1   1.62    4.88</code></pre>
 <div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb98-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb98-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-37-1.png" width="576"></p>
@@ -624,7 +624,7 @@
 <pre><code>## # A tibble: 1 x 2
 ##   lower upper
 ##   &lt;dbl&gt; &lt;dbl&gt;
-## 1 0.914  4.44</code></pre>
+## 1  1.70  4.90</code></pre>
 <div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb101-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb101-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-37-2.png" width="576"></p>
@@ -639,7 +639,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1 0.466</code></pre>
+## 1 0.452</code></pre>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb104-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb104-2" data-line-number="2"><span class="st"> </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(<span class="dt">response =</span> day_hour, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb104-3" data-line-number="3"><span class="st"> </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
@@ -648,7 +648,7 @@
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
-## 1   0.42   0.508</code></pre>
+## 1  0.406   0.496</code></pre>
 <div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb106-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb106-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-39-1.png" width="576"></p>
@@ -656,7 +656,7 @@
 <pre><code>## # A tibble: 1 x 2
 ##   lower upper
 ##   &lt;dbl&gt; &lt;dbl&gt;
-## 1 0.422 0.510</code></pre>
+## 1 0.408 0.496</code></pre>
 <div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb109-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb109-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-39-2.png" width="576"></p>
@@ -674,9 +674,9 @@
 <a class="sourceLine" id="cb110-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb110-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
-##     stat
-##    &lt;dbl&gt;
-## 1 -0.745</code></pre>
+##    stat
+##   &lt;dbl&gt;
+## 1  5.63</code></pre>
 <div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb112-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb112-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb112-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
@@ -685,7 +685,7 @@
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
-## 1  -7.17    6.08</code></pre>
+## 1  -2.03    12.5</code></pre>
 <div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb114-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-41-1.png" width="576"></p>
@@ -693,7 +693,7 @@
 <pre><code>## # A tibble: 1 x 2
 ##   lower upper
 ##   &lt;dbl&gt; &lt;dbl&gt;
-## 1 -7.30  5.81</code></pre>
+## 1 -1.61  12.9</code></pre>
 <div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb117-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-41-2.png" width="576"></p>
@@ -706,9 +706,9 @@
 <a class="sourceLine" id="cb118-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb118-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"t"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
-##     stat
-##    &lt;dbl&gt;
-## 1 -0.218</code></pre>
+##    stat
+##   &lt;dbl&gt;
+## 1  1.51</code></pre>
 <div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb120-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb120-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
@@ -717,15 +717,15 @@
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
-## 1  -2.24    1.72</code></pre>
+## 1 -0.359    3.74</code></pre>
 <div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb122-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-43-1.png" width="576"></p>
 <div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> t_hat) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
-##   lower upper
-##   &lt;dbl&gt; &lt;dbl&gt;
-## 1 -2.18  1.75</code></pre>
+##    lower upper
+##    &lt;dbl&gt; &lt;dbl&gt;
+## 1 -0.578  3.60</code></pre>
 <div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb125-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-43-2.png" width="576"></p>
@@ -738,9 +738,9 @@
 <a class="sourceLine" id="cb126-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb126-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"diff in props"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
-##     stat
-##    &lt;dbl&gt;
-## 1 0.0205</code></pre>
+##       stat
+##      &lt;dbl&gt;
+## 1 -0.00438</code></pre>
 <div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb128-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb128-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb128-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -749,15 +749,15 @@
 <pre><code>## # A tibble: 1 x 2
 ##    `2.5%` `97.5%`
 ##     &lt;dbl&gt;   &lt;dbl&gt;
-## 1 -0.0648   0.108</code></pre>
+## 1 -0.0957  0.0818</code></pre>
 <div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb130-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb130-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-45-1.png" width="576"></p>
 <div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" data-line-number="1">( standard_error_ci &lt;-<span class="st"> </span><span class="kw"><a href="../reference/get_confidence_interval.html">get_ci</a></span>(boot, <span class="dt">type =</span> <span class="st">"se"</span>, <span class="dt">point_estimate =</span> d_hat) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 2
-##     lower upper
-##     &lt;dbl&gt; &lt;dbl&gt;
-## 1 -0.0676 0.109</code></pre>
+##     lower  upper
+##     &lt;dbl&gt;  &lt;dbl&gt;
+## 1 -0.0914 0.0826</code></pre>
 <div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb133-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-45-2.png" width="576"></p>
@@ -770,9 +770,9 @@
 <a class="sourceLine" id="cb134-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb134-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"z"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"summer"</span>, <span class="st">"winter"</span>)) )</a></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
-##    stat
-##   &lt;dbl&gt;
-## 1 0.460</code></pre>
+##      stat
+##     &lt;dbl&gt;
+## 1 -0.0985</code></pre>
 <div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb136-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(day_hour <span class="op">~</span><span class="st"> </span>season, <span class="dt">success =</span> <span class="st">"morning"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb136-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
@@ -781,7 +781,7 @@
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
-## 1  -1.48    2.50</code></pre>
+## 1  -1.96    1.79</code></pre>
 <div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb138-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-47-1.png" width="576"></p>
@@ -789,7 +789,7 @@
 <pre><code>## # A tibble: 1 x 2
 ##   lower upper
 ##   &lt;dbl&gt; &lt;dbl&gt;
-## 1 -1.52  2.44</code></pre>
+## 1 -2.04  1.85</code></pre>
 <div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb141-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-47-2.png" width="576"></p>
@@ -804,7 +804,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1  1.02</code></pre>
+## 1 0.992</code></pre>
 <div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb144-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb144-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
@@ -813,7 +813,7 @@
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
-## 1  0.973    1.07</code></pre>
+## 1  0.946    1.03</code></pre>
 <div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb146-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb146-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-49-1.png" width="576"></p>
@@ -821,7 +821,7 @@
 <pre><code>## # A tibble: 1 x 2
 ##   lower upper
 ##   &lt;dbl&gt; &lt;dbl&gt;
-## 1 0.965  1.07</code></pre>
+## 1 0.947  1.04</code></pre>
 <div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb149-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb149-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-49-2.png" width="576"></p>
@@ -836,7 +836,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##    stat
 ##   &lt;dbl&gt;
-## 1 0.894</code></pre>
+## 1 0.895</code></pre>
 <div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb152-1" data-line-number="1">boot &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb152-2" data-line-number="2"><span class="st">   </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(arr_delay <span class="op">~</span><span class="st"> </span>dep_delay) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb152-3" data-line-number="3"><span class="st">   </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"bootstrap"</span>) <span class="op">%&gt;%</span></a>
@@ -845,7 +845,7 @@
 <pre><code>## # A tibble: 1 x 2
 ##   `2.5%` `97.5%`
 ##    &lt;dbl&gt;   &lt;dbl&gt;
-## 1  0.850   0.922</code></pre>
+## 1  0.827   0.933</code></pre>
 <div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb154-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb154-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> percentile_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-51-1.png" width="576"></p>
@@ -854,7 +854,7 @@
 <pre><code>## # A tibble: 1 x 2
 ##   lower upper
 ##   &lt;dbl&gt; &lt;dbl&gt;
-## 1 0.858 0.931</code></pre>
+## 1 0.842 0.948</code></pre>
 <div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb157-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(boot) <span class="op">+</span></a>
 <a class="sourceLine" id="cb157-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span>(<span class="dt">endpoints =</span> standard_error_ci)</a></code></pre></div>
 <p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-51-2.png" width="576"></p>
