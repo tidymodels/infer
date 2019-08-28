@@ -2,14 +2,14 @@
 % Please edit documentation in R/shade_confidence_interval.R
 \name{shade_confidence_interval}
 \alias{shade_confidence_interval}
-\alias{shade_confidence_interval}
 \alias{shade_ci}
 \title{Add information about confidence interval}
 \usage{
 shade_confidence_interval(endpoints, color = "mediumaquamarine",
   fill = "turquoise", ...)
 
-shade_ci(endpoints, color = "mediumaquamarine", fill = "turquoise", ...)
+shade_ci(endpoints, color = "mediumaquamarine", fill = "turquoise",
+  ...)
 }
 \arguments{
 \item{endpoints}{A 2 element vector or a 1 x 2 data frame containing the

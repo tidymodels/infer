@@ -4,14 +4,21 @@
 \alias{t_test}
 \title{Tidy t-test}
 \usage{
-t_test(data, formula, order = NULL, alternative = "two_sided", mu = 0,
-  conf_int = TRUE, conf_level = 0.95, ...)
+t_test(x, formula, response = NULL, explanatory = NULL, order = NULL,
+  alternative = "two_sided", mu = 0, conf_int = TRUE,
+  conf_level = 0.95, ...)
 }
 \arguments{
-\item{data}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
+\item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 
 \item{formula}{A formula with the response variable on the left and the
 explanatory on the right.}
+
+\item{response}{The variable name in \code{x} that will serve as the response.
+This is alternative to using the \code{formula} argument.}
+
+\item{explanatory}{The variable name in \code{x} that will serve as the
+explanatory variable.}
 
 \item{order}{A string vector of specifying the order in which the levels of
 the explanatory variable should be ordered for subtraction, where \code{order = c("first", "second")} means \code{("first" - "second")}.}

@@ -11,6 +11,7 @@ latex: false
 env:
  global:
    - CRAN: http://cran.rstudio.com
+   - VDIFFR_RUN_TESTS: false
 
 notifications:
   email:
