@@ -300,7 +300,7 @@ chisq_stat <- function(x, formula, response = NULL,
     mutate_if(is.character, as.factor) %>%
     mutate_if(is.logical, as.factor)
   
-  stats::chisq.test(table(x), ...) %>%
+  suppressWarnings(stats::chisq.test(table(x), ...)) %>%
     broom::glance() %>%
     dplyr::select(statistic) %>%
     pull()
