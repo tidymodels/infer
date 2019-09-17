@@ -232,7 +232,7 @@ calc_impl.Chisq <- function(type, x, order, ...) {
       p_levels <- get_par_levels(x)
       x %>%
         dplyr::summarize(
-          stat = supressWarnings(stats::chisq.test(
+          stat = suppressWarnings(stats::chisq.test(
             # Ensure correct ordering of parameters
             table(!!(attr(x, "response")))[p_levels],
             p = attr(x, "params")
