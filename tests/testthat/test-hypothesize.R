@@ -65,7 +65,7 @@ test_that(
     mtcars_df %>%
       specify(response = mpg) %>%
       hypothesize(null = "dependence"),
-    "You must specify exactly one of `p`, `mu`, `med`, or `sigma`"
+    '`null` should be either "point" or "independence".'
   )
 })
 
@@ -91,7 +91,7 @@ test_that(
     mtcars_df %>%
       specify(response = mpg) %>%
       hypothesize(null = c("point", "independence")),
-    "You should specify exacly one type of null hypothesis"
+    "You should specify exactly one type of null hypothesis"
   )
 })
 
