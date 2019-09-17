@@ -3,14 +3,13 @@
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param null The null hypothesis. Options include `"independence"` and
 #'   `"point"`.
-#' @param p The estimated proportion of successes as a number between zero and
-#' one. To be used with point null hypotheses when the specified response
+#' @param p The true proportion of successes (a number between 0 and 1). To be used with point null hypotheses when the specified response
 #' variable is categorical.
-#' @param mu The estimated mean as a number. To be used with point null
+#' @param mu The true mean (any numerical value). To be used with point null
 #' hypotheses when the specified response variable is continuous.
-#' @param med The estimated median as a number. To be used with point null
+#' @param med The true median (any numerical value). To be used with point null
 #' hypotheses when the specified response variable is continuous.
-#' @param sigma The estimated standard deviation as a number. To be used with
+#' @param sigma The true standard deviation (any numerical value). To be used with
 #' point null hypotheses.
 #'
 #' @return A tibble containing the response (and explanatory, if specified)
