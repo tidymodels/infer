@@ -1,3 +1,5 @@
+set.seed(4242)
+
 iris_df <- tibble::as_tibble(iris)
 
 iris_tbl <- iris %>%
@@ -27,7 +29,6 @@ set.seed(2018)
 test_df <- tibble::tibble(stat = rnorm(100))
 
 # Data for visualization tests
-set.seed(4242)
 
 iris_permute <- iris_tbl %>%
   specify(Sepal.Width.Group ~ Sepal.Length.Group, success = "large") %>%
