@@ -1,9 +1,17 @@
-# Development version
+# infer 0.5.0
 
 ## Breaking changes
 
-- `shade_confidence_interval()` now plots vertical lines starting from zero (previously - from the bottom of a plot).
-- `shade_p_value()` now uses "area under the curve" approach to shading.
+- `shade_confidence_interval()` now plots vertical lines starting from zero (previously - from the bottom of a plot) (#234).
+- `shade_p_value()` now uses "area under the curve" approach to shading (#229).
+
+## Other
+
+- Updated `chisq_test()` to take arguments in a response/explanatory format, perform goodness of fit tests, and default to the approximation approach (#241).
+- Updated `chisq_stat()` to do goodness of fit (#241).
+- Make interface to `hypothesize()` clearer by adding the options for the point null parameters to the function signature (#242).
+- Manage `infer` class more systematically (#219).
+- Use `vdiffr` for plot testing (#221).
 
 # infer 0.4.0
 
