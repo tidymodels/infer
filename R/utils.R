@@ -244,15 +244,15 @@ check_point_params <- function(x, stat) {
 # Helpers for hypothesize() -----------------------------------------------
 
 match_null_hypothesis <- function(null) {
-  NULL_HYPOTHESIS_TYPES <- c("point", "independence")
+  null_hypothesis_types <- c("point", "independence")
   if(length(null) != 1) {
     stop_glue('You should specify exactly one type of null hypothesis.')
   }
-  i <- pmatch(null, NULL_HYPOTHESIS_TYPES)
+  i <- pmatch(null, null_hypothesis_types)
   if(is.na(i)) {
     stop_glue('`null` should be either "point" or "independence".')
   }
-  NULL_HYPOTHESIS_TYPES[i]
+  null_hypothesis_types[i]
 }
 
 sanitize_hypothesis_params_independence <- function(dots) {
