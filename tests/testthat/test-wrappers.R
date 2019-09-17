@@ -188,15 +188,16 @@ test_that("conf_int argument works", {
 
   # Check that var.equal produces different results
   # Thanks for finding this @EllaKaye!
-  set.seed(208)
-  iris_small <- iris2 %>% sample_n(10)
+  iris_small <- iris2 %>% slice(1:6, 90:100)
+
   no_var_equal <- iris_small %>%
     t_stat(Petal.Width ~ Species, order = c("versicolor", "virginica"))
+  
   var_equal <- iris_small %>%
     t_stat(
       Petal.Width ~ Species, order = c("versicolor", "virginica"),
       var.equal = TRUE
-    )
+    ) 
   expect_false(no_var_equal == var_equal)
 
   shortcut_no_var_equal <- iris_small %>%

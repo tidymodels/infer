@@ -12,17 +12,16 @@ hypothesize(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL)
 \item{null}{The null hypothesis. Options include \code{"independence"} and
 \code{"point"}.}
 
-\item{p}{The estimated proportion of successes as a number between zero and
-one. To be used with point null hypotheses when the specified response
+\item{p}{The true proportion of successes (a number between 0 and 1). To be used with point null hypotheses when the specified response
 variable is categorical.}
 
-\item{mu}{The estimated mean as a number. To be used with point null
+\item{mu}{The true mean (any numerical value). To be used with point null
 hypotheses when the specified response variable is continuous.}
 
-\item{med}{The estimated median as a number. To be used with point null
+\item{med}{The true median (any numerical value). To be used with point null
 hypotheses when the specified response variable is continuous.}
 
-\item{sigma}{The estimated standard deviation as a number. To be used with
+\item{sigma}{The true standard deviation (any numerical value). To be used with
 point null hypotheses.}
 }
 \value{

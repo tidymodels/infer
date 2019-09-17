@@ -5,13 +5,17 @@
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param reps The number of resamples to generate.
-#' @param type Currently either `bootstrap`, `permute`, or `simulate`.
+#' @param type Currently either `bootstrap`, `permute`, or `simulate` as defined
+#' in the `GENERATION_TYPES` vector.
 #' @param ... Currently ignored.
 #'
 #' @return A tibble containing `rep` generated datasets, indicated by the
 #'   `replicate` column.
 #'
 #' @examples
+#' # Different `type` options
+#' GENERATION_TYPES   
+#'  
 #' # Permutation test for two binary variables
 #' mtcars %>%
 #'   dplyr::mutate(am = factor(am), vs = factor(vs)) %>%
@@ -42,6 +46,7 @@ generate <- function(x, reps = 1, type = NULL, ...) {
     simulate = simulate(x, reps, ...)
   )
 }
+
 
 #' @rdname generate
 #' @export
