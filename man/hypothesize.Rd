@@ -4,7 +4,7 @@
 \alias{hypothesize}
 \title{Declare a null hypothesis}
 \usage{
-hypothesize(x, null, ...)
+hypothesize(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL)
 }
 \arguments{
 \item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
@@ -12,7 +12,18 @@ hypothesize(x, null, ...)
 \item{null}{The null hypothesis. Options include \code{"independence"} and
 \code{"point"}.}
 
-\item{...}{Arguments passed to downstream functions.}
+\item{p}{The estimated proportion of successes as a number between zero and
+one. To be used with point null hypotheses when the specified response
+variable is categorical.}
+
+\item{mu}{The estimated mean as a number. To be used with point null
+hypotheses when the specified response variable is continuous.}
+
+\item{med}{The estimated median as a number. To be used with point null
+hypotheses when the specified response variable is continuous.}
+
+\item{sigma}{The estimated standard deviation as a number. To be used with
+point null hypotheses.}
 }
 \value{
 A tibble containing the response (and explanatory, if specified)
