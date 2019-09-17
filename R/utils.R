@@ -246,7 +246,7 @@ check_point_params <- function(x, stat) {
 match_null_hypothesis <- function(null) {
   NULL_HYPOTHESIS_TYPES <- c("point", "independence")
   if(length(null) != 1) {
-    stop_glue('You should specify exacly one type of null hypothesis.')
+    stop_glue('You should specify exactly one type of null hypothesis.')
   }
   i <- pmatch(null, NULL_HYPOTHESIS_TYPES)
   if(is.na(i)) {
