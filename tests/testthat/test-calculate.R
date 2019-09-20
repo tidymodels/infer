@@ -417,7 +417,8 @@ test_that("calculate doesn't depend on order of `p` (#122)", {
 
   expect_equal(
     calc_chisq(c("versicolor" = 0.25, "setosa" = 0.5, "virginica" = 0.25)),
-    calc_chisq(c("virginica" = 0.25, "versicolor" = 0.25, "setosa" = 0.5))
+    calc_chisq(c("virginica" = 0.25, "versicolor" = 0.25, "setosa" = 0.5)),
+    tolerance = 1e-5
   )
 })
 
@@ -444,7 +445,8 @@ test_that("calc_impl.sum works", {
 
   expect_equal(
     gen_iris16 %>% calculate(stat = "sum"),
-    gen_iris16 %>% dplyr::summarise(stat = sum(Petal.Width))
+    gen_iris16 %>% dplyr::summarise(stat = sum(Petal.Width)),
+    tolerance = 1e-5
   )
 })
 
