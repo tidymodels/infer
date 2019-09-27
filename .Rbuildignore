@@ -10,7 +10,6 @@
 ^docs*
 ^CONDUCT\.md$
 ^README\.md$
-^NEWS\.md$
 ^cran-comments\.md$
 ^_build\.sh$
 ^appveyor\.yml$
