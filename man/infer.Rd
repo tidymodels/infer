@@ -6,12 +6,42 @@
 \alias{infer-package}
 \title{infer: a grammar for statistical inference}
 \description{
+\if{html}{\figure{infer.png}{options: align='right'}}
+
 The objective of this package is to perform statistical inference using a
 grammar that illustrates the underlying concepts and a format that coheres
 with the tidyverse.
 }
-\examples{
-# Example usage:
-library(infer)
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/tidymodels/infer}
+  \item \url{https://infer.netlify.com/}
+  \item Report bugs at \url{https://github.com/tidymodels/infer/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Andrew Bray \email{abray@reed.edu}
+
+Authors:
+\itemize{
+  \item Chester Ismay \email{chester.ismay@gmail.com}
+  \item Evgeni Chasnovski \email{evgeni.chasnovski@gmail.com}
+  \item Ben Baumer \email{ben.baumer@gmail.com}
+  \item Mine Cetinkaya-Rundel \email{mine@stat.duke.edu}
+}
+
+Other contributors:
+\itemize{
+  \item Ted Laderas \email{tedladeras@gmail.com} [contributor]
+  \item Nick Solomon \email{nick.solomon@datacamp.com} [contributor]
+  \item Johanna Hardin \email{Jo.Hardin@pomona.edu} [contributor]
+  \item Albert Y. Kim \email{albert.ys.kim@gmail.com} [contributor]
+  \item Neal Fultz \email{nfultz@gmail.com} [contributor]
+  \item Doug Friedman \email{doug.nhp@gmail.com} [contributor]
+  \item Richie Cotton \email{richie@datacamp.com} [contributor]
+  \item Brian Fannin \email{captain@pirategrunt.com} [contributor]
+}
 
 }

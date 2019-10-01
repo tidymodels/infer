@@ -42,7 +42,8 @@ Suggests:
     testthat,
     covr,
     vdiffr
-URL: https://github.com/tidymodels/infer
+URL: https://github.com/tidymodels/infer,
+     https://infer.netlify.com/
 BugReports: https://github.com/tidymodels/infer/issues
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
