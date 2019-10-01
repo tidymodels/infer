@@ -8,11 +8,13 @@
 
 <title>Declare a null hypothesis — hypothesize • infer</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -38,10 +40,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Declare a null hypothesis — hypothesize" />
 
+<meta property="og:title" content="Declare a null hypothesis — hypothesize" />
 <meta property="og:description" content="Declare a null hypothesis" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -72,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -118,7 +121,6 @@
   <a href="../TO-DO.html">To-Dos</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/tidymodels/infer">
@@ -151,13 +153,11 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Declare a null hypothesis</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>hypothesize</span>(<span class='no'>x</span>, <span class='no'>null</span>, <span class='no'>...</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>hypothesize</span>(<span class='no'>x</span>, <span class='no'>null</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>med</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -171,16 +171,31 @@
 <code>"point"</code>.</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Arguments passed to downstream functions.</p></td>
+      <th>p</th>
+      <td><p>The true proportion of successes (a number between 0 and 1). To be used with point null hypotheses when the specified response
+variable is categorical.</p></td>
+    </tr>
+    <tr>
+      <th>mu</th>
+      <td><p>The true mean (any numerical value). To be used with point null
+hypotheses when the specified response variable is continuous.</p></td>
+    </tr>
+    <tr>
+      <th>med</th>
+      <td><p>The true median (any numerical value). To be used with point null
+hypotheses when the specified response variable is continuous.</p></td>
+    </tr>
+    <tr>
+      <th>sigma</th>
+      <td><p>The true standard deviation (any numerical value). To be used with
+point null hypotheses.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A tibble containing the response (and explanatory, if specified)
 variable data with parameter information stored as well.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Permutation test similar to ANOVA</span>
@@ -190,18 +205,18 @@ variable data with parameter information stored as well.</p>
   <span class='fu'>hypothesize</span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"F"</span>)</div><div class='output co'>#&gt; # A tibble: 100 x 2
-#&gt;    replicate  stat
-#&gt;        &lt;int&gt; &lt;dbl&gt;
-#&gt;  1         1 4.41 
-#&gt;  2         2 0.438
-#&gt;  3         3 0.211
-#&gt;  4         4 0.568
-#&gt;  5         5 0.433
-#&gt;  6         6 1.09 
-#&gt;  7         7 0.376
-#&gt;  8         8 1.97 
-#&gt;  9         9 0.790
-#&gt; 10        10 6.82 
+#&gt;    replicate   stat
+#&gt;        &lt;int&gt;  &lt;dbl&gt;
+#&gt;  1         1 2.12  
+#&gt;  2         2 0.156 
+#&gt;  3         3 0.0258
+#&gt;  4         4 0.0981
+#&gt;  5         5 1.09  
+#&gt;  6         6 1.81  
+#&gt;  7         7 0.180 
+#&gt;  8         8 7.45  
+#&gt;  9         9 0.828 
+#&gt; 10        10 0.621 
 #&gt; # … with 90 more rows</div><div class='input'>
 </div></pre>
   </div>
@@ -209,9 +224,7 @@ variable data with parameter information stored as well.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -225,7 +238,7 @@ variable data with parameter information stored as well.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

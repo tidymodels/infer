@@ -8,11 +8,13 @@
 
 <title>Tidy t-test statistic — t_stat • infer</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -38,10 +40,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Tidy t-test statistic — t_stat" />
 
+<meta property="og:title" content="Tidy t-test statistic — t_stat" />
 <meta property="og:description" content="A shortcut wrapper function to get the observed test statistic for a t test." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -72,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -118,7 +121,6 @@
   <a href="../TO-DO.html">To-Dos</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/tidymodels/infer">
@@ -151,18 +153,18 @@
     </div>
 
     <div class="ref-description">
-    
     <p>A shortcut wrapper function to get the observed test statistic for a t test.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>t_stat</span>(<span class='no'>data</span>, <span class='no'>formula</span>, <span class='no'>...</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>t_stat</span>(<span class='no'>x</span>, <span class='no'>formula</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>explanatory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"two_sided"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>conf_int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>conf_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='no'>...</span>)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
+      <th>x</th>
       <td><p>A data frame that can be coerced into a <a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a>.</p></td>
     </tr>
     <tr>
@@ -171,18 +173,52 @@
 explanatory on the right.</p></td>
     </tr>
     <tr>
+      <th>response</th>
+      <td><p>The variable name in <code>x</code> that will serve as the response.
+This is alternative to using the <code>formula</code> argument.</p></td>
+    </tr>
+    <tr>
+      <th>explanatory</th>
+      <td><p>The variable name in <code>x</code> that will serve as the
+explanatory variable.</p></td>
+    </tr>
+    <tr>
+      <th>order</th>
+      <td><p>A string vector of specifying the order in which the levels of
+the explanatory variable should be ordered for subtraction, where <code>order = c("first", "second")</code> means <code>("first" - "second")</code>.</p></td>
+    </tr>
+    <tr>
+      <th>alternative</th>
+      <td><p>Character string giving the direction of the alternative
+hypothesis. Options are <code>"two_sided"</code> (default), <code>"greater"</code>, or <code>"less"</code>.</p></td>
+    </tr>
+    <tr>
+      <th>mu</th>
+      <td><p>A numeric value giving the hypothesized null mean value for a one
+sample test and the hypothesized difference for a two sample test.</p></td>
+    </tr>
+    <tr>
+      <th>conf_int</th>
+      <td><p>A logical value for whether to include the confidence
+interval or not. <code>TRUE</code> by default.</p></td>
+    </tr>
+    <tr>
+      <th>conf_level</th>
+      <td><p>A numeric value between 0 and 1. Default value is 0.95.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Pass in arguments to {infer} functions.</p></td>
     </tr>
     </table>
-    
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+    </ul>
 
   </div>
 </div>
@@ -194,7 +230,7 @@ explanatory on the right.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

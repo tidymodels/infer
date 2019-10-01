@@ -8,11 +8,13 @@
 
 <title>Add information about confidence interval — shade_confidence_interval • infer</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -38,12 +40,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Add information about confidence interval — shade_confidence_interval" />
 
+<meta property="og:title" content="Add information about confidence interval — shade_confidence_interval" />
 <meta property="og:description" content="shade_confidence_interval() plots confidence interval region on top of the
 visualize() output. It should be used as {ggplot2} layer function (see
 examples). shade_ci() is its alias." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -74,7 +77,7 @@ examples). shade_ci() is its alias." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -120,7 +123,6 @@ examples). shade_ci() is its alias." />
   <a href="../TO-DO.html">To-Dos</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/tidymodels/infer">
@@ -148,16 +150,14 @@ examples). shade_ci() is its alias." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Add information about confidence interval</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/visualize.R'><code>R/visualize.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/shade_confidence_interval.R'><code>R/shade_confidence_interval.R</code></a></small>
     <div class="hidden name"><code>shade_confidence_interval.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
     <p><code>shade_confidence_interval()</code> plots confidence interval region on top of the
 <code><a href='visualize.html'>visualize()</a></code> output. It should be used as {ggplot2} layer function (see
 examples). <code>shade_ci()</code> is its alias.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>shade_confidence_interval</span>(<span class='no'>endpoints</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"mediumaquamarine"</span>,
@@ -165,7 +165,7 @@ examples). <code>shade_ci()</code> is its alias.</p>
 
 <span class='fu'>shade_ci</span>(<span class='no'>endpoints</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"mediumaquamarine"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='st'>"turquoise"</span>,
   <span class='no'>...</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -190,16 +190,14 @@ confidence interval. If <code>NULL</code> then no shading is actually done.</p><
       <td><p>Other arguments passed along to {ggplot2} functions.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list of {ggplot2} objects to be added to the <code><a href='visualize.html'>visualize()</a></code>
 output.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='shade_p_value.html'>shade_p_value()</a></code> to add information about p-value region.</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>viz_plot</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
@@ -216,11 +214,8 @@ output.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -234,7 +229,7 @@ output.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>
