@@ -1,7 +1,7 @@
 context("rep_sample_n")
 
 N <- 5
-population <- tibble::data_frame(
+population <- tibble::tibble(
   ball_ID = 1:N,
   color = factor(c(rep("red", 3), rep("white", N - 3)))
 )

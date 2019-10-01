@@ -7,9 +7,13 @@
 #'
 #' A tidier version of [t.test()][stats::t.test()] for two sample tests.
 #'
-#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
+#' @param response The variable name in `x` that will serve as the response.
+#'   This is alternative to using the `formula` argument.
+#' @param explanatory The variable name in `x` that will serve as the
+#'   explanatory variable.
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction, where `order =
 #'   c("first", "second")` means `("first" - "second")`.
@@ -30,52 +34,61 @@
 #'
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
+#' @importFrom stats as.formula
 #' @export
-t_test <- function(data, formula, # response = NULL, explanatory = NULL,
+t_test <- function(x, formula, 
+                   response = NULL, 
+                   explanatory = NULL,
                    order = NULL,
-                   alternative = "two_sided", mu = 0,
+                   alternative = "two_sided", 
+                   mu = 0,
                    conf_int = TRUE,
                    conf_level = 0.95,
                    ...) {
   check_conf_level(conf_level)
-
-  # Match with old "dot" syntax
+  
+  # convert all character and logical variables to be factor variables
+  x <- tibble::as_tibble(x) %>%
+    mutate_if(is.character, as.factor) %>%
+    mutate_if(is.logical, as.factor)
+  
+  # parse response and explanatory variables
+  response    <- enquo(response)
+  explanatory <- enquo(explanatory)
+  x <- parse_variables(x = x, formula = formula, 
+                       response = response, explanatory = explanatory)
+  
+  # match with old "dot" syntax in t.test
   if (alternative == "two_sided") {
     alternative <- "two.sided"
   }
-
-  ### Only currently working with formula interface
-#  if (hasArg(formula)) {
-  if (!is.null(f_rhs(formula))) {
-    data[[as.character(f_rhs(formula))]] <- factor(
-      data[[as.character(f_rhs(formula))]], levels = c(order[1], order[2])
-    )
-
-    # Two sample case
-    prelim <- data %>%
-      stats::t.test(
-        formula = formula, data = .,
-        alternative = alternative,
-        mu = mu,
-        conf.level = conf_level,
-        ...
-      ) %>%
+  
+  # two sample
+  if (has_explanatory(x)) {
+    # if (!is.null(order)) {
+    #   x[[as.character(attr(x, "explanatory"))]] <- factor(explanatory_variable(x), 
+    #                                                       levels = c(order[1], 
+    #                                                                  order[2]),
+    #                                                       ordered = TRUE)
+    # }
+    check_order(x, explanatory_variable(x), order)
+    prelim <- stats::t.test(formula = as.formula(paste0(attr(x, "response"),
+                                                        " ~ ",
+                                                        attr(x, "explanatory"))),
+                            data = x,
+                            alternative = alternative,
+                            mu = mu,
+                            conf.level = conf_level,
+                            ...) %>%
       broom::glance()
-  } else {
-    # One sample case
-    # To fix weird indexing error convert back to data.frame
-    # (Error: Can't use matrix or array for column indexing)
-    data <- as.data.frame(data)
-    prelim <- stats::t.test(
-      x = data[[as.character(f_lhs(formula))]],
-      alternative = alternative,
-      mu = mu,
-      conf.level = conf_level,
-      ...
-    ) %>%
+  } else { # one sample
+    prelim <- stats::t.test(response_variable(x),
+                            alternative = alternative,
+                            mu = mu,
+                            conf.level = conf_level) %>%
       broom::glance()
   }
-
+  
   if (conf_int) {
     results <- prelim %>%
       dplyr::select(
@@ -88,43 +101,103 @@ t_test <- function(data, formula, # response = NULL, explanatory = NULL,
         statistic, t_df = parameter, p_value = p.value, alternative
       )
   }
-
+  
   results
-#   } else {
-#     data %>%
-#       stats::t.test(
-#        formula = substitute(response) ~ substitute(explanatory), data = .,
-#         alternative = alternative
-#       ) %>%
-#       broom::glance() %>%
-#       dplyr::select(
-#         statistic, t_df = parameter, p_value = p.value, alternative
-#       )
-#
-#     t.test(
-#       y = data[[as.character(substitute(response))]],
-#       x = data[[as.character(substitute(explanatory))]],
-#       alternative = alternative
-#     ) %>%
-#       broom::glance() %>%
-#       select(statistic, t_df = parameter, p_value = p.value, alternative)
-#   }
 }
 
 #' Tidy t-test statistic
 #'
 #' A shortcut wrapper function to get the observed test statistic for a t test.
 #'
-#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
+#' @param response The variable name in `x` that will serve as the response.
+#'   This is alternative to using the `formula` argument.
+#' @param explanatory The variable name in `x` that will serve as the
+#'   explanatory variable.
+#' @param order A string vector of specifying the order in which the levels of
+#'   the explanatory variable should be ordered for subtraction, where `order =
+#'   c("first", "second")` means `("first" - "second")`.
+#' @param alternative Character string giving the direction of the alternative
+#'   hypothesis. Options are `"two_sided"` (default), `"greater"`, or `"less"`.
+#' @param mu A numeric value giving the hypothesized null mean value for a one
+#'   sample test and the hypothesized difference for a two sample test.
+#' @param conf_int A logical value for whether to include the confidence
+#'   interval or not. `TRUE` by default.
+#' @param conf_level A numeric value between 0 and 1. Default value is 0.95.
 #' @param ... Pass in arguments to \\{infer\\} functions.
 #'
 #' @export
-t_stat <- function(data, formula, ...) {
-  data %>%
-    t_test(formula = formula, ...) %>%
-    dplyr::select(statistic)
+t_stat <- function(x, formula, 
+                   response = NULL, 
+                   explanatory = NULL,
+                   order = NULL,
+                   alternative = "two_sided", 
+                   mu = 0,
+                   conf_int = FALSE,
+                   conf_level = 0.95,
+                   ...) {
+  check_conf_level(conf_level)
+  
+  # convert all character and logical variables to be factor variables
+  x <- tibble::as_tibble(x) %>%
+    mutate_if(is.character, as.factor) %>%
+    mutate_if(is.logical, as.factor)
+  
+  # parse response and explanatory variables
+  response    <- enquo(response)
+  explanatory <- enquo(explanatory)
+  x <- parse_variables(x = x, formula = formula, 
+                       response = response, explanatory = explanatory)
+  
+  # match with old "dot" syntax in t.test
+  if (alternative == "two_sided") {
+    alternative <- "two.sided"
+  }
+  
+  # two sample
+  if (has_explanatory(x)) {
+    # if (!is.null(order)) {
+    #   x[[as.character(attr(x, "explanatory"))]] <- factor(explanatory_variable(x), 
+    #                                                       levels = c(order[1], 
+    #                                                                  order[2]),
+    #                                                       ordered = TRUE)
+    # }
+    check_order(x, explanatory_variable(x), order)
+    prelim <- stats::t.test(formula = as.formula(paste0(attr(x, "response"),
+                                                        " ~ ",
+                                                        attr(x, "explanatory"))),
+                            data = x,
+                            alternative = alternative,
+                            mu = mu,
+                            conf.level = conf_level,
+                            ...) %>%
+      broom::glance()
+  } else { # one sample
+    prelim <- stats::t.test(response_variable(x),
+                            alternative = alternative,
+                            mu = mu,
+                            conf.level = conf_level) %>%
+      broom::glance()
+  }
+  
+  if (conf_int) {
+    results <- prelim %>%
+      dplyr::select(
+        statistic, t_df = parameter, p_value = p.value, alternative,
+        lower_ci = conf.low, upper_ci = conf.high
+      )
+  } else {
+    results <- prelim %>%
+      dplyr::select(
+        statistic, t_df = parameter, p_value = p.value, alternative
+      )
+  }
+  
+  results %>%
+    dplyr::select(statistic) %>%
+    pull()
 }
 
 #' Tidy chi-squared test
@@ -132,9 +205,13 @@ t_stat <- function(data, formula, ...) {
 #' A tidier version of [chisq.test()][stats::chisq.test()] for goodness of fit
 #' tests and tests of independence.
 #'
-#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
+#' @param response The variable name in `x` that will serve as the response.
+#'   This is alternative to using the `formula` argument.
+#' @param explanatory The variable name in `x` that will serve as the
+#'   explanatory variable.
 #' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
 #'
 #' @examples
@@ -143,22 +220,37 @@ t_stat <- function(data, formula, ...) {
 #'   dplyr::mutate(cyl = factor(cyl), am = factor(am)) %>%
 #'   chisq_test(cyl ~ am)
 #'
-#' @importFrom rlang f_lhs f_rhs
 #' @export
-chisq_test <- function(data, formula, # response = NULL, explanatory = NULL,
-                       ...) {
-  if (is.null(f_rhs(formula))) {
+chisq_test <- function(x, formula, response = NULL, 
+                       explanatory = NULL, ...) {
+  # Parse response and explanatory variables
+  response    <- enquo(response)
+  explanatory <- enquo(explanatory)
+  x <- parse_variables(x = x, formula = formula, 
+                       response = response, explanatory = explanatory)
+  
+  if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
-      "`chisq_test()` currently only has functionality for ",
-      "Chi-Square Test of Independence, not for Chi-Square Goodness of Fit."
+      'The response variable of `{attr(x, "response")}` is not appropriate\n',
+      "since '{stat}' is expecting the response variable to be categorical."
     )
   }
-  ## Only currently working with formula interface
-  explanatory_var <- f_rhs(formula)
-  response_var <- f_lhs(formula)
-
-  df <- data[, as.character(c(response_var, explanatory_var))]
-  stats::chisq.test(table(df), ...) %>%
+  if (has_explanatory(x) && 
+      !(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
+    stop_glue(
+      'The explanatory variable of `{attr(x, "explanatory")}` is not appropriate\n',
+      "since '{stat}' is expecting the explanatory variable to be categorical."
+    )
+  }
+  
+  x <- x %>%
+    select(one_of(c(
+      as.character((attr(x, "response"))), as.character(attr(x, "explanatory"))
+    ))) %>%
+    mutate_if(is.character, as.factor) %>%
+    mutate_if(is.logical, as.factor)
+  
+  stats::chisq.test(table(x), ...) %>%
     broom::glance() %>%
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
 }
@@ -169,24 +261,49 @@ chisq_test <- function(data, formula, # response = NULL, explanatory = NULL,
 #' test. Uses [chisq.test()][stats::chisq.test()], which applies a continuity
 #' correction.
 #'
-#' @param data A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
 #'   explanatory on the right.
+#' @param response The variable name in `x` that will serve as the response.
+#'   This is alternative to using the `formula` argument.
+#' @param explanatory The variable name in `x` that will serve as the
+#'   explanatory variable.
 #' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
 #'
 #' @export
-chisq_stat <- function(data, formula, ...) {
-  if (is.null(f_rhs(formula))) {
+chisq_stat <- function(x, formula, response = NULL, 
+                       explanatory = NULL, ...) {
+  # Parse response and explanatory variables
+  response    <- enquo(response)
+  explanatory <- enquo(explanatory)
+  x <- parse_variables(x = x, formula = formula, 
+                       response = response, explanatory = explanatory)
+  
+  if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
-      "`chisq_stat()` currently only has functionality for ",
-      "Chi-Square Test of Independence, not for Chi-Square Goodness of Fit. ",
-      "Use `specify() %>% hypothesize() %>% calculate()` instead."
+      'The response variable of `{attr(x, "response")}` is not appropriate\n',
+      "since '{stat}' is expecting the response variable to be categorical."
     )
-  } else {
-    data %>%
-      specify(formula = formula, ...) %>%
-      calculate(stat = "Chisq")
   }
+  if (has_explanatory(x) && 
+      !(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
+    stop_glue(
+      'The explanatory variable of `{attr(x, "explanatory")}` is not appropriate\n',
+      "since '{stat}' is expecting the explanatory variable to be categorical."
+    )
+  }
+  
+  x <- x %>%
+    select(one_of(c(
+      as.character((attr(x, "response"))), as.character(attr(x, "explanatory"))
+    ))) %>%
+    mutate_if(is.character, as.factor) %>%
+    mutate_if(is.logical, as.factor)
+  
+  suppressWarnings(stats::chisq.test(table(x), ...)) %>%
+    broom::glance() %>%
+    dplyr::select(statistic) %>%
+    pull()
 }
 
 check_conf_level <- function(conf_level) {

@@ -1,7 +1,7 @@
 Package: infer
 Type: Package
 Title: Tidy Statistical Inference
-Version: 0.4.1
+Version: 0.5.0
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
     person("Chester", "Ismay", email = "chester.ismay@gmail.com", role = "aut"),
@@ -28,7 +28,8 @@ Imports:
     ggplot2,
     magrittr,
     glue (>= 1.3.0),
-    grDevices
+    grDevices,
+    purrr
 Depends:
     R (>= 3.1.2)
 Suggests: 
@@ -39,7 +40,8 @@ Suggests:
     nycflights13,
     stringr,
     testthat,
-    covr
+    covr,
+    vdiffr
 URL: https://github.com/tidymodels/infer
 BugReports: https://github.com/tidymodels/infer/issues
 Roxygen: list(markdown = TRUE)

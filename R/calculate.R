@@ -108,7 +108,7 @@ calculate <- function(x,
     )
   }
 #   else {
-#     class(result) <- append("infer", class(result))
+#     result <- append_infer_class(result)
 #   }
 
   result <- copy_attrs(to = result, from = x)
@@ -232,12 +232,12 @@ calc_impl.Chisq <- function(type, x, order, ...) {
       p_levels <- get_par_levels(x)
       x %>%
         dplyr::summarize(
-          stat = stats::chisq.test(
+          stat = suppressWarnings(stats::chisq.test(
             # Ensure correct ordering of parameters
             table(!!(attr(x, "response")))[p_levels],
             p = attr(x, "params")
           )$stat
-        )
+        ))
     } else {
       # Straight from `specify()`
       stop_glue(
