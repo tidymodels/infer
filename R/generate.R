@@ -163,12 +163,17 @@ permute <- function(x, reps = 1, ...) {
 permute_once <- function(x, ...) {
   dots <- list(...)
 
-  if (attr(x, "null") == "independence") {
+  if (is_hypothesized(x) && (attr(x, "null") == "independence")) {
     y <- pull(x, !!attr(x, "response"))
 
     y_prime <- sample(y, size = length(y), replace = FALSE)
     x[as.character(attr(x, "response"))] <- y_prime
     return(x)
+  } else {
+    stop_glue(
+      "Permuting should be done only when doing independence hypothesis test. ",
+      "See `hypothesize()`."
+    )
   }
 }
 
