@@ -397,7 +397,6 @@ test_that("obs_stat as a data.frame works", {
   )
 })
 
-
 test_that('method = "both" behaves nicely', {
   # stop_glue(
   #   '`generate()` and `calculate()` are both required to be done prior ',
@@ -484,6 +483,28 @@ test_that("confidence interval plots are working", {
   )
 
   expect_warning(iris_boot %>% visualize(obs_stat = 3, endpoints = perc_ci))
+})
+
+test_that("title adapts to not hypothesis testing workflow", {
+  set.seed(100)
+  iris_boot_tbl <- iris_tbl %>% 
+    specify(response = Sepal.Width) %>% 
+    generate(reps = 100, type = "bootstrap")
+  
+  expect_doppelganger(
+    "vis-no-hypothesize-sim",
+    iris_boot_tbl %>% 
+      calculate(stat = "mean") %>%
+      visualize()
+  )
+  expect_doppelganger(
+    "vis-no-hypothesize-both",
+    expect_warning(
+      iris_boot_tbl %>% 
+        calculate(stat = "t") %>%
+        visualize(method = "both")
+    )
+  )
 })
 
 test_that("warn_right_tail_test works", {
