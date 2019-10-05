@@ -100,7 +100,7 @@ check_permutation_attributes <- function(x, attr) {
 
 bootstrap <- function(x, reps = 1, ...) {
   # Check if hypothesis test chosen
-  if (!is_nuat(x, "null")) {
+  if (is_hypothesized(x)) {
     # If so, shift the variable chosen to have a mean corresponding
     # to that specified in `hypothesize`
     if (!is.null(attr(attr(x, "params"), "names"))){

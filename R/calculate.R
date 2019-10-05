@@ -49,7 +49,7 @@ calculate <- function(x,
   }
 
   if (is_nuat(x, "generate") || !attr(x, "generate")) {
-    if (is_nuat(x, "null")) {
+    if (!is_hypothesized(x)) {
       x$replicate <- 1L
     } else if (
       stat %in% c(
@@ -353,7 +353,7 @@ calc_impl.t <- function(type, x, order, ...) {
   # One sample mean
   else if (attr(x, "theory_type") == "One sample t") {
     # For bootstrap
-    if (is_nuat(x, "null")) {
+    if (!is_hypothesized(x)) {
       x %>%
         dplyr::summarize(
           stat = stats::t.test(!!attr(x, "response"), ...)[["statistic"]]
