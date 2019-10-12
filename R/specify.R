@@ -126,19 +126,19 @@ parse_variables <- function(x, formula, response = NULL,
   }
   if (methods::hasArg(formula)) {
     tryCatch(
-      formula_arg_is_formula <- rlang::is_formula(formula), 
+      rlang::is_formula(formula), 
       error = function(e) {
         stop_glue("The argument you passed in for the formula does not exist.
                   * Were you trying to pass in an unquoted column name?
                   * Did you forget to name one or more arguments?")
       }
-        )
-    if (!formula_arg_is_formula) {
+    )
+    if (!rlang::is_formula(formula)) {
       stop_glue("The first unnamed argument must be a formula.
                 * You passed in '{get_type(formula)}'.
                 * Did you forget to name one or more arguments?")
     }
-    }
+  }
   
   attr(x, "response")    <- get_expr(response)
   attr(x, "explanatory") <- get_expr(explanatory)
@@ -148,35 +148,50 @@ parse_variables <- function(x, formula, response = NULL,
     attr(x, "explanatory") <- f_rhs(formula)
   }
   
-  if (is_nuat(x, "response")) {
+  # Check response and explanatory variables to be appropriate for later use
+  if (!has_response(x)) {
     stop_glue("Supply not `NULL` response variable.")
   }
-  
-  if (!(as.character(attr(x, "response")) %in% names(x))) {
-    stop_glue(
-      'The response variable `{attr(x, "response")}` cannot be found in this ',
-      'dataframe.'
-    )
-  }
+  check_var_correct(x, "response")
+  check_var_correct(x, "explanatory")
   
   # If there's an explanatory var
-  if (has_explanatory(x)) {
-    if (!as.character(attr(x, "explanatory")) %in% names(x)) {
+  check_vars_different(x)
+  
+  x
+}
+
+check_var_correct <- function(x, var_name) {
+  var <- attr(x, var_name)
+  
+  # Variable (if present) should be a symbolic column name
+  if (!is.null(var)) {
+    if (!rlang::is_symbolic(var)) {
+      stop_glue("The {var_name} variable should be symbolic.")
+    }
+    
+    if (!(as.character(var) %in% names(x))) {
       stop_glue(
-        'The explanatory variable `{attr(x, "explanatory")}` cannot be found ',
-        'in this dataframe.'
+        'The {var_name} variable `{var}` cannot be found in this dataframe.'
       )
     }
-    if (
-      identical(
-        as.character(attr(x, "response")), as.character(attr(x, "explanatory"))
-      )
-    ) {
+  }
+  
+  TRUE
+}
+
+check_vars_different <- function(x) {
+  if (has_response(x) && has_explanatory(x)) {
+    res_var <- as.character(attr(x, "response"))
+    exp_var <- as.character(attr(x, "explanatory"))
+    
+    if (identical(res_var, exp_var)) {
       stop_glue(
         "The response and explanatory variables must be different from one ",
         "another."
       )
     }
   }
-  return(x)
+  
+  TRUE
 }
