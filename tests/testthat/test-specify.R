@@ -76,3 +76,7 @@ test_that("is_complete works", {
   some_missing <- data.frame(vec = c(NA, 2, 3))
   expect_warning(specify(some_missing, response = vec))
 })
+
+test_that("specify doesn't have NSE issues (#256)", {
+  expect_silent(specify(tibble(x = 1:10), x ~ NULL))
+})
