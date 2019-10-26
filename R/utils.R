@@ -212,7 +212,7 @@ check_for_factor_stat <- function(x, stat, explanatory_variable) {
 check_point_params <- function(x, stat) {
   param_names <- attr(attr(x, "params"), "names")
   hyp_text <- 'to be set in `hypothesize()`.'
-  if (!is_nuat(x, "null")) {
+  if (is_hypothesized(x)) {
     if (stat %in% c("mean", "median", "sd", "prop")) {
       if ((stat == "mean") && !("mu" %in% param_names)) {
         stop_glue('`stat == "mean"` requires `"mu"` {hyp_text}')

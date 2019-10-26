@@ -107,10 +107,6 @@ is_generated <- function(x) {
   !is.null(attr(x, "generate")) && attr(x, "generate")
 }
 
-is_hypothesized <- function(x){
-  !is.null(attr(x, "null"))
-}
-
 # which_distribution <- function(x, theory_type, obs_stat, direction){
 #
 #   param <- attr(x, "distr_param")

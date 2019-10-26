@@ -100,7 +100,7 @@ check_permutation_attributes <- function(x, attr) {
 
 bootstrap <- function(x, reps = 1, ...) {
   # Check if hypothesis test chosen
-  if (!is_nuat(x, "null")) {
+  if (is_hypothesized(x)) {
     # If so, shift the variable chosen to have a mean corresponding
     # to that specified in `hypothesize`
     if (!is.null(attr(attr(x, "params"), "names"))){
@@ -163,12 +163,17 @@ permute <- function(x, reps = 1, ...) {
 permute_once <- function(x, ...) {
   dots <- list(...)
 
-  if (attr(x, "null") == "independence") {
+  if (is_hypothesized(x) && (attr(x, "null") == "independence")) {
     y <- pull(x, !!attr(x, "response"))
 
     y_prime <- sample(y, size = length(y), replace = FALSE)
     x[as.character(attr(x, "response"))] <- y_prime
     return(x)
+  } else {
+    stop_glue(
+      "Permuting should be done only when doing independence hypothesis test. ",
+      "See `hypothesize()`."
+    )
   }
 }
 

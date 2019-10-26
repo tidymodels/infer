@@ -370,12 +370,25 @@ theory_curve <- function(method, d_fun, q_fun, args_list, dens_color) {
 title_labels_layer <- function(data) {
   method <- get_viz_method(data)
   theory_type <- short_theory_type(data)
+  
+  if (is_hypothesized(data)) {
+    distr_name <- "Null Distribution"
+  } else {
+    distr_name <- switch(
+      attr(data, "type"),
+      bootstrap = "Bootstrap Distribution",
+      # For other generation types there will be no distribution adjective.
+      # However, currently they seem to be never used without `hypothesize()`
+      # step.
+      "Distribution"
+    )
+  }
 
   title_string <- switch(
     method,
-    simulation = "Simulation-Based Null Distribution",
-    theoretical = "Theoretical {theory_type} Null Distribution",
-    both = "Simulation-Based and Theoretical {theory_type} Null Distributions"
+    simulation = "Simulation-Based {distr_name}",
+    theoretical = "Theoretical {theory_type} {distr_name}",
+    both = "Simulation-Based and Theoretical {theory_type} {distr_name}s"
   )
 
   x_lab <- switch(method, simulation = "stat", "{theory_type} stat")

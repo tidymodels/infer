@@ -64,3 +64,7 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
   )
   append_infer_class(tibble::as_tibble(x))
 }
+
+is_hypothesized <- function(x){
+  !is.null(attr(x, "null"))
+}
