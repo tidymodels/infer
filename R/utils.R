@@ -35,6 +35,19 @@ is_nuat <- function(x, at) {
   is.null(attr(x, at))
 }
 
+# Wrapper for deduplication by name after doing `c(...)`
+c_dedupl <- function(...) {
+  l <- c(...)
+  
+  l_names <- names(l)
+  
+  if (is.null(l_names)) {
+    l
+  } else {
+    l[!duplicated(l_names) | (l_names == "")]
+  }
+}
+
 explanatory_variable <- function(x) {
   x[[as.character(attr(x, "explanatory"))]]
 }
