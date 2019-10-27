@@ -59,11 +59,11 @@ shade_p_value <- function(obs_stat, direction,
     if (direction %in% c("less", "left", "greater", "right")) {
       tail_area <- one_tail_area(obs_stat, direction)
       
-      res <- c(res, geom_tail_area(tail_area, fill))
+      res <- c(res, geom_tail_area(tail_area, fill, ...))
     } else if (direction %in% c("two_sided", "both")) {
       tail_area <- two_tail_area(obs_stat, direction)
       
-      res <- c(res, geom_tail_area(tail_area, fill))
+      res <- c(res, geom_tail_area(tail_area, fill, ...))
     } else {
       warning_glue(
         '`direction` should be one of `"less"`, `"left"`, `"greater"`, ",
@@ -73,15 +73,24 @@ shade_p_value <- function(obs_stat, direction,
   }
   
   # Add vertical line at `obs_stat`
-  c(
-    res,
-    list(ggplot2::geom_segment(
+  # Making extra step of precomputing arguments in order to have default value
+  # of `size = 2` overwritable in `...`
+  segment_args <- c_dedupl(
+    # Not overwritable arguments
+    list(
       # Here `aes()` is needed to force {ggplot2} to include segment in the plot
-      aes(x = obs_stat, xend = obs_stat, y = 0, yend = Inf),
-      colour = color, size = 2,
+      mapping = aes(x = obs_stat, xend = obs_stat, y = 0, yend = Inf),
+      color = color,
       inherit.aes = FALSE
-    ))
+    ),
+    # Extra arguments
+    list(...),
+    # Default arguments that might be replaced in `...`
+    list(size = 2)
   )
+  segment_layer <- do.call(ggplot2::geom_segment, segment_args)
+  
+  c(res, list(segment_layer))
 }
 
 #' @rdname shade_p_value
@@ -101,14 +110,21 @@ check_shade_p_value_args <- function(obs_stat, direction, color, fill) {
   TRUE
 }
 
-geom_tail_area <- function(tail_data, fill) {
-  list(
-    ggplot2::geom_area(
-      data = tail_data, mapping = aes(x = x, y = y, group = dir),
-      fill = fill, alpha = 0.6,
-      show.legend = FALSE, inherit.aes = FALSE
-    )
+geom_tail_area <- function(tail_data, fill, ...) {
+  area_args <- c_dedupl(
+    list(
+      data = tail_data,
+      mapping = aes(x = x, y = y, group = dir),
+      fill = fill,
+      show.legend = FALSE,
+      inherit.aes = FALSE
+    ),
+    list(...),
+    list(alpha = 0.6)
   )
+  area_layer <- do.call(ggplot2::geom_area, area_args)
+  
+  list(area_layer)
 }
 
 two_tail_area <- function(obs_stat, direction) {
