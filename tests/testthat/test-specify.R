@@ -27,16 +27,20 @@ test_that("data argument", {
 
 test_that("response and explanatory arguments", {
   expect_error(specify(mtcars_df, response = blah), "response.*cannot be found")
-  expect_error(specify(mtcars_df, response = "blah"), "response.*symbolic")
+  expect_error(
+    specify(mtcars_df, response = "blah"), "response.*bare.*not a string"
+  )
   expect_error(
     specify(mtcars_df, formula = mpg ~ blah), "explanatory.*cannot be found"
   )
   expect_error(specify(mtcars_df, blah2 ~ cyl), "response.*cannot be found")
   expect_error(specify(mtcars_df), "Supply.*response")
   expect_error(specify(mtcars_df, formula = mpg ~ mpg), "different")
-  expect_error(specify(mtcars_df, formula = "mpg" ~ cyl), "response.*symbolic")
   expect_error(
-    specify(mtcars_df, formula = mpg ~ "cyl"), "explanatory.*symbolic"
+    specify(mtcars_df, formula = "mpg" ~ cyl), "response.*bare.*not a string"
+  )
+  expect_error(
+    specify(mtcars_df, formula = mpg ~ "cyl"), "explanatory.*bare.*not a string"
   )
   expect_silent(specify(mtcars_df, formula = mpg ~ cyl))
 

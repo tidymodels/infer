@@ -167,7 +167,10 @@ check_var_correct <- function(x, var_name) {
   # Variable (if present) should be a symbolic column name
   if (!is.null(var)) {
     if (!rlang::is_symbolic(var)) {
-      stop_glue("The {var_name} variable should be symbolic.")
+      stop_glue(
+        "The {var_name} should be a bare variable name (not a string in ",
+        "quotation marks)."
+      )
     }
     
     if (!(as.character(var) %in% names(x))) {
