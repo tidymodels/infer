@@ -12,6 +12,7 @@
 #' @param fill A character or hex string specifying the color to shade the
 #'   confidence interval. If `NULL` then no shading is actually done.
 #' @param ... Other arguments passed along to \\{ggplot2\\} functions.
+#' 
 #' @return A list of \\{ggplot2\\} objects to be added to the `visualize()`
 #'   output.
 #'
@@ -36,6 +37,8 @@ NULL
 #' @export
 shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
                                       fill = "turquoise", ...) {
+  dots <- list(...)
+  
   endpoints <- impute_endpoints(endpoints)
   check_shade_confidence_interval_args(color, fill)
   
@@ -45,30 +48,41 @@ shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
   }
   
   if (!is.null(fill)) {
-    res <- c(
-      res, list(
-        ggplot2::geom_rect(
-          data = data.frame(endpoints[1]),
-          fill = fill, alpha = 0.6,
-          aes(xmin = endpoints[1], xmax = endpoints[2], ymin = 0, ymax = Inf),
-          inherit.aes = FALSE,
-          ...
-        )
-      )
+    # Making extra step of precomputing arguments in order to have default value
+    # of `alpha = 0.6` overwritable in `...`
+    rect_args <- c_dedupl(
+      # Not overwritable arguments
+      list(
+        data = data.frame(endpoints[1]),
+        mapping = aes(
+          xmin = endpoints[1], xmax = endpoints[2], ymin = 0, ymax = Inf
+        ),
+        fill = fill,
+        inherit.aes = FALSE
+      ),
+      # Extra arguments
+      dots,
+      # Default arguments that might be replaced in `...`
+      list(alpha = 0.6)
     )
+    rect_layer <- do.call(ggplot2::geom_rect, rect_args)
+    
+    res <- c(res, list(rect_layer))
   }
   
-  c(
-    res,
+  segment_args <- c_dedupl(
     list(
-      ggplot2::geom_segment(
-        data = data.frame(x = endpoints),
-        aes(x = x, xend = x, y = 0, yend = Inf),
-        colour = color, size = 2,
-        inherit.aes = FALSE
-      )
-    )
+      data = data.frame(x = endpoints),
+      mapping = aes(x = x, xend = x, y = 0, yend = Inf),
+      color = color,
+      inherit.aes = FALSE
+    ),
+    dots,
+    list(size = 2)
   )
+  segment_layer <- do.call(ggplot2::geom_segment, segment_args)
+  
+  c(res, list(segment_layer))
 }
 
 #' @rdname shade_confidence_interval

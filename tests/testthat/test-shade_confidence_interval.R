@@ -43,6 +43,17 @@ test_that("shade_confidence_interval accepts `NULL` as `endpoints`",  {
   )
 })
 
+test_that("shade_confidence_interval uses extra aesthetic", {
+  expect_doppelganger(
+    "ci-extra-aes-1",
+    iris_viz_sim + shade_confidence_interval(c(-1, 1), alpha = 1)
+  )
+  expect_doppelganger(
+    "ci-extra-aes-2",
+    iris_viz_sim + shade_confidence_interval(c(-1, 1), linetype = "dotted")
+  )
+})
+
 test_that("shade_confidence_interval throws errors and warnings", {
   expect_warning(iris_viz_sim + shade_confidence_interval(c(1, 2, 3)), "2")
   expect_error(
