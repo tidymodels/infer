@@ -6,24 +6,22 @@
 set_params <- function(x) {
   attr(x, "theory_type") <- NULL
 
-  if (!is_nuat(x, "response")) {
+  if (has_response(x)) {
     num_response_levels <- length(levels(response_variable(x)))
   }
 
   # One variable
   if (
-    !is_nuat(x, "response") && is_nuat(x, "explanatory") &&
+    has_response(x) && !has_explanatory(x) &&
     !is_nuat(x, "response_type") && is_nuat(x, "explanatory_type")
   ) {
 
     # One mean
     if (attr(x, "response_type") %in% c("integer", "numeric")) {
       attr(x, "theory_type") <- "One sample t"
-      attr(x, "distr_param") <- x %>%
-        dplyr::summarize(
-          df = stats::t.test(response_variable(x))[["parameter"]]
-        ) %>%
-        dplyr::pull()
+      attr(x, "distr_param") <- stats::t.test(
+        response_variable(x)
+      )[["parameter"]]
       attr(x, "type") <- "bootstrap"
     } else if (
       
@@ -43,7 +41,7 @@ set_params <- function(x) {
 
   # Two variables
   if (
-    !is_nuat(x, "response") && !is_nuat(x, "explanatory") &
+    has_response(x) && has_explanatory(x) &
     !is_nuat(x, "response_type") && !is_nuat(x, "explanatory_type")
   ) {
     attr(x, "type") <- "bootstrap"
@@ -59,32 +57,19 @@ set_params <- function(x) {
         attr(x, "theory_type") <- "Two sample t"
         # Keep track of Satterthwaite degrees of freedom since lost when
         # in aggregation w/ calculate()/generate()
-        attr(x, "distr_param") <- x %>%
-          dplyr::summarize(
-            df = stats::t.test(
-              !!attr(x, "response") ~ !!attr(x, "explanatory")
-            )[["parameter"]]
-          ) %>%
-          dplyr::pull()
+        attr(x, "distr_param") <- stats::t.test(
+          response_variable(x) ~ explanatory_variable(x)
+        )[["parameter"]]
       } else {
         
         # >2 sample means (F distribution)
         attr(x, "theory_type") <- "ANOVA"
         # Get numerator and denominator degrees of freedom
-        attr(x, "distr_param") <- x %>%
-          dplyr::summarize(
-            df1 = stats::anova(stats::aov(
-              !!attr(x, "response") ~ !!attr(x, "explanatory")
-            ))$Df[1]
-          ) %>%
-          dplyr::pull()
-        attr(x, "distr_param2") <- x %>%
-          dplyr::summarize(
-            df2 = stats::anova(stats::aov(
-              !!attr(x, "response") ~ !!attr(x, "explanatory")
-            ))$Df[2]
-          ) %>%
-          dplyr::pull()
+        degrees <- stats::anova(stats::aov(
+          response_variable(x) ~ explanatory_variable(x)
+        ))$Df
+        attr(x, "distr_param") <- degrees[1]
+        attr(x, "distr_param2") <- degrees[2]
       }
     }
 
@@ -106,15 +91,11 @@ set_params <- function(x) {
         
         # >2 sample proportions (chi-square test of indep)
         attr(x, "theory_type") <- "Chi-square test of indep"
-        attr(x, "distr_param") <- x %>%
-          dplyr::summarize(
-            df = suppressWarnings(
-              stats::chisq.test(
-                table(response_variable(x), explanatory_variable(x))
-              )$parameter
-            )
-          ) %>%
-          dplyr::pull()
+        attr(x, "distr_param") <- suppressWarnings(
+          stats::chisq.test(
+            table(response_variable(x), explanatory_variable(x))
+          )$parameter
+        )
       }
     }
 
