@@ -1,21 +1,37 @@
 #' Generate resamples, permutations, or simulations
 #'
-#' Generation is done based on [specify()] and (if needed) [hypothesize()]
-#' inputs.
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#' 
+#' Generation creates a null distribution from [specify()] and (if needed) 
+#' [hypothesize()] inputs
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param reps The number of resamples to generate.
-#' @param type Currently either `bootstrap`, `permute`, or `simulate` as defined
-#' in the `GENERATION_TYPES` vector.
+#' @param type Currently either `bootstrap`, `permute`, or `simulate` 
+#' (see below)
 #' @param ... Currently ignored.
 #'
 #' @return A tibble containing `rep` generated datasets, indicated by the
 #'   `replicate` column.
+#'   
+#' @section Generation Types:
+#' 
+#' The `type` argument determines the method used to create the null 
+#' distribution.
+#' 
+#' \itemize{
+#'   \item `bootstrap`: A bootstrap sample will be drawn for each `rep`,
+#'   where a sample of size equal to the input sample size is drawn (with 
+#'   replacement) from the input sample data.
+#'   \item `permute`: For each `rep`, each input value will be randomly 
+#'   reassigned (without replacement) to a new output value in the sample.
+#'   \item `simulate`: A value will be sampled from a theoretical distribution 
+#'   with parameters specified in [hypothesis()] for each `rep`. (This option is 
+#'   currently only applicable for testing point estimates.)
+#' }
 #'
 #' @examples
-#' # Different `type` options
-#' GENERATION_TYPES   
-#'  
 #' # Permutation test for two binary variables
 #' mtcars %>%
 #'   dplyr::mutate(am = factor(am), vs = factor(vs)) %>%
@@ -47,10 +63,6 @@ generate <- function(x, reps = 1, type = NULL, ...) {
   )
 }
 
-
-#' @rdname generate
-#' @export
-GENERATION_TYPES <- c("bootstrap", "permute",  "simulate")
 
 sanitize_generation_type <- function(x) {
   if(is.null(x)) return(x)
