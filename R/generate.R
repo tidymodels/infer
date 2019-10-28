@@ -27,7 +27,7 @@
 #'   \item `permute`: For each `rep`, each input value will be randomly 
 #'   reassigned (without replacement) to a new output value in the sample.
 #'   \item `simulate`: A value will be sampled from a theoretical distribution 
-#'   with parameters specified in [hypothesis()] for each `rep`. (This option is 
+#'   with parameters specified in [hypothesize()] for each `rep`. (This option is 
 #'   currently only applicable for testing point estimates.)
 #' }
 #'

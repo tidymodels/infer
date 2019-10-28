@@ -39,7 +39,7 @@ replacement) from the input sample data.
 \item \code{permute}: For each \code{rep}, each input value will be randomly
 reassigned (without replacement) to a new output value in the sample.
 \item \code{simulate}: A value will be sampled from a theoretical distribution
-with parameters specified in \code{\link[=hypothesis]{hypothesis()}} for each \code{rep}. (This option is
+with parameters specified in \code{\link[=hypothesize]{hypothesize()}} for each \code{rep}. (This option is
 currently only applicable for testing point estimates.)
 }
 }
