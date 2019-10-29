@@ -29,7 +29,8 @@ Imports:
     magrittr,
     glue (>= 1.3.0),
     grDevices,
-    purrr
+    purrr,
+    lifecycle
 Depends:
     R (>= 3.1.2)
 Suggests: 
