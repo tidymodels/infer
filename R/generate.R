@@ -9,10 +9,10 @@
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param reps The number of resamples to generate.
 #' @param type Currently either `bootstrap`, `permute`, or `simulate` 
-#' (see below)
+#' (see below).
 #' @param ... Currently ignored.
 #'
-#' @return A tibble containing `rep` generated datasets, indicated by the
+#' @return A tibble containing `reps` generated datasets, indicated by the
 #'   `replicate` column.
 #'   
 #' @section Generation Types:
@@ -21,14 +21,14 @@
 #' distribution.
 #' 
 #' \itemize{
-#'   \item `bootstrap`: A bootstrap sample will be drawn for each `rep`,
+#'   \item `bootstrap`: A bootstrap sample will be drawn for each replicate,
 #'   where a sample of size equal to the input sample size is drawn (with 
 #'   replacement) from the input sample data.
-#'   \item `permute`: For each `rep`, each input value will be randomly 
+#'   \item `permute`: For each replicate, each input value will be randomly 
 #'   reassigned (without replacement) to a new output value in the sample.
 #'   \item `simulate`: A value will be sampled from a theoretical distribution 
-#'   with parameters specified in [hypothesize()] for each `rep`. (This option is 
-#'   currently only applicable for testing point estimates.)
+#'   with parameters specified in [hypothesize()] for each replicate. (This 
+#'   option is currently only applicable for testing point estimates.)
 #' }
 #'
 #' @examples

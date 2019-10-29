@@ -12,12 +12,12 @@ generate(x, reps = 1, type = NULL, ...)
 \item{reps}{The number of resamples to generate.}
 
 \item{type}{Currently either \code{bootstrap}, \code{permute}, or \code{simulate}
-(see below)}
+(see below).}
 
 \item{...}{Currently ignored.}
 }
 \value{
-A tibble containing \code{rep} generated datasets, indicated by the
+A tibble containing \code{reps} generated datasets, indicated by the
 \code{replicate} column.
 }
 \description{
@@ -33,14 +33,14 @@ The \code{type} argument determines the method used to create the null
 distribution.
 
 \itemize{
-\item \code{bootstrap}: A bootstrap sample will be drawn for each \code{rep},
+\item \code{bootstrap}: A bootstrap sample will be drawn for each replicate,
 where a sample of size equal to the input sample size is drawn (with
 replacement) from the input sample data.
-\item \code{permute}: For each \code{rep}, each input value will be randomly
+\item \code{permute}: For each replicate, each input value will be randomly
 reassigned (without replacement) to a new output value in the sample.
 \item \code{simulate}: A value will be sampled from a theoretical distribution
-with parameters specified in \code{\link[=hypothesize]{hypothesize()}} for each \code{rep}. (This option is
-currently only applicable for testing point estimates.)
+with parameters specified in \code{\link[=hypothesize]{hypothesize()}} for each replicate. (This
+option is currently only applicable for testing point estimates.)
 }
 }
 
