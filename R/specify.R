@@ -1,14 +1,20 @@
-#' Specify the response and explanatory variables
+#' Specify response and explanatory variables
 #'
-#' `specify()` also converts character variables chosen to be `factor`s.
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#'  
+#' `specify()` is used to specify which columns in the supplied data frame are
+#' the relevant response (and, if applicable, explanatory) variables. Note that 
+#' character variables are converted to `factor`s.
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
-#'   explanatory on the right.
+#'   explanatory on the right. Alternatively, a `response` and `explanatory`
+#'   argument can be supplied.
 #' @param response The variable name in `x` that will serve as the response.
-#'   This is alternative to using the `formula` argument.
+#'   This is an alternative to using the `formula` argument.
 #' @param explanatory The variable name in `x` that will serve as the
-#'   explanatory variable.
+#'   explanatory variable. This is an alternative to using the formula argument.
 #' @param success The level of `response` that will be considered a success, as
 #'   a string. Needed for inference on one proportion, a difference in
 #'   proportions, and corresponding z stats.

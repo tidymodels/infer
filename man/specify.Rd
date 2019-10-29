@@ -2,7 +2,7 @@
 % Please edit documentation in R/specify.R
 \name{specify}
 \alias{specify}
-\title{Specify the response and explanatory variables}
+\title{Specify response and explanatory variables}
 \usage{
 specify(x, formula, response = NULL, explanatory = NULL,
   success = NULL)
@@ -11,13 +11,14 @@ specify(x, formula, response = NULL, explanatory = NULL,
 \item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 
 \item{formula}{A formula with the response variable on the left and the
-explanatory on the right.}
+explanatory on the right. Alternatively, a \code{response} and \code{explanatory}
+argument can be supplied.}
 
 \item{response}{The variable name in \code{x} that will serve as the response.
-This is alternative to using the \code{formula} argument.}
+This is an alternative to using the \code{formula} argument.}
 
 \item{explanatory}{The variable name in \code{x} that will serve as the
-explanatory variable.}
+explanatory variable. This is an alternative to using the formula argument.}
 
 \item{success}{The level of \code{response} that will be considered a success, as
 a string. Needed for inference on one proportion, a difference in
@@ -28,7 +29,11 @@ A tibble containing the response (and explanatory, if specified)
 variable data.
 }
 \description{
-\code{specify()} also converts character variables chosen to be \code{factor}s.
+\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+
+\code{specify()} is used to specify which columns in the supplied data frame are
+the relevant response (and, if applicable, explanatory) variables. Note that
+character variables are converted to \code{factor}s.
 }
 \examples{
 # Permutation test similar to ANOVA
