@@ -80,9 +80,8 @@ null_distn %>%
 
 **Observed stat**
 ```{r}
-( t_bar <- fli_small %>%
-  specify(response = dep_delay) %>%
-  calculate(stat = "t") )
+t_obs <- fli_small %>%
+  t_stat(response = dep_delay, mu = 8)
 ```
 
 ```{r}
