@@ -20,3 +20,4 @@
 ^_pkgdown.yml
 ^_pkgdown\.yml$
 ^docs$
+^data-raw*
