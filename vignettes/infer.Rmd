@@ -25,23 +25,131 @@ The workflow of this package is designed around this idea. Starting out with som
 + `generate()` allows you to construct a null distribution based on your null hypothesis.
 + `calculate()` allows you to calculate a summary statistic describing the effect observed in the data.
 
-Throughout this vignette, we make use of the *dataset_name* dataset that is included in the package.
+Throughout this vignette, we make use of `gss`, a dataset supplied by `infer` containing a sample of 3000 observations sampled from the *General Social Survey*. 
+
+```{r load-devtools, echo = FALSE, message = FALSE, warning = FALSE}
+devtools::load_all()
+```
+
+
+```{r load-gss}
+# load in the dataset
+data(gss)
+
+# take a look at its structure
+str(gss)
+```
+
+Each row is an individual survey response, containing some basic demographic information on the respondent as well as some additional variables. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not provide accurate estimates unless weighted properly.
 
 ### `specify()`: Specifying Response (and Explanatory) Variables
 
-<!-- some background on specify --> 
+The `specify` function can be used to specify which of the variables in the dataset you're interested in. If you're only interested in, say, the `age` of the respondents, you might write:
+
+```{r specify-example, warning = FALSE, message = FALSE}
+gss %>%
+  specify(response = age)
+```
+
+On the front-end, the output of `specify` just looks like it selects off the columns in the dataframe that you've specified. Checking the class of this object, though:
+
+```{r specify-one, warning = FALSE, message = FALSE}
+gss %>%
+  specify(response = age) %>%
+  class()
+```
+
+We can see that the `infer` class has been appended on top of the dataframe classes--this new class stores some extra metadata.
+
+If you're interested in two variables--`age` and `partyid`, for example--you can `specify` their relationship in one of two (equivalent) ways:
+
+```{r specify-two, warning = FALSE, message = FALSE}
+# with the named arguments
+gss %>%
+  specify(age ~ partyid)
+
+# as a formula
+gss %>%
+  specify(response = age, explanatory = partyid)
+```
+
+If you're doing inference on one proportion or a difference in proportions, you will need to use the `success` argument to specify which level of your `response` variable is a success. For instance, if you're interested in using <!-- need more binary variables, less charged--> , you might use the following code:
+
+```{r specify-success, warning = FALSE, message = FALSE}
+# specifying for inference on proportions
+
+```
 
 ### `hypothesize()`: Declaring the Null Hypothesis
 
-<!-- some background on hypothesize --> 
+The next step in the `infer` pipeline is often to declare a null hypothesis using `hypothesize()`. The first step is to supply one of "independence" or "point" to the `null` argument. If your null hypothesis assumes independence between two variables, then this is all you need to supply to `hypothesize()`:
+
+```{r hypothesize-independence, warning = FALSE, message = FALSE}
+gss %>%
+  specify(sex ~ partyid, success = "female") %>%
+  hypothesize(null = "independence")
+```
+
+If you're doing inference on a point estimate, you will also need to provide one of `p` (the true proportion of successes, between 0 and 1), `mu` (the true mean), `med` (the true median), or `sigma` (the true standard deviation). For instance, if the null hypothesis is that the mean number of hours worked per week in this sample is 40, we would write:
+
+```{r hypothesize-40-hr-week, warning = FALSE, message = FALSE}
+gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40)
+```
+
+Again, from the front-end, the dataframe outputted from `hypothesize()` looks almost exactly the same as it did when it came out of `specify()`, but `infer` now "knows" your null hypothesis.
 
 ### `generate()`: Generating the Null Distribution
 
-<!-- some background on generate --> 
+Once we've asserted our null hypothesis using `hypothesize()`, we can construct a null distribution based on this hypothesis. We can do this using one of several methods, supplied in the `type` argument:
+
+* `bootstrap`: A bootstrap sample will be drawn for each replicate, where a sample of size equal to the input sample size is drawn (with replacement) from the input sample data.  
+* `permute`: For each replicate, each input value will be randomly reassigned (without replacement) to a new output value in the sample.  
+* `simulate`: A value will be sampled from a theoretical distribution with parameters specified in `hypothesize()` for each replicate. (This option is currently only applicable for testing point estimates.)  
+
+Continuing on with our example above, about the average number of hours worked a week, we might write:
+
+```{r generate-point, warning = FALSE, message = FALSE}
+gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
+  generate(reps = 1000, type = "bootstrap")
+```
+
+In the above example, we take 1000 bootstrap samples to form our null distribution.
+
+To generate a null distribution for the independence of two variables, we could also randomly reshuffle the pairings of explanatory and response variables to break any existing association. For instance, to generate 1000 replicates that can be used to create a null distribution under the assumption that political party affiliation is not affected by age:
+
+```{r generate-permute, warning = FALSE, message = FALSE}
+gss %>%
+  specify(partyid ~ age) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute")
+```
 
 ### `calculate()`: Calculating Summary Statistics
 
-<!-- some background on calculate --> 
+Depending on whether you're carrying out computation-based inference or theory-based inference, you will either supply `calculate()` with the output of `generate()` or `hypothesize`, respectively. The function, for one, takes in a `stat` argument, which is currently one of "mean", "median", "sum", "sd", "prop", "count", "diff in means", "diff in medians", "diff in props", "Chisq", "F", "t", "z", "slope", or "correlation". For example, continuing our example above to calculate the null distribution of mean hours worked per week:
+
+```{r calculate-point, warning = FALSE, message = FALSE}
+gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
+  generate(reps = 1000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+```
+
+If you're carrying out inference on differences in means, medians, or proportions, or t and z statistics, you will need to supply an `order` argument, giving the order in which the explanatory variables should be subtracted. For instance, to find the difference in mean age of those that identify as democrat or republican, we might write:
+
+```{r specify-diff-in-means}
+gss %>%
+  dplyr::filter(partyid %in% c("dem", "rep")) %>%
+  specify(age ~ partyid) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate("diff in means", order = c("rep", "dem"))
+```
 
 ### Other Utilities in infer
 
@@ -49,7 +157,7 @@ Throughout this vignette, we make use of the *dataset_name* dataset that is incl
 
 ### Examples
 
-We'll work through some examples using the *dataset_name* dataset. In each, we'll point out the kinds of variable(s) involved, generate a null distribution, calculate the relevant test statistic, visualize where the observed statistic lies in the observed distribution, extract the p-value from the test statistic, and find a confidence interval for the point estimate.
+We'll work through some examples using `gss`, a dataset supplied by `infer` containing a sample of 3000 observations sampled from the *General Social Survey*. In each, we'll point out the kinds of variable(s) involved, generate a null distribution, calculate the relevant test statistic, visualize where the observed statistic lies in the observed distribution, extract the p-value from the test statistic, and find a confidence interval for the point estimate.
 
 #### Example Template
 
@@ -78,7 +186,3 @@ Point out and describe the relevant variable(s). Mention common terminology that
 ```{r confidence-interval}
 # find a confidence interval for the point estimate
 ```
-
-
-
-
