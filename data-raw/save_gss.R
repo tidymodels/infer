@@ -1,4 +1,5 @@
 library(dplyr)
+library(forcats)
 library(srvyr)
 library(ggplot2)
 
@@ -13,34 +14,39 @@ unlink(temp)
 # select relevant columns
 
 gss_small <- gss_orig %>%
-  filter(!stringr::str_detect(sample, "blk oversamp")) %>%
-  select(year, age, sex, race, partyid, hompop, hours = hrs1, 
-         income, class, finrela, weight = wtssall) %>%
-  mutate_if(is.factor, ~forcats::fct_collapse(., NULL = c("IAP", "NA"))) %>%
+  filter(!stringr::str_detect(sample, "blk oversamp")) %>% # this is for weighting
+  select(year, age, sex, college = degree, partyid, hompop, 
+         hours = hrs1, income, class, finrela, weight = wtssall) %>%
+  mutate_if(is.factor, ~fct_collapse(., NULL = c("IAP", "NA", "iap", "na"))) %>%
   mutate(age = age %>%
-           forcats::fct_recode("89" = "89 or older",
-                               NULL = "DK") %>% # truncated at 89
+           fct_recode("89" = "89 or older",
+                      NULL = "DK") %>% # truncated at 89
            as.character() %>%
            as.numeric(),
          hompop = hompop %>%
-           forcats::fct_collapse(NULL = c("DK", "NA")) %>%
+           fct_collapse(NULL = c("DK")) %>%
            as.character() %>%
            as.numeric(),
          hours = hours %>%
-           forcats::fct_recode("89" = "89+ hrs",
-                               NULL = "DK") %>% # truncated at 89
+           fct_recode("89" = "89+ hrs",
+                      NULL = "DK") %>% # truncated at 89
            as.character() %>%
            as.numeric(),
          weight = weight %>%
            as.character() %>%
            as.numeric(),
-         partyid = forcats::fct_collapse(partyid, 
+         partyid = fct_collapse(partyid, 
            dem = c("strong democrat", "not str democrat"),
            rep = c("strong republican", "not str republican"),
            ind = c("ind,near dem", "independent", "ind,near rep"),
            other = "other party"
          ),
-         income = factor(income, ordered = TRUE)
+         income = factor(income, ordered = TRUE),
+         college = fct_collapse(college,
+           degree = c("junior college", "bachelor", "graduate"),
+           "no degree"  = c("lt high school", "high school"),
+           NULL = "dk" # no dks show up in the data, so drop this level
+         )
          )
 
 # sample 3k of the full data set

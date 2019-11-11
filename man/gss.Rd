@@ -9,7 +9,8 @@
 \item{year}{year respondent was surveyed}
 \item{age}{age at time of survey, truncated at 89}
 \item{sex}{respondent's sex}
-\item{race}{respondent's race}
+\item{college}{whether on not respondent has a college degree, including
+junior/community college}
 \item{partyid}{political party affiliation}
 \item{hompop}{number of persons in household}
 \item{hours}{number of hours worked in week before survey, truncated at 89}
