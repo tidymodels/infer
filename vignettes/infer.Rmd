@@ -188,10 +188,11 @@ Where does our observed statistic lie on this distribution? We can use the `obs_
 
 ```{r visualize2, warning = FALSE, message = FALSE}
 null_dist %>%
-  visualize(obs_stat = point_estimate)
+  visualize() +
+  shade_p_value(obs_stat = point_estimate, direction = "two_sided")
 ```
 
-The red bar looks like it's pretty far out on the right tail of the null distribution, so observing a mean of `r point_estimate` hours would be pretty unlikely if the mean was actually 40 hours. How unlikely, though?
+Notice that `infer` has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. The red bar looks like it's pretty far out on the right tail of the null distribution, so observing a mean of `r point_estimate` hours would be pretty unlikely if the mean was actually 40 hours. How unlikely, though?
 
 ```{r get_p_value, warning = FALSE, message = FALSE}
 # get a two-tailed p-value
@@ -202,15 +203,6 @@ p_value
 ```
 
 It looks like the p-value is `r p_value`, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (`r abs(point_estimate-40)` hours) from 40 would be `r p_value`. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
-
-We can also shade the regions of the null distribution that are as (or more) extreme than our observed statistic to get a sense of what `r p_value*100`% of the distribution actually looks like.
-
-```{r shade_p_value, warning = FALSE, message = FALSE}
-# get a two-tailed p-value
-null_dist %>%
-  visualize() +
-  shade_p_value(obs_stat = point_estimate, direction = "two_sided")
-```
 
 To get a confidence interval around our estimate, we can write:
 
