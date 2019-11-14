@@ -22,7 +22,12 @@ extreme than this).}
 A 1x1 \link[tibble:tibble]{tibble} with value between 0 and 1.
 }
 \description{
+\Sexpr[results=rd, stage=render]{lifecycle::badge("stable")}
+
+Compute a p-value from a null distribution and observed statistc.
 Simulation-based methods are (currently only) supported.
+
+Learn more in \code{vignette("infer")}.
 }
 \section{Aliases}{
 
@@ -51,4 +56,8 @@ null_distn <- mtcars_df \%>\%
 # in means more extreme than in the dataset?
 null_distn \%>\%
   get_p_value(obs_stat = d_hat, direction = "right")
+  
+# More in-depth explanation of how to use the infer package
+vignette("infer")   
+  
 }

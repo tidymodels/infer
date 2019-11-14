@@ -62,8 +62,12 @@ A ggplot object showing the simulation-based distribution as a
 histogram or bar graph. Also used to show the theoretical curves.
 }
 \description{
+\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+
 Visualize the distribution of the simulation-based inferential statistics or
 the theoretical distribution (or both!).
+
+Learn more in \code{vignette("infer")}.
 }
 \details{
 In order to make visualization workflow more straightforward and
@@ -106,6 +110,9 @@ mtcars \%>\%
   generate(reps = 100, type = "permute") \%>\%
   calculate(stat = "t", order = c("1", "0")) \%>\%
   visualize(method = "both")
+
+# More in-depth explanation of how to use the infer package
+vignette("infer")
 
 }
 \seealso{

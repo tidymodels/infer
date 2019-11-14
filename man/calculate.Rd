@@ -28,7 +28,12 @@ difference in means, medians, or proportions and t and z statistics.}
 A tibble containing a \code{stat} column of calculated statistics.
 }
 \description{
-Calculate summary statistics
+\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+
+Calculates summary statistics from outputs of \code{\link[=generate]{generate()}} or
+\code{\link[=hypothesize]{hypothesize()}}.
+
+Learn more in \code{vignette("infer")}.
 }
 \examples{
 # Permutation test for two binary variables
@@ -38,5 +43,8 @@ mtcars \%>\%
   hypothesize(null = "independence") \%>\%
   generate(reps = 100, type = "permute") \%>\%
   calculate(stat = "diff in props", order = c("1", "0"))
+  
+# More in-depth explanation of how to use the infer package
+vignette("infer")
 
 }

@@ -1,8 +1,13 @@
 #' Add information about confidence interval
 #'
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#'
 #' `shade_confidence_interval()` plots confidence interval region on top of the
 #' [visualize()] output. It should be used as \\{ggplot2\\} layer function (see
 #' examples). `shade_ci()` is its alias.
+#' 
+#' Learn more in `vignette("infer")`.
 #'
 #' @param endpoints A 2 element vector or a 1 x 2 data frame containing the
 #'   lower and upper values to be plotted. Most useful for visualizing
@@ -29,6 +34,9 @@
 #'
 #' viz_plot + shade_confidence_interval(c(-1.5, 1.5))
 #' viz_plot + shade_confidence_interval(c(-1.5, 1.5), fill = NULL)
+#'
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")
 #'
 #' @name shade_confidence_interval
 NULL

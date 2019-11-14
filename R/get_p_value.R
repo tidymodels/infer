@@ -1,6 +1,12 @@
 #' Compute p-value
 #'
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("stable")}
+#'
+#' Compute a p-value from a null distribution and observed statistc. 
 #' Simulation-based methods are (currently only) supported.
+#' 
+#' Learn more in `vignette("infer")`.
 #'
 #' @param x Data frame of calculated statistics as returned by [generate()]
 #' @param obs_stat A numeric value or a 1x1 data frame (as extreme or more
@@ -35,6 +41,10 @@
 #' # in means more extreme than in the dataset?
 #' null_distn %>%
 #'   get_p_value(obs_stat = d_hat, direction = "right")
+#'   
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")   
+#'   
 #' @name get_p_value
 NULL
 

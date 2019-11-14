@@ -29,9 +29,13 @@ A list of \{ggplot2\} objects to be added to the \code{visualize()}
 output.
 }
 \description{
+\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+
 \code{shade_confidence_interval()} plots confidence interval region on top of the
 \code{\link[=visualize]{visualize()}} output. It should be used as \{ggplot2\} layer function (see
 examples). \code{shade_ci()} is its alias.
+
+Learn more in \code{vignette("infer")}.
 }
 \examples{
 viz_plot <- mtcars \%>\%
@@ -44,6 +48,9 @@ viz_plot <- mtcars \%>\%
 
 viz_plot + shade_confidence_interval(c(-1.5, 1.5))
 viz_plot + shade_confidence_interval(c(-1.5, 1.5), fill = NULL)
+
+# More in-depth explanation of how to use the infer package
+vignette("infer")
 
 }
 \seealso{

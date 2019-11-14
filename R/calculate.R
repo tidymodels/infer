@@ -1,5 +1,13 @@
 #' Calculate summary statistics
 #'
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#' 
+#' Calculates summary statistics from outputs of [generate()] or 
+#' [hypothesize()].
+#' 
+#' Learn more in `vignette("infer")`.
+#'
 #' @param x The output from [generate()] for computation-based inference or the
 #'   output from [hypothesize()] piped in to here for theory-based inference.
 #' @param stat A string giving the type of the statistic to calculate. Current
@@ -23,6 +31,9 @@
 #'   hypothesize(null = "independence") %>%
 #'   generate(reps = 100, type = "permute") %>%
 #'   calculate(stat = "diff in props", order = c("1", "0"))
+#'   
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")
 #'
 #' @importFrom dplyr group_by summarize n
 #' @importFrom rlang !! sym quo enquo eval_tidy

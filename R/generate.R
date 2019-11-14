@@ -1,10 +1,12 @@
 #' Generate resamples, permutations, or simulations
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("questioning")}
 #' 
 #' Generation creates a null distribution from [specify()] and (if needed) 
-#' [hypothesize()] inputs
+#' [hypothesize()] inputs.
+#' 
+#' Learn more in `vignette("infer")`.
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param reps The number of resamples to generate.
@@ -38,6 +40,9 @@
 #'   specify(am ~ vs, success = "1") %>%
 #'   hypothesize(null = "independence") %>%
 #'   generate(reps = 100, type = "permute")
+#'
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")
 #'
 #' @importFrom dplyr group_by
 #' @export

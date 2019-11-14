@@ -34,6 +34,8 @@ variable data.
 \code{specify()} is used to specify which columns in the supplied data frame are
 the relevant response (and, if applicable, explanatory) variables. Note that
 character variables are converted to \code{factor}s.
+
+Learn more in \code{vignette("infer")}.
 }
 \examples{
 # Permutation test similar to ANOVA
@@ -43,5 +45,8 @@ mtcars \%>\%
   hypothesize(null = "independence") \%>\%
   generate(reps = 100, type = "permute") \%>\%
   calculate(stat = "F")
+
+# More in-depth explanation of how to use the infer package
+vignette("infer")
 
 }

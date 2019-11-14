@@ -30,7 +30,12 @@ A 1 x 2 tibble with values corresponding to lower and upper values in
 the confidence interval.
 }
 \description{
-Only simulation-based methods are (currently only) supported.
+\Sexpr[results=rd, stage=render]{lifecycle::badge("stable")}
+
+Compute a confidence interval around a summary statistic. Only
+simulation-based methods are (currently only) supported.
+
+Learn more in \code{vignette("infer")}.
 }
 \section{Aliases}{
 
@@ -61,4 +66,8 @@ bootstrap_distn \%>\%
 # To calculate std error, set the type and point estimate
 bootstrap_distn \%>\%
   get_confidence_interval(type = "se", point_estimate = d_hat)
+  
+# More in-depth explanation of how to use the infer package
+vignette("infer")  
+ 
 }

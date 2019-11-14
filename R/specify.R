@@ -6,6 +6,8 @@
 #' `specify()` is used to specify which columns in the supplied data frame are
 #' the relevant response (and, if applicable, explanatory) variables. Note that 
 #' character variables are converted to `factor`s.
+#' 
+#' Learn more in `vignette("infer")`.
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
@@ -30,6 +32,9 @@
 #'   hypothesize(null = "independence") %>%
 #'   generate(reps = 100, type = "permute") %>%
 #'   calculate(stat = "F")
+#'
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")
 #'
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs

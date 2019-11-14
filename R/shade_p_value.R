@@ -1,8 +1,13 @@
 #' Add information about p-value region(s)
 #'
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#'
 #' `shade_p_value()` plots p-value region(s) (using "area under the curve"
 #' approach) on top of the [visualize()] output. It should be used as
 #' \\{ggplot2\\} layer function (see examples). `shade_pvalue()` is its alias.
+#' 
+#' Learn more in `vignette("infer")`.
 #'
 #' @param obs_stat A numeric value or 1x1 data frame corresponding to what the
 #'   observed statistic is.
@@ -38,6 +43,9 @@
 #' visualize(data_to_plot, method = "both") +
 #'   shade_p_value(1.5, direction = "both")
 #' visualize(data_to_plot) + shade_p_value(1.5, direction = NULL)
+#' 
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")
 #'
 #' @name shade_p_value
 NULL

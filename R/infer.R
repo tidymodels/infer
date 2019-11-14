@@ -5,6 +5,8 @@
 #' The objective of this package is to perform statistical inference using a
 #' grammar that illustrates the underlying concepts and a format that coheres
 #' with the tidyverse.
+#' 
+#' For an overview of how to use the core functionality, see `vignette("infer")`
 #'
 #'
 #' @docType package

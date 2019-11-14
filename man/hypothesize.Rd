@@ -29,7 +29,11 @@ A tibble containing the response (and explanatory, if specified)
 variable data with parameter information stored as well.
 }
 \description{
-Declare a null hypothesis
+\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+
+Declare a null hypothesis about variables selected in \code{\link[=specify]{specify()}}.
+
+Learn more in \code{vignette("infer")}.
 }
 \examples{
 # Permutation test similar to ANOVA
@@ -39,5 +43,8 @@ mtcars \%>\%
   hypothesize(null = "independence") \%>\%
   generate(reps = 100, type = "permute") \%>\%
   calculate(stat = "F")
+
+# More in-depth explanation of how to use the infer package
+vignette("infer")
 
 }

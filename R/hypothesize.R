@@ -1,5 +1,12 @@
 #' Declare a null hypothesis
 #'
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#' 
+#' Declare a null hypothesis about variables selected in [specify()].
+#' 
+#' Learn more in `vignette("infer")`.
+#'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param null The null hypothesis. Options include `"independence"` and
 #'   `"point"`.
@@ -23,6 +30,9 @@
 #'   hypothesize(null = "independence") %>%
 #'   generate(reps = 100, type = "permute") %>%
 #'   calculate(stat = "F")
+#'
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")
 #'
 #' @importFrom purrr compact
 #' @export

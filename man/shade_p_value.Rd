@@ -31,9 +31,13 @@ A list of \{ggplot2\} objects to be added to the \code{visualize()}
 output.
 }
 \description{
+\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+
 \code{shade_p_value()} plots p-value region(s) (using "area under the curve"
 approach) on top of the \code{\link[=visualize]{visualize()}} output. It should be used as
 \{ggplot2\} layer function (see examples). \code{shade_pvalue()} is its alias.
+
+Learn more in \code{vignette("infer")}.
 }
 \examples{
 set.seed(505)
@@ -51,6 +55,9 @@ visualize(data_to_plot, method = "theoretical") +
 visualize(data_to_plot, method = "both") +
   shade_p_value(1.5, direction = "both")
 visualize(data_to_plot) + shade_p_value(1.5, direction = NULL)
+
+# More in-depth explanation of how to use the infer package
+vignette("infer")
 
 }
 \seealso{

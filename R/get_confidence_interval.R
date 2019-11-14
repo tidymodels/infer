@@ -1,6 +1,12 @@
 #' Compute confidence interval
 #'
-#' Only simulation-based methods are (currently only) supported.
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("stable")}
+#'
+#' Compute a confidence interval around a summary statistic. Only 
+#' simulation-based methods are (currently only) supported.
+#' 
+#' Learn more in `vignette("infer")`.
 #'
 #' @param x Data frame of calculated statistics or containing attributes of
 #'   theoretical distribution values. Currently, dependent on statistics being
@@ -42,6 +48,10 @@
 #' # To calculate std error, set the type and point estimate
 #' bootstrap_distn %>%
 #'   get_confidence_interval(type = "se", point_estimate = d_hat)
+#'   
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")  
+#'  
 #' @name get_confidence_interval
 #' @export
 get_confidence_interval <- function(x, level = 0.95, type = "percentile",

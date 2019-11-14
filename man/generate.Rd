@@ -21,10 +21,12 @@ A tibble containing \code{reps} generated datasets, indicated by the
 \code{replicate} column.
 }
 \description{
-\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+\Sexpr[results=rd, stage=render]{lifecycle::badge("questioning")}
 
 Generation creates a null distribution from \code{\link[=specify]{specify()}} and (if needed)
-\code{\link[=hypothesize]{hypothesize()}} inputs
+\code{\link[=hypothesize]{hypothesize()}} inputs.
+
+Learn more in \code{vignette("infer")}.
 }
 \section{Generation Types}{
 
@@ -51,5 +53,8 @@ mtcars \%>\%
   specify(am ~ vs, success = "1") \%>\%
   hypothesize(null = "independence") \%>\%
   generate(reps = 100, type = "permute")
+
+# More in-depth explanation of how to use the infer package
+vignette("infer")
 
 }

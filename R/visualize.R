@@ -1,7 +1,12 @@
 #' Visualize statistical inference
 #'
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#'
 #' Visualize the distribution of the simulation-based inferential statistics or
 #' the theoretical distribution (or both!).
+#' 
+#' Learn more in `vignette("infer")`.
 #'
 #' @param data The output from [calculate()].
 #' @param bins The number of bins in the histogram.
@@ -78,6 +83,9 @@
 #'   generate(reps = 100, type = "permute") %>%
 #'   calculate(stat = "t", order = c("1", "0")) %>%
 #'   visualize(method = "both")
+#'
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")
 #'
 #' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle
 #' @importFrom ggplot2 xlab ylab geom_vline geom_rect geom_bar
