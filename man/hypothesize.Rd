@@ -36,13 +36,15 @@ Declare a null hypothesis about variables selected in \code{\link[=specify]{spec
 Learn more in \code{vignette("infer")}.
 }
 \examples{
-# Permutation test similar to ANOVA
-mtcars \%>\%
-  dplyr::mutate(cyl = factor(cyl)) \%>\%
-  specify(mpg ~ cyl) \%>\%
-  hypothesize(null = "independence") \%>\%
-  generate(reps = 100, type = "permute") \%>\%
-  calculate(stat = "F")
+# hypothesize independence of two variables
+gss \%>\%
+ specify(college ~ partyid, success = "degree") \%>\%
+ hypothesize(null = "independence")
+ 
+# hypothesize a mean number of hours worked per week of 40
+gss \%>\%
+  specify(response = hours) \%>\%
+  hypothesize(null = "point", mu = 40)
 
 # More in-depth explanation of how to use the infer package
 vignette("infer")

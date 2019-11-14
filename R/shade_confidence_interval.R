@@ -28,7 +28,7 @@
 #' point_estimate <- gss %>%
 #'   specify(response = hours) %>%
 #'   calculate(stat = "mean") %>%
-#'   pull()
+#'   dplyr::pull()
 #'   
 #' # ...and a null distribution
 #' null_dist <- gss %>%
