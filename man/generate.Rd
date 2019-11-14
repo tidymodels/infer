@@ -47,12 +47,18 @@ option is currently only applicable for testing point estimates.)
 }
 
 \examples{
-# Permutation test for two binary variables
-mtcars \%>\%
-  dplyr::mutate(am = factor(am), vs = factor(vs)) \%>\%
-  specify(am ~ vs, success = "1") \%>\%
-  hypothesize(null = "independence") \%>\%
-  generate(reps = 100, type = "permute")
+# Generate a null distribution by taking 1000 bootstrap samples
+gss \%>\%
+ specify(response = hours) \%>\%
+ hypothesize(null = "point", mu = 40) \%>\%
+ generate(reps = 1000, type = "bootstrap")
+
+# Generate a null distribution for the independence of
+# two variables by permuting their values 1000 times
+gss \%>\%
+ specify(partyid ~ age) \%>\%
+ hypothesize(null = "independence") \%>\%
+ generate(reps = 1000, type = "permute")
 
 # More in-depth explanation of how to use the infer package
 vignette("infer")

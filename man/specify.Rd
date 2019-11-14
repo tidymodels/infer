@@ -38,13 +38,17 @@ character variables are converted to \code{factor}s.
 Learn more in \code{vignette("infer")}.
 }
 \examples{
-# Permutation test similar to ANOVA
-mtcars \%>\%
-  dplyr::mutate(cyl = factor(cyl)) \%>\%
-  specify(mpg ~ cyl) \%>\%
-  hypothesize(null = "independence") \%>\%
-  generate(reps = 100, type = "permute") \%>\%
-  calculate(stat = "F")
+# specifying for a point estimate on one variable
+gss \%>\%
+   specify(response = age)
+
+# specify a relationship between variables as a formula...
+gss \%>\%
+  specify(age ~ partyid)
+  
+# ...or with named arguments!
+gss \%>\%
+  specify(response = age, explanatory = partyid)
 
 # More in-depth explanation of how to use the infer package
 vignette("infer")

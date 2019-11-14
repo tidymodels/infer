@@ -28,21 +28,27 @@
 #'   interval.
 #'
 #' @examples
-#' set.seed(505)
-#' data_to_plot <- mtcars %>%
-#'   dplyr::mutate(am = factor(am)) %>%
-#'   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
-#'   hypothesize(null = "independence") %>%
-#'   generate(reps = 100, type = "permute") %>%
-#'   calculate(stat = "t", order = c("1", "0"))
-#'
-#' visualize(data_to_plot, method = "simulation") +
-#'   shade_p_value(1.5, direction = "right")
-#' visualize(data_to_plot, method = "theoretical") +
-#'   shade_p_value(1.5, direction = "left")
-#' visualize(data_to_plot, method = "both") +
-#'   shade_p_value(1.5, direction = "both")
-#' visualize(data_to_plot) + shade_p_value(1.5, direction = NULL)
+#' # find the point estimate---mean number of hours worked per week
+#' point_estimate <- gss %>%
+#'   specify(response = hours) %>%
+#'   calculate(stat = "mean") %>%
+#'   pull()
+#'   
+#' # ...and a null distribution
+#' null_dist <- gss %>%
+#'   # ...we're interested in the number of hours worked per week
+#'   specify(response = hours) %>%
+#'   # hypothesizing that the mean is 40
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   # generating data points for a null distribution
+#'   generate(reps = 10000, type = "bootstrap") %>%
+#'   # finding the null distribution
+#'   calculate(stat = "mean")
+#'   
+#' # shade the p-value of the point estimate
+#' null_dist %>%
+#'   visualize() +
+#'   shade_p_value(obs_stat = point_estimate, direction = "two_sided")
 #' 
 #' # More in-depth explanation of how to use the infer package
 #' vignette("infer")

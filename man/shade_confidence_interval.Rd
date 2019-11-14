@@ -38,16 +38,41 @@ examples). \code{shade_ci()} is its alias.
 Learn more in \code{vignette("infer")}.
 }
 \examples{
-viz_plot <- mtcars \%>\%
-  dplyr::mutate(am = factor(am)) \%>\%
-  specify(mpg ~ am) \%>\% # alt: response = mpg, explanatory = am
-  hypothesize(null = "independence") \%>\%
-  generate(reps = 100, type = "permute") \%>\%
-  calculate(stat = "t", order = c("1", "0")) \%>\%
-  visualize(method = "both")
-
-viz_plot + shade_confidence_interval(c(-1.5, 1.5))
-viz_plot + shade_confidence_interval(c(-1.5, 1.5), fill = NULL)
+# find the point estimate---mean number of hours worked per week
+point_estimate <- gss \%>\%
+  specify(response = hours) \%>\%
+  calculate(stat = "mean") \%>\%
+  pull()
+  
+# ...and a null distribution
+null_dist <- gss \%>\%
+  # ...we're interested in the number of hours worked per week
+  specify(response = hours) \%>\%
+  # hypothesizing that the mean is 40
+  hypothesize(null = "point", mu = 40) \%>\%
+  # generating data points for a null distribution
+  generate(reps = 10000, type = "bootstrap") \%>\%
+  # finding the null distribution
+  calculate(stat = "mean")
+  
+# find a confidence interval around the point estimate
+ci <- null_dist \%>\%
+  get_confidence_interval(point_estimate = point_estimate,
+                          # at the 95\% confidence level
+                          level = .95,
+                          # using the standard error method
+                          type = "se")   
+  
+  
+# and plot it!
+null_dist \%>\%
+  visualize() +
+  shade_confidence_interval(ci)
+  
+# or just plot the bounds
+null_dist \%>\%
+  visualize() +
+  shade_confidence_interval(ci, fill = NULL)
 
 # More in-depth explanation of how to use the infer package
 vignette("infer")

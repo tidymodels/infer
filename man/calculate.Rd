@@ -36,14 +36,23 @@ Calculates summary statistics from outputs of \code{\link[=generate]{generate()}
 Learn more in \code{vignette("infer")}.
 }
 \examples{
-# Permutation test for two binary variables
-mtcars \%>\%
-  dplyr::mutate(am = factor(am), vs = factor(vs)) \%>\%
-  specify(am ~ vs, success = "1") \%>\%
-  hypothesize(null = "independence") \%>\%
-  generate(reps = 100, type = "permute") \%>\%
-  calculate(stat = "diff in props", order = c("1", "0"))
-  
+
+# calculate a null distribution of hours worked per week under
+# the null hypothesis that the mean is 40
+gss \%>\%
+ specify(response = hours) \%>\%
+ hypothesize(null = "point", mu = 40) \%>\%
+ generate(reps = 1000, type = "bootstrap") \%>\%
+ calculate(stat = "mean")
+
+# calculate a null distribution assuming independence between age
+# of respondent and whether they have a college degree
+gss \%>\%
+ specify(age ~ college) \%>\%
+ hypothesize(null = "independence") \%>\%
+ generate(reps = 1000, type = "permute") \%>\%
+ calculate("diff in means", order = c("degree", "no degree"))
+
 # More in-depth explanation of how to use the infer package
 vignette("infer")
 

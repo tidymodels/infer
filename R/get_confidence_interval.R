@@ -26,28 +26,29 @@
 #' `conf_int()` is a deprecated alias of `get_confidence_interval()`.
 #'
 #' @examples
-#' # Prepare the dataset
-#' mtcars_df <- mtcars %>%
-#'   dplyr::mutate(am = factor(am))
-#'
-#' # Calculate the difference in means in the dataset
-#' d_hat <- mtcars_df %>%
-#'   specify(mpg ~ am) %>%
-#'   calculate(stat = "diff in means", order = c("1", "0"))
-#'
-#' # Same calculation on 100 bootstrap replicates
-#' bootstrap_distn <- mtcars_df %>%
-#'   specify(mpg ~ am) %>%
-#'   generate(reps = 100, type = "bootstrap") %>%
-#'   calculate(stat = "diff in means", order = c("1", "0"))
-#'
-#' # Use level to set the confidence level
-#' bootstrap_distn %>%
-#'   get_confidence_interval(level = 0.9)
-#'
-#' # To calculate std error, set the type and point estimate
-#' bootstrap_distn %>%
-#'   get_confidence_interval(type = "se", point_estimate = d_hat)
+#' 
+#' # find the point estimate---mean number of hours worked per week
+#' point_estimate <- gss %>%
+#'   specify(response = hours) %>%
+#'   calculate(stat = "mean") %>%
+#'   pull()
+#' 
+#' # starting with the gss dataset
+#' gss %>%
+#'   # ...we're interested in the number of hours worked per week
+#'   specify(response = hours) %>%
+#'   # hypothesizing that the mean is 40
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   # generating data points for a null distribution
+#'   generate(reps = 10000, type = "bootstrap") %>%
+#'   # finding the null distribution
+#'   calculate(stat = "mean") %>%
+#    # calculate the confidence interval around the point estimate
+#'   get_confidence_interval(point_estimate = point_estimate,
+#'                           # at the 95% confidence level
+#'                           level = .95,
+#'                           # using the standard error method
+#'                           type = "se")
 #'   
 #' # More in-depth explanation of how to use the infer package
 #' vignette("infer")  

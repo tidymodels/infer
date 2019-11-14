@@ -53,36 +53,45 @@
 #' @seealso [shade_p_value()], [shade_confidence_interval()].
 #'
 #' @examples
-#' # Permutations to create a simulation-based null distribution for
-#' # one numerical response and one categorical predictor
-#' # using t statistic
-#' mtcars %>%
-#'   dplyr::mutate(am = factor(am)) %>%
-#'   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
-#'   hypothesize(null = "independence") %>%
-#'   generate(reps = 100, type = "permute") %>%
-#'   calculate(stat = "t", order = c("1", "0")) %>%
-#'   visualize(method = "simulation") #default method
+#'   
+#' # ...and a null distribution
+#' null_dist <- gss %>%
+#'   # ...we're interested in the number of hours worked per week
+#'   specify(response = hours) %>%
+#'   # hypothesizing that the mean is 40
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   # generating data points for a null distribution
+#'   generate(reps = 10000, type = "bootstrap") %>%
+#'   # finding the null distribution
+#'   calculate(stat = "mean")
+#'   
+#' # we can easily plot the null distribution by piping into visualize
+#' null_dist %>%
+#'   visualize()
 #'
-#' # Theoretical t distribution for
-#' # one numerical response and one categorical predictor
-#' # using t statistic
-#' mtcars %>%
-#'   dplyr::mutate(am = factor(am)) %>%
-#'   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
-#'   hypothesize(null = "independence") %>%
-#'   # generate() is not needed since we are not doing simulation
-#'   calculate(stat = "t", order = c("1", "0")) %>%
-#'   visualize(method = "theoretical")
-#'
-#' # Overlay theoretical distribution on top of randomized t-statistics
-#' mtcars %>%
-#'   dplyr::mutate(am = factor(am)) %>%
-#'   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
-#'   hypothesize(null = "independence") %>%
-#'   generate(reps = 100, type = "permute") %>%
-#'   calculate(stat = "t", order = c("1", "0")) %>%
-#'   visualize(method = "both")
+#' # we can add layers to the plot ggplot-style, as well... 
+#' # find the point estimate---mean number of hours worked per week
+#' point_estimate <- gss %>%
+#'   specify(response = hours) %>%
+#'   calculate(stat = "mean") %>%
+#'   pull()
+#'   
+#' # find a confidence interval around the point estimate
+#' ci <- null_dist %>%
+#'   get_confidence_interval(point_estimate = point_estimate,
+#'                           # at the 95% confidence level
+#'                           level = .95,
+#'                           # using the standard error method
+#'                           type = "se")  
+#'   
+#' # display a shading of the area beyond the p-value on the plot
+#' null_dist %>%
+#'   visualize() +
+#'   shade_p_value(obs_stat = point_estimate, direction = "two_sided")
+#' 
+#' null_dist %>%
+#'   visualize() +
+#'   shade_confidence_interval(ci)
 #'
 #' # More in-depth explanation of how to use the infer package
 #' vignette("infer")
