@@ -22,8 +22,8 @@ The workflow of this package is designed around this idea. Starting out with som
 
 + `specify()` allows you to specify the variable, or relationship between variables, that you're interested in.
 + `hypothesize()` allows you to declare the null hypothesis.
-+ `generate()` allows you to generate data reflecting the null hypothesis
-+ `calculate()` allows you to calculate a distribution of statistics from the generated data to form the null distribution
++ `generate()` allows you to generate data reflecting the null hypothesis.
++ `calculate()` allows you to calculate a distribution of statistics from the generated data to form the null distribution.
 
 Throughout this vignette, we make use of `gss`, a dataset supplied by `infer` containing a sample of 3000 observations sampled from the *General Social Survey*. 
 
@@ -193,7 +193,7 @@ null_dist %>%
   shade_p_value(obs_stat = point_estimate, direction = "two_sided")
 ```
 
-Notice that `infer` has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. The red bar looks like it's pretty far out on the right tail of the null distribution, so observing a mean of `r point_estimate` hours would be pretty unlikely if the mean was actually 40 hours. How unlikely, though?
+Notice that `infer` has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the `+` operator to apply the `shade_p_value` function. This is because `visualize` outputs a plot object from `ggplot2` instead of a data frame, and the `+` operator is needed to add the p-value layer to the plot object.) The red bar looks like it's pretty far out on the right tail of the null distribution, so observing a mean of `r point_estimate` hours would be pretty unlikely if the mean was actually 40 hours. How unlikely, though?
 
 ```{r get_p_value, warning = FALSE, message = FALSE}
 # get a two-tailed p-value
@@ -218,6 +218,6 @@ null_dist %>%
                           type = "se")
 ```
 
-As you can see, 40 hours per work is not contained in this interval, which aligns with our previous conclusion that this finding is significant at the confidence level $\alpha = .05$.
+As you can see, 40 hours per week is not contained in this interval, which aligns with our previous conclusion that this finding is significant at the confidence level $\alpha = .05$.
 
 This vignette covers most all of the key functionality of infer. See `help(package = "infer")` for a full list of functions and vignettes.
