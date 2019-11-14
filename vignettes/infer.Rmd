@@ -141,15 +141,14 @@ gss %>%
   calculate(stat = "mean")
 ```
 
-If you're carrying out inference on differences in means, medians, or proportions, or t and z statistics, you will need to supply an `order` argument, giving the order in which the explanatory variables should be subtracted. For instance, to find the difference in mean age of those that identify as democrat or republican, we might write:
+If you're carrying out inference on differences in means, medians, or proportions, or t and z statistics, you will need to supply an `order` argument, giving the order in which the explanatory variables should be subtracted. For instance, to find the difference in mean age of those that have a college degree and those that don't, we might write:
 
 ```{r specify-diff-in-means, warning = FALSE, message = FALSE, cache = TRUE}
 gss %>%
-  dplyr::filter(partyid %in% c("dem", "rep")) %>%
-  specify(age ~ partyid) %>%
+  specify(age ~ college) %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate("diff in means", order = c("rep", "dem"))
+  calculate("diff in means", order = c("degree", "no degree"))
 ```
 
 ### Other Utilities in `infer`
