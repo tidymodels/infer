@@ -162,7 +162,7 @@ To illustrate, we'll go back to the example of determining whether the mean of t
 point_estimate <- gss %>%
   specify(response = hours) %>%
   calculate(stat = "mean") %>%
-  pull()
+  dplyr::pull()
 
 # generate a null distribution
 null_dist <- gss %>%
