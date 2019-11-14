@@ -21,3 +21,5 @@
 ^_pkgdown\.yml$
 ^docs$
 ^data-raw*
+^doc$
+^Meta$

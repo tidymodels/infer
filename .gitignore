@@ -5,3 +5,5 @@
 *.Rproj
 .DS_Store
 .httr-oauth
+doc
+Meta
