@@ -24,10 +24,10 @@ statistic as a vertical line on the plot.}
 \item{fill}{A character or hex string specifying the color to shade the
 p-value region. If \code{NULL} then no shading is actually done.}
 
-\item{...}{Other arguments passed along to \{ggplot2\} functions.}
+\item{...}{Other arguments passed along to \\{ggplot2\\} functions.}
 }
 \value{
-A list of \{ggplot2\} objects to be added to the \code{visualize()}
+A list of \\{ggplot2\\} objects to be added to the \code{visualize()}
 output.
 }
 \description{
@@ -35,7 +35,7 @@ output.
 
 \code{shade_p_value()} plots p-value region(s) (using "area under the curve"
 approach) on top of the \code{\link[=visualize]{visualize()}} output. It should be used as
-\{ggplot2\} layer function (see examples). \code{shade_pvalue()} is its alias.
+\\{ggplot2\\} layer function (see examples). \code{shade_pvalue()} is its alias.
 
 Learn more in \code{vignette("infer")}.
 }

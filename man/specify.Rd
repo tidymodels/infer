@@ -4,8 +4,7 @@
 \alias{specify}
 \title{Specify response and explanatory variables}
 \usage{
-specify(x, formula, response = NULL, explanatory = NULL,
-  success = NULL)
+specify(x, formula, response = NULL, explanatory = NULL, success = NULL)
 }
 \arguments{
 \item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}

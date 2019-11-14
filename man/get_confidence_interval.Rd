@@ -5,8 +5,12 @@
 \alias{get_ci}
 \title{Compute confidence interval}
 \usage{
-get_confidence_interval(x, level = 0.95, type = "percentile",
-  point_estimate = NULL)
+get_confidence_interval(
+  x,
+  level = 0.95,
+  type = "percentile",
+  point_estimate = NULL
+)
 
 get_ci(x, level = 0.95, type = "percentile", point_estimate = NULL)
 }

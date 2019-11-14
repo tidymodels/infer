@@ -5,11 +5,14 @@
 \alias{shade_ci}
 \title{Add information about confidence interval}
 \usage{
-shade_confidence_interval(endpoints, color = "mediumaquamarine",
-  fill = "turquoise", ...)
+shade_confidence_interval(
+  endpoints,
+  color = "mediumaquamarine",
+  fill = "turquoise",
+  ...
+)
 
-shade_ci(endpoints, color = "mediumaquamarine", fill = "turquoise",
-  ...)
+shade_ci(endpoints, color = "mediumaquamarine", fill = "turquoise", ...)
 }
 \arguments{
 \item{endpoints}{A 2 element vector or a 1 x 2 data frame containing the
@@ -22,17 +25,17 @@ end points as a vertical lines on the plot.}
 \item{fill}{A character or hex string specifying the color to shade the
 confidence interval. If \code{NULL} then no shading is actually done.}
 
-\item{...}{Other arguments passed along to \{ggplot2\} functions.}
+\item{...}{Other arguments passed along to \\{ggplot2\\} functions.}
 }
 \value{
-A list of \{ggplot2\} objects to be added to the \code{visualize()}
+A list of \\{ggplot2\\} objects to be added to the \code{visualize()}
 output.
 }
 \description{
 \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
 
 \code{shade_confidence_interval()} plots confidence interval region on top of the
-\code{\link[=visualize]{visualize()}} output. It should be used as \{ggplot2\} layer function (see
+\code{\link[=visualize]{visualize()}} output. It should be used as \\{ggplot2\\} layer function (see
 examples). \code{shade_ci()} is its alias.
 
 Learn more in \code{vignette("infer")}.

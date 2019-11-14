@@ -5,15 +5,35 @@
 \alias{visualise}
 \title{Visualize statistical inference}
 \usage{
-visualize(data, bins = 15, method = "simulation",
-  dens_color = "black", obs_stat = NULL, obs_stat_color = "red2",
-  pvalue_fill = "pink", direction = NULL, endpoints = NULL,
-  endpoints_color = "mediumaquamarine", ci_fill = "turquoise", ...)
+visualize(
+  data,
+  bins = 15,
+  method = "simulation",
+  dens_color = "black",
+  obs_stat = NULL,
+  obs_stat_color = "red2",
+  pvalue_fill = "pink",
+  direction = NULL,
+  endpoints = NULL,
+  endpoints_color = "mediumaquamarine",
+  ci_fill = "turquoise",
+  ...
+)
 
-visualise(data, bins = 15, method = "simulation",
-  dens_color = "black", obs_stat = NULL, obs_stat_color = "red2",
-  pvalue_fill = "pink", direction = NULL, endpoints = NULL,
-  endpoints_color = "mediumaquamarine", ci_fill = "turquoise", ...)
+visualise(
+  data,
+  bins = 15,
+  method = "simulation",
+  dens_color = "black",
+  obs_stat = NULL,
+  obs_stat_color = "red2",
+  pvalue_fill = "pink",
+  direction = NULL,
+  endpoints = NULL,
+  endpoints_color = "mediumaquamarine",
+  ci_fill = "turquoise",
+  ...
+)
 }
 \arguments{
 \item{data}{The output from \code{\link[=calculate]{calculate()}}.}
@@ -55,7 +75,7 @@ Details)}.}
 \item{ci_fill}{A character or hex string specifying the color to shade the
 confidence interval. \strong{Deprecated (see Details)}.}
 
-\item{...}{Other arguments passed along to \{ggplot2\} functions.}
+\item{...}{Other arguments passed along to \\{ggplot2\\} functions.}
 }
 \value{
 A ggplot object showing the simulation-based distribution as a
@@ -73,7 +93,7 @@ Learn more in \code{vignette("infer")}.
 In order to make visualization workflow more straightforward and
 explicit \code{visualize()} now only should be used to plot statistics directly.
 That is why arguments not related to this task are deprecated and will be
-removed in a future release of \{infer\}.
+removed in a future release of \\{infer\\}.
 
 To add to plot information related to p-value use \code{\link[=shade_p_value]{shade_p_value()}}. To add
 to plot information related to confidence interval use
