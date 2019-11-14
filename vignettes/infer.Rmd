@@ -89,7 +89,7 @@ The next step in the `infer` pipeline is often to declare a null hypothesis usin
 
 ```{r hypothesize-independence, warning = FALSE, message = FALSE, cache = TRUE}
 gss %>%
-  specify(sex ~ partyid, success = "female") %>%
+  specify(college ~ partyid, success = "degree") %>%
   hypothesize(null = "independence")
 ```
 
