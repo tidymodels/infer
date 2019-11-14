@@ -27,7 +27,9 @@ The workflow of this package is designed around this idea. Starting out with som
 
 Throughout this vignette, we make use of `gss`, a dataset supplied by `infer` containing a sample of 3000 observations sampled from the *General Social Survey*. 
 
-```{r load-devtools, echo = FALSE, message = FALSE, warning = FALSE}
+```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
+library(devtools)
+library(dplyr)
 devtools::load_all()
 ```
 
