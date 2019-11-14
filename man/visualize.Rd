@@ -116,12 +116,12 @@ null_dist <- gss \%>\%
 null_dist \%>\%
   visualize()
 
-# we can add layers to the plot ggplot-style, as well... 
+# we can add layers to the plot as in ggplot, as well... 
 # find the point estimate---mean number of hours worked per week
 point_estimate <- gss \%>\%
   specify(response = hours) \%>\%
   calculate(stat = "mean") \%>\%
-  pull()
+  dplyr::pull()
   
 # find a confidence interval around the point estimate
 ci <- null_dist \%>\%
