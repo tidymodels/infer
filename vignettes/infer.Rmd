@@ -22,8 +22,8 @@ The workflow of this package is designed around this idea. Starting out with som
 
 + `specify()` allows you to specify the variable, or relationship between variables, that you're interested in.
 + `hypothesize()` allows you to declare the null hypothesis.
-+ `generate()` allows you to construct a null distribution based on your null hypothesis.
-+ `calculate()` allows you to calculate a summary statistic describing the effect observed in the data.
++ `generate()` allows you to generate data reflecting the null hypothesis
++ `calculate()` allows you to calculate a distribution of statistics from the generated data to form the null distribution
 
 Throughout this vignette, we make use of `gss`, a dataset supplied by `infer` containing a sample of 3000 observations sampled from the *General Social Survey*. 
 
