@@ -32,7 +32,7 @@ devtools::load_all()
 ```
 
 
-```{r load-gss}
+```{r load-gss, warning = FALSE, message = FALSE}
 # load in the dataset
 data(gss)
 
@@ -46,14 +46,14 @@ Each row is an individual survey response, containing some basic demographic inf
 
 The `specify` function can be used to specify which of the variables in the dataset you're interested in. If you're only interested in, say, the `age` of the respondents, you might write:
 
-```{r specify-example, warning = FALSE, message = FALSE}
+```{r specify-example, warning = FALSE, message = FALSE, cache = TRUE}
 gss %>%
   specify(response = age)
 ```
 
 On the front-end, the output of `specify` just looks like it selects off the columns in the dataframe that you've specified. Checking the class of this object, though:
 
-```{r specify-one, warning = FALSE, message = FALSE}
+```{r specify-one, warning = FALSE, message = FALSE, cache = TRUE}
 gss %>%
   specify(response = age) %>%
   class()
@@ -63,7 +63,7 @@ We can see that the `infer` class has been appended on top of the dataframe clas
 
 If you're interested in two variables--`age` and `partyid`, for example--you can `specify` their relationship in one of two (equivalent) ways:
 
-```{r specify-two, warning = FALSE, message = FALSE}
+```{r specify-two, warning = FALSE, message = FALSE, cache = TRUE}
 # with the named arguments
 gss %>%
   specify(age ~ partyid)
@@ -73,18 +73,19 @@ gss %>%
   specify(response = age, explanatory = partyid)
 ```
 
-If you're doing inference on one proportion or a difference in proportions, you will need to use the `success` argument to specify which level of your `response` variable is a success. For instance, if you're interested in using <!-- need more binary variables, less charged--> , you might use the following code:
+If you're doing inference on one proportion or a difference in proportions, you will need to use the `success` argument to specify which level of your `response` variable is a success. For instance, if you're interested in the proportion of respondents in this sample with a college degree, you might use the following code:
 
-```{r specify-success, warning = FALSE, message = FALSE}
+```{r specify-success, warning = FALSE, message = FALSE, cache = TRUE}
 # specifying for inference on proportions
-
+gss %>%
+  specify(response = college, success = "degree")
 ```
 
 ### `hypothesize()`: Declaring the Null Hypothesis
 
 The next step in the `infer` pipeline is often to declare a null hypothesis using `hypothesize()`. The first step is to supply one of "independence" or "point" to the `null` argument. If your null hypothesis assumes independence between two variables, then this is all you need to supply to `hypothesize()`:
 
-```{r hypothesize-independence, warning = FALSE, message = FALSE}
+```{r hypothesize-independence, warning = FALSE, message = FALSE, cache = TRUE}
 gss %>%
   specify(sex ~ partyid, success = "female") %>%
   hypothesize(null = "independence")
@@ -92,7 +93,7 @@ gss %>%
 
 If you're doing inference on a point estimate, you will also need to provide one of `p` (the true proportion of successes, between 0 and 1), `mu` (the true mean), `med` (the true median), or `sigma` (the true standard deviation). For instance, if the null hypothesis is that the mean number of hours worked per week in this sample is 40, we would write:
 
-```{r hypothesize-40-hr-week, warning = FALSE, message = FALSE}
+```{r hypothesize-40-hr-week, warning = FALSE, message = FALSE, cache = TRUE}
 gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40)
@@ -110,7 +111,7 @@ Once we've asserted our null hypothesis using `hypothesize()`, we can construct 
 
 Continuing on with our example above, about the average number of hours worked a week, we might write:
 
-```{r generate-point, warning = FALSE, message = FALSE}
+```{r generate-point, warning = FALSE, message = FALSE, cache = TRUE}
 gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40) %>%
@@ -121,7 +122,7 @@ In the above example, we take 1000 bootstrap samples to form our null distributi
 
 To generate a null distribution for the independence of two variables, we could also randomly reshuffle the pairings of explanatory and response variables to break any existing association. For instance, to generate 1000 replicates that can be used to create a null distribution under the assumption that political party affiliation is not affected by age:
 
-```{r generate-permute, warning = FALSE, message = FALSE}
+```{r generate-permute, warning = FALSE, message = FALSE, cache = TRUE}
 gss %>%
   specify(partyid ~ age) %>%
   hypothesize(null = "independence") %>%
@@ -132,7 +133,7 @@ gss %>%
 
 Depending on whether you're carrying out computation-based inference or theory-based inference, you will either supply `calculate()` with the output of `generate()` or `hypothesize`, respectively. The function, for one, takes in a `stat` argument, which is currently one of "mean", "median", "sum", "sd", "prop", "count", "diff in means", "diff in medians", "diff in props", "Chisq", "F", "t", "z", "slope", or "correlation". For example, continuing our example above to calculate the null distribution of mean hours worked per week:
 
-```{r calculate-point, warning = FALSE, message = FALSE}
+```{r calculate-point, warning = FALSE, message = FALSE, cache = TRUE}
 gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40) %>%
@@ -142,7 +143,7 @@ gss %>%
 
 If you're carrying out inference on differences in means, medians, or proportions, or t and z statistics, you will need to supply an `order` argument, giving the order in which the explanatory variables should be subtracted. For instance, to find the difference in mean age of those that identify as democrat or republican, we might write:
 
-```{r specify-diff-in-means}
+```{r specify-diff-in-means, warning = FALSE, message = FALSE, cache = TRUE}
 gss %>%
   dplyr::filter(partyid %in% c("dem", "rep")) %>%
   specify(age ~ partyid) %>%
@@ -151,38 +152,79 @@ gss %>%
   calculate("diff in means", order = c("rep", "dem"))
 ```
 
-### Other Utilities in infer
+### Other Utilities in `infer`
 
-<!-- visualize, get_p_value, get_confidence interval --> 
+`infer` also offers several utilities to extract the meaning out of summary statistics and null distributions---the package provides functions to visualize where a statistic is relative to a distribution (with `visualize()`), calculate p-values (with `get_p_value()`), and calculate confidence intervals (with `get_confidence_interval()`).
 
-### Examples
+To illustrate, we'll go back to the example of determining whether the mean of the reported hours worked per week is 40 hours.
 
-We'll work through some examples using `gss`, a dataset supplied by `infer` containing a sample of 3000 observations sampled from the *General Social Survey*. In each, we'll point out the kinds of variable(s) involved, generate a null distribution, calculate the relevant test statistic, visualize where the observed statistic lies in the observed distribution, extract the p-value from the test statistic, and find a confidence interval for the point estimate.
+```{r utilities-examples}
+# find the point estimate
+point_estimate <- gss %>%
+  specify(response = hours) %>%
+  calculate(stat = "mean") %>%
+  pull()
 
-#### Example Template
-
-Point out and describe the relevant variable(s). Mention common terminology that is specific to this use-case.
-
-```{r observed}
-# calculate the observed statistic
+# generate a null distribution
+null_dist <- gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
+  generate(reps = 10000, type = "bootstrap") %>%
+  calculate(stat = "mean")
 ```
 
-```{r null-dist}
-# generate the null distribution
+(Notice the warning: `Removed 1244 rows containing missing values.` This would be worth noting if you were actually carrying out this hypothesis test.)
+
+Our point estimate `r point_estimate` seems *pretty* close to 40, but a little bit different. We might wonder if this difference is just due to random chance, or if the mean number of hours worked per week in the population really isn't 40.
+
+We could initially just visualize the null distribution.
+
+```{r visualize, warning = FALSE, message = FALSE}
+null_dist %>%
+  visualize()
 ```
 
-```{r test-stat}
-# calculate the test statistic
+Where does our observed statistic lie on this distribution? We can use the `obs_stat` argument to specify this.
+
+```{r visualize2, warning = FALSE, message = FALSE}
+null_dist %>%
+  visualize(obs_stat = point_estimate)
 ```
 
-```{r visualize}
-# visualize where the test statistic lies in the null distribution
+The red bar looks like it's pretty far out on the right tail of the null distribution, so observing a mean of `r point_estimate` hours would be pretty unlikely if the mean was actually 40 hours. How unlikely, though?
+
+```{r get_p_value, warning = FALSE, message = FALSE}
+# get a two-tailed p-value
+p_value <- null_dist %>%
+  get_p_value(obs_stat = point_estimate, direction = "two_sided")
+
+p_value
 ```
 
-```{r p-value}
-# calculate the p-value from the test statistic
+It looks like the p-value is `r p_value`, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (`r abs(point_estimate-40)` hours) from 40 would be `r p_value`. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
+
+We can also shade the regions of the null distribution that are as (or more) extreme than our observed statistic to get a sense of what `r p_value*100`% of the distribution actually looks like.
+
+```{r shade_p_value, warning = FALSE, message = FALSE}
+# get a two-tailed p-value
+null_dist %>%
+  visualize() +
+  shade_p_value(obs_stat = point_estimate, direction = "two_sided")
 ```
 
-```{r confidence-interval}
-# find a confidence interval for the point estimate
+To get a confidence interval around our estimate, we can write:
+
+```{r get_conf, message = FALSE, warning = FALSE}
+# start with the null distribution
+null_dist %>%
+  # calculate the confidence interval around the point estimate
+  get_confidence_interval(point_estimate = point_estimate,
+                          # at the 95% confidence level
+                          level = .95,
+                          # using the standard error
+                          type = "se")
 ```
+
+As you can see, 40 hours per work is not contained in this interval, which aligns with our previous conclusion that this finding is significant at the confidence level $\alpha = .05$.
+
+This vignette covers most all of the key functionality of infer. See `help(package = "infer")` for a full list of functions and vignettes.
