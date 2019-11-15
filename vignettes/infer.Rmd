@@ -42,7 +42,7 @@ data(gss)
 str(gss)
 ```
 
-Each row is an individual survey response, containing some basic demographic information on the respondent as well as some additional variables. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not provide accurate estimates unless weighted properly.
+Each row is an individual survey response, containing some basic demographic information on the respondent as well as some additional variables. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about - American adults.
 
 ### `specify()`: Specifying Response (and Explanatory) Variables
 
@@ -75,7 +75,7 @@ gss %>%
   specify(response = age, explanatory = partyid)
 ```
 
-If you're doing inference on one proportion or a difference in proportions, you will need to use the `success` argument to specify which level of your `response` variable is a success. For instance, if you're interested in the proportion of respondents in this sample with a college degree, you might use the following code:
+If you're doing inference on one proportion or a difference in proportions, you will need to use the `success` argument to specify which level of your `response` variable is a success. For instance, if you're interested in the proportion of the population with a college degree, you might use the following code:
 
 ```{r specify-success, warning = FALSE, message = FALSE, cache = TRUE}
 # specifying for inference on proportions
@@ -93,7 +93,7 @@ gss %>%
   hypothesize(null = "independence")
 ```
 
-If you're doing inference on a point estimate, you will also need to provide one of `p` (the true proportion of successes, between 0 and 1), `mu` (the true mean), `med` (the true median), or `sigma` (the true standard deviation). For instance, if the null hypothesis is that the mean number of hours worked per week in this sample is 40, we would write:
+If you're doing inference on a point estimate, you will also need to provide one of `p` (the true proportion of successes, between 0 and 1), `mu` (the true mean), `med` (the true median), or `sigma` (the true standard deviation). For instance, if the null hypothesis is that the mean number of hours worked per week in our population is 40, we would write:
 
 ```{r hypothesize-40-hr-week, warning = FALSE, message = FALSE, cache = TRUE}
 gss %>%
@@ -143,7 +143,7 @@ gss %>%
   calculate(stat = "mean")
 ```
 
-If you're carrying out inference on differences in means, medians, or proportions, or t and z statistics, you will need to supply an `order` argument, giving the order in which the explanatory variables should be subtracted. For instance, to find the difference in mean age of those that have a college degree and those that don't, we might write:
+The output of `calculate()` here shows us the sample statistic (in this case, the mean) for each of our 1000 replicates. If you're carrying out inference on differences in means, medians, or proportions, or t and z statistics, you will need to supply an `order` argument, giving the order in which the explanatory variables should be subtracted. For instance, to find the difference in mean age of those that have a college degree and those that don't, we might write:
 
 ```{r specify-diff-in-means, warning = FALSE, message = FALSE, cache = TRUE}
 gss %>%
@@ -157,7 +157,7 @@ gss %>%
 
 `infer` also offers several utilities to extract the meaning out of summary statistics and null distributions---the package provides functions to visualize where a statistic is relative to a distribution (with `visualize()`), calculate p-values (with `get_p_value()`), and calculate confidence intervals (with `get_confidence_interval()`).
 
-To illustrate, we'll go back to the example of determining whether the mean of the reported hours worked per week is 40 hours.
+To illustrate, we'll go back to the example of determining whether the mean number of hours worked per week is 40 hours.
 
 ```{r utilities-examples}
 # find the point estimate
@@ -185,7 +185,7 @@ null_dist %>%
   visualize()
 ```
 
-Where does our observed statistic lie on this distribution? We can use the `obs_stat` argument to specify this.
+Where does our sample's observed statistic lie on this distribution? We can use the `obs_stat` argument to specify this.
 
 ```{r visualize2, warning = FALSE, message = FALSE}
 null_dist %>%
@@ -193,7 +193,7 @@ null_dist %>%
   shade_p_value(obs_stat = point_estimate, direction = "two_sided")
 ```
 
-Notice that `infer` has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the `+` operator to apply the `shade_p_value` function. This is because `visualize` outputs a plot object from `ggplot2` instead of a data frame, and the `+` operator is needed to add the p-value layer to the plot object.) The red bar looks like it's pretty far out on the right tail of the null distribution, so observing a mean of `r point_estimate` hours would be pretty unlikely if the mean was actually 40 hours. How unlikely, though?
+Notice that `infer` has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the `+` operator to apply the `shade_p_value` function. This is because `visualize` outputs a plot object from `ggplot2` instead of a data frame, and the `+` operator is needed to add the p-value layer to the plot object.) The red bar looks like it's pretty far out on the right tail of the null distribution, so observing a sample mean of `r point_estimate` hours would be pretty unlikely if the mean was actually 40 hours. How unlikely, though?
 
 ```{r get_p_value, warning = FALSE, message = FALSE}
 # get a two-tailed p-value
