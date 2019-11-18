@@ -194,3 +194,10 @@ test_that("params correct", {
 test_that("sensible output", {
   expect_equal(class(one_mean)[1], "infer")
 })
+
+
+# is_hypothesized ---------------------------------------------------------
+test_that("is_hypothesized works", {
+  expect_true(is_hypothesized(one_mean))
+  expect_false(is_hypothesized(one_mean_specify))
+})

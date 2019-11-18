@@ -5,11 +5,14 @@
 \alias{shade_ci}
 \title{Add information about confidence interval}
 \usage{
-shade_confidence_interval(endpoints, color = "mediumaquamarine",
-  fill = "turquoise", ...)
+shade_confidence_interval(
+  endpoints,
+  color = "mediumaquamarine",
+  fill = "turquoise",
+  ...
+)
 
-shade_ci(endpoints, color = "mediumaquamarine", fill = "turquoise",
-  ...)
+shade_ci(endpoints, color = "mediumaquamarine", fill = "turquoise", ...)
 }
 \arguments{
 \item{endpoints}{A 2 element vector or a 1 x 2 data frame containing the
@@ -22,28 +25,60 @@ end points as a vertical lines on the plot.}
 \item{fill}{A character or hex string specifying the color to shade the
 confidence interval. If \code{NULL} then no shading is actually done.}
 
-\item{...}{Other arguments passed along to \{ggplot2\} functions.}
+\item{...}{Other arguments passed along to \\{ggplot2\\} functions.}
 }
 \value{
-A list of \{ggplot2\} objects to be added to the \code{visualize()}
+A list of \\{ggplot2\\} objects to be added to the \code{visualize()}
 output.
 }
 \description{
+\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+
 \code{shade_confidence_interval()} plots confidence interval region on top of the
-\code{\link[=visualize]{visualize()}} output. It should be used as \{ggplot2\} layer function (see
+\code{\link[=visualize]{visualize()}} output. It should be used as \\{ggplot2\\} layer function (see
 examples). \code{shade_ci()} is its alias.
+
+Learn more in \code{vignette("infer")}.
 }
 \examples{
-viz_plot <- mtcars \%>\%
-  dplyr::mutate(am = factor(am)) \%>\%
-  specify(mpg ~ am) \%>\% # alt: response = mpg, explanatory = am
-  hypothesize(null = "independence") \%>\%
-  generate(reps = 100, type = "permute") \%>\%
-  calculate(stat = "t", order = c("1", "0")) \%>\%
-  visualize(method = "both")
+# find the point estimate---mean number of hours worked per week
+point_estimate <- gss \%>\%
+  specify(response = hours) \%>\%
+  calculate(stat = "mean") \%>\%
+  dplyr::pull()
+  
+# ...and a null distribution
+null_dist <- gss \%>\%
+  # ...we're interested in the number of hours worked per week
+  specify(response = hours) \%>\%
+  # hypothesizing that the mean is 40
+  hypothesize(null = "point", mu = 40) \%>\%
+  # generating data points for a null distribution
+  generate(reps = 10000, type = "bootstrap") \%>\%
+  # finding the null distribution
+  calculate(stat = "mean")
+  
+# find a confidence interval around the point estimate
+ci <- null_dist \%>\%
+  get_confidence_interval(point_estimate = point_estimate,
+                          # at the 95\% confidence level
+                          level = .95,
+                          # using the standard error method
+                          type = "se")   
+  
+  
+# and plot it!
+null_dist \%>\%
+  visualize() +
+  shade_confidence_interval(ci)
+  
+# or just plot the bounds
+null_dist \%>\%
+  visualize() +
+  shade_confidence_interval(ci, fill = NULL)
 
-viz_plot + shade_confidence_interval(c(-1.5, 1.5))
-viz_plot + shade_confidence_interval(c(-1.5, 1.5), fill = NULL)
+# More in-depth explanation of how to use the infer package
+vignette("infer")
 
 }
 \seealso{

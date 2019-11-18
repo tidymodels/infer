@@ -1,5 +1,13 @@
 #' Calculate summary statistics
 #'
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#' 
+#' Calculates summary statistics from outputs of [generate()] or 
+#' [hypothesize()].
+#' 
+#' Learn more in `vignette("infer")`.
+#'
 #' @param x The output from [generate()] for computation-based inference or the
 #'   output from [hypothesize()] piped in to here for theory-based inference.
 #' @param stat A string giving the type of the statistic to calculate. Current
@@ -16,13 +24,25 @@
 #' @return A tibble containing a `stat` column of calculated statistics.
 #'
 #' @examples
-#' # Permutation test for two binary variables
-#' mtcars %>%
-#'   dplyr::mutate(am = factor(am), vs = factor(vs)) %>%
-#'   specify(am ~ vs, success = "1") %>%
-#'   hypothesize(null = "independence") %>%
-#'   generate(reps = 100, type = "permute") %>%
-#'   calculate(stat = "diff in props", order = c("1", "0"))
+#'
+#' # calculate a null distribution of hours worked per week under
+#' # the null hypothesis that the mean is 40
+#' gss %>%
+#'  specify(response = hours) %>%
+#'  hypothesize(null = "point", mu = 40) %>%
+#'  generate(reps = 1000, type = "bootstrap") %>%
+#'  calculate(stat = "mean")
+#'
+#' # calculate a null distribution assuming independence between age
+#' # of respondent and whether they have a college degree
+#' gss %>%
+#'  specify(age ~ college) %>%
+#'  hypothesize(null = "independence") %>%
+#'  generate(reps = 1000, type = "permute") %>%
+#'  calculate("diff in means", order = c("degree", "no degree"))
+#'
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")
 #'
 #' @importFrom dplyr group_by summarize n
 #' @importFrom rlang !! sym quo enquo eval_tidy
@@ -49,7 +69,7 @@ calculate <- function(x,
   }
 
   if (is_nuat(x, "generate") || !attr(x, "generate")) {
-    if (is_nuat(x, "null")) {
+    if (!is_hypothesized(x)) {
       x$replicate <- 1L
     } else if (
       stat %in% c(
@@ -353,7 +373,7 @@ calc_impl.t <- function(type, x, order, ...) {
   # One sample mean
   else if (attr(x, "theory_type") == "One sample t") {
     # For bootstrap
-    if (is_nuat(x, "null")) {
+    if (!is_hypothesized(x)) {
       x %>%
         dplyr::summarize(
           stat = stats::t.test(!!attr(x, "response"), ...)[["statistic"]]

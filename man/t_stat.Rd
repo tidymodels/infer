@@ -4,9 +4,18 @@
 \alias{t_stat}
 \title{Tidy t-test statistic}
 \usage{
-t_stat(x, formula, response = NULL, explanatory = NULL, order = NULL,
-  alternative = "two_sided", mu = 0, conf_int = FALSE,
-  conf_level = 0.95, ...)
+t_stat(
+  x,
+  formula,
+  response = NULL,
+  explanatory = NULL,
+  order = NULL,
+  alternative = "two_sided",
+  mu = 0,
+  conf_int = FALSE,
+  conf_level = 0.95,
+  ...
+)
 }
 \arguments{
 \item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
@@ -34,7 +43,7 @@ interval or not. \code{TRUE} by default.}
 
 \item{conf_level}{A numeric value between 0 and 1. Default value is 0.95.}
 
-\item{...}{Pass in arguments to \{infer\} functions.}
+\item{...}{Pass in arguments to \\{infer\\} functions.}
 }
 \description{
 A shortcut wrapper function to get the observed test statistic for a t test.

@@ -1,5 +1,12 @@
 #' Declare a null hypothesis
 #'
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#' 
+#' Declare a null hypothesis about variables selected in [specify()].
+#' 
+#' Learn more in `vignette("infer")`.
+#'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param null The null hypothesis. Options include `"independence"` and
 #'   `"point"`.
@@ -16,13 +23,18 @@
 #'   variable data with parameter information stored as well.
 #'
 #' @examples
-#' # Permutation test similar to ANOVA
-#' mtcars %>%
-#'   dplyr::mutate(cyl = factor(cyl)) %>%
-#'   specify(mpg ~ cyl) %>%
-#'   hypothesize(null = "independence") %>%
-#'   generate(reps = 100, type = "permute") %>%
-#'   calculate(stat = "F")
+#' # hypothesize independence of two variables
+#' gss %>%
+#'  specify(college ~ partyid, success = "degree") %>%
+#'  hypothesize(null = "independence")
+#'  
+#' # hypothesize a mean number of hours worked per week of 40
+#' gss %>%
+#'   specify(response = hours) %>%
+#'   hypothesize(null = "point", mu = 40)
+#'
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")
 #'
 #' @importFrom purrr compact
 #' @export
@@ -63,4 +75,8 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
     }
   )
   append_infer_class(tibble::as_tibble(x))
+}
+
+is_hypothesized <- function(x){
+  !is.null(attr(x, "null"))
 }

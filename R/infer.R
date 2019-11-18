@@ -1,16 +1,17 @@
 #' infer: a grammar for statistical inference
 #'
+#' \if{html}{\figure{infer.png}{options: align='right'}}
+#'  
 #' The objective of this package is to perform statistical inference using a
 #' grammar that illustrates the underlying concepts and a format that coheres
 #' with the tidyverse.
+#' 
+#' For an overview of how to use the core functionality, see `vignette("infer")`
 #'
-#' @examples
-#' # Example usage:
-#' library(infer)
 #'
 #' @docType package
 #' @name infer
-NULL
+"_PACKAGE"
 
 ## quiets concerns of R CMD check re: the .'s that appear in pipelines
 ## From Jenny Bryan's googlesheets package

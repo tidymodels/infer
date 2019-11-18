@@ -35,6 +35,19 @@ is_nuat <- function(x, at) {
   is.null(attr(x, at))
 }
 
+# Wrapper for deduplication by name after doing `c(...)`
+c_dedupl <- function(...) {
+  l <- c(...)
+  
+  l_names <- names(l)
+  
+  if (is.null(l_names)) {
+    l
+  } else {
+    l[!duplicated(l_names) | (l_names == "")]
+  }
+}
+
 explanatory_variable <- function(x) {
   x[[as.character(attr(x, "explanatory"))]]
 }
@@ -212,7 +225,7 @@ check_for_factor_stat <- function(x, stat, explanatory_variable) {
 check_point_params <- function(x, stat) {
   param_names <- attr(attr(x, "params"), "names")
   hyp_text <- 'to be set in `hypothesize()`.'
-  if (!is_nuat(x, "null")) {
+  if (is_hypothesized(x)) {
     if (stat %in% c("mean", "median", "sd", "prop")) {
       if ((stat == "mean") && !("mu" %in% param_names)) {
         stop_glue('`stat == "mean"` requires `"mu"` {hyp_text}')

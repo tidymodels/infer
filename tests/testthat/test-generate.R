@@ -231,10 +231,12 @@ test_that("auto `type` works (generate)", {
   )
 
   expect_error(
-    expect_warning(mtcars_df %>%
+    expect_warning(
+      mtcars_df %>%
         specify(mpg ~ am) %>%
         generate(reps = 100, type = "permute")
-    )
+    ),
+    "independence hypothesis test"
   )
 
   expect_warning(mtcars_df %>%

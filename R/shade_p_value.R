@@ -1,8 +1,13 @@
 #' Add information about p-value region(s)
 #'
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#'
 #' `shade_p_value()` plots p-value region(s) (using "area under the curve"
 #' approach) on top of the [visualize()] output. It should be used as
 #' \\{ggplot2\\} layer function (see examples). `shade_pvalue()` is its alias.
+#' 
+#' Learn more in `vignette("infer")`.
 #'
 #' @param obs_stat A numeric value or 1x1 data frame corresponding to what the
 #'   observed statistic is.
@@ -23,21 +28,30 @@
 #'   interval.
 #'
 #' @examples
-#' set.seed(505)
-#' data_to_plot <- mtcars %>%
-#'   dplyr::mutate(am = factor(am)) %>%
-#'   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
-#'   hypothesize(null = "independence") %>%
-#'   generate(reps = 100, type = "permute") %>%
-#'   calculate(stat = "t", order = c("1", "0"))
-#'
-#' visualize(data_to_plot, method = "simulation") +
-#'   shade_p_value(1.5, direction = "right")
-#' visualize(data_to_plot, method = "theoretical") +
-#'   shade_p_value(1.5, direction = "left")
-#' visualize(data_to_plot, method = "both") +
-#'   shade_p_value(1.5, direction = "both")
-#' visualize(data_to_plot) + shade_p_value(1.5, direction = NULL)
+#' # find the point estimate---mean number of hours worked per week
+#' point_estimate <- gss %>%
+#'   specify(response = hours) %>%
+#'   calculate(stat = "mean") %>%
+#'   dplyr::pull()
+#'   
+#' # ...and a null distribution
+#' null_dist <- gss %>%
+#'   # ...we're interested in the number of hours worked per week
+#'   specify(response = hours) %>%
+#'   # hypothesizing that the mean is 40
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   # generating data points for a null distribution
+#'   generate(reps = 10000, type = "bootstrap") %>%
+#'   # finding the null distribution
+#'   calculate(stat = "mean")
+#'   
+#' # shade the p-value of the point estimate
+#' null_dist %>%
+#'   visualize() +
+#'   shade_p_value(obs_stat = point_estimate, direction = "two_sided")
+#' 
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")
 #'
 #' @name shade_p_value
 NULL
@@ -59,11 +73,11 @@ shade_p_value <- function(obs_stat, direction,
     if (direction %in% c("less", "left", "greater", "right")) {
       tail_area <- one_tail_area(obs_stat, direction)
       
-      res <- c(res, geom_tail_area(tail_area, fill))
+      res <- c(res, geom_tail_area(tail_area, fill, ...))
     } else if (direction %in% c("two_sided", "both")) {
       tail_area <- two_tail_area(obs_stat, direction)
       
-      res <- c(res, geom_tail_area(tail_area, fill))
+      res <- c(res, geom_tail_area(tail_area, fill, ...))
     } else {
       warning_glue(
         '`direction` should be one of `"less"`, `"left"`, `"greater"`, ",
@@ -73,15 +87,24 @@ shade_p_value <- function(obs_stat, direction,
   }
   
   # Add vertical line at `obs_stat`
-  c(
-    res,
-    list(ggplot2::geom_segment(
+  # Making extra step of precomputing arguments in order to have default value
+  # of `size = 2` overwritable in `...`
+  segment_args <- c_dedupl(
+    # Not overwritable arguments
+    list(
       # Here `aes()` is needed to force {ggplot2} to include segment in the plot
-      aes(x = obs_stat, xend = obs_stat, y = 0, yend = Inf),
-      colour = color, size = 2,
+      mapping = aes(x = obs_stat, xend = obs_stat, y = 0, yend = Inf),
+      color = color,
       inherit.aes = FALSE
-    ))
+    ),
+    # Extra arguments
+    list(...),
+    # Default arguments that might be replaced in `...`
+    list(size = 2)
   )
+  segment_layer <- do.call(ggplot2::geom_segment, segment_args)
+  
+  c(res, list(segment_layer))
 }
 
 #' @rdname shade_p_value
@@ -101,14 +124,21 @@ check_shade_p_value_args <- function(obs_stat, direction, color, fill) {
   TRUE
 }
 
-geom_tail_area <- function(tail_data, fill) {
-  list(
-    ggplot2::geom_area(
-      data = tail_data, mapping = aes(x = x, y = y, group = dir),
-      fill = fill, alpha = 0.6,
-      show.legend = FALSE, inherit.aes = FALSE
-    )
+geom_tail_area <- function(tail_data, fill, ...) {
+  area_args <- c_dedupl(
+    list(
+      data = tail_data,
+      mapping = aes(x = x, y = y, group = dir),
+      fill = fill,
+      show.legend = FALSE,
+      inherit.aes = FALSE
+    ),
+    list(...),
+    list(alpha = 0.6)
   )
+  area_layer <- do.call(ggplot2::geom_area, area_args)
+  
+  list(area_layer)
 }
 
 two_tail_area <- function(obs_stat, direction) {

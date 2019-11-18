@@ -26,14 +26,22 @@ test_that("data argument", {
 })
 
 test_that("response and explanatory arguments", {
-  expect_error(specify(mtcars_df, response = blah))
-  expect_error(specify(mtcars_df, response = "blah"))
-  expect_error(specify(mtcars_df, formula = mpg ~ blah))
-  expect_error(specify(blah ~ cyl))
-  expect_error(specify(mtcars_df, blah2 ~ cyl))
-  expect_error(specify(mtcars_df))
-  expect_error(specify(mtcars_df, formula = mpg ~ mpg))
-  expect_error(specify(mtcars_df, formula = mpg ~ "cyl"))
+  expect_error(specify(mtcars_df, response = blah), "response.*cannot be found")
+  expect_error(
+    specify(mtcars_df, response = "blah"), "response.*bare.*not a string"
+  )
+  expect_error(
+    specify(mtcars_df, formula = mpg ~ blah), "explanatory.*cannot be found"
+  )
+  expect_error(specify(mtcars_df, blah2 ~ cyl), "response.*cannot be found")
+  expect_error(specify(mtcars_df), "Supply.*response")
+  expect_error(specify(mtcars_df, formula = mpg ~ mpg), "different")
+  expect_error(
+    specify(mtcars_df, formula = "mpg" ~ cyl), "response.*bare.*not a string"
+  )
+  expect_error(
+    specify(mtcars_df, formula = mpg ~ "cyl"), "explanatory.*bare.*not a string"
+  )
   expect_silent(specify(mtcars_df, formula = mpg ~ cyl))
 
   expect_error(specify(mtcars_df, formula = NULL ~ cyl), "NULL.*response")
@@ -71,4 +79,8 @@ test_that("formula argument is a formula", {
 test_that("is_complete works", {
   some_missing <- data.frame(vec = c(NA, 2, 3))
   expect_warning(specify(some_missing, response = vec))
+})
+
+test_that("specify doesn't have NSE issues (#256)", {
+  expect_silent(specify(tibble(x = 1:10), x ~ NULL))
 })

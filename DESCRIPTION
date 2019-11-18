@@ -1,7 +1,7 @@
 Package: infer
 Type: Package
 Title: Tidy Statistical Inference
-Version: 0.5.0
+Version: 0.5.1
 Authors@R: c(
     person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
     person("Chester", "Ismay", email = "chester.ismay@gmail.com", role = "aut"),
@@ -29,7 +29,8 @@ Imports:
     magrittr,
     glue (>= 1.3.0),
     grDevices,
-    purrr
+    purrr,
+    lifecycle
 Depends:
     R (>= 3.1.2)
 Suggests: 
@@ -42,8 +43,9 @@ Suggests:
     testthat,
     covr,
     vdiffr
-URL: https://github.com/tidymodels/infer
+URL: https://github.com/tidymodels/infer,
+     https://infer.netlify.com/
 BugReports: https://github.com/tidymodels/infer/issues
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.0
 VignetteBuilder: knitr

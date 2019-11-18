@@ -66,6 +66,21 @@ test_that("shade_p_value accepts synonyms for 'direction'", {
   )
 })
 
+test_that("shade_p_value uses extra aesthetic", {
+  expect_doppelganger(
+    "pval-extra-aes-1",
+    iris_viz_sim + shade_p_value(1, "two_sided", alpha = 1)
+  )
+  expect_doppelganger(
+    "pval-extra-aes-2",
+    iris_viz_sim + shade_p_value(1, "two_sided", linetype = "dotted")
+  )
+  expect_doppelganger(
+    "pval-extra-aes-3",
+    iris_viz_sim + shade_p_value(1, "two_sided", size = 4)
+  )
+})
+
 test_that("shade_p_value accepts `NULL` as `obs_stat`",  {
   expect_doppelganger(
     "pval-null-obs_stat", iris_viz_sim + shade_p_value(NULL, "left")
