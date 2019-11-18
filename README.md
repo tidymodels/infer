@@ -46,8 +46,7 @@ remotes::install_github("tidymodels/infer")
 ```
 
 To install the cutting edge version of `infer` (do so at your own risk),
-make sure to install `remotes` first. This version was last updated on
-2019-06-13 14:54:51.
+make sure to install `remotes` first.
 
 ``` r
 install.packages("remotes")
