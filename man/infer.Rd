@@ -12,6 +12,9 @@ The objective of this package is to perform statistical inference using a
 grammar that illustrates the underlying concepts and a format that coheres
 with the tidyverse.
 }
+\details{
+For an overview of how to use the core functionality, see \code{vignette("infer")}
+}
 \seealso{
 Useful links:
 \itemize{

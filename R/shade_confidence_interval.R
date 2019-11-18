@@ -1,8 +1,13 @@
 #' Add information about confidence interval
 #'
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#'
 #' `shade_confidence_interval()` plots confidence interval region on top of the
 #' [visualize()] output. It should be used as \\{ggplot2\\} layer function (see
 #' examples). `shade_ci()` is its alias.
+#' 
+#' Learn more in `vignette("infer")`.
 #'
 #' @param endpoints A 2 element vector or a 1 x 2 data frame containing the
 #'   lower and upper values to be plotted. Most useful for visualizing
@@ -19,16 +24,44 @@
 #' @seealso [shade_p_value()] to add information about p-value region.
 #'
 #' @examples
-#' viz_plot <- mtcars %>%
-#'   dplyr::mutate(am = factor(am)) %>%
-#'   specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
-#'   hypothesize(null = "independence") %>%
-#'   generate(reps = 100, type = "permute") %>%
-#'   calculate(stat = "t", order = c("1", "0")) %>%
-#'   visualize(method = "both")
+#' # find the point estimate---mean number of hours worked per week
+#' point_estimate <- gss %>%
+#'   specify(response = hours) %>%
+#'   calculate(stat = "mean") %>%
+#'   dplyr::pull()
+#'   
+#' # ...and a null distribution
+#' null_dist <- gss %>%
+#'   # ...we're interested in the number of hours worked per week
+#'   specify(response = hours) %>%
+#'   # hypothesizing that the mean is 40
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   # generating data points for a null distribution
+#'   generate(reps = 10000, type = "bootstrap") %>%
+#'   # finding the null distribution
+#'   calculate(stat = "mean")
+#'   
+#' # find a confidence interval around the point estimate
+#' ci <- null_dist %>%
+#'   get_confidence_interval(point_estimate = point_estimate,
+#'                           # at the 95% confidence level
+#'                           level = .95,
+#'                           # using the standard error method
+#'                           type = "se")   
+#'   
+#'   
+#' # and plot it!
+#' null_dist %>%
+#'   visualize() +
+#'   shade_confidence_interval(ci)
+#'   
+#' # or just plot the bounds
+#' null_dist %>%
+#'   visualize() +
+#'   shade_confidence_interval(ci, fill = NULL)
 #'
-#' viz_plot + shade_confidence_interval(c(-1.5, 1.5))
-#' viz_plot + shade_confidence_interval(c(-1.5, 1.5), fill = NULL)
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")
 #'
 #' @name shade_confidence_interval
 NULL

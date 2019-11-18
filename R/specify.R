@@ -1,14 +1,22 @@
-#' Specify the response and explanatory variables
+#' Specify response and explanatory variables
 #'
-#' `specify()` also converts character variables chosen to be `factor`s.
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#'  
+#' `specify()` is used to specify which columns in the supplied data frame are
+#' the relevant response (and, if applicable, explanatory) variables. Note that 
+#' character variables are converted to `factor`s.
+#' 
+#' Learn more in `vignette("infer")`.
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
-#'   explanatory on the right.
+#'   explanatory on the right. Alternatively, a `response` and `explanatory`
+#'   argument can be supplied.
 #' @param response The variable name in `x` that will serve as the response.
-#'   This is alternative to using the `formula` argument.
+#'   This is an alternative to using the `formula` argument.
 #' @param explanatory The variable name in `x` that will serve as the
-#'   explanatory variable.
+#'   explanatory variable. This is an alternative to using the formula argument.
 #' @param success The level of `response` that will be considered a success, as
 #'   a string. Needed for inference on one proportion, a difference in
 #'   proportions, and corresponding z stats.
@@ -17,13 +25,20 @@
 #'   variable data.
 #'
 #' @examples
-#' # Permutation test similar to ANOVA
-#' mtcars %>%
-#'   dplyr::mutate(cyl = factor(cyl)) %>%
-#'   specify(mpg ~ cyl) %>%
-#'   hypothesize(null = "independence") %>%
-#'   generate(reps = 100, type = "permute") %>%
-#'   calculate(stat = "F")
+#' # specifying for a point estimate on one variable
+#' gss %>%
+#'    specify(response = age)
+#' 
+#' # specify a relationship between variables as a formula...
+#' gss %>%
+#'   specify(age ~ partyid)
+#'   
+#' # ...or with named arguments!
+#' gss %>%
+#'   specify(response = age, explanatory = partyid)
+#'
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")
 #'
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs

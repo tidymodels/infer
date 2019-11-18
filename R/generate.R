@@ -1,27 +1,54 @@
 #' Generate resamples, permutations, or simulations
 #'
-#' Generation is done based on [specify()] and (if needed) [hypothesize()]
-#' inputs.
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("questioning")}
+#' 
+#' Generation creates a null distribution from [specify()] and (if needed) 
+#' [hypothesize()] inputs.
+#' 
+#' Learn more in `vignette("infer")`.
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param reps The number of resamples to generate.
-#' @param type Currently either `bootstrap`, `permute`, or `simulate` as defined
-#' in the `GENERATION_TYPES` vector.
+#' @param type Currently either `bootstrap`, `permute`, or `simulate` 
+#' (see below).
 #' @param ... Currently ignored.
 #'
-#' @return A tibble containing `rep` generated datasets, indicated by the
+#' @return A tibble containing `reps` generated datasets, indicated by the
 #'   `replicate` column.
+#'   
+#' @section Generation Types:
+#' 
+#' The `type` argument determines the method used to create the null 
+#' distribution.
+#' 
+#' \itemize{
+#'   \item `bootstrap`: A bootstrap sample will be drawn for each replicate,
+#'   where a sample of size equal to the input sample size is drawn (with 
+#'   replacement) from the input sample data.
+#'   \item `permute`: For each replicate, each input value will be randomly 
+#'   reassigned (without replacement) to a new output value in the sample.
+#'   \item `simulate`: A value will be sampled from a theoretical distribution 
+#'   with parameters specified in [hypothesize()] for each replicate. (This 
+#'   option is currently only applicable for testing point estimates.)
+#' }
 #'
 #' @examples
-#' # Different `type` options
-#' GENERATION_TYPES   
-#'  
-#' # Permutation test for two binary variables
-#' mtcars %>%
-#'   dplyr::mutate(am = factor(am), vs = factor(vs)) %>%
-#'   specify(am ~ vs, success = "1") %>%
-#'   hypothesize(null = "independence") %>%
-#'   generate(reps = 100, type = "permute")
+#' # Generate a null distribution by taking 1000 bootstrap samples
+#' gss %>%
+#'  specify(response = hours) %>%
+#'  hypothesize(null = "point", mu = 40) %>%
+#'  generate(reps = 1000, type = "bootstrap")
+#' 
+#' # Generate a null distribution for the independence of
+#' # two variables by permuting their values 1000 times
+#' gss %>%
+#'  specify(partyid ~ age) %>%
+#'  hypothesize(null = "independence") %>%
+#'  generate(reps = 1000, type = "permute")
+#' 
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")
 #'
 #' @importFrom dplyr group_by
 #' @export
@@ -47,10 +74,6 @@ generate <- function(x, reps = 1, type = NULL, ...) {
   )
 }
 
-
-#' @rdname generate
-#' @export
-GENERATION_TYPES <- c("bootstrap", "permute",  "simulate")
 
 sanitize_generation_type <- function(x) {
   if(is.null(x)) return(x)

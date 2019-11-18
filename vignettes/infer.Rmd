@@ -1,0 +1,223 @@
+---
+title: "infer"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{infer}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r include=FALSE}
+knitr::opts_chunk$set(fig.width = 6, fig.height = 3.5) 
+options(digits = 4)
+```
+
+### Introduction
+
+`infer` implements an expressive grammar to perform statistical inference that coheres with the `tidyverse` design framework. Rather than providing methods for specific statistical tests, this package consolidates the principles that are shared among common hypothesis tests into a set of 4 main verbs (functions), supplemented with many utilities to visualize and extract value from their outputs.
+
+Regardless of which hypothesis test we're using, we're still asking the same kind of question: is the effect/difference in our observed data real, or due to chance? To answer this question, we start by assuming that the observed data came from some world where "nothing is going on" (i.e. the observed effect was simply due to random chance), and call this assumption our *null hypothesis*. (In reality, we might not believe in the null hypothesis at all---the null hypothesis is in opposition to the *alternate hypothesis*, which supposes that the effect present in the observed data is actually due to the fact that "something is going on.") We then calculate a *test statistic* from our data that describes the observed effect. We can use this test statistic to calculate a *p-value*, giving the probability that our observed data could come about if the null hypothesis was true. If this probability is below some pre-defined *significance level* $\alpha$, then we can reject our null hypothesis.
+
+The workflow of this package is designed around this idea. Starting out with some dataset,
+
++ `specify()` allows you to specify the variable, or relationship between variables, that you're interested in.
++ `hypothesize()` allows you to declare the null hypothesis.
++ `generate()` allows you to generate data reflecting the null hypothesis.
++ `calculate()` allows you to calculate a distribution of statistics from the generated data to form the null distribution.
+
+Throughout this vignette, we make use of `gss`, a dataset supplied by `infer` containing a sample of 3000 observations sampled from the *General Social Survey*. 
+
+```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
+library(devtools)
+library(dplyr)
+devtools::load_all()
+```
+
+
+```{r load-gss, warning = FALSE, message = FALSE}
+# load in the dataset
+data(gss)
+
+# take a look at its structure
+str(gss)
+```
+
+Each row is an individual survey response, containing some basic demographic information on the respondent as well as some additional variables. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about - American adults.
+
+### `specify()`: Specifying Response (and Explanatory) Variables
+
+The `specify` function can be used to specify which of the variables in the dataset you're interested in. If you're only interested in, say, the `age` of the respondents, you might write:
+
+```{r specify-example, warning = FALSE, message = FALSE, cache = TRUE}
+gss %>%
+  specify(response = age)
+```
+
+On the front-end, the output of `specify` just looks like it selects off the columns in the dataframe that you've specified. Checking the class of this object, though:
+
+```{r specify-one, warning = FALSE, message = FALSE, cache = TRUE}
+gss %>%
+  specify(response = age) %>%
+  class()
+```
+
+We can see that the `infer` class has been appended on top of the dataframe classes--this new class stores some extra metadata.
+
+If you're interested in two variables--`age` and `partyid`, for example--you can `specify` their relationship in one of two (equivalent) ways:
+
+```{r specify-two, warning = FALSE, message = FALSE, cache = TRUE}
+# with the named arguments
+gss %>%
+  specify(age ~ partyid)
+
+# as a formula
+gss %>%
+  specify(response = age, explanatory = partyid)
+```
+
+If you're doing inference on one proportion or a difference in proportions, you will need to use the `success` argument to specify which level of your `response` variable is a success. For instance, if you're interested in the proportion of the population with a college degree, you might use the following code:
+
+```{r specify-success, warning = FALSE, message = FALSE, cache = TRUE}
+# specifying for inference on proportions
+gss %>%
+  specify(response = college, success = "degree")
+```
+
+### `hypothesize()`: Declaring the Null Hypothesis
+
+The next step in the `infer` pipeline is often to declare a null hypothesis using `hypothesize()`. The first step is to supply one of "independence" or "point" to the `null` argument. If your null hypothesis assumes independence between two variables, then this is all you need to supply to `hypothesize()`:
+
+```{r hypothesize-independence, warning = FALSE, message = FALSE, cache = TRUE}
+gss %>%
+  specify(college ~ partyid, success = "degree") %>%
+  hypothesize(null = "independence")
+```
+
+If you're doing inference on a point estimate, you will also need to provide one of `p` (the true proportion of successes, between 0 and 1), `mu` (the true mean), `med` (the true median), or `sigma` (the true standard deviation). For instance, if the null hypothesis is that the mean number of hours worked per week in our population is 40, we would write:
+
+```{r hypothesize-40-hr-week, warning = FALSE, message = FALSE, cache = TRUE}
+gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40)
+```
+
+Again, from the front-end, the dataframe outputted from `hypothesize()` looks almost exactly the same as it did when it came out of `specify()`, but `infer` now "knows" your null hypothesis.
+
+### `generate()`: Generating the Null Distribution
+
+Once we've asserted our null hypothesis using `hypothesize()`, we can construct a null distribution based on this hypothesis. We can do this using one of several methods, supplied in the `type` argument:
+
+* `bootstrap`: A bootstrap sample will be drawn for each replicate, where a sample of size equal to the input sample size is drawn (with replacement) from the input sample data.  
+* `permute`: For each replicate, each input value will be randomly reassigned (without replacement) to a new output value in the sample.  
+* `simulate`: A value will be sampled from a theoretical distribution with parameters specified in `hypothesize()` for each replicate. (This option is currently only applicable for testing point estimates.)  
+
+Continuing on with our example above, about the average number of hours worked a week, we might write:
+
+```{r generate-point, warning = FALSE, message = FALSE, cache = TRUE}
+gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
+  generate(reps = 1000, type = "bootstrap")
+```
+
+In the above example, we take 1000 bootstrap samples to form our null distribution.
+
+To generate a null distribution for the independence of two variables, we could also randomly reshuffle the pairings of explanatory and response variables to break any existing association. For instance, to generate 1000 replicates that can be used to create a null distribution under the assumption that political party affiliation is not affected by age:
+
+```{r generate-permute, warning = FALSE, message = FALSE, cache = TRUE}
+gss %>%
+  specify(partyid ~ age) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute")
+```
+
+### `calculate()`: Calculating Summary Statistics
+
+Depending on whether you're carrying out computation-based inference or theory-based inference, you will either supply `calculate()` with the output of `generate()` or `hypothesize`, respectively. The function, for one, takes in a `stat` argument, which is currently one of "mean", "median", "sum", "sd", "prop", "count", "diff in means", "diff in medians", "diff in props", "Chisq", "F", "t", "z", "slope", or "correlation". For example, continuing our example above to calculate the null distribution of mean hours worked per week:
+
+```{r calculate-point, warning = FALSE, message = FALSE, cache = TRUE}
+gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
+  generate(reps = 1000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+```
+
+The output of `calculate()` here shows us the sample statistic (in this case, the mean) for each of our 1000 replicates. If you're carrying out inference on differences in means, medians, or proportions, or t and z statistics, you will need to supply an `order` argument, giving the order in which the explanatory variables should be subtracted. For instance, to find the difference in mean age of those that have a college degree and those that don't, we might write:
+
+```{r specify-diff-in-means, warning = FALSE, message = FALSE, cache = TRUE}
+gss %>%
+  specify(age ~ college) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate("diff in means", order = c("degree", "no degree"))
+```
+
+### Other Utilities in `infer`
+
+`infer` also offers several utilities to extract the meaning out of summary statistics and null distributions---the package provides functions to visualize where a statistic is relative to a distribution (with `visualize()`), calculate p-values (with `get_p_value()`), and calculate confidence intervals (with `get_confidence_interval()`).
+
+To illustrate, we'll go back to the example of determining whether the mean number of hours worked per week is 40 hours.
+
+```{r utilities-examples}
+# find the point estimate
+point_estimate <- gss %>%
+  specify(response = hours) %>%
+  calculate(stat = "mean") %>%
+  dplyr::pull()
+
+# generate a null distribution
+null_dist <- gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
+  generate(reps = 10000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+```
+
+(Notice the warning: `Removed 1244 rows containing missing values.` This would be worth noting if you were actually carrying out this hypothesis test.)
+
+Our point estimate `r point_estimate` seems *pretty* close to 40, but a little bit different. We might wonder if this difference is just due to random chance, or if the mean number of hours worked per week in the population really isn't 40.
+
+We could initially just visualize the null distribution.
+
+```{r visualize, warning = FALSE, message = FALSE}
+null_dist %>%
+  visualize()
+```
+
+Where does our sample's observed statistic lie on this distribution? We can use the `obs_stat` argument to specify this.
+
+```{r visualize2, warning = FALSE, message = FALSE}
+null_dist %>%
+  visualize() +
+  shade_p_value(obs_stat = point_estimate, direction = "two_sided")
+```
+
+Notice that `infer` has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the `+` operator to apply the `shade_p_value` function. This is because `visualize` outputs a plot object from `ggplot2` instead of a data frame, and the `+` operator is needed to add the p-value layer to the plot object.) The red bar looks like it's pretty far out on the right tail of the null distribution, so observing a sample mean of `r point_estimate` hours would be pretty unlikely if the mean was actually 40 hours. How unlikely, though?
+
+```{r get_p_value, warning = FALSE, message = FALSE}
+# get a two-tailed p-value
+p_value <- null_dist %>%
+  get_p_value(obs_stat = point_estimate, direction = "two_sided")
+
+p_value
+```
+
+It looks like the p-value is `r p_value`, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (`r abs(point_estimate-40)` hours) from 40 would be `r p_value`. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
+
+To get a confidence interval around our estimate, we can write:
+
+```{r get_conf, message = FALSE, warning = FALSE}
+# start with the null distribution
+null_dist %>%
+  # calculate the confidence interval around the point estimate
+  get_confidence_interval(point_estimate = point_estimate,
+                          # at the 95% confidence level
+                          level = .95,
+                          # using the standard error
+                          type = "se")
+```
+
+As you can see, 40 hours per week is not contained in this interval, which aligns with our previous conclusion that this finding is significant at the confidence level $\alpha = .05$.
+
+This vignette covers most all of the key functionality of infer. See `help(package = "infer")` for a full list of functions and vignettes.

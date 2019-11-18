@@ -1,6 +1,12 @@
 #' Compute p-value
 #'
+#' @description
+#' \Sexpr[results=rd, stage=render]{lifecycle::badge("stable")}
+#'
+#' Compute a p-value from a null distribution and observed statistc. 
 #' Simulation-based methods are (currently only) supported.
+#' 
+#' Learn more in `vignette("infer")`.
 #'
 #' @param x Data frame of calculated statistics as returned by [generate()]
 #' @param obs_stat A numeric value or a 1x1 data frame (as extreme or more
@@ -15,26 +21,29 @@
 #' `p_value` is a deprecated alias of `get_p_value()`.
 #'
 #' @examples
-#' # Prepare the dataset
-#' mtcars_df <- mtcars %>%
-#'   dplyr::mutate(am = factor(am))
-#'
-#' # Calculate the difference in means in the dataset
-#' d_hat <- mtcars_df %>%
-#'   specify(mpg ~ am) %>%
-#'   calculate(stat = "diff in means", order = c("1", "0"))
-#'
-#' # Same calculation on 100 permutation replicates
-#' null_distn <- mtcars_df %>%
-#'   specify(mpg ~ am) %>%
-#'   hypothesize(null = "independence") %>%
-#'   generate(reps = 100) %>%
-#'   calculate(stat = "diff in means", order = c("1", "0"))
-#'
-#' # What proportion of replicates had a difference
-#' # in means more extreme than in the dataset?
-#' null_distn %>%
-#'   get_p_value(obs_stat = d_hat, direction = "right")
+#' 
+#' # find the point estimate---mean number of hours worked per week
+#' point_estimate <- gss %>%
+#'   specify(response = hours) %>%
+#'   calculate(stat = "mean") %>%
+#'   dplyr::pull()
+#' 
+#' # starting with the gss dataset
+#' gss %>%
+#'   # ...we're interested in the number of hours worked per week
+#'   specify(response = hours) %>%
+#'   # hypothesizing that the mean is 40
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   # generating data points for a null distribution
+#'   generate(reps = 10000, type = "bootstrap") %>%
+#'   # finding the null distribution
+#'   calculate(stat = "mean") %>%
+#    # calculate the p-value for the point estimate
+#'   get_p_value(obs_stat = point_estimate, direction = "two_sided")
+#'   
+#' # More in-depth explanation of how to use the infer package
+#' vignette("infer")   
+#'   
 #' @name get_p_value
 NULL
 

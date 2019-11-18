@@ -5,8 +5,12 @@
 \alias{get_ci}
 \title{Compute confidence interval}
 \usage{
-get_confidence_interval(x, level = 0.95, type = "percentile",
-  point_estimate = NULL)
+get_confidence_interval(
+  x,
+  level = 0.95,
+  type = "percentile",
+  point_estimate = NULL
+)
 
 get_ci(x, level = 0.95, type = "percentile", point_estimate = NULL)
 }
@@ -30,7 +34,12 @@ A 1 x 2 tibble with values corresponding to lower and upper values in
 the confidence interval.
 }
 \description{
-Only simulation-based methods are (currently only) supported.
+\Sexpr[results=rd, stage=render]{lifecycle::badge("stable")}
+
+Compute a confidence interval around a summary statistic. Only
+simulation-based methods are (currently only) supported.
+
+Learn more in \code{vignette("infer")}.
 }
 \section{Aliases}{
 
@@ -39,26 +48,30 @@ Only simulation-based methods are (currently only) supported.
 }
 
 \examples{
-# Prepare the dataset
-mtcars_df <- mtcars \%>\%
-  dplyr::mutate(am = factor(am))
 
-# Calculate the difference in means in the dataset
-d_hat <- mtcars_df \%>\%
-  specify(mpg ~ am) \%>\%
-  calculate(stat = "diff in means", order = c("1", "0"))
+# find the point estimate---mean number of hours worked per week
+point_estimate <- gss \%>\%
+  specify(response = hours) \%>\%
+  calculate(stat = "mean") \%>\%
+  dplyr::pull()
 
-# Same calculation on 100 bootstrap replicates
-bootstrap_distn <- mtcars_df \%>\%
-  specify(mpg ~ am) \%>\%
-  generate(reps = 100, type = "bootstrap") \%>\%
-  calculate(stat = "diff in means", order = c("1", "0"))
-
-# Use level to set the confidence level
-bootstrap_distn \%>\%
-  get_confidence_interval(level = 0.9)
-
-# To calculate std error, set the type and point estimate
-bootstrap_distn \%>\%
-  get_confidence_interval(type = "se", point_estimate = d_hat)
+# starting with the gss dataset
+gss \%>\%
+  # ...we're interested in the number of hours worked per week
+  specify(response = hours) \%>\%
+  # hypothesizing that the mean is 40
+  hypothesize(null = "point", mu = 40) \%>\%
+  # generating data points for a null distribution
+  generate(reps = 10000, type = "bootstrap") \%>\%
+  # finding the null distribution
+  calculate(stat = "mean") \%>\%
+  get_confidence_interval(point_estimate = point_estimate,
+                          # at the 95\% confidence level
+                          level = .95,
+                          # using the standard error method
+                          type = "se")
+  
+# More in-depth explanation of how to use the infer package
+vignette("infer")  
+ 
 }
