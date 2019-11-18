@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>infer: a grammar for statistical inference — infer • infer</title>
+<title>Subset of data from the General Social Survey (GSS). — gss • infer</title>
 
 
 <!-- jquery -->
@@ -41,11 +41,14 @@
 
 
 
-<meta property="og:title" content="infer: a grammar for statistical inference — infer" />
-<meta property="og:description" content="
-The objective of this package is to perform statistical inference using a
-grammar that illustrates the underlying concepts and a format that coheres
-with the tidyverse." />
+<meta property="og:title" content="Subset of data from the General Social Survey (GSS). — gss" />
+<meta property="og:description" content="The General Social Survey is a high-quality survey which gathers data on
+American society and opinions, conducted since 1972. This data set is a
+sample of 3,000 entries from the GSS, including demographic markers and some
+economic variables. Note that this data is included for demonstration only,
+and will not provide accurate estimates relating to GSS variables unless
+properly weighted. However, due to the high quality of the GSS, the
+unweighted data will approximate the weighted data in some analyses." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -150,61 +153,52 @@ with the tidyverse." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>infer: a grammar for statistical inference</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/infer.R'><code>R/infer.R</code></a></small>
-    <div class="hidden name"><code>infer.Rd</code></div>
+    <h1>Subset of data from the General Social Survey (GSS).</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/gss.R'><code>R/gss.R</code></a></small>
+    <div class="hidden name"><code>gss.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><img src='figures/infer.png' align='right' /></p>
-<p>The objective of this package is to perform statistical inference using a
-grammar that illustrates the underlying concepts and a format that coheres
-with the tidyverse.</p>
+    <p>The General Social Survey is a high-quality survey which gathers data on
+American society and opinions, conducted since 1972. This data set is a
+sample of 3,000 entries from the GSS, including demographic markers and some
+economic variables. Note that this data is included for demonstration only,
+and will not provide accurate estimates relating to GSS variables unless
+properly weighted. However, due to the high quality of the GSS, the
+unweighted data will approximate the weighted data in some analyses.</p>
     </div>
 
+    <pre class="usage"><span class='no'>gss</span></pre>
 
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>For an overview of how to use the core functionality, see <code><a href='../articles/infer.html'>vignette("infer")</a></code></p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>A tibble with 3000 rows and 11 variables:</p><dl class='dl-horizontal'>
+<dt>year</dt><dd><p>year respondent was surveyed</p></dd>
+<dt>age</dt><dd><p>age at time of survey, truncated at 89</p></dd>
+<dt>sex</dt><dd><p>respondent's sex</p></dd>
+<dt>college</dt><dd><p>whether on not respondent has a college degree, including
+junior/community college</p></dd>
+<dt>partyid</dt><dd><p>political party affiliation</p></dd>
+<dt>hompop</dt><dd><p>number of persons in household</p></dd>
+<dt>hours</dt><dd><p>number of hours worked in week before survey, truncated at 89</p></dd>
+<dt>income</dt><dd><p>total family income</p></dd>
+<dt>class</dt><dd><p>subjective socioeconomic class identification</p></dd>
+<dt>finrela</dt><dd><p>opinion of family income</p></dd>
+<dt>weight</dt><dd><p>survey weight</p></dd>
 
-    <div class='dont-index'><p>Useful links:</p><ul>
-<li><p><a href='https://github.com/tidymodels/infer'>https://github.com/tidymodels/infer</a></p></li>
-<li><p><a href='https://infer.netlify.com/'>https://infer.netlify.com/</a></p></li>
-<li><p>Report bugs at <a href='https://github.com/tidymodels/infer/issues'>https://github.com/tidymodels/infer/issues</a></p></li>
-</ul>
+</dl>
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
-</div>
+    <p><a href='https://gss.norc.org'>https://gss.norc.org</a></p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#format">Format</a></li>
+      <li><a href="#source">Source</a></li>
     </ul>
-
-    <h2>Author</h2>
-    <p><strong>Maintainer</strong>: Andrew Bray <a href='mailto:abray@reed.edu'>abray@reed.edu</a></p>
-<p>Authors:</p><ul>
-<li><p>Chester Ismay <a href='mailto:chester.ismay@gmail.com'>chester.ismay@gmail.com</a></p></li>
-<li><p>Evgeni Chasnovski <a href='mailto:evgeni.chasnovski@gmail.com'>evgeni.chasnovski@gmail.com</a></p></li>
-<li><p>Ben Baumer <a href='mailto:ben.baumer@gmail.com'>ben.baumer@gmail.com</a></p></li>
-<li><p>Mine Cetinkaya-Rundel <a href='mailto:mine@stat.duke.edu'>mine@stat.duke.edu</a></p></li>
-</ul>
-
-<p>Other contributors:</p><ul>
-<li><p>Ted Laderas <a href='mailto:tedladeras@gmail.com'>tedladeras@gmail.com</a> [contributor]</p></li>
-<li><p>Nick Solomon <a href='mailto:nick.solomon@datacamp.com'>nick.solomon@datacamp.com</a> [contributor]</p></li>
-<li><p>Johanna Hardin <a href='mailto:Jo.Hardin@pomona.edu'>Jo.Hardin@pomona.edu</a> [contributor]</p></li>
-<li><p>Albert Y. Kim <a href='mailto:albert.ys.kim@gmail.com'>albert.ys.kim@gmail.com</a> [contributor]</p></li>
-<li><p>Neal Fultz <a href='mailto:nfultz@gmail.com'>nfultz@gmail.com</a> [contributor]</p></li>
-<li><p>Doug Friedman <a href='mailto:doug.nhp@gmail.com'>doug.nhp@gmail.com</a> [contributor]</p></li>
-<li><p>Richie Cotton <a href='mailto:richie@datacamp.com'>richie@datacamp.com</a> [contributor]</p></li>
-<li><p>Brian Fannin <a href='mailto:captain@pirategrunt.com'>captain@pirategrunt.com</a> [contributor]</p></li>
-</ul>
-
 
   </div>
 </div>

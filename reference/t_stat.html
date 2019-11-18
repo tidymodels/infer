@@ -75,7 +75,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -156,9 +156,18 @@
     <p>A shortcut wrapper function to get the observed test statistic for a t test.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>t_stat</span>(<span class='no'>x</span>, <span class='no'>formula</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>explanatory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"two_sided"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>conf_int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>conf_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>t_stat</span>(
+  <span class='no'>x</span>,
+  <span class='no'>formula</span>,
+  <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>explanatory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"two_sided"</span>,
+  <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>conf_int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>conf_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -208,7 +217,7 @@ interval or not. <code>TRUE</code> by default.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Pass in arguments to {infer} functions.</p></td>
+      <td><p>Pass in arguments to \infer\ functions.</p></td>
     </tr>
     </table>
 

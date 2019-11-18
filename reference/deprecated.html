@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Deprecated functions — deprecated • infer</title>
+<title>Deprecated functions and objects — deprecated • infer</title>
 
 
 <!-- jquery -->
@@ -41,9 +41,9 @@
 
 
 
-<meta property="og:title" content="Deprecated functions — deprecated" />
-<meta property="og:description" content="These functions should no longer be used. They will be removed in a
-future release of infer." />
+<meta property="og:title" content="Deprecated functions and objects — deprecated" />
+<meta property="og:description" content="These functions and objects should no longer be used. They will be removed
+in a future release of infer." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -76,7 +76,7 @@ future release of infer." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -148,19 +148,21 @@ future release of infer." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Deprecated functions</h1>
+    <h1>Deprecated functions and objects</h1>
     <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/deprecated.R'><code>R/deprecated.R</code></a></small>
     <div class="hidden name"><code>deprecated.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These functions should no longer be used. They will be removed in a
-future release of <code>infer</code>.</p>
+    <p>These functions and objects should no longer be used. They will be removed
+in a future release of <code>infer</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>conf_int</span>(<span class='no'>x</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"percentile"</span>, <span class='kw'>point_estimate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
 
-<span class='fu'>p_value</span>(<span class='no'>x</span>, <span class='no'>obs_stat</span>, <span class='no'>direction</span>)</pre>
+<span class='fu'>p_value</span>(<span class='no'>x</span>, <span class='no'>obs_stat</span>, <span class='no'>direction</span>)
+
+<span class='no'>GENERATION_TYPES</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -191,15 +193,19 @@ future release of <code>infer</code>.</p>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>An object of class <code>character</code> of length 3.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='get_p_value.html'>get_p_value</a></code>, <code><a href='get_confidence_interval.html'>get_confidence_interval</a></code></p></div>
+    <div class='dont-index'><p><code><a href='get_p_value.html'>get_p_value()</a></code>, <code><a href='get_confidence_interval.html'>get_confidence_interval()</a></code>, <code><a href='generate.html'>generate()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#format">Format</a></li>
       <li><a href="#see-also">See also</a></li>
     </ul>
 
