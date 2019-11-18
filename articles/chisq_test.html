@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chi-squared test: Independence and Goodness of Fit • infer</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
@@ -108,7 +108,7 @@
       <h1>Chi-squared test: Independence and Goodness of Fit</h1>
                         <h4 class="author">Chester Ismay and Andrew Bray</h4>
             
-            <h4 class="date">2019-10-01</h4>
+            <h4 class="date">2019-11-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/master/vignettes/chisq_test.Rmd"><code>vignettes/chisq_test.Rmd</code></a></small>
       <div class="hidden name"><code>chisq_test.Rmd</code></div>
@@ -168,7 +168,7 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">obs_chisq &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/specify.html">specify</a></span>(origin <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># alt: response = origin, explanatory = season</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="dt">stat =</span> <span class="st">"Chisq"</span>)</a></code></pre></div>
-<p>The observed <span class="math inline">\(\chi^2\)</span> statistic is 1.7926106.</p>
+<p>The observed <span class="math inline">\(\chi^2\)</span> statistic is 0.571898.</p>
 <p>There also exists a shortcut:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">obs_chisq &lt;-<span class="st"> </span>fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/chisq_stat.html">chisq_stat</a></span>(<span class="dt">formula =</span> origin <span class="op">~</span><span class="st"> </span>season)</a></code></pre></div>
@@ -195,7 +195,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.416</code></pre>
+## 1   0.748</code></pre>
 </div>
 <div id="sampling-distribution-under-null-via-approximation" class="section level3">
 <h3 class="hasAnchor">
@@ -208,14 +208,14 @@
 <a class="sourceLine" id="cb7-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb7-7" data-line-number="7"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(chisq_null_theor, <span class="dt">method =</span> <span class="st">"theoretical"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb7-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> obs_chisq, <span class="dt">direction =</span> <span class="st">"right"</span>)</a></code></pre></div>
-<pre><code>## Warning: Check to make sure the conditions have been met for the
-## theoretical method. {infer} currently does not check these for you.</code></pre>
+<pre><code>## Warning: Check to make sure the conditions have been met for the theoretical
+## method. {infer} currently does not check these for you.</code></pre>
 <p><img src="chisq_test_files/figure-html/unnamed-chunk-7-1.png" width="768"></p>
 <p>We can also overlay the appropriate <span class="math inline">\(\chi^2\)</span> distribution on top of permuted statistics.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(chisq_null_perm, <span class="dt">method =</span> <span class="st">"both"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> obs_chisq, <span class="dt">direction =</span> <span class="st">"right"</span>)</a></code></pre></div>
-<pre><code>## Warning: Check to make sure the conditions have been met for the
-## theoretical method. {infer} currently does not check these for you.</code></pre>
+<pre><code>## Warning: Check to make sure the conditions have been met for the theoretical
+## method. {infer} currently does not check these for you.</code></pre>
 <p><img src="chisq_test_files/figure-html/unnamed-chunk-8-1.png" width="768"></p>
 </div>
 <div id="calculate-p-value-1" class="section level3">
@@ -224,7 +224,7 @@
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">fli_small <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/chisq_test.html">chisq_test</a></span>(<span class="dt">formula =</span> origin <span class="op">~</span><span class="st"> </span>season) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span>(p_value)</a></code></pre></div>
-<pre><code>## [1] 0.4080746</code></pre>
+<pre><code>## [1] 0.7513009</code></pre>
 </div>
 </div>
 <div id="goodness-of-fit-test" class="section level2">
@@ -262,7 +262,7 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.028</code></pre>
+## 1   0.007</code></pre>
 </div>
 <div id="sampling-distribution-under-null-via-approximation-1" class="section level3">
 <h3 class="hasAnchor">
@@ -275,14 +275,14 @@
 <a class="sourceLine" id="cb17-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb17-7" data-line-number="7"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(chisq_null_theor, <span class="dt">method =</span> <span class="st">"theoretical"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb17-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> obs_chisq, <span class="dt">direction =</span> <span class="st">"right"</span>)</a></code></pre></div>
-<pre><code>## Warning: Check to make sure the conditions have been met for the
-## theoretical method. {infer} currently does not check these for you.</code></pre>
+<pre><code>## Warning: Check to make sure the conditions have been met for the theoretical
+## method. {infer} currently does not check these for you.</code></pre>
 <p><img src="chisq_test_files/figure-html/unnamed-chunk-13-1.png" width="768"></p>
 <p>We can also overlay the appropriate <span class="math inline">\(\chi^2\)</span> distribution on top of permuted statistics.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw"><a href="../reference/visualize.html">visualize</a></span>(chisq_null_perm, <span class="dt">method =</span> <span class="st">"both"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb19-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="dt">obs_stat =</span> obs_chisq, <span class="dt">direction =</span> <span class="st">"right"</span>)</a></code></pre></div>
-<pre><code>## Warning: Check to make sure the conditions have been met for the
-## theoretical method. {infer} currently does not check these for you.</code></pre>
+<pre><code>## Warning: Check to make sure the conditions have been met for the theoretical
+## method. {infer} currently does not check these for you.</code></pre>
 <p><img src="chisq_test_files/figure-html/unnamed-chunk-14-1.png" width="768"></p>
 </div>
 <div id="calculate-p-value-3" class="section level3">
