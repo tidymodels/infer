@@ -14,7 +14,7 @@ output: github_document
 <!--https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg-->
 
 
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer) [![Travis-CI Build Status](https://travis-ci.org/tidymodels/infer.svg?branch=master)](https://travis-ci.org/tidymodels/infer) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/tidymodels/infer?branch=master&svg=true)](https://ci.appveyor.com/project/tidymodels/infer) [![Coverage Status](https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg)](https://codecov.io/github/tidymodels/infer/?branch=master)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer) [![Travis-CI Build Status](https://travis-ci.org/tidymodels/infer.svg?branch=master)](https://travis-ci.org/tidymodels/infer) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/tidymodels/infer?branch=master&svg=true)](https://ci.appveyor.com/project/tidymodels/infer) [![Coverage Status](https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg)](https://codecov.io/github/tidymodels/infer/?branch=master)
 
 
 The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the `tidyverse` design framework.
@@ -42,7 +42,7 @@ install.packages("remotes")
 remotes::install_github("tidymodels/infer")
 ```
 
-To install the cutting edge version of `infer` (do so at your own risk), make sure to install `remotes` first. This version was last updated on `r Sys.time()`.
+To install the cutting edge version of `infer` (do so at your own risk), make sure to install `remotes` first.
 
 ```{r}
 install.packages("remotes")
