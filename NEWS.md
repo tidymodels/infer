@@ -1,3 +1,7 @@
+# infer 0.5.1
+
+- Updates to documentation and other tweaks
+
 # infer 0.5.0
 
 ## Breaking changes
