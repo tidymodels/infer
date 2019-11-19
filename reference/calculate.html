@@ -213,16 +213,16 @@ difference in means, medians, or proportions and t and z statistics.</p></td>
  <span class='fu'>calculate</span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1244 rows containing missing values.</span></div><div class='output co'>#&gt; # A tibble: 1,000 x 2
 #&gt;    replicate  stat
 #&gt;        &lt;int&gt; &lt;dbl&gt;
-#&gt;  1         1  40.1
-#&gt;  2         2  39.7
-#&gt;  3         3  40.0
-#&gt;  4         4  39.8
-#&gt;  5         5  39.9
-#&gt;  6         6  40.4
-#&gt;  7         7  39.9
-#&gt;  8         8  40.3
-#&gt;  9         9  40.3
-#&gt; 10        10  39.9
+#&gt;  1         1  39.9
+#&gt;  2         2  39.9
+#&gt;  3         3  39.8
+#&gt;  4         4  40.1
+#&gt;  5         5  40.4
+#&gt;  6         6  40.1
+#&gt;  7         7  40.2
+#&gt;  8         8  40.4
+#&gt;  9         9  39.9
+#&gt; 10        10  40.3
 #&gt; # … with 990 more rows</div><div class='input'>
 <span class='co'># calculate a null distribution assuming independence between age</span>
 <span class='co'># of respondent and whether they have a college degree</span>
@@ -231,18 +231,18 @@ difference in means, medians, or proportions and t and z statistics.</p></td>
  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
  <span class='fu'>calculate</span>(<span class='st'>"diff in means"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"degree"</span>, <span class='st'>"no degree"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 22 rows containing missing values.</span></div><div class='output co'>#&gt; # A tibble: 1,000 x 2
-#&gt;    replicate    stat
-#&gt;        &lt;int&gt;   &lt;dbl&gt;
-#&gt;  1         1  1.20  
-#&gt;  2         2 -0.0948
-#&gt;  3         3 -0.180 
-#&gt;  4         4  0.379 
-#&gt;  5         5  0.321 
-#&gt;  6         6 -0.754 
-#&gt;  7         7 -1.36  
-#&gt;  8         8 -0.789 
-#&gt;  9         9  0.775 
-#&gt; 10        10 -0.260 
+#&gt;    replicate   stat
+#&gt;        &lt;int&gt;  &lt;dbl&gt;
+#&gt;  1         1 0.814 
+#&gt;  2         2 0.619 
+#&gt;  3         3 0.146 
+#&gt;  4         4 0.972 
+#&gt;  5         5 0.381 
+#&gt;  6         6 1.15  
+#&gt;  7         7 0.0394
+#&gt;  8         8 0.651 
+#&gt;  9         9 0.731 
+#&gt; 10        10 0.111 
 #&gt; # … with 990 more rows</div><div class='input'>
 <span class='co'># More in-depth explanation of how to use the infer package</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: vignette ‘infer’ not found</span></div><div class='input'>
