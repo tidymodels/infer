@@ -11,7 +11,7 @@
 
 <!--https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg-->
 
-[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)
 [![Travis-CI Build
 Status](https://travis-ci.org/tidymodels/infer.svg?branch=master)](https://travis-ci.org/tidymodels/infer)
 [![AppVeyor Build
