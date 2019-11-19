@@ -310,16 +310,16 @@
 ## # Groups:   replicate [1,000]
 ##    replicate hours
 ##        &lt;int&gt; &lt;dbl&gt;
-##  1         1  39.2
-##  2         1  59.2
-##  3         1  39.2
-##  4         1  39.2
-##  5         1  39.2
-##  6         1  39.2
-##  7         1  39.2
-##  8         1  11.2
-##  9         1  24.2
-## 10         1  36.2
+##  1         1 39.2 
+##  2         1 39.2 
+##  3         1 39.2 
+##  4         1  2.23
+##  5         1 19.2 
+##  6         1 71.2 
+##  7         1 34.2 
+##  8         1 39.2 
+##  9         1 39.2 
+## 10         1 45.2 
 ## # … with 1,755,990 more rows</code></pre>
 <p>In the above example, we take 1000 bootstrap samples to form our null distribution.</p>
 <p>To generate a null distribution for the independence of two variables, we could also randomly reshuffle the pairings of explanatory and response variables to break any existing association. For instance, to generate 1000 replicates that can be used to create a null distribution under the assumption that political party affiliation is not affected by age:</p>
@@ -334,14 +334,14 @@
 ## # Groups:   replicate [1,000]
 ##    partyid   age replicate
 ##    &lt;fct&gt;   &lt;dbl&gt;     &lt;int&gt;
-##  1 dem        37         1
+##  1 ind        37         1
 ##  2 ind        29         1
-##  3 rep        58         1
+##  3 dem        58         1
 ##  4 dem        40         1
 ##  5 ind        39         1
-##  6 ind        37         1
-##  7 ind        53         1
-##  8 dem        41         1
+##  6 dem        37         1
+##  7 dem        53         1
+##  8 ind        41         1
 ##  9 ind        55         1
 ## 10 ind        47         1
 ## # … with 2,962,990 more rows</code></pre>
@@ -358,15 +358,15 @@
 <pre><code>## # A tibble: 1,000 x 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
-##  1         1  40.2
-##  2         2  39.9
-##  3         3  39.3
-##  4         4  40.2
-##  5         5  39.7
-##  6         6  40.0
-##  7         7  39.9
-##  8         8  39.9
-##  9         9  39.6
+##  1         1  39.9
+##  2         2  40.5
+##  3         3  40.2
+##  4         4  40.1
+##  5         5  39.8
+##  6         6  40.2
+##  7         7  39.3
+##  8         8  39.8
+##  9         9  40.2
 ## 10        10  39.9
 ## # … with 990 more rows</code></pre>
 <p>The output of <code><a href="../reference/calculate.html">calculate()</a></code> here shows us the sample statistic (in this case, the mean) for each of our 1000 replicates. If you’re carrying out inference on differences in means, medians, or proportions, or t and z statistics, you will need to supply an <code>order</code> argument, giving the order in which the explanatory variables should be subtracted. For instance, to find the difference in mean age of those that have a college degree and those that don’t, we might write:</p>
@@ -376,18 +376,18 @@
 <a class="sourceLine" id="cb23-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="../reference/generate.html">generate</a></span>(<span class="dt">reps =</span> <span class="dv">1000</span>, <span class="dt">type =</span> <span class="st">"permute"</span>) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb23-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="../reference/calculate.html">calculate</a></span>(<span class="st">"diff in means"</span>, <span class="dt">order =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"degree"</span>, <span class="st">"no degree"</span>))</a></code></pre></div>
 <pre><code>## # A tibble: 1,000 x 2
-##    replicate    stat
-##        &lt;int&gt;   &lt;dbl&gt;
-##  1         1 -0.0388
-##  2         2 -0.294 
-##  3         3  0.534 
-##  4         4  1.04  
-##  5         5 -0.399 
-##  6         6  0.505 
-##  7         7  0.0173
-##  8         8  0.114 
-##  9         9 -0.156 
-## 10        10  0.252 
+##    replicate   stat
+##        &lt;int&gt;  &lt;dbl&gt;
+##  1         1  0.196
+##  2         2 -0.448
+##  3         3 -0.890
+##  4         4  1.04 
+##  5         5  0.267
+##  6         6  0.146
+##  7         7 -0.343
+##  8         8  0.984
+##  9         9  0.653
+## 10        10  0.240
 ## # … with 990 more rows</code></pre>
 </div>
 <div id="other-utilities-in-infer" class="section level3">
@@ -429,8 +429,8 @@
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1   0.022</code></pre>
-<p>It looks like the p-value is 0.022, which is pretty small—if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (0.7722 hours) from 40 would be 0.022. This may or may not be statistically significantly different, depending on the significance level <span class="math inline">\(\alpha\)</span> you decided on <em>before</em> you ran this analysis. If you had set <span class="math inline">\(\alpha = .05\)</span>, then this difference would be statistically significant, but if you had set <span class="math inline">\(\alpha = .01\)</span>, then it would not be.</p>
+## 1  0.0196</code></pre>
+<p>It looks like the p-value is 0.0196, which is pretty small—if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (0.7722 hours) from 40 would be 0.0196. This may or may not be statistically significantly different, depending on the significance level <span class="math inline">\(\alpha\)</span> you decided on <em>before</em> you ran this analysis. If you had set <span class="math inline">\(\alpha = .05\)</span>, then this difference would be statistically significant, but if you had set <span class="math inline">\(\alpha = .01\)</span>, then it would not be.</p>
 <p>To get a confidence interval around our estimate, we can write:</p>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="co"># start with the null distribution</span></a>
 <a class="sourceLine" id="cb33-2" data-line-number="2">null_dist <span class="op">%&gt;%</span></a>
