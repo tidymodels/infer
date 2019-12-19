@@ -1,19 +1,23 @@
 ---
 title: "Chi-Squared Tests: Independence and Goodness of Fit"
 output: rmarkdown::html_vignette
-vignette: >
+vignette: |
   %\VignetteIndexEntry{Chi-Squared Tests}
+  %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r settings, include=FALSE}
-knitr::opts_chunk$set(fig.width = 6, fig.height = 3.5) 
+knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5) 
 options(digits = 4)
 ```
 
 ```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(devtools)
+library(tidyr)
+library(ggplot2)
 library(dplyr)
 devtools::load_all()
 ```
@@ -24,13 +28,30 @@ In this vignette, we'll walk through conducting a $\chi^2$ (chi-squared) test of
 
 Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. The data looks like this:
 
-```{r glimpse-gss, warning = FALSE, message = FALSE}
+```{r glimpse-gss-actual, warning = FALSE, message = FALSE}
 dplyr::glimpse(gss)
 ```
 
 ### Test of Independence
 
 To carry out a chi-squared test of independence, we'll examine the association between income and educational attainment. `college` is a categorical variable with values `degree` and `no degree`, indicating whether or not the respondent has a college degree (including community college), and `finrela` gives the respondent's self-identification of family income---either `far below average`, `below average`, `average`, `above average`, `far above average`, or `DK` (don't know).
+
+This is what the relationship looks like in the observed data:
+
+```{r plot-indep, echo = FALSE}
+gss %>%
+  tidyr::drop_na(finrela, college) %>%
+  ggplot2::ggplot() +
+  ggplot2::aes(x = finrela, fill = college) +
+  ggplot2::geom_bar(position = "fill") +
+  ggplot2::scale_fill_brewer(type = "qual") +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, 
+                                                     vjust = .5)) +
+    ggplot2::labs(x = "finrela: Self-Identification of Income Class",
+                  y = "Proportion")
+```
+
+If there were no relationship, we would expect to see the purple bars reaching to the same height, regardless of income class. Are the differences we see here, though, just due to random noise?
 
 First, to calculate the observed statistic, we can use `specify()` and `calculate()`.
 
@@ -40,6 +61,7 @@ observed_indep_statistic <- gss %>%
   specify(college ~ finrela) %>%
   calculate(stat = "Chisq")
 ```
+
 The observed $\chi^2$ statistic is `r observed_indep_statistic`. Now, we want to compare this statistic to a null distribution, generated under the assumption that these variables are not actually related, to get a sense of how likely it would be for us to see this observed statistic if there were actually no association between education and income.
 
 We can `generate` the null distribution in one of two ways---using simulation or theoretical approximation. The simulation approach permutes the response and explanatory variables, so that each person's educational attainment is matched up with a random income from the sample in order to break up any association between the two.
@@ -47,17 +69,17 @@ We can `generate` the null distribution in one of two ways---using simulation or
 ```{r generate-null-indep, warning = FALSE, message = FALSE}
 # generate the null distribution using simulation
 null_distribution_simulated <- gss %>%
-  # note that we could also use the 
-  # `specify(response = college, explanatory = finrela)` syntax here
   specify(college ~ finrela) %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
   calculate(stat = "Chisq")
+```
 
+Note that, in the line `specify(college ~ finrela)` above, we could use the equivalent syntax `specify(response = college, explanatory = finrela)`. The same goes in the code below, which generates the null distribution using theoretical approximation instead of simulation.
+
+```{r generate-null-indep-t, warning = FALSE, message = FALSE}
 # generate the null distribution by theoretical approximation
 null_distribution_theoretical <- gss %>%
-  # note that we could also use the 
-  # `specify(response = college, explanatory = finrela)` syntax here
   specify(college ~ finrela) %>%
   hypothesize(null = "independence") %>%
   # note that we skip the generation step here!
@@ -85,11 +107,33 @@ p_value_independence <- null_distribution_simulated %>%
 p_value_independence
 ```
 
-Thus, if there were really no relationship between education and income, the probability that we would see a statistic as or more extreme than `r observed_indep_statistic` is `r p_value_independence`.
+Thus, if there were really no relationship between education and income, the probability that we would see a statistic as or more extreme than `r observed_indep_statistic` is approximately `r p_value_independence`.
+
+Note that, equivalently to the steps shown above, the package supplies a wrapper function, `chisq_test`, to carry out Chi-Squared tests of independence on tidy data. The syntax goes like this:
+
+```{r chisq-indep-wrapper, message = FALSE, warning = FALSE}
+chisq_test(gss, college ~ finrela)
+```
+
 
 ### Goodness of Fit
 
-Now, moving on to a chi-squared goodness of fit test, we'll take a look at the self-identified income class of our survey respondents. Suppose our null hypothesis is that `finrela` follows a uniform distribution (i.e. there's actually an equal number of people that describe their income as far below average, below average, average, above average, far above average, or that don't know their income.) First, we would calculate our observed statistic.
+Now, moving on to a chi-squared goodness of fit test, we'll take a look at the self-identified income class of our survey respondents. Suppose our null hypothesis is that `finrela` follows a uniform distribution (i.e. there's actually an equal number of people that describe their income as far below average, below average, average, above average, far above average, or that don't know their income.) The graph below represents this hypothesis:
+
+```{r gof-plot, echo = FALSE}
+gss %>%
+  tidyr::drop_na(finrela) %>%
+  ggplot2::ggplot() +
+  ggplot2::aes(x = finrela) +
+  ggplot2::geom_bar() +
+  ggplot2::geom_hline(yintercept = 466.3, col = "red") +
+  ggplot2::labs(x = "finrela: Self-Identification of Income Class",
+                y = "Number of Responses")
+```
+
+It seems like a uniform distribution may not be the most appropriate description of the data--many more people describe their income as average than than any of the other options. Lets now test whether this difference in distributions is statistically significant.
+
+First, to carry out this hypothesis test, we would calculate our observed statistic.
 
 ```{r observed-gof-statistic, warning = FALSE, message = FALSE}
 # calculating the null distribution
@@ -133,7 +177,7 @@ null_distribution_gof %>%
                 direction = "greater")
 ```
 
-This statistic seems like it would be really unlikely if income class self-identification actually followed a uniform distribution! How unlikely, though? Calculating the p-value:
+This statistic seems like it would be _really_ unlikely if income class self-identification actually followed a uniform distribution! How unlikely, though? Calculating the p-value:
 
 ```{r get-p-value-gof, warning = FALSE, message = FALSE}
 # calculate the p-value
@@ -144,6 +188,19 @@ p_value_gof <- null_distribution_gof %>%
 p_value_gof
 ```
 
-Thus, if each self-identified income class was equally likely to occur, the probability that we would see a distribution like the one we did is `r p_value_gof`.
+Thus, if each self-identified income class was equally likely to occur, the probability that we would see a distribution like the one we did is approximately `r p_value_gof`.
+
+Again, equivalently to the steps shown above, the package supplies a wrapper function, `chisq_test`, to carry out Chi-Squared goodness of fit tests on tidy data. The syntax goes like this:
+
+```{r chisq-gof-wrapper, message = FALSE, warning = FALSE}
+chisq_test(gss, 
+           response = finrela,
+           p = c("far below average" = .167,
+                    "below average" = .167,
+                    "average" = .167,
+                    "above average" = .167,
+                    "far above average" = .167,
+                    "DK" = .165))
+```
 
 
