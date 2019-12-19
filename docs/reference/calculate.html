@@ -42,7 +42,10 @@
 
 
 <meta property="og:title" content="Calculate summary statistics — calculate" />
-<meta property="og:description" content="Calculate summary statistics" />
+<meta property="og:description" content="
+Calculates summary statistics from outputs of generate() or
+hypothesize().
+Learn more in vignette(&quot;infer&quot;)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -75,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -88,6 +91,9 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/infer.html">infer</a>
+    </li>
     <li>
       <a href="../articles/chisq_test.html">Chi-square Test Example</a>
     </li>
@@ -153,12 +159,19 @@
     </div>
 
     <div class="ref-description">
-    <p>Calculate summary statistics</p>
+    <p><a href='https://www.tidyverse.org/lifecycle/#maturing'><img src='figures/lifecycle-maturing.svg' alt='Maturing lifecycle'></a></p>
+<p>Calculates summary statistics from outputs of <code><a href='generate.html'>generate()</a></code> or
+<code><a href='hypothesize.html'>hypothesize()</a></code>.</p>
+<p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calculate</span>(<span class='no'>x</span>, <span class='kw'>stat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>, <span class='st'>"sum"</span>, <span class='st'>"sd"</span>, <span class='st'>"prop"</span>, <span class='st'>"count"</span>,
-  <span class='st'>"diff in means"</span>, <span class='st'>"diff in medians"</span>, <span class='st'>"diff in props"</span>, <span class='st'>"Chisq"</span>, <span class='st'>"F"</span>,
-  <span class='st'>"slope"</span>, <span class='st'>"correlation"</span>, <span class='st'>"t"</span>, <span class='st'>"z"</span>), <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>calculate</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>stat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>, <span class='st'>"sum"</span>, <span class='st'>"sd"</span>, <span class='st'>"prop"</span>, <span class='st'>"count"</span>, <span class='st'>"diff in means"</span>,
+    <span class='st'>"diff in medians"</span>, <span class='st'>"diff in props"</span>, <span class='st'>"Chisq"</span>, <span class='st'>"F"</span>, <span class='st'>"slope"</span>, <span class='st'>"correlation"</span>, <span class='st'>"t"</span>, <span class='st'>"z"</span>),
+  <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -193,27 +206,50 @@ difference in means, medians, or proportions and t and z statistics.</p></td>
     <p>A tibble containing a <code>stat</code> column of calculated statistics.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Permutation test for two binary variables</span>
-<span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>am</span>), <span class='kw'>vs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>vs</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>am</span> ~ <span class='no'>vs</span>, <span class='kw'>success</span> <span class='kw'>=</span> <span class='st'>"1"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>calculate</span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"diff in props"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>))</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 100 x 2</span><span>
-#&gt;    replicate    stat
-#&gt;        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span>         1  0.039</span><span style='text-decoration: underline;'>7</span><span>
-#&gt; </span><span style='color: #555555;'> 2</span><span>         2 -</span><span style='color: #BB0000;'>0.214</span><span> 
-#&gt; </span><span style='color: #555555;'> 3</span><span>         3 -</span><span style='color: #BB0000;'>0.087</span><span style='color: #BB0000;text-decoration: underline;'>3</span><span>
-#&gt; </span><span style='color: #555555;'> 4</span><span>         4  0.039</span><span style='text-decoration: underline;'>7</span><span>
-#&gt; </span><span style='color: #555555;'> 5</span><span>         5  0.167 
-#&gt; </span><span style='color: #555555;'> 6</span><span>         6  0.167 
-#&gt; </span><span style='color: #555555;'> 7</span><span>         7  0.167 
-#&gt; </span><span style='color: #555555;'> 8</span><span>         8  0.167 
-#&gt; </span><span style='color: #555555;'> 9</span><span>         9  0.167 
-#&gt; </span><span style='color: #555555;'>10</span><span>        10  0.294 
-#&gt; </span><span style='color: #555555;'># … with 90 more rows</span><span></div><div class='input'>
-</div></span></pre>
+    <pre class="examples"><div class='input'>
+<span class='co'># calculate a null distribution of hours worked per week under</span>
+<span class='co'># the null hypothesis that the mean is 40</span>
+<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
+ <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>hours</span>) <span class='kw'>%&gt;%</span>
+ <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>40</span>) <span class='kw'>%&gt;%</span>
+ <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>) <span class='kw'>%&gt;%</span>
+ <span class='fu'>calculate</span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1244 rows containing missing values.</span></div><div class='output co'>#&gt; # A tibble: 1,000 x 2
+#&gt;    replicate  stat
+#&gt;        &lt;int&gt; &lt;dbl&gt;
+#&gt;  1         1  39.9
+#&gt;  2         2  39.9
+#&gt;  3         3  39.8
+#&gt;  4         4  40.1
+#&gt;  5         5  40.4
+#&gt;  6         6  40.1
+#&gt;  7         7  40.2
+#&gt;  8         8  40.4
+#&gt;  9         9  39.9
+#&gt; 10        10  40.3
+#&gt; # … with 990 more rows</div><div class='input'>
+<span class='co'># calculate a null distribution assuming independence between age</span>
+<span class='co'># of respondent and whether they have a college degree</span>
+<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
+ <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>age</span> ~ <span class='no'>college</span>) <span class='kw'>%&gt;%</span>
+ <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
+ <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
+ <span class='fu'>calculate</span>(<span class='st'>"diff in means"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"degree"</span>, <span class='st'>"no degree"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 22 rows containing missing values.</span></div><div class='output co'>#&gt; # A tibble: 1,000 x 2
+#&gt;    replicate   stat
+#&gt;        &lt;int&gt;  &lt;dbl&gt;
+#&gt;  1         1 0.814 
+#&gt;  2         2 0.619 
+#&gt;  3         3 0.146 
+#&gt;  4         4 0.972 
+#&gt;  5         5 0.381 
+#&gt;  6         6 1.15  
+#&gt;  7         7 0.0394
+#&gt;  8         8 0.651 
+#&gt;  9         9 0.731 
+#&gt; 10        10 0.111 
+#&gt; # … with 990 more rows</div><div class='input'>
+<span class='co'># More in-depth explanation of how to use the infer package</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: vignette ‘infer’ not found</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

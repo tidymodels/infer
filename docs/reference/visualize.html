@@ -42,8 +42,10 @@
 
 
 <meta property="og:title" content="Visualize statistical inference — visualize" />
-<meta property="og:description" content="Visualize the distribution of the simulation-based inferential statistics or
-the theoretical distribution (or both!)." />
+<meta property="og:description" content="
+Visualize the distribution of the simulation-based inferential statistics or
+the theoretical distribution (or both!).
+Learn more in vignette(&quot;infer&quot;)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -76,7 +78,7 @@ the theoretical distribution (or both!)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -89,6 +91,9 @@ the theoretical distribution (or both!)." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/infer.html">infer</a>
+    </li>
     <li>
       <a href="../articles/chisq_test.html">Chi-square Test Example</a>
     </li>
@@ -154,19 +159,41 @@ the theoretical distribution (or both!)." />
     </div>
 
     <div class="ref-description">
-    <p>Visualize the distribution of the simulation-based inferential statistics or
+    <p><a href='https://www.tidyverse.org/lifecycle/#maturing'><img src='figures/lifecycle-maturing.svg' alt='Maturing lifecycle'></a></p>
+<p>Visualize the distribution of the simulation-based inferential statistics or
 the theoretical distribution (or both!).</p>
+<p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>visualize</span>(<span class='no'>data</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"simulation"</span>,
-  <span class='kw'>dens_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>obs_stat_color</span> <span class='kw'>=</span> <span class='st'>"red2"</span>,
-  <span class='kw'>pvalue_fill</span> <span class='kw'>=</span> <span class='st'>"pink"</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>endpoints</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>endpoints_color</span> <span class='kw'>=</span> <span class='st'>"mediumaquamarine"</span>, <span class='kw'>ci_fill</span> <span class='kw'>=</span> <span class='st'>"turquoise"</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>visualize</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"simulation"</span>,
+  <span class='kw'>dens_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>obs_stat_color</span> <span class='kw'>=</span> <span class='st'>"red2"</span>,
+  <span class='kw'>pvalue_fill</span> <span class='kw'>=</span> <span class='st'>"pink"</span>,
+  <span class='kw'>direction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>endpoints</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>endpoints_color</span> <span class='kw'>=</span> <span class='st'>"mediumaquamarine"</span>,
+  <span class='kw'>ci_fill</span> <span class='kw'>=</span> <span class='st'>"turquoise"</span>,
+  <span class='no'>...</span>
+)
 
-<span class='fu'>visualise</span>(<span class='no'>data</span>, <span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"simulation"</span>,
-  <span class='kw'>dens_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>obs_stat_color</span> <span class='kw'>=</span> <span class='st'>"red2"</span>,
-  <span class='kw'>pvalue_fill</span> <span class='kw'>=</span> <span class='st'>"pink"</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>endpoints</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>endpoints_color</span> <span class='kw'>=</span> <span class='st'>"mediumaquamarine"</span>, <span class='kw'>ci_fill</span> <span class='kw'>=</span> <span class='st'>"turquoise"</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>visualise</span>(
+  <span class='no'>data</span>,
+  <span class='kw'>bins</span> <span class='kw'>=</span> <span class='fl'>15</span>,
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"simulation"</span>,
+  <span class='kw'>dens_color</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
+  <span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>obs_stat_color</span> <span class='kw'>=</span> <span class='st'>"red2"</span>,
+  <span class='kw'>pvalue_fill</span> <span class='kw'>=</span> <span class='st'>"pink"</span>,
+  <span class='kw'>direction</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>endpoints</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>endpoints_color</span> <span class='kw'>=</span> <span class='st'>"mediumaquamarine"</span>,
+  <span class='kw'>ci_fill</span> <span class='kw'>=</span> <span class='st'>"turquoise"</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -234,7 +261,7 @@ confidence interval. <strong>Deprecated (see Details)</strong>.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Other arguments passed along to {ggplot2} functions.</p></td>
+      <td><p>Other arguments passed along to \ggplot2\ functions.</p></td>
     </tr>
     </table>
 
@@ -247,7 +274,7 @@ histogram or bar graph. Also used to show the theoretical curves.</p>
     <p>In order to make visualization workflow more straightforward and
 explicit <code>visualize()</code> now only should be used to plot statistics directly.
 That is why arguments not related to this task are deprecated and will be
-removed in a future release of {infer}.</p>
+removed in a future release of \infer\.</p>
 <p>To add to plot information related to p-value use <code><a href='shade_p_value.html'>shade_p_value()</a></code>. To add
 to plot information related to confidence interval use
 <code><a href='shade_confidence_interval.html'>shade_confidence_interval()</a></code>.</p>
@@ -256,34 +283,43 @@ to plot information related to confidence interval use
     <div class='dont-index'><p><code><a href='shade_p_value.html'>shade_p_value()</a></code>, <code><a href='shade_confidence_interval.html'>shade_confidence_interval()</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Permutations to create a simulation-based null distribution for</span>
-<span class='co'># one numerical response and one categorical predictor</span>
-<span class='co'># using t statistic</span>
-<span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
-  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"simulation"</span>) <span class='co'>#default method</span></div><div class='img'><img src='visualize-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Theoretical t distribution for</span>
-<span class='co'># one numerical response and one categorical predictor</span>
-<span class='co'># using t statistic</span>
-<span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
-  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-  <span class='co'># generate() is not needed since we are not doing simulation</span>
-  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"theoretical"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.</span></div><div class='img'><img src='visualize-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Overlay theoretical distribution on top of randomized t-statistics</span>
-<span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>am</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span> <span class='co'># alt: response = mpg, explanatory = am</span>
-  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"t"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>visualize</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"both"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.</span></div><div class='img'><img src='visualize-3.png' alt='' width='700' height='433' /></div><div class='input'>
+    <pre class="examples"><div class='input'>
+<span class='co'># ...and a null distribution</span>
+<span class='no'>null_dist</span> <span class='kw'>&lt;-</span> <span class='no'>gss</span> <span class='kw'>%&gt;%</span>
+  <span class='co'># ...we're interested in the number of hours worked per week</span>
+  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>hours</span>) <span class='kw'>%&gt;%</span>
+  <span class='co'># hypothesizing that the mean is 40</span>
+  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>40</span>) <span class='kw'>%&gt;%</span>
+  <span class='co'># generating data points for a null distribution</span>
+  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>) <span class='kw'>%&gt;%</span>
+  <span class='co'># finding the null distribution</span>
+  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1244 rows containing missing values.</span></div><div class='input'>
+<span class='co'># we can easily plot the null distribution by piping into visualize</span>
+<span class='no'>null_dist</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>visualize</span>()</div><div class='img'><img src='visualize-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># we can add layers to the plot as in ggplot, as well... </span>
+<span class='co'># find the point estimate---mean number of hours worked per week</span>
+<span class='no'>point_estimate</span> <span class='kw'>&lt;-</span> <span class='no'>gss</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>hours</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1244 rows containing missing values.</span></div><div class='input'>
+<span class='co'># find a confidence interval around the point estimate</span>
+<span class='no'>ci</span> <span class='kw'>&lt;-</span> <span class='no'>null_dist</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='get_confidence_interval.html'>get_confidence_interval</a></span>(<span class='kw'>point_estimate</span> <span class='kw'>=</span> <span class='no'>point_estimate</span>,
+                          <span class='co'># at the 95% confidence level</span>
+                          <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>.95</span>,
+                          <span class='co'># using the standard error method</span>
+                          <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"se"</span>)
+
+<span class='co'># display a shading of the area beyond the p-value on the plot</span>
+<span class='no'>null_dist</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>visualize</span>() +
+  <span class='fu'><a href='shade_p_value.html'>shade_p_value</a></span>(<span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='no'>point_estimate</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"two_sided"</span>)</div><div class='img'><img src='visualize-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>null_dist</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>visualize</span>() +
+  <span class='fu'><a href='shade_confidence_interval.html'>shade_confidence_interval</a></span>(<span class='no'>ci</span>)</div><div class='img'><img src='visualize-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># More in-depth explanation of how to use the infer package</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: vignette ‘infer’ not found</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

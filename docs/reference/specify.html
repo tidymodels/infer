@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Specify the response and explanatory variables — specify • infer</title>
+<title>Specify response and explanatory variables — specify • infer</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,12 @@
 
 
 
-<meta property="og:title" content="Specify the response and explanatory variables — specify" />
-<meta property="og:description" content="specify() also converts character variables chosen to be factors." />
+<meta property="og:title" content="Specify response and explanatory variables — specify" />
+<meta property="og:description" content="
+specify() is used to specify which columns in the supplied data frame are
+the relevant response (and, if applicable, explanatory) variables. Note that
+character variables are converted to factors.
+Learn more in vignette(&quot;infer&quot;)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -75,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -88,6 +92,9 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/infer.html">infer</a>
+    </li>
     <li>
       <a href="../articles/chisq_test.html">Chi-square Test Example</a>
     </li>
@@ -147,17 +154,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Specify the response and explanatory variables</h1>
+    <h1>Specify response and explanatory variables</h1>
     <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/specify.R'><code>R/specify.R</code></a></small>
     <div class="hidden name"><code>specify.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>specify()</code> also converts character variables chosen to be <code>factor</code>s.</p>
+    <p><a href='https://www.tidyverse.org/lifecycle/#maturing'><img src='figures/lifecycle-maturing.svg' alt='Maturing lifecycle'></a></p>
+<p><code>specify()</code> is used to specify which columns in the supplied data frame are
+the relevant response (and, if applicable, explanatory) variables. Note that
+character variables are converted to <code>factor</code>s.</p>
+<p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>specify</span>(<span class='no'>x</span>, <span class='no'>formula</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>explanatory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>success</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>specify</span>(<span class='no'>x</span>, <span class='no'>formula</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>explanatory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>success</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,17 +179,18 @@
     <tr>
       <th>formula</th>
       <td><p>A formula with the response variable on the left and the
-explanatory on the right.</p></td>
+explanatory on the right. Alternatively, a <code>response</code> and <code>explanatory</code>
+argument can be supplied.</p></td>
     </tr>
     <tr>
       <th>response</th>
       <td><p>The variable name in <code>x</code> that will serve as the response.
-This is alternative to using the <code>formula</code> argument.</p></td>
+This is an alternative to using the <code>formula</code> argument.</p></td>
     </tr>
     <tr>
       <th>explanatory</th>
       <td><p>The variable name in <code>x</code> that will serve as the
-explanatory variable.</p></td>
+explanatory variable. This is an alternative to using the formula argument.</p></td>
     </tr>
     <tr>
       <th>success</th>
@@ -195,27 +206,62 @@ proportions, and corresponding z stats.</p></td>
 variable data.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Permutation test similar to ANOVA</span>
-<span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>cyl</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>cyl</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>specify</span>(<span class='no'>mpg</span> ~ <span class='no'>cyl</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"F"</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 100 x 2</span><span>
-#&gt;    replicate   stat
-#&gt;        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span>         1 1.45  
-#&gt; </span><span style='color: #555555;'> 2</span><span>         2 0.222 
-#&gt; </span><span style='color: #555555;'> 3</span><span>         3 0.072</span><span style='text-decoration: underline;'>6</span><span>
-#&gt; </span><span style='color: #555555;'> 4</span><span>         4 0.849 
-#&gt; </span><span style='color: #555555;'> 5</span><span>         5 1.69  
-#&gt; </span><span style='color: #555555;'> 6</span><span>         6 0.251 
-#&gt; </span><span style='color: #555555;'> 7</span><span>         7 0.169 
-#&gt; </span><span style='color: #555555;'> 8</span><span>         8 1.50  
-#&gt; </span><span style='color: #555555;'> 9</span><span>         9 0.463 
-#&gt; </span><span style='color: #555555;'>10</span><span>        10 0.028</span><span style='text-decoration: underline;'>8</span><span>
-#&gt; </span><span style='color: #555555;'># … with 90 more rows</span><span></div><div class='input'>
-</div></span></pre>
+    <pre class="examples"><div class='input'><span class='co'># specifying for a point estimate on one variable</span>
+<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
+   <span class='fu'>specify</span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>age</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 12 rows containing missing values.</span></div><div class='output co'>#&gt; Response: age (numeric)
+#&gt; # A tibble: 2,988 x 1
+#&gt;      age
+#&gt;    &lt;dbl&gt;
+#&gt;  1    37
+#&gt;  2    29
+#&gt;  3    58
+#&gt;  4    40
+#&gt;  5    39
+#&gt;  6    37
+#&gt;  7    53
+#&gt;  8    41
+#&gt;  9    55
+#&gt; 10    47
+#&gt; # … with 2,978 more rows</div><div class='input'>
+<span class='co'># specify a relationship between variables as a formula...</span>
+<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>specify</span>(<span class='no'>age</span> ~ <span class='no'>partyid</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 37 rows containing missing values.</span></div><div class='output co'>#&gt; Response: age (numeric)
+#&gt; Explanatory: partyid (factor)
+#&gt; # A tibble: 2,963 x 2
+#&gt;      age partyid
+#&gt;    &lt;dbl&gt; &lt;fct&gt;  
+#&gt;  1    37 dem    
+#&gt;  2    29 dem    
+#&gt;  3    58 ind    
+#&gt;  4    40 rep    
+#&gt;  5    39 dem    
+#&gt;  6    37 dem    
+#&gt;  7    53 dem    
+#&gt;  8    41 rep    
+#&gt;  9    55 ind    
+#&gt; 10    47 rep    
+#&gt; # … with 2,953 more rows</div><div class='input'>
+<span class='co'># ...or with named arguments!</span>
+<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'>specify</span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>age</span>, <span class='kw'>explanatory</span> <span class='kw'>=</span> <span class='no'>partyid</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 37 rows containing missing values.</span></div><div class='output co'>#&gt; Response: age (numeric)
+#&gt; Explanatory: partyid (factor)
+#&gt; # A tibble: 2,963 x 2
+#&gt;      age partyid
+#&gt;    &lt;dbl&gt; &lt;fct&gt;  
+#&gt;  1    37 dem    
+#&gt;  2    29 dem    
+#&gt;  3    58 ind    
+#&gt;  4    40 rep    
+#&gt;  5    39 dem    
+#&gt;  6    37 dem    
+#&gt;  7    53 dem    
+#&gt;  8    41 rep    
+#&gt;  9    55 ind    
+#&gt; 10    47 rep    
+#&gt; # … with 2,953 more rows</div><div class='input'>
+<span class='co'># More in-depth explanation of how to use the infer package</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: vignette ‘infer’ not found</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

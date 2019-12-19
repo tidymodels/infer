@@ -42,7 +42,10 @@
 
 
 <meta property="og:title" content="Compute confidence interval — get_confidence_interval" />
-<meta property="og:description" content="Only simulation-based methods are (currently only) supported." />
+<meta property="og:description" content="
+Compute a confidence interval around a summary statistic. Only
+simulation-based methods are (currently only) supported.
+Learn more in vignette(&quot;infer&quot;)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -75,7 +78,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -88,6 +91,9 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/infer.html">infer</a>
+    </li>
     <li>
       <a href="../articles/chisq_test.html">Chi-square Test Example</a>
     </li>
@@ -153,11 +159,18 @@
     </div>
 
     <div class="ref-description">
-    <p>Only simulation-based methods are (currently only) supported.</p>
+    <p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p>
+<p>Compute a confidence interval around a summary statistic. Only
+simulation-based methods are (currently only) supported.</p>
+<p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_confidence_interval</span>(<span class='no'>x</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"percentile"</span>,
-  <span class='kw'>point_estimate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>get_confidence_interval</span>(
+  <span class='no'>x</span>,
+  <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"percentile"</span>,
+  <span class='kw'>point_estimate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)
 
 <span class='fu'>get_ci</span>(<span class='no'>x</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"percentile"</span>, <span class='kw'>point_estimate</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
@@ -200,33 +213,33 @@ the confidence interval.</p>
 <code><a href='deprecated.html'>conf_int()</a></code> is a deprecated alias of <code>get_confidence_interval()</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Prepare the dataset</span>
-<span class='no'>mtcars_df</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>am</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='no'>am</span>))
-
-<span class='co'># Calculate the difference in means in the dataset</span>
-<span class='no'>d_hat</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars_df</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"diff in means"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>))
-
-<span class='co'># Same calculation on 100 bootstrap replicates</span>
-<span class='no'>bootstrap_distn</span> <span class='kw'>&lt;-</span> <span class='no'>mtcars_df</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>mpg</span> ~ <span class='no'>am</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"diff in means"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"1"</span>, <span class='st'>"0"</span>))
-
-<span class='co'># Use level to set the confidence level</span>
-<span class='no'>bootstrap_distn</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>get_confidence_interval</span>(<span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 2</span><span>
-#&gt;    `5%` `95%`
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>  3.46  10.4</div><div class='input'>
-<span class='co'># To calculate std error, set the type and point estimate</span>
-<span class='no'>bootstrap_distn</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>get_confidence_interval</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"se"</span>, <span class='kw'>point_estimate</span> <span class='kw'>=</span> <span class='no'>d_hat</span>)</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 2</span><span>
+    <pre class="examples"><div class='input'>
+<span class='co'># find the point estimate---mean number of hours worked per week</span>
+<span class='no'>point_estimate</span> <span class='kw'>&lt;-</span> <span class='no'>gss</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>hours</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1244 rows containing missing values.</span></div><div class='input'>
+<span class='co'># starting with the gss dataset</span>
+<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
+  <span class='co'># ...we're interested in the number of hours worked per week</span>
+  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>hours</span>) <span class='kw'>%&gt;%</span>
+  <span class='co'># hypothesizing that the mean is 40</span>
+  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>40</span>) <span class='kw'>%&gt;%</span>
+  <span class='co'># generating data points for a null distribution</span>
+  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>) <span class='kw'>%&gt;%</span>
+  <span class='co'># finding the null distribution</span>
+  <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>get_confidence_interval</span>(<span class='kw'>point_estimate</span> <span class='kw'>=</span> <span class='no'>point_estimate</span>,
+                          <span class='co'># at the 95% confidence level</span>
+                          <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>.95</span>,
+                          <span class='co'># using the standard error method</span>
+                          <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"se"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1244 rows containing missing values.</span></div><div class='output co'>#&gt; # A tibble: 1 x 2
 #&gt;   lower upper
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span>  3.04  11.5</div></span></pre>
+#&gt;   &lt;dbl&gt; &lt;dbl&gt;
+#&gt; 1  40.1  41.4</div><div class='input'>
+<span class='co'># More in-depth explanation of how to use the infer package</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: vignette ‘infer’ not found</span></div><div class='input'> 
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
