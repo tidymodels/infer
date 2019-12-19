@@ -22,7 +22,7 @@ devtools::load_all()
 
 ### Introduction
 
-In this vignette, we'll walk through conducting t-tests using `infer`. We'll start out with a 1-sample t-test, which compares a sample mean to a hypothesized mean value. Then, we'll discuss paired t-tests, which are a special use case of 1-sample t-tests, and evaluate whether differences in paired values (e.g. some measure taken of a person before and after an experiment) differ from 0. Finally, we'll wrap up with 2-sample t-tests, testing the difference in means of two samples.
+In this vignette, we'll walk through conducting t-tests using `infer`. We'll start out with a 1-sample t-test, which compares a sample mean to a hypothesized true mean value. Then, we'll discuss paired t-tests, which are a special use case of 1-sample t-tests, and evaluate whether differences in paired values (e.g. some measure taken of a person before and after an experiment) differ from 0. Finally, we'll wrap up with 2-sample t-tests, testing the difference in means of two populations using a sample of data drawm from them.
 
 Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. The data looks like this:
 
@@ -32,7 +32,7 @@ dplyr::glimpse(gss)
 
 ### 1-Sample t-Test
 
-The 1-sample t-test can be used to test whether a sample of continuous data could have plausibly come from a population with a specific mean. As an example, we'll test whether the average American adult works 40 hours a week using data from the `gss`. To do so, we make use of the `hours` variable, giving the number of hours that respondents reported having worked in the previous week. The distribution of `hours` in the observed data looks like this:
+The 1-sample t-test can be used to test whether a sample of continuous data could have plausibly come from a population with a specified mean. As an example, we'll test whether the average American adult works 40 hours a week using data from the `gss`. To do so, we make use of the `hours` variable, giving the number of hours that respondents reported having worked in the previous week. The distribution of `hours` in the observed data looks like this:
 
 ```{r plot-1-sample, echo = FALSE}
 gss %>%
@@ -44,20 +44,20 @@ gss %>%
   ggplot2::scale_x_continuous(breaks = seq(0, 90, 10))
 ```
 
-Note the warning about missing values---many respondents' values are missing. If we were actually carrying out this hypothesis test, we might look further into how this data was collected; it's possible that some of the missing values should actually be 0 hours.
+Note the warning about missing values---many respondents' entries are missing. If we were actually carrying out this hypothesis test, we might look further into how this data was collected; it's possible that some of the missing values should actually be 0 hours.
 
 In general, though, it looks like most respondents reported having worked 40 hours, but there's quite a bit of variability. Let's test whether we have evidence that the true mean number of hours that Americans work per week is 40.
 
 First, to calculate the observed statistic, we can use `specify()` and `calculate()`.
 
 ```{r calc-obs-stat-1-sample, warning = FALSE, message = FALSE}
-# calculate the sample mean
-sample_mean <- gss %>%
+# calculate the observed statistic
+observed_statistic <- gss %>%
   specify(response = hours) %>%
-  calculate(stat = "mean")
+  calculate(stat = "t", mu = 40)
 ```
 
-The sample mean is `r sample_mean`. Now, we want to compare this mean to a null distribution, generated under the assumption that the mean was actually 40, to get a sense of how likely it would be for us to see this sample mean is the true mean was really 40.
+The observed statistic is `r observed_statistic`. Now, we want to compare this statistic to a null distribution, generated under the assumption that the mean was actually 40, to get a sense of how likely it would be for us to see this observed statistic if the true number of hours worked per week in the population was really 40.
 
 We can `generate` the null distribution using the bootstrap. In the bootstrap, for each replicate, a sample of size equal to the input sample size is drawn (with replacement) from the input sample data. This allows us to get a sense of how much variability we'd expect to see in the entire population so that we can then understand how unlikely our sample mean would be.
 
@@ -67,7 +67,7 @@ null_distribution_1_sample <- gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40) %>%
   generate(reps = 1000, type = "bootstrap") %>%
-  calculate(stat = "mean")
+  calculate(stat = "t")
 ```
 
 To get a sense for what these distributions look like, and where our observed statistic falls, we can use `visualize()`:
@@ -76,32 +76,38 @@ To get a sense for what these distributions look like, and where our observed st
 # visualize the null distribution and test statistic!
 null_distribution_1_sample %>%
   visualize() + 
-  shade_p_value(sample_mean,
-                direction = "both")
+  shade_p_value(observed_statistic,
+                direction = "two_sided")
 ```
 
-It looks like our sample mean of `r sample_mean` would be relatively unlikely if the true mean was actually 40 hours a week. More exactly, we can calculate the p-value:
+It looks like our observed statistic of `r observed_statistic` would be relatively unlikely if the true mean was actually 40 hours a week. More exactly, we can calculate the p-value:
 
 ```{r p-value-1-sample, warning = FALSE, message = FALSE}
-# calculate the p value from the sample mean and null distribution
+# calculate the p value from the test statistic and null distribution
 p_value_1_sample <- null_distribution_1_sample %>%
-  get_p_value(obs_stat = sample_mean,
-              direction = "both")
+  get_p_value(obs_stat = observed_statistic,
+              direction = "two_sided")
 
 p_value_1_sample
 ```
 
-Thus, if the mean number of hours worked per week was really 40, the probability that we would see a sample mean as or more extreme than `r sample_mean` is approximately `r p_value_1_sample`.
+Thus, if the true mean number of hours worked per week was really 40, the probability that we would see a test statistic as or more extreme than `r observed_statistic` is approximately `r p_value_1_sample`.
 
 Note that, equivalently to the steps shown above, the package supplies a wrapper function, `t_test`, to carry out 1-sample t-Tests on tidy data. The syntax looks like this:
 
-```{r 1-sample-t-test-wrapper, message = FALSE, warning = FALSE}
+```{r t-test-wrapper, message = FALSE, warning = FALSE}
 t_test(gss, response = hours, mu = 40)
+```
+
+Also, to just calculate the observed statistic, the package supplies the wrapper `t_stat()`.
+
+```{r t-stat-wrapper, message = FALSE, warning = FALSE}
+t_stat(gss, response = hours, mu = 40)
 ```
 
 ### Paired t-Test
 
-You might be interested in running a paired t-Test. Paired t-tests can be used in situations when there is a natural pairing between values in distributions---a common example would be two columns, `before` and `after`, say, that contain measurements from a patient before and after some treatment. To compare these two distributions, then, we're not necessarily interested in how the two distributions look different altogether, but how these two measurements from each individual change across time. (Pairings don't necessarily have to be over time; another commonly used example is measurements from two married people.) Thus, we can create a new column (see `mutate()` from the `dplyr` package if you're not sure how to do this) that is the difference between the two: `difference = after - before`, and then examine _this_ distribution to see how each individuals' measurements changed over time.
+You might be interested in running a paired t-Test. Paired t-tests can be used in situations when there is a natural pairing between values in distributions---a common example would be two columns, `before` and `after`, say, that contain measurements from a patient before and after some treatment. To compare these two distributions, then, we're not necessarily interested in how the two distributions look different altogether, but how these two measurements from each individual change across time. (Pairings don't necessarily have to be over time; another common usage is measurements from two married people, for example.) Thus, we can create a new column (see `mutate()` from the `dplyr` package if you're not sure how to do this) that is the difference between the two: `difference = after - before`, and then examine _this_ distribution to see how each individuals' measurements changed over time.
 
 Once we've `mutate()`d that new `difference` column, we can run a 1-sample t-Test on it, where our null hypothesis is that `mu = 0` (i.e. the difference between these measurements before and after treatment is, on average, 0). To do so, we'd use the procedure outlined in the above section.
 
@@ -179,7 +185,7 @@ To get a sense for what these distributions look like, and where our observed st
 null_distribution_2_sample_permute %>%
   visualize() + 
   shade_p_value(observed_statistic,
-                direction = "both")
+                direction = "two_sided")
 ```
 
 The syntax to do the same thing with the theoretical null looks similar---we just pipe in the theoretical null distribution instead, and drop in `method = "theoretical"` to `visualize()`.
@@ -189,7 +195,7 @@ The syntax to do the same thing with the theoretical null looks similar---we jus
 null_distribution_2_sample_theoretical %>%
   visualize(method = "theoretical") + 
   shade_p_value(observed_statistic,
-                direction = "both")
+                direction = "two_sided")
 ```
 
 We could also visualize both null distributions to get a sense of how the randomization-based and theoretical versions relate. To do so, start off with the randomization-based null distribution, and then drop in `method = "both"` to `visualize()`.
@@ -199,7 +205,7 @@ We could also visualize both null distributions to get a sense of how the random
 null_distribution_2_sample_permute %>%
   visualize(method = "both") + 
   shade_p_value(observed_statistic,
-                direction = "both")
+                direction = "two_sided")
 ```
 
 Regardless, it looks like our observed statistic of `r observed_statistic` would be really unlikely if there was truly no relationship between degree status and number of hours worked. More exactly, we can calculate the p-value; theoretical p-values are not yet supported, so we'll use the randomization-based null distribution to do calculate the p-value.
@@ -209,7 +215,7 @@ Regardless, it looks like our observed statistic of `r observed_statistic` would
 # distribution and the observed statistic
 p_value_2_sample <- null_distribution_2_sample_permute %>%
   get_p_value(obs_stat = observed_statistic,
-              direction = "both")
+              direction = "two_sided")
 
 p_value_2_sample
 ```
@@ -221,7 +227,8 @@ Note that, equivalently to the steps shown above, the package supplies a wrapper
 ```{r 2-sample-t-test-wrapper, message = FALSE, warning = FALSE}
 t_test(x = gss_small, 
        formula = hours ~ college, 
-       order = c("degree", "no degree"))
+       order = c("degree", "no degree"),
+       alternative = "two_sided")
 ```
 
 In the above example, we specified the relationship with the syntax `formula = hours ~ college`; we could have also written `response = hours, explanatory = college`.
