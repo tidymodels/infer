@@ -99,3 +99,10 @@ Note that, equivalently to the steps shown above, the package supplies a wrapper
 t_test(gss, response = hours, mu = 40)
 ```
 
+### Paired t-Test
+
+You might be interested in running a paired t-Test. Paired t-tests can be used in situations when there is a natural pairing between values in distributions---a common example would be two columns, `before` and `after`, say, that contain measurements from a patient before and after some treatment. To compare these two distributions, then, we're not necessarily interested in how the two distributions look different altogether, but how these two measurements from each individual change across time. (Pairings don't necessarily have to be over time; another commonly used example is measurements from two married people.) Thus, we can create a new column (see `mutate()` from the `dplyr` package if you're not sure how to do this) that is the difference between the two: `difference = after - before`, and then examine _this_ distribution to see how each individuals' measurements changed over time.
+
+Once we've `mutate()`d that new `difference` column, we can run a 1-sample t-Test on it, where our null hypothesis is that `mu = 0` (i.e. the difference between these measurements before and after treatment is, on average, 0). To do so, we'd use the procedure outlined in the above section.
+
+
