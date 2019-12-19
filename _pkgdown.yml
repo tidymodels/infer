@@ -9,6 +9,8 @@ navbar:
   left:
   - text: Articles
     menu:
+    - text: infer
+      href: articles/infer.html
     - text: Chi-square Test Example
       href: articles/chisq_test.html
     - text: Two-Sample t-test Example
