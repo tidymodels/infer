@@ -1,0 +1,101 @@
+---
+title: "t-Tests"
+output: rmarkdown::html_vignette
+vignette: |
+  %\VignetteIndexEntry{t-Tests}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r settings, include=FALSE}
+knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5) 
+options(digits = 4)
+```
+
+```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
+library(devtools)
+library(tidyr)
+library(ggplot2)
+library(dplyr)
+devtools::load_all()
+```
+
+### Introduction
+
+In this vignette, we'll walk through conducting t-tests using `infer`. We'll start out with a 1-sample t-test, which compares a sample mean to a hypothesized mean value. Then, we'll discuss paired t-tests, which are a special use case of 1-sample t-tests, and evaluate whether differences in paired values (e.g. some measure taken of a person before and after an experiment) differ from 0. Finally, we'll wrap up with 2-sample t-tests, testing the difference in means of two samples.
+
+Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. The data looks like this:
+
+```{r glimpse-gss-actual, warning = FALSE, message = FALSE}
+dplyr::glimpse(gss)
+```
+
+### 1-Sample t-Test
+
+To carry out a 1-sample t-Test, we'll test whether the average American adult works 40 hours a week. To do so, we make use of the `hours` variable, giving the number of hours that respondents reported having worked in the previous week. The distribution of `hours` in the observed data looks like this:
+
+```{r plot-1-sample, echo = FALSE}
+gss %>%
+  ggplot2::ggplot() +
+  ggplot2::aes(x = hours) +
+  ggplot2::geom_histogram(bins = 20) +
+  ggplot2::labs(x = "hours: Number of Hours Worked",
+                y = "Number of Responses") +
+  ggplot2::scale_x_continuous(breaks = seq(0, 90, 10))
+```
+
+Note the warning about missing values---many respondents' values are missing. If we were actually carrying out this hypothesis test, we might look further into how this data was collected; it's possible that some of the missing values should actually be 0 hours.
+
+In general, though, it looks like most respondents reported having worked 40 hours, but there's quite a bit of variability. Let's test whether we have evidence that the true mean number of hours that Americans work per week is 40.
+
+First, to calculate the observed statistic, we can use `specify()` and `calculate()`.
+
+```{r calc-obs-stat-1-sample, warning = FALSE, message = FALSE}
+# calculate the sample mean
+sample_mean <- gss %>%
+  specify(response = hours) %>%
+  calculate(stat = "mean")
+```
+
+The sample mean is `r sample_mean`. Now, we want to compare this mean to a null distribution, generated under the assumption that the mean was actually 40, to get a sense of how likely it would be for us to see this sample mean is the true mean was really 40.
+
+We can `generate` the null distribution using the bootstrap. In the bootstrap, for each replicate, a sample of size equal to the input sample size is drawn (with replacement) from the input sample data. This allows us to get a sense of how much variability we'd expect to see in the entire population so that we can then understand how unlikely our sample mean would be.
+
+```{r generate-null-1-sample, warning = FALSE, message = FALSE}
+# generate the null distribution
+null_distribution_1_sample <- gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
+  generate(reps = 1000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+```
+
+To get a sense for what these distributions look like, and where our observed statistic falls, we can use `visualize()`:
+
+```{r visualize-1-sample, warning = FALSE, message = FALSE}
+# visualize the null distribution and test statistic!
+null_distribution_1_sample %>%
+  visualize() + 
+  shade_p_value(sample_mean,
+                direction = "both")
+```
+
+It looks like our sample mean of `r sample_mean` would be relatively unlikely if the true mean was actually 40 hours a week. More exactly, we can calculate the p-value:
+
+```{r p-value-1-sample, warning = FALSE, message = FALSE}
+# calculate the p value from the sample mean and null distribution
+p_value_1_sample <- null_distribution_1_sample %>%
+  get_p_value(obs_stat = sample_mean,
+              direction = "both")
+
+p_value_1_sample
+```
+
+Thus, if there were really no relationship between education and income, the probability that we would see a statistic as or more extreme than `r sample_mean` is approximately `r p_value_1_sample`.
+
+Note that, equivalently to the steps shown above, the package supplies a wrapper function, `t_test`, to carry out 1-sample t-Tests on tidy data. The syntax looks like this:
+
+```{r 1-sample-t-test-wrapper, message = FALSE, warning = FALSE}
+t_test(gss, response = hours, mu = 40)
+```
+
