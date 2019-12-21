@@ -1,12 +1,10 @@
 ---
-title: "Chi-Squared Tests: Independence and Goodness of Fit"
+title: "Tidy Chi-Squared Tests with {infer}"
 output: rmarkdown::html_vignette
 vignette: |
   %\VignetteIndexEntry{Chi-Squared Tests}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: console
 ---
 
 ```{r settings, include=FALSE}
@@ -26,7 +24,7 @@ devtools::load_all()
 
 In this vignette, we'll walk through conducting a $\chi^2$ (chi-squared) test of independence and a chi-squared goodness of fit test using `infer`. We'll start out with a  chi-squared test of independence, which can be used to test the association between two categorical variables. Then, we'll move on to a chi-squared goodness of fit test, which tests how well the distribution of one categorical variable can be approximated by some theoretical distribution.
 
-Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. The data looks like this:
+Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
 ```{r glimpse-gss-actual, warning = FALSE, message = FALSE}
 dplyr::glimpse(gss)
@@ -34,9 +32,9 @@ dplyr::glimpse(gss)
 
 ### Test of Independence
 
-To carry out a chi-squared test of independence, we'll examine the association between income and educational attainment. `college` is a categorical variable with values `degree` and `no degree`, indicating whether or not the respondent has a college degree (including community college), and `finrela` gives the respondent's self-identification of family income---either `far below average`, `below average`, `average`, `above average`, `far above average`, or `DK` (don't know).
+To carry out a chi-squared test of independence, we'll examine the association between income and educational attainment in the United States. `college` is a categorical variable with values `degree` and `no degree`, indicating whether or not the respondent has a college degree (including community college), and `finrela` gives the respondent's self-identification of family income---either `far below average`, `below average`, `average`, `above average`, `far above average`, or `DK` (don't know).
 
-This is what the relationship looks like in the observed data:
+This is what the relationship looks like in the sample data:
 
 ```{r plot-indep, echo = FALSE}
 gss %>%

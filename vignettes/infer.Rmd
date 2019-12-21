@@ -1,14 +1,14 @@
 ---
-title: "infer"
+title: "Getting to Know {infer}"
 output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{infer}
+vignette: |
+  %\VignetteIndexEntry{ANOVA}
+  %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
 ---
 
 ```{r include=FALSE}
-knitr::opts_chunk$set(fig.width = 6, fig.height = 3.5) 
+knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5) 
 options(digits = 4)
 ```
 
@@ -25,7 +25,7 @@ The workflow of this package is designed around this idea. Starting out with som
 + `generate()` allows you to generate data reflecting the null hypothesis.
 + `calculate()` allows you to calculate a distribution of statistics from the generated data to form the null distribution.
 
-Throughout this vignette, we make use of `gss`, a dataset supplied by `infer` containing a sample of 3000 observations sampled from the *General Social Survey*. 
+Throughout this vignette, we make use of `gss`, a dataset supplied by `infer` containing a sample of 3000 observations of 11 variables from the *General Social Survey*. 
 
 ```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(devtools)
@@ -39,10 +39,10 @@ devtools::load_all()
 data(gss)
 
 # take a look at its structure
-str(gss)
+dplyr::glimpse(gss)
 ```
 
-Each row is an individual survey response, containing some basic demographic information on the respondent as well as some additional variables. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about - American adults.
+Each row is an individual survey response, containing some basic demographic information on the respondent as well as some additional variables. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults.
 
 ### `specify()`: Specifying Response (and Explanatory) Variables
 

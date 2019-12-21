@@ -1,12 +1,10 @@
 ---
-title: "ANOVA (Analysis of Variance)"
+title: "Tidy ANOVA (Analysis of Variance) with {infer}"
 output: rmarkdown::html_vignette
 vignette: |
   %\VignetteIndexEntry{ANOVA}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: console
 ---
 
 ```{r settings, include=FALSE}
@@ -24,7 +22,7 @@ devtools::load_all()
 
 In this vignette, we'll walk through conducting an analysis of variance (ANOVA) test using `infer`. ANOVAs are used to analyze differences in group means.
 
-Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. The data looks like this:
+Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
 ```{r glimpse-gss-actual, warning = FALSE, message = FALSE}
 dplyr::glimpse(gss)
