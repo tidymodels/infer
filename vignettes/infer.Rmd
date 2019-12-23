@@ -4,7 +4,7 @@ output:
   rmarkdown::html_vignette:
     toc: true
 vignette: |
-  %\VignetteIndexEntry{ANOVA}
+  %\VignetteIndexEntry{infer}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---
