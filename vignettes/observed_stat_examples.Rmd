@@ -78,6 +78,14 @@ Calculating the observed statistic,
 
 ```{r, message = FALSE, warning = FALSE}
 t_bar <- gss %>%
+  specify(response = hours) %>%
+  calculate(stat = "t", mu = 40)
+```
+
+Alternatively, using the wrapper to calculate the test statistic, 
+
+```{r, message = FALSE, warning = FALSE}
+t_bar <- gss %>%
   t_stat(response = hours, mu = 40)
 ```
 
@@ -103,6 +111,13 @@ Calculating the p-value from the null distribution and observed statistic,
 ```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = t_bar, direction = "two_sided")
+```
+
+Alternatively, using the `t_test` wrapper:
+
+```{r, message = FALSE, warning = FALSE}
+gss %>%
+  t_test(response = hours, mu = 40)
 ```
 
 
@@ -278,6 +293,19 @@ Chisq_hat <- gss %>%
   calculate(stat = "Chisq")
 ```
 
+Alternatively, using the `chisq_stat` wrapper to calculate the test statistic,
+
+```{r, message = FALSE, warning = FALSE}
+Chisq_hat <- gss %>%
+  chisq_stat(response = finrela,
+             p = c("far below average" = .167,
+                   "below average" = .167,
+                   "average" = .167,
+                   "above average" = .167,
+                   "far above average" = .167,
+                   "DK" = .165))
+```
+
 Then, generating the null distribution,
 
 ```{r, message = FALSE, warning = FALSE}
@@ -308,7 +336,20 @@ null_distn %>%
   get_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
-### Two categorical (>2 level) variables
+Alternatively, using the `chisq_test` wrapper:
+
+```{r, message = FALSE, warning = FALSE}
+chisq_test(gss, 
+           response = finrela,
+           p = c("far below average" = .167,
+                 "below average" = .167,
+                 "average" = .167,
+                 "above average" = .167,
+                 "far above average" = .167,
+                 "DK" = .165))
+```
+
+### Two categorical (>2 level): Chi-squared test of independence
 
 Calculating the observed statistic,
 
@@ -316,6 +357,13 @@ Calculating the observed statistic,
 Chisq_hat <- gss %>%
   specify(formula = partyid ~ class) %>% 
   calculate(stat = "Chisq")
+```
+
+Alternatively, using the wrapper to calculate the test statistic,
+
+```{r, message = FALSE, warning = FALSE}
+Chisq_hat <- gss %>%
+  chisq_stat(formula = partyid ~ class)
 ```
 
 Then, generating the null distribution,
@@ -340,6 +388,13 @@ Calculating the p-value from the null distribution and observed statistic,
 ```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = Chisq_hat, direction = "greater")
+```
+
+Alternatively, using the wrapper to carry out the test,
+
+```{r, message = FALSE, warning = FALSE}
+gss %>%
+  chisq_test(formula = partyid ~ class)
 ```
 
 ### One numerical variable, one categorical (2 levels) (diff in means)
