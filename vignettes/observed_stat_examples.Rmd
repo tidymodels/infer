@@ -3,6 +3,7 @@ title: "Full infer Pipeline Examples"
 output: 
   rmarkdown::html_vignette:
     df_print: kable
+    toc: true
 vignette: |
   %\VignetteIndexEntry{Full infer pipeline examples}
   %\VignetteEncoding{UTF-8}
@@ -16,7 +17,7 @@ knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5)
 options(digits = 4)
 ```
 
-This vignette is intended to provide a set of examples that nearly exhaustively demonstrate the functionalities provided by `infer`. Commentary on these examples is limited---for more discussion of the intuition behind the package, see the "Getting to Know infer" vignette, accessible by calling `vignette("infer")`.
+This vignette is intended to provide a set of examples that nearly exhaustively demonstrate the functionalities provided by `infer`. Commentary on these examples is limited---for more discussion of the intuition behind the package, see the "Getting to Know {infer}" vignette, accessible by calling `vignette("infer")`.
 
 Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
@@ -35,7 +36,7 @@ data(gss)
 dplyr::glimpse(gss)
 ```
 
-### Hypothesis tests
+## Hypothesis tests
 
 ### One numerical variable (mean)
 
@@ -53,7 +54,7 @@ Then, generating the null distribution,
 null_distn <- gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40) %>%
-  generate(reps = 100) %>%
+  generate(reps = 1000) %>%
   calculate(stat = "mean")
 ```
 
@@ -86,7 +87,7 @@ Then, generating the null distribution,
 null_distn <- gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40) %>%
-  generate(reps = 100) %>%
+  generate(reps = 1000) %>%
   calculate(stat = "t")
 ```
 
@@ -121,7 +122,7 @@ Then, generating the null distribution,
 null_distn <- gss %>%
   specify(response = age) %>%
   hypothesize(null = "point", med = 40) %>% 
-  generate(reps = 100) %>% 
+  generate(reps = 1000) %>% 
   calculate(stat = "median")
 ```
 
@@ -155,7 +156,7 @@ Then, generating the null distribution,
 null_distn <- gss %>%
   specify(response = sex, success = "female") %>%
   hypothesize(null = "point", p = .5) %>%
-  generate(reps = 100) %>%
+  generate(reps = 1000) %>%
   calculate(stat = "prop")
 ```
 
@@ -180,7 +181,7 @@ null_distn <- gss %>%
   dplyr::mutate(is_female = (sex == "female")) %>%
   specify(response = is_female, success = "TRUE") %>%
   hypothesize(null = "point", p = .5) %>%
-  generate(reps = 100) %>%
+  generate(reps = 1000) %>%
   calculate(stat = "prop")
 ```
 
@@ -204,7 +205,7 @@ Then, generating the null distribution,
 null_distn <- gss %>%
   specify(college ~ sex, success = "no degree") %>%
   hypothesize(null = "independence") %>% 
-  generate(reps = 100) %>% 
+  generate(reps = 1000) %>% 
   calculate(stat = "diff in props", order = c("female", "male"))
 ```
 
@@ -238,7 +239,7 @@ Then, generating the null distribution,
 null_distn <- gss %>%
   specify(college ~ sex, success = "no degree") %>%
   hypothesize(null = "independence") %>% 
-  generate(reps = 100) %>% 
+  generate(reps = 1000) %>% 
   calculate(stat = "z", order = c("female", "male"))
 ```
 
@@ -289,7 +290,7 @@ null_distn <- gss %>%
                     "above average" = .167,
                     "far above average" = .167,
                     "DK" = .165)) %>%
-  generate(reps = 100, type = "simulate") %>%
+  generate(reps = 1000, type = "simulate") %>%
   calculate(stat = "Chisq")
 ```
 
@@ -323,7 +324,7 @@ Then, generating the null distribution,
 null_distn <- gss %>%
   specify(partyid ~ class) %>%
   hypothesize(null = "independence") %>% 
-  generate(reps = 100, type = "permute") %>% 
+  generate(reps = 1000, type = "permute") %>% 
   calculate(stat = "Chisq")
 ```
 
@@ -357,7 +358,7 @@ Then, generating the null distribution,
 null_distn <- gss %>%
   specify(age ~ college) %>%
   hypothesize(null = "independence") %>%
-  generate(reps = 100, type = "permute") %>%
+  generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in means", order = c("degree", "no degree"))
 ```
 
@@ -391,7 +392,7 @@ Then, generating the null distribution,
 null_distn <- gss %>%
   specify(age ~ college) %>%
   hypothesize(null = "independence") %>%
-  generate(reps = 100, type = "permute") %>%
+  generate(reps = 1000, type = "permute") %>%
   calculate(stat = "t", order = c("degree", "no degree"))
 ```
 
@@ -427,7 +428,7 @@ Then, generating the null distribution,
 null_distn <- gss %>%
   specify(age ~ college) %>% # alt: response = age, explanatory = season
   hypothesize(null = "independence") %>%
-  generate(reps = 100, type = "permute") %>%
+  generate(reps = 1000, type = "permute") %>%
   calculate(stat = "diff in medians", order = c("degree", "no degree"))
 ```
 
@@ -461,7 +462,7 @@ Then, generating the null distribution,
 null_distn <- gss %>%
    specify(age ~ partyid) %>%
    hypothesize(null = "independence") %>%
-   generate(reps = 100, type = "permute") %>%
+   generate(reps = 1000, type = "permute") %>%
    calculate(stat = "F")
 ```
 
@@ -495,7 +496,7 @@ Then, generating the null distribution,
 null_distn <- gss %>%
    specify(hours ~ age) %>% 
    hypothesize(null = "independence") %>%
-   generate(reps = 100, type = "permute") %>%
+   generate(reps = 1000, type = "permute") %>%
    calculate(stat = "slope")
 ```
 
@@ -529,7 +530,7 @@ Then, generating the null distribution,
 null_distn <- gss %>%
    specify(hours ~ age) %>% 
    hypothesize(null = "independence") %>%
-   generate(reps = 100, type = "permute") %>%
+   generate(reps = 1000, type = "permute") %>%
    calculate(stat = "correlation")
 ```
 
@@ -569,7 +570,7 @@ Then, generating the null distribution,
 ```{r, message = FALSE, warning = FALSE}
 boot <- gss %>%
    specify(response = hours) %>%
-   generate(reps = 100, type = "bootstrap") %>%
+   generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "mean")
 ```
 
@@ -610,7 +611,7 @@ Then, generating the null distribution,
 ```{r, message = FALSE, warning = FALSE}
 boot <- gss %>%
    specify(response = hours) %>%
-   generate(reps = 100, type = "bootstrap") %>%
+   generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "t")
 ```
 
@@ -653,7 +654,7 @@ Then, generating the null distribution,
 ```{r, message = FALSE, warning = FALSE}
 boot <- gss %>%
  specify(response = sex, success = "female") %>%
- generate(reps = 100, type = "bootstrap") %>%
+ generate(reps = 1000, type = "bootstrap") %>%
  calculate(stat = "prop")
 ```
 
@@ -699,7 +700,7 @@ Then, generating the null distribution,
 ```{r, message = FALSE, warning = FALSE}
 boot <- gss %>%
    specify(hours ~ college) %>%
-   generate(reps = 100, type = "bootstrap") %>%
+   generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "diff in means", order = c("degree", "no degree"))
 ```
 
@@ -741,7 +742,7 @@ Then, generating the null distribution,
 ```{r, message = FALSE, warning = FALSE}
 boot <- gss %>%
    specify(hours ~ college) %>%
-   generate(reps = 100, type = "bootstrap") %>%
+   generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "t", order = c("degree", "no degree"))
 ```
 
@@ -784,7 +785,7 @@ Then, generating the null distribution,
 ```{r, message = FALSE, warning = FALSE}
 boot <- gss %>%
   specify(college ~ sex, success = "degree") %>%
-  generate(reps = 100, type = "bootstrap") %>% 
+  generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "diff in props", order = c("female", "male"))
 ```
 
@@ -826,7 +827,7 @@ Then, generating the null distribution,
 ```{r, message = FALSE, warning = FALSE}
 boot <- gss %>%
   specify(college ~ sex, success = "degree") %>%
-  generate(reps = 100, type = "bootstrap") %>% 
+  generate(reps = 1000, type = "bootstrap") %>% 
   calculate(stat = "z", order = c("female", "male"))
 ```
 
@@ -869,7 +870,7 @@ Then, generating the null distribution,
 ```{r, message = FALSE, warning = FALSE}
 boot <- gss %>%
    specify(hours ~ age) %>% 
-   generate(reps = 100, type = "bootstrap") %>%
+   generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "slope")
 ```
 
@@ -911,7 +912,7 @@ Then, generating the null distribution,
 ```{r, message = FALSE, warning = FALSE}
 boot <- gss %>%
    specify(hours ~ age) %>% 
-   generate(reps = 100, type = "bootstrap") %>%
+   generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "correlation")
 ```
 

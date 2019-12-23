@@ -1,5 +1,5 @@
 ---
-title: "Tidy Chi-Squared Tests with {infer}"
+title: "Tidy Chi-Squared Tests with infer"
 output: rmarkdown::html_vignette
 vignette: |
   %\VignetteIndexEntry{Chi-Squared Tests}

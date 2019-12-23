@@ -17,7 +17,7 @@ navbar:
       href: articles/anova.html
     - text: Chi-Squared
       href: articles/chi_squared.html
-    - text: Observed Statistic Examples
+    - text: Full infer Pipeline Examples
       href: articles/observed_stat_examples.html      
   - text: Reference
     href: reference/index.html      

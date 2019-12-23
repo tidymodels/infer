@@ -1,5 +1,5 @@
 ---
-title: "Tidy t-Tests with {infer}"
+title: "Tidy t-Tests with infer"
 output: rmarkdown::html_vignette
 vignette: |
   %\VignetteIndexEntry{t-Tests}

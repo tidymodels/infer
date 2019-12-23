@@ -1,5 +1,5 @@
 ---
-title: "Tidy ANOVA (Analysis of Variance) with {infer}"
+title: "Tidy ANOVA (Analysis of Variance) with infer"
 output: rmarkdown::html_vignette
 vignette: |
   %\VignetteIndexEntry{ANOVA}
