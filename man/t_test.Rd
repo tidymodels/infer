@@ -49,6 +49,8 @@ interval or not. \code{TRUE} by default.}
 A tidier version of \link[stats:t.test]{t.test()} for two sample tests.
 }
 \examples{
+library(tidyr)
+
 # t test for number of hours worked per week
 # by college degree status
 gss \%>\%

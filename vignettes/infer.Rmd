@@ -32,6 +32,7 @@ Throughout this vignette, we make use of `gss`, a dataset supplied by `infer` co
 ```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(devtools)
 library(dplyr)
+library(tidyr)
 devtools::load_all()
 ```
 
@@ -165,8 +166,7 @@ To illustrate, we'll go back to the example of determining whether the mean numb
 # find the point estimate
 point_estimate <- gss %>%
   specify(response = hours) %>%
-  calculate(stat = "mean") %>%
-  dplyr::pull()
+  calculate(stat = "mean")
 
 # generate a null distribution
 null_dist <- gss %>%

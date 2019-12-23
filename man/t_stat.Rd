@@ -49,6 +49,8 @@ interval or not. \code{TRUE} by default.}
 A shortcut wrapper function to get the observed test statistic for a t test.
 }
 \examples{
+library(tidyr)
+
 # t test statistic for true mean number of hours worked
 # per week of 40
 gss \%>\%

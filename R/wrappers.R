@@ -27,6 +27,8 @@
 #' @param ... For passing in other arguments to [t.test()][stats::t.test()].
 #'
 #' @examples
+#' library(tidyr)
+#' 
 #' # t test for number of hours worked per week
 #' # by college degree status
 #' gss %>%
@@ -136,6 +138,8 @@ t_test <- function(x, formula,
 #' @param ... Pass in arguments to \\{infer\\} functions.
 #'
 #' @examples
+#' library(tidyr)
+#' 
 #' # t test statistic for true mean number of hours worked
 #' # per week of 40
 #' gss %>%
