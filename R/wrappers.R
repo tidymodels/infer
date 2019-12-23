@@ -27,10 +27,17 @@
 #' @param ... For passing in other arguments to [t.test()][stats::t.test()].
 #'
 #' @examples
-#' # t test for comparing mpg against automatic/manual
-#' mtcars %>%
-#'   dplyr::mutate(am = factor(am)) %>%
-#'   t_test(mpg ~ am, order = c("1", "0"), alternative = "less")
+#' # t test for number of hours worked per week
+#' # by college degree status
+#' gss %>%
+#'    tidyr::drop_na(college) %>%
+#'    t_test(formula = hours ~ college,
+#'       order = c("degree", "no degree"),
+#'       alternative = "two_sided")
+#'
+#' # see vignette("infer") for more explanation of the
+#' # intuition behind the infer package, and vignette("t_test") 
+#' # for more examples of t-tests using infer
 #'
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
@@ -128,6 +135,20 @@ t_test <- function(x, formula,
 #' @param conf_level A numeric value between 0 and 1. Default value is 0.95.
 #' @param ... Pass in arguments to \\{infer\\} functions.
 #'
+#' @examples
+#' # t test statistic for true mean number of hours worked
+#' # per week of 40
+#' gss %>%
+#'    t_stat(response = hours, mu = 40)
+#'
+#' # t test statistic for number of hours worked per week
+#' # by college degree status
+#' gss %>%
+#'    tidyr::drop_na(college) %>%
+#'    t_stat(formula = hours ~ college,
+#'       order = c("degree", "no degree"),
+#'       alternative = "two_sided")
+#'
 #' @export
 t_stat <- function(x, formula, 
                    response = NULL, 
@@ -215,10 +236,20 @@ t_stat <- function(x, formula,
 #' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
 #'
 #' @examples
-#' # chisq test for comparing number of cylinders against automatic/manual
-#' mtcars %>%
-#'   dplyr::mutate(cyl = factor(cyl), am = factor(am)) %>%
-#'   chisq_test(cyl ~ am)
+#' # chi-squared test of independence for college completion 
+#' # status depending on one's self-identified income class
+#' chisq_test(gss, college ~ finrela)
+#' 
+#' # chi-squared goodness of fit test on whether self-identified 
+#' # income class follows a uniform distribution
+#' chisq_test(gss, 
+#'            response = finrela,
+#'            p = c("far below average" = .167,
+#'                  "below average" = .167,
+#'                  "average" = .167,
+#'                  "above average" = .167,
+#'                  "far above average" = .167,
+#'                  "DK" = .165))
 #'
 #' @export
 chisq_test <- function(x, formula, response = NULL, 
@@ -269,6 +300,24 @@ chisq_test <- function(x, formula, response = NULL,
 #' @param explanatory The variable name in `x` that will serve as the
 #'   explanatory variable.
 #' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
+#'
+#' @examples
+#' # chi-squared test statistic for test of independence 
+#' # of college completion status depending and one's 
+#' # self-identified income class
+#' chisq_stat(gss, college ~ finrela)
+#' 
+#' # chi-squared test statistic for a goodness of fit 
+#' # test on whether self-identified income class 
+#' # follows a uniform distribution
+#' chisq_stat(gss, 
+#'            response = finrela,
+#'            p = c("far below average" = .167,
+#'                  "below average" = .167,
+#'                  "average" = .167,
+#'                  "above average" = .167,
+#'                  "far above average" = .167,
+#'                  "DK" = .165))
 #'
 #' @export
 chisq_stat <- function(x, formula, response = NULL, 

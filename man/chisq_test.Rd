@@ -25,9 +25,19 @@ A tidier version of \link[stats:chisq.test]{chisq.test()} for goodness of fit
 tests and tests of independence.
 }
 \examples{
-# chisq test for comparing number of cylinders against automatic/manual
-mtcars \%>\%
-  dplyr::mutate(cyl = factor(cyl), am = factor(am)) \%>\%
-  chisq_test(cyl ~ am)
+# chi-squared test of independence for college completion 
+# status depending on one's self-identified income class
+chisq_test(gss, college ~ finrela)
+
+# chi-squared goodness of fit test on whether self-identified 
+# income class follows a uniform distribution
+chisq_test(gss, 
+           response = finrela,
+           p = c("far below average" = .167,
+                 "below average" = .167,
+                 "average" = .167,
+                 "above average" = .167,
+                 "far above average" = .167,
+                 "DK" = .165))
 
 }

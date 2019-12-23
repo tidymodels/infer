@@ -25,3 +25,22 @@ A shortcut wrapper function to get the observed test statistic for a chisq
 test. Uses \link[stats:chisq.test]{chisq.test()}, which applies a continuity
 correction.
 }
+\examples{
+# chi-squared test statistic for test of independence 
+# of college completion status depending and one's 
+# self-identified income class
+chisq_stat(gss, college ~ finrela)
+
+# chi-squared test statistic for a goodness of fit 
+# test on whether self-identified income class 
+# follows a uniform distribution
+chisq_stat(gss, 
+           response = finrela,
+           p = c("far below average" = .167,
+                 "below average" = .167,
+                 "average" = .167,
+                 "above average" = .167,
+                 "far above average" = .167,
+                 "DK" = .165))
+
+}
