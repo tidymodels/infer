@@ -136,9 +136,6 @@ specify <- function(x, formula, response = NULL,
 #' @importFrom rlang get_expr
 parse_variables <- function(x, formula, response = NULL,
                             explanatory = NULL) {
-  if (!methods::hasArg(formula) && !methods::hasArg(response)) {
-    stop_glue("Please give the `response` variable.")
-  }
   if (methods::hasArg(formula)) {
     tryCatch(
       rlang::is_formula(formula), 
@@ -165,7 +162,7 @@ parse_variables <- function(x, formula, response = NULL,
   
   # Check response and explanatory variables to be appropriate for later use
   if (!has_response(x)) {
-    stop_glue("Supply not `NULL` response variable.")
+    stop_glue("Please supply a response variable that is not `NULL`.")
   }
   check_var_correct(x, "response")
   check_var_correct(x, "explanatory")
