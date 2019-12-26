@@ -207,22 +207,13 @@ t_stat <- function(x, formula,
       broom::glance()
   }
   
-  if (conf_int) {
-    results <- prelim %>%
-      dplyr::select(
-        statistic, t_df = parameter, p_value = p.value, alternative,
-        lower_ci = conf.low, upper_ci = conf.high
-      )
-  } else {
-    results <- prelim %>%
-      dplyr::select(
-        statistic, t_df = parameter, p_value = p.value, alternative
-      )
-  }
-  
-  results %>%
+  # removed unnecessary if(conf_int) clause; only the statistic itself 
+  # was returned regardless
+  results <- prelim %>%
     dplyr::select(statistic) %>%
     pull()
+  
+  results
 }
 
 #' Tidy chi-squared test
@@ -335,14 +326,14 @@ chisq_stat <- function(x, formula, response = NULL,
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
       'The response variable of `{attr(x, "response")}` is not appropriate\n',
-      "since '{stat}' is expecting the response variable to be categorical."
+      "since the response variable is expected to be categorical."
     )
   }
   if (has_explanatory(x) && 
-      !(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
+      !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
       'The explanatory variable of `{attr(x, "explanatory")}` is not appropriate\n',
-      "since '{stat}' is expecting the explanatory variable to be categorical."
+      "since the response variable is expected to be categorical."
     )
   }
   

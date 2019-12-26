@@ -151,6 +151,9 @@ test_that("_stat functions work", {
   
   expect_equivalent(another_way, obs_stat_way)
   expect_equivalent(another_way, obs_stat_way_alt)
+  
+  expect_error(chisq_stat(x = iris2, response = Sepal.Length, explanatory = Species))
+  expect_error(chisq_stat(x = iris2, response = Species, explanatory = Sepal.Length))
 })
 
 test_that("conf_int argument works", {
