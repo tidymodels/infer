@@ -267,14 +267,14 @@ chisq_test <- function(x, formula, response = NULL,
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
       'The response variable of `{attr(x, "response")}` is not appropriate\n',
-      "since '{stat}' is expecting the response variable to be categorical."
+      "since the response variable is expected to be categorical."
     )
   }
   if (has_explanatory(x) && 
-      !(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
+      !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
       'The explanatory variable of `{attr(x, "explanatory")}` is not appropriate\n',
-      "since '{stat}' is expecting the explanatory variable to be categorical."
+      "since the explanatory variable is expected to be categorical."
     )
   }
   
