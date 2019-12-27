@@ -1,155 +1,201 @@
 ---
-title: "Full infer pipeline examples using `nycflights13` `flights` data"
-author: "Chester Ismay"
-date: "Updated on 2018-06-14"
+title: "Full infer Pipeline Examples"
 output: 
   rmarkdown::html_vignette:
     df_print: kable
+    toc: true
 vignette: |
   %\VignetteIndexEntry{Full infer pipeline examples}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  chunk_output_type: console
 ---
 
+#### Introduction
 
 ```{r include=FALSE}
-knitr::opts_chunk$set(fig.width = 6, fig.height = 3.5) 
+knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5) 
 options(digits = 4)
 ```
 
-## Data preparation
+This vignette is intended to provide a set of examples that nearly exhaustively demonstrate the functionalities provided by `infer`. Commentary on these examples is limited---for more discussion of the intuition behind the package, see the "Getting to Know infer" vignette, accessible by calling `vignette("infer")`.
 
-```{r message=FALSE, warning=FALSE}
-library(nycflights13)
+Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
+
+```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
+library(devtools)
 library(dplyr)
-library(ggplot2)
-library(stringr)
-library(infer)
-set.seed(2017)
-fli_small <- flights %>% 
-  na.omit() %>%
-  sample_n(size = 500) %>% 
-  mutate(season = case_when(
-    month %in% c(10:12, 1:3) ~ "winter",
-    month %in% c(4:9) ~ "summer"
-  )) %>% 
-  mutate(day_hour = case_when(
-    between(hour, 1, 12) ~ "morning",
-    between(hour, 13, 24) ~ "not morning"
-  )) %>% 
-  select(arr_delay, dep_delay, season, 
-         day_hour, origin, carrier)
+library(tidyr)
+devtools::load_all()
 ```
 
-* Two numeric - `arr_delay`, `dep_delay`
-* Two categories 
-    - `season` (`"winter"`, `"summer"`), 
-    - `day_hour` (`"morning"`, `"not morning"`)
-* Three categories - `origin` (`"EWR"`, `"JFK"`, `"LGA"`)
-* Sixteen categories - `carrier`
 
-***
+```{r load-gss, warning = FALSE, message = FALSE}
+# load in the dataset
+data(gss)
 
-# Hypothesis tests
+# take a look at its structure
+dplyr::glimpse(gss)
+```
+
+## Hypothesis tests
 
 ### One numerical variable (mean)
 
-**Observed stat**
-```{r}
-( x_bar <- fli_small %>%
-  specify(response = dep_delay) %>%
-  calculate(stat = "mean") )
+Calculating the observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
+x_bar <- gss %>%
+  specify(response = hours) %>%
+  calculate(stat = "mean")
 ```
 
-```{r}
-null_distn <- fli_small %>%
-  specify(response = dep_delay) %>%
-  hypothesize(null = "point", mu = 10) %>%
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn <- gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
   generate(reps = 1000) %>%
   calculate(stat = "mean")
+```
 
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = x_bar, direction = "two_sided")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = x_bar, direction = "two_sided")
 ```
 
 ### One numerical variable (standardized mean $t$)
 
-**Observed stat**
-```{r}
-t_bar <- fli_small %>%
-  t_stat(response = dep_delay, mu = 8)
+Calculating the observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
+t_bar <- gss %>%
+  specify(response = hours) %>%
+  calculate(stat = "t", mu = 40)
 ```
 
-```{r}
-null_distn <- fli_small %>%
-  specify(response = dep_delay) %>%
-  hypothesize(null = "point", mu = 8) %>%
+Alternatively, using the wrapper to calculate the test statistic, 
+
+```{r, message = FALSE, warning = FALSE}
+t_bar <- gss %>%
+  t_stat(response = hours, mu = 40)
+```
+
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn <- gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
   generate(reps = 1000) %>%
   calculate(stat = "t")
+```
 
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = t_bar, direction = "two_sided")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = t_bar, direction = "two_sided")
+```
+
+Alternatively, using the `t_test` wrapper:
+
+```{r, message = FALSE, warning = FALSE}
+gss %>%
+  t_test(response = hours, mu = 40)
 ```
 
 
 ### One numerical variable (median)
 
-**Observed stat**
+Calculating the observed statistic,
 
-```{r}
-( x_tilde <- fli_small %>%
-  specify(response = dep_delay) %>%
-  calculate(stat = "median") )
+```{r, message = FALSE, warning = FALSE}
+x_tilde <- gss %>%
+  specify(response = age) %>%
+  calculate(stat = "median")
 ```
 
-```{r}
-null_distn <- fli_small %>%
-  specify(response = dep_delay) %>%
-  hypothesize(null = "point", med = -1) %>% 
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn <- gss %>%
+  specify(response = age) %>%
+  hypothesize(null = "point", med = 40) %>% 
   generate(reps = 1000) %>% 
   calculate(stat = "median")
+```
 
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = x_tilde, direction = "two_sided")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = x_tilde, direction = "two_sided")
 ```
 
 ### One categorical (one proportion)
 
-**Observed stat**
+Calculating the observed statistic,
 
-```{r}
-( p_hat <- fli_small %>%
-  specify(response = day_hour, success = "morning") %>%
-  calculate(stat = "prop") )
+```{r, message = FALSE, warning = FALSE}
+p_hat <- gss %>%
+  specify(response = sex, success = "female") %>%
+  calculate(stat = "prop")
 ```
 
-```{r}
-null_distn <- fli_small %>%
-  specify(response = day_hour, success = "morning") %>%
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn <- gss %>%
+  specify(response = sex, success = "female") %>%
   hypothesize(null = "point", p = .5) %>%
   generate(reps = 1000) %>%
   calculate(stat = "prop")
+```
 
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = p_hat, direction = "two_sided")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = p_hat, direction = "two_sided")
 ```
 
-Logical variables will be coerced to factors:
+Note that logical variables will be coerced to factors:
 
-```{r}
-null_distn <- fli_small %>%
-  mutate(day_hour_logical = (day_hour == "morning")) %>%
-  specify(response = day_hour_logical, success = "TRUE") %>%
+```{r, message = FALSE, warning = FALSE}
+null_distn <- gss %>%
+  dplyr::mutate(is_female = (sex == "female")) %>%
+  specify(response = is_female, success = "TRUE") %>%
   hypothesize(null = "point", p = .5) %>%
   generate(reps = 1000) %>%
   calculate(stat = "prop")
@@ -161,47 +207,68 @@ Not yet implemented.
 
 ### Two categorical (2 level) variables
 
-**Observed stat**
+Calculating the observed statistic,
 
-```{r}
-( d_hat <- fli_small %>% 
-  specify(day_hour ~ season, success = "morning") %>%
-  calculate(stat = "diff in props", order = c("winter", "summer")) )
+```{r, message = FALSE, warning = FALSE}
+d_hat <- gss %>% 
+  specify(college ~ sex, success = "no degree") %>%
+  calculate(stat = "diff in props", order = c("female", "male"))
 ```
 
+Then, generating the null distribution,
 
-```{r}
-null_distn <- fli_small %>%
-  specify(day_hour ~ season, success = "morning") %>%
+```{r, message = FALSE, warning = FALSE}
+null_distn <- gss %>%
+  specify(college ~ sex, success = "no degree") %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000) %>% 
-  calculate(stat = "diff in props", order = c("winter", "summer"))
+  calculate(stat = "diff in props", order = c("female", "male"))
+```
 
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = d_hat, direction = "two_sided")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = d_hat, direction = "two_sided")
 ```
 
 ### Two categorical (2 level) variables (z)
 
-**Standardized observed stat**
+Finding the standardized observed statistic,
 
-```{r}
-( z_hat <- fli_small %>% 
-  specify(day_hour ~ season, success = "morning") %>%
-  calculate(stat = "z", order = c("winter", "summer")) )
+```{r, message = FALSE, warning = FALSE}
+z_hat <- gss %>% 
+  specify(college ~ sex, success = "no degree") %>%
+  calculate(stat = "z", order = c("female", "male"))
 ```
 
-```{r}
-null_distn <- fli_small %>%
-  specify(day_hour ~ season, success = "morning") %>%
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn <- gss %>%
+  specify(college ~ sex, success = "no degree") %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000) %>% 
-  calculate(stat = "z", order = c("winter", "summer"))
+  calculate(stat = "z", order = c("female", "male"))
+```
 
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = z_hat, direction = "two_sided")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = z_hat, direction = "two_sided")
 ```
@@ -210,97 +277,191 @@ Note the similarities in this plot and the previous one.
 
 ### One categorical (>2 level) - GoF
 
-**Observed stat**
+Calculating the observed statistic,
 
 Note the need to add in the hypothesized values here to compute the observed statistic.
 
-```{r}
-( Chisq_hat <- fli_small %>%
-  specify(response = origin) %>%
-  hypothesize(null = "point", 
-              p = c("EWR" = .33, "JFK" = .33, "LGA" = .34)) %>% 
-  calculate(stat = "Chisq") )
+```{r, message = FALSE, warning = FALSE}
+Chisq_hat <- gss %>%
+  specify(response = finrela) %>%
+  hypothesize(null = "point",
+              p = c("far below average" = 1/6,
+                    "below average" = 1/6,
+                    "average" = 1/6,
+                    "above average" = 1/6,
+                    "far above average" = 1/6,
+                    "DK" = 1/6)) %>%
+  calculate(stat = "Chisq")
 ```
 
-```{r}
-null_distn <- fli_small %>%
-  specify(response = origin) %>%
-  hypothesize(null = "point", 
-              p = c("EWR" = .33, "JFK" = .33, "LGA" = .34)) %>% 
-  generate(reps = 1000, type = "simulate") %>% 
-  calculate(stat = "Chisq")
+Alternatively, using the `chisq_stat` wrapper to calculate the test statistic,
 
+```{r, message = FALSE, warning = FALSE}
+Chisq_hat <- gss %>%
+  chisq_stat(response = finrela,
+             p = c("far below average" = 1/6,
+                   "below average" = 1/6,
+                   "average" = 1/6,
+                   "above average" = 1/6,
+                   "far above average" = 1/6,
+                   "DK" = 1/6))
+```
+
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn <- gss %>%
+  specify(response = finrela) %>%
+  hypothesize(null = "point",
+              p = c("far below average" = 1/6,
+                    "below average" = 1/6,
+                    "average" = 1/6,
+                    "above average" = 1/6,
+                    "far above average" = 1/6,
+                    "DK" = 1/6)) %>%
+  generate(reps = 1000, type = "simulate") %>%
+  calculate(stat = "Chisq")
+```
+
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
-### Two categorical (>2 level) variables
+Alternatively, using the `chisq_test` wrapper:
 
-**Observed stat**
-
-```{r}
-( Chisq_hat <- fli_small %>%
-  specify(formula = day_hour ~ origin) %>% 
-  calculate(stat = "Chisq") )
+```{r, message = FALSE, warning = FALSE}
+chisq_test(gss, 
+           response = finrela,
+           p = c("far below average" = 1/6,
+                 "below average" = 1/6,
+                 "average" = 1/6,
+                 "above average" = 1/6,
+                 "far above average" = 1/6,
+                 "DK" = 1/6))
 ```
 
-```{r}
-null_distn <- fli_small %>%
-  specify(day_hour ~ origin) %>%
+### Two categorical (>2 level): Chi-squared test of independence
+
+Calculating the observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
+Chisq_hat <- gss %>%
+  specify(formula = partyid ~ class) %>% 
+  calculate(stat = "Chisq")
+```
+
+Alternatively, using the wrapper to calculate the test statistic,
+
+```{r, message = FALSE, warning = FALSE}
+Chisq_hat <- gss %>%
+  chisq_stat(formula = partyid ~ class)
+```
+
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn <- gss %>%
+  specify(partyid ~ class) %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>% 
   calculate(stat = "Chisq")
+```
 
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = Chisq_hat, direction = "greater")
+```
+
+Alternatively, using the wrapper to carry out the test,
+
+```{r, message = FALSE, warning = FALSE}
+gss %>%
+  chisq_test(formula = partyid ~ class)
 ```
 
 ### One numerical variable, one categorical (2 levels) (diff in means)
 
-**Observed stat**
+Calculating the observed statistic,
 
-```{r}
-( d_hat <- fli_small %>% 
-  specify(dep_delay ~ season) %>% 
-  calculate(stat = "diff in means", order = c("summer", "winter")) )
+```{r, message = FALSE, warning = FALSE}
+d_hat <- gss %>% 
+  specify(age ~ college) %>% 
+  calculate(stat = "diff in means", order = c("degree", "no degree"))
 ```
 
-```{r}
-null_distn <- fli_small %>%
-  specify(dep_delay ~ season) %>%
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn <- gss %>%
+  specify(age ~ college) %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in means", order = c("summer", "winter"))
+  calculate(stat = "diff in means", order = c("degree", "no degree"))
+```
 
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = d_hat, direction = "two_sided")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = d_hat, direction = "two_sided")
 ```
 
 ### One numerical variable, one categorical (2 levels) (t)
 
-**Standardized observed stat**
+Finding the standardized observed statistic,
 
-```{r}
-( t_hat <- fli_small %>% 
-  specify(dep_delay ~ season) %>% 
-  calculate(stat = "t", order = c("summer", "winter")) )
+```{r, message = FALSE, warning = FALSE}
+t_hat <- gss %>% 
+  specify(age ~ college) %>% 
+  calculate(stat = "t", order = c("degree", "no degree"))
 ```
 
-```{r}
-null_distn <- fli_small %>%
-  specify(dep_delay ~ season) %>%
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn <- gss %>%
+  specify(age ~ college) %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "t", order = c("summer", "winter"))
+  calculate(stat = "t", order = c("degree", "no degree"))
+```
 
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = t_hat, direction = "two_sided")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = t_hat, direction = "two_sided")
 ```
@@ -309,93 +470,136 @@ Note the similarities in this plot and the previous one.
 
 ### One numerical variable, one categorical (2 levels) (diff in medians)
 
-**Observed stat**
+Calculating the observed statistic,
 
-```{r}
-( d_hat <- fli_small %>% 
-  specify(dep_delay ~ season) %>% 
-  calculate(stat = "diff in medians", order = c("summer", "winter")) )
+```{r, message = FALSE, warning = FALSE}
+d_hat <- gss %>% 
+  specify(age ~ college) %>% 
+  calculate(stat = "diff in medians", order = c("degree", "no degree"))
 ```
 
-```{r}
-null_distn <- fli_small %>%
-  specify(dep_delay ~ season) %>% # alt: response = dep_delay, 
-  # explanatory = season
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn <- gss %>%
+  specify(age ~ college) %>% # alt: response = age, explanatory = season
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
-  calculate(stat = "diff in medians", order = c("summer", "winter"))
+  calculate(stat = "diff in medians", order = c("degree", "no degree"))
+```
 
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = d_hat, direction = "two_sided")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = d_hat, direction = "two_sided")
 ```
 
 ### One numerical, one categorical (>2 levels) -  ANOVA
 
-**Observed stat**
+Calculating the observed statistic,
 
-```{r}
-( F_hat <- fli_small %>% 
-  specify(arr_delay ~ origin) %>%
-  calculate(stat = "F") )
+```{r, message = FALSE, warning = FALSE}
+F_hat <- gss %>% 
+  specify(age ~ partyid) %>%
+  calculate(stat = "F")
 ```
 
-```{r}
-null_distn <- fli_small %>%
-   specify(arr_delay ~ origin) %>%
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn <- gss %>%
+   specify(age ~ partyid) %>%
    hypothesize(null = "independence") %>%
    generate(reps = 1000, type = "permute") %>%
    calculate(stat = "F")
+```
 
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = F_hat, direction = "greater")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
 ### Two numerical vars - SLR 
 
-**Observed stat**
+Calculating the observed statistic,
 
-```{r}
-( slope_hat <- fli_small %>% 
-  specify(arr_delay ~ dep_delay) %>% 
-  calculate(stat = "slope") )
+```{r, message = FALSE, warning = FALSE}
+slope_hat <- gss %>% 
+  specify(hours ~ age) %>% 
+  calculate(stat = "slope")
 ```
 
-```{r}
-null_distn <- fli_small %>%
-   specify(arr_delay ~ dep_delay) %>% 
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn <- gss %>%
+   specify(hours ~ age) %>% 
    hypothesize(null = "independence") %>%
    generate(reps = 1000, type = "permute") %>%
    calculate(stat = "slope")
+```
 
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = slope_hat, direction = "two_sided")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = slope_hat, direction = "two_sided")
 ```
 
 ### Two numerical vars - correlation
 
-**Observed stat**
+Calculating the observed statistic,
 
-```{r}
-( correlation_hat <- fli_small %>% 
-  specify(arr_delay ~ dep_delay) %>% 
-  calculate(stat = "correlation") )
+```{r, message = FALSE, warning = FALSE}
+correlation_hat <- gss %>% 
+  specify(hours ~ age) %>% 
+  calculate(stat = "correlation")
 ```
 
-```{r}
-null_distn <- fli_small %>%
-   specify(arr_delay ~ dep_delay) %>% 
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn <- gss %>%
+   specify(hours ~ age) %>% 
    hypothesize(null = "independence") %>%
    generate(reps = 1000, type = "permute") %>%
    calculate(stat = "correlation")
+```
 
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = correlation_hat, direction = "two_sided")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r, message = FALSE, warning = FALSE}
 null_distn %>%
   get_p_value(obs_stat = correlation_hat, direction = "two_sided")
 ```
@@ -405,50 +609,44 @@ null_distn %>%
 
 Not currently implemented since $t$ could refer to standardized slope or standardized correlation.
 
-
-```{r echo=FALSE, eval=FALSE}
-# **Standardized observed stat**
-( t_hat <- fli_small %>% 
-  specify(arr_delay ~ dep_delay) %>% 
-  calculate(stat = "t") )
-```
-
-```{r echo=FALSE, eval=FALSE}
-null_distn <- fli_small %>%
-   specify(arr_delay ~ dep_delay) %>% 
-   hypothesize(null = "independence") %>%
-   generate(reps = 1000, type = "permute") %>%
-   calculate(stat = "t")
-
-visualize(null_distn) +
-  shade_p_value(obs_stat = t_hat, direction = "two_sided")
-null_distn %>%
-  get_p_value(obs_stat = t_hat, direction = "two_sided")
-```
-
-
 ## Confidence intervals
 
 ### One numerical (one mean)
 
-**Point estimate**
+Finding the observed statistic,
 
-```{r}
-( x_bar <- fli_small %>% 
-  specify(response = arr_delay) %>%
-  calculate(stat = "mean") )
+```{r, message = FALSE, warning = FALSE}
+x_bar <- gss %>% 
+  specify(response = hours) %>%
+  calculate(stat = "mean")
 ```
 
-```{r}
-boot <- fli_small %>%
-   specify(response = arr_delay) %>%
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+boot <- gss %>%
+   specify(response = hours) %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "mean")
-( percentile_ci <- get_ci(boot) )
+```
 
+Use the null distribution to find a confidence interval,
+
+```{r, message = FALSE, warning = FALSE}
+percentile_ci <- get_ci(boot)
+```
+
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
-( standard_error_ci <- get_ci(boot, type = "se", point_estimate = x_bar) )
+```
+
+Alternatively, use the null distribution to find a confidence interval using the standard error,
+
+```{r, message = FALSE, warning = FALSE}
+standard_error_ci <- get_ci(boot, type = "se", point_estimate = x_bar)
 
 visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
@@ -456,24 +654,41 @@ visualize(boot) +
 
 ### One numerical (one mean - standardized)
 
-**Point estimate**
+Finding the observed statistic,
 
-```{r}
-( t_hat <- fli_small %>% 
-  specify(response = arr_delay) %>%
-  calculate(stat = "t") )
+```{r, message = FALSE, warning = FALSE}
+t_hat <- gss %>% 
+  specify(response = hours) %>%
+  calculate(stat = "t")
 ```
 
-```{r}
-boot <- fli_small %>%
-   specify(response = arr_delay) %>%
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+boot <- gss %>%
+   specify(response = hours) %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "t")
-( percentile_ci <- get_ci(boot) )
+```
 
+Use the null distribution to find a confidence interval,
+
+```{r, message = FALSE, warning = FALSE}
+percentile_ci <- get_ci(boot)
+```
+
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
-( standard_error_ci <- get_ci(boot, type = "se", point_estimate = t_hat) )
+```
+
+Alternatively, use the null distribution to find a confidence interval using the standard error,
+
+```{r, message = FALSE, warning = FALSE}
+standard_error_ci <- boot %>%
+  get_ci(type = "se", point_estimate = t_hat)
 
 visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
@@ -482,24 +697,41 @@ visualize(boot) +
 
 ### One categorical (one proportion)
 
-**Point estimate**
+Finding the observed statistic,
 
-```{r}
-( p_hat <- fli_small %>% 
-   specify(response = day_hour, success = "morning") %>%
-   calculate(stat = "prop") )
+```{r, message = FALSE, warning = FALSE}
+p_hat <- gss %>% 
+   specify(response = sex, success = "female") %>%
+   calculate(stat = "prop")
 ```
 
-```{r}
-boot <- fli_small %>%
- specify(response = day_hour, success = "morning") %>%
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+boot <- gss %>%
+ specify(response = sex, success = "female") %>%
  generate(reps = 1000, type = "bootstrap") %>%
  calculate(stat = "prop")
-( percentile_ci <- get_ci(boot) )
+```
 
+Use the null distribution to find a confidence interval,
+
+```{r, message = FALSE, warning = FALSE}
+percentile_ci <- get_ci(boot)
+```
+
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
-( standard_error_ci <- get_ci(boot, type = "se", point_estimate = p_hat) )
+```
+
+Alternatively, use the null distribution to find a confidence interval using the standard error,
+
+```{r, message = FALSE, warning = FALSE}
+standard_error_ci <- boot %>%
+  get_ci(type = "se", point_estimate = p_hat)
 
 visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
@@ -511,24 +743,41 @@ Not yet implemented.
 
 ### One numerical variable, one categorical (2 levels) (diff in means)
 
-**Point estimate**
+Finding the observed statistic,
 
-```{r}
-( d_hat <- fli_small %>%
-  specify(arr_delay ~ season) %>%
-  calculate(stat = "diff in means", order = c("summer", "winter")) )
+```{r, message = FALSE, warning = FALSE}
+d_hat <- gss %>%
+  specify(hours ~ college) %>%
+  calculate(stat = "diff in means", order = c("degree", "no degree"))
 ```
 
-```{r}
-boot <- fli_small %>%
-   specify(arr_delay ~ season) %>%
-   generate(reps = 1000, type = "bootstrap") %>%
-   calculate(stat = "diff in means", order = c("summer", "winter"))
-( percentile_ci <- get_ci(boot) )
+Then, generating the null distribution,
 
+```{r, message = FALSE, warning = FALSE}
+boot <- gss %>%
+   specify(hours ~ college) %>%
+   generate(reps = 1000, type = "bootstrap") %>%
+   calculate(stat = "diff in means", order = c("degree", "no degree"))
+```
+
+Use the null distribution to find a confidence interval,
+
+```{r, message = FALSE, warning = FALSE}
+percentile_ci <- get_ci(boot)
+```
+
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
-( standard_error_ci <- get_ci(boot, type = "se", point_estimate = d_hat) )
+```
+
+Alternatively, use the null distribution to find a confidence interval using the standard error,
+
+```{r, message = FALSE, warning = FALSE}
+standard_error_ci <- boot %>%
+  get_ci(type = "se", point_estimate = d_hat)
 
 visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
@@ -536,24 +785,41 @@ visualize(boot) +
 
 ### One numerical variable, one categorical (2 levels) (t)
 
-**Standardized point estimate**
+Finding the standardized point estimate,
 
-```{r}
-( t_hat <- fli_small %>%
-  specify(arr_delay ~ season) %>%
-  calculate(stat = "t", order = c("summer", "winter")) )
+```{r, message = FALSE, warning = FALSE}
+t_hat <- gss %>%
+  specify(hours ~ college) %>%
+  calculate(stat = "t", order = c("degree", "no degree"))
 ```
 
-```{r}
-boot <- fli_small %>%
-   specify(arr_delay ~ season) %>%
-   generate(reps = 1000, type = "bootstrap") %>%
-   calculate(stat = "t", order = c("summer", "winter"))
-( percentile_ci <- get_ci(boot) )
+Then, generating the null distribution,
 
+```{r, message = FALSE, warning = FALSE}
+boot <- gss %>%
+   specify(hours ~ college) %>%
+   generate(reps = 1000, type = "bootstrap") %>%
+   calculate(stat = "t", order = c("degree", "no degree"))
+```
+
+Use the null distribution to find a confidence interval,
+
+```{r, message = FALSE, warning = FALSE}
+percentile_ci <- get_ci(boot)
+```
+
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
-( standard_error_ci <- get_ci(boot, type = "se", point_estimate = t_hat) )
+```
+
+Alternatively, use the null distribution to find a confidence interval using the standard error,
+
+```{r, message = FALSE, warning = FALSE}
+standard_error_ci <- boot %>%
+  get_ci(type = "se", point_estimate = t_hat)
 
 visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
@@ -562,24 +828,41 @@ visualize(boot) +
 
 ### Two categorical variables (diff in proportions)
 
-**Point estimate**
+Finding the observed statistic,
 
-```{r}
-( d_hat <- fli_small %>% 
-  specify(day_hour ~ season, success = "morning") %>%
-  calculate(stat = "diff in props", order = c("summer", "winter")) )
+```{r, message = FALSE, warning = FALSE}
+d_hat <- gss %>% 
+  specify(college ~ sex, success = "degree") %>%
+  calculate(stat = "diff in props", order = c("female", "male"))
 ```
 
-```{r}
-boot <- fli_small %>%
-  specify(day_hour ~ season, success = "morning") %>%
-  generate(reps = 1000, type = "bootstrap") %>% 
-  calculate(stat = "diff in props", order = c("summer", "winter"))
-( percentile_ci <- get_ci(boot) )
+Then, generating the null distribution,
 
+```{r, message = FALSE, warning = FALSE}
+boot <- gss %>%
+  specify(college ~ sex, success = "degree") %>%
+  generate(reps = 1000, type = "bootstrap") %>% 
+  calculate(stat = "diff in props", order = c("female", "male"))
+```
+
+Use the null distribution to find a confidence interval,
+
+```{r, message = FALSE, warning = FALSE}
+percentile_ci <- get_ci(boot)
+```
+
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
-( standard_error_ci <- get_ci(boot, type = "se", point_estimate = d_hat) )
+```
+
+Alternatively, use the null distribution to find a confidence interval using the standard error,
+
+```{r, message = FALSE, warning = FALSE}
+standard_error_ci <- boot %>%
+  get_ci(type = "se", point_estimate = d_hat)
 
 visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
@@ -587,24 +870,41 @@ visualize(boot) +
 
 ### Two categorical variables (z)
 
-**Standardized point estimate**
+Finding the standardized point estimate,
 
-```{r}
-( z_hat <- fli_small %>% 
-  specify(day_hour ~ season, success = "morning") %>%
-  calculate(stat = "z", order = c("summer", "winter")) )
+```{r, message = FALSE, warning = FALSE}
+z_hat <- gss %>% 
+  specify(college ~ sex, success = "degree") %>%
+  calculate(stat = "z", order = c("female", "male"))
 ```
 
-```{r}
-boot <- fli_small %>%
-  specify(day_hour ~ season, success = "morning") %>%
-  generate(reps = 1000, type = "bootstrap") %>% 
-  calculate(stat = "z", order = c("summer", "winter"))
-( percentile_ci <- get_ci(boot) )
+Then, generating the null distribution,
 
+```{r, message = FALSE, warning = FALSE}
+boot <- gss %>%
+  specify(college ~ sex, success = "degree") %>%
+  generate(reps = 1000, type = "bootstrap") %>% 
+  calculate(stat = "z", order = c("female", "male"))
+```
+
+Use the null distribution to find a confidence interval,
+
+```{r, message = FALSE, warning = FALSE}
+percentile_ci <- get_ci(boot)
+```
+
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
-( standard_error_ci <- get_ci(boot, type = "se", point_estimate = z_hat) )
+```
+
+Alternatively, use the null distribution to find a confidence interval using the standard error,
+
+```{r, message = FALSE, warning = FALSE}
+standard_error_ci <- boot %>%
+  get_ci(type = "se", point_estimate = z_hat)
 
 visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
@@ -613,24 +913,41 @@ visualize(boot) +
 
 ### Two numerical vars - SLR
 
-**Point estimate**
+Finding the observed statistic,
 
-```{r}
-( slope_hat <- fli_small %>% 
-  specify(arr_delay ~ dep_delay) %>%
-  calculate(stat = "slope") )
+```{r, message = FALSE, warning = FALSE}
+slope_hat <- gss %>% 
+  specify(hours ~ age) %>%
+  calculate(stat = "slope")
 ```
 
-```{r}
-boot <- fli_small %>%
-   specify(arr_delay ~ dep_delay) %>% 
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+boot <- gss %>%
+   specify(hours ~ age) %>% 
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "slope")
-( percentile_ci <- get_ci(boot) )
+```
 
+Use the null distribution to find a confidence interval,
+
+```{r, message = FALSE, warning = FALSE}
+percentile_ci <- get_ci(boot)
+```
+
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
-( standard_error_ci <- get_ci(boot, type = "se", point_estimate = slope_hat) )
+```
+
+Alternatively, use the null distribution to find a confidence interval using the standard error,
+
+```{r, message = FALSE, warning = FALSE}
+standard_error_ci <- boot %>%
+  get_ci(type = "se", point_estimate = slope_hat)
 
 visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
@@ -638,25 +955,41 @@ visualize(boot) +
 
 ### Two numerical vars - correlation
 
-**Point estimate**
+Finding the observed statistic,
 
-```{r}
-( correlation_hat <- fli_small %>% 
-  specify(arr_delay ~ dep_delay) %>%
-  calculate(stat = "correlation") )
+```{r, message = FALSE, warning = FALSE}
+correlation_hat <- gss %>% 
+  specify(hours ~ age) %>%
+  calculate(stat = "correlation")
 ```
 
-```{r}
-boot <- fli_small %>%
-   specify(arr_delay ~ dep_delay) %>% 
+Then, generating the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+boot <- gss %>%
+   specify(hours ~ age) %>% 
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "correlation")
-( percentile_ci <- get_ci(boot) )
+```
 
+Use the null distribution to find a confidence interval,
+
+```{r, message = FALSE, warning = FALSE}
+percentile_ci <- get_ci(boot)
+```
+
+Visualizing the observed statistic alongside the null distribution,
+
+```{r, message = FALSE, warning = FALSE}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
-( standard_error_ci <- get_ci(boot, type = "se", 
-                            point_estimate = correlation_hat) )
+```
+
+Alternatively, use the null distribution to find a confidence interval using the standard error,
+
+```{r, message = FALSE, warning = FALSE}
+standard_error_ci <- boot %>%
+  get_ci(type = "se", point_estimate = correlation_hat)
 
 visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
@@ -666,26 +999,3 @@ visualize(boot) +
 ### Two numerical vars - t
 
 Not currently implemented since $t$ could refer to standardized slope or standardized correlation.
-
-
-```{r eval=FALSE, echo=FALSE}
-# **Point estimate**
-( t_hat <- fli_small %>% 
-  specify(arr_delay ~ dep_delay) %>%
-  calculate(stat = "t") )
-```
-
-```{r eval=FALSE, echo=FALSE}
-boot <- fli_small %>%
-   specify(arr_delay ~ dep_delay) %>% 
-   generate(reps = 1000, type = "bootstrap") %>%
-   calculate(stat = "t")
-( percentile_ci <- get_ci(boot) )
-
-visualize(boot) +
-  shade_confidence_interval(endpoints = percentile_ci)
-( standard_error_ci <- get_ci(boot, type = "se", point_estimate = t_hat) )
-
-visualize(boot) +
-  shade_confidence_interval(endpoints = standard_error_ci)
-```

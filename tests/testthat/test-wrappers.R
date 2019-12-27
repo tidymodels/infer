@@ -75,6 +75,13 @@ test_that("chisq_test works", {
   
   expect_equal(new_way, new_way_alt, tolerance = 1e-5)
   expect_equal(new_way, old_way, tolerance = 1e-5)
+  
+  # check that function errors out when response is numeric
+  expect_error(chisq_test(x = iris2, response = Sepal.Length, explanatory = Species))
+  
+  # check that function errors out when explanatory is numeric
+  expect_error(chisq_test(x = iris2, response = Species, explanatory = Sepal.Length))
+
 })
 
 test_that("_stat functions work", {
@@ -144,6 +151,9 @@ test_that("_stat functions work", {
   
   expect_equivalent(another_way, obs_stat_way)
   expect_equivalent(another_way, obs_stat_way_alt)
+  
+  expect_error(chisq_stat(x = iris2, response = Sepal.Length, explanatory = Species))
+  expect_error(chisq_stat(x = iris2, response = Species, explanatory = Sepal.Length))
 })
 
 test_that("conf_int argument works", {

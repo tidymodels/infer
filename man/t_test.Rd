@@ -49,9 +49,18 @@ interval or not. \code{TRUE} by default.}
 A tidier version of \link[stats:t.test]{t.test()} for two sample tests.
 }
 \examples{
-# t test for comparing mpg against automatic/manual
-mtcars \%>\%
-  dplyr::mutate(am = factor(am)) \%>\%
-  t_test(mpg ~ am, order = c("1", "0"), alternative = "less")
+library(tidyr)
+
+# t test for number of hours worked per week
+# by college degree status
+gss \%>\%
+   tidyr::drop_na(college) \%>\%
+   t_test(formula = hours ~ college,
+      order = c("degree", "no degree"),
+      alternative = "two_sided")
+
+# see vignette("infer") for more explanation of the
+# intuition behind the infer package, and vignette("t_test") 
+# for more examples of t-tests using infer
 
 }

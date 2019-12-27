@@ -27,10 +27,19 @@
 #' @param ... For passing in other arguments to [t.test()][stats::t.test()].
 #'
 #' @examples
-#' # t test for comparing mpg against automatic/manual
-#' mtcars %>%
-#'   dplyr::mutate(am = factor(am)) %>%
-#'   t_test(mpg ~ am, order = c("1", "0"), alternative = "less")
+#' library(tidyr)
+#' 
+#' # t test for number of hours worked per week
+#' # by college degree status
+#' gss %>%
+#'    tidyr::drop_na(college) %>%
+#'    t_test(formula = hours ~ college,
+#'       order = c("degree", "no degree"),
+#'       alternative = "two_sided")
+#'
+#' # see vignette("infer") for more explanation of the
+#' # intuition behind the infer package, and vignette("t_test") 
+#' # for more examples of t-tests using infer
 #'
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
@@ -128,6 +137,22 @@ t_test <- function(x, formula,
 #' @param conf_level A numeric value between 0 and 1. Default value is 0.95.
 #' @param ... Pass in arguments to \\{infer\\} functions.
 #'
+#' @examples
+#' library(tidyr)
+#' 
+#' # t test statistic for true mean number of hours worked
+#' # per week of 40
+#' gss %>%
+#'    t_stat(response = hours, mu = 40)
+#'
+#' # t test statistic for number of hours worked per week
+#' # by college degree status
+#' gss %>%
+#'    tidyr::drop_na(college) %>%
+#'    t_stat(formula = hours ~ college,
+#'       order = c("degree", "no degree"),
+#'       alternative = "two_sided")
+#'
 #' @export
 t_stat <- function(x, formula, 
                    response = NULL, 
@@ -182,22 +207,13 @@ t_stat <- function(x, formula,
       broom::glance()
   }
   
-  if (conf_int) {
-    results <- prelim %>%
-      dplyr::select(
-        statistic, t_df = parameter, p_value = p.value, alternative,
-        lower_ci = conf.low, upper_ci = conf.high
-      )
-  } else {
-    results <- prelim %>%
-      dplyr::select(
-        statistic, t_df = parameter, p_value = p.value, alternative
-      )
-  }
-  
-  results %>%
+  # removed unnecessary if(conf_int) clause; only the statistic itself 
+  # was returned regardless
+  results <- prelim %>%
     dplyr::select(statistic) %>%
     pull()
+  
+  results
 }
 
 #' Tidy chi-squared test
@@ -215,10 +231,20 @@ t_stat <- function(x, formula,
 #' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
 #'
 #' @examples
-#' # chisq test for comparing number of cylinders against automatic/manual
-#' mtcars %>%
-#'   dplyr::mutate(cyl = factor(cyl), am = factor(am)) %>%
-#'   chisq_test(cyl ~ am)
+#' # chi-squared test of independence for college completion 
+#' # status depending on one's self-identified income class
+#' chisq_test(gss, college ~ finrela)
+#' 
+#' # chi-squared goodness of fit test on whether self-identified 
+#' # income class follows a uniform distribution
+#' chisq_test(gss, 
+#'            response = finrela,
+#'            p = c("far below average" = 1/6,
+#'                  "below average" = 1/6,
+#'                  "average" = 1/6,
+#'                  "above average" = 1/6,
+#'                  "far above average" = 1/6,
+#'                  "DK" = 1/6))
 #'
 #' @export
 chisq_test <- function(x, formula, response = NULL, 
@@ -232,14 +258,14 @@ chisq_test <- function(x, formula, response = NULL,
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
       'The response variable of `{attr(x, "response")}` is not appropriate\n',
-      "since '{stat}' is expecting the response variable to be categorical."
+      "since the response variable is expected to be categorical."
     )
   }
   if (has_explanatory(x) && 
-      !(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
+      !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
       'The explanatory variable of `{attr(x, "explanatory")}` is not appropriate\n',
-      "since '{stat}' is expecting the explanatory variable to be categorical."
+      "since the explanatory variable is expected to be categorical."
     )
   }
   
@@ -270,6 +296,24 @@ chisq_test <- function(x, formula, response = NULL,
 #'   explanatory variable.
 #' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
 #'
+#' @examples
+#' # chi-squared test statistic for test of independence 
+#' # of college completion status depending and one's 
+#' # self-identified income class
+#' chisq_stat(gss, college ~ finrela)
+#' 
+#' # chi-squared test statistic for a goodness of fit 
+#' # test on whether self-identified income class 
+#' # follows a uniform distribution
+#' chisq_stat(gss, 
+#'            response = finrela,
+#'            p = c("far below average" = 1/6,
+#'                  "below average" = 1/6,
+#'                  "average" = 1/6,
+#'                  "above average" = 1/6,
+#'                  "far above average" = 1/6,
+#'                  "DK" = 1/6))
+#'
 #' @export
 chisq_stat <- function(x, formula, response = NULL, 
                        explanatory = NULL, ...) {
@@ -282,14 +326,14 @@ chisq_stat <- function(x, formula, response = NULL,
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
       'The response variable of `{attr(x, "response")}` is not appropriate\n',
-      "since '{stat}' is expecting the response variable to be categorical."
+      "since the response variable is expected to be categorical."
     )
   }
   if (has_explanatory(x) && 
-      !(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
+      !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
       'The explanatory variable of `{attr(x, "explanatory")}` is not appropriate\n',
-      "since '{stat}' is expecting the explanatory variable to be categorical."
+      "since the response variable is expected to be categorical."
     )
   }
   

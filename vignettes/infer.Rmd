@@ -1,14 +1,16 @@
 ---
-title: "infer"
-output: rmarkdown::html_vignette
-vignette: >
+title: "Getting to Know infer"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: |
   %\VignetteIndexEntry{infer}
+  %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
 ---
 
 ```{r include=FALSE}
-knitr::opts_chunk$set(fig.width = 6, fig.height = 3.5) 
+knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5) 
 options(digits = 4)
 ```
 
@@ -25,11 +27,12 @@ The workflow of this package is designed around this idea. Starting out with som
 + `generate()` allows you to generate data reflecting the null hypothesis.
 + `calculate()` allows you to calculate a distribution of statistics from the generated data to form the null distribution.
 
-Throughout this vignette, we make use of `gss`, a dataset supplied by `infer` containing a sample of 3000 observations sampled from the *General Social Survey*. 
+Throughout this vignette, we make use of `gss`, a dataset supplied by `infer` containing a sample of 3000 observations of 11 variables from the *General Social Survey*. 
 
 ```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(devtools)
 library(dplyr)
+library(tidyr)
 devtools::load_all()
 ```
 
@@ -39,23 +42,23 @@ devtools::load_all()
 data(gss)
 
 # take a look at its structure
-str(gss)
+dplyr::glimpse(gss)
 ```
 
-Each row is an individual survey response, containing some basic demographic information on the respondent as well as some additional variables. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about - American adults.
+Each row is an individual survey response, containing some basic demographic information on the respondent as well as some additional variables. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults.
 
-### `specify()`: Specifying Response (and Explanatory) Variables
+### specify(): Specifying Response (and Explanatory) Variables
 
 The `specify` function can be used to specify which of the variables in the dataset you're interested in. If you're only interested in, say, the `age` of the respondents, you might write:
 
-```{r specify-example, warning = FALSE, message = FALSE, cache = TRUE}
+```{r specify-example, warning = FALSE, message = FALSE}
 gss %>%
   specify(response = age)
 ```
 
 On the front-end, the output of `specify` just looks like it selects off the columns in the dataframe that you've specified. Checking the class of this object, though:
 
-```{r specify-one, warning = FALSE, message = FALSE, cache = TRUE}
+```{r specify-one, warning = FALSE, message = FALSE}
 gss %>%
   specify(response = age) %>%
   class()
@@ -65,7 +68,7 @@ We can see that the `infer` class has been appended on top of the dataframe clas
 
 If you're interested in two variables--`age` and `partyid`, for example--you can `specify` their relationship in one of two (equivalent) ways:
 
-```{r specify-two, warning = FALSE, message = FALSE, cache = TRUE}
+```{r specify-two, warning = FALSE, message = FALSE}
 # with the named arguments
 gss %>%
   specify(age ~ partyid)
@@ -77,17 +80,17 @@ gss %>%
 
 If you're doing inference on one proportion or a difference in proportions, you will need to use the `success` argument to specify which level of your `response` variable is a success. For instance, if you're interested in the proportion of the population with a college degree, you might use the following code:
 
-```{r specify-success, warning = FALSE, message = FALSE, cache = TRUE}
+```{r specify-success, warning = FALSE, message = FALSE}
 # specifying for inference on proportions
 gss %>%
   specify(response = college, success = "degree")
 ```
 
-### `hypothesize()`: Declaring the Null Hypothesis
+### hypothesize(): Declaring the Null Hypothesis
 
 The next step in the `infer` pipeline is often to declare a null hypothesis using `hypothesize()`. The first step is to supply one of "independence" or "point" to the `null` argument. If your null hypothesis assumes independence between two variables, then this is all you need to supply to `hypothesize()`:
 
-```{r hypothesize-independence, warning = FALSE, message = FALSE, cache = TRUE}
+```{r hypothesize-independence, warning = FALSE, message = FALSE}
 gss %>%
   specify(college ~ partyid, success = "degree") %>%
   hypothesize(null = "independence")
@@ -95,7 +98,7 @@ gss %>%
 
 If you're doing inference on a point estimate, you will also need to provide one of `p` (the true proportion of successes, between 0 and 1), `mu` (the true mean), `med` (the true median), or `sigma` (the true standard deviation). For instance, if the null hypothesis is that the mean number of hours worked per week in our population is 40, we would write:
 
-```{r hypothesize-40-hr-week, warning = FALSE, message = FALSE, cache = TRUE}
+```{r hypothesize-40-hr-week, warning = FALSE, message = FALSE}
 gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40)
@@ -103,7 +106,7 @@ gss %>%
 
 Again, from the front-end, the dataframe outputted from `hypothesize()` looks almost exactly the same as it did when it came out of `specify()`, but `infer` now "knows" your null hypothesis.
 
-### `generate()`: Generating the Null Distribution
+### generate(): Generating the Null Distribution
 
 Once we've asserted our null hypothesis using `hypothesize()`, we can construct a null distribution based on this hypothesis. We can do this using one of several methods, supplied in the `type` argument:
 
@@ -113,7 +116,7 @@ Once we've asserted our null hypothesis using `hypothesize()`, we can construct 
 
 Continuing on with our example above, about the average number of hours worked a week, we might write:
 
-```{r generate-point, warning = FALSE, message = FALSE, cache = TRUE}
+```{r generate-point, warning = FALSE, message = FALSE}
 gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40) %>%
@@ -124,18 +127,18 @@ In the above example, we take 1000 bootstrap samples to form our null distributi
 
 To generate a null distribution for the independence of two variables, we could also randomly reshuffle the pairings of explanatory and response variables to break any existing association. For instance, to generate 1000 replicates that can be used to create a null distribution under the assumption that political party affiliation is not affected by age:
 
-```{r generate-permute, warning = FALSE, message = FALSE, cache = TRUE}
+```{r generate-permute, warning = FALSE, message = FALSE}
 gss %>%
   specify(partyid ~ age) %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute")
 ```
 
-### `calculate()`: Calculating Summary Statistics
+### calculate(): Calculating Summary Statistics
 
 Depending on whether you're carrying out computation-based inference or theory-based inference, you will either supply `calculate()` with the output of `generate()` or `hypothesize`, respectively. The function, for one, takes in a `stat` argument, which is currently one of "mean", "median", "sum", "sd", "prop", "count", "diff in means", "diff in medians", "diff in props", "Chisq", "F", "t", "z", "slope", or "correlation". For example, continuing our example above to calculate the null distribution of mean hours worked per week:
 
-```{r calculate-point, warning = FALSE, message = FALSE, cache = TRUE}
+```{r calculate-point, warning = FALSE, message = FALSE}
 gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40) %>%
@@ -145,7 +148,7 @@ gss %>%
 
 The output of `calculate()` here shows us the sample statistic (in this case, the mean) for each of our 1000 replicates. If you're carrying out inference on differences in means, medians, or proportions, or t and z statistics, you will need to supply an `order` argument, giving the order in which the explanatory variables should be subtracted. For instance, to find the difference in mean age of those that have a college degree and those that don't, we might write:
 
-```{r specify-diff-in-means, warning = FALSE, message = FALSE, cache = TRUE}
+```{r specify-diff-in-means, warning = FALSE, message = FALSE}
 gss %>%
   specify(age ~ college) %>%
   hypothesize(null = "independence") %>%
@@ -153,7 +156,7 @@ gss %>%
   calculate("diff in means", order = c("degree", "no degree"))
 ```
 
-### Other Utilities in `infer`
+### Other Utilities in {infer}
 
 `infer` also offers several utilities to extract the meaning out of summary statistics and null distributions---the package provides functions to visualize where a statistic is relative to a distribution (with `visualize()`), calculate p-values (with `get_p_value()`), and calculate confidence intervals (with `get_confidence_interval()`).
 
@@ -163,8 +166,7 @@ To illustrate, we'll go back to the example of determining whether the mean numb
 # find the point estimate
 point_estimate <- gss %>%
   specify(response = hours) %>%
-  calculate(stat = "mean") %>%
-  dplyr::pull()
+  calculate(stat = "mean")
 
 # generate a null distribution
 null_dist <- gss %>%
