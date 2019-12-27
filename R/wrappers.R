@@ -239,12 +239,12 @@ t_stat <- function(x, formula,
 #' # income class follows a uniform distribution
 #' chisq_test(gss, 
 #'            response = finrela,
-#'            p = c("far below average" = .167,
-#'                  "below average" = .167,
-#'                  "average" = .167,
-#'                  "above average" = .167,
-#'                  "far above average" = .167,
-#'                  "DK" = .165))
+#'            p = c("far below average" = 1/6,
+#'                  "below average" = 1/6,
+#'                  "average" = 1/6,
+#'                  "above average" = 1/6,
+#'                  "far above average" = 1/6,
+#'                  "DK" = 1/6))
 #'
 #' @export
 chisq_test <- function(x, formula, response = NULL, 
@@ -307,12 +307,12 @@ chisq_test <- function(x, formula, response = NULL,
 #' # follows a uniform distribution
 #' chisq_stat(gss, 
 #'            response = finrela,
-#'            p = c("far below average" = .167,
-#'                  "below average" = .167,
-#'                  "average" = .167,
-#'                  "above average" = .167,
-#'                  "far above average" = .167,
-#'                  "DK" = .165))
+#'            p = c("far below average" = 1/6,
+#'                  "below average" = 1/6,
+#'                  "average" = 1/6,
+#'                  "above average" = 1/6,
+#'                  "far above average" = 1/6,
+#'                  "DK" = 1/6))
 #'
 #' @export
 chisq_stat <- function(x, formula, response = NULL, 
