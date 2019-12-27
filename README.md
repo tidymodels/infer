@@ -48,8 +48,8 @@ To install the current stable version of `infer` from CRAN:
 install.packages("infer")
 ```
 
-To install the developmental version of `infer`, make sure to install
-`remotes` first. The `pkgdown` website for this version is at
+To install the developmental stable version of `infer`, make sure to
+install `remotes` first. The `pkgdown` website for this version is at
 <https://infer.netlify.com>.
 
 ``` r
@@ -57,7 +57,7 @@ install.packages("remotes")
 remotes::install_github("tidymodels/infer")
 ```
 
-To install the cutting edge version of `infer` (do so at your own risk),
+To install the experimental version of `infer` (do so at your own risk),
 make sure to install `remotes` first.
 
 ``` r
@@ -65,9 +65,8 @@ install.packages("remotes")
 remotes::install_github("tidymodels/infer", ref = "develop")
 ```
 
-To see documentation for the developmental version of `infer`, the
-developmental `pkgdown` site is available at
-<https://infer-dev.netlify.com>.
+To see documentation for the experimental version of `infer`, the
+`pkgdown` site is available at <https://infer-dev.netlify.com>.
 
 ### Contributing
 
