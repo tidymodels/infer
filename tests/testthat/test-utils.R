@@ -52,5 +52,5 @@ test_that("c_dedupl returns input when unnamed", {
 })
 
 test_that("hypothesize errors out when x isn't a dataframe",
-          expect_error(hypothesize(c(1, 2, 3)), 
+          expect_error(hypothesize(c(1, 2, 3), null = "point"), 
                        "x must be a data.frame or tibble"))
