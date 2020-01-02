@@ -361,6 +361,17 @@ test_that("One sample t hypothesis test is working", {
       generate(reps = 10) %>%
       calculate(stat = "t")
   )
+  
+  expect_message(
+    iris_tbl %>%
+      specify(response = Petal.Width) %>%
+      calculate(stat = "t"),
+    "the t-test will assume a null hypothesis"
+  )
+  
+  iris_tbl %>%
+    specify(response = Petal.Width) %>%
+    calculate(stat = "t", mu = 1)
 })
 
 test_that("specify done before calculate", {
