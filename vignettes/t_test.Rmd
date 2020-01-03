@@ -54,7 +54,8 @@ First, to calculate the observed statistic, we can use `specify()` and `calculat
 # calculate the observed statistic
 observed_statistic <- gss %>%
   specify(response = hours) %>%
-  calculate(stat = "t", mu = 40)
+  hypothesize(null = "point", mu = 40) %>%
+  calculate(stat = "t")
 ```
 
 The observed statistic is `r observed_statistic`. Now, we want to compare this statistic to a null distribution, generated under the assumption that the mean was actually 40, to get a sense of how likely it would be for us to see this observed statistic if the true number of hours worked per week in the population was really 40.

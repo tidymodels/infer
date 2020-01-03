@@ -82,7 +82,8 @@ calculate <- function(x,
         "implemented) for `stat` = \"{stat}\". Are you missing ",
         "a `generate()` step?"
       )
-    } else if (!(stat %in% c("Chisq", "prop", "count"))) {
+      } else if (!(stat %in% c("Chisq", "prop", "count")) &
+                 !(stat == "t" & (attr(x, "theory_type") == "One sample t"))) {
       # From `hypothesize()` to `calculate()`
       # Catch-all if generate was not called
 #      warning_glue("You unexpectantly went from `hypothesize()` to ",
@@ -374,10 +375,19 @@ calc_impl.t <- function(type, x, order, ...) {
   else if (attr(x, "theory_type") == "One sample t") {
     # For bootstrap
     if (!is_hypothesized(x)) {
+      
+      if (is.null(list(...)$mu)) {
+        message_glue(
+          "No `mu` argument was hypothesized, so the t-test will ",
+          "assume a null hypothesis `mu = 0`."
+        )
+      }
+      
       x %>%
         dplyr::summarize(
           stat = stats::t.test(!!attr(x, "response"), ...)[["statistic"]]
         )
+      
     } else {
       # For hypothesis testing
       x %>%

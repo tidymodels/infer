@@ -80,7 +80,8 @@ Calculating the observed statistic,
 ```{r, message = FALSE, warning = FALSE}
 t_bar <- gss %>%
   specify(response = hours) %>%
-  calculate(stat = "t", mu = 40)
+  hypothesize(null = "point", mu = 40) %>%
+  calculate(stat = "t")
 ```
 
 Alternatively, using the wrapper to calculate the test statistic, 
