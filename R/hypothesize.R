@@ -80,3 +80,7 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
 is_hypothesized <- function(x){
   !is.null(attr(x, "null"))
 }
+
+#' @rdname hypothesize
+#' @export
+hypothesise <- hypothesize
