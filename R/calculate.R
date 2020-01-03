@@ -82,8 +82,8 @@ calculate <- function(x,
         "implemented) for `stat` = \"{stat}\". Are you missing ",
         "a `generate()` step?"
       )
-      } else if (!(stat %in% c("Chisq", "prop", "count")) |
-                 (stat == "t" & (attr(x, "theory_type") == "One sample t"))) {
+      } else if (!(stat %in% c("Chisq", "prop", "count")) &
+                 !(stat == "t" & (attr(x, "theory_type") == "One sample t"))) {
       # From `hypothesize()` to `calculate()`
       # Catch-all if generate was not called
 #      warning_glue("You unexpectantly went from `hypothesize()` to ",
