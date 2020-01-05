@@ -19,6 +19,16 @@
 #' @section Aliases:
 #' `get_pvalue()` is an alias of `get_p_value()`.
 #' `p_value` is a deprecated alias of `get_p_value()`.
+#' 
+#' @section Zero p-value:
+#' Output of `get_p_value()` can be zero (in case of extreme observed statistic
+#' relatively to values in `x`). However, this is due to simulation nature of
+#' currently supported methods, because in practice true p-value of exactly zero
+#' is almost impossible. Here output is an approximation based on the number of
+#' `reps` chosen in `generate()` step. The true p-value is a small value likely
+#' less than `3/reps` (value chosen using a poisson approximation).
+#' 
+#' If output has zero p-value, a warning is given describing this situation.
 #'
 #' @examples
 #' 
@@ -91,6 +101,14 @@ simulation_based_p_value <- function(x, obs_stat, direction) {
     pval <- right_p_value(x[["stat"]], obs_stat)
   } else {
     pval <- two_sided_p_value(x[["stat"]], obs_stat)
+  }
+  
+  if (abs(pval) < 1e-16) {
+    warning_glue(
+      "Please be cautious. A value of 0 for the p-value here is an ",
+      "approximation based on the number of `reps` chosen in `generate()` ",
+      "step. The true p-value is a small value likely less than `3/reps`."
+    )
   }
 
   tibble::tibble(p_value = pval)
