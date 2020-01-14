@@ -46,7 +46,7 @@
 #' @importFrom methods hasArg
 #' @export
 specify <- function(x, formula, response = NULL,
-                    explanatory = NULL, success = NULL) {
+                    explanatory = NULL, subject = NULL, success = NULL) {
   check_type(x, is.data.frame)
 
   # Convert all character and logical variables to be factor variables
@@ -61,6 +61,14 @@ specify <- function(x, formula, response = NULL,
   explanatory <- enquo(explanatory)
   x <- parse_variables(x = x, formula = formula, 
                        response = response, explanatory = explanatory)
+
+  # Process "subject" arg
+  
+  if(!is.null(subject)) {
+
+      attr(x, "subject") <- subject
+
+  }
 
   # Process "success" arg
   response_col <- response_variable(x)
@@ -120,7 +128,8 @@ specify <- function(x, formula, response = NULL,
   # Select variables
   x <- x %>%
     select(one_of(c(
-      as.character((attr(x, "response"))), as.character(attr(x, "explanatory"))
+      as.character((attr(x, "response"))), as.character(attr(x, "explanatory")),
+      as.character(attr(x, "subject"))
     )))
 
   is_complete <- stats::complete.cases(x)
