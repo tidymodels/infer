@@ -219,8 +219,7 @@ permute_once_within <- function(x, ...) {
   dots <- list(...)
 
   if (is_hypothesized(x) && (attr(x, "null") == "independence")) {
-       id <- attr(x, "subject") 
-       x %>% dplyr::group_by(id) %>% 
+       x %>% dplyr::group_by_at(attr(x, "subject")) %>% 
              dplyr::group_modify(~mutate(.,!!attr(x, "response"):=sample(!!attr(x, "response")))) %>%
              dplyr::ungroup() %>% 
              return 
