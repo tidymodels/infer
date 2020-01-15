@@ -20,7 +20,9 @@
 #' @param success The level of `response` that will be considered a success, as
 #'   a string. Needed for inference on one proportion, a difference in
 #'   proportions, and corresponding z stats.
-#'
+#' @param subject For responses from subjects with repeated measures, the column
+#'   with the identifier can be specified so that the responses will be permuted
+#'   per subject.
 #' @return A tibble containing the response (and explanatory, if specified)
 #'   variable data.
 #'
@@ -36,7 +38,7 @@
 #' # ...or with named arguments!
 #' gss %>%
 #'   specify(response = age, explanatory = partyid)
-#'
+#' 
 #' # More in-depth explanation of how to use the infer package
 #' vignette("infer")
 #'
