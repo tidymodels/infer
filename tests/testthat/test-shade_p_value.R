@@ -93,12 +93,12 @@ test_that("shade_p_value throws errors", {
   expect_error(iris_viz_sim + shade_p_value(1, "right", color = "x"), "color")
   expect_error(iris_viz_sim + shade_p_value(1, "right", fill = "x"), "color")
   expect_error(iris_viz_sim %>% shade_p_value(1, "right"), 
-               "`shade_p_value()` as a layer")
+               "\\`shade_p_value()\\` as a layer")
   expect_error(iris_viz_sim %>% shade_p_value(obs_stat = 1), 
-               "`shade_p_value()` as a layer")
+               "\\`shade_p_value()\\` as a layer")
   expect_error(iris_viz_sim %>% shade_p_value(obs_stat = 1, 
                                               direction = "right"), 
-               "`shade_p_value()` as a layer")
+               "\\`shade_p_value()\\` as a layer")
 })
 
 
