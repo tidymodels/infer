@@ -70,11 +70,11 @@ test_that("shade_confidence_interval throws errors and warnings", {
   )
   expect_error(
     iris_viz_sim %>% shade_confidence_interval(c(-1, 1)), 
-    "\\`shade_confidence_interval()\\` as a layer"
+    "\\`shade_confidence_interval\\(\\)\\` as a layer"
   )
   expect_error(
     iris_viz_sim %>% shade_confidence_interval(endpoints = c(-1, 1)), 
-    "\\`shade_confidence_interval()\\` as a layer"
+    "\\`shade_confidence_interval\\(\\)\\` as a layer"
   )
 })
 
