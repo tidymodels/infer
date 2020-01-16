@@ -445,38 +445,21 @@ parse_type <- function(f_name) {
 
 # a function for checking arguments to functions that are added as layers
 # to visualize()d objects to make sure they weren't mistakenly piped
-check_for_piped_visualize <- function(obs_stat, direction, color, endpoints) {
-  # call the internal function 3 times since iteration doesn't preserve names
-  if (!is.null(obs_stat)) {check_for_piped_visualize_(obs_stat)}
-  if (!is.null(direction)) {check_for_piped_visualize_(direction)}
-  if (!is.null(color)) {check_for_piped_visualize_(color)}
-  if (!is.null(endpoints)) {check_for_piped_visualize_(endpoints)}
-}
-
-check_for_piped_visualize_ <- function(argument) {
-  # check for an input that was probably piped
-  if ("gg" %in% class(argument)) {
+check_for_piped_visualize <- function(...) {
+  
+  is_ggplot_output <- vapply(list(...), ggplot2::is.ggplot, logical(1))
+  
+  if (any(is_ggplot_output)) {
     
-    # extract the name of the argument
-    argument_name <- deparse(substitute(argument))
+    called_function <- sys.call(-1)[[1]]
     
-    # find what the type of the argument should actually be
-    if (argument_name %in% c("obs_stat", "endpoints")) {
-      needed_type <- "numeric"
-    } else if (argument_name == "direction") {
-      needed_type <- "character"
-    } else if (argument_name == "color") {
-      needed_type <- "color string"
-    }
-    
-    # grab the name of the function that the user actually called
-    called_function <- sys.call(-2)[[1]]
-    
-    # raise an error
-    stop_glue("It looks like the supplied `{argument_name}` argument is ",
-              "a plot rather than a `{needed_type}` object. ",
-              "Did you pipe the result of `visualize()` into ",
-              "`{called_function}` (using `%>%`) rather than adding ",
-              "the result of `{called_function}` as a layer with `+`?")
-    }
+    stop_glue(
+      "It looks like you piped the result of `visualize()` into ",
+      "`{called_function}()` (using `%>%`) rather than adding the result of ",
+      "`{called_function}()` as a layer with `+`. Consider changing",
+      "`%>%` to `+`."
+    )
+  }
+  
+  TRUE
 }

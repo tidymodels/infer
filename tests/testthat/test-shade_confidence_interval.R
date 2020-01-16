@@ -70,11 +70,11 @@ test_that("shade_confidence_interval throws errors and warnings", {
   )
   expect_error(
     iris_viz_sim %>% shade_confidence_interval(c(-1, 1)), 
-    "is a plot"
+    "adding the result"
   )
   expect_error(
     iris_viz_sim %>% shade_confidence_interval(endpoints = c(-1, 1)), 
-    "is a plot"
+    "adding the result"
   )
 })
 

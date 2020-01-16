@@ -61,7 +61,7 @@ NULL
 shade_p_value <- function(obs_stat, direction,
                           color = "red2", fill = "pink", ...) {
   # argument checking
-  check_for_piped_visualize(obs_stat, direction, color, NULL)
+  check_for_piped_visualize(obs_stat, direction, color, fill)
   obs_stat <- check_obs_stat(obs_stat)
   check_shade_p_value_args(obs_stat, direction, color, fill)
   
