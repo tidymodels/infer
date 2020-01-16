@@ -367,6 +367,7 @@ check_direction <- function(direction = c("less", "greater", "two_sided",
 
 check_obs_stat <- function(obs_stat) {
   if (!is.null(obs_stat)) {
+    
     if ("data.frame" %in% class(obs_stat)) {
       check_type(obs_stat, is.data.frame)
       if ((nrow(obs_stat) != 1) || (ncol(obs_stat) != 1)) {
@@ -438,4 +439,43 @@ parse_type <- function(f_name) {
     f_name,
     regexec("is[_\\.]([[:alnum:]_\\.]+)$", f_name)
   )[[1]][2]
+}
+
+# Helpers for visualize() Utilities -----------------------------------------------
+
+# a function for checking arguments to functions that are added as layers
+# to visualize()d objects to make sure they weren't mistakenly piped
+check_for_piped_visualize <- function(obs_stat, direction, color) {
+  # call the internal function 3 times since iteration doesn't preserve names
+  check_for_piped_visualize_(obs_stat)
+  check_for_piped_visualize_(direction)
+  check_for_piped_visualize_(color)
+}
+
+check_for_piped_visualize_ <- function(argument) {
+  # check for an input that was probably piped
+  if ("gg" %in% class(argument)) {
+    
+    # extract the name of the argument
+    argument_name <- deparse(substitute(argument))
+    
+    # find what the type of the argument should actually be
+    if (argument_name == "obs_stat") {
+      needed_type <- "numeric"
+    } else if (argument_name == "direction") {
+      needed_type <- "character"
+    } else if (argument_name == "color") {
+      needed_type <- "color string"
+    }
+    
+    # grab the name of the function that the user actually called
+    called_function <- sys.call(-2)[[1]]
+    
+    # raise an error
+    stop_glue("It looks like the supplied `{argument_name}` argument is ",
+              "a plot rather than a `{needed_type}` object. ",
+              "Did you pipe the result of `visualize()` into ",
+              "`{called_function}` (using `%>%`) rather than adding ",
+              "the result of `{called_function}` as a layer with `+`?")
+    }
 }

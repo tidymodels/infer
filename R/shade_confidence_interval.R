@@ -70,6 +70,9 @@ NULL
 #' @export
 shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
                                       fill = "turquoise", ...) {
+  # argument checking
+  check_for_piped_visualize(obs_stat, direction, color)
+  
   dots <- list(...)
   
   endpoints <- impute_endpoints(endpoints)
