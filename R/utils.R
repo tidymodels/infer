@@ -445,11 +445,12 @@ parse_type <- function(f_name) {
 
 # a function for checking arguments to functions that are added as layers
 # to visualize()d objects to make sure they weren't mistakenly piped
-check_for_piped_visualize <- function(obs_stat, direction, color) {
+check_for_piped_visualize <- function(obs_stat, direction, color, endpoints) {
   # call the internal function 3 times since iteration doesn't preserve names
-  check_for_piped_visualize_(obs_stat)
-  check_for_piped_visualize_(direction)
-  check_for_piped_visualize_(color)
+  if (!is.null(obs_stat)) {check_for_piped_visualize_(obs_stat)}
+  if (!is.null(direction)) {check_for_piped_visualize_(direction)}
+  if (!is.null(color)) {check_for_piped_visualize_(color)}
+  if (!is.null(endpoints)) {check_for_piped_visualize_(endpoints)}
 }
 
 check_for_piped_visualize_ <- function(argument) {
