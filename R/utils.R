@@ -461,7 +461,7 @@ check_for_piped_visualize_ <- function(argument) {
     argument_name <- deparse(substitute(argument))
     
     # find what the type of the argument should actually be
-    if (argument_name == "obs_stat") {
+    if (argument_name %in% c("obs_stat", "endpoints")) {
       needed_type <- "numeric"
     } else if (argument_name == "direction") {
       needed_type <- "character"
