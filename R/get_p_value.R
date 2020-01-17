@@ -21,14 +21,19 @@
 #' `p_value` is a deprecated alias of `get_p_value()`.
 #' 
 #' @section Zero p-value:
-#' Output of `get_p_value()` can be zero (in case of extreme observed statistic
-#' relatively to values in `x`). However, this is due to simulation nature of
-#' currently supported methods, because in practice true p-value of exactly zero
-#' is almost impossible. Here output is an approximation based on the number of
-#' `reps` chosen in `generate()` step. The true p-value is a small value likely
-#' less than `3/reps` (value chosen using a poisson approximation).
+#' Though a true p-value of 0 is impossible, `get_p_value()` may return 0 in 
+#' some cases. This is due to the simulation-based nature of the `infer` 
+#' package; the output of this function is an approximation based on 
+#' the number of `reps` chosen in the `generate()` step. When the observed
+#' statistic is very unlikely given the null hypothesis, and only a small
+#' number of `reps` have been generated to form a null distribution,
+#' it is possible that the observed statistic will be more extreme than
+#' every test statistic generated to form the null distribution, resulting
+#' in an approximate p-value of 0. In this case, the true p-value is a small 
+#' value likely less than `3/reps` (based on a poisson approximation).
 #' 
-#' If output has zero p-value, a warning is given describing this situation.
+#' In the case that a p-value of zero is reported, a warning message will be 
+#' raised to caution the user against reporting a p-value exactly equal to 0.
 #'
 #' @examples
 #' 
@@ -105,9 +110,9 @@ simulation_based_p_value <- function(x, obs_stat, direction) {
   
   if (abs(pval) < 1e-16) {
     warning_glue(
-      "Please be cautious. A value of 0 for the p-value here is an ",
-      "approximation based on the number of `reps` chosen in `generate()` ",
-      "step. The true p-value is a small value likely less than `3/reps`."
+      "Please be cautious in reporting a p-value of 0. This result is an ",
+      "approximation based on the number of `reps` chosen in the `generate()` ",
+      "step. See `?get_p_value()` for more information."
     )
   }
 

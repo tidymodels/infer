@@ -37,14 +37,19 @@ Learn more in \code{vignette("infer")}.
 
 \section{Zero p-value}{
 
-Output of \code{get_p_value()} can be zero (in case of extreme observed statistic
-relatively to values in \code{x}). However, this is due to simulation nature of
-currently supported methods, because in practice true p-value of exactly zero
-is almost impossible. Here output is an approximation based on the number of
-\code{reps} chosen in \code{generate()} step. The true p-value is a small value likely
-less than \code{3/reps} (value chosen using a poisson approximation).
+Though a true p-value of 0 is impossible, \code{get_p_value()} may return 0 in
+some cases. This is due to the simulation-based nature of the \code{infer}
+package; the output of this function is an approximation based on
+the number of \code{reps} chosen in the \code{generate()} step. When the observed
+statistic is very unlikely given the null hypothesis, and only a small
+number of \code{reps} have been generated to form a null distribution,
+it is possible that the observed statistic will be more extreme than
+every test statistic generated to form the null distribution, resulting
+in an approximate p-value of 0. In this case, the true p-value is a small
+value likely less than \code{3/reps} (based on a poisson approximation).
 
-If output has zero p-value, a warning is given describing this situation.
+In the case that a p-value of zero is reported, a warning message will be
+raised to caution the user against reporting a p-value exactly equal to 0.
 }
 
 \examples{

@@ -52,6 +52,6 @@ test_that("get_p_value warns in case of zero p-value", {
   
   expect_warning(
     get_p_value(stat_df, obs_stat = -10, direction = "left"),
-    "p-value.*small"
+    "be cautious"
   )
 })
