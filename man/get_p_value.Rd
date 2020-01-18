@@ -38,7 +38,7 @@ Learn more in \code{vignette("infer")}.
 \section{Zero p-value}{
 
 Though a true p-value of 0 is impossible, \code{get_p_value()} may return 0 in
-some cases. This is due to the simulation-based nature of the \code{infer}
+some cases. This is due to the simulation-based nature of the \{infer\}
 package; the output of this function is an approximation based on
 the number of \code{reps} chosen in the \code{generate()} step. When the observed
 statistic is very unlikely given the null hypothesis, and only a small

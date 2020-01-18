@@ -22,7 +22,7 @@
 #' 
 #' @section Zero p-value:
 #' Though a true p-value of 0 is impossible, `get_p_value()` may return 0 in 
-#' some cases. This is due to the simulation-based nature of the `infer` 
+#' some cases. This is due to the simulation-based nature of the \{infer\} 
 #' package; the output of this function is an approximation based on 
 #' the number of `reps` chosen in the `generate()` step. When the observed
 #' statistic is very unlikely given the null hypothesis, and only a small
