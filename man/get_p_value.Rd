@@ -35,6 +35,23 @@ Learn more in \code{vignette("infer")}.
 \code{p_value} is a deprecated alias of \code{get_p_value()}.
 }
 
+\section{Zero p-value}{
+
+Though a true p-value of 0 is impossible, \code{get_p_value()} may return 0 in
+some cases. This is due to the simulation-based nature of the \{infer\}
+package; the output of this function is an approximation based on
+the number of \code{reps} chosen in the \code{generate()} step. When the observed
+statistic is very unlikely given the null hypothesis, and only a small
+number of \code{reps} have been generated to form a null distribution,
+it is possible that the observed statistic will be more extreme than
+every test statistic generated to form the null distribution, resulting
+in an approximate p-value of 0. In this case, the true p-value is a small
+value likely less than \code{3/reps} (based on a poisson approximation).
+
+In the case that a p-value of zero is reported, a warning message will be
+raised to caution the user against reporting a p-value exactly equal to 0.
+}
+
 \examples{
 
 # find the point estimate---mean number of hours worked per week

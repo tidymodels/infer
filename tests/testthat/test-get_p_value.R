@@ -46,3 +46,12 @@ test_that("theoretical p-value not supported error", {
       get_p_value(obs_stat = obs_F, direction = "right")
   )
 })
+
+test_that("get_p_value warns in case of zero p-value", {
+  stat_df <- tibble::tibble(stat = 1:10)
+  
+  expect_warning(
+    get_p_value(stat_df, obs_stat = -10, direction = "left"),
+    "be cautious"
+  )
+})
