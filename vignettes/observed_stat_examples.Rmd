@@ -131,7 +131,7 @@ visualize(null_distn, method = "both") +
   shade_p_value(obs_stat = t_bar, direction = "two_sided")
 ```
 
-Note that the above code makes use of the simulation-based null distribution.
+Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
@@ -315,7 +315,7 @@ visualize(null_distn, method = "both") +
   shade_p_value(obs_stat = z_hat, direction = "two_sided")
 ```
 
-Note that the above code makes use of the simulation-based null distribution.
+Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
@@ -410,7 +410,7 @@ visualize(null_distn_theoretical, method = "both") +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
-Note that the above code makes use of the simulation-based null distribution.
+Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
@@ -489,7 +489,7 @@ visualize(null_distn, method = "both") +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
-Note that the above code makes use of the simulation-based null distribution.
+Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
@@ -589,7 +589,7 @@ visualize(null_distn, method = "both") +
   shade_p_value(obs_stat = t_hat, direction = "two_sided")
 ```
 
-Note that the above code makes use of the simulation-based null distribution.
+Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
@@ -684,7 +684,7 @@ visualize(null_distn, mdthod = "both") +
   shade_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
-Note that the above code makes use of the simulation-based null distribution.
+Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 

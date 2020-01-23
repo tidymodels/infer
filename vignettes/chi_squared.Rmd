@@ -62,10 +62,10 @@ observed_indep_statistic <- gss %>%
 
 The observed $\chi^2$ statistic is `r observed_indep_statistic`. Now, we want to compare this statistic to a null distribution, generated under the assumption that these variables are not actually related, to get a sense of how likely it would be for us to see this observed statistic if there were actually no association between education and income.
 
-We can `generate` the null distribution in one of two ways---using simulation or theoretical approximation. The simulation approach permutes the response and explanatory variables, so that each person's educational attainment is matched up with a random income from the sample in order to break up any association between the two.
+We can `generate` the null distribution in one of two ways---using randomization or theory-based methods. The randomization approach permutes the response and explanatory variables, so that each person's educational attainment is matched up with a random income from the sample in order to break up any association between the two.
 
 ```{r generate-null-indep, warning = FALSE, message = FALSE}
-# generate the null distribution using simulation
+# generate the null distribution using randomization
 null_distribution_simulated <- gss %>%
   specify(college ~ finrela) %>%
   hypothesize(null = "independence") %>%
@@ -73,7 +73,7 @@ null_distribution_simulated <- gss %>%
   calculate(stat = "Chisq")
 ```
 
-Note that, in the line `specify(college ~ finrela)` above, we could use the equivalent syntax `specify(response = college, explanatory = finrela)`. The same goes in the code below, which generates the null distribution using theoretical approximation instead of simulation.
+Note that, in the line `specify(college ~ finrela)` above, we could use the equivalent syntax `specify(response = college, explanatory = finrela)`. The same goes in the code below, which generates the null distribution using theory-based methods instead of randomization.
 
 ```{r generate-null-indep-t, warning = FALSE, message = FALSE}
 # generate the null distribution by theoretical approximation
@@ -106,7 +106,7 @@ gss %>%
                 direction = "greater")
 ```
 
-To visualize both the simulation-based and theoretical null distributions to get a sense of how the two relate, we can pipe the simulation-based null distribution into `visualize()`, and further provide `method = "both"`.
+To visualize both the randomization-based and theoretical null distributions to get a sense of how the two relate, we can pipe the randomization-based null distribution into `visualize()`, and further provide `method = "both"`.
 
 ```{r visualize-indep-both, warning = FALSE, message = FALSE}
 # visualize both null distributions and the test statistic!

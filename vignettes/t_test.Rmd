@@ -189,7 +189,7 @@ null_distribution_2_sample_permute %>%
                 direction = "two_sided")
 ```
 
-The syntax to do the same thing with the theoretical null distribution looks similar---we just pipe in the theoretical null distribution instead, and drop in `method = "theoretical"` to `visualize()`.
+The syntax to do the same thing with the theory-based null distribution looks similar---we just pipe in the theory-based null distribution instead, and drop in `method = "theoretical"` to `visualize()`.
 
 ```{r visualize-2-sample-theoreticql, warning = FALSE, message = FALSE}
 # visualize the theoretical null distribution and test statistic!
@@ -199,7 +199,7 @@ null_distribution_2_sample_theoretical %>%
                 direction = "two_sided")
 ```
 
-We could also visualize both null distributions to get a sense of how the simulation-based and theoretical versions relate. To do so, start off with the simulation-based null distribution, and then drop in `method = "both"` to `visualize()`.
+We could also visualize both null distributions to get a sense of how the randomization-based and theoretical versions relate. To do so, start off with the randomization-based null distribution, and then drop in `method = "both"` to `visualize()`.
 
 ```{r visualize-2-sample-both, warning = FALSE, message = FALSE}
 # visualize both null distributions and test statistic!
@@ -212,7 +212,7 @@ null_distribution_2_sample_permute %>%
 Regardless, it looks like our observed statistic of `r observed_statistic` would be really unlikely if there was truly no relationship between degree status and number of hours worked. More exactly, we can calculate the p-value; theoretical p-values are not yet supported, so we'll use the randomization-based null distribution to do calculate the p-value.
 
 ```{r p-value-2-sample, warning = FALSE, message = FALSE}
-# calculate the p value from the simulation-based null 
+# calculate the p value from the randomization-based null 
 # distribution and the observed statistic
 p_value_2_sample <- null_distribution_2_sample_permute %>%
   get_p_value(obs_stat = observed_statistic,

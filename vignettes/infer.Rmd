@@ -224,9 +224,9 @@ As you can see, 40 hours per week is not contained in this interval, which align
 
 ### Theoretical Methods
 
-{infer} also provides functionality to use theoretical methods for the following test statistics: `"Chisq"`, `"F"`, `"t"`, and `"z"`. 
+{infer} also provides functionality to use theoretical methods for `"Chisq"`, `"F"` and `"t"` test statistics. 
 
-Generally, to find a null distribution using theory-based methods, use the same code that you would use to find the null distribution using simulation-based methods, but skip the `generate()` step. For example, if we wanted to find a null distribution for the relationship between age (`age`) and party identification (`partyid`) using simulation, we could write:
+Generally, to find a null distribution using theory-based methods, use the same code that you would use to find the null distribution using randomization-based methods, but skip the `generate()` step. For example, if we wanted to find a null distribution for the relationship between age (`age`) and party identification (`partyid`) using randomization, we could write:
 
 ```{r, message = FALSE, warning = FALSE}
 null_f_distn <- gss %>%
@@ -253,14 +253,14 @@ F_hat <- gss %>%
   calculate(stat = "F")
 ```
 
-Now, instead of just piping the null distribution into `visualize()`, as we would do if we wanted to visualize the simulation-based null distribution, we also need to provide `method = "theoretical"` to `visualize()`.
+Now, instead of just piping the null distribution into `visualize()`, as we would do if we wanted to visualize the randomization-based null distribution, we also need to provide `method = "theoretical"` to `visualize()`.
 
 ```{r, message = FALSE, warning = FALSE}
 visualize(null_f_distn_theoretical, method = "theoretical") +
   shade_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
-To get a sense of how the theory-based and simulation-based null distributions relate, as well, we can pipe the simulation-based null distribution into `visualize()` and also specify `method = "both"`
+To get a sense of how the theory-based and randomization-based null distributions relate, as well, we can pipe the randomization-based null distribution into `visualize()` and also specify `method = "both"`
 
 ```{r, message = FALSE, warning = FALSE}
 visualize(null_f_distn, method = "both") +
