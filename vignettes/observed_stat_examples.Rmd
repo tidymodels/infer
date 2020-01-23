@@ -101,7 +101,7 @@ null_distn <- gss %>%
   calculate(stat = "t")
 ```
 
-Alternatively, finding the null distribution using theoretical methods by skipping the `generate(reps = 1000)` step,
+Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
 
 ```{r, message = FALSE, warning = FALSE}
 null_distn_theoretical <- gss %>%
@@ -285,7 +285,7 @@ null_distn <- gss %>%
   calculate(stat = "z", order = c("female", "male"))
 ```
 
-Alternatively, finding the null distribution using theoretical methods by skipping the `generate(reps = 1000)` step,
+Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
 
 ```{r, message = FALSE, warning = FALSE}
 null_distn_theoretical <- gss %>%
@@ -374,7 +374,7 @@ null_distn <- gss %>%
   calculate(stat = "Chisq")
 ```
 
-Alternatively, finding the null distribution using theoretical methods by skipping the `generate(reps = 1000)` step,
+Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
 
 ```{r, message = FALSE, warning = FALSE}
 null_distn_theoretical <- gss %>%
@@ -459,7 +459,7 @@ null_distn <- gss %>%
   calculate(stat = "Chisq")
 ```
 
-Alternatively, finding the null distribution using theoretical methods by skipping the `generate(reps = 1000)` step,
+Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
 
 ```{r, message = FALSE, warning = FALSE}
 null_distn_theoretical <- gss %>%
@@ -559,7 +559,7 @@ null_distn <- gss %>%
   calculate(stat = "t", order = c("degree", "no degree"))
 ```
 
-Alternatively, finding the null distribution using theoretical methods by skipping the `generate(reps = 1000)` step,
+Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
 
 ```{r, message = FALSE, warning = FALSE}
 null_distn_theoretical <- gss %>%
@@ -654,7 +654,7 @@ null_distn <- gss %>%
    calculate(stat = "F")
 ```
 
-Alternatively, finding the null distribution using theoretical methods by skipping the `generate(reps = 1000)` step,
+Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
 
 ```{r, message = FALSE, warning = FALSE}
 null_distn_theoretical <- gss %>%

@@ -156,7 +156,7 @@ gss %>%
   calculate("diff in means", order = c("degree", "no degree"))
 ```
 
-### Other Utilities in {infer}
+### Other Utilities
 
 `infer` also offers several utilities to extract the meaning out of summary statistics and null distributions---the package provides functions to visualize where a statistic is relative to a distribution (with `visualize()`), calculate p-values (with `get_p_value()`), and calculate confidence intervals (with `get_confidence_interval()`).
 
@@ -222,4 +222,49 @@ null_dist %>%
 
 As you can see, 40 hours per week is not contained in this interval, which aligns with our previous conclusion that this finding is significant at the confidence level $\alpha = .05$.
 
-This vignette covers most all of the key functionality of infer. See `help(package = "infer")` for a full list of functions and vignettes.
+### Theoretical Methods
+
+{infer} also provides functionality to use theoretical methods for the following test statistics: `"Chisq"`, `"F"`, `"t"`, and `"z"`. 
+
+Generally, to find a null distribution using theory-based methods, use the same code that you would use to find the null distribution using simulation-based methods, but skip the `generate()` step. For example, if we wanted to find a null distribution for the relationship between age (`age`) and party identification (`partyid`) using simulation, we could write:
+
+```{r, message = FALSE, warning = FALSE}
+null_f_distn <- gss %>%
+   specify(age ~ partyid) %>%
+   hypothesize(null = "independence") %>%
+   generate(reps = 1000, type = "permute") %>%
+   calculate(stat = "F")
+```
+
+To find the null distribution using theory-based methods, instead, skip the `generate()` step entirely:
+
+```{r, message = FALSE, warning = FALSE}
+null_f_distn_theoretical <- gss %>%
+   specify(age ~ partyid) %>%
+   hypothesize(null = "independence") %>%
+   calculate(stat = "F")
+```
+
+We'll calculate the observed statistic to make use of in the following visualizations---this procedure is the same, regardless of the methods used to find the null distribution.
+
+```{r, message = FALSE, warning = FALSE}
+F_hat <- gss %>% 
+  specify(age ~ partyid) %>%
+  calculate(stat = "F")
+```
+
+Now, instead of just piping the null distribution into `visualize()`, as we would do if we wanted to visualize the simulation-based null distribution, we also need to provide `method = "theoretical"` to `visualize()`.
+
+```{r, message = FALSE, warning = FALSE}
+visualize(null_f_distn_theoretical, method = "theoretical") +
+  shade_p_value(obs_stat = F_hat, direction = "greater")
+```
+
+To get a sense of how the theory-based and simulation-based null distributions relate, as well, we can pipe the simulation-based null distribution into `visualize()` and also specify `method = "both"`
+
+```{r, message = FALSE, warning = FALSE}
+visualize(null_f_distn, method = "both") +
+  shade_p_value(obs_stat = F_hat, direction = "greater")
+```
+
+That's it! This vignette covers most all of the key functionality of infer. See `help(package = "infer")` for a full list of functions and vignettes.
