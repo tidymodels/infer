@@ -81,7 +81,29 @@ null_distribution %>%
                 direction = "greater")
 ```
 
-It looks like our observed test statistic would be _really_ unlikely if there were actually no association between age and political party affiliation. More exactly, we can calculate the p-value:
+We could also visualize the observed statistic against the theoretical null distribution. Note that we skip the `generate()` and `calculate()` steps when using the theoretical approach, and that we now need to provide `method = "theoretical"` to `visualize()`.
+
+```{r visualize-f-theor, warning = FALSE, message = FALSE}
+# visualize the theoretical null distribution and test statistic!
+gss %>%
+  specify(age ~ partyid) %>%
+  hypothesize(null = "independence") %>%
+  visualize(method = "theoretical") + 
+  shade_p_value(observed_f_statistic,
+                direction = "greater")
+```
+
+To visualize both the simulation-based and theoretical null distributions to get a sense of how the two relate, we can pipe the simulation-based null distribution into `visualize()`, and then further provide `method = "both"` to `visualize()`.
+
+```{r visualize-indep-both, warning = FALSE, message = FALSE}
+# visualize both null distributions and the test statistic!
+null_distribution %>%
+  visualize(method = "both") + 
+  shade_p_value(observed_f_statistic,
+                direction = "greater")
+```
+
+Either way, it looks like our observed test statistic would be _really_ unlikely if there were actually no association between age and political party affiliation. More exactly, we can calculate the p-value:
 
 ```{r p-value-indep, warning = FALSE, message = FALSE}
 # calculate the p value from the observed statistic and null distribution
@@ -93,5 +115,6 @@ p_value
 ```
 
 Thus, if there were really no relationship between age and political party affiliation, the probability that we would see a statistic as or more extreme than `r observed_f_statistic` is approximately `r p_value`.
+
 
 The package currently does not supply a wrapper for tidy ANOVA tests.
