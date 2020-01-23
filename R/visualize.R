@@ -54,16 +54,16 @@
 #'
 #' @examples
 #'   
-#' # ...and a null distribution
+#' # find a null distribution
 #' null_dist <- gss %>%
-#'   # ...we're interested in the number of hours worked per week
+#'   # we're interested in the number of hours worked per week
 #'   specify(response = hours) %>%
 #'   # hypothesizing that the mean is 40
 #'   hypothesize(null = "point", mu = 40) %>%
 #'   # generating data points for a null distribution
 #'   generate(reps = 10000, type = "bootstrap") %>%
-#'   # finding the null distribution
-#'   calculate(stat = "mean")
+#'   # calculating a distribution of t test statistics
+#'   calculate(stat = "t")
 #'   
 #' # we can easily plot the null distribution by piping into visualize
 #' null_dist %>%
@@ -73,8 +73,8 @@
 #' # find the point estimate---mean number of hours worked per week
 #' point_estimate <- gss %>%
 #'   specify(response = hours) %>%
-#'   calculate(stat = "mean") %>%
-#'   dplyr::pull()
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   calculate(stat = "t")
 #'   
 #' # find a confidence interval around the point estimate
 #' ci <- null_dist %>%
@@ -92,6 +92,20 @@
 #' null_dist %>%
 #'   visualize() +
 #'   shade_confidence_interval(ci)
+#'   
+#' # to plot a theoretical null distribution, skip the generate()
+#' # step and supply `method = "theoretical"` to `visualize()`
+#' null_dist_theoretical <- gss %>%
+#'   specify(response = hours) %>%
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   calculate(stat = "t") 
+#'   
+#' visualize(null_dist_theoretical, method = "theoretical")
+#' 
+#' # to plot both a theory-based and simulation-based null distribution,
+#' # use the simulation-based null distribution and supply
+#' # `method = "both"` to `visualize()`
+#' visualize(null_dist, method = "both")
 #'
 #' # More in-depth explanation of how to use the infer package
 #' vignette("infer")
