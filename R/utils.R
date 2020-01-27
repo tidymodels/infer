@@ -367,6 +367,7 @@ check_direction <- function(direction = c("less", "greater", "two_sided",
 
 check_obs_stat <- function(obs_stat) {
   if (!is.null(obs_stat)) {
+    
     if ("data.frame" %in% class(obs_stat)) {
       check_type(obs_stat, is.data.frame)
       if ((nrow(obs_stat) != 1) || (ncol(obs_stat) != 1)) {
@@ -438,4 +439,27 @@ parse_type <- function(f_name) {
     f_name,
     regexec("is[_\\.]([[:alnum:]_\\.]+)$", f_name)
   )[[1]][2]
+}
+
+# Helpers for visualize() Utilities -----------------------------------------------
+
+# a function for checking arguments to functions that are added as layers
+# to visualize()d objects to make sure they weren't mistakenly piped
+check_for_piped_visualize <- function(...) {
+  
+  is_ggplot_output <- vapply(list(...), ggplot2::is.ggplot, logical(1))
+  
+  if (any(is_ggplot_output)) {
+    
+    called_function <- sys.call(-1)[[1]]
+    
+    stop_glue(
+      "It looks like you piped the result of `visualize()` into ",
+      "`{called_function}()` (using `%>%`) rather than adding the result of ",
+      "`{called_function}()` as a layer with `+`. Consider changing",
+      "`%>%` to `+`."
+    )
+  }
+  
+  TRUE
 }
