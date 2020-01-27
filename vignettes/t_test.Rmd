@@ -189,7 +189,7 @@ null_distribution_2_sample_permute %>%
                 direction = "two_sided")
 ```
 
-The syntax to do the same thing with the theoretical null looks similar---we just pipe in the theoretical null distribution instead, and drop in `method = "theoretical"` to `visualize()`.
+The syntax to do the same thing with the theory-based null distribution looks similar---we just pipe in the theory-based null distribution instead, and drop in `method = "theoretical"` to `visualize()`.
 
 ```{r visualize-2-sample-theoreticql, warning = FALSE, message = FALSE}
 # visualize the theoretical null distribution and test statistic!

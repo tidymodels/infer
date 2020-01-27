@@ -101,12 +101,37 @@ null_distn <- gss %>%
   calculate(stat = "t")
 ```
 
+Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn_theoretical <- gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
+  calculate(stat = "t")
+```
+
 Visualizing the observed statistic alongside the null distribution,
 
 ```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = t_bar, direction = "two_sided")
 ```
+
+Alternatively, visualizing the observed statistic using the theory-based null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+visualize(null_distn_theoretical, method = "theoretical") +
+  shade_p_value(obs_stat = t_bar, direction = "two_sided")
+```
+
+Alternatively, visualizing the observed statistic using both of the null distributions,
+
+```{r, message = FALSE, warning = FALSE}
+visualize(null_distn, method = "both") +
+  shade_p_value(obs_stat = t_bar, direction = "two_sided")
+```
+
+Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
@@ -260,12 +285,37 @@ null_distn <- gss %>%
   calculate(stat = "z", order = c("female", "male"))
 ```
 
+Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn_theoretical <- gss %>%
+  specify(college ~ sex, success = "no degree") %>%
+  hypothesize(null = "independence") %>%  
+  calculate(stat = "z", order = c("female", "male"))
+```
+
 Visualizing the observed statistic alongside the null distribution,
 
 ```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = z_hat, direction = "two_sided")
 ```
+
+Alternatively, visualizing the observed statistic using the theory-based null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+visualize(null_distn_theoretical, method = "theoretical") +
+  shade_p_value(obs_stat = z_hat, direction = "two_sided")
+```
+
+Alternatively, visualizing the observed statistic using both of the null distributions,
+
+```{r, message = FALSE, warning = FALSE}
+visualize(null_distn, method = "both") +
+  shade_p_value(obs_stat = z_hat, direction = "two_sided")
+```
+
+Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
@@ -324,12 +374,43 @@ null_distn <- gss %>%
   calculate(stat = "Chisq")
 ```
 
+Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn_theoretical <- gss %>%
+  specify(response = finrela) %>%
+  hypothesize(null = "point",
+              p = c("far below average" = 1/6,
+                    "below average" = 1/6,
+                    "average" = 1/6,
+                    "above average" = 1/6,
+                    "far above average" = 1/6,
+                    "DK" = 1/6)) %>%
+  calculate(stat = "Chisq")
+```
+
 Visualizing the observed statistic alongside the null distribution,
 
 ```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
+
+Alternatively, visualizing the observed statistic using the theory-based null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+visualize(null_distn_theoretical, method = "theoretical") +
+  shade_p_value(obs_stat = Chisq_hat, direction = "greater")
+```
+
+Alternatively, visualizing the observed statistic using both of the null distributions,
+
+```{r, message = FALSE, warning = FALSE}
+visualize(null_distn_theoretical, method = "both") +
+  shade_p_value(obs_stat = Chisq_hat, direction = "greater")
+```
+
+Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
@@ -378,12 +459,37 @@ null_distn <- gss %>%
   calculate(stat = "Chisq")
 ```
 
+Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn_theoretical <- gss %>%
+  specify(partyid ~ class) %>%
+  hypothesize(null = "independence") %>% 
+  calculate(stat = "Chisq")
+```
+
 Visualizing the observed statistic alongside the null distribution,
 
 ```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
+
+Alternatively, visualizing the observed statistic using the theory-based null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+visualize(null_distn_theoretical, method = "theoretical") +
+  shade_p_value(obs_stat = Chisq_hat, direction = "greater")
+```
+
+Alternatively, visualizing the observed statistic using both of the null distributions,
+
+```{r, message = FALSE, warning = FALSE}
+visualize(null_distn, method = "both") +
+  shade_p_value(obs_stat = Chisq_hat, direction = "greater")
+```
+
+Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
@@ -453,12 +559,37 @@ null_distn <- gss %>%
   calculate(stat = "t", order = c("degree", "no degree"))
 ```
 
+Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn_theoretical <- gss %>%
+  specify(age ~ college) %>%
+  hypothesize(null = "independence") %>%
+  calculate(stat = "t", order = c("degree", "no degree"))
+```
+
 Visualizing the observed statistic alongside the null distribution,
 
 ```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = t_hat, direction = "two_sided")
 ```
+
+Alternatively, visualizing the observed statistic using the theory-based null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+visualize(null_distn_theoretical, method = "theoretical") +
+  shade_p_value(obs_stat = t_hat, direction = "two_sided")
+```
+
+Alternatively, visualizing the observed statistic using both of the null distributions,
+
+```{r, message = FALSE, warning = FALSE}
+visualize(null_distn, method = "both") +
+  shade_p_value(obs_stat = t_hat, direction = "two_sided")
+```
+
+Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
@@ -523,12 +654,37 @@ null_distn <- gss %>%
    calculate(stat = "F")
 ```
 
+Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
+
+```{r, message = FALSE, warning = FALSE}
+null_distn_theoretical <- gss %>%
+   specify(age ~ partyid) %>%
+   hypothesize(null = "independence") %>%
+   calculate(stat = "F")
+```
+
 Visualizing the observed statistic alongside the null distribution,
 
 ```{r, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = F_hat, direction = "greater")
 ```
+
+Alternatively, visualizing the observed statistic using the theory-based null distribution,
+
+```{r, message = FALSE, warning = FALSE}
+visualize(null_distn_theoretical, method = "theoretical") +
+  shade_p_value(obs_stat = F_hat, direction = "greater")
+```
+
+Alternatively, visualizing the observed statistic using both of the null distributions,
+
+```{r, message = FALSE, warning = FALSE}
+visualize(null_distn, mdthod = "both") +
+  shade_p_value(obs_stat = F_hat, direction = "greater")
+```
+
+Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
