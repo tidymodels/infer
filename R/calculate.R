@@ -100,7 +100,7 @@ calculate <- function(x,
       (attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))
     )
   ) {
-    check_order(x, explanatory_variable(x), order)
+    order <- check_order(x, explanatory_variable(x), order)
   }
 
   if (!(

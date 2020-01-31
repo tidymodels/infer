@@ -121,19 +121,25 @@ null_transformer <- function(text, envir) {
 }
 
 check_order <- function(x, explanatory_variable, order) {
-  unique_explanatory_variable <- unique(explanatory_variable)
-  if (length(unique_explanatory_variable) != 2) {
+  unique_ex <- sort(unique(explanatory_variable))
+  if (length(unique_ex) != 2) {
     stop_glue(
       "Statistic is based on a difference; the explanatory variable should ",
       "have two levels."
     )
   }
   if (is.null(order)) {
-    stop_glue(
-      "Statistic is based on a difference; specify the `order` in which to ",
-      "subtract the levels of the explanatory variable. ",
-      '`order = c("first", "second")` means `("first" - "second")`. ',
-      "Check `?calculate` for details."
+    # Default to subtracting the first (alphabetically) level from the second,
+    # unless the explanatory variable is a factor (in which case order is 
+    # preserved); raise a warning if this was done implicitly.
+    order <- unique_ex
+    warning_glue(
+      "The statistic is based on a difference; by default, the ",
+      "explanatory variable has been subtracted in the order ", 
+      "\"{unique_ex[1]}\" - \"{unique_ex[2]}\". To specify the ",
+      "order yourself, provide `order = c(\"{unique_ex[1]}\", ",
+      "\"{unique_ex[2]}\")` (to subtract in the order ",
+      "\"{unique_ex[1]}\" - \"{unique_ex[2]}\" to the calculate() function."
     )
   } else {
     if (xor(is.na(order[1]), is.na(order[2]))) {
@@ -144,13 +150,15 @@ check_order <- function(x, explanatory_variable, order) {
     if (length(order) > 2) {
       stop_glue("`order` is expecting only two entries.")
     }
-    if (order[1] %in% unique_explanatory_variable == FALSE) {
+    if (order[1] %in% unique_ex == FALSE) {
       stop_glue("{order[1]} is not a level of the explanatory variable.")
     }
-    if (order[2] %in% unique_explanatory_variable == FALSE) {
+    if (order[2] %in% unique_ex == FALSE) {
       stop_glue("{order[2]} is not a level of the explanatory variable.")
     }
   }
+  # return the order as given (unless the argument was invalid or NULL)
+  order
 }
 
 check_args_and_attr <- function(x, explanatory_variable, response_variable,
