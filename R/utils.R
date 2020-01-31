@@ -132,7 +132,7 @@ check_order <- function(x, explanatory_variable, order) {
     # Default to subtracting the first (alphabetically) level from the second,
     # unless the explanatory variable is a factor (in which case order is 
     # preserved); raise a warning if this was done implicitly.
-    order <- unique_ex
+    order <- as.character(unique_ex)
     warning_glue(
       "The statistic is based on a difference; by default, the ",
       "explanatory variable has been subtracted in the order ", 
