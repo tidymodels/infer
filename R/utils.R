@@ -139,7 +139,7 @@ check_order <- function(x, explanatory_variable, order) {
       "\"{unique_ex[1]}\" - \"{unique_ex[2]}\". To specify the ",
       "order yourself, provide `order = c(\"{unique_ex[1]}\", ",
       "\"{unique_ex[2]}\")` (to subtract in the order ",
-      "\"{unique_ex[1]}\" - \"{unique_ex[2]}\" to the calculate() function."
+      "\"{unique_ex[1]}\" - \"{unique_ex[2]}\") to the calculate() function."
     )
   } else {
     if (xor(is.na(order[1]), is.na(order[2]))) {
