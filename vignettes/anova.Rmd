@@ -14,7 +14,6 @@ options(digits = 4)
 
 ```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(devtools)
-library(tidyr)
 library(ggplot2)
 library(dplyr)
 devtools::load_all()
@@ -34,7 +33,6 @@ This is what the relationship looks like in the observed data:
 
 ```{r plot-f, echo = FALSE}
 gss %>%
-  tidyr::drop_na(age, partyid) %>%
   ggplot2::ggplot() +
   ggplot2::aes(x = partyid, y = age) +
   ggplot2::geom_boxplot() +
@@ -115,6 +113,5 @@ p_value
 ```
 
 Thus, if there were really no relationship between age and political party affiliation, the probability that we would see a statistic as or more extreme than `r observed_f_statistic` is approximately `r p_value`.
-
 
 The package currently does not supply a wrapper for tidy ANOVA tests.

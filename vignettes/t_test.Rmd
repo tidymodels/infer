@@ -14,7 +14,6 @@ options(digits = 4)
 
 ```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(devtools)
-library(tidyr)
 library(ggplot2)
 library(dplyr)
 devtools::load_all()
@@ -119,7 +118,6 @@ Once we've `mutate()`d that new `difference` column, we can run a 1-sample t-Tes
 
 ```{r plot-2-sample, echo = FALSE}
 gss %>%
-  tidyr::drop_na(college) %>%
   ggplot2::ggplot() +
   ggplot2::aes(x = college, y = hours) +
   ggplot2::geom_boxplot() +
@@ -131,18 +129,11 @@ It looks like both of these distributions are centered near 40 hours a week, but
 
 Again, note the warning about missing values---many respondents' values are missing. If we were actually carrying out this hypothesis test, we might look further into how this data was collected; it's possible that whether or not a value in either of these columns is missing is related to what that value would be. 
 
-To carry out this hypothesis test, we first need to get rid of rows in the dataset that have an NA in the `college` column, so that our only two groups are `no degree` and `degree`. The following code will do that for us:
-
-```{r gss-small, message = FALSE, warning = FALSE}
-gss_small <- gss %>%
-  tidyr::drop_na(college)
-```
-
 Now, to calculate the observed $t$ statistic, we can use `specify()` and `calculate()`.
 
 ```{r calc-obs-stat-2-sample, warning = FALSE, message = FALSE}
 # calculate the observed statistic
-observed_statistic <- gss_small %>%
+observed_statistic <- gss %>%
   specify(hours ~ college) %>%
   calculate(stat = "t", order = c("degree", "no degree"))
 
@@ -159,7 +150,7 @@ We can `generate` the null distribution using permutation, where, for each repli
 
 ```{r generate-null-2-sample, warning = FALSE, message = FALSE}
 # generate the null distribution with randomization
-null_distribution_2_sample_permute <- gss_small %>%
+null_distribution_2_sample_permute <- gss %>%
   specify(hours ~ college) %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
@@ -170,7 +161,7 @@ We can also generate the null distribution using the theoretical $t$ distributio
 
 ```{r generate-null-2-sample-theoretical, warning = FALSE, message = FALSE}
 # generate the null distribution with the theoretical t
-null_distribution_2_sample_theoretical <- gss_small %>%
+null_distribution_2_sample_theoretical <- gss %>%
   specify(hours ~ college) %>%
   hypothesize(null = "independence") %>%
   # generate() isn't used for the theoretical version!
@@ -226,7 +217,7 @@ Thus, if there were really no relationship between the number of hours worked a 
 Note that, equivalently to the steps shown above, the package supplies a wrapper function, `t_test`, to carry out 2-sample t-Tests on tidy data. The syntax looks like this:
 
 ```{r 2-sample-t-test-wrapper, message = FALSE, warning = FALSE}
-t_test(x = gss_small, 
+t_test(x = gss, 
        formula = hours ~ college, 
        order = c("degree", "no degree"),
        alternative = "two_sided")
