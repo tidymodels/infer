@@ -4,15 +4,16 @@ library(srvyr)
 library(ggplot2)
 
 # pull gss data
-
 temp <- tempfile()
 download.file("https://gss.norc.org/documents/stata/GSS_stata.zip",temp)
-gss_orig <- haven::read_dta(unz(temp, filename = "GSS7218_R1.DTA")) %>%
+
+# if this next line errors with "No such file or directory", try
+# incrementing the number after "_R"
+gss_orig <- haven::read_dta(unz(temp, filename = "GSS7218_R2.DTA")) %>%
   haven::as_factor()
 unlink(temp)
 
 # select relevant columns
-
 gss_small <- gss_orig %>%
   filter(!stringr::str_detect(sample, "blk oversamp")) %>% # this is for weighting
   select(year, age, sex, college = degree, partyid, hompop, 
@@ -49,14 +50,13 @@ gss_small <- gss_orig %>%
          )
          )
 
-# sample 3k of the full data set
-
-set.seed(20191105)
+# sample 3k rows, first dropping NAs
+set.seed(20200201)
 gss <- gss_small %>%
-  sample_n(3000)
+  drop_na() %>%
+  sample_n(500)
 
 # check that the sample is similar unweighted to weighted
-
 gss_wt <- srvyr::as_survey_design(gss, weights = weight)
 
 unweighted <- gss %>%
@@ -70,10 +70,7 @@ weighted <- gss_wt %>%
   group_by(year, sex, partyid) %>%
   summarize(prop = srvyr::survey_mean())
 
-# ehhhh close enough until you really drill down, we'll put a disclaimer
-
 # save data into package
-
 usethis::use_data(gss, overwrite = TRUE)
 
 devtools::document()
