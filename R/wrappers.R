@@ -80,7 +80,7 @@ t_test <- function(x, formula,
     #                                                                  order[2]),
     #                                                       ordered = TRUE)
     # }
-    check_order(x, explanatory_variable(x), order)
+    order <- check_order(x, explanatory_variable(x), order)
     prelim <- stats::t.test(formula = as.formula(paste0(attr(x, "response"),
                                                         " ~ ",
                                                         attr(x, "explanatory"))),
@@ -189,7 +189,7 @@ t_stat <- function(x, formula,
     #                                                                  order[2]),
     #                                                       ordered = TRUE)
     # }
-    check_order(x, explanatory_variable(x), order)
+    order <- check_order(x, explanatory_variable(x), order)
     prelim <- stats::t.test(formula = as.formula(paste0(attr(x, "response"),
                                                         " ~ ",
                                                         attr(x, "explanatory"))),

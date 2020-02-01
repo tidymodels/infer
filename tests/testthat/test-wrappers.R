@@ -11,7 +11,7 @@ iris3 <- iris %>%
 
 test_that("t_test works", {
   # Two Sample
-  expect_error(iris2 %>% t_test(Sepal.Width ~ Species))
+  expect_warning(iris2 %>% t_test(Sepal.Width ~ Species))
 
   expect_error(
     iris2 %>% t_test(response = "Sepal.Width", explanatory = "Species")

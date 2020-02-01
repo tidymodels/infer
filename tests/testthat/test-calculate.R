@@ -125,7 +125,7 @@ test_that("response variable is a factor (two var problems)", {
   expect_silent(
     calculate(gen_iris4a, stat = "z", order = c("large", "small"))
   )
-  expect_error(calculate(gen_iris4a, stat = "z"))
+  expect_warning(calculate(gen_iris4a, stat = "z"))
 })
 
 gen_iris5 <- iris %>%
@@ -144,11 +144,11 @@ test_that("two sample mean-type problems are working", {
     specify(Sepal.Width ~ Sepal.Length.Group) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_error(calculate(gen_iris5a, stat = "diff in means"))
+  expect_warning(calculate(gen_iris5a, stat = "diff in means"))
   expect_silent(
     calculate(gen_iris5a, stat = "diff in means", order = c(">5", "<=5"))
   )
-  expect_error(calculate(gen_iris5a, stat = "t"))
+  expect_warning(calculate(gen_iris5a, stat = "t"))
   expect_silent(calculate(gen_iris5a, stat = "t", order = c(">5", "<=5")))
 })
 
@@ -270,7 +270,8 @@ test_that("`order` is working", {
     calculate(gen_iris11, stat = "diff in means", order = c(">5", "<=4", ">4"))
   )
   # order not given
-  expect_error(calculate(gen_iris11, stat = "diff in means"))
+  expect_warning(calculate(gen_iris11, stat = "diff in means"),
+                 "by default, the explanatory variable has been subtracted")
 })
 
 gen_iris12 <- iris %>%
