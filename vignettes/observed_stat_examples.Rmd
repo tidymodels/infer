@@ -13,7 +13,8 @@ vignette: |
 #### Introduction
 
 ```{r include=FALSE}
-knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5) 
+knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5, 
+                      message = FALSE, warning = FALSE) 
 options(digits = 4)
 ```
 
@@ -21,15 +22,14 @@ This vignette is intended to provide a set of examples that nearly exhaustively 
 
 Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
-```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
+```{r load-packages, echo = FALSE}
 library(devtools)
 library(dplyr)
-library(tidyr)
 devtools::load_all()
 ```
 
 
-```{r load-gss, warning = FALSE, message = FALSE}
+```{r load-gss}
 # load in the dataset
 data(gss)
 
@@ -43,7 +43,7 @@ dplyr::glimpse(gss)
 
 Calculating the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 x_bar <- gss %>%
   specify(response = hours) %>%
   calculate(stat = "mean")
@@ -51,7 +51,7 @@ x_bar <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn <- gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40) %>%
@@ -61,14 +61,14 @@ null_distn <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn) +
   shade_p_value(obs_stat = x_bar, direction = "two_sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn %>%
   get_p_value(obs_stat = x_bar, direction = "two_sided")
 ```
@@ -77,7 +77,7 @@ null_distn %>%
 
 Calculating the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 t_bar <- gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40) %>%
@@ -86,14 +86,14 @@ t_bar <- gss %>%
 
 Alternatively, using the wrapper to calculate the test statistic, 
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 t_bar <- gss %>%
   t_stat(response = hours, mu = 40)
 ```
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn <- gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40) %>%
@@ -103,7 +103,7 @@ null_distn <- gss %>%
 
 Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn_theoretical <- gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40) %>%
@@ -112,21 +112,21 @@ null_distn_theoretical <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn) +
   shade_p_value(obs_stat = t_bar, direction = "two_sided")
 ```
 
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn_theoretical, method = "theoretical") +
   shade_p_value(obs_stat = t_bar, direction = "two_sided")
 ```
 
 Alternatively, visualizing the observed statistic using both of the null distributions,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn, method = "both") +
   shade_p_value(obs_stat = t_bar, direction = "two_sided")
 ```
@@ -135,14 +135,14 @@ Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn %>%
   get_p_value(obs_stat = t_bar, direction = "two_sided")
 ```
 
 Alternatively, using the `t_test` wrapper:
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 gss %>%
   t_test(response = hours, mu = 40)
 ```
@@ -152,7 +152,7 @@ gss %>%
 
 Calculating the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 x_tilde <- gss %>%
   specify(response = age) %>%
   calculate(stat = "median")
@@ -160,7 +160,7 @@ x_tilde <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn <- gss %>%
   specify(response = age) %>%
   hypothesize(null = "point", med = 40) %>% 
@@ -170,14 +170,14 @@ null_distn <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn) +
   shade_p_value(obs_stat = x_tilde, direction = "two_sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn %>%
   get_p_value(obs_stat = x_tilde, direction = "two_sided")
 ```
@@ -186,7 +186,7 @@ null_distn %>%
 
 Calculating the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 p_hat <- gss %>%
   specify(response = sex, success = "female") %>%
   calculate(stat = "prop")
@@ -194,7 +194,7 @@ p_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn <- gss %>%
   specify(response = sex, success = "female") %>%
   hypothesize(null = "point", p = .5) %>%
@@ -204,21 +204,21 @@ null_distn <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn) +
   shade_p_value(obs_stat = p_hat, direction = "two_sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn %>%
   get_p_value(obs_stat = p_hat, direction = "two_sided")
 ```
 
 Note that logical variables will be coerced to factors:
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn <- gss %>%
   dplyr::mutate(is_female = (sex == "female")) %>%
   specify(response = is_female, success = "TRUE") %>%
@@ -235,7 +235,7 @@ Not yet implemented.
 
 Calculating the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 d_hat <- gss %>% 
   specify(college ~ sex, success = "no degree") %>%
   calculate(stat = "diff in props", order = c("female", "male"))
@@ -243,7 +243,7 @@ d_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn <- gss %>%
   specify(college ~ sex, success = "no degree") %>%
   hypothesize(null = "independence") %>% 
@@ -253,14 +253,14 @@ null_distn <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn) +
   shade_p_value(obs_stat = d_hat, direction = "two_sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn %>%
   get_p_value(obs_stat = d_hat, direction = "two_sided")
 ```
@@ -269,7 +269,7 @@ null_distn %>%
 
 Finding the standardized observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 z_hat <- gss %>% 
   specify(college ~ sex, success = "no degree") %>%
   calculate(stat = "z", order = c("female", "male"))
@@ -277,7 +277,7 @@ z_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn <- gss %>%
   specify(college ~ sex, success = "no degree") %>%
   hypothesize(null = "independence") %>% 
@@ -287,7 +287,7 @@ null_distn <- gss %>%
 
 Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn_theoretical <- gss %>%
   specify(college ~ sex, success = "no degree") %>%
   hypothesize(null = "independence") %>%  
@@ -296,21 +296,21 @@ null_distn_theoretical <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn) +
   shade_p_value(obs_stat = z_hat, direction = "two_sided")
 ```
 
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn_theoretical, method = "theoretical") +
   shade_p_value(obs_stat = z_hat, direction = "two_sided")
 ```
 
 Alternatively, visualizing the observed statistic using both of the null distributions,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn, method = "both") +
   shade_p_value(obs_stat = z_hat, direction = "two_sided")
 ```
@@ -319,7 +319,7 @@ Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn %>%
   get_p_value(obs_stat = z_hat, direction = "two_sided")
 ```
@@ -332,7 +332,7 @@ Calculating the observed statistic,
 
 Note the need to add in the hypothesized values here to compute the observed statistic.
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 Chisq_hat <- gss %>%
   specify(response = finrela) %>%
   hypothesize(null = "point",
@@ -347,7 +347,7 @@ Chisq_hat <- gss %>%
 
 Alternatively, using the `chisq_stat` wrapper to calculate the test statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 Chisq_hat <- gss %>%
   chisq_stat(response = finrela,
              p = c("far below average" = 1/6,
@@ -360,7 +360,7 @@ Chisq_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn <- gss %>%
   specify(response = finrela) %>%
   hypothesize(null = "point",
@@ -376,7 +376,7 @@ null_distn <- gss %>%
 
 Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn_theoretical <- gss %>%
   specify(response = finrela) %>%
   hypothesize(null = "point",
@@ -391,21 +391,21 @@ null_distn_theoretical <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn) +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn_theoretical, method = "theoretical") +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
 Alternatively, visualizing the observed statistic using both of the null distributions,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn_theoretical, method = "both") +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
@@ -414,14 +414,14 @@ Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn %>%
   get_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
 Alternatively, using the `chisq_test` wrapper:
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 chisq_test(gss, 
            response = finrela,
            p = c("far below average" = 1/6,
@@ -436,24 +436,24 @@ chisq_test(gss,
 
 Calculating the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 Chisq_hat <- gss %>%
-  specify(formula = partyid ~ class) %>% 
+  specify(formula = finrela ~ sex) %>% 
   calculate(stat = "Chisq")
 ```
 
 Alternatively, using the wrapper to calculate the test statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 Chisq_hat <- gss %>%
-  chisq_stat(formula = partyid ~ class)
+  chisq_stat(formula = finrela ~ sex)
 ```
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn <- gss %>%
-  specify(partyid ~ class) %>%
+  specify(finrela ~ sex) %>%
   hypothesize(null = "independence") %>% 
   generate(reps = 1000, type = "permute") %>% 
   calculate(stat = "Chisq")
@@ -461,30 +461,30 @@ null_distn <- gss %>%
 
 Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn_theoretical <- gss %>%
-  specify(partyid ~ class) %>%
+  specify(finrela ~ sex) %>%
   hypothesize(null = "independence") %>% 
   calculate(stat = "Chisq")
 ```
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn) +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn_theoretical, method = "theoretical") +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
 Alternatively, visualizing the observed statistic using both of the null distributions,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn, method = "both") +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
@@ -493,23 +493,23 @@ Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn %>%
   get_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
 Alternatively, using the wrapper to carry out the test,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 gss %>%
-  chisq_test(formula = partyid ~ class)
+  chisq_test(formula = finrela ~ sex)
 ```
 
 ### One numerical variable, one categorical (2 levels) (diff in means)
 
 Calculating the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 d_hat <- gss %>% 
   specify(age ~ college) %>% 
   calculate(stat = "diff in means", order = c("degree", "no degree"))
@@ -517,7 +517,7 @@ d_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn <- gss %>%
   specify(age ~ college) %>%
   hypothesize(null = "independence") %>%
@@ -527,14 +527,14 @@ null_distn <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn) +
   shade_p_value(obs_stat = d_hat, direction = "two_sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn %>%
   get_p_value(obs_stat = d_hat, direction = "two_sided")
 ```
@@ -543,7 +543,7 @@ null_distn %>%
 
 Finding the standardized observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 t_hat <- gss %>% 
   specify(age ~ college) %>% 
   calculate(stat = "t", order = c("degree", "no degree"))
@@ -551,7 +551,7 @@ t_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn <- gss %>%
   specify(age ~ college) %>%
   hypothesize(null = "independence") %>%
@@ -561,7 +561,7 @@ null_distn <- gss %>%
 
 Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn_theoretical <- gss %>%
   specify(age ~ college) %>%
   hypothesize(null = "independence") %>%
@@ -570,21 +570,21 @@ null_distn_theoretical <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn) +
   shade_p_value(obs_stat = t_hat, direction = "two_sided")
 ```
 
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn_theoretical, method = "theoretical") +
   shade_p_value(obs_stat = t_hat, direction = "two_sided")
 ```
 
 Alternatively, visualizing the observed statistic using both of the null distributions,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn, method = "both") +
   shade_p_value(obs_stat = t_hat, direction = "two_sided")
 ```
@@ -593,7 +593,7 @@ Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn %>%
   get_p_value(obs_stat = t_hat, direction = "two_sided")
 ```
@@ -604,7 +604,7 @@ Note the similarities in this plot and the previous one.
 
 Calculating the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 d_hat <- gss %>% 
   specify(age ~ college) %>% 
   calculate(stat = "diff in medians", order = c("degree", "no degree"))
@@ -612,7 +612,7 @@ d_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn <- gss %>%
   specify(age ~ college) %>% # alt: response = age, explanatory = season
   hypothesize(null = "independence") %>%
@@ -622,14 +622,14 @@ null_distn <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn) +
   shade_p_value(obs_stat = d_hat, direction = "two_sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn %>%
   get_p_value(obs_stat = d_hat, direction = "two_sided")
 ```
@@ -638,7 +638,7 @@ null_distn %>%
 
 Calculating the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 F_hat <- gss %>% 
   specify(age ~ partyid) %>%
   calculate(stat = "F")
@@ -646,7 +646,7 @@ F_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn <- gss %>%
    specify(age ~ partyid) %>%
    hypothesize(null = "independence") %>%
@@ -656,7 +656,7 @@ null_distn <- gss %>%
 
 Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn_theoretical <- gss %>%
    specify(age ~ partyid) %>%
    hypothesize(null = "independence") %>%
@@ -665,21 +665,21 @@ null_distn_theoretical <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn) +
   shade_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn_theoretical, method = "theoretical") +
   shade_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
 Alternatively, visualizing the observed statistic using both of the null distributions,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn, mdthod = "both") +
   shade_p_value(obs_stat = F_hat, direction = "greater")
 ```
@@ -688,7 +688,7 @@ Note that the above code makes use of the randomization-based null distribution.
 
 Calculating the p-value from the null distribution and observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn %>%
   get_p_value(obs_stat = F_hat, direction = "greater")
 ```
@@ -697,7 +697,7 @@ null_distn %>%
 
 Calculating the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 slope_hat <- gss %>% 
   specify(hours ~ age) %>% 
   calculate(stat = "slope")
@@ -705,7 +705,7 @@ slope_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn <- gss %>%
    specify(hours ~ age) %>% 
    hypothesize(null = "independence") %>%
@@ -715,14 +715,14 @@ null_distn <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn) +
   shade_p_value(obs_stat = slope_hat, direction = "two_sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn %>%
   get_p_value(obs_stat = slope_hat, direction = "two_sided")
 ```
@@ -731,7 +731,7 @@ null_distn %>%
 
 Calculating the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 correlation_hat <- gss %>% 
   specify(hours ~ age) %>% 
   calculate(stat = "correlation")
@@ -739,7 +739,7 @@ correlation_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn <- gss %>%
    specify(hours ~ age) %>% 
    hypothesize(null = "independence") %>%
@@ -749,14 +749,14 @@ null_distn <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(null_distn) +
   shade_p_value(obs_stat = correlation_hat, direction = "two_sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 null_distn %>%
   get_p_value(obs_stat = correlation_hat, direction = "two_sided")
 ```
@@ -772,7 +772,7 @@ Not currently implemented since $t$ could refer to standardized slope or standar
 
 Finding the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 x_bar <- gss %>% 
   specify(response = hours) %>%
   calculate(stat = "mean")
@@ -780,7 +780,7 @@ x_bar <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 boot <- gss %>%
    specify(response = hours) %>%
    generate(reps = 1000, type = "bootstrap") %>%
@@ -789,20 +789,20 @@ boot <- gss %>%
 
 Use the null distribution to find a confidence interval,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 percentile_ci <- get_ci(boot)
 ```
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
 Alternatively, use the null distribution to find a confidence interval using the standard error,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 standard_error_ci <- get_ci(boot, type = "se", point_estimate = x_bar)
 
 visualize(boot) +
@@ -813,37 +813,39 @@ visualize(boot) +
 
 Finding the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 t_hat <- gss %>% 
   specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
   calculate(stat = "t")
 ```
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 boot <- gss %>%
    specify(response = hours) %>%
+   hypothesize(null = "point", mu = 40) %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "t")
 ```
 
 Use the null distribution to find a confidence interval,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 percentile_ci <- get_ci(boot)
 ```
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
 Alternatively, use the null distribution to find a confidence interval using the standard error,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 standard_error_ci <- boot %>%
   get_ci(type = "se", point_estimate = t_hat)
 
@@ -856,7 +858,7 @@ visualize(boot) +
 
 Finding the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 p_hat <- gss %>% 
    specify(response = sex, success = "female") %>%
    calculate(stat = "prop")
@@ -864,7 +866,7 @@ p_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 boot <- gss %>%
  specify(response = sex, success = "female") %>%
  generate(reps = 1000, type = "bootstrap") %>%
@@ -873,20 +875,20 @@ boot <- gss %>%
 
 Use the null distribution to find a confidence interval,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 percentile_ci <- get_ci(boot)
 ```
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
 Alternatively, use the null distribution to find a confidence interval using the standard error,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 standard_error_ci <- boot %>%
   get_ci(type = "se", point_estimate = p_hat)
 
@@ -902,7 +904,7 @@ Not yet implemented.
 
 Finding the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 d_hat <- gss %>%
   specify(hours ~ college) %>%
   calculate(stat = "diff in means", order = c("degree", "no degree"))
@@ -910,7 +912,7 @@ d_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 boot <- gss %>%
    specify(hours ~ college) %>%
    generate(reps = 1000, type = "bootstrap") %>%
@@ -919,20 +921,20 @@ boot <- gss %>%
 
 Use the null distribution to find a confidence interval,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 percentile_ci <- get_ci(boot)
 ```
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
 Alternatively, use the null distribution to find a confidence interval using the standard error,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 standard_error_ci <- boot %>%
   get_ci(type = "se", point_estimate = d_hat)
 
@@ -944,7 +946,7 @@ visualize(boot) +
 
 Finding the standardized point estimate,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 t_hat <- gss %>%
   specify(hours ~ college) %>%
   calculate(stat = "t", order = c("degree", "no degree"))
@@ -952,7 +954,7 @@ t_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 boot <- gss %>%
    specify(hours ~ college) %>%
    generate(reps = 1000, type = "bootstrap") %>%
@@ -961,20 +963,20 @@ boot <- gss %>%
 
 Use the null distribution to find a confidence interval,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 percentile_ci <- get_ci(boot)
 ```
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
 Alternatively, use the null distribution to find a confidence interval using the standard error,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 standard_error_ci <- boot %>%
   get_ci(type = "se", point_estimate = t_hat)
 
@@ -987,7 +989,7 @@ visualize(boot) +
 
 Finding the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 d_hat <- gss %>% 
   specify(college ~ sex, success = "degree") %>%
   calculate(stat = "diff in props", order = c("female", "male"))
@@ -995,7 +997,7 @@ d_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 boot <- gss %>%
   specify(college ~ sex, success = "degree") %>%
   generate(reps = 1000, type = "bootstrap") %>% 
@@ -1004,20 +1006,20 @@ boot <- gss %>%
 
 Use the null distribution to find a confidence interval,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 percentile_ci <- get_ci(boot)
 ```
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
 Alternatively, use the null distribution to find a confidence interval using the standard error,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 standard_error_ci <- boot %>%
   get_ci(type = "se", point_estimate = d_hat)
 
@@ -1029,7 +1031,7 @@ visualize(boot) +
 
 Finding the standardized point estimate,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 z_hat <- gss %>% 
   specify(college ~ sex, success = "degree") %>%
   calculate(stat = "z", order = c("female", "male"))
@@ -1037,7 +1039,7 @@ z_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 boot <- gss %>%
   specify(college ~ sex, success = "degree") %>%
   generate(reps = 1000, type = "bootstrap") %>% 
@@ -1046,20 +1048,20 @@ boot <- gss %>%
 
 Use the null distribution to find a confidence interval,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 percentile_ci <- get_ci(boot)
 ```
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
 Alternatively, use the null distribution to find a confidence interval using the standard error,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 standard_error_ci <- boot %>%
   get_ci(type = "se", point_estimate = z_hat)
 
@@ -1072,7 +1074,7 @@ visualize(boot) +
 
 Finding the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 slope_hat <- gss %>% 
   specify(hours ~ age) %>%
   calculate(stat = "slope")
@@ -1080,7 +1082,7 @@ slope_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 boot <- gss %>%
    specify(hours ~ age) %>% 
    generate(reps = 1000, type = "bootstrap") %>%
@@ -1089,20 +1091,20 @@ boot <- gss %>%
 
 Use the null distribution to find a confidence interval,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 percentile_ci <- get_ci(boot)
 ```
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
 Alternatively, use the null distribution to find a confidence interval using the standard error,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 standard_error_ci <- boot %>%
   get_ci(type = "se", point_estimate = slope_hat)
 
@@ -1114,7 +1116,7 @@ visualize(boot) +
 
 Finding the observed statistic,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 correlation_hat <- gss %>% 
   specify(hours ~ age) %>%
   calculate(stat = "correlation")
@@ -1122,7 +1124,7 @@ correlation_hat <- gss %>%
 
 Then, generating the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 boot <- gss %>%
    specify(hours ~ age) %>% 
    generate(reps = 1000, type = "bootstrap") %>%
@@ -1131,20 +1133,20 @@ boot <- gss %>%
 
 Use the null distribution to find a confidence interval,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 percentile_ci <- get_ci(boot)
 ```
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
 Alternatively, use the null distribution to find a confidence interval using the standard error,
 
-```{r, message = FALSE, warning = FALSE}
+```{r}
 standard_error_ci <- boot %>%
   get_ci(type = "se", point_estimate = correlation_hat)
 

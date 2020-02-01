@@ -27,12 +27,11 @@ The workflow of this package is designed around this idea. Starting out with som
 + `generate()` allows you to generate data reflecting the null hypothesis.
 + `calculate()` allows you to calculate a distribution of statistics from the generated data to form the null distribution.
 
-Throughout this vignette, we make use of `gss`, a dataset supplied by `infer` containing a sample of 3000 observations of 11 variables from the *General Social Survey*. 
+Throughout this vignette, we make use of `gss`, a dataset supplied by `infer` containing a sample of 500 observations of 11 variables from the *General Social Survey*. 
 
 ```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(devtools)
 library(dplyr)
-library(tidyr)
 devtools::load_all()
 ```
 
@@ -172,7 +171,7 @@ point_estimate <- gss %>%
 null_dist <- gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40) %>%
-  generate(reps = 10000, type = "bootstrap") %>%
+  generate(reps = 1000, type = "bootstrap") %>%
   calculate(stat = "mean")
 ```
 
@@ -195,7 +194,7 @@ null_dist %>%
   shade_p_value(obs_stat = point_estimate, direction = "two_sided")
 ```
 
-Notice that `infer` has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the `+` operator to apply the `shade_p_value` function. This is because `visualize` outputs a plot object from `ggplot2` instead of a data frame, and the `+` operator is needed to add the p-value layer to the plot object.) The red bar looks like it's pretty far out on the right tail of the null distribution, so observing a sample mean of `r point_estimate` hours would be pretty unlikely if the mean was actually 40 hours. How unlikely, though?
+Notice that `infer` has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the `+` operator to apply the `shade_p_value` function. This is because `visualize` outputs a plot object from `ggplot2` instead of a data frame, and the `+` operator is needed to add the p-value layer to the plot object.) The red bar looks like it's slightly far out on the right tail of the null distribution, so observing a sample mean of `r point_estimate` hours would be somewhat unlikely if the mean was actually 40 hours. How unlikely, though?
 
 ```{r get_p_value, warning = FALSE, message = FALSE}
 # get a two-tailed p-value
