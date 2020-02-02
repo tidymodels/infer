@@ -5,6 +5,9 @@
 
 #' Tidy t-test
 #'
+#' @description
+#' \lifecycle{maturing}
+#'
 #' A tidier version of [t.test()][stats::t.test()] for two sample tests.
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
@@ -116,6 +119,9 @@ t_test <- function(x, formula,
 
 #' Tidy t-test statistic
 #'
+#' @description
+#' \lifecycle{maturing}
+#' 
 #' A shortcut wrapper function to get the observed test statistic for a t test.
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
@@ -218,6 +224,9 @@ t_stat <- function(x, formula,
 
 #' Tidy chi-squared test
 #'
+#' @description
+#' \lifecycle{maturing}
+#'
 #' A tidier version of [chisq.test()][stats::chisq.test()] for goodness of fit
 #' tests and tests of independence.
 #'
@@ -282,6 +291,9 @@ chisq_test <- function(x, formula, response = NULL,
 }
 
 #' Tidy chi-squared test statistic
+#'
+#'  @description
+#' \lifecycle{maturing}
 #'
 #' A shortcut wrapper function to get the observed test statistic for a chisq
 #' test. Uses [chisq.test()][stats::chisq.test()], which applies a continuity

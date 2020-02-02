@@ -1,7 +1,7 @@
 #' Generate resamples, permutations, or simulations
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{lifecycle::badge("questioning")}
+#' \lifecycle{questioning}
 #' 
 #' Generation creates a null distribution from [specify()] and (if needed) 
 #' [hypothesize()] inputs.

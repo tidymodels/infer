@@ -31,7 +31,7 @@ A list of \\{ggplot2\\} objects to be added to the \code{visualize()}
 output.
 }
 \description{
-\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+\lifecycle{maturing}
 
 \code{shade_p_value()} plots p-value region(s) (using "area under the curve"
 approach) on top of the \code{\link[=visualize]{visualize()}} output. It should be used as

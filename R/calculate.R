@@ -1,7 +1,7 @@
 #' Calculate summary statistics
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#' \lifecycle{maturing}
 #' 
 #' Calculates summary statistics from outputs of [generate()] or 
 #' [hypothesize()].

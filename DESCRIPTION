@@ -47,6 +47,8 @@ Suggests:
 URL: https://github.com/tidymodels/infer,
      https://infer.netlify.com/
 BugReports: https://github.com/tidymodels/infer/issues
+RdMacros: 
+    lifecycle
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.0.2
 VignetteBuilder: knitr

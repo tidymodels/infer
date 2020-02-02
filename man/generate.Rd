@@ -21,7 +21,7 @@ A tibble containing \code{reps} generated datasets, indicated by the
 \code{replicate} column.
 }
 \description{
-\Sexpr[results=rd, stage=render]{lifecycle::badge("questioning")}
+\lifecycle{questioning}
 
 Generation creates a null distribution from \code{\link[=specify]{specify()}} and (if needed)
 \code{\link[=hypothesize]{hypothesize()}} inputs.

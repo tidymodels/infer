@@ -1,7 +1,7 @@
 #' Declare a null hypothesis
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#' \lifecycle{maturing}
 #' 
 #' Declare a null hypothesis about variables selected in [specify()].
 #' 
