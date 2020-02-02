@@ -1,3 +1,15 @@
+# infer 0.5.2
+
+- Warn the user when a p-value of 0 is reported (#257, #273)
+- Added new vignettes: `chi_squared` and `anova` (#268)
+- Updates to documentation and existing vignettes (#268)
+- Add alias for `hypothesize()` (`hypothesise()`) (#271)
+- Subtraction order no longer required for difference-based tests--a warning will be raised in the case that the user doesn't supply an `order` argument (#275, #281)
+- Add new messages for common errors (#277)
+- Increase coverage of theoretical methods in documentation (#278, #280)
+- Drop missing values and reduce size of `gss` dataset used in examples (#282)
+- Fix formatting of lifecycle badges (#283)
+
 # infer 0.5.1
 
 - Updates to documentation and other tweaks
