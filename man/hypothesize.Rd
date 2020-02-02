@@ -32,7 +32,7 @@ A tibble containing the response (and explanatory, if specified)
 variable data with parameter information stored as well.
 }
 \description{
-\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+\lifecycle{maturing}
 
 Declare a null hypothesis about variables selected in \code{\link[=specify]{specify()}}.
 

@@ -46,6 +46,8 @@ interval or not. \code{TRUE} by default.}
 \item{...}{Pass in arguments to \\{infer\\} functions.}
 }
 \description{
+\lifecycle{maturing}
+
 A shortcut wrapper function to get the observed test statistic for a t test.
 }
 \examples{

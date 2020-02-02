@@ -1,7 +1,7 @@
 #' Compute p-value
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{lifecycle::badge("stable")}
+#' \lifecycle{stable}
 #'
 #' Compute a p-value from a null distribution and observed statistc. 
 #' Simulation-based methods are (currently only) supported.

@@ -82,7 +82,7 @@ A ggplot object showing the simulation-based distribution as a
 histogram or bar graph. Also used to show the theoretical curves.
 }
 \description{
-\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+\lifecycle{maturing}
 
 Visualize the distribution of the simulation-based inferential statistics or
 the theoretical distribution (or both!).

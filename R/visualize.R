@@ -1,7 +1,7 @@
 #' Visualize statistical inference
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+#' \lifecycle{maturing}
 #'
 #' Visualize the distribution of the simulation-based inferential statistics or
 #' the theoretical distribution (or both!).

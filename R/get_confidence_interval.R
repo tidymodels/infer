@@ -1,7 +1,7 @@
 #' Compute confidence interval
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{lifecycle::badge("stable")}
+#' \lifecycle{stable}
 #'
 #' Compute a confidence interval around a summary statistic. Only 
 #' simulation-based methods are (currently only) supported.

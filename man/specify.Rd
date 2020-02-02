@@ -28,7 +28,7 @@ A tibble containing the response (and explanatory, if specified)
 variable data.
 }
 \description{
-\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+\lifecycle{maturing}
 
 \code{specify()} is used to specify which columns in the supplied data frame are
 the relevant response (and, if applicable, explanatory) variables. Note that

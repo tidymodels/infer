@@ -46,6 +46,8 @@ interval or not. \code{TRUE} by default.}
 \item{...}{For passing in other arguments to \link[stats:t.test]{t.test()}.}
 }
 \description{
+\lifecycle{maturing}
+
 A tidier version of \link[stats:t.test]{t.test()} for two sample tests.
 }
 \examples{

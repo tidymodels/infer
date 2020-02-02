@@ -32,7 +32,7 @@ A list of \\{ggplot2\\} objects to be added to the \code{visualize()}
 output.
 }
 \description{
-\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
+\lifecycle{maturing}
 
 \code{shade_confidence_interval()} plots confidence interval region on top of the
 \code{\link[=visualize]{visualize()}} output. It should be used as \\{ggplot2\\} layer function (see
