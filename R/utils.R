@@ -129,17 +129,17 @@ check_order <- function(x, explanatory_variable, order) {
     )
   }
   if (is.null(order)) {
-    # Default to subtracting the first (alphabetically) level from the second,
-    # unless the explanatory variable is a factor (in which case order is 
-    # preserved); raise a warning if this was done implicitly.
+    # Default to subtracting/dividing the first (alphabetically) level by the 
+    # second, unless the explanatory variable is a factor (in which case order 
+    # is preserved); raise a warning if this was done implicitly.
     order <- as.character(unique_ex)
     warning_glue(
-      "The statistic is based on a difference; by default, the ",
-      "explanatory variable has been subtracted in the order ", 
-      "\"{unique_ex[1]}\" - \"{unique_ex[2]}\". To specify the ",
-      "order yourself, provide `order = c(\"{unique_ex[1]}\", ",
-      "\"{unique_ex[2]}\")` (to subtract in the order ",
-      "\"{unique_ex[1]}\" - \"{unique_ex[2]}\") to the calculate() function."
+      "The statistic is based on a difference or ratio; by default, for ",
+      "difference-based statistics, the explanatory variable is subtracted ",
+      "in the order \"{unique_ex[1]}\" - \"{unique_ex[2]}\", or divided in ", 
+      "the order \"{unique_ex[1]}\" / \"{unique_ex[2]}\" for ratio-based ",
+      "statistics. To specify this order yourself, supply `order = ",
+      "c(\"{unique_ex[1]}\", \"{unique_ex[2]}\")` to the calculate() function."
     )
   } else {
     if (xor(is.na(order[1]), is.na(order[2]))) {
@@ -169,7 +169,7 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
     !stat %in% c(
       "mean", "median", "sum", "sd", "prop", "count", "diff in means",
       "diff in medians", "diff in props", "Chisq", "F", "slope", "correlation",
-      "t", "z"
+      "t", "z", "ratio of props"
     )
   ) {
     stop_glue(
@@ -194,7 +194,7 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
     }
   }
 
-  if (stat %in% c("diff in props", "Chisq")) {
+  if (stat %in% c("diff in props", "ratio of props", "Chisq")) {
     if (has_explanatory(x) && !is.factor(response_variable(x))) {
       stop_glue(
         'The response variable of `{attr(x, "response")}` is not appropriate\n',
@@ -219,7 +219,8 @@ check_for_numeric_stat <- function(x, stat) {
 }
 
 check_for_factor_stat <- function(x, stat, explanatory_variable) {
-  if (stat %in% c("diff in means", "diff in medians", "diff in props", "F")) {
+  if (stat %in% c("diff in means", "diff in medians", "diff in props", 
+                  "F", "ratio of props")) {
     if (!is.factor(explanatory_variable)) {
       stop_glue(
         'The explanatory variable of `{attr(x, "explanatory")}` is not ',

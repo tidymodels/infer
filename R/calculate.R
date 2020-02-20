@@ -13,7 +13,7 @@
 #' @param stat A string giving the type of the statistic to calculate. Current
 #'   options include `"mean"`, `"median"`, `"sum"`, `"sd"`, `"prop"`, `"count"`,
 #'   `"diff in means"`, `"diff in medians"`, `"diff in props"`, `"Chisq"`,
-#'   `"F"`, `"t"`, `"z"`, `"slope"`, and `"correlation"`.
+#'   `"F"`, `"t"`, `"z"`, `"ratio of props"`, `"slope"`, and `"correlation"`.
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction, where `order =
 #'   c("first", "second")` means `("first" - "second")` Needed for inference on
@@ -51,7 +51,8 @@ calculate <- function(x,
                       stat = c(
                         "mean", "median", "sum", "sd", "prop", "count",
                         "diff in means", "diff in medians", "diff in props",
-                        "Chisq", "F", "slope", "correlation", "t", "z"
+                        "Chisq", "F", "slope", "correlation", "t", "z",
+                        "ratio of props"
                       ),
                       order = NULL,
                       ...) {
@@ -74,7 +75,8 @@ calculate <- function(x,
     } else if (
       stat %in% c(
         "mean", "median", "sum", "sd", "prop", "count", "diff in means",
-        "diff in medians", "diff in props", "slope", "correlation"
+        "diff in medians", "diff in props", "slope", "correlation", 
+        "ratio of props"
       )
     ) {
       stop_glue(
@@ -94,7 +96,8 @@ calculate <- function(x,
   }
   
   if (
-    (stat %in% c("diff in means", "diff in medians", "diff in props")) ||
+    (stat %in% c("diff in means", "diff in medians", 
+                 "diff in props", "ratio of props")) ||
     (
       !is_nuat(x, "theory_type") &&
       (attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))
@@ -104,7 +107,8 @@ calculate <- function(x,
   }
 
   if (!(
-    (stat %in% c("diff in means", "diff in medians", "diff in props")) ||
+    (stat %in% c("diff in means", "diff in medians", 
+                 "diff in props", "ratio of props")) ||
     (
       !is_nuat(x, "theory_type") &&
       attr(x, "theory_type") %in% c("Two sample props z", "Two sample t")
@@ -313,17 +317,25 @@ calc_impl.Chisq <- function(type, x, order, ...) {
   }
 }
 
-calc_impl.diff_in_props <- function(type, x, order, ...) {
+calc_impl.function_of_props <- function(type, x, order, operator, ...) {
   col <- attr(x, "response")
   success <- attr(x, "success")
-
+  
   x %>%
     dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
     dplyr::summarize(prop = mean(!!sym(col) == success, ...)) %>%
     dplyr::summarize(
-      stat = prop[!!attr(x, "explanatory") == order[1]] -
-        prop[!!attr(x, "explanatory") == order[2]]
+      stat = operator(prop[!!attr(x, "explanatory") == order[1]],
+        prop[!!attr(x, "explanatory") == order[2]])
     )
+}
+
+calc_impl.diff_in_props <- function(type, x, order, ...) {
+  calc_impl.function_of_props(type, x, order, operator = `-`, ...)
+}
+
+calc_impl.ratio_of_props <- function(type, x, order, ...) {
+  calc_impl.function_of_props(type, x, order, operator = `/`, ...)
 }
 
 calc_impl.t <- function(type, x, order, ...) {
