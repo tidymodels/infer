@@ -271,7 +271,7 @@ test_that("`order` is working", {
   )
   # order not given
   expect_warning(calculate(gen_iris11, stat = "diff in means"),
-                 "by default, the explanatory variable has been subtracted")
+                 "The statistic is based on a difference or ratio")
 })
 
 gen_iris12 <- iris %>%
