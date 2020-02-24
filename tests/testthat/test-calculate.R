@@ -105,6 +105,8 @@ test_that("response variable is a factor (two var problems)", {
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
   expect_error(calculate(gen_iris4, stat = "diff in props"))
+  expect_error(calculate(gen_iris4, stat = "ratio of props"))
+  expect_error(calculate(gen_iris4, stat = "odds ratio"))
 
   expect_error(calculate(gen_iris4, stat = "t"))
 
@@ -121,6 +123,12 @@ test_that("response variable is a factor (two var problems)", {
     generate(reps = 10, type = "permute")
   expect_silent(
     calculate(gen_iris4a, stat = "diff in props", order = c("large", "small"))
+  )
+  expect_silent(
+    calculate(gen_iris4a, stat = "ratio of props", order = c("large", "small"))
+  )
+  expect_silent(
+    calculate(gen_iris4a, stat = "odds ratio", order = c("large", "small"))
   )
   expect_silent(
     calculate(gen_iris4a, stat = "z", order = c("large", "small"))
