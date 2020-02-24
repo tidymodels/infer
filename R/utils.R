@@ -169,7 +169,7 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
     !stat %in% c(
       "mean", "median", "sum", "sd", "prop", "count", "diff in means",
       "diff in medians", "diff in props", "Chisq", "F", "slope", "correlation",
-      "t", "z", "ratio of props"
+      "t", "z", "ratio of props", "odds ratio"
     )
   ) {
     stop_glue(
@@ -194,7 +194,7 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
     }
   }
 
-  if (stat %in% c("diff in props", "ratio of props", "Chisq")) {
+  if (stat %in% c("diff in props", "ratio of props", "Chisq", "odds ratio")) {
     if (has_explanatory(x) && !is.factor(response_variable(x))) {
       stop_glue(
         'The response variable of `{attr(x, "response")}` is not appropriate\n',
@@ -220,7 +220,7 @@ check_for_numeric_stat <- function(x, stat) {
 
 check_for_factor_stat <- function(x, stat, explanatory_variable) {
   if (stat %in% c("diff in means", "diff in medians", "diff in props", 
-                  "F", "ratio of props")) {
+                  "F", "ratio of props", "odds ratio")) {
     if (!is.factor(explanatory_variable)) {
       stop_glue(
         'The explanatory variable of `{attr(x, "explanatory")}` is not ',

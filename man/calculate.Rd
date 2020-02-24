@@ -8,7 +8,7 @@ calculate(
   x,
   stat = c("mean", "median", "sum", "sd", "prop", "count", "diff in means",
     "diff in medians", "diff in props", "Chisq", "F", "slope", "correlation", "t", "z",
-    "ratio of props"),
+    "ratio of props", "odds ratio"),
   order = NULL,
   ...
 )

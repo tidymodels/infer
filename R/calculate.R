@@ -52,7 +52,7 @@ calculate <- function(x,
                         "mean", "median", "sum", "sd", "prop", "count",
                         "diff in means", "diff in medians", "diff in props",
                         "Chisq", "F", "slope", "correlation", "t", "z",
-                        "ratio of props"
+                        "ratio of props", "odds ratio"
                       ),
                       order = NULL,
                       ...) {
@@ -76,7 +76,7 @@ calculate <- function(x,
       stat %in% c(
         "mean", "median", "sum", "sd", "prop", "count", "diff in means",
         "diff in medians", "diff in props", "slope", "correlation", 
-        "ratio of props"
+        "ratio of props", "odds ratio"
       )
     ) {
       stop_glue(
@@ -97,7 +97,7 @@ calculate <- function(x,
   
   if (
     (stat %in% c("diff in means", "diff in medians", 
-                 "diff in props", "ratio of props")) ||
+                 "diff in props", "ratio of props", "odds ratio")) ||
     (
       !is_nuat(x, "theory_type") &&
       (attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))
@@ -108,7 +108,7 @@ calculate <- function(x,
 
   if (!(
     (stat %in% c("diff in means", "diff in medians", 
-                 "diff in props", "ratio of props")) ||
+                 "diff in props", "ratio of props", "odds ratio")) ||
     (
       !is_nuat(x, "theory_type") &&
       attr(x, "theory_type") %in% c("Two sample props z", "Two sample t")
@@ -336,6 +336,21 @@ calc_impl.diff_in_props <- function(type, x, order, ...) {
 
 calc_impl.ratio_of_props <- function(type, x, order, ...) {
   calc_impl.function_of_props(type, x, order, operator = `/`, ...)
+}
+
+calc_impl.odds_ratio <- function(type, x, order, ...) {
+  col <- attr(x, "response")
+  success <- attr(x, "success")
+  
+  x %>%
+    dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
+    dplyr::summarize(prop = mean(!!sym(col) == success, ...)) %>%
+    dplyr::summarize(
+      prop_1 = prop[!!attr(x, "explanatory") == order[1]],
+      prop_2 = prop[!!attr(x, "explanatory") == order[2]],
+      stat =  (prop_1 / prop_2) / ((1 - prop_1) / (1 - prop_2))
+    ) %>%
+    dplyr::select(stat)
 }
 
 calc_impl.t <- function(type, x, order, ...) {
