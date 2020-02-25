@@ -495,3 +495,42 @@ test_that("calc_impl.count works", {
     gen_iris12 %>% dplyr::summarise(stat = sum(Sepal.Length.Group == ">5"))
   )
 })
+
+
+gss_biased <- gss %>% 
+  dplyr::filter(!(sex == "male" & college == "no degree" & age < 40))
+
+gss_tbl <- table(gss_biased$sex, gss_biased$college)
+
+test_that("calc_impl.odds_ratio works", {
+  
+  base_odds_ratio <- {(gss_tbl[1,1] * gss_tbl[2,2]) / 
+    (gss_tbl[1,2] * gss_tbl[2,1])}
+  
+  expect_equal({
+    gss_biased %>% 
+      specify(college ~ sex, success = "degree") %>%
+      calculate(stat = "odds ratio", order = c("female", "male")) %>%
+      dplyr::pull()
+  },
+                expected = base_odds_ratio,
+                tolerance = .001)
+  
+})
+
+test_that("calc_impl.ratio_of_props works", {
+  
+  base_ratio_of_props <- {(gss_tbl[1,2] / sum(gss_tbl[1,])) / 
+      (gss_tbl[2,2] / sum(gss_tbl[2,]))}
+  
+  expect_equal({
+    gss_biased %>% 
+      specify(college ~ sex, success = "degree") %>%
+      calculate(stat = "ratio of props", order = c("male", "female")) %>%
+      dplyr::pull()
+  },
+                expected = base_ratio_of_props,
+                tolerance = .001)
+  
+})
+
