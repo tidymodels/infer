@@ -116,8 +116,8 @@ calculate <- function(x,
   )) {
     if (!is.null(order)) {
       warning_glue(
-        "Statistic is not based on a difference; the `order` argument ",
-        "is ignored. Check `?calculate` for details."
+        "Statistic is not based on a difference or ratio; the `order` argument",
+        " will be ignored. Check `?calculate` for details."
       )
     }
   }

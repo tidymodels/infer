@@ -124,8 +124,8 @@ check_order <- function(x, explanatory_variable, order) {
   unique_ex <- sort(unique(explanatory_variable))
   if (length(unique_ex) != 2) {
     stop_glue(
-      "Statistic is based on a difference; the explanatory variable should ",
-      "have two levels."
+      "Statistic is based on a difference or ratio; the explanatory variable", 
+      "should have two levels."
     )
   }
   if (is.null(order)) {
