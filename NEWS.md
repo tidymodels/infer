@@ -9,6 +9,7 @@
 - Increase coverage of theoretical methods in documentation (#278, #280)
 - Drop missing values and reduce size of `gss` dataset used in examples (#282)
 - Fix formatting of lifecycle badges (#283)
+- Add `stat = "ratio of props"` and `stat = "odds ratio"` to `calculate` (#285)
 
 # infer 0.5.1
 

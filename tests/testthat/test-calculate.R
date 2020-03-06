@@ -105,6 +105,8 @@ test_that("response variable is a factor (two var problems)", {
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
   expect_error(calculate(gen_iris4, stat = "diff in props"))
+  expect_error(calculate(gen_iris4, stat = "ratio of props"))
+  expect_error(calculate(gen_iris4, stat = "odds ratio"))
 
   expect_error(calculate(gen_iris4, stat = "t"))
 
@@ -121,6 +123,12 @@ test_that("response variable is a factor (two var problems)", {
     generate(reps = 10, type = "permute")
   expect_silent(
     calculate(gen_iris4a, stat = "diff in props", order = c("large", "small"))
+  )
+  expect_silent(
+    calculate(gen_iris4a, stat = "ratio of props", order = c("large", "small"))
+  )
+  expect_silent(
+    calculate(gen_iris4a, stat = "odds ratio", order = c("large", "small"))
   )
   expect_silent(
     calculate(gen_iris4a, stat = "z", order = c("large", "small"))
@@ -271,7 +279,7 @@ test_that("`order` is working", {
   )
   # order not given
   expect_warning(calculate(gen_iris11, stat = "diff in means"),
-                 "by default, the explanatory variable has been subtracted")
+                 "The statistic is based on a difference or ratio")
 })
 
 gen_iris12 <- iris %>%
@@ -487,3 +495,37 @@ test_that("calc_impl.count works", {
     gen_iris12 %>% dplyr::summarise(stat = sum(Sepal.Length.Group == ">5"))
   )
 })
+
+
+gss_biased <- gss %>% 
+  dplyr::filter(!(sex == "male" & college == "no degree" & age < 40))
+
+gss_tbl <- table(gss_biased$sex, gss_biased$college)
+
+test_that("calc_impl.odds_ratio works", {
+  base_odds_ratio <- {(gss_tbl[1,1] * gss_tbl[2,2]) / 
+    (gss_tbl[1,2] * gss_tbl[2,1])}
+  
+  expect_equal(
+    gss_biased %>% 
+      specify(college ~ sex, success = "degree") %>%
+      calculate(stat = "odds ratio", order = c("female", "male")) %>%
+      dplyr::pull(),
+    expected = base_odds_ratio,
+    tolerance = .001)
+})
+
+test_that("calc_impl.ratio_of_props works", {
+  base_ratio_of_props <- {(gss_tbl[1,2] / sum(gss_tbl[1,])) / 
+      (gss_tbl[2,2] / sum(gss_tbl[2,]))}
+  
+  expect_equal(
+    gss_biased %>% 
+      specify(college ~ sex, success = "degree") %>%
+      calculate(stat = "ratio of props", order = c("male", "female")) %>%
+      dplyr::pull(),
+    expected = base_ratio_of_props,
+    tolerance = .001)
+  
+})
+

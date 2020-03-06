@@ -233,6 +233,8 @@ Not yet implemented.
 
 ### Two categorical (2 level) variables
 
+The `infer` package provides several statistics to work with data of this type. One of them is the statistic for difference in proportions. 
+
 Calculating the observed statistic,
 
 ```{r}
@@ -263,6 +265,74 @@ Calculating the p-value from the null distribution and observed statistic,
 ```{r}
 null_distn %>%
   get_p_value(obs_stat = d_hat, direction = "two_sided")
+```
+
+`infer` also provides functionality to calculate ratios of proportions. The workflow looks similar to that for `diff in props`.
+
+Calculating the observed statistic,
+
+```{r}
+r_hat <- gss %>% 
+  specify(college ~ sex, success = "no degree") %>%
+  calculate(stat = "ratio of props", order = c("female", "male"))
+```
+
+Then, generating the null distribution,
+
+```{r}
+null_distn <- gss %>%
+  specify(college ~ sex, success = "no degree") %>%
+  hypothesize(null = "independence") %>% 
+  generate(reps = 1000) %>% 
+  calculate(stat = "ratio of props", order = c("female", "male"))
+```
+
+Visualizing the observed statistic alongside the null distribution,
+
+```{r}
+visualize(null_distn) +
+  shade_p_value(obs_stat = r_hat, direction = "two_sided")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r}
+null_distn %>%
+  get_p_value(obs_stat = r_hat, direction = "two_sided")
+```
+
+In addition, the package provides functionality to calculate odds ratios. The workflow also looks similar to that for `diff in props`.
+
+Calculating the observed statistic,
+
+```{r}
+or_hat <- gss %>% 
+  specify(college ~ sex, success = "no degree") %>%
+  calculate(stat = "odds ratio", order = c("female", "male"))
+```
+
+Then, generating the null distribution,
+
+```{r}
+null_distn <- gss %>%
+  specify(college ~ sex, success = "no degree") %>%
+  hypothesize(null = "independence") %>% 
+  generate(reps = 1000) %>% 
+  calculate(stat = "odds ratio", order = c("female", "male"))
+```
+
+Visualizing the observed statistic alongside the null distribution,
+
+```{r}
+visualize(null_distn) +
+  shade_p_value(obs_stat = or_hat, direction = "two_sided")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r}
+null_distn %>%
+  get_p_value(obs_stat = or_hat, direction = "two_sided")
 ```
 
 ### Two categorical (2 level) variables (z)
