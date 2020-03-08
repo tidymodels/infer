@@ -110,7 +110,7 @@
 #' # More in-depth explanation of how to use the infer package
 #' vignette("infer")
 #'
-#' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle
+#' @importFrom ggplot2 ggplot geom_histogram aes ggtitle
 #' @importFrom ggplot2 xlab ylab geom_vline geom_rect geom_bar
 #' @importFrom stats dt qt df qf dnorm qnorm dchisq qchisq
 #' @export
@@ -381,15 +381,17 @@ theory_curve <- function(method, d_fun, q_fun, args_list, dens_color) {
     x_range <- do.call(q_fun, c(p = list(c(0.001, 0.999)), args_list))
 
     res <- list(
-      stat_function(
-        data = data.frame(x = x_range), mapping = aes(x),
-        fun = d_fun, args = args_list, color = dens_color
+      ggplot2::geom_path(
+        data = data.frame(x = x_range), mapping = aes(x = x),
+        stat = "function", fun = d_fun, args = args_list,
+        color = dens_color
       )
     )
   } else if (method == "both") {
     res <- list(
-      stat_function(
-        mapping = aes(x = stat), fun = d_fun, args = args_list,
+      ggplot2::geom_path(
+        mapping = aes(x = stat),
+        stat = "function", fun = d_fun, args = args_list,
         color = dens_color
       )
     )
