@@ -406,9 +406,14 @@ check_conf_level <- function(conf_level) {
 #' # proportion test for difference in proportions of 
 #' # college completion by respondent sex
 #' prop_test(gss, 
-#'           college ~ sex, 
-#'           success = "degree", 
+#'           college ~ sex,  
 #'           order = c("female", "male"))
+#'           
+#' # a one-proportion test for hypothesized null 
+#' # proportion of college completion of .2
+#' prop_test(gss,
+#'           college ~ NULL,
+#'           p = .2)
 #'
 #' @export
 prop_test <- function(x, formula, 
@@ -467,7 +472,25 @@ prop_test <- function(x, formula,
                                ...) %>%
       broom::glance()
   } else { # one sample
-    return("unimplemented")
+    response_tbl <- x %>%
+      select(as.character((attr(x, "response")))) %>%
+      mutate_if(is.character, as.factor) %>%
+      mutate_if(is.logical, as.factor) %>%
+      table()
+    
+    if (is.null(p)) {
+      message_glue(
+        "No `p` argument was hypothesized, so the test will ",
+        "assume a null hypothesis `p = .5`."
+      )
+    }
+    
+    prelim <- stats::prop.test(x = response_tbl,
+                               alternative = alternative,
+                               conf.level = conf_level,
+                               p = p,
+                               ...) %>%
+      broom::glance()
   }
   
   if (conf_int & is.null(p)) {

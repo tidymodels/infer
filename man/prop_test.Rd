@@ -61,8 +61,13 @@ proportions.
 # proportion test for difference in proportions of 
 # college completion by respondent sex
 prop_test(gss, 
-          college ~ sex, 
-          success = "degree", 
+          college ~ sex,  
           order = c("female", "male"))
+          
+# a one-proportion test for hypothesized null 
+# proportion of college completion of .2
+prop_test(gss,
+          college ~ NULL,
+          p = .2)
 
 }
