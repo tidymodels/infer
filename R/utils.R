@@ -120,7 +120,7 @@ null_transformer <- function(text, envir) {
   out
 }
 
-check_order <- function(x, explanatory_variable, order) {
+check_order <- function(x, explanatory_variable, order, in_calculate = TRUE) {
   unique_ex <- sort(unique(explanatory_variable))
   if (length(unique_ex) != 2) {
     stop_glue(
@@ -128,7 +128,7 @@ check_order <- function(x, explanatory_variable, order) {
       "should have two levels."
     )
   }
-  if (is.null(order)) {
+  if (is.null(order) & in_calculate) {
     # Default to subtracting/dividing the first (alphabetically) level by the 
     # second, unless the explanatory variable is a factor (in which case order 
     # is preserved); raise a warning if this was done implicitly.
@@ -141,6 +141,16 @@ check_order <- function(x, explanatory_variable, order) {
       "statistics. To specify this order yourself, supply `order = ",
       "c(\"{unique_ex[1]}\", \"{unique_ex[2]}\")` to the calculate() function."
     )
+  } else if (is.null(order)) {
+    order <- as.character(unique_ex)
+    warning_glue(
+      "The statistic is based on a difference or ratio; by default, for ",
+      "difference-based statistics, the explanatory variable is subtracted ",
+      "in the order \"{unique_ex[1]}\" - \"{unique_ex[2]}\", or divided in ", 
+      "the order \"{unique_ex[1]}\" / \"{unique_ex[2]}\" for ratio-based ",
+      "statistics. To specify this order yourself, supply `order = ",
+      "c(\"{unique_ex[1]}\", \"{unique_ex[2]}\")`."
+    )    
   } else {
     if (xor(is.na(order[1]), is.na(order[2]))) {
       stop_glue(
