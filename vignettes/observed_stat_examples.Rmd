@@ -229,7 +229,13 @@ null_distn <- gss %>%
 
 ### One categorical variable (standardized proportion $z$)
 
-Not yet implemented.
+While the standardized proportion $z$ statistic has not yet been implemented in the randomization-based framework, the package supplies a wrapper around `prop.test` to allow for tests of a single proportion on tidy data.
+
+```{r prop_test_1_grp}
+prop_test(gss,
+          college ~ NULL,
+          p = .2)
+```
 
 ### Two categorical (2 level) variables
 
@@ -395,6 +401,14 @@ null_distn %>%
 ```
 
 Note the similarities in this plot and the previous one.
+
+The package also supplies a wrapper around `prop.test` to allow for tests of equality of proportions on tidy data.
+
+```{r prop_test_2_grp}
+prop_test(gss, 
+          college ~ sex,  
+          order = c("female", "male"))
+```
 
 ### One categorical (>2 level) - GoF
 
