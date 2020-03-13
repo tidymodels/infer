@@ -83,7 +83,7 @@ t_test <- function(x, formula,
     #                                                                  order[2]),
     #                                                       ordered = TRUE)
     # }
-    order <- check_order(x, explanatory_variable(x), order)
+    order <- check_order(x, explanatory_variable(x), order, in_calculate = FALSE)
     prelim <- stats::t.test(formula = as.formula(paste0(attr(x, "response"),
                                                         " ~ ",
                                                         attr(x, "explanatory"))),
@@ -195,7 +195,7 @@ t_stat <- function(x, formula,
     #                                                                  order[2]),
     #                                                       ordered = TRUE)
     # }
-    order <- check_order(x, explanatory_variable(x), order)
+    order <- check_order(x, explanatory_variable(x), order, in_calculate = FALSE)
     prelim <- stats::t.test(formula = as.formula(paste0(attr(x, "response"),
                                                         " ~ ",
                                                         attr(x, "explanatory"))),
@@ -369,3 +369,147 @@ check_conf_level <- function(conf_level) {
     stop_glue("The `conf_level` argument must be a number between 0 and 1.")
   }
 }
+
+#' Tidy proportion test
+#'
+#' @description
+#' \lifecycle{experimental}
+#'
+#' A tidier version of [prop.test()][stats::prop.test()] for equal or given
+#' proportions.
+#'
+#' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
+#' @param formula A formula with the response variable on the left and the
+#'   explanatory on the right, where an explanatory variable NULL indicates
+#'   a test of a single proportion.
+#' @param response The variable name in `x` that will serve as the response.
+#'   This is alternative to using the `formula` argument. This is an alternative
+#'   to the formula interface.
+#' @param explanatory The variable name in `x` that will serve as the
+#'   explanatory variable. Optional. This is an alternative to the formula
+#'   interface.
+#' @param order A string vector specifying the order in which the proportions
+#'   should be subtracted, where  `order = c("first", "second")` means 
+#'   `"first" - "second"`. Ignored for one-sample tests, and optional for two 
+#'   sample tests.
+#' @param alternative Character string giving the direction of the alternative
+#'   hypothesis. Options are `"two_sided"` (default), `"greater"`, or `"less"`.
+#' @param p A numeric vector giving the hypothesized null proportion of
+#' success for each group.
+#' @param conf_int A logical value for whether to report the confidence
+#'   interval or not. `TRUE` by default, ignored if `p` is specified for a
+#'   two-sample test.
+#' @param conf_level A numeric value between 0 and 1. Default value is 0.95.
+#' @param ... Additional arguments for [prop.test()][stats::prop.test()].
+#'
+#' @examples
+#' # proportion test for difference in proportions of 
+#' # college completion by respondent sex
+#' prop_test(gss, 
+#'           college ~ sex,  
+#'           order = c("female", "male"))
+#'           
+#' # a one-proportion test for hypothesized null 
+#' # proportion of college completion of .2
+#' prop_test(gss,
+#'           college ~ NULL,
+#'           p = .2)
+#'
+#' @export
+prop_test <- function(x, formula, 
+                      response = NULL, 
+                      explanatory = NULL,
+                      p = NULL,
+                      order = NULL,
+                      alternative = "two_sided", 
+                      conf_int = TRUE,
+                      conf_level = 0.95,
+                      ...) {
+  # Parse response and explanatory variables
+  response    <- enquo(response)
+  explanatory <- enquo(explanatory)
+  x <- parse_variables(x = x, formula = formula, 
+                       response = response, explanatory = explanatory)
+  
+  if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
+    stop_glue(
+      'The response variable of `{attr(x, "response")}` is not appropriate\n',
+      "since the response variable is expected to be categorical."
+    )
+  }
+  if (has_explanatory(x) && 
+      !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
+    stop_glue(
+      'The explanatory variable of `{attr(x, "explanatory")}` is not appropriate\n',
+      "since the explanatory variable is expected to be categorical."
+    )
+  }
+  # match with old "dot" syntax in t.test
+  if (alternative == "two_sided") {
+    alternative <- "two.sided"
+  }
+  
+  # two sample
+  if (has_explanatory(x)) {
+    
+    order <- check_order(x, explanatory_variable(x), order, in_calculate = FALSE)
+    
+    # make a summary table to supply to prop.test
+    sum_table <- x %>%
+      select(as.character((attr(x, "response"))), 
+             as.character(attr(x, "explanatory"))) %>%
+      mutate_if(is.character, as.factor) %>%
+      mutate_if(is.logical, as.factor) %>%
+      table()
+    
+    # reorder according to the order argument
+    sum_table <- sum_table[, order]
+    
+    prelim <- stats::prop.test(x = sum_table,
+                               alternative = alternative,
+                               conf.level = conf_level,
+                               p = p,
+                               ...) %>%
+      broom::glance()
+  } else { # one sample
+    response_tbl <- x %>%
+      select(as.character((attr(x, "response")))) %>%
+      mutate_if(is.character, as.factor) %>%
+      mutate_if(is.logical, as.factor) %>%
+      table()
+    
+    if (is.null(p)) {
+      message_glue(
+        "No `p` argument was hypothesized, so the test will ",
+        "assume a null hypothesis `p = .5`."
+      )
+    }
+    
+    prelim <- stats::prop.test(x = response_tbl,
+                               alternative = alternative,
+                               conf.level = conf_level,
+                               p = p,
+                               ...) %>%
+      broom::glance()
+  }
+  
+  if (conf_int & is.null(p)) {
+     results <- prelim %>%
+       dplyr::select(statistic, 
+                     chisq_df = parameter, 
+                     p_value = p.value, 
+                     alternative,
+                     lower_ci = conf.low, 
+                     upper_ci = conf.high)
+    
+  } else {
+     results <- prelim %>%
+       dplyr::select(statistic, 
+                     chisq_df = parameter, 
+                     p_value = p.value, 
+                     alternative)
+  }
+  
+  results
+}
+
