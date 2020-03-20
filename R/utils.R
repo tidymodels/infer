@@ -274,6 +274,43 @@ check_point_params <- function(x, stat) {
   }
 }
 
+# This function checks for NaNs in the output of `calculate` and raises
+# a message/warning/error depending on the context in which it was called.
+check_for_nan <- function(x, context) {
+  num_nans <- sum(is.nan(x$stat))
+  # If there are no NaNs, continue on as normal :-)
+  if (num_nans == 0) {
+    return(x)
+  # If all of the data is NaN, raise an error
+  } else {
+    calc_ref <- " See ?calculate for more details."
+  } 
+  if (num_nans == nrow(x)) {
+    stop_glue("All calculated statistics were NaN.", calc_ref)
+  } else {
+    report_num_nans <- if (num_nans == 1) {
+      "1 calculated statistic was NaN."
+    } else {
+      paste0(num_nans, " calculated statistics were NaN.")
+    }
+  }
+  if (context == "visualize") {
+    # Raise a warning and plot the data with NaNs removed
+    warning_glue(report_num_nans,
+                 " NaNs have been omitted from this visualization.",
+                 calc_ref)
+    return(x[!is.nan(x$stat),])
+  }
+  if (context == "get_p_value") {
+    # Raise an error (unless na.rm = TRUE)
+    stop_glue(report_num_nans,
+              " Simulation-based p-values are not well-defined for null",
+              " distributions with non-finite values.",
+              calc_ref)
+
+  }
+}
+
 # Helpers for hypothesize() -----------------------------------------------
 
 match_null_hypothesis <- function(null) {

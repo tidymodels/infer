@@ -124,6 +124,7 @@ visualize <- function(data, bins = 15, method = "simulation",
                       endpoints_color = "mediumaquamarine",
                       ci_fill = "turquoise",
                       ...) {
+  data <- check_for_nan(data, "visualize")
   check_visualize_args(
     data, bins, method, dens_color, obs_stat, obs_stat_color,
     pvalue_fill, direction, endpoints, endpoints_color, ci_fill

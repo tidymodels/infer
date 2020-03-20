@@ -34,6 +34,7 @@
 #' 
 #' In the case that a p-value of zero is reported, a warning message will be 
 #' raised to caution the user against reporting a p-value exactly equal to 0.
+#' 
 #'
 #' @examples
 #' 
@@ -73,6 +74,7 @@ get_p_value <- function(x, obs_stat, direction) {
       .sep = " "
     )
   }
+  check_for_nan(x, "get_p_value")
   obs_stat <- check_obs_stat(obs_stat)
   check_direction(direction)
 

@@ -40,6 +40,15 @@ Calculates summary statistics from outputs of \code{\link[=generate]{generate()}
 
 Learn more in \code{vignette("infer")}.
 }
+\section{Missing values}{
+
+In some cases, when bootstrapping with small samples, some generated
+bootstrap samples will have only one level of the explanatory variable
+present. For some test statistics, the calculated statistic in these
+cases will be NaN. The package will omit non-finite values from
+visualizations (with a warning) and raise an error in p-value calculations.
+}
+
 \examples{
 
 # calculate a null distribution of hours worked per week under
