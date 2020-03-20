@@ -233,7 +233,7 @@ calc_impl.correlation <- function(type, x, order, ...) {
 calc_impl_diff_f <- function(f) {
   function(type, x, order, ...) {
     x %>%
-      dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
+      dplyr::group_by(replicate, !!attr(x, "explanatory"), .drop = FALSE) %>%
       dplyr::summarize(value = f(!!attr(x, "response"), ...)) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(
@@ -322,7 +322,7 @@ calc_impl.function_of_props <- function(type, x, order, operator, ...) {
   success <- attr(x, "success")
   
   x %>%
-    dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
+    dplyr::group_by(replicate, !!attr(x, "explanatory"), .drop = FALSE) %>%
     dplyr::summarize(prop = mean(!!sym(col) == success, ...)) %>%
     dplyr::summarize(
       stat = operator(prop[!!attr(x, "explanatory") == order[1]],
@@ -343,7 +343,7 @@ calc_impl.odds_ratio <- function(type, x, order, ...) {
   success <- attr(x, "success")
   
   x %>%
-    dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
+    dplyr::group_by(replicate, !!attr(x, "explanatory"), .drop = FALSE) %>%
     dplyr::summarize(prop = mean(!!sym(col) == success, ...)) %>%
     dplyr::summarize(
       prop_1 = prop[!!attr(x, "explanatory") == order[1]],
