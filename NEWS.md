@@ -12,6 +12,8 @@
 - Add `stat = "ratio of props"` and `stat = "odds ratio"` to `calculate` (#285)
 - Add `prop_test()`, a tidy interface to `prop.test()` (#284, #287)
 - Updates to `visualize()` for compatibility with `ggplot2` v3.3.0 (#289)
+- Fix error when bootstrapping with small samples and raise warnings/errors 
+when appropriate (#239, #244, #291)
 
 # infer 0.5.1
 
