@@ -69,11 +69,14 @@ obs_stat <- data %>%
 
 test_that("checking for NaNs after calculate works", {
   # A warning should be raised if there are NaNs in a visualized dist
-  expect_warning(visualize(dist))
+  expect_warning(visualize(dist), "statistic was")
+  # And that a different warning for plural NaNs
+  dist$stat[1] <- NaN
+  expect_warning(visualize(dist), "statistics were")
   # Check that an error is raised for p-value calculation
-  expect_error(get_p_value(dist, obs_stat, "both"))
+  expect_error(get_p_value(dist, obs_stat, "both"), "not well-defined")
   # In the case that _all_ values are NaN, both should raise an error
   dist$stat <- rep(NaN, nrow(dist))
-  expect_error(visualize(dist))
-  expect_error(get_p_value(dist, obs_stat))
+  expect_error(visualize(dist), "All calculated stat")
+  expect_error(get_p_value(dist, obs_stat), "All calculated stat")
 })
