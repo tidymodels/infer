@@ -40,7 +40,7 @@ Calculates summary statistics from outputs of \code{\link[=generate]{generate()}
 
 Learn more in \code{vignette("infer")}.
 }
-\section{Missing values}{
+\section{Missing levels in small samples}{
 
 In some cases, when bootstrapping with small samples, some generated
 bootstrap samples will have only one level of the explanatory variable
