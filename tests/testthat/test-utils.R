@@ -56,22 +56,25 @@ test_that("hypothesize errors out when x isn't a dataframe",
                        "x must be a data.frame or tibble"))
 
 # data for NaN checking
-data <- data.frame(var1 = c(rep("Yes", 23), rep("No", 7)), 
-                   var2 = c( rep("F", 6), rep("M", 17), rep("M", 7)))
-set.seed(42)
+data <- data.frame(var1 = c(rep("Yes", 17), rep("No", 13)), 
+                   var2 = c( rep("F", 6), rep("M", 17), rep("F", 7)))
+
+# generate a bootstrap dist and then manually drop in NaNs
 dist <- data %>%
   specify(var1 ~ var2, success = "Yes") %>%
-  generate(reps = 229, type = "bootstrap") %>%
+  generate(reps = 10, type = "bootstrap") %>%
   calculate(stat = "diff in props", order = c("F", "M"))
 obs_stat <- data %>%
   specify(var1 ~ var2, success = "Yes") %>%
   calculate(stat = "diff in props", order = c("F", "M"))
 
+dist$stat[1] <- NaN
+
 test_that("checking for NaNs after calculate works", {
   # A warning should be raised if there are NaNs in a visualized dist
   expect_warning(visualize(dist), "statistic was")
   # And that a different warning for plural NaNs
-  dist$stat[1] <- NaN
+  dist$stat[2] <- NaN
   expect_warning(visualize(dist), "statistics were")
   # Check that an error is raised for p-value calculation
   expect_error(get_p_value(dist, obs_stat, "both"), "not well-defined")
