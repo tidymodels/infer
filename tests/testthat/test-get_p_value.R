@@ -55,3 +55,24 @@ test_that("get_p_value warns in case of zero p-value", {
     "be cautious"
   )
 })
+
+test_that("get_p_value throws error in case of `NaN` stat", {
+  stat_df <- tibble::tibble(stat = 1:10)
+  obs_stat <- 2.71
+  
+  stat_df$stat[1] <- NaN
+  expect_error(
+    get_p_value(stat_df, obs_stat, "both"),
+    "1 calculated statistic was `NaN`.*not well-defined"
+  )
+  
+  stat_df$stat[2] <- NaN
+  expect_error(
+    get_p_value(stat_df, obs_stat, "both"),
+    "2 calculated statistics were `NaN`.*not well-defined"
+  )
+  
+  # In the case that _all_ values are NaN, error should have different text
+  stat_df$stat <- NaN
+  expect_error(get_p_value(stat_df, obs_stat, "both"), "All calculated stat")
+})
