@@ -4,6 +4,12 @@ template:
       api_key: 33338960d0dcb55ff924a40c2f749a0d
       index_name: infer
 
+home:
+  title: infer - Tidy Statistical Inference
+  description: >
+    An R package to perform statistical inference using an expressive 
+    statistical grammar that coheres with the tidyverse design framework.
+
 navbar:
   type: default
   left:
@@ -27,8 +33,6 @@ navbar:
     href: CONTRIBUTING.html
   - text: Code of Conduct
     href: CONDUCT.html
-  - text: To-Dos
-    href: TO-DO.html
   right:
   - icon: fa-github fa-lg
     href: https://github.com/tidymodels/infer

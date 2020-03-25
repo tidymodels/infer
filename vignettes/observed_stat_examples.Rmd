@@ -1,5 +1,6 @@
 ---
 title: "Full infer Pipeline Examples"
+description: "A near-exhaustive demonstration of the functionality in infer."
 output: 
   rmarkdown::html_vignette:
     df_print: kable
