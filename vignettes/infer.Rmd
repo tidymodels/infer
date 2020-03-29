@@ -1,5 +1,6 @@
 ---
 title: "Getting to Know infer"
+description: "An introduction to the infer R package."
 output: 
   rmarkdown::html_vignette:
     toc: true

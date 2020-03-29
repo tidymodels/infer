@@ -24,3 +24,4 @@
 ^doc$
 ^Meta$
 README_files/
+^pkgdown$
