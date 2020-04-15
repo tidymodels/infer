@@ -85,3 +85,7 @@ jobs:
       - name: Install XQuartz on MacOS
         if: runner.os == 'macOS'
         run: brew cask install xquartz
+
+      - name: Install freetype on MacOS
+        if: runner.os == 'macOS'
+        run: brew install freetype
