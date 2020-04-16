@@ -44,6 +44,7 @@ Suggests:
     covr,
     vdiffr,
     lifecycle
+Remotes: r-lib/xml2    
 URL: https://github.com/tidymodels/infer,
      https://infer.netlify.com/
 BugReports: https://github.com/tidymodels/infer/issues
