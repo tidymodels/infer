@@ -90,4 +90,6 @@ jobs:
 
       - name: Install freetype on MacOS
         if: runner.os == 'macOS'
-        run: brew install freetype
+        run: |
+          brew install freetype
+          brew link --overwrite freetype
