@@ -52,10 +52,10 @@ jobs:
         run: |
           install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          install.packages('devtools')
           install.packages('systemfonts')
           install.packages('gdtools')
           install.packages('vdiffr')
-          install.packages('devtools')
         shell: Rscript {0}
 
       - name: Cache R packages
