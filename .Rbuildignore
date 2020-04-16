@@ -25,3 +25,4 @@
 ^Meta$
 README_files/
 ^pkgdown$
+^\.github$

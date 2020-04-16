@@ -14,7 +14,6 @@ options(digits = 4)
 ```
 
 ```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
-library(devtools)
 library(ggplot2)
 library(dplyr)
 devtools::load_all()

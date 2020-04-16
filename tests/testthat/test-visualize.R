@@ -219,11 +219,11 @@ test_that("visualize basic tests", {
     "vis-both-left-2",
     expect_warning(
       iris_tbl %>%
-        specify(Sepal.Length ~ Species) %>%
+        specify(Sepal.Width.Group ~ Sepal.Length.Group, success = "large") %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
-        calculate(stat = "F") %>%
-        visualize(method = "both", obs_stat = obs_F, direction = "left")
+        calculate(stat = "z", order = c(">5", "<=5")) %>%
+        visualize(method = "both", direction = "left", obs_stat = obs_z)
     )
   )
 
