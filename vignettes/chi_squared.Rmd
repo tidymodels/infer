@@ -16,8 +16,7 @@ options(digits = 4)
 ```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(ggplot2)
 library(dplyr)
-#devtools::load_all()
-library(infer)
+devtools::load_all()
 ```
 
 ### Introduction

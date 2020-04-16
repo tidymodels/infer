@@ -16,8 +16,7 @@ options(digits = 4)
 ```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(ggplot2)
 library(dplyr)
-#devtools::load_all()
-library(infer)
+devtools::load_all()
 ```
 
 In this vignette, we'll walk through conducting an analysis of variance (ANOVA) test using `infer`. ANOVAs are used to analyze differences in group means.
