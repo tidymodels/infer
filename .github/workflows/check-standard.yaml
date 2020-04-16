@@ -38,6 +38,16 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@master
 
+      - name: Install XQuartz on MacOS
+        if: runner.os == 'macOS'
+        run: brew cask install xquartz
+
+      - name: Install freetype on MacOS
+        if: runner.os == 'macOS'
+        run: |
+          brew install freetype
+          brew link --overwrite freetype
+          
       - name: Query dependencies
         run: |
           install.packages('remotes')
@@ -83,13 +93,3 @@ jobs:
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
-
-      - name: Install XQuartz on MacOS
-        if: runner.os == 'macOS'
-        run: brew cask install xquartz
-
-      - name: Install freetype on MacOS
-        if: runner.os == 'macOS'
-        run: |
-          brew install freetype
-          brew link --overwrite freetype
