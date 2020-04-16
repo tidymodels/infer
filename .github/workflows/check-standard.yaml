@@ -48,6 +48,12 @@ jobs:
           brew install freetype
           brew link --overwrite freetype
           
+      - name: Install XML2 on MacOS
+        if: runner.os == 'macOS'
+        run: |
+          brew install libxml2
+          brew link --force libxml2
+          
       - name: Query dependencies
         run: |
           install.packages('remotes')
