@@ -48,6 +48,11 @@ jobs:
           brew install freetype
           brew link --overwrite freetype
           
+      - name: Install cairo on MacOS for xml2
+        if: runner.os == 'macOS'
+        run: |
+          brew install cairo
+          
       - name: Install XML2 on MacOS
         if: runner.os == 'macOS'
         run: |
