@@ -15,6 +15,7 @@
 - Fix error when bootstrapping with small samples and raise warnings/errors 
 when appropriate (#239, #244, #291)
 - Fix unit test failures resulting from breaking changes in `dplyr` v1.0.0
+- Fix error in `generate()` when response variable is named `x` (#299)
 
 # infer 0.5.1
 
