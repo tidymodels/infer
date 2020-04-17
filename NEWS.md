@@ -14,6 +14,7 @@
 - Updates to `visualize()` for compatibility with `ggplot2` v3.3.0 (#289)
 - Fix error when bootstrapping with small samples and raise warnings/errors 
 when appropriate (#239, #244, #291)
+- Fix unit test failures resulting from breaking changes in `dplyr` v1.0.0
 
 # infer 0.5.1
 
