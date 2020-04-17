@@ -224,7 +224,7 @@ test_that("chi-square matches chisq.test value", {
       stats::chisq.test(table(.$Species))
     )) %>%
     dplyr::select(replicate, stat = statistic)
-  expect_equal(infer_way, trad_way)
+  expect_equivalent(infer_way, trad_way)
 
   gen_iris9a <- iris %>%
     specify(Species ~ NULL) %>%
@@ -241,7 +241,7 @@ test_that("chi-square matches chisq.test value", {
       stats::chisq.test(table(.$Species), p = c(0.8, 0.1, 0.1))
     )) %>%
     dplyr::select(replicate, stat = statistic)
-  expect_equal(infer_way, trad_way)
+  expect_equivalent(infer_way, trad_way)
 })
 
 test_that("`order` is working", {
@@ -490,7 +490,7 @@ test_that("calc_impl.count works", {
     sum(iris_tbl$Sepal.Length.Group == ">5")
   )
 
-  expect_equal(
+  expect_equivalent(
     gen_iris12 %>% calculate(stat = "count"),
     gen_iris12 %>% dplyr::summarise(stat = sum(Sepal.Length.Group == ">5"))
   )
