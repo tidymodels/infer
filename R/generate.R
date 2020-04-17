@@ -211,10 +211,13 @@ simulate <- function(x, reps = 1, ...) {
     sample(fct_levels, size = nrow(x), replace = TRUE, prob = format_params(x)),
     simplify = FALSE
   ))
-
+  
+  # Precomputing `nrow(x)` is needed because it can be misinterpeted inside
+  # `tibble()` in case `attr(x, "response")` is also `x` (see #299)
+  x_nrow <- nrow(x)
   rep_tbl <- tibble::tibble(
     !!attr(x, "response") := as.factor(col_simmed),
-    replicate = as.factor(rep(1:reps, rep(nrow(x), reps)))
+    replicate = as.factor(rep(1:reps, rep(x_nrow, reps)))
   )
 
   rep_tbl <- copy_attrs(to = rep_tbl, from = x)
