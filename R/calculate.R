@@ -447,7 +447,7 @@ calc_impl.z <- function(type, x, order, ...) {
     aggregated <- x %>%
       dplyr::group_by(replicate, explan) %>%
       dplyr::summarize(
-        group_num = n(),
+        group_num = dplyr::n(),
         prop = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success)),
         num_suc = sum(rlang::eval_tidy(col) == rlang::eval_tidy(success))
       )
