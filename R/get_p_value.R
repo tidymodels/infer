@@ -12,7 +12,8 @@
 #' @param obs_stat A numeric value or a 1x1 data frame (as extreme or more
 #'   extreme than this).
 #' @param direction A character string. Options are `"less"`, `"greater"`, or
-#'   `"two_sided"`. Can also use `"left"`, `"right"`, or `"both"`.
+#'   `"two_sided"`. Can also use `"left"`, `"right"`, `"both"`, 
+#'   `"two-sided"`, or `"two sided"`.
 #'
 #' @return A 1x1 [tibble][tibble::tibble] with value between 0 and 1.
 #'

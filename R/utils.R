@@ -405,15 +405,18 @@ hypothesize_checks <- function(x, null) {
 }
 
 check_direction <- function(direction = c("less", "greater", "two_sided",
-                                          "left", "right", "both")) {
+                                          "left", "right", "both",
+                                          "two-sided", "two sided")) {
   check_type(direction, is.character)
 
   if (
-    !(direction %in% c("less", "greater", "two_sided", "left", "right", "both"))
+    !(direction %in% c("less", "greater", "two_sided", "left", "right", 
+                       "both", "two-sided", "two sided"))
   ) {
     stop_glue(
       'The provided value for `direction` is not appropriate. Possible values ',
-      'are "less", "greater", "two_sided", "left", "right", or "both".'
+      'are "less", "greater", "two_sided", "left", "right", "both", ',
+      '"two-sided", or "two sided"'
     )
   }
 }
