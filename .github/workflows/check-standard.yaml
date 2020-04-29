@@ -99,6 +99,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           install.packages('processx')
+          install.packages('ps')
         shell: Rscript {0}
 
       - name: Check
