@@ -94,6 +94,12 @@ jobs:
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
+        
+      - name: Install MacOS r-devel dependencies
+        if: runner.os == 'macOS'
+        run: |
+          install.packages('processx')
+        shell: Rscript {0}
 
       - name: Check
         env:
