@@ -34,7 +34,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r@master
         with:
-          r-version: 3.6
+          r-version: ${{ matrix.config.r }}
 
       - uses: r-lib/actions/setup-pandoc@master
 
