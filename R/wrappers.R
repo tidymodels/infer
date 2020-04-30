@@ -21,7 +21,7 @@
 #'   the explanatory variable should be ordered for subtraction, where `order =
 #'   c("first", "second")` means `("first" - "second")`.
 #' @param alternative Character string giving the direction of the alternative
-#'   hypothesis. Options are `"two_sided"` (default), `"greater"`, or `"less"`.
+#'   hypothesis. Options are `"two-sided"` (default), `"greater"`, or `"less"`.
 #' @param mu A numeric value giving the hypothesized null mean value for a one
 #'   sample test and the hypothesized difference for a two sample test.
 #' @param conf_int A logical value for whether to include the confidence
@@ -38,7 +38,7 @@
 #'    tidyr::drop_na(college) %>%
 #'    t_test(formula = hours ~ college,
 #'       order = c("degree", "no degree"),
-#'       alternative = "two_sided")
+#'       alternative = "two-sided")
 #'
 #' # see vignette("infer") for more explanation of the
 #' # intuition behind the infer package, and vignette("t_test") 
@@ -52,7 +52,7 @@ t_test <- function(x, formula,
                    response = NULL, 
                    explanatory = NULL,
                    order = NULL,
-                   alternative = "two_sided", 
+                   alternative = "two-sided", 
                    mu = 0,
                    conf_int = TRUE,
                    conf_level = 0.95,
@@ -71,7 +71,7 @@ t_test <- function(x, formula,
                        response = response, explanatory = explanatory)
   
   # match with old "dot" syntax in t.test
-  if (alternative == "two_sided") {
+  if (alternative %in% c("two-sided", "two_sided", "two sided")) {
     alternative <- "two.sided"
   }
   
@@ -135,7 +135,7 @@ t_test <- function(x, formula,
 #'   the explanatory variable should be ordered for subtraction, where `order =
 #'   c("first", "second")` means `("first" - "second")`.
 #' @param alternative Character string giving the direction of the alternative
-#'   hypothesis. Options are `"two_sided"` (default), `"greater"`, or `"less"`.
+#'   hypothesis. Options are `"two-sided"` (default), `"greater"`, or `"less"`.
 #' @param mu A numeric value giving the hypothesized null mean value for a one
 #'   sample test and the hypothesized difference for a two sample test.
 #' @param conf_int A logical value for whether to include the confidence
@@ -157,14 +157,14 @@ t_test <- function(x, formula,
 #'    tidyr::drop_na(college) %>%
 #'    t_stat(formula = hours ~ college,
 #'       order = c("degree", "no degree"),
-#'       alternative = "two_sided")
+#'       alternative = "two-sided")
 #'
 #' @export
 t_stat <- function(x, formula, 
                    response = NULL, 
                    explanatory = NULL,
                    order = NULL,
-                   alternative = "two_sided", 
+                   alternative = "two-sided", 
                    mu = 0,
                    conf_int = FALSE,
                    conf_level = 0.95,
@@ -183,7 +183,7 @@ t_stat <- function(x, formula,
                        response = response, explanatory = explanatory)
   
   # match with old "dot" syntax in t.test
-  if (alternative == "two_sided") {
+  if (alternative %in% c("two-sided", "two_sided", "two sided")) {
     alternative <- "two.sided"
   }
   
