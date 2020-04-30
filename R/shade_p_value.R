@@ -12,8 +12,8 @@
 #' @param obs_stat A numeric value or 1x1 data frame corresponding to what the
 #'   observed statistic is.
 #' @param direction A string specifying in which direction the shading should
-#'   occur. Options are `"less"`, `"greater"`, or `"two_sided"`. Can
-#'   also give `"left"`, `"right"`, `"both"`, `"two-sided"`, or `"two sided"`. 
+#'   occur. Options are `"less"`, `"greater"`, or `"two-sided"`. Can
+#'   also give `"left"`, `"right"`, `"both"`, `"two_sided"`, or `"two sided"`. 
 #'   If `NULL` then no shading is actually done.
 #' @param color A character or hex string specifying the color of the observed
 #'   statistic as a vertical line on the plot.

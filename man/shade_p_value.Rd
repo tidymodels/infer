@@ -14,8 +14,8 @@ shade_pvalue(obs_stat, direction, color = "red2", fill = "pink", ...)
 observed statistic is.}
 
 \item{direction}{A string specifying in which direction the shading should
-occur. Options are \code{"less"}, \code{"greater"}, or \code{"two_sided"}. Can
-also give \code{"left"}, \code{"right"}, \code{"both"}, \code{"two-sided"}, or \code{"two sided"}.
+occur. Options are \code{"less"}, \code{"greater"}, or \code{"two-sided"}. Can
+also give \code{"left"}, \code{"right"}, \code{"both"}, \code{"two_sided"}, or \code{"two sided"}.
 If \code{NULL} then no shading is actually done.}
 
 \item{color}{A character or hex string specifying the color of the observed
