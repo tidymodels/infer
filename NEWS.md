@@ -16,6 +16,8 @@
 when appropriate (#239, #244, #291)
 - Fix unit test failures resulting from breaking changes in `dplyr` v1.0.0
 - Fix error in `generate()` when response variable is named `x` (#299)
+- Add `two-sided` and `two sided` as aliases for `two_sided` for the 
+`direction` argument in `get_p_value()` and `shade_p_value()` (#302)
 
 # infer 0.5.1
 

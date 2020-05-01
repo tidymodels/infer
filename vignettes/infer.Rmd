@@ -191,7 +191,7 @@ Where does our sample's observed statistic lie on this distribution? We can use 
 ```{r visualize2, warning = FALSE, message = FALSE}
 null_dist %>%
   visualize() +
-  shade_p_value(obs_stat = point_estimate, direction = "two_sided")
+  shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 ```
 
 Notice that `infer` has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the `+` operator to apply the `shade_p_value` function. This is because `visualize` outputs a plot object from `ggplot2` instead of a data frame, and the `+` operator is needed to add the p-value layer to the plot object.) The red bar looks like it's slightly far out on the right tail of the null distribution, so observing a sample mean of `r point_estimate` hours would be somewhat unlikely if the mean was actually 40 hours. How unlikely, though?
@@ -199,7 +199,7 @@ Notice that `infer` has also shaded the regions of the null distribution that ar
 ```{r get_p_value, warning = FALSE, message = FALSE}
 # get a two-tailed p-value
 p_value <- null_dist %>%
-  get_p_value(obs_stat = point_estimate, direction = "two_sided")
+  get_p_value(obs_stat = point_estimate, direction = "two-sided")
 
 p_value
 ```

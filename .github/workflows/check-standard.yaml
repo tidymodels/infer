@@ -85,12 +85,21 @@ jobs:
         run: |
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          sudo add-apt-repository ppa:cran/libgit2
+          echo $sysreqs
           sudo -s eval "$sysreqs"
 
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
+        shell: Rscript {0}
+        
+      - name: Install MacOS r-devel dependencies
+        if: runner.os == 'macOS'
+        run: |
+          install.packages('processx')
+          install.packages('ps')
         shell: Rscript {0}
 
       - name: Check

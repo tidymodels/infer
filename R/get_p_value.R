@@ -12,7 +12,8 @@
 #' @param obs_stat A numeric value or a 1x1 data frame (as extreme or more
 #'   extreme than this).
 #' @param direction A character string. Options are `"less"`, `"greater"`, or
-#'   `"two_sided"`. Can also use `"left"`, `"right"`, or `"both"`.
+#'   `"two-sided"`. Can also use `"left"`, `"right"`, `"both"`, 
+#'   `"two_sided"`, or `"two sided"`.
 #'
 #' @return A 1x1 [tibble][tibble::tibble] with value between 0 and 1.
 #'
@@ -55,7 +56,7 @@
 #'   # finding the null distribution
 #'   calculate(stat = "mean") %>%
 #    # calculate the p-value for the point estimate
-#'   get_p_value(obs_stat = point_estimate, direction = "two_sided")
+#'   get_p_value(obs_stat = point_estimate, direction = "two-sided")
 #'   
 #' # More in-depth explanation of how to use the infer package
 #' vignette("infer")   

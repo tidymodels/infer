@@ -16,7 +16,8 @@ get_pvalue(x, obs_stat, direction)
 extreme than this).}
 
 \item{direction}{A character string. Options are \code{"less"}, \code{"greater"}, or
-\code{"two_sided"}. Can also use \code{"left"}, \code{"right"}, or \code{"both"}.}
+\code{"two-sided"}. Can also use \code{"left"}, \code{"right"}, \code{"both"},
+\code{"two_sided"}, or \code{"two sided"}.}
 }
 \value{
 A 1x1 \link[tibble:tibble]{tibble} with value between 0 and 1.
@@ -70,7 +71,7 @@ gss \%>\%
   generate(reps = 10000, type = "bootstrap") \%>\%
   # finding the null distribution
   calculate(stat = "mean") \%>\%
-  get_p_value(obs_stat = point_estimate, direction = "two_sided")
+  get_p_value(obs_stat = point_estimate, direction = "two-sided")
   
 # More in-depth explanation of how to use the infer package
 vignette("infer")   

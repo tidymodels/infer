@@ -63,14 +63,14 @@ Visualizing the observed statistic alongside the null distribution,
 
 ```{r}
 visualize(null_distn) +
-  shade_p_value(obs_stat = x_bar, direction = "two_sided")
+  shade_p_value(obs_stat = x_bar, direction = "two-sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
 null_distn %>%
-  get_p_value(obs_stat = x_bar, direction = "two_sided")
+  get_p_value(obs_stat = x_bar, direction = "two-sided")
 ```
 
 ### One numerical variable (standardized mean $t$)
@@ -114,21 +114,21 @@ Visualizing the observed statistic alongside the null distribution,
 
 ```{r}
 visualize(null_distn) +
-  shade_p_value(obs_stat = t_bar, direction = "two_sided")
+  shade_p_value(obs_stat = t_bar, direction = "two-sided")
 ```
 
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
 ```{r}
 visualize(null_distn_theoretical, method = "theoretical") +
-  shade_p_value(obs_stat = t_bar, direction = "two_sided")
+  shade_p_value(obs_stat = t_bar, direction = "two-sided")
 ```
 
 Alternatively, visualizing the observed statistic using both of the null distributions,
 
 ```{r}
 visualize(null_distn, method = "both") +
-  shade_p_value(obs_stat = t_bar, direction = "two_sided")
+  shade_p_value(obs_stat = t_bar, direction = "two-sided")
 ```
 
 Note that the above code makes use of the randomization-based null distribution.
@@ -137,7 +137,7 @@ Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
 null_distn %>%
-  get_p_value(obs_stat = t_bar, direction = "two_sided")
+  get_p_value(obs_stat = t_bar, direction = "two-sided")
 ```
 
 Alternatively, using the `t_test` wrapper:
@@ -172,14 +172,14 @@ Visualizing the observed statistic alongside the null distribution,
 
 ```{r}
 visualize(null_distn) +
-  shade_p_value(obs_stat = x_tilde, direction = "two_sided")
+  shade_p_value(obs_stat = x_tilde, direction = "two-sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
 null_distn %>%
-  get_p_value(obs_stat = x_tilde, direction = "two_sided")
+  get_p_value(obs_stat = x_tilde, direction = "two-sided")
 ```
 
 ### One categorical (one proportion)
@@ -206,14 +206,14 @@ Visualizing the observed statistic alongside the null distribution,
 
 ```{r}
 visualize(null_distn) +
-  shade_p_value(obs_stat = p_hat, direction = "two_sided")
+  shade_p_value(obs_stat = p_hat, direction = "two-sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
 null_distn %>%
-  get_p_value(obs_stat = p_hat, direction = "two_sided")
+  get_p_value(obs_stat = p_hat, direction = "two-sided")
 ```
 
 Note that logical variables will be coerced to factors:
@@ -263,14 +263,14 @@ Visualizing the observed statistic alongside the null distribution,
 
 ```{r}
 visualize(null_distn) +
-  shade_p_value(obs_stat = d_hat, direction = "two_sided")
+  shade_p_value(obs_stat = d_hat, direction = "two-sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
 null_distn %>%
-  get_p_value(obs_stat = d_hat, direction = "two_sided")
+  get_p_value(obs_stat = d_hat, direction = "two-sided")
 ```
 
 `infer` also provides functionality to calculate ratios of proportions. The workflow looks similar to that for `diff in props`.
@@ -297,14 +297,14 @@ Visualizing the observed statistic alongside the null distribution,
 
 ```{r}
 visualize(null_distn) +
-  shade_p_value(obs_stat = r_hat, direction = "two_sided")
+  shade_p_value(obs_stat = r_hat, direction = "two-sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
 null_distn %>%
-  get_p_value(obs_stat = r_hat, direction = "two_sided")
+  get_p_value(obs_stat = r_hat, direction = "two-sided")
 ```
 
 In addition, the package provides functionality to calculate odds ratios. The workflow also looks similar to that for `diff in props`.
@@ -331,14 +331,14 @@ Visualizing the observed statistic alongside the null distribution,
 
 ```{r}
 visualize(null_distn) +
-  shade_p_value(obs_stat = or_hat, direction = "two_sided")
+  shade_p_value(obs_stat = or_hat, direction = "two-sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
 null_distn %>%
-  get_p_value(obs_stat = or_hat, direction = "two_sided")
+  get_p_value(obs_stat = or_hat, direction = "two-sided")
 ```
 
 ### Two categorical (2 level) variables (z)
@@ -374,21 +374,21 @@ Visualizing the observed statistic alongside the null distribution,
 
 ```{r}
 visualize(null_distn) +
-  shade_p_value(obs_stat = z_hat, direction = "two_sided")
+  shade_p_value(obs_stat = z_hat, direction = "two-sided")
 ```
 
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
 ```{r}
 visualize(null_distn_theoretical, method = "theoretical") +
-  shade_p_value(obs_stat = z_hat, direction = "two_sided")
+  shade_p_value(obs_stat = z_hat, direction = "two-sided")
 ```
 
 Alternatively, visualizing the observed statistic using both of the null distributions,
 
 ```{r}
 visualize(null_distn, method = "both") +
-  shade_p_value(obs_stat = z_hat, direction = "two_sided")
+  shade_p_value(obs_stat = z_hat, direction = "two-sided")
 ```
 
 Note that the above code makes use of the randomization-based null distribution.
@@ -397,7 +397,7 @@ Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
 null_distn %>%
-  get_p_value(obs_stat = z_hat, direction = "two_sided")
+  get_p_value(obs_stat = z_hat, direction = "two-sided")
 ```
 
 Note the similarities in this plot and the previous one.
@@ -613,14 +613,14 @@ Visualizing the observed statistic alongside the null distribution,
 
 ```{r}
 visualize(null_distn) +
-  shade_p_value(obs_stat = d_hat, direction = "two_sided")
+  shade_p_value(obs_stat = d_hat, direction = "two-sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
 null_distn %>%
-  get_p_value(obs_stat = d_hat, direction = "two_sided")
+  get_p_value(obs_stat = d_hat, direction = "two-sided")
 ```
 
 ### One numerical variable, one categorical (2 levels) (t)
@@ -656,21 +656,21 @@ Visualizing the observed statistic alongside the null distribution,
 
 ```{r}
 visualize(null_distn) +
-  shade_p_value(obs_stat = t_hat, direction = "two_sided")
+  shade_p_value(obs_stat = t_hat, direction = "two-sided")
 ```
 
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
 ```{r}
 visualize(null_distn_theoretical, method = "theoretical") +
-  shade_p_value(obs_stat = t_hat, direction = "two_sided")
+  shade_p_value(obs_stat = t_hat, direction = "two-sided")
 ```
 
 Alternatively, visualizing the observed statistic using both of the null distributions,
 
 ```{r}
 visualize(null_distn, method = "both") +
-  shade_p_value(obs_stat = t_hat, direction = "two_sided")
+  shade_p_value(obs_stat = t_hat, direction = "two-sided")
 ```
 
 Note that the above code makes use of the randomization-based null distribution.
@@ -679,7 +679,7 @@ Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
 null_distn %>%
-  get_p_value(obs_stat = t_hat, direction = "two_sided")
+  get_p_value(obs_stat = t_hat, direction = "two-sided")
 ```
 
 Note the similarities in this plot and the previous one.
@@ -708,14 +708,14 @@ Visualizing the observed statistic alongside the null distribution,
 
 ```{r}
 visualize(null_distn) +
-  shade_p_value(obs_stat = d_hat, direction = "two_sided")
+  shade_p_value(obs_stat = d_hat, direction = "two-sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
 null_distn %>%
-  get_p_value(obs_stat = d_hat, direction = "two_sided")
+  get_p_value(obs_stat = d_hat, direction = "two-sided")
 ```
 
 ### One numerical, one categorical (>2 levels) -  ANOVA
@@ -801,14 +801,14 @@ Visualizing the observed statistic alongside the null distribution,
 
 ```{r}
 visualize(null_distn) +
-  shade_p_value(obs_stat = slope_hat, direction = "two_sided")
+  shade_p_value(obs_stat = slope_hat, direction = "two-sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
 null_distn %>%
-  get_p_value(obs_stat = slope_hat, direction = "two_sided")
+  get_p_value(obs_stat = slope_hat, direction = "two-sided")
 ```
 
 ### Two numerical vars - correlation
@@ -835,14 +835,14 @@ Visualizing the observed statistic alongside the null distribution,
 
 ```{r}
 visualize(null_distn) +
-  shade_p_value(obs_stat = correlation_hat, direction = "two_sided")
+  shade_p_value(obs_stat = correlation_hat, direction = "two-sided")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
 null_distn %>%
-  get_p_value(obs_stat = correlation_hat, direction = "two_sided")
+  get_p_value(obs_stat = correlation_hat, direction = "two-sided")
 ```
 
 

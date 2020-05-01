@@ -10,7 +10,7 @@ t_test(
   response = NULL,
   explanatory = NULL,
   order = NULL,
-  alternative = "two_sided",
+  alternative = "two-sided",
   mu = 0,
   conf_int = TRUE,
   conf_level = 0.95,
@@ -33,7 +33,7 @@ explanatory variable.}
 the explanatory variable should be ordered for subtraction, where \code{order = c("first", "second")} means \code{("first" - "second")}.}
 
 \item{alternative}{Character string giving the direction of the alternative
-hypothesis. Options are \code{"two_sided"} (default), \code{"greater"}, or \code{"less"}.}
+hypothesis. Options are \code{"two-sided"} (default), \code{"greater"}, or \code{"less"}.}
 
 \item{mu}{A numeric value giving the hypothesized null mean value for a one
 sample test and the hypothesized difference for a two sample test.}
@@ -59,7 +59,7 @@ gss \%>\%
    tidyr::drop_na(college) \%>\%
    t_test(formula = hours ~ college,
       order = c("degree", "no degree"),
-      alternative = "two_sided")
+      alternative = "two-sided")
 
 # see vignette("infer") for more explanation of the
 # intuition behind the infer package, and vignette("t_test") 
