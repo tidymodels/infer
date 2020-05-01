@@ -60,7 +60,7 @@ null_dist <- gss \%>\%
 # shade the p-value of the point estimate
 null_dist \%>\%
   visualize() +
-  shade_p_value(obs_stat = point_estimate, direction = "two_sided")
+  shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 
 # More in-depth explanation of how to use the infer package
 vignette("infer")

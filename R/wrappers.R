@@ -393,7 +393,7 @@ check_conf_level <- function(conf_level) {
 #'   `"first" - "second"`. Ignored for one-sample tests, and optional for two 
 #'   sample tests.
 #' @param alternative Character string giving the direction of the alternative
-#'   hypothesis. Options are `"two_sided"` (default), `"greater"`, or `"less"`.
+#'   hypothesis. Options are `"two-sided"` (default), `"greater"`, or `"less"`.
 #' @param p A numeric vector giving the hypothesized null proportion of
 #' success for each group.
 #' @param conf_int A logical value for whether to report the confidence
@@ -421,7 +421,7 @@ prop_test <- function(x, formula,
                       explanatory = NULL,
                       p = NULL,
                       order = NULL,
-                      alternative = "two_sided", 
+                      alternative = "two-sided", 
                       conf_int = TRUE,
                       conf_level = 0.95,
                       ...) {
@@ -445,7 +445,7 @@ prop_test <- function(x, formula,
     )
   }
   # match with old "dot" syntax in t.test
-  if (alternative == "two_sided") {
+  if (alternative %in% c("two-sided", "two_sided", "two sided")) {
     alternative <- "two.sided"
   }
   

@@ -87,7 +87,7 @@
 #' # display a shading of the area beyond the p-value on the plot
 #' null_dist %>%
 #'   visualize() +
-#'   shade_p_value(obs_stat = point_estimate, direction = "two_sided")
+#'   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 #' 
 #' null_dist %>%
 #'   visualize() +

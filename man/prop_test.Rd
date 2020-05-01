@@ -11,7 +11,7 @@ prop_test(
   explanatory = NULL,
   p = NULL,
   order = NULL,
-  alternative = "two_sided",
+  alternative = "two-sided",
   conf_int = TRUE,
   conf_level = 0.95,
   ...
@@ -41,7 +41,7 @@ should be subtracted, where  \code{order = c("first", "second")} means
 sample tests.}
 
 \item{alternative}{Character string giving the direction of the alternative
-hypothesis. Options are \code{"two_sided"} (default), \code{"greater"}, or \code{"less"}.}
+hypothesis. Options are \code{"two-sided"} (default), \code{"greater"}, or \code{"less"}.}
 
 \item{conf_int}{A logical value for whether to report the confidence
 interval or not. \code{TRUE} by default, ignored if \code{p} is specified for a
