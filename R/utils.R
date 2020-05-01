@@ -415,8 +415,8 @@ check_direction <- function(direction = c("less", "greater", "two_sided",
   ) {
     stop_glue(
       'The provided value for `direction` is not appropriate. Possible values ',
-      'are "less", "greater", "two_sided", "left", "right", "both", ',
-      '"two-sided", or "two sided"'
+      'are "less", "greater", "two-sided", "left", "right", "both", ',
+      '"two_sided", or "two sided"'
     )
   }
 }

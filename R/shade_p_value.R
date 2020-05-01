@@ -84,7 +84,7 @@ shade_p_value <- function(obs_stat, direction,
     } else {
       warning_glue(
         '`direction` should be one of `"less"`, `"left"`, `"greater"`, ",
-        "`"right"`, `"two_sided"`, `"both"`, `"two-sided"`, or `"two sided"`.'
+        "`"right"`, `"two-sided"`, `"both"`, `"two_sided"`, or `"two sided"`.'
       )
     }
   }
