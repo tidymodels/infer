@@ -32,6 +32,13 @@ test_that("t_test works", {
   expect_equal(new_way, new_way_alt, tolerance = 1e-5)
   expect_equal(new_way, old_way, tolerance = 1e-5)
   
+  # check that the order argument changes output
+  new_way2 <- t_test(iris2, 
+                    Sepal.Width ~ Species, 
+                    order = c("virginica", "versicolor"))  
+  expect_equal(new_way[["lower_ci"]], -new_way2[["upper_ci"]])
+  expect_equal(new_way[["statistic"]], -new_way2[["statistic"]])
+  
   # One Sample
   new_way <- iris2 %>%
     t_test(Sepal.Width ~ NULL, mu = 0)

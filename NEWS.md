@@ -18,6 +18,7 @@ when appropriate (#239, #244, #291)
 - Fix error in `generate()` when response variable is named `x` (#299)
 - Add `two-sided` and `two sided` as aliases for `two_sided` for the 
 `direction` argument in `get_p_value()` and `shade_p_value()` (#302)
+- Fix `t_test()` and `t_stat()` ignoring the `order` argument (#310)
 
 # infer 0.5.1
 
