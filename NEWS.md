@@ -68,7 +68,7 @@ when appropriate (#239, #244, #291)
 - Fully use {tibble} (#166).
 - Fix `calculate()` to not depend on order of `p` for `type = "simulate"` (#122).
 - Reduce code duplication (#173).
-- Make transparancy in `visualize()` to not depend on method and data volume.
+- Make transparency in `visualize()` to not depend on method and data volume.
 - Make `visualize()` work for "One sample t" theoretical type with `method = "both"`.
 - Add `stat = "sum"` and `stat = "count"` options to `calculate()` (#50).
 

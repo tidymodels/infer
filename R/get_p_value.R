@@ -3,7 +3,7 @@
 #' @description
 #' \lifecycle{stable}
 #'
-#' Compute a p-value from a null distribution and observed statistc. 
+#' Compute a p-value from a null distribution and observed statistic. 
 #' Simulation-based methods are (currently only) supported.
 #' 
 #' Learn more in `vignette("infer")`.
