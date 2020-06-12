@@ -25,7 +25,7 @@ A 1x1 \link[tibble:tibble]{tibble} with value between 0 and 1.
 \description{
 \lifecycle{stable}
 
-Compute a p-value from a null distribution and observed statistc.
+Compute a p-value from a null distribution and observed statistic.
 Simulation-based methods are (currently only) supported.
 
 Learn more in \code{vignette("infer")}.

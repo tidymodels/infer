@@ -7,7 +7,9 @@
 \alias{p_value}
 \alias{GENERATION_TYPES}
 \title{Deprecated functions and objects}
-\format{An object of class \code{character} of length 3.}
+\format{
+An object of class \code{character} of length 3.
+}
 \usage{
 conf_int(x, level = 0.95, type = "percentile", point_estimate = NULL)
 
