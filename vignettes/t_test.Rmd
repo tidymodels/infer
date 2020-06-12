@@ -4,8 +4,8 @@ description: "Conducting t-Tests on tidy data with infer."
 output: rmarkdown::html_vignette
 vignette: |
   %\VignetteIndexEntry{t-Tests}
-  %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 ```{r settings, include=FALSE}

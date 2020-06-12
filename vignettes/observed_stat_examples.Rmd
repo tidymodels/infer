@@ -7,8 +7,8 @@ output:
     toc: true
 vignette: |
   %\VignetteIndexEntry{Full infer pipeline examples}
-  %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 #### Introduction
