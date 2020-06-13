@@ -1,7 +1,6 @@
 #' Add information about confidence interval
 #'
 #' @description
-#' \lifecycle{maturing}
 #'
 #' `shade_confidence_interval()` plots confidence interval region on top of the
 #' [visualize()] output. It should be used as \\{ggplot2\\} layer function (see

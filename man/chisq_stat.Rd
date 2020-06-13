@@ -22,7 +22,6 @@ explanatory variable.}
 }
 \description{
 @description
-\lifecycle{maturing}
 }
 \details{
 A shortcut wrapper function to get the observed test statistic for a chisq

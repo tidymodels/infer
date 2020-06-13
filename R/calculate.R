@@ -1,7 +1,6 @@
 #' Calculate summary statistics
 #'
 #' @description
-#' \lifecycle{maturing}
 #' 
 #' Calculates summary statistics from outputs of [generate()] or 
 #' [hypothesize()].

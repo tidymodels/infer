@@ -6,7 +6,6 @@
 #' Tidy t-test
 #'
 #' @description
-#' \lifecycle{maturing}
 #'
 #' A tidier version of [t.test()][stats::t.test()] for two sample tests.
 #'
@@ -121,7 +120,6 @@ t_test <- function(x, formula,
 #' Tidy t-test statistic
 #'
 #' @description
-#' \lifecycle{maturing}
 #' 
 #' A shortcut wrapper function to get the observed test statistic for a t test.
 #'
@@ -227,7 +225,6 @@ t_stat <- function(x, formula,
 #' Tidy chi-squared test
 #'
 #' @description
-#' \lifecycle{maturing}
 #'
 #' A tidier version of [chisq.test()][stats::chisq.test()] for goodness of fit
 #' tests and tests of independence.
@@ -295,7 +292,6 @@ chisq_test <- function(x, formula, response = NULL,
 #' Tidy chi-squared test statistic
 #'
 #'  @description
-#' \lifecycle{maturing}
 #'
 #' A shortcut wrapper function to get the observed test statistic for a chisq
 #' test. Uses [chisq.test()][stats::chisq.test()], which applies a continuity
@@ -375,7 +371,6 @@ check_conf_level <- function(conf_level) {
 #' Tidy proportion test
 #'
 #' @description
-#' \lifecycle{experimental}
 #'
 #' A tidier version of [prop.test()][stats::prop.test()] for equal or given
 #' proportions.

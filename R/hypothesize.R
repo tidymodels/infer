@@ -1,7 +1,6 @@
 #' Declare a null hypothesis
 #'
 #' @description
-#' \lifecycle{maturing}
 #' 
 #' Declare a null hypothesis about variables selected in [specify()].
 #' 

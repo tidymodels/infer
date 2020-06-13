@@ -1,7 +1,6 @@
 #' Generate resamples, permutations, or simulations
 #'
 #' @description
-#' \lifecycle{questioning}
 #' 
 #' Generation creates a null distribution from [specify()] and (if needed) 
 #' [hypothesize()] inputs.

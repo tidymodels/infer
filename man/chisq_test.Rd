@@ -21,8 +21,6 @@ explanatory variable.}
 \item{...}{Additional arguments for \link[stats:chisq.test]{chisq.test()}.}
 }
 \description{
-\lifecycle{maturing}
-
 A tidier version of \link[stats:chisq.test]{chisq.test()} for goodness of fit
 tests and tests of independence.
 }

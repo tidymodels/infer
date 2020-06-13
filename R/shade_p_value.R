@@ -1,7 +1,6 @@
 #' Add information about p-value region(s)
 #'
 #' @description
-#' \lifecycle{maturing}
 #'
 #' `shade_p_value()` plots p-value region(s) (using "area under the curve"
 #' approach) on top of the [visualize()] output. It should be used as

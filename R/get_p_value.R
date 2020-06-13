@@ -1,7 +1,6 @@
 #' Compute p-value
 #'
 #' @description
-#' \lifecycle{stable}
 #'
 #' Compute a p-value from a null distribution and observed statistic. 
 #' Simulation-based methods are (currently only) supported.

@@ -34,8 +34,6 @@ A 1 x 2 tibble with values corresponding to lower and upper values in
 the confidence interval.
 }
 \description{
-\lifecycle{stable}
-
 Compute a confidence interval around a summary statistic. Only
 simulation-based methods are (currently only) supported.
 

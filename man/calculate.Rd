@@ -33,8 +33,6 @@ difference in means, medians, or proportions and t and z statistics.}
 A tibble containing a \code{stat} column of calculated statistics.
 }
 \description{
-\lifecycle{maturing}
-
 Calculates summary statistics from outputs of \code{\link[=generate]{generate()}} or
 \code{\link[=hypothesize]{hypothesize()}}.
 
