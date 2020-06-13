@@ -48,7 +48,9 @@
 #'  calculate("diff in means", order = c("degree", "no degree"))
 #'
 #' # More in-depth explanation of how to use the infer package
+#' \dontrun{
 #' vignette("infer")
+#' }
 #'
 #' @importFrom dplyr group_by summarize n
 #' @importFrom rlang !! sym quo enquo eval_tidy

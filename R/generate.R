@@ -47,7 +47,9 @@
 #'  generate(reps = 1000, type = "permute")
 #' 
 #' # More in-depth explanation of how to use the infer package
+#' \dontrun{
 #' vignette("infer")
+#' }
 #'
 #' @importFrom dplyr group_by
 #' @export

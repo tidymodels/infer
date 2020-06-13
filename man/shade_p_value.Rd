@@ -61,7 +61,9 @@ null_dist \%>\%
   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 
 # More in-depth explanation of how to use the infer package
+\dontrun{
 vignette("infer")
+}
 
 }
 \seealso{

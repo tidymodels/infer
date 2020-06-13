@@ -66,6 +66,8 @@ gss \%>\%
  calculate("diff in means", order = c("degree", "no degree"))
 
 # More in-depth explanation of how to use the infer package
+\dontrun{
 vignette("infer")
+}
 
 }

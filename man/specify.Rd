@@ -48,6 +48,8 @@ gss \%>\%
   specify(response = age, explanatory = partyid)
 
 # More in-depth explanation of how to use the infer package
+\dontrun{
 vignette("infer")
+}
 
 }

@@ -107,7 +107,9 @@
 #' visualize(null_dist, method = "both")
 #'
 #' # More in-depth explanation of how to use the infer package
+#' \dontrun{
 #' vignette("infer")
+#' }
 #'
 #' @importFrom ggplot2 ggplot geom_histogram aes ggtitle
 #' @importFrom ggplot2 xlab ylab geom_vline geom_rect geom_bar

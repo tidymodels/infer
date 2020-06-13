@@ -70,6 +70,8 @@ gss \%>\%
                           type = "se")
   
 # More in-depth explanation of how to use the infer package
-vignette("infer")  
+\dontrun{
+vignette("infer")
+} 
  
 }

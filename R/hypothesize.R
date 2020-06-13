@@ -33,7 +33,9 @@
 #'   hypothesize(null = "point", mu = 40)
 #'
 #' # More in-depth explanation of how to use the infer package
+#' \dontrun{
 #' vignette("infer")
+#' }
 #'
 #' @importFrom purrr compact
 #' @export

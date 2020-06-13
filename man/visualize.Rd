@@ -153,7 +153,9 @@ visualize(null_dist_theoretical, method = "theoretical")
 visualize(null_dist, method = "both")
 
 # More in-depth explanation of how to use the infer package
+\dontrun{
 vignette("infer")
+}
 
 }
 \seealso{

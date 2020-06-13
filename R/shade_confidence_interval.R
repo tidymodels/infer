@@ -60,7 +60,9 @@
 #'   shade_confidence_interval(ci, fill = NULL)
 #'
 #' # More in-depth explanation of how to use the infer package
+#' \dontrun{
 #' vignette("infer")
+#' }
 #'
 #' @name shade_confidence_interval
 NULL

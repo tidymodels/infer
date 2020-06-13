@@ -72,6 +72,8 @@ gss \%>\%
   get_p_value(obs_stat = point_estimate, direction = "two-sided")
   
 # More in-depth explanation of how to use the infer package
-vignette("infer")   
+\dontrun{
+vignette("infer")
+}  
   
 }
