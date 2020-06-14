@@ -51,7 +51,7 @@ null_dist <- gss \%>\%
   # hypothesizing that the mean is 40
   hypothesize(null = "point", mu = 40) \%>\%
   # generating data points for a null distribution
-  generate(reps = 10000, type = "bootstrap") \%>\%
+  generate(reps = 1000, type = "bootstrap") \%>\%
   # finding the null distribution
   calculate(stat = "mean")
   

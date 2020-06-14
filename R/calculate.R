@@ -36,7 +36,7 @@
 #' gss %>%
 #'  specify(response = hours) %>%
 #'  hypothesize(null = "point", mu = 40) %>%
-#'  generate(reps = 1000, type = "bootstrap") %>%
+#'  generate(reps = 200, type = "bootstrap") %>%
 #'  calculate(stat = "mean")
 #'
 #' # calculate a null distribution assuming independence between age
@@ -44,7 +44,7 @@
 #' gss %>%
 #'  specify(age ~ college) %>%
 #'  hypothesize(null = "independence") %>%
-#'  generate(reps = 1000, type = "permute") %>%
+#'  generate(reps = 200, type = "permute") %>%
 #'  calculate("diff in means", order = c("degree", "no degree"))
 #'
 #' # More in-depth explanation of how to use the infer package
