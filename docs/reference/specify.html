@@ -8,25 +8,36 @@
 
 <title>Specify response and explanatory variables — specify • infer</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -35,19 +46,17 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
 
 <meta property="og:title" content="Specify response and explanatory variables — specify" />
-<meta property="og:description" content="
-specify() is used to specify which columns in the supplied data frame are
+<meta property="og:description" content="specify() is used to specify which columns in the supplied data frame are
 the relevant response (and, if applicable, explanatory) variables. Note that
 character variables are converted to factors.
 Learn more in vignette(&quot;infer&quot;)." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -65,7 +74,7 @@ Learn more in vignette(&quot;infer&quot;)." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -79,11 +88,7 @@ Learn more in vignette(&quot;infer&quot;)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1.9000</span>
-
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
-
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
       </span>
     </div>
 
@@ -97,22 +102,19 @@ Learn more in vignette(&quot;infer&quot;)." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/infer.html">infer</a>
+      <a href="../articles/infer.html">Getting to Know infer</a>
     </li>
     <li>
-      <a href="../articles/chisq_test.html">Chi-square Test Example</a>
+      <a href="../articles/t_test.html">t-Tests</a>
     </li>
     <li>
-      <a href="../articles/two_sample_t.html">Two-Sample t-test Example</a>
+      <a href="../articles/anova.html">ANOVA</a>
     </li>
     <li>
-      <a href="../articles/observed_stat_examples.html">Observed Statistic Calculation Examples</a>
+      <a href="../articles/chi_squared.html">Chi-Squared</a>
     </li>
     <li>
-      <a href="../articles/flights_examples.html">Simulation-Based `flights` Examples</a>
-    </li>
-    <li>
-      <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
+      <a href="../articles/observed_stat_examples.html">Full infer Pipeline Examples</a>
     </li>
   </ul>
 </li>
@@ -127,9 +129,6 @@ Learn more in vignette(&quot;infer&quot;)." />
 </li>
 <li>
   <a href="../CONDUCT.html">Code of Conduct</a>
-</li>
-<li>
-  <a href="../TO-DO.html">To-Dos</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -164,8 +163,7 @@ Learn more in vignette(&quot;infer&quot;)." />
     </div>
 
     <div class="ref-description">
-    <p><a href='https://www.tidyverse.org/lifecycle/#maturing'><img src='figures/lifecycle-maturing.svg' alt='Maturing lifecycle'></a></p>
-<p><code>specify()</code> is used to specify which columns in the supplied data frame are
+    <p><code>specify()</code> is used to specify which columns in the supplied data frame are
 the relevant response (and, if applicable, explanatory) variables. Note that
 character variables are converted to <code>factor</code>s.</p>
 <p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
@@ -212,123 +210,66 @@ variable data.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># specifying for a point estimate on one variable</span>
 <span class='no'>gss</span> <span class='kw'>%&gt;%</span>
-   <span class='fu'>specify</span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>age</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 12 rows containing missing values.</span></div><div class='output co'>#&gt; Response: age (numeric)
-
-#&gt; <span style='color: #555555;'># A tibble: 2,988 x 1</span><span>
+   <span class='fu'>specify</span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>age</span>)</div><div class='output co'>#&gt; Response: age (numeric)
+#&gt; <span style='color: #949494;'># A tibble: 500 x 1</span><span>
 #&gt;      age
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span>    37
-#&gt; </span><span style='color: #555555;'> 2</span><span>    29
-#&gt; </span><span style='color: #555555;'> 3</span><span>    58
-#&gt; </span><span style='color: #555555;'> 4</span><span>    40
-#&gt; </span><span style='color: #555555;'> 5</span><span>    39
-#&gt; </span><span style='color: #555555;'> 6</span><span>    37
-#&gt; </span><span style='color: #555555;'> 7</span><span>    53
-#&gt; </span><span style='color: #555555;'> 8</span><span>    41
-#&gt; </span><span style='color: #555555;'> 9</span><span>    55
-#&gt; </span><span style='color: #555555;'>10</span><span>    47
-#&gt; </span><span style='color: #555555;'># … with 2,978 more rows</span><span></div><div class='input'>
-
-#&gt; # A tibble: 2,988 x 1
-#&gt;      age
-#&gt;    &lt;dbl&gt;
-#&gt;  1    37
-#&gt;  2    29
-#&gt;  3    58
-#&gt;  4    40
-#&gt;  5    39
-#&gt;  6    37
-#&gt;  7    53
-#&gt;  8    41
-#&gt;  9    55
-#&gt; 10    47
-#&gt; # … with 2,978 more rows</div><div class='input'>
-
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>    36
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>    34
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>    24
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>    42
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>    31
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>    32
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>    48
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>    36
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>    30
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>    33
+#&gt; </span><span style='color: #949494;'># … with 490 more rows</span><span></div><div class='input'>
 <span class='co'># specify a relationship between variables as a formula...</span>
 <span class='no'>gss</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>specify</span>(<span class='no'>age</span> ~ <span class='no'>partyid</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 37 rows containing missing values.</span></div><div class='output co'>#&gt; Response: age (numeric)
+  <span class='fu'>specify</span>(<span class='no'>age</span> ~ <span class='no'>partyid</span>)</div><div class='output co'>#&gt; Response: age (numeric)
 #&gt; Explanatory: partyid (factor)
-
-#&gt; </span><span style='color: #555555;'># A tibble: 2,963 x 2</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 500 x 2</span><span>
 #&gt;      age partyid
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>  
-#&gt; </span><span style='color: #555555;'> 1</span><span>    37 dem    
-#&gt; </span><span style='color: #555555;'> 2</span><span>    29 dem    
-#&gt; </span><span style='color: #555555;'> 3</span><span>    58 ind    
-#&gt; </span><span style='color: #555555;'> 4</span><span>    40 rep    
-#&gt; </span><span style='color: #555555;'> 5</span><span>    39 dem    
-#&gt; </span><span style='color: #555555;'> 6</span><span>    37 dem    
-#&gt; </span><span style='color: #555555;'> 7</span><span>    53 dem    
-#&gt; </span><span style='color: #555555;'> 8</span><span>    41 rep    
-#&gt; </span><span style='color: #555555;'> 9</span><span>    55 ind    
-#&gt; </span><span style='color: #555555;'>10</span><span>    47 rep    
-#&gt; </span><span style='color: #555555;'># … with 2,953 more rows</span><span></div><div class='input'>
-
-#&gt; # A tibble: 2,963 x 2
-#&gt;      age partyid
-#&gt;    &lt;dbl&gt; &lt;fct&gt;  
-#&gt;  1    37 dem    
-#&gt;  2    29 dem    
-#&gt;  3    58 ind    
-#&gt;  4    40 rep    
-#&gt;  5    39 dem    
-#&gt;  6    37 dem    
-#&gt;  7    53 dem    
-#&gt;  8    41 rep    
-#&gt;  9    55 ind    
-#&gt; 10    47 rep    
-#&gt; # … with 2,953 more rows</div><div class='input'>
-
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>  
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>    36 ind    
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>    34 rep    
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>    24 ind    
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>    42 ind    
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>    31 rep    
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>    32 rep    
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>    48 dem    
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>    36 ind    
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>    30 rep    
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>    33 dem    
+#&gt; </span><span style='color: #949494;'># … with 490 more rows</span><span></div><div class='input'>
 <span class='co'># ...or with named arguments!</span>
 <span class='no'>gss</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>specify</span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>age</span>, <span class='kw'>explanatory</span> <span class='kw'>=</span> <span class='no'>partyid</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 37 rows containing missing values.</span></div><div class='output co'>#&gt; Response: age (numeric)
+  <span class='fu'>specify</span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>age</span>, <span class='kw'>explanatory</span> <span class='kw'>=</span> <span class='no'>partyid</span>)</div><div class='output co'>#&gt; Response: age (numeric)
 #&gt; Explanatory: partyid (factor)
-
-#&gt; </span><span style='color: #555555;'># A tibble: 2,963 x 2</span><span>
+#&gt; </span><span style='color: #949494;'># A tibble: 500 x 2</span><span>
 #&gt;      age partyid
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>  
-#&gt; </span><span style='color: #555555;'> 1</span><span>    37 dem    
-#&gt; </span><span style='color: #555555;'> 2</span><span>    29 dem    
-#&gt; </span><span style='color: #555555;'> 3</span><span>    58 ind    
-#&gt; </span><span style='color: #555555;'> 4</span><span>    40 rep    
-#&gt; </span><span style='color: #555555;'> 5</span><span>    39 dem    
-#&gt; </span><span style='color: #555555;'> 6</span><span>    37 dem    
-#&gt; </span><span style='color: #555555;'> 7</span><span>    53 dem    
-#&gt; </span><span style='color: #555555;'> 8</span><span>    41 rep    
-#&gt; </span><span style='color: #555555;'> 9</span><span>    55 ind    
-#&gt; </span><span style='color: #555555;'>10</span><span>    47 rep    
-#&gt; </span><span style='color: #555555;'># … with 2,953 more rows</span><span></div><div class='input'>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>  
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>    36 ind    
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>    34 rep    
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>    24 ind    
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>    42 ind    
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>    31 rep    
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>    32 rep    
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>    48 dem    
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>    36 ind    
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>    30 rep    
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span>    33 dem    
+#&gt; </span><span style='color: #949494;'># … with 490 more rows</span><span></div><div class='input'>
 <span class='co'># More in-depth explanation of how to use the infer package</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: vignette ‘infer’ not found</span></div><div class='input'>
-</div></span></pre>
-
-#&gt; # A tibble: 2,963 x 2
-#&gt;      age partyid
-#&gt;    &lt;dbl&gt; &lt;fct&gt;  
-#&gt;  1    37 dem    
-#&gt;  2    29 dem    
-#&gt;  3    58 ind    
-#&gt;  4    40 rep    
-#&gt;  5    39 dem    
-#&gt;  6    37 dem    
-#&gt;  7    53 dem    
-#&gt;  8    41 rep    
-#&gt;  9    55 ind    
-#&gt; 10    47 rep    
-#&gt; # … with 2,953 more rows</div><div class='input'>
-<span class='co'># More in-depth explanation of how to use the infer package</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: vignette ‘infer’ not found</span></div><div class='input'>
-</div></pre>
-
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)
+}</div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -339,7 +280,7 @@ variable data.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
