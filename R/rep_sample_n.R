@@ -1,7 +1,6 @@
 #' Perform repeated sampling
 #'
 #' @description
-#' \lifecycle{questioning}
 #'
 #' Perform repeated sampling of samples of size n. Useful for creating sampling
 #' distributions.

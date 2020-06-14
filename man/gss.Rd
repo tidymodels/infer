@@ -4,7 +4,8 @@
 \name{gss}
 \alias{gss}
 \title{Subset of data from the General Social Survey (GSS).}
-\format{A tibble with 500 rows and 11 variables:
+\format{
+A tibble with 500 rows and 11 variables:
 \describe{
 \item{year}{year respondent was surveyed}
 \item{age}{age at time of survey, truncated at 89}
@@ -18,7 +19,8 @@ junior/community college}
 \item{class}{subjective socioeconomic class identification}
 \item{finrela}{opinion of family income}
 \item{weight}{survey weight}
-}}
+}
+}
 \source{
 \url{https://gss.norc.org}
 }

@@ -1,7 +1,6 @@
 #' Specify response and explanatory variables
 #'
 #' @description
-#' \lifecycle{maturing}
 #'  
 #' `specify()` is used to specify which columns in the supplied data frame are
 #' the relevant response (and, if applicable, explanatory) variables. Note that 
@@ -38,7 +37,9 @@
 #'   specify(response = age, explanatory = partyid)
 #'
 #' # More in-depth explanation of how to use the infer package
+#' \dontrun{
 #' vignette("infer")
+#' }
 #'
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs

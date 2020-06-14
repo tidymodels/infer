@@ -6,8 +6,8 @@ output:
     toc: true
 vignette: |
   %\VignetteIndexEntry{infer}
-  %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 ```{r include=FALSE}

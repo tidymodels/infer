@@ -1,7 +1,6 @@
 #' Compute confidence interval
 #'
 #' @description
-#' \lifecycle{stable}
 #'
 #' Compute a confidence interval around a summary statistic. Only 
 #' simulation-based methods are (currently only) supported.
@@ -40,7 +39,7 @@
 #'   # hypothesizing that the mean is 40
 #'   hypothesize(null = "point", mu = 40) %>%
 #'   # generating data points for a null distribution
-#'   generate(reps = 10000, type = "bootstrap") %>%
+#'   generate(reps = 1000, type = "bootstrap") %>%
 #'   # finding the null distribution
 #'   calculate(stat = "mean") %>%
 #    # calculate the confidence interval around the point estimate
@@ -51,7 +50,9 @@
 #'                           type = "se")
 #'   
 #' # More in-depth explanation of how to use the infer package
-#' vignette("infer")  
+#' \dontrun{
+#' vignette("infer")
+#' } 
 #'  
 #' @name get_confidence_interval
 #' @export

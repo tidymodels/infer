@@ -82,8 +82,6 @@ A ggplot object showing the simulation-based distribution as a
 histogram or bar graph. Also used to show the theoretical curves.
 }
 \description{
-\lifecycle{maturing}
-
 Visualize the distribution of the simulation-based inferential statistics or
 the theoretical distribution (or both!).
 
@@ -108,7 +106,7 @@ null_dist <- gss \%>\%
   # hypothesizing that the mean is 40
   hypothesize(null = "point", mu = 40) \%>\%
   # generating data points for a null distribution
-  generate(reps = 10000, type = "bootstrap") \%>\%
+  generate(reps = 1000, type = "bootstrap") \%>\%
   # calculating a distribution of t test statistics
   calculate(stat = "t")
   
@@ -155,7 +153,9 @@ visualize(null_dist_theoretical, method = "theoretical")
 visualize(null_dist, method = "both")
 
 # More in-depth explanation of how to use the infer package
+\dontrun{
 vignette("infer")
+}
 
 }
 \seealso{

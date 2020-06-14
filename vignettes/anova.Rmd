@@ -4,8 +4,8 @@ description: "Conducting ANOVA (Analysis of Variance) on tidy data with infer."
 output: rmarkdown::html_vignette
 vignette: |
   %\VignetteIndexEntry{ANOVA}
-  %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 ```{r settings, include=FALSE}

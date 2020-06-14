@@ -28,8 +28,6 @@ A tibble containing the response (and explanatory, if specified)
 variable data.
 }
 \description{
-\lifecycle{maturing}
-
 \code{specify()} is used to specify which columns in the supplied data frame are
 the relevant response (and, if applicable, explanatory) variables. Note that
 character variables are converted to \code{factor}s.
@@ -50,6 +48,8 @@ gss \%>\%
   specify(response = age, explanatory = partyid)
 
 # More in-depth explanation of how to use the infer package
+\dontrun{
 vignette("infer")
+}
 
 }

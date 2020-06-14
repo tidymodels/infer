@@ -33,8 +33,6 @@ difference in means, medians, or proportions and t and z statistics.}
 A tibble containing a \code{stat} column of calculated statistics.
 }
 \description{
-\lifecycle{maturing}
-
 Calculates summary statistics from outputs of \code{\link[=generate]{generate()}} or
 \code{\link[=hypothesize]{hypothesize()}}.
 
@@ -56,7 +54,7 @@ visualizations (with a warning) and raise an error in p-value calculations.
 gss \%>\%
  specify(response = hours) \%>\%
  hypothesize(null = "point", mu = 40) \%>\%
- generate(reps = 1000, type = "bootstrap") \%>\%
+ generate(reps = 200, type = "bootstrap") \%>\%
  calculate(stat = "mean")
 
 # calculate a null distribution assuming independence between age
@@ -64,10 +62,12 @@ gss \%>\%
 gss \%>\%
  specify(age ~ college) \%>\%
  hypothesize(null = "independence") \%>\%
- generate(reps = 1000, type = "permute") \%>\%
+ generate(reps = 200, type = "permute") \%>\%
  calculate("diff in means", order = c("degree", "no degree"))
 
 # More in-depth explanation of how to use the infer package
+\dontrun{
 vignette("infer")
+}
 
 }

@@ -32,8 +32,6 @@ A tibble containing the response (and explanatory, if specified)
 variable data with parameter information stored as well.
 }
 \description{
-\lifecycle{maturing}
-
 Declare a null hypothesis about variables selected in \code{\link[=specify]{specify()}}.
 
 Learn more in \code{vignette("infer")}.
@@ -50,6 +48,8 @@ gss \%>\%
   hypothesize(null = "point", mu = 40)
 
 # More in-depth explanation of how to use the infer package
+\dontrun{
 vignette("infer")
+}
 
 }

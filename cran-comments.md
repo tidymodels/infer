@@ -1,7 +1,7 @@
 ## Test environments
-* local OS X install, R 3.6.1
-* ubuntu 12.04 (on travis-ci), R 3.6.1, R-oldrel, R-devel
-* win-builder (oldrel, devel, release)
+* local OS X install, R 4.0.0
+* ubuntu 16.04 (on travis-ci), oldrel, release, devel
+* win-builder (release, devel)
 * rhub: debian-gcc-devel-nold
 
 ## R CMD check results
@@ -11,4 +11,3 @@
 ## Reverse dependencies
 
 There is one reverse dependency: moderndive. No problems found.
-

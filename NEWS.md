@@ -8,7 +8,6 @@
 - Add new messages for common errors (#277)
 - Increase coverage of theoretical methods in documentation (#278, #280)
 - Drop missing values and reduce size of `gss` dataset used in examples (#282)
-- Fix formatting of lifecycle badges (#283)
 - Add `stat = "ratio of props"` and `stat = "odds ratio"` to `calculate` (#285)
 - Add `prop_test()`, a tidy interface to `prop.test()` (#284, #287)
 - Updates to `visualize()` for compatibility with `ggplot2` v3.3.0 (#289)
@@ -68,7 +67,7 @@ when appropriate (#239, #244, #291)
 - Fully use {tibble} (#166).
 - Fix `calculate()` to not depend on order of `p` for `type = "simulate"` (#122).
 - Reduce code duplication (#173).
-- Make transparancy in `visualize()` to not depend on method and data volume.
+- Make transparency in `visualize()` to not depend on method and data volume.
 - Make `visualize()` work for "One sample t" theoretical type with `method = "both"`.
 - Add `stat = "sum"` and `stat = "count"` options to `calculate()` (#50).
 

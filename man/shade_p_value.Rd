@@ -31,8 +31,6 @@ A list of \\{ggplot2\\} objects to be added to the \code{visualize()}
 output.
 }
 \description{
-\lifecycle{maturing}
-
 \code{shade_p_value()} plots p-value region(s) (using "area under the curve"
 approach) on top of the \code{\link[=visualize]{visualize()}} output. It should be used as
 \\{ggplot2\\} layer function (see examples). \code{shade_pvalue()} is its alias.
@@ -53,7 +51,7 @@ null_dist <- gss \%>\%
   # hypothesizing that the mean is 40
   hypothesize(null = "point", mu = 40) \%>\%
   # generating data points for a null distribution
-  generate(reps = 10000, type = "bootstrap") \%>\%
+  generate(reps = 1000, type = "bootstrap") \%>\%
   # finding the null distribution
   calculate(stat = "mean")
   
@@ -63,7 +61,9 @@ null_dist \%>\%
   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 
 # More in-depth explanation of how to use the infer package
+\dontrun{
 vignette("infer")
+}
 
 }
 \seealso{

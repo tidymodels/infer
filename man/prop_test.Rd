@@ -52,8 +52,6 @@ two-sample test.}
 \item{...}{Additional arguments for \link[stats:prop.test]{prop.test()}.}
 }
 \description{
-\lifecycle{experimental}
-
 A tidier version of \link[stats:prop.test]{prop.test()} for equal or given
 proportions.
 }

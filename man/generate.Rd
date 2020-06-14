@@ -21,8 +21,6 @@ A tibble containing \code{reps} generated datasets, indicated by the
 \code{replicate} column.
 }
 \description{
-\lifecycle{questioning}
-
 Generation creates a null distribution from \code{\link[=specify]{specify()}} and (if needed)
 \code{\link[=hypothesize]{hypothesize()}} inputs.
 
@@ -47,20 +45,22 @@ option is currently only applicable for testing point estimates.)
 }
 
 \examples{
-# Generate a null distribution by taking 1000 bootstrap samples
+# Generate a null distribution by taking 200 bootstrap samples
 gss \%>\%
  specify(response = hours) \%>\%
  hypothesize(null = "point", mu = 40) \%>\%
- generate(reps = 1000, type = "bootstrap")
+ generate(reps = 200, type = "bootstrap")
 
 # Generate a null distribution for the independence of
 # two variables by permuting their values 1000 times
 gss \%>\%
  specify(partyid ~ age) \%>\%
  hypothesize(null = "independence") \%>\%
- generate(reps = 1000, type = "permute")
+ generate(reps = 200, type = "permute")
 
 # More in-depth explanation of how to use the infer package
+\dontrun{
 vignette("infer")
+}
 
 }
