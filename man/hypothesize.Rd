@@ -2,9 +2,12 @@
 % Please edit documentation in R/hypothesize.R
 \name{hypothesize}
 \alias{hypothesize}
+\alias{hypothesise}
 \title{Declare a null hypothesis}
 \usage{
 hypothesize(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL)
+
+hypothesise(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL)
 }
 \arguments{
 \item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
@@ -29,8 +32,6 @@ A tibble containing the response (and explanatory, if specified)
 variable data with parameter information stored as well.
 }
 \description{
-\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
-
 Declare a null hypothesis about variables selected in \code{\link[=specify]{specify()}}.
 
 Learn more in \code{vignette("infer")}.
@@ -47,6 +48,8 @@ gss \%>\%
   hypothesize(null = "point", mu = 40)
 
 # More in-depth explanation of how to use the infer package
+\dontrun{
 vignette("infer")
+}
 
 }

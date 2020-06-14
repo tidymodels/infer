@@ -1,9 +1,8 @@
 #' Compute p-value
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{lifecycle::badge("stable")}
 #'
-#' Compute a p-value from a null distribution and observed statistc. 
+#' Compute a p-value from a null distribution and observed statistic. 
 #' Simulation-based methods are (currently only) supported.
 #' 
 #' Learn more in `vignette("infer")`.
@@ -12,13 +11,30 @@
 #' @param obs_stat A numeric value or a 1x1 data frame (as extreme or more
 #'   extreme than this).
 #' @param direction A character string. Options are `"less"`, `"greater"`, or
-#'   `"two_sided"`. Can also use `"left"`, `"right"`, or `"both"`.
+#'   `"two-sided"`. Can also use `"left"`, `"right"`, `"both"`, 
+#'   `"two_sided"`, or `"two sided"`.
 #'
 #' @return A 1x1 [tibble][tibble::tibble] with value between 0 and 1.
 #'
 #' @section Aliases:
 #' `get_pvalue()` is an alias of `get_p_value()`.
 #' `p_value` is a deprecated alias of `get_p_value()`.
+#' 
+#' @section Zero p-value:
+#' Though a true p-value of 0 is impossible, `get_p_value()` may return 0 in 
+#' some cases. This is due to the simulation-based nature of the \{infer\} 
+#' package; the output of this function is an approximation based on 
+#' the number of `reps` chosen in the `generate()` step. When the observed
+#' statistic is very unlikely given the null hypothesis, and only a small
+#' number of `reps` have been generated to form a null distribution,
+#' it is possible that the observed statistic will be more extreme than
+#' every test statistic generated to form the null distribution, resulting
+#' in an approximate p-value of 0. In this case, the true p-value is a small 
+#' value likely less than `3/reps` (based on a poisson approximation).
+#' 
+#' In the case that a p-value of zero is reported, a warning message will be 
+#' raised to caution the user against reporting a p-value exactly equal to 0.
+#' 
 #'
 #' @examples
 #' 
@@ -35,14 +51,16 @@
 #'   # hypothesizing that the mean is 40
 #'   hypothesize(null = "point", mu = 40) %>%
 #'   # generating data points for a null distribution
-#'   generate(reps = 10000, type = "bootstrap") %>%
+#'   generate(reps = 1000, type = "bootstrap") %>%
 #'   # finding the null distribution
 #'   calculate(stat = "mean") %>%
 #    # calculate the p-value for the point estimate
-#'   get_p_value(obs_stat = point_estimate, direction = "two_sided")
+#'   get_p_value(obs_stat = point_estimate, direction = "two-sided")
 #'   
 #' # More in-depth explanation of how to use the infer package
-#' vignette("infer")   
+#' \dontrun{
+#' vignette("infer")
+#' }  
 #'   
 #' @name get_p_value
 NULL
@@ -58,6 +76,7 @@ get_p_value <- function(x, obs_stat, direction) {
       .sep = " "
     )
   }
+  check_for_nan(x, "get_p_value")
   obs_stat <- check_obs_stat(obs_stat)
   check_direction(direction)
 
@@ -91,6 +110,14 @@ simulation_based_p_value <- function(x, obs_stat, direction) {
     pval <- right_p_value(x[["stat"]], obs_stat)
   } else {
     pval <- two_sided_p_value(x[["stat"]], obs_stat)
+  }
+  
+  if (abs(pval) < 1e-16) {
+    warning_glue(
+      "Please be cautious in reporting a p-value of 0. This result is an ",
+      "approximation based on the number of `reps` chosen in the `generate()` ",
+      "step. See `?get_p_value()` for more information."
+    )
   }
 
   tibble::tibble(p_value = pval)

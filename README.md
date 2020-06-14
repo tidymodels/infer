@@ -1,5 +1,5 @@
 
-# infer R Package <img src="https://github.com/tidymodels/infer/blob/develop/figs/infer_gnome.png?raw=true" align="right" width=125 />
+# infer R Package <img src="https://github.com/tidymodels/infer/blob/master/figs/infer_gnome.png?raw=true" align="right" width=125 />
 
 -----
 
@@ -14,15 +14,25 @@
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)
 [![Travis-CI Build
 Status](https://travis-ci.org/tidymodels/infer.svg?branch=master)](https://travis-ci.org/tidymodels/infer)
-[![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/tidymodels/infer?branch=master&svg=true)](https://ci.appveyor.com/project/tidymodels/infer)
 [![Coverage
 Status](https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg)](https://codecov.io/github/tidymodels/infer/?branch=master)
 
 The objective of this package is to perform statistical inference using
 an expressive statistical grammar that coheres with the `tidyverse`
-design
-framework.
+design framework. The package is centered around 4 main verbs,
+supplemented with many utilities to visualize and extract value from
+their outputs.
+
+  - `specify()` allows you to specify the variable, or relationship
+    between variables, that you’re interested in.
+  - `hypothesize()` allows you to declare the null hypothesis.
+  - `generate()` allows you to generate data reflecting the null
+    hypothesis.
+  - `calculate()` allows you to calculate a distribution of statistics
+    from the generated data to form the null distribution.
+
+To learn more about the principles underlying the package design, see
+`vignette("infer")`.
 
 ![](https://raw.githubusercontent.com/tidymodels/infer/master/figs/ht-diagram.png)<!-- -->
 
@@ -36,16 +46,16 @@ To install the current stable version of `infer` from CRAN:
 install.packages("infer")
 ```
 
-To install the developmental version of `infer`, make sure to install
-`remotes` first. The `pkgdown` website for this developmental version is
-at <https://infer.netlify.com>.
+To install the developmental stable version of `infer`, make sure to
+install `remotes` first. The `pkgdown` website for this version is at
+<https://infer.netlify.com>.
 
 ``` r
 install.packages("remotes")
 remotes::install_github("tidymodels/infer")
 ```
 
-To install the cutting edge version of `infer` (do so at your own risk),
+To install the experimental version of `infer` (do so at your own risk),
 make sure to install `remotes` first.
 
 ``` r
@@ -53,64 +63,106 @@ install.packages("remotes")
 remotes::install_github("tidymodels/infer", ref = "develop")
 ```
 
-To see the things we are working on with the package as
-vignettes/Articles, check out the developmental `pkgdown` site at
-<https://infer-dev.netlify.com>.
+To see documentation for the experimental version of `infer`, the
+`pkgdown` site is available at <https://infer-dev.netlify.com>.
 
 ### Contributing
 
 -----
 
-We welcome others helping us make this package as user friendly and
+We welcome others helping us make this package as user-friendly and
 efficient as possible. Please review our
-[contributing](https://github.com/tidymodels/infer/blob/develop/CONDUCT.md)
-and [conduct](CONDUCT.md) guidelines. Of particular interest is helping
-us to write `testthat` tests and in building vignettes that show how to
-(and how NOT to) use the package. By participating in this project you
+[contributing](https://github.com/tidymodels/infer/blob/master/CONTRIBUTING.md)
+and
+[conduct](https://github.com/tidymodels/infer/blob/master/CONDUCT.md)
+guidelines. Please see the open
+[issues](https://github.com/tidymodels/infer/issues) for more specific
+fixes/additions needing attention. By participating in this project you
 agree to abide by its terms.
 
 ### Examples
 
 -----
 
-These examples assume that `mtcars` has been overwritten so that the
-variables `cyl`, `vs`, `am`, `gear`, and `carb` are `factor`s.
+These examples are pulled from the “Full infer Pipeline Examples”
+vignette, accessible by calling `vignette("observed_stat_examples")`.
+They make use of the `gss` dataset supplied by the package, providing a
+sample of data from the [General Social Survey](https://gss.norc.org).
+The data looks like this:
 
 ``` r
-mtcars <- as.data.frame(mtcars) %>%
-  mutate(cyl = factor(cyl),
-          vs = factor(vs),
-          am = factor(am),
-          gear = factor(gear),
-          carb = factor(carb))
+# load in the dataset
+data(gss)
+
+# take a glimpse at it
+str(gss)
 ```
 
-Hypothesis test for a difference in proportions (using the formula
-interface `y ~ x` in `specify()`):
+    ## Classes 'tbl_df', 'tbl' and 'data.frame':    500 obs. of  11 variables:
+    ##  $ year   : num  2014 1994 1998 1996 1994 ...
+    ##  $ age    : num  36 34 24 42 31 32 48 36 30 33 ...
+    ##  $ sex    : Factor w/ 2 levels "male","female": 1 2 1 1 1 2 2 2 2 2 ...
+    ##  $ college: Factor w/ 2 levels "no degree","degree": 2 1 2 1 2 1 1 2 2 1 ...
+    ##  $ partyid: Factor w/ 5 levels "dem","ind","rep",..: 2 3 2 2 3 3 1 2 3 1 ...
+    ##  $ hompop : num  3 4 1 4 2 4 2 1 5 2 ...
+    ##  $ hours  : num  50 31 40 40 40 53 32 20 40 40 ...
+    ##  $ income : Ord.factor w/ 12 levels "lt $1000"<"$1000 to 2999"<..: 12 11 12 12 12 12 12 12 12 10 ...
+    ##  $ class  : Factor w/ 6 levels "lower class",..: 3 2 2 2 3 3 2 3 3 2 ...
+    ##  $ finrela: Factor w/ 6 levels "far below average",..: 2 2 2 4 4 3 2 4 3 1 ...
+    ##  $ weight : num  0.896 1.083 0.55 1.086 1.083 ...
+
+As an example, we’ll run an analysis of variance on `age` and `partyid`,
+testing whether the age of a respondent is independent of their
+political party affiliation.
+
+Calculating the observed statistic,
 
 ``` r
-mtcars %>%
-  specify(am ~ vs, success = "1") %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 100, type = "permute") %>%
-  calculate(stat = "diff in props", order = c("1", "0"))
+F_hat <- gss %>% 
+  specify(age ~ partyid) %>%
+  calculate(stat = "F")
 ```
 
-Confidence interval for a difference in means (using the non-formula
-interface giving both the `response` and `explanatory` variables in
-`specify()`):
+Then, generating the null distribution,
 
 ``` r
-mtcars %>%
-  specify(response = mpg, explanatory = am) %>%
-  generate(reps = 100, type = "bootstrap") %>%
-  calculate(stat = "diff in means", order = c("1", "0"))
+null_distn <- gss %>%
+   specify(age ~ partyid) %>%
+   hypothesize(null = "independence") %>%
+   generate(reps = 1000, type = "permute") %>%
+   calculate(stat = "F")
 ```
 
-Note that the formula and non-formula interfaces work for all
-implemented inference procedures in `infer`. Use whatever is more
-natural for you. If you will be doing modeling using functions like
-`lm()` and `glm()`, we recommend you begin to use the formula `y ~ x`
-notation as soon as possible though.
+Visualizing the observed statistic alongside the null distribution,
 
-Other examples are available in the package vignettes.
+``` r
+visualize(null_distn) +
+  shade_p_value(obs_stat = F_hat, direction = "greater")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+Calculating the p-value from the null distribution and observed
+statistic,
+
+``` r
+null_distn %>%
+  get_p_value(obs_stat = F_hat, direction = "greater")
+```
+
+    ## # A tibble: 1 x 1
+    ##   p_value
+    ##     <dbl>
+    ## 1   0.056
+
+Note that the formula and non-formula interfaces (i.e. `age ~ partyid`
+vs. `response = age, explanatory = partyid`) work for all implemented
+inference procedures in `infer`. Use whatever is more natural for you.
+If you will be doing modeling using functions like `lm()` and `glm()`,
+though, we recommend you begin to use the formula `y ~ x` notation as
+soon as possible.
+
+Other resources are available in the package vignettes\! See
+`vignette("observed_stat_examples")` for more examples like the one
+above, and `vignette("infer")` for discussion of the underlying
+principles of the package design.

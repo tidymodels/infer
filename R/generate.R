@@ -1,7 +1,6 @@
 #' Generate resamples, permutations, or simulations
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{lifecycle::badge("questioning")}
 #' 
 #' Generation creates a null distribution from [specify()] and (if needed) 
 #' [hypothesize()] inputs.
@@ -34,21 +33,23 @@
 #' }
 #'
 #' @examples
-#' # Generate a null distribution by taking 1000 bootstrap samples
+#' # Generate a null distribution by taking 200 bootstrap samples
 #' gss %>%
 #'  specify(response = hours) %>%
 #'  hypothesize(null = "point", mu = 40) %>%
-#'  generate(reps = 1000, type = "bootstrap")
+#'  generate(reps = 200, type = "bootstrap")
 #' 
 #' # Generate a null distribution for the independence of
 #' # two variables by permuting their values 1000 times
 #' gss %>%
 #'  specify(partyid ~ age) %>%
 #'  hypothesize(null = "independence") %>%
-#'  generate(reps = 1000, type = "permute")
+#'  generate(reps = 200, type = "permute")
 #' 
 #' # More in-depth explanation of how to use the infer package
+#' \dontrun{
 #' vignette("infer")
+#' }
 #'
 #' @importFrom dplyr group_by
 #' @export
@@ -211,10 +212,13 @@ simulate <- function(x, reps = 1, ...) {
     sample(fct_levels, size = nrow(x), replace = TRUE, prob = format_params(x)),
     simplify = FALSE
   ))
-
+  
+  # Precomputing `nrow(x)` is needed because it can be misinterpeted inside
+  # `tibble()` in case `attr(x, "response")` is also `x` (see #299)
+  x_nrow <- nrow(x)
   rep_tbl <- tibble::tibble(
     !!attr(x, "response") := as.factor(col_simmed),
-    replicate = as.factor(rep(1:reps, rep(nrow(x), reps)))
+    replicate = as.factor(rep(1:reps, rep(x_nrow, reps)))
   )
 
   rep_tbl <- copy_attrs(to = rep_tbl, from = x)

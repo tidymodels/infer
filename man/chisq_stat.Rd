@@ -21,7 +21,29 @@ explanatory variable.}
 \item{...}{Additional arguments for \link[stats:chisq.test]{chisq.test()}.}
 }
 \description{
+@description
+}
+\details{
 A shortcut wrapper function to get the observed test statistic for a chisq
 test. Uses \link[stats:chisq.test]{chisq.test()}, which applies a continuity
 correction.
+}
+\examples{
+# chi-squared test statistic for test of independence 
+# of college completion status depending and one's 
+# self-identified income class
+chisq_stat(gss, college ~ finrela)
+
+# chi-squared test statistic for a goodness of fit 
+# test on whether self-identified income class 
+# follows a uniform distribution
+chisq_stat(gss, 
+           response = finrela,
+           p = c("far below average" = 1/6,
+                 "below average" = 1/6,
+                 "average" = 1/6,
+                 "above average" = 1/6,
+                 "far above average" = 1/6,
+                 "DK" = 1/6))
+
 }

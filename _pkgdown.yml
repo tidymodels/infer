@@ -4,23 +4,27 @@ template:
       api_key: 33338960d0dcb55ff924a40c2f749a0d
       index_name: infer
 
+home:
+  title: infer - Tidy Statistical Inference
+  description: >
+    An R package to perform statistical inference using an expressive 
+    statistical grammar that coheres with the tidyverse design framework.
+
 navbar:
   type: default
   left:
   - text: Articles
     menu:
-    - text: infer
+    - text: Getting to Know infer
       href: articles/infer.html
-    - text: Chi-square Test Example
-      href: articles/chisq_test.html
-    - text: Two-Sample t-test Example
-      href: articles/two_sample_t.html    
-    - text: Observed Statistic Calculation Examples
-      href: articles/observed_stat_examples.html
-    - text: Simulation-Based `flights` Examples
-      href: articles/flights_examples.html
-    - text: Examples using `mtcars`
-      href: articles/mtcars_examples.html
+    - text: t-Tests
+      href: articles/t_test.html
+    - text: ANOVA
+      href: articles/anova.html
+    - text: Chi-Squared
+      href: articles/chi_squared.html
+    - text: Full infer Pipeline Examples
+      href: articles/observed_stat_examples.html      
   - text: Reference
     href: reference/index.html      
   - text: News
@@ -29,8 +33,6 @@ navbar:
     href: CONTRIBUTING.html
   - text: Code of Conduct
     href: CONDUCT.html
-  - text: To-Dos
-    href: TO-DO.html
   right:
   - icon: fa-github fa-lg
     href: https://github.com/tidymodels/infer

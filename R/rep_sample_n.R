@@ -1,7 +1,6 @@
 #' Perform repeated sampling
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{lifecycle::badge("questioning")}
 #'
 #' Perform repeated sampling of samples of size n. Useful for creating sampling
 #' distributions.

@@ -34,8 +34,6 @@ A 1 x 2 tibble with values corresponding to lower and upper values in
 the confidence interval.
 }
 \description{
-\Sexpr[results=rd, stage=render]{lifecycle::badge("stable")}
-
 Compute a confidence interval around a summary statistic. Only
 simulation-based methods are (currently only) supported.
 
@@ -62,7 +60,7 @@ gss \%>\%
   # hypothesizing that the mean is 40
   hypothesize(null = "point", mu = 40) \%>\%
   # generating data points for a null distribution
-  generate(reps = 10000, type = "bootstrap") \%>\%
+  generate(reps = 1000, type = "bootstrap") \%>\%
   # finding the null distribution
   calculate(stat = "mean") \%>\%
   get_confidence_interval(point_estimate = point_estimate,
@@ -72,6 +70,8 @@ gss \%>\%
                           type = "se")
   
 # More in-depth explanation of how to use the infer package
-vignette("infer")  
+\dontrun{
+vignette("infer")
+} 
  
 }

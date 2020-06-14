@@ -1,7 +1,6 @@
 #' Add information about p-value region(s)
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
 #'
 #' `shade_p_value()` plots p-value region(s) (using "area under the curve"
 #' approach) on top of the [visualize()] output. It should be used as
@@ -12,9 +11,9 @@
 #' @param obs_stat A numeric value or 1x1 data frame corresponding to what the
 #'   observed statistic is.
 #' @param direction A string specifying in which direction the shading should
-#'   occur. Options are `"less"`, `"greater"`, or `"two_sided"`. Can
-#'   also give `"left"`, `"right"`, or `"both"`. If `NULL` then no shading is
-#'   actually done.
+#'   occur. Options are `"less"`, `"greater"`, or `"two-sided"`. Can
+#'   also give `"left"`, `"right"`, `"both"`, `"two_sided"`, or `"two sided"`. 
+#'   If `NULL` then no shading is actually done.
 #' @param color A character or hex string specifying the color of the observed
 #'   statistic as a vertical line on the plot.
 #' @param fill A character or hex string specifying the color to shade the
@@ -41,17 +40,19 @@
 #'   # hypothesizing that the mean is 40
 #'   hypothesize(null = "point", mu = 40) %>%
 #'   # generating data points for a null distribution
-#'   generate(reps = 10000, type = "bootstrap") %>%
+#'   generate(reps = 1000, type = "bootstrap") %>%
 #'   # finding the null distribution
 #'   calculate(stat = "mean")
 #'   
 #' # shade the p-value of the point estimate
 #' null_dist %>%
 #'   visualize() +
-#'   shade_p_value(obs_stat = point_estimate, direction = "two_sided")
+#'   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 #' 
 #' # More in-depth explanation of how to use the infer package
+#' \dontrun{
 #' vignette("infer")
+#' }
 #'
 #' @name shade_p_value
 NULL
@@ -60,6 +61,8 @@ NULL
 #' @export
 shade_p_value <- function(obs_stat, direction,
                           color = "red2", fill = "pink", ...) {
+  # argument checking
+  check_for_piped_visualize(obs_stat, direction, color, fill)
   obs_stat <- check_obs_stat(obs_stat)
   check_shade_p_value_args(obs_stat, direction, color, fill)
   
@@ -74,14 +77,15 @@ shade_p_value <- function(obs_stat, direction,
       tail_area <- one_tail_area(obs_stat, direction)
       
       res <- c(res, geom_tail_area(tail_area, fill, ...))
-    } else if (direction %in% c("two_sided", "both")) {
+    } else if (direction %in% c("two_sided", "both", 
+                                "two-sided", "two sided")) {
       tail_area <- two_tail_area(obs_stat, direction)
       
       res <- c(res, geom_tail_area(tail_area, fill, ...))
     } else {
       warning_glue(
         '`direction` should be one of `"less"`, `"left"`, `"greater"`, ",
-        "`"right"`, `"two_sided"`, `"both"`.'
+        "`"right"`, `"two-sided"`, `"both"`, `"two_sided"`, or `"two sided"`.'
       )
     }
   }
@@ -256,7 +260,7 @@ norm_direction <- function(direction) {
     direction,
     less = , left = "left",
     greater = , right = "right",
-    two_sided = , both = "both"
+    two_sided = , `two-sided` = , `two sided` = , both = "both"
   )
 }
 

@@ -1,3 +1,24 @@
+# infer 0.5.2
+
+- Warn the user when a p-value of 0 is reported (#257, #273)
+- Added new vignettes: `chi_squared` and `anova` (#268)
+- Updates to documentation and existing vignettes (#268)
+- Add alias for `hypothesize()` (`hypothesise()`) (#271)
+- Subtraction order no longer required for difference-based tests--a warning will be raised in the case that the user doesn't supply an `order` argument (#275, #281)
+- Add new messages for common errors (#277)
+- Increase coverage of theoretical methods in documentation (#278, #280)
+- Drop missing values and reduce size of `gss` dataset used in examples (#282)
+- Add `stat = "ratio of props"` and `stat = "odds ratio"` to `calculate` (#285)
+- Add `prop_test()`, a tidy interface to `prop.test()` (#284, #287)
+- Updates to `visualize()` for compatibility with `ggplot2` v3.3.0 (#289)
+- Fix error when bootstrapping with small samples and raise warnings/errors 
+when appropriate (#239, #244, #291)
+- Fix unit test failures resulting from breaking changes in `dplyr` v1.0.0
+- Fix error in `generate()` when response variable is named `x` (#299)
+- Add `two-sided` and `two sided` as aliases for `two_sided` for the 
+`direction` argument in `get_p_value()` and `shade_p_value()` (#302)
+- Fix `t_test()` and `t_stat()` ignoring the `order` argument (#310)
+
 # infer 0.5.1
 
 - Updates to documentation and other tweaks
@@ -46,7 +67,7 @@
 - Fully use {tibble} (#166).
 - Fix `calculate()` to not depend on order of `p` for `type = "simulate"` (#122).
 - Reduce code duplication (#173).
-- Make transparancy in `visualize()` to not depend on method and data volume.
+- Make transparency in `visualize()` to not depend on method and data volume.
 - Make `visualize()` work for "One sample t" theoretical type with `method = "both"`.
 - Add `stat = "sum"` and `stat = "count"` options to `calculate()` (#50).
 

@@ -34,7 +34,8 @@ test_that("response and explanatory arguments", {
     specify(mtcars_df, formula = mpg ~ blah), "explanatory.*cannot be found"
   )
   expect_error(specify(mtcars_df, blah2 ~ cyl), "response.*cannot be found")
-  expect_error(specify(mtcars_df), "Supply.*response")
+  expect_error(specify(mtcars_df), 
+               "Please supply a response variable that is not `NULL`.")
   expect_error(specify(mtcars_df, formula = mpg ~ mpg), "different")
   expect_error(
     specify(mtcars_df, formula = "mpg" ~ cyl), "response.*bare.*not a string"
@@ -44,7 +45,8 @@ test_that("response and explanatory arguments", {
   )
   expect_silent(specify(mtcars_df, formula = mpg ~ cyl))
 
-  expect_error(specify(mtcars_df, formula = NULL ~ cyl), "NULL.*response")
+  expect_error(specify(mtcars_df, formula = NULL ~ cyl), 
+               "Please supply a response variable that is not `NULL`.")
 })
 
 test_that("success argument", {

@@ -1,7 +1,6 @@
 #' Add information about confidence interval
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
 #'
 #' `shade_confidence_interval()` plots confidence interval region on top of the
 #' [visualize()] output. It should be used as \\{ggplot2\\} layer function (see
@@ -37,7 +36,7 @@
 #'   # hypothesizing that the mean is 40
 #'   hypothesize(null = "point", mu = 40) %>%
 #'   # generating data points for a null distribution
-#'   generate(reps = 10000, type = "bootstrap") %>%
+#'   generate(reps = 1000, type = "bootstrap") %>%
 #'   # finding the null distribution
 #'   calculate(stat = "mean")
 #'   
@@ -61,7 +60,9 @@
 #'   shade_confidence_interval(ci, fill = NULL)
 #'
 #' # More in-depth explanation of how to use the infer package
+#' \dontrun{
 #' vignette("infer")
+#' }
 #'
 #' @name shade_confidence_interval
 NULL
@@ -70,6 +71,9 @@ NULL
 #' @export
 shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
                                       fill = "turquoise", ...) {
+  # argument checking
+  check_for_piped_visualize(endpoints, color, fill)
+  
   dots <- list(...)
   
   endpoints <- impute_endpoints(endpoints)

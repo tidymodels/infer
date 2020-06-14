@@ -11,7 +11,7 @@ iris3 <- iris %>%
 
 test_that("t_test works", {
   # Two Sample
-  expect_error(iris2 %>% t_test(Sepal.Width ~ Species))
+  expect_warning(iris2 %>% t_test(Sepal.Width ~ Species))
 
   expect_error(
     iris2 %>% t_test(response = "Sepal.Width", explanatory = "Species")
@@ -31,6 +31,13 @@ test_that("t_test works", {
   
   expect_equal(new_way, new_way_alt, tolerance = 1e-5)
   expect_equal(new_way, old_way, tolerance = 1e-5)
+  
+  # check that the order argument changes output
+  new_way2 <- t_test(iris2, 
+                    Sepal.Width ~ Species, 
+                    order = c("virginica", "versicolor"))  
+  expect_equal(new_way[["lower_ci"]], -new_way2[["upper_ci"]])
+  expect_equal(new_way[["statistic"]], -new_way2[["statistic"]])
   
   # One Sample
   new_way <- iris2 %>%
@@ -75,6 +82,13 @@ test_that("chisq_test works", {
   
   expect_equal(new_way, new_way_alt, tolerance = 1e-5)
   expect_equal(new_way, old_way, tolerance = 1e-5)
+  
+  # check that function errors out when response is numeric
+  expect_error(chisq_test(x = iris2, response = Sepal.Length, explanatory = Species))
+  
+  # check that function errors out when explanatory is numeric
+  expect_error(chisq_test(x = iris2, response = Species, explanatory = Sepal.Length))
+
 })
 
 test_that("_stat functions work", {
@@ -144,6 +158,9 @@ test_that("_stat functions work", {
   
   expect_equivalent(another_way, obs_stat_way)
   expect_equivalent(another_way, obs_stat_way_alt)
+  
+  expect_error(chisq_stat(x = iris2, response = Sepal.Length, explanatory = Species))
+  expect_error(chisq_stat(x = iris2, response = Species, explanatory = Sepal.Length))
 })
 
 test_that("conf_int argument works", {
@@ -212,4 +229,96 @@ test_that("conf_int argument works", {
       var.equal = TRUE
     )
   expect_false(shortcut_no_var_equal == shortcut_var_equal)
+})
+
+# generate some data to test the prop.test wrapper
+df <- data.frame(resp = c(rep("c", 450), rep("d", 50), rep("c", 400), rep("d", 100)), 
+                 exp = rep(c("a", "b"), each = 500))
+
+sum_df <- table(df)
+
+bad_df <- data.frame(resp = 1:5, 
+                     exp = letters[1:5])
+
+bad_df2 <- data.frame(resp = letters[1:5], 
+                     exp = 1:5)
+
+test_that("two sample prop_test works", {
+
+  # run the tests with default args
+  base <- prop.test(sum_df)
+  infer <- prop_test(df, resp ~ exp, order = c("a", "b"))
+  
+  # check that results are same
+  expect_equal(base[["statistic"]], 
+               infer[["statistic"]], 
+               tolerance = .001)
+  expect_equal(base[["parameter"]], 
+               infer[["chisq_df"]])
+  expect_equal(base[["p.value"]], 
+               infer[["p_value"]],
+               tolerance = .001)
+
+  # expect warning for unspecified order
+  expect_warning(prop_test(df, resp ~ exp))
+  
+  # check that the functions respond to "p" in the same way
+  base2 <- prop.test(sum_df, p = c(.1, .1))
+  infer2 <- prop_test(df, resp ~ exp, order = c("a", "b"), p = c(.1, .1))
+  expect_equal(base2[["statistic"]], 
+               infer2[["statistic"]], 
+               tolerance = .001)
+  expect_equal(base2[["parameter"]], 
+               infer2[["chisq_df"]])
+  expect_equal(base2[["p.value"]], 
+               infer2[["p_value"]],
+               tolerance = .001)
+  
+  # check confidence interval argument
+  infer3 <- prop_test(df, resp ~ exp, order = c("a", "b"), conf_int = TRUE)
+  expect_length(infer3, 6)
+  expect_length(infer2, 4)
+  
+  # check that the order argument changes output
+  infer4 <- prop_test(df, resp ~ exp, order = c("b", "a"), conf_int = TRUE)
+  expect_equal(infer4[["lower_ci"]], -infer3[["upper_ci"]])
+  
+  expect_error(prop_test(bad_df, resp ~ exp))
+  expect_error(prop_test(bad_df2, resp ~ exp))
+})
+
+# ...and some data for the one sample wrapper
+df_1 <- df %>%
+  select(resp)
+
+sum_df_1 <- table(df_1)
+
+test_that("one sample prop_test works", {
+  
+  # check that results with default args are the same
+  base <- prop.test(sum_df_1)
+  infer <- prop_test(df_1, resp ~ NULL, p = .5)
+  expect_equal(base[["statistic"]], 
+               infer[["statistic"]], 
+               tolerance = .001)
+  expect_equal(base[["parameter"]], 
+               infer[["chisq_df"]])
+  expect_equal(base[["p.value"]], 
+               infer[["p_value"]],
+               tolerance = .001)
+  
+  # check that the functions respond to "p" in the same way
+  base2 <- prop.test(sum_df_1, p = .86)
+  infer2 <- prop_test(df_1, resp ~ NULL, p = .86)
+  expect_equal(base2[["statistic"]], 
+               infer2[["statistic"]], 
+               tolerance = .001)
+  expect_equal(base2[["parameter"]], 
+               infer2[["chisq_df"]])
+  expect_equal(base2[["p.value"]], 
+               infer2[["p_value"]],
+               tolerance = .001)
+  
+  # expect message for unspecified p
+  expect_message(prop_test(df_1, resp ~ NULL))
 })

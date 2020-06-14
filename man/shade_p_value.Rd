@@ -14,9 +14,9 @@ shade_pvalue(obs_stat, direction, color = "red2", fill = "pink", ...)
 observed statistic is.}
 
 \item{direction}{A string specifying in which direction the shading should
-occur. Options are \code{"less"}, \code{"greater"}, or \code{"two_sided"}. Can
-also give \code{"left"}, \code{"right"}, or \code{"both"}. If \code{NULL} then no shading is
-actually done.}
+occur. Options are \code{"less"}, \code{"greater"}, or \code{"two-sided"}. Can
+also give \code{"left"}, \code{"right"}, \code{"both"}, \code{"two_sided"}, or \code{"two sided"}.
+If \code{NULL} then no shading is actually done.}
 
 \item{color}{A character or hex string specifying the color of the observed
 statistic as a vertical line on the plot.}
@@ -31,8 +31,6 @@ A list of \\{ggplot2\\} objects to be added to the \code{visualize()}
 output.
 }
 \description{
-\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
-
 \code{shade_p_value()} plots p-value region(s) (using "area under the curve"
 approach) on top of the \code{\link[=visualize]{visualize()}} output. It should be used as
 \\{ggplot2\\} layer function (see examples). \code{shade_pvalue()} is its alias.
@@ -53,17 +51,19 @@ null_dist <- gss \%>\%
   # hypothesizing that the mean is 40
   hypothesize(null = "point", mu = 40) \%>\%
   # generating data points for a null distribution
-  generate(reps = 10000, type = "bootstrap") \%>\%
+  generate(reps = 1000, type = "bootstrap") \%>\%
   # finding the null distribution
   calculate(stat = "mean")
   
 # shade the p-value of the point estimate
 null_dist \%>\%
   visualize() +
-  shade_p_value(obs_stat = point_estimate, direction = "two_sided")
+  shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 
 # More in-depth explanation of how to use the infer package
+\dontrun{
 vignette("infer")
+}
 
 }
 \seealso{

@@ -23,8 +23,6 @@ A tibble of size \code{rep} times \code{size} rows corresponding to \code{rep}
 samples of size n = \code{size} from \code{tbl}.
 }
 \description{
-\Sexpr[results=rd, stage=render]{lifecycle::badge("questioning")}
-
 Perform repeated sampling of samples of size n. Useful for creating sampling
 distributions.
 }

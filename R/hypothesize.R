@@ -1,7 +1,6 @@
 #' Declare a null hypothesis
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
 #' 
 #' Declare a null hypothesis about variables selected in [specify()].
 #' 
@@ -34,7 +33,9 @@
 #'   hypothesize(null = "point", mu = 40)
 #'
 #' # More in-depth explanation of how to use the infer package
+#' \dontrun{
 #' vignette("infer")
+#' }
 #'
 #' @importFrom purrr compact
 #' @export
@@ -80,3 +81,7 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
 is_hypothesized <- function(x){
   !is.null(attr(x, "null"))
 }
+
+#' @rdname hypothesize
+#' @export
+hypothesise <- hypothesize

@@ -32,6 +32,12 @@ test_that("get_p_value works", {
   expect_equal(
     get_p_value(test_df, 4, "two_sided"), get_p_value(test_df, 4, "both")
   )
+  expect_equal(
+    get_p_value(test_df, 4, "two-sided"), get_p_value(test_df, 4, "both")
+  )
+  expect_equal(
+    get_p_value(test_df, 4, "two sided"), get_p_value(test_df, 4, "both")
+  )
 })
 
 test_that("theoretical p-value not supported error", {
@@ -45,4 +51,34 @@ test_that("theoretical p-value not supported error", {
       calculate(stat = "F") %>% 
       get_p_value(obs_stat = obs_F, direction = "right")
   )
+})
+
+test_that("get_p_value warns in case of zero p-value", {
+  stat_df <- tibble::tibble(stat = 1:10)
+  
+  expect_warning(
+    get_p_value(stat_df, obs_stat = -10, direction = "left"),
+    "be cautious"
+  )
+})
+
+test_that("get_p_value throws error in case of `NaN` stat", {
+  stat_df <- tibble::tibble(stat = 1:10)
+  obs_stat <- 2.71
+  
+  stat_df$stat[1] <- NaN
+  expect_error(
+    get_p_value(stat_df, obs_stat, "both"),
+    "1 calculated statistic was `NaN`.*not well-defined"
+  )
+  
+  stat_df$stat[2] <- NaN
+  expect_error(
+    get_p_value(stat_df, obs_stat, "both"),
+    "2 calculated statistics were `NaN`.*not well-defined"
+  )
+  
+  # In the case that _all_ values are NaN, error should have different text
+  stat_df$stat <- NaN
+  expect_error(get_p_value(stat_df, obs_stat, "both"), "All calculated stat")
 })

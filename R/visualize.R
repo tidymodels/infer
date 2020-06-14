@@ -1,7 +1,6 @@
 #' Visualize statistical inference
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
 #'
 #' Visualize the distribution of the simulation-based inferential statistics or
 #' the theoretical distribution (or both!).
@@ -54,16 +53,16 @@
 #'
 #' @examples
 #'   
-#' # ...and a null distribution
+#' # find a null distribution
 #' null_dist <- gss %>%
-#'   # ...we're interested in the number of hours worked per week
+#'   # we're interested in the number of hours worked per week
 #'   specify(response = hours) %>%
 #'   # hypothesizing that the mean is 40
 #'   hypothesize(null = "point", mu = 40) %>%
 #'   # generating data points for a null distribution
-#'   generate(reps = 10000, type = "bootstrap") %>%
-#'   # finding the null distribution
-#'   calculate(stat = "mean")
+#'   generate(reps = 1000, type = "bootstrap") %>%
+#'   # calculating a distribution of t test statistics
+#'   calculate(stat = "t")
 #'   
 #' # we can easily plot the null distribution by piping into visualize
 #' null_dist %>%
@@ -73,8 +72,8 @@
 #' # find the point estimate---mean number of hours worked per week
 #' point_estimate <- gss %>%
 #'   specify(response = hours) %>%
-#'   calculate(stat = "mean") %>%
-#'   dplyr::pull()
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   calculate(stat = "t")
 #'   
 #' # find a confidence interval around the point estimate
 #' ci <- null_dist %>%
@@ -87,16 +86,32 @@
 #' # display a shading of the area beyond the p-value on the plot
 #' null_dist %>%
 #'   visualize() +
-#'   shade_p_value(obs_stat = point_estimate, direction = "two_sided")
+#'   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 #' 
 #' null_dist %>%
 #'   visualize() +
 #'   shade_confidence_interval(ci)
+#'   
+#' # to plot a theoretical null distribution, skip the generate()
+#' # step and supply `method = "theoretical"` to `visualize()`
+#' null_dist_theoretical <- gss %>%
+#'   specify(response = hours) %>%
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   calculate(stat = "t") 
+#'   
+#' visualize(null_dist_theoretical, method = "theoretical")
+#' 
+#' # to plot both a theory-based and simulation-based null distribution,
+#' # use the simulation-based null distribution and supply
+#' # `method = "both"` to `visualize()`
+#' visualize(null_dist, method = "both")
 #'
 #' # More in-depth explanation of how to use the infer package
+#' \dontrun{
 #' vignette("infer")
+#' }
 #'
-#' @importFrom ggplot2 ggplot geom_histogram aes stat_function ggtitle
+#' @importFrom ggplot2 ggplot geom_histogram aes ggtitle
 #' @importFrom ggplot2 xlab ylab geom_vline geom_rect geom_bar
 #' @importFrom stats dt qt df qf dnorm qnorm dchisq qchisq
 #' @export
@@ -110,6 +125,7 @@ visualize <- function(data, bins = 15, method = "simulation",
                       endpoints_color = "mediumaquamarine",
                       ci_fill = "turquoise",
                       ...) {
+  data <- check_for_nan(data, "visualize")
   check_visualize_args(
     data, bins, method, dens_color, obs_stat, obs_stat_color,
     pvalue_fill, direction, endpoints, endpoints_color, ci_fill
@@ -367,15 +383,17 @@ theory_curve <- function(method, d_fun, q_fun, args_list, dens_color) {
     x_range <- do.call(q_fun, c(p = list(c(0.001, 0.999)), args_list))
 
     res <- list(
-      stat_function(
-        data = data.frame(x = x_range), mapping = aes(x),
-        fun = d_fun, args = args_list, color = dens_color
+      ggplot2::geom_path(
+        data = data.frame(x = x_range), mapping = aes(x = x),
+        stat = "function", fun = d_fun, args = args_list,
+        color = dens_color
       )
     )
   } else if (method == "both") {
     res <- list(
-      stat_function(
-        mapping = aes(x = stat), fun = d_fun, args = args_list,
+      ggplot2::geom_path(
+        mapping = aes(x = stat),
+        stat = "function", fun = d_fun, args = args_list,
         color = dens_color
       )
     )

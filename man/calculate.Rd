@@ -7,7 +7,8 @@
 calculate(
   x,
   stat = c("mean", "median", "sum", "sd", "prop", "count", "diff in means",
-    "diff in medians", "diff in props", "Chisq", "F", "slope", "correlation", "t", "z"),
+    "diff in medians", "diff in props", "Chisq", "F", "slope", "correlation", "t", "z",
+    "ratio of props", "odds ratio"),
   order = NULL,
   ...
 )
@@ -19,7 +20,7 @@ output from \code{\link[=hypothesize]{hypothesize()}} piped in to here for theor
 \item{stat}{A string giving the type of the statistic to calculate. Current
 options include \code{"mean"}, \code{"median"}, \code{"sum"}, \code{"sd"}, \code{"prop"}, \code{"count"},
 \code{"diff in means"}, \code{"diff in medians"}, \code{"diff in props"}, \code{"Chisq"},
-\code{"F"}, \code{"t"}, \code{"z"}, \code{"slope"}, and \code{"correlation"}.}
+\code{"F"}, \code{"t"}, \code{"z"}, \code{"ratio of props"}, \code{"slope"}, and \code{"correlation"}.}
 
 \item{order}{A string vector of specifying the order in which the levels of
 the explanatory variable should be ordered for subtraction, where \code{order = c("first", "second")} means \code{("first" - "second")} Needed for inference on
@@ -32,13 +33,20 @@ difference in means, medians, or proportions and t and z statistics.}
 A tibble containing a \code{stat} column of calculated statistics.
 }
 \description{
-\Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
-
 Calculates summary statistics from outputs of \code{\link[=generate]{generate()}} or
 \code{\link[=hypothesize]{hypothesize()}}.
 
 Learn more in \code{vignette("infer")}.
 }
+\section{Missing levels in small samples}{
+
+In some cases, when bootstrapping with small samples, some generated
+bootstrap samples will have only one level of the explanatory variable
+present. For some test statistics, the calculated statistic in these
+cases will be NaN. The package will omit non-finite values from
+visualizations (with a warning) and raise an error in p-value calculations.
+}
+
 \examples{
 
 # calculate a null distribution of hours worked per week under
@@ -46,7 +54,7 @@ Learn more in \code{vignette("infer")}.
 gss \%>\%
  specify(response = hours) \%>\%
  hypothesize(null = "point", mu = 40) \%>\%
- generate(reps = 1000, type = "bootstrap") \%>\%
+ generate(reps = 200, type = "bootstrap") \%>\%
  calculate(stat = "mean")
 
 # calculate a null distribution assuming independence between age
@@ -54,10 +62,12 @@ gss \%>\%
 gss \%>\%
  specify(age ~ college) \%>\%
  hypothesize(null = "independence") \%>\%
- generate(reps = 1000, type = "permute") \%>\%
+ generate(reps = 200, type = "permute") \%>\%
  calculate("diff in means", order = c("degree", "no degree"))
 
 # More in-depth explanation of how to use the infer package
+\dontrun{
 vignette("infer")
+}
 
 }

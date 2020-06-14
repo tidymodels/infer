@@ -1,0 +1,117 @@
+---
+title: "Tidy ANOVA (Analysis of Variance) with infer"
+description: "Conducting ANOVA (Analysis of Variance) on tidy data with infer."
+output: rmarkdown::html_vignette
+vignette: |
+  %\VignetteIndexEntry{ANOVA}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r settings, include=FALSE}
+knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5) 
+options(digits = 4)
+```
+
+```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
+library(ggplot2)
+library(dplyr)
+devtools::load_all()
+```
+
+In this vignette, we'll walk through conducting an analysis of variance (ANOVA) test using `infer`. ANOVAs are used to analyze differences in group means.
+
+Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
+
+```{r glimpse-gss-actual, warning = FALSE, message = FALSE}
+dplyr::glimpse(gss)
+```
+
+To carry out an ANOVA, we'll examine the association between age and political party affiliation in the United States. The `age` variable is a numerical variable measuring the respondents' age at the time that the survey was taken, and `partyid` is a factor variable with unique values `r unique(gss$partyid)`.
+
+This is what the relationship looks like in the observed data:
+
+```{r plot-f, echo = FALSE}
+gss %>%
+  ggplot2::ggplot() +
+  ggplot2::aes(x = partyid, y = age) +
+  ggplot2::geom_boxplot() +
+  ggplot2::scale_fill_brewer(type = "qual") +
+  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, 
+                                                     vjust = .5)) +
+    ggplot2::labs(x = "partyid: Political Party Affiliation",
+                  y = "age: Age of Respondent")
+```
+
+If there were no relationship, we would expect to see the each of these boxplots lining up along the y-axis. It looks like the average age of democrats and republicans seems to be a bit larger than independent and other American voters. Is this difference just random noise, though?
+
+First, to calculate the observed statistic, we can use `specify()` and `calculate()`.
+
+```{r calc-obs-stat-f, warning = FALSE, message = FALSE}
+# calculate the observed statistic
+observed_f_statistic <- gss %>%
+  specify(age ~ partyid) %>%
+  calculate(stat = "F")
+```
+
+The observed $F$ statistic is `r observed_f_statistic`. Now, we want to compare this statistic to a null distribution, generated under the assumption that age and political party affiliation are not actually related, to get a sense of how likely it would be for us to see this observed statistic if there were actually no association between the two variables.
+
+We can `generate` the null distribution using randomization. The randomization approach permutes the response and explanatory variables, so that each person's educational attainment is matched up with a random income from the sample in order to break up any association between the two.
+
+```{r generate-null-f, warning = FALSE, message = FALSE}
+# generate the null distribution using randomization
+null_distribution <- gss %>%
+  specify(age ~ partyid) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  calculate(stat = "F")
+```
+
+Note that, in the line `specify(age ~ partyid)` above, we could use the equivalent syntax `specify(response = age, explanatory = partyid)`. 
+
+To get a sense for what this distribution looks like, and where our observed statistic falls, we can use `visualize()`:
+
+```{r visualize-f, warning = FALSE, message = FALSE}
+# visualize the null distribution and test statistic!
+null_distribution %>%
+  visualize() + 
+  shade_p_value(observed_f_statistic,
+                direction = "greater")
+```
+
+We could also visualize the observed statistic against the theoretical null distribution. Note that we skip the `generate()` and `calculate()` steps when using the theoretical approach, and that we now need to provide `method = "theoretical"` to `visualize()`.
+
+```{r visualize-f-theor, warning = FALSE, message = FALSE}
+# visualize the theoretical null distribution and test statistic!
+gss %>%
+  specify(age ~ partyid) %>%
+  hypothesize(null = "independence") %>%
+  visualize(method = "theoretical") + 
+  shade_p_value(observed_f_statistic,
+                direction = "greater")
+```
+
+To visualize both the randomization-based and theoretical null distributions to get a sense of how the two relate, we can pipe the randomization-based null distribution into `visualize()`, and then further provide `method = "both"` to `visualize()`.
+
+```{r visualize-indep-both, warning = FALSE, message = FALSE}
+# visualize both null distributions and the test statistic!
+null_distribution %>%
+  visualize(method = "both") + 
+  shade_p_value(observed_f_statistic,
+                direction = "greater")
+```
+
+Either way, it looks like our observed test statistic would be _really_ unlikely if there were actually no association between age and political party affiliation. More exactly, we can calculate the p-value:
+
+```{r p-value-indep, warning = FALSE, message = FALSE}
+# calculate the p value from the observed statistic and null distribution
+p_value <- null_distribution %>%
+  get_p_value(obs_stat = observed_f_statistic,
+              direction = "greater")
+
+p_value
+```
+
+Thus, if there were really no relationship between age and political party affiliation, the probability that we would see a statistic as or more extreme than `r observed_f_statistic` is approximately `r p_value`.
+
+The package currently does not supply a wrapper for tidy ANOVA tests.

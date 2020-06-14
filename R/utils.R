@@ -120,21 +120,37 @@ null_transformer <- function(text, envir) {
   out
 }
 
-check_order <- function(x, explanatory_variable, order) {
-  unique_explanatory_variable <- unique(explanatory_variable)
-  if (length(unique_explanatory_variable) != 2) {
+check_order <- function(x, explanatory_variable, order, in_calculate = TRUE) {
+  unique_ex <- sort(unique(explanatory_variable))
+  if (length(unique_ex) != 2) {
     stop_glue(
-      "Statistic is based on a difference; the explanatory variable should ",
-      "have two levels."
+      "Statistic is based on a difference or ratio; the explanatory variable", 
+      "should have two levels."
     )
   }
-  if (is.null(order)) {
-    stop_glue(
-      "Statistic is based on a difference; specify the `order` in which to ",
-      "subtract the levels of the explanatory variable. ",
-      '`order = c("first", "second")` means `("first" - "second")`. ',
-      "Check `?calculate` for details."
+  if (is.null(order) & in_calculate) {
+    # Default to subtracting/dividing the first (alphabetically) level by the 
+    # second, unless the explanatory variable is a factor (in which case order 
+    # is preserved); raise a warning if this was done implicitly.
+    order <- as.character(unique_ex)
+    warning_glue(
+      "The statistic is based on a difference or ratio; by default, for ",
+      "difference-based statistics, the explanatory variable is subtracted ",
+      "in the order \"{unique_ex[1]}\" - \"{unique_ex[2]}\", or divided in ", 
+      "the order \"{unique_ex[1]}\" / \"{unique_ex[2]}\" for ratio-based ",
+      "statistics. To specify this order yourself, supply `order = ",
+      "c(\"{unique_ex[1]}\", \"{unique_ex[2]}\")` to the calculate() function."
     )
+  } else if (is.null(order)) {
+    order <- as.character(unique_ex)
+    warning_glue(
+      "The statistic is based on a difference or ratio; by default, for ",
+      "difference-based statistics, the explanatory variable is subtracted ",
+      "in the order \"{unique_ex[1]}\" - \"{unique_ex[2]}\", or divided in ", 
+      "the order \"{unique_ex[1]}\" / \"{unique_ex[2]}\" for ratio-based ",
+      "statistics. To specify this order yourself, supply `order = ",
+      "c(\"{unique_ex[1]}\", \"{unique_ex[2]}\")`."
+    )    
   } else {
     if (xor(is.na(order[1]), is.na(order[2]))) {
       stop_glue(
@@ -144,13 +160,15 @@ check_order <- function(x, explanatory_variable, order) {
     if (length(order) > 2) {
       stop_glue("`order` is expecting only two entries.")
     }
-    if (order[1] %in% unique_explanatory_variable == FALSE) {
+    if (order[1] %in% unique_ex == FALSE) {
       stop_glue("{order[1]} is not a level of the explanatory variable.")
     }
-    if (order[2] %in% unique_explanatory_variable == FALSE) {
+    if (order[2] %in% unique_ex == FALSE) {
       stop_glue("{order[2]} is not a level of the explanatory variable.")
     }
   }
+  # return the order as given (unless the argument was invalid or NULL)
+  order
 }
 
 check_args_and_attr <- function(x, explanatory_variable, response_variable,
@@ -161,7 +179,7 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
     !stat %in% c(
       "mean", "median", "sum", "sd", "prop", "count", "diff in means",
       "diff in medians", "diff in props", "Chisq", "F", "slope", "correlation",
-      "t", "z"
+      "t", "z", "ratio of props", "odds ratio"
     )
   ) {
     stop_glue(
@@ -186,7 +204,7 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
     }
   }
 
-  if (stat %in% c("diff in props", "Chisq")) {
+  if (stat %in% c("diff in props", "ratio of props", "Chisq", "odds ratio")) {
     if (has_explanatory(x) && !is.factor(response_variable(x))) {
       stop_glue(
         'The response variable of `{attr(x, "response")}` is not appropriate\n',
@@ -211,7 +229,8 @@ check_for_numeric_stat <- function(x, stat) {
 }
 
 check_for_factor_stat <- function(x, stat, explanatory_variable) {
-  if (stat %in% c("diff in means", "diff in medians", "diff in props", "F")) {
+  if (stat %in% c("diff in means", "diff in medians", "diff in props", 
+                  "F", "ratio of props", "odds ratio")) {
     if (!is.factor(explanatory_variable)) {
       stop_glue(
         'The explanatory variable of `{attr(x, "explanatory")}` is not ',
@@ -252,6 +271,40 @@ check_point_params <- function(x, stat) {
       #   stop_glue('`stat == "prop"` requires `"p"` {hyp_text}')
       # }
     }
+  }
+}
+
+# This function checks for NaNs in the output of `calculate` and raises
+# a message/warning/error depending on the context in which it was called.
+check_for_nan <- function(x, context) {
+  stat_is_nan <- is.nan(x[["stat"]])
+  num_nans <- sum(stat_is_nan)
+  # If there are no NaNs, continue on as normal :-)
+  if (num_nans == 0) {
+    return(x)
+  }
+  
+  calc_ref <- "See ?calculate for more details"
+  # If all of the data is NaN, raise an error
+  if (num_nans == nrow(x)) {
+    stop_glue("All calculated statistics were `NaN`. {calc_ref}.")
+  }
+  
+  stats_were <- if (num_nans == 1) {"statistic was"} else {"statistics were"}
+  num_nans_msg <- glue::glue("{num_nans} calculated {stats_were} `NaN`")
+  
+  if (context == "visualize") {
+    # Raise a warning and plot the data with NaNs removed
+    warning_glue(
+      "{num_nans_msg}. `NaN`s have been omitted from visualization. {calc_ref}."
+    )
+    return(x[!stat_is_nan, ])
+  } else if (context == "get_p_value") {
+    # Raise an error
+    stop_glue(
+      "{num_nans_msg}. Simulation-based p-values are not well-defined for ",
+      "null distributions with non-finite values. {calc_ref}."
+    )
   }
 }
 
@@ -352,21 +405,25 @@ hypothesize_checks <- function(x, null) {
 }
 
 check_direction <- function(direction = c("less", "greater", "two_sided",
-                                          "left", "right", "both")) {
+                                          "left", "right", "both",
+                                          "two-sided", "two sided")) {
   check_type(direction, is.character)
 
   if (
-    !(direction %in% c("less", "greater", "two_sided", "left", "right", "both"))
+    !(direction %in% c("less", "greater", "two_sided", "left", "right", 
+                       "both", "two-sided", "two sided"))
   ) {
     stop_glue(
       'The provided value for `direction` is not appropriate. Possible values ',
-      'are "less", "greater", "two_sided", "left", "right", or "both".'
+      'are "less", "greater", "two-sided", "left", "right", "both", ',
+      '"two_sided", or "two sided"'
     )
   }
 }
 
 check_obs_stat <- function(obs_stat) {
   if (!is.null(obs_stat)) {
+    
     if ("data.frame" %in% class(obs_stat)) {
       check_type(obs_stat, is.data.frame)
       if ((nrow(obs_stat) != 1) || (ncol(obs_stat) != 1)) {
@@ -438,4 +495,27 @@ parse_type <- function(f_name) {
     f_name,
     regexec("is[_\\.]([[:alnum:]_\\.]+)$", f_name)
   )[[1]][2]
+}
+
+# Helpers for visualize() Utilities -----------------------------------------------
+
+# a function for checking arguments to functions that are added as layers
+# to visualize()d objects to make sure they weren't mistakenly piped
+check_for_piped_visualize <- function(...) {
+  
+  is_ggplot_output <- vapply(list(...), ggplot2::is.ggplot, logical(1))
+  
+  if (any(is_ggplot_output)) {
+    
+    called_function <- sys.call(-1)[[1]]
+    
+    stop_glue(
+      "It looks like you piped the result of `visualize()` into ",
+      "`{called_function}()` (using `%>%`) rather than adding the result of ",
+      "`{called_function}()` as a layer with `+`. Consider changing",
+      "`%>%` to `+`."
+    )
+  }
+  
+  TRUE
 }

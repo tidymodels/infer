@@ -1,7 +1,6 @@
 #' Calculate summary statistics
 #'
 #' @description
-#' \Sexpr[results=rd, stage=render]{lifecycle::badge("maturing")}
 #' 
 #' Calculates summary statistics from outputs of [generate()] or 
 #' [hypothesize()].
@@ -13,7 +12,7 @@
 #' @param stat A string giving the type of the statistic to calculate. Current
 #'   options include `"mean"`, `"median"`, `"sum"`, `"sd"`, `"prop"`, `"count"`,
 #'   `"diff in means"`, `"diff in medians"`, `"diff in props"`, `"Chisq"`,
-#'   `"F"`, `"t"`, `"z"`, `"slope"`, and `"correlation"`.
+#'   `"F"`, `"t"`, `"z"`, `"ratio of props"`, `"slope"`, and `"correlation"`.
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction, where `order =
 #'   c("first", "second")` means `("first" - "second")` Needed for inference on
@@ -23,6 +22,13 @@
 #'
 #' @return A tibble containing a `stat` column of calculated statistics.
 #'
+#' @section Missing levels in small samples:
+#' In some cases, when bootstrapping with small samples, some generated 
+#' bootstrap samples will have only one level of the explanatory variable 
+#' present. For some test statistics, the calculated statistic in these
+#' cases will be NaN. The package will omit non-finite values from 
+#' visualizations (with a warning) and raise an error in p-value calculations.
+#'
 #' @examples
 #'
 #' # calculate a null distribution of hours worked per week under
@@ -30,7 +36,7 @@
 #' gss %>%
 #'  specify(response = hours) %>%
 #'  hypothesize(null = "point", mu = 40) %>%
-#'  generate(reps = 1000, type = "bootstrap") %>%
+#'  generate(reps = 200, type = "bootstrap") %>%
 #'  calculate(stat = "mean")
 #'
 #' # calculate a null distribution assuming independence between age
@@ -38,11 +44,13 @@
 #' gss %>%
 #'  specify(age ~ college) %>%
 #'  hypothesize(null = "independence") %>%
-#'  generate(reps = 1000, type = "permute") %>%
+#'  generate(reps = 200, type = "permute") %>%
 #'  calculate("diff in means", order = c("degree", "no degree"))
 #'
 #' # More in-depth explanation of how to use the infer package
+#' \dontrun{
 #' vignette("infer")
+#' }
 #'
 #' @importFrom dplyr group_by summarize n
 #' @importFrom rlang !! sym quo enquo eval_tidy
@@ -51,7 +59,8 @@ calculate <- function(x,
                       stat = c(
                         "mean", "median", "sum", "sd", "prop", "count",
                         "diff in means", "diff in medians", "diff in props",
-                        "Chisq", "F", "slope", "correlation", "t", "z"
+                        "Chisq", "F", "slope", "correlation", "t", "z",
+                        "ratio of props", "odds ratio"
                       ),
                       order = NULL,
                       ...) {
@@ -74,7 +83,8 @@ calculate <- function(x,
     } else if (
       stat %in% c(
         "mean", "median", "sum", "sd", "prop", "count", "diff in means",
-        "diff in medians", "diff in props", "slope", "correlation"
+        "diff in medians", "diff in props", "slope", "correlation", 
+        "ratio of props", "odds ratio"
       )
     ) {
       stop_glue(
@@ -82,7 +92,8 @@ calculate <- function(x,
         "implemented) for `stat` = \"{stat}\". Are you missing ",
         "a `generate()` step?"
       )
-    } else if (!(stat %in% c("Chisq", "prop", "count"))) {
+      } else if (!(stat %in% c("Chisq", "prop", "count")) &
+                 !(stat == "t" & (attr(x, "theory_type") == "One sample t"))) {
       # From `hypothesize()` to `calculate()`
       # Catch-all if generate was not called
 #      warning_glue("You unexpectantly went from `hypothesize()` to ",
@@ -93,17 +104,19 @@ calculate <- function(x,
   }
   
   if (
-    (stat %in% c("diff in means", "diff in medians", "diff in props")) ||
+    (stat %in% c("diff in means", "diff in medians", 
+                 "diff in props", "ratio of props", "odds ratio")) ||
     (
       !is_nuat(x, "theory_type") &&
       (attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))
     )
   ) {
-    check_order(x, explanatory_variable(x), order)
+    order <- check_order(x, explanatory_variable(x), order)
   }
 
   if (!(
-    (stat %in% c("diff in means", "diff in medians", "diff in props")) ||
+    (stat %in% c("diff in means", "diff in medians", 
+                 "diff in props", "ratio of props", "odds ratio")) ||
     (
       !is_nuat(x, "theory_type") &&
       attr(x, "theory_type") %in% c("Two sample props z", "Two sample t")
@@ -111,8 +124,8 @@ calculate <- function(x,
   )) {
     if (!is.null(order)) {
       warning_glue(
-        "Statistic is not based on a difference; the `order` argument ",
-        "is ignored. Check `?calculate` for details."
+        "Statistic is not based on a difference or ratio; the `order` argument",
+        " will be ignored. Check `?calculate` for details."
       )
     }
   }
@@ -228,7 +241,7 @@ calc_impl.correlation <- function(type, x, order, ...) {
 calc_impl_diff_f <- function(f) {
   function(type, x, order, ...) {
     x %>%
-      dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
+      dplyr::group_by(replicate, !!attr(x, "explanatory"), .drop = FALSE) %>%
       dplyr::summarize(value = f(!!attr(x, "response"), ...)) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(
@@ -312,17 +325,40 @@ calc_impl.Chisq <- function(type, x, order, ...) {
   }
 }
 
-calc_impl.diff_in_props <- function(type, x, order, ...) {
+calc_impl.function_of_props <- function(type, x, order, operator, ...) {
   col <- attr(x, "response")
   success <- attr(x, "success")
-
+  
   x %>%
-    dplyr::group_by(replicate, !!attr(x, "explanatory")) %>%
+    dplyr::group_by(replicate, !!attr(x, "explanatory"), .drop = FALSE) %>%
     dplyr::summarize(prop = mean(!!sym(col) == success, ...)) %>%
     dplyr::summarize(
-      stat = prop[!!attr(x, "explanatory") == order[1]] -
-        prop[!!attr(x, "explanatory") == order[2]]
+      stat = operator(prop[!!attr(x, "explanatory") == order[1]],
+        prop[!!attr(x, "explanatory") == order[2]])
     )
+}
+
+calc_impl.diff_in_props <- function(type, x, order, ...) {
+  calc_impl.function_of_props(type, x, order, operator = `-`, ...)
+}
+
+calc_impl.ratio_of_props <- function(type, x, order, ...) {
+  calc_impl.function_of_props(type, x, order, operator = `/`, ...)
+}
+
+calc_impl.odds_ratio <- function(type, x, order, ...) {
+  col <- attr(x, "response")
+  success <- attr(x, "success")
+  
+  x %>%
+    dplyr::group_by(replicate, !!attr(x, "explanatory"), .drop = FALSE) %>%
+    dplyr::summarize(prop = mean(!!sym(col) == success, ...)) %>%
+    dplyr::summarize(
+      prop_1 = prop[!!attr(x, "explanatory") == order[1]],
+      prop_2 = prop[!!attr(x, "explanatory") == order[2]],
+      stat =  (prop_1 / prop_2) / ((1 - prop_1) / (1 - prop_2))
+    ) %>%
+    dplyr::select(stat)
 }
 
 calc_impl.t <- function(type, x, order, ...) {
@@ -374,10 +410,19 @@ calc_impl.t <- function(type, x, order, ...) {
   else if (attr(x, "theory_type") == "One sample t") {
     # For bootstrap
     if (!is_hypothesized(x)) {
+      
+      if (is.null(list(...)$mu)) {
+        message_glue(
+          "No `mu` argument was hypothesized, so the t-test will ",
+          "assume a null hypothesis `mu = 0`."
+        )
+      }
+      
       x %>%
         dplyr::summarize(
           stat = stats::t.test(!!attr(x, "response"), ...)[["statistic"]]
         )
+      
     } else {
       # For hypothesis testing
       x %>%
@@ -403,7 +448,7 @@ calc_impl.z <- function(type, x, order, ...) {
     aggregated <- x %>%
       dplyr::group_by(replicate, explan) %>%
       dplyr::summarize(
-        group_num = n(),
+        group_num = dplyr::n(),
         prop = mean(rlang::eval_tidy(col) == rlang::eval_tidy(success)),
         num_suc = sum(rlang::eval_tidy(col) == rlang::eval_tidy(success))
       )

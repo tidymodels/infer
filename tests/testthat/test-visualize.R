@@ -39,7 +39,7 @@ obs_diff_mean <- iris_tbl %>%
   pull()
 
 obs_t <- iris_tbl %>%
-  t_stat(Sepal.Width ~ Sepal.Length.Group, order = c(">5", "<=5"))
+  t_stat(Sepal.Width ~ Sepal.Length.Group, order = c("<=5", ">5"))
 
 obs_F <- anova(
     aov(formula = Sepal.Width ~ Species, data = iris_tbl)
@@ -219,11 +219,11 @@ test_that("visualize basic tests", {
     "vis-both-left-2",
     expect_warning(
       iris_tbl %>%
-        specify(Sepal.Length ~ Species) %>%
+        specify(Sepal.Width.Group ~ Sepal.Length.Group, success = "large") %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
-        calculate(stat = "F") %>%
-        visualize(method = "both", obs_stat = obs_F, direction = "left")
+        calculate(stat = "z", order = c(">5", "<=5")) %>%
+        visualize(method = "both", direction = "left", obs_stat = obs_z)
     )
   )
 
@@ -519,4 +519,23 @@ test_that("warn_right_tail_test works", {
   
   expect_warn_right_tail("F")
   expect_warn_right_tail("Chi-Square")
+})
+
+test_that("visualize warns about removing `NaN`", {
+  dist <- iris_boot_tbl <- iris_tbl %>% 
+    specify(response = Sepal.Width) %>% 
+    generate(reps = 10, type = "bootstrap") %>% 
+    calculate("mean")
+  
+  # A warning should be raised if there is NaN in a visualized dist
+  dist$stat[1] <- NaN
+  expect_warning(visualize(dist), "1 calculated statistic was")
+  
+  # And a different warning for plural NaNs
+  dist$stat[2] <- NaN
+  expect_warning(visualize(dist), "2 calculated statistics were")
+  
+  # In the case that _all_ values are NaN, error should be raised
+  dist$stat <- rep(NaN, nrow(dist))
+  expect_error(visualize(dist), "All calculated stat")
 })

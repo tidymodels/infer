@@ -37,6 +37,7 @@ Authors:
 
 Other contributors:
 \itemize{
+  \item Simon Couch \email{simonpatrickcouch@gmail.com} [contributor]
   \item Ted Laderas \email{tedladeras@gmail.com} [contributor]
   \item Nick Solomon \email{nick.solomon@datacamp.com} [contributor]
   \item Johanna Hardin \email{Jo.Hardin@pomona.edu} [contributor]
