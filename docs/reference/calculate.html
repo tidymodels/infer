@@ -78,7 +78,11 @@ Learn more in vignette(&quot;infer&quot;)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
+
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1.9000</span>
+
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+
       </span>
     </div>
 
@@ -91,6 +95,9 @@ Learn more in vignette(&quot;infer&quot;)." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/infer.html">infer</a>
+    </li>
     <li>
       <a href="../articles/chisq_test.html">Chi-square Test Example</a>
     </li>
@@ -210,6 +217,7 @@ difference in means, medians, or proportions and t and z statistics.</p></td>
  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>hours</span>) <span class='kw'>%&gt;%</span>
  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>40</span>) <span class='kw'>%&gt;%</span>
  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>) <span class='kw'>%&gt;%</span>
+
  <span class='fu'>calculate</span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1244 rows containing missing values.</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1,000 x 2</span><span>
 #&gt;    replicate  stat
 #&gt;        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -224,12 +232,29 @@ difference in means, medians, or proportions and t and z statistics.</p></td>
 #&gt; </span><span style='color: #555555;'> 9</span><span>         9  39.9
 #&gt; </span><span style='color: #555555;'>10</span><span>        10  40.3
 #&gt; </span><span style='color: #555555;'># … with 990 more rows</span><span></div><div class='input'>
+
+ <span class='fu'>calculate</span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1244 rows containing missing values.</span></div><div class='output co'>#&gt; # A tibble: 1,000 x 2
+#&gt;    replicate  stat
+#&gt;        &lt;int&gt; &lt;dbl&gt;
+#&gt;  1         1  39.9
+#&gt;  2         2  39.9
+#&gt;  3         3  39.8
+#&gt;  4         4  40.1
+#&gt;  5         5  40.4
+#&gt;  6         6  40.1
+#&gt;  7         7  40.2
+#&gt;  8         8  40.4
+#&gt;  9         9  39.9
+#&gt; 10        10  40.3
+#&gt; # … with 990 more rows</div><div class='input'>
+
 <span class='co'># calculate a null distribution assuming independence between age</span>
 <span class='co'># of respondent and whether they have a college degree</span>
 <span class='no'>gss</span> <span class='kw'>%&gt;%</span>
  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>age</span> ~ <span class='no'>college</span>) <span class='kw'>%&gt;%</span>
  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
+
  <span class='fu'>calculate</span>(<span class='st'>"diff in means"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"degree"</span>, <span class='st'>"no degree"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 22 rows containing missing values.</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1,000 x 2</span><span>
 #&gt;    replicate   stat
 #&gt;        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -247,6 +272,25 @@ difference in means, medians, or proportions and t and z statistics.</p></td>
 <span class='co'># More in-depth explanation of how to use the infer package</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: vignette ‘infer’ not found</span></div><div class='input'>
 </div></span></pre>
+
+ <span class='fu'>calculate</span>(<span class='st'>"diff in means"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"degree"</span>, <span class='st'>"no degree"</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 22 rows containing missing values.</span></div><div class='output co'>#&gt; # A tibble: 1,000 x 2
+#&gt;    replicate   stat
+#&gt;        &lt;int&gt;  &lt;dbl&gt;
+#&gt;  1         1 0.814 
+#&gt;  2         2 0.619 
+#&gt;  3         3 0.146 
+#&gt;  4         4 0.972 
+#&gt;  5         5 0.381 
+#&gt;  6         6 1.15  
+#&gt;  7         7 0.0394
+#&gt;  8         8 0.651 
+#&gt;  9         9 0.731 
+#&gt; 10        10 0.111 
+#&gt; # … with 990 more rows</div><div class='input'>
+<span class='co'># More in-depth explanation of how to use the infer package</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: vignette ‘infer’ not found</span></div><div class='input'>
+</div></pre>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

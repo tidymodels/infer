@@ -78,7 +78,11 @@ Learn more in vignette(&quot;infer&quot;)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
+
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1.9000</span>
+
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+
       </span>
     </div>
 
@@ -91,6 +95,9 @@ Learn more in vignette(&quot;infer&quot;)." />
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/infer.html">infer</a>
+    </li>
     <li>
       <a href="../articles/chisq_test.html">Chi-square Test Example</a>
     </li>
@@ -216,6 +223,7 @@ option is currently only applicable for testing point estimates.)</p></li>
  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>40</span>) <span class='kw'>%&gt;%</span>
  <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1244 rows containing missing values.</span></div><div class='output co'>#&gt; Response: hours (numeric)
 #&gt; Null Hypothesis: point
+
 #&gt; <span style='color: #555555;'># A tibble: 1,756,000 x 2</span><span>
 #&gt; </span><span style='color: #555555;'># Groups:   replicate [1,000]</span><span>
 #&gt;    replicate hours
@@ -231,6 +239,23 @@ option is currently only applicable for testing point estimates.)</p></li>
 #&gt; </span><span style='color: #555555;'> 9</span><span>         1  49.2
 #&gt; </span><span style='color: #555555;'>10</span><span>         1  47.2
 #&gt; </span><span style='color: #555555;'># … with 1,755,990 more rows</span><span></div><div class='input'>
+
+#&gt; # A tibble: 1,756,000 x 2
+#&gt; # Groups:   replicate [1,000]
+#&gt;    replicate hours
+#&gt;        &lt;int&gt; &lt;dbl&gt;
+#&gt;  1         1  39.2
+#&gt;  2         1  31.2
+#&gt;  3         1  39.2
+#&gt;  4         1  59.2
+#&gt;  5         1  39.2
+#&gt;  6         1  24.2
+#&gt;  7         1  34.2
+#&gt;  8         1  39.2
+#&gt;  9         1  49.2
+#&gt; 10         1  47.2
+#&gt; # … with 1,755,990 more rows</div><div class='input'>
+
 <span class='co'># Generate a null distribution for the independence of</span>
 <span class='co'># two variables by permuting their values 1000 times</span>
 <span class='no'>gss</span> <span class='kw'>%&gt;%</span>
@@ -239,6 +264,7 @@ option is currently only applicable for testing point estimates.)</p></li>
  <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 37 rows containing missing values.</span></div><div class='output co'>#&gt; Response: partyid (factor)
 #&gt; Explanatory: age (numeric)
 #&gt; Null Hypothesis: independence
+
 #&gt; </span><span style='color: #555555;'># A tibble: 2,963,000 x 3</span><span>
 #&gt; </span><span style='color: #555555;'># Groups:   replicate [1,000]</span><span>
 #&gt;    partyid   age replicate
@@ -257,6 +283,26 @@ option is currently only applicable for testing point estimates.)</p></li>
 <span class='co'># More in-depth explanation of how to use the infer package</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: vignette ‘infer’ not found</span></div><div class='input'>
 </div></span></pre>
+
+#&gt; # A tibble: 2,963,000 x 3
+#&gt; # Groups:   replicate [1,000]
+#&gt;    partyid   age replicate
+#&gt;    &lt;fct&gt;   &lt;dbl&gt;     &lt;int&gt;
+#&gt;  1 dem        37         1
+#&gt;  2 dem        29         1
+#&gt;  3 rep        58         1
+#&gt;  4 ind        40         1
+#&gt;  5 dem        39         1
+#&gt;  6 rep        37         1
+#&gt;  7 dem        53         1
+#&gt;  8 dem        41         1
+#&gt;  9 dem        55         1
+#&gt; 10 rep        47         1
+#&gt; # … with 2,962,990 more rows</div><div class='input'>
+<span class='co'># More in-depth explanation of how to use the infer package</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: vignette ‘infer’ not found</span></div><div class='input'>
+</div></pre>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

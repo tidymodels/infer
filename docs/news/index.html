@@ -73,7 +73,11 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
+
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1.9000</span>
+
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+
       </span>
     </div>
 
@@ -86,6 +90,9 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/infer.html">infer</a>
+    </li>
     <li>
       <a href="../articles/chisq_test.html">Chi-square Test Example</a>
     </li>
@@ -149,6 +156,62 @@
       <small>Source: <a href='https://github.com/tidymodels/infer/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+
+    <div id="infer-0-5-0" class="section level1">
+<h1 class="page-header">
+<a href="#infer-0-5-0" class="anchor"></a>infer 0.5.0<small> 2019-09-27 </small>
+</h1>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<ul>
+<li>
+<code><a href="../reference/shade_confidence_interval.html">shade_confidence_interval()</a></code> now plots vertical lines starting from zero (previously - from the bottom of a plot) (<a href='https://github.com/tidymodels/infer/issues/234'>#234</a>).</li>
+<li>
+<code><a href="../reference/shade_p_value.html">shade_p_value()</a></code> now uses “area under the curve” approach to shading (<a href='https://github.com/tidymodels/infer/issues/229'>#229</a>).</li>
+</ul>
+</div>
+<div id="other" class="section level2">
+<h2 class="hasAnchor">
+<a href="#other" class="anchor"></a>Other</h2>
+<ul>
+<li>Updated <code><a href="../reference/chisq_test.html">chisq_test()</a></code> to take arguments in a response/explanatory format, perform goodness of fit tests, and default to the approximation approach (<a href='https://github.com/tidymodels/infer/issues/241'>#241</a>).</li>
+<li>Updated <code><a href="../reference/chisq_stat.html">chisq_stat()</a></code> to do goodness of fit (<a href='https://github.com/tidymodels/infer/issues/241'>#241</a>).</li>
+<li>Make interface to <code><a href="../reference/hypothesize.html">hypothesize()</a></code> clearer by adding the options for the point null parameters to the function signature (<a href='https://github.com/tidymodels/infer/issues/242'>#242</a>).</li>
+<li>Manage <code>infer</code> class more systematically (<a href='https://github.com/tidymodels/infer/issues/219'>#219</a>).</li>
+<li>Use <code>vdiffr</code> for plot testing (<a href='https://github.com/tidymodels/infer/issues/221'>#221</a>).</li>
+</ul>
+</div>
+</div>
+    <div id="infer-0-4-1" class="section level1">
+<h1 class="page-header">
+<a href="#infer-0-4-1" class="anchor"></a>infer 0.4.1<small> Unreleased </small>
+</h1>
+<ul>
+<li>Added Evgeni Chasnovski as author for his incredible work on refactoring the package and providing excellent support.</li>
+</ul>
+</div>
+    <div id="infer-0-4-0" class="section level1">
+<h1 class="page-header">
+<a href="#infer-0-4-0" class="anchor"></a>infer 0.4.0<small> 2018-11-15 </small>
+
+    <div id="infer-0-5-1" class="section level1">
+<h1 class="page-header">
+<a href="#infer-0-5-1" class="anchor"></a>infer 0.5.1<small> 2019-11-19 </small>
+
+</h1>
+<div id="breaking-changes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes-1" class="anchor"></a>Breaking changes</h2>
+<ul>
+
+<li>Changed method of computing two-sided p-value to a more conventional one. It also makes <code><a href="../reference/get_p_value.html">get_pvalue()</a></code> and <code><a href="../reference/visualize.html">visualize()</a></code> more aligned (<a href='https://github.com/tidymodels/infer/issues/205'>#205</a>).</li>
+</ul>
+</div>
+
+<li>Updates to documentation and other tweaks</li>
+</ul>
+</div>
     <div id="infer-0-5-0" class="section level1">
 <h1 class="page-header">
 <a href="#infer-0-5-0" class="anchor"></a>infer 0.5.0<small> 2019-09-27 </small>
@@ -194,6 +257,7 @@
 <li>Changed method of computing two-sided p-value to a more conventional one. It also makes <code><a href="../reference/get_p_value.html">get_pvalue()</a></code> and <code><a href="../reference/visualize.html">visualize()</a></code> more aligned (<a href='https://github.com/tidymodels/infer/issues/205'>#205</a>).</li>
 </ul>
 </div>
+
 <div id="deprecation-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#deprecation-changes" class="anchor"></a>Deprecation changes</h2>
@@ -383,6 +447,10 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+
+
+        <li><a href="#infer-0-5-1">0.5.1</a></li>
+
         <li><a href="#infer-0-5-0">0.5.0</a></li>
         <li><a href="#infer-0-4-1">0.4.1</a></li>
         <li><a href="#infer-0-4-0">0.4.0</a></li>
