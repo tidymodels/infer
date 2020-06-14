@@ -1,11 +1,11 @@
 pandoc: '2.2'
-pkgdown: 1.4.1.9000
-pkgdown_sha: 24ef1bbdec0de44fe11eb1d58b40dba961525d43
+pkgdown: 1.5.1.9000
+pkgdown_sha: e3235d58b2c539f6aa34a0be88363c6998c9d5ca
 articles:
-  chisq_test: chisq_test.html
-  flights_examples: flights_examples.html
+  anova: anova.html
+  chi_squared: chi_squared.html
   infer: infer.html
-  mtcars_examples: mtcars_examples.html
   observed_stat_examples: observed_stat_examples.html
-  two_sample_t: two_sample_t.html
+  t_test: t_test.html
+last_built: 2020-06-14T22:20Z
 

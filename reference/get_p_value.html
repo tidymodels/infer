@@ -8,25 +8,36 @@
 
 <title>Compute p-value — get_p_value • infer</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -35,18 +46,16 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
 
 <meta property="og:title" content="Compute p-value — get_p_value" />
-<meta property="og:description" content="
-Compute a p-value from a null distribution and observed statistc.
+<meta property="og:description" content="Compute a p-value from a null distribution and observed statistic.
 Simulation-based methods are (currently only) supported.
 Learn more in vignette(&quot;infer&quot;)." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -64,7 +73,7 @@ Learn more in vignette(&quot;infer&quot;)." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -78,7 +87,7 @@ Learn more in vignette(&quot;infer&quot;)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
       </span>
     </div>
 
@@ -92,22 +101,19 @@ Learn more in vignette(&quot;infer&quot;)." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/infer.html">infer</a>
+      <a href="../articles/infer.html">Getting to Know infer</a>
     </li>
     <li>
-      <a href="../articles/chisq_test.html">Chi-square Test Example</a>
+      <a href="../articles/t_test.html">t-Tests</a>
     </li>
     <li>
-      <a href="../articles/two_sample_t.html">Two-Sample t-test Example</a>
+      <a href="../articles/anova.html">ANOVA</a>
     </li>
     <li>
-      <a href="../articles/observed_stat_examples.html">Observed Statistic Calculation Examples</a>
+      <a href="../articles/chi_squared.html">Chi-Squared</a>
     </li>
     <li>
-      <a href="../articles/flights_examples.html">Simulation-Based `flights` Examples</a>
-    </li>
-    <li>
-      <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
+      <a href="../articles/observed_stat_examples.html">Full infer Pipeline Examples</a>
     </li>
   </ul>
 </li>
@@ -122,9 +128,6 @@ Learn more in vignette(&quot;infer&quot;)." />
 </li>
 <li>
   <a href="../CONDUCT.html">Code of Conduct</a>
-</li>
-<li>
-  <a href="../TO-DO.html">To-Dos</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -159,8 +162,7 @@ Learn more in vignette(&quot;infer&quot;)." />
     </div>
 
     <div class="ref-description">
-    <p><a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a></p>
-<p>Compute a p-value from a null distribution and observed statistc.
+    <p>Compute a p-value from a null distribution and observed statistic.
 Simulation-based methods are (currently only) supported.</p>
 <p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
     </div>
@@ -184,7 +186,8 @@ extreme than this).</p></td>
     <tr>
       <th>direction</th>
       <td><p>A character string. Options are <code>"less"</code>, <code>"greater"</code>, or
-<code>"two_sided"</code>. Can also use <code>"left"</code>, <code>"right"</code>, or <code>"both"</code>.</p></td>
+<code>"two-sided"</code>. Can also use <code>"left"</code>, <code>"right"</code>, <code>"both"</code>,
+<code>"two_sided"</code>, or <code>"two sided"</code>.</p></td>
     </tr>
     </table>
 
@@ -197,6 +200,22 @@ extreme than this).</p></td>
 
 <p><code>get_pvalue()</code> is an alias of <code>get_p_value()</code>.
 <code>p_value</code> is a deprecated alias of <code>get_p_value()</code>.</p>
+    <h2 class="hasAnchor" id="zero-p-value"><a class="anchor" href="#zero-p-value"></a>Zero p-value</h2>
+
+    
+
+<p>Though a true p-value of 0 is impossible, <code>get_p_value()</code> may return 0 in
+some cases. This is due to the simulation-based nature of the {infer}
+package; the output of this function is an approximation based on
+the number of <code>reps</code> chosen in the <code><a href='generate.html'>generate()</a></code> step. When the observed
+statistic is very unlikely given the null hypothesis, and only a small
+number of <code>reps</code> have been generated to form a null distribution,
+it is possible that the observed statistic will be more extreme than
+every test statistic generated to form the null distribution, resulting
+in an approximate p-value of 0. In this case, the true p-value is a small
+value likely less than <code>3/reps</code> (based on a poisson approximation).</p>
+<p>In the case that a p-value of zero is reported, a warning message will be
+raised to caution the user against reporting a p-value exactly equal to 0.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
@@ -204,7 +223,8 @@ extreme than this).</p></td>
 <span class='no'>point_estimate</span> <span class='kw'>&lt;-</span> <span class='no'>gss</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>hours</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1244 rows containing missing values.</span></div><div class='input'>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span>()
+
 <span class='co'># starting with the gss dataset</span>
 <span class='no'>gss</span> <span class='kw'>%&gt;%</span>
   <span class='co'># ...we're interested in the number of hours worked per week</span>
@@ -212,26 +232,22 @@ extreme than this).</p></td>
   <span class='co'># hypothesizing that the mean is 40</span>
   <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>40</span>) <span class='kw'>%&gt;%</span>
   <span class='co'># generating data points for a null distribution</span>
-  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>10000</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>) <span class='kw'>%&gt;%</span>
   <span class='co'># finding the null distribution</span>
   <span class='fu'><a href='calculate.html'>calculate</a></span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>get_p_value</span>(<span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='no'>point_estimate</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"two_sided"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1244 rows containing missing values.</span></div><div class='output co'>#&gt; # A tibble: 1 x 1
+  <span class='fu'>get_p_value</span>(<span class='kw'>obs_stat</span> <span class='kw'>=</span> <span class='no'>point_estimate</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"two-sided"</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 1
 #&gt;   p_value
 #&gt;     &lt;dbl&gt;
-#&gt; 1  0.0182</div><div class='input'>
+#&gt; 1   0.042</div><div class='input'>
 <span class='co'># More in-depth explanation of how to use the infer package</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: vignette ‘infer’ not found</span></div><div class='input'>  
-</div></pre>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#aliases">Aliases</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -242,7 +258,7 @@ extreme than this).</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

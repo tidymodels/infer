@@ -8,25 +8,36 @@
 
 <title>Declare a null hypothesis — hypothesize • infer</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.min.css" integrity="sha256-PbSmjxuVAzJ6FPvNYsrXygfGhNJYyZ2GktDbkMBqQZg=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/v4-shims.min.css" integrity="sha256-A6jcAdwFD48VMjlI3GDxUd+eCQa7/KWy6G9oe/ovaPA=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -35,17 +46,15 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
 
 <meta property="og:title" content="Declare a null hypothesis — hypothesize" />
-<meta property="og:description" content="
-Declare a null hypothesis about variables selected in specify().
+<meta property="og:description" content="Declare a null hypothesis about variables selected in specify().
 Learn more in vignette(&quot;infer&quot;)." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -63,7 +72,7 @@ Learn more in vignette(&quot;infer&quot;)." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -77,7 +86,7 @@ Learn more in vignette(&quot;infer&quot;)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
       </span>
     </div>
 
@@ -91,22 +100,19 @@ Learn more in vignette(&quot;infer&quot;)." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/infer.html">infer</a>
+      <a href="../articles/infer.html">Getting to Know infer</a>
     </li>
     <li>
-      <a href="../articles/chisq_test.html">Chi-square Test Example</a>
+      <a href="../articles/t_test.html">t-Tests</a>
     </li>
     <li>
-      <a href="../articles/two_sample_t.html">Two-Sample t-test Example</a>
+      <a href="../articles/anova.html">ANOVA</a>
     </li>
     <li>
-      <a href="../articles/observed_stat_examples.html">Observed Statistic Calculation Examples</a>
+      <a href="../articles/chi_squared.html">Chi-Squared</a>
     </li>
     <li>
-      <a href="../articles/flights_examples.html">Simulation-Based `flights` Examples</a>
-    </li>
-    <li>
-      <a href="../articles/mtcars_examples.html">Examples using `mtcars`</a>
+      <a href="../articles/observed_stat_examples.html">Full infer Pipeline Examples</a>
     </li>
   </ul>
 </li>
@@ -121,9 +127,6 @@ Learn more in vignette(&quot;infer&quot;)." />
 </li>
 <li>
   <a href="../CONDUCT.html">Code of Conduct</a>
-</li>
-<li>
-  <a href="../TO-DO.html">To-Dos</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -158,12 +161,13 @@ Learn more in vignette(&quot;infer&quot;)." />
     </div>
 
     <div class="ref-description">
-    <p><a href='https://www.tidyverse.org/lifecycle/#maturing'><img src='figures/lifecycle-maturing.svg' alt='Maturing lifecycle'></a></p>
-<p>Declare a null hypothesis about variables selected in <code><a href='specify.html'>specify()</a></code>.</p>
+    <p>Declare a null hypothesis about variables selected in <code><a href='specify.html'>specify()</a></code>.</p>
 <p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>hypothesize</span>(<span class='no'>x</span>, <span class='no'>null</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>med</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>hypothesize</span>(<span class='no'>x</span>, <span class='no'>null</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>med</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>hypothesise</span>(<span class='no'>x</span>, <span class='no'>null</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>med</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -208,54 +212,51 @@ variable data with parameter information stored as well.</p>
     <pre class="examples"><div class='input'><span class='co'># hypothesize independence of two variables</span>
 <span class='no'>gss</span> <span class='kw'>%&gt;%</span>
  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>college</span> ~ <span class='no'>partyid</span>, <span class='kw'>success</span> <span class='kw'>=</span> <span class='st'>"degree"</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'>hypothesize</span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 33 rows containing missing values.</span></div><div class='output co'>#&gt; Response: college (factor)
+ <span class='fu'>hypothesize</span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>)</div><div class='output co'>#&gt; Response: college (factor)
 #&gt; Explanatory: partyid (factor)
 #&gt; Null Hypothesis: independence
-#&gt; # A tibble: 2,967 x 2
+#&gt; # A tibble: 500 x 2
 #&gt;    college   partyid
 #&gt;    &lt;fct&gt;     &lt;fct&gt;  
-#&gt;  1 no degree dem    
-#&gt;  2 no degree dem    
+#&gt;  1 degree    ind    
+#&gt;  2 no degree rep    
 #&gt;  3 degree    ind    
-#&gt;  4 degree    rep    
-#&gt;  5 no degree dem    
-#&gt;  6 no degree dem    
+#&gt;  4 no degree ind    
+#&gt;  5 degree    rep    
+#&gt;  6 no degree rep    
 #&gt;  7 no degree dem    
-#&gt;  8 no degree rep    
-#&gt;  9 no degree ind    
-#&gt; 10 no degree rep    
-#&gt; # … with 2,957 more rows</div><div class='input'>
+#&gt;  8 degree    ind    
+#&gt;  9 degree    rep    
+#&gt; 10 no degree dem    
+#&gt; # … with 490 more rows</div><div class='input'>
 <span class='co'># hypothesize a mean number of hours worked per week of 40</span>
 <span class='no'>gss</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>hours</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>hypothesize</span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>40</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1244 rows containing missing values.</span></div><div class='output co'>#&gt; Response: hours (numeric)
+  <span class='fu'>hypothesize</span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>40</span>)</div><div class='output co'>#&gt; Response: hours (numeric)
 #&gt; Null Hypothesis: point
-#&gt; # A tibble: 1,756 x 1
+#&gt; # A tibble: 500 x 1
 #&gt;    hours
 #&gt;    &lt;dbl&gt;
 #&gt;  1    50
-#&gt;  2    60
-#&gt;  3    84
+#&gt;  2    31
+#&gt;  3    40
 #&gt;  4    40
-#&gt;  5    50
-#&gt;  6    60
-#&gt;  7    40
+#&gt;  5    40
+#&gt;  6    53
+#&gt;  7    32
 #&gt;  8    20
 #&gt;  9    40
 #&gt; 10    40
-#&gt; # … with 1,746 more rows</div><div class='input'>
+#&gt; # … with 490 more rows</div><div class='input'>
 <span class='co'># More in-depth explanation of how to use the infer package</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: vignette ‘infer’ not found</span></div><div class='input'>
-</div></pre>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -266,7 +267,7 @@ variable data with parameter information stored as well.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
