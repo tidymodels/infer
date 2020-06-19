@@ -1,19 +1,15 @@
 set.seed(4242)
 
-iris_df <- tibble::as_tibble(iris)
+gss_tbl <- tibble::as_tibble(gss) %>%
+  dplyr::filter(!(is.na(sex) | is.na(college))) %>%
+  dplyr::mutate(partyid = as.character(partyid)) %>%
+  dplyr::filter(partyid %in% c("ind", "rep", "dem"))
 
-iris_tbl <- iris %>%
-  tibble::as_tibble() %>%
-  dplyr::mutate(
-    Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5"),
-    Sepal.Width.Group = dplyr::if_else(Sepal.Width > 3, "large", "small")
-  )
-
-iris_calc <- iris_tbl %>%
-  specify(Sepal.Length.Group ~ Sepal.Width.Group, success = "<=5") %>%
+gss_calc <- gss_tbl %>%
+  specify(college ~ sex, success = "no degree") %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000) %>%
-  calculate(stat = "diff in props", order = c("large", "small"))
+  calculate(stat = "diff in props", order = c("female", "male"))
 
 mtcars_df <- mtcars %>%
   dplyr::mutate(
@@ -21,25 +17,27 @@ mtcars_df <- mtcars %>%
     carb = factor(carb)
   )
 
-obs_diff <- iris_tbl %>%
-  specify(Sepal.Length.Group ~ Sepal.Width.Group, success = "<=5") %>%
-  calculate(stat = "diff in props", order = c("large", "small"))
+obs_diff <- gss_tbl %>%
+  specify(college ~ sex, success = "no degree") %>%
+  calculate(stat = "diff in props", order = c("female", "male"))
 
 set.seed(2018)
 test_df <- tibble::tibble(stat = rnorm(100))
 
 # Data for visualization tests
 
-iris_permute <- iris_tbl %>%
-  specify(Sepal.Width.Group ~ Sepal.Length.Group, success = "large") %>%
+gss_permute <- gss_tbl %>%
+  specify(college ~ sex, success = "no degree") %>%
   hypothesize(null = "independence") %>%
   generate(reps = 100, type = "permute") %>%
-  calculate(stat = "z", order = c(">5", "<=5"))
-iris_viz_sim <- iris_permute %>% visualize(method = "simulation")
+  calculate(stat = "z", order = c("female", "male"))
+
+gss_viz_sim <- gss_permute %>% visualize(method = "simulation")
+
 # Warnings are about checking conditions for the theoretical method.
-iris_viz_theor <- suppressWarnings(
-  iris_permute %>% visualize(method = "theoretical")
+gss_viz_theor <- suppressWarnings(
+  gss_permute %>% visualize(method = "theoretical")
 )
-iris_viz_both <- suppressWarnings(
-  iris_permute %>% visualize(method = "both")
+gss_viz_both <- suppressWarnings(
+  gss_permute %>% visualize(method = "both")
 )

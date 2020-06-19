@@ -28,7 +28,9 @@ test_that("get_p_value works", {
   expect_equal(
     get_p_value(test_df, 4, "greater"), get_p_value(test_df, 4, "right")
   )
-  expect_equal(get_p_value(test_df, 4, "less"), get_p_value(test_df, 4, "left"))
+  expect_equal(
+    get_p_value(test_df, 4, "less"), get_p_value(test_df, 4, "left")
+  )
   expect_equal(
     get_p_value(test_df, 4, "two_sided"), get_p_value(test_df, 4, "both")
   )
@@ -41,12 +43,12 @@ test_that("get_p_value works", {
 })
 
 test_that("theoretical p-value not supported error", {
-  obs_F <- iris_tbl %>% 
-    specify(Sepal.Width ~ Species) %>%
+  obs_F <- gss_tbl %>% 
+    specify(hours ~ partyid) %>%
     calculate(stat = "F") 
   expect_error(
-    iris_tbl %>% 
-      specify(Sepal.Width ~ Species) %>%
+    gss_tbl %>% 
+      specify(hours ~ partyid) %>%
       hypothesize(null = "independence") %>% 
       calculate(stat = "F") %>% 
       get_p_value(obs_stat = obs_F, direction = "right")
