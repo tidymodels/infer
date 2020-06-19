@@ -6,15 +6,15 @@ test_that("basics work", {
   expect_error(test_df %>% get_confidence_interval(level = 1.2))
   expect_error(test_df %>% get_confidence_interval(point_estimate = "help"))
 
-  expect_silent(iris_calc %>% 
+  expect_silent(gss_calc %>% 
                   get_confidence_interval(type = "se", 
                                           point_estimate = 4))
-  expect_silent(iris_calc %>% 
+  expect_silent(gss_calc %>% 
                   get_confidence_interval(type = "se", 
                                           point_estimate = obs_diff))
-  expect_error(iris_calc %>% 
+  expect_error(gss_calc %>% 
                  get_confidence_interval(type = "se", 
                                          point_estimate = "error"))
-  expect_error(iris_calc %>% 
+  expect_error(gss_calc %>% 
                  get_confidence_interval(type = "se"))
 })
