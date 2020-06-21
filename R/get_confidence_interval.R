@@ -62,26 +62,12 @@
 get_confidence_interval <- function(x, level = 0.95, type = "percentile",
                                     point_estimate = NULL) {
   check_ci_args(x, level, type, point_estimate)
-
-  if (type == "percentile") {
-    ci_vec <- stats::quantile(
-      x[["stat"]],
-      probs = c((1 - level) / 2, level + (1 - level) / 2)
-    )
-    
-    ci <- tibble::tibble(ci_vec[1], ci_vec[2])
-    names(ci) <- names(ci_vec)
-  } else {
-    point_estimate <- check_obs_stat(point_estimate)
-    multiplier <- stats::qnorm(1 - (1 - level) / 2)
-    
-    ci <- tibble::tibble(
-      lower = point_estimate - multiplier * stats::sd(x[["stat"]]),
-      upper = point_estimate + multiplier * stats::sd(x[["stat"]])
-    )
-  }
-
-  ci
+  
+  switch(
+    type,
+    percentile = ci_percentile(x, level),
+    se = ci_se(x, level, point_estimate)
+  )
 }
 
 #' @rdname get_confidence_interval
@@ -93,12 +79,28 @@ get_ci <- function(x, level = 0.95, type = "percentile",
   )
 }
 
+ci_percentile <- function(x, level) {
+  ci_vec <- stats::quantile(x[["stat"]], probs = (1 + c(-level, level)) / 2)
+  
+  tibble::as_tibble(as.list(ci_vec))
+}
+
+ci_se <- function(x, level, point_estimate) {
+  point_estimate <- check_obs_stat(point_estimate)
+  
+  multiplier <- stats::qnorm((1 + level) / 2)
+  ci_vec <- point_estimate + c(-multiplier, multiplier) * stats::sd(x[["stat"]])
+  
+  tibble::tibble(lower = ci_vec[[1]], upper = ci_vec[[2]])
+}
+
 check_ci_args <- function(x, level, type, point_estimate){
   if (!is.null(point_estimate)) {
     if (!is.data.frame(point_estimate)) {
       check_type(point_estimate, is.numeric)
     } else {
       check_type(point_estimate, is.data.frame)
+      check_type(point_estimate[[1]][[1]], is.numeric)
     }
   }
   check_type(x, is.data.frame)
@@ -117,10 +119,6 @@ check_ci_args <- function(x, level, type, point_estimate){
       'A numeric value needs to be given for `point_estimate` ',
       'for `type = "se"'
     )
-  }
-
-  if ((type == "se") && is.vector(point_estimate)) {
-    check_type(point_estimate, is.numeric) 
   }
 }
 
