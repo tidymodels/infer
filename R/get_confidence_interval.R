@@ -66,7 +66,8 @@ get_confidence_interval <- function(x, level = 0.95, type = "percentile",
   switch(
     type,
     percentile = ci_percentile(x, level),
-    se = ci_se(x, level, point_estimate)
+    se = ci_se(x, level, point_estimate),
+    `bias-corrected` = ci_bias_corrected(x, level, point_estimate)
   )
 }
 
@@ -94,6 +95,20 @@ ci_se <- function(x, level, point_estimate) {
   tibble::tibble(lower = ci_vec[[1]], upper = ci_vec[[2]])
 }
 
+ci_bias_corrected <- function(x, level, point_estimate) {
+  point_estimate <- check_obs_stat(point_estimate)
+  
+  p <- mean(x[["stat"]] <= point_estimate)
+  z0 <- stats::qnorm(p) 
+  # z_alpha_2 is z_(alpha/2)
+  z_alpha_2 <- stats::qnorm((1 + c(-level, level)) / 2)
+  new_probs <- stats::pnorm(2*z0 + z_alpha_2)
+  
+  ci_vec <- stats::quantile(x[["stat"]], probs = new_probs)
+  
+  tibble::tibble(lower = ci_vec[[1]], upper = ci_vec[[2]])
+}
+
 check_ci_args <- function(x, level, type, point_estimate){
   if (!is.null(point_estimate)) {
     if (!is.data.frame(point_estimate)) {
@@ -110,14 +125,16 @@ check_ci_args <- function(x, level, type, point_estimate){
     stop_glue("The value of `level` must be between 0 and 1 non-inclusive.")
   }
 
-  if (!(type %in% c("percentile", "se"))) {
-    stop_glue('The options for `type` are "percentile" or "se".')
+  if (!(type %in% c("percentile", "se", "bias-corrected"))) {
+    stop_glue(
+      'The options for `type` are "percentile", "se", or "bias-corrected".'
+    )
   }
 
-  if ((type == "se") && is.null(point_estimate)) {
+  if ((type %in% c("se", "bias-corrected")) && is.null(point_estimate)) {
     stop_glue(
       'A numeric value needs to be given for `point_estimate` ',
-      'for `type = "se"'
+      'for `type` "se" or "bias-corrected".'
     )
   }
 }
