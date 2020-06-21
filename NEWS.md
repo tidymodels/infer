@@ -1,3 +1,5 @@
+# infer (development version)
+
 # infer 0.5.2
 
 - Warn the user when a p-value of 0 is reported (#257, #273)
