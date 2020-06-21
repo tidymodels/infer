@@ -14,9 +14,10 @@
 #'   Default value is 0.95.
 #' @param type A string giving which method should be used for creating the
 #'   confidence interval. The default is `"percentile"` with `"se"`
-#'   corresponding to (multiplier * standard error) as the other option.
+#'   corresponding to (multiplier * standard error) and `"bias-corrected"` for
+#'   bias-corrected interval as other options.
 #' @param point_estimate A numeric value or a 1x1 data frame set to `NULL` by
-#'   default. Needed to be provided if `type = "se"`.
+#'   default. Needed to be provided if `type` is `"se"` or `"bias-corrected"`.
 #'
 #' @return A 1 x 2 tibble with values corresponding to lower and upper values in
 #'   the confidence interval.
