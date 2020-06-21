@@ -20,6 +20,7 @@
 #'
 #' @return A 1 x 2 tibble with values corresponding to lower and upper values in
 #'   the confidence interval.
+#'
 #' @section Aliases:
 #' `get_ci()` is an alias of `get_confidence_interval()`.
 #' `conf_int()` is a deprecated alias of `get_confidence_interval()`.
@@ -43,11 +44,13 @@
 #'   # finding the null distribution
 #'   calculate(stat = "mean") %>%
 #    # calculate the confidence interval around the point estimate
-#'   get_confidence_interval(point_estimate = point_estimate,
-#'                           # at the 95% confidence level
-#'                           level = .95,
-#'                           # using the standard error method
-#'                           type = "se")
+#'   get_confidence_interval(
+#'     point_estimate = point_estimate,
+#'     # at the 95% confidence level
+#'     level = 0.95,
+#'     # using the standard error method
+#'     type = "se"
+#'   )
 #'   
 #' # More in-depth explanation of how to use the infer package
 #' \dontrun{
@@ -57,59 +60,67 @@
 #' @name get_confidence_interval
 #' @export
 get_confidence_interval <- function(x, level = 0.95, type = "percentile",
-  point_estimate = NULL){
-
+                                    point_estimate = NULL) {
   check_ci_args(x, level, type, point_estimate)
 
-  if(type == "percentile") {
-    ci_vec <- stats::quantile(x[["stat"]],
-      probs = c((1 - level) / 2, level + (1 - level) / 2))
-
+  if (type == "percentile") {
+    ci_vec <- stats::quantile(
+      x[["stat"]],
+      probs = c((1 - level) / 2, level + (1 - level) / 2)
+    )
+    
     ci <- tibble::tibble(ci_vec[1], ci_vec[2])
     names(ci) <- names(ci_vec)
   } else {
     point_estimate <- check_obs_stat(point_estimate)
     multiplier <- stats::qnorm(1 - (1 - level) / 2)
+    
     ci <- tibble::tibble(
       lower = point_estimate - multiplier * stats::sd(x[["stat"]]),
-      upper = point_estimate + multiplier * stats::sd(x[["stat"]]))
+      upper = point_estimate + multiplier * stats::sd(x[["stat"]])
+    )
   }
 
-  return(ci)
+  ci
 }
 
 #' @rdname get_confidence_interval
 #' @export
 get_ci <- function(x, level = 0.95, type = "percentile",
-  point_estimate = NULL) {
+                   point_estimate = NULL) {
   get_confidence_interval(
     x, level = level, type = type, point_estimate = point_estimate
   )
 }
 
 check_ci_args <- function(x, level, type, point_estimate){
-
-  if(!is.null(point_estimate)){
-    if(!is.data.frame(point_estimate))
+  if (!is.null(point_estimate)) {
+    if (!is.data.frame(point_estimate)) {
       check_type(point_estimate, is.numeric)
-    else
+    } else {
       check_type(point_estimate, is.data.frame)
+    }
   }
   check_type(x, is.data.frame)
   check_type(level, is.numeric)
-  if(level <= 0 || level >= 1){
+  
+  if ((level <= 0) || (level >= 1)) {
     stop_glue("The value of `level` must be between 0 and 1 non-inclusive.")
   }
 
-  if(!(type %in% c("percentile", "se"))){
+  if (!(type %in% c("percentile", "se"))) {
     stop_glue('The options for `type` are "percentile" or "se".')
   }
 
-  if(type == "se" && is.null(point_estimate))
-    stop_glue('A numeric value needs to be given for `point_estimate` ',
-      'for `type = "se"')
+  if ((type == "se") && is.null(point_estimate)) {
+    stop_glue(
+      'A numeric value needs to be given for `point_estimate` ',
+      'for `type = "se"'
+    )
+  }
 
-  if(type == "se" && is.vector(point_estimate))
-    check_type(point_estimate, is.numeric)
+  if ((type == "se") && is.vector(point_estimate)) {
+    check_type(point_estimate, is.numeric) 
+  }
 }
 

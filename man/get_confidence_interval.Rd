@@ -63,11 +63,13 @@ gss \%>\%
   generate(reps = 1000, type = "bootstrap") \%>\%
   # finding the null distribution
   calculate(stat = "mean") \%>\%
-  get_confidence_interval(point_estimate = point_estimate,
-                          # at the 95\% confidence level
-                          level = .95,
-                          # using the standard error method
-                          type = "se")
+  get_confidence_interval(
+    point_estimate = point_estimate,
+    # at the 95\% confidence level
+    level = 0.95,
+    # using the standard error method
+    type = "se"
+  )
   
 # More in-depth explanation of how to use the infer package
 \dontrun{
