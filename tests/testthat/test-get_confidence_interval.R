@@ -3,8 +3,8 @@ context("get_confidence_interval")
 point <- mean(test_df[["stat"]])
 
 perc_def_out <- tibble::tibble(
-  `2.5%`  = unname(quantile(test_df[["stat"]], 0.025)),
-  `97.5%` = unname(quantile(test_df[["stat"]], 0.975))
+  lower_ci = unname(quantile(test_df[["stat"]], 0.025)),
+  upper_ci = unname(quantile(test_df[["stat"]], 0.975))
 )
 
 test_that("get_confidence_interval works with defaults", {
@@ -25,8 +25,8 @@ test_that("get_confidence_interval works with `type = 'percentile'`", {
   expect_equal(
     test_df %>% get_confidence_interval(level = 0.5, type = "percentile"),
     tibble::tibble(
-      `25%` = unname(quantile(test_df[["stat"]], 0.25)),
-      `75%` = unname(quantile(test_df[["stat"]], 0.75))
+      lower_ci = unname(quantile(test_df[["stat"]], 0.25)),
+      upper_ci = unname(quantile(test_df[["stat"]], 0.75))
     )
   )
 })
@@ -35,7 +35,7 @@ test_that("get_confidence_interval works with `type = 'se'`", {
   expect_message(
     expect_equal(
       test_df %>% get_confidence_interval(type = "se", point_estimate = point),
-      tibble::tibble(lower = -1.965, upper = 2.008),
+      tibble::tibble(lower_ci = -1.965, upper_ci = 2.008),
       tolerance = 1e-3
     ),
     "Using `level = 0.95`"
@@ -44,7 +44,7 @@ test_that("get_confidence_interval works with `type = 'se'`", {
   expect_equal(
     test_df %>%
       get_confidence_interval(level = 0.5, type = "se", point_estimate = point),
-    tibble::tibble(lower = -0.662, upper = 0.705),
+    tibble::tibble(lower_ci = -0.662, upper_ci = 0.705),
     tolerance = 1e-3
   )
 })
@@ -56,7 +56,7 @@ test_that("get_confidence_interval works with `type = 'bias-corrected'`", {
         get_confidence_interval(
           type = "bias-corrected", point_estimate = point
         ),
-      tibble::tibble(lower = -1.692, upper = 2.276),
+      tibble::tibble(lower_ci = -1.692, upper_ci = 2.276),
       tolerance = 1e-3
     ),
     "Using `level = 0.95`"
@@ -67,7 +67,7 @@ test_that("get_confidence_interval works with `type = 'bias-corrected'`", {
       get_confidence_interval(
         level = 0.5, type = "bias-corrected", point_estimate = point
       ),
-    tibble::tibble(lower = -0.594, upper = 0.815),
+    tibble::tibble(lower_ci = -0.594, upper_ci = 0.815),
     tolerance = 1e-3
   )
 })

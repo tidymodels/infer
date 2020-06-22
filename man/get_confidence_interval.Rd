@@ -31,8 +31,8 @@ bias-corrected interval as other options.}
 default. Needed to be provided if \code{type} is \code{"se"} or \code{"bias-corrected"}.}
 }
 \value{
-A 1 x 2 tibble with values corresponding to lower and upper values in
-the confidence interval.
+A 1 x 2 tibble with 'lower_ci' and 'upper_ci' columns. Values
+correspond to lower and upper bounds of the confidence interval.
 }
 \description{
 Compute a confidence interval around a summary statistic. Only

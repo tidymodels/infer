@@ -19,8 +19,8 @@
 #' @param point_estimate A numeric value or a 1x1 data frame set to `NULL` by
 #'   default. Needed to be provided if `type` is `"se"` or `"bias-corrected"`.
 #'
-#' @return A 1 x 2 tibble with values corresponding to lower and upper values in
-#'   the confidence interval.
+#' @return A 1 x 2 tibble with 'lower_ci' and 'upper_ci' columns. Values
+#'   correspond to lower and upper bounds of the confidence interval.
 #'
 #' @section Aliases:
 #' `get_ci()` is an alias of `get_confidence_interval()`.
@@ -89,7 +89,7 @@ get_ci <- function(x, level = 0.95, type = "percentile",
 ci_percentile <- function(x, level) {
   ci_vec <- stats::quantile(x[["stat"]], probs = (1 + c(-level, level)) / 2)
   
-  tibble::as_tibble(as.list(ci_vec))
+  make_ci_df(ci_vec)
 }
 
 ci_se <- function(x, level, point_estimate) {
@@ -98,7 +98,7 @@ ci_se <- function(x, level, point_estimate) {
   multiplier <- stats::qnorm((1 + level) / 2)
   ci_vec <- point_estimate + c(-multiplier, multiplier) * stats::sd(x[["stat"]])
   
-  tibble::tibble(lower = ci_vec[[1]], upper = ci_vec[[2]])
+  make_ci_df(ci_vec)
 }
 
 ci_bias_corrected <- function(x, level, point_estimate) {
@@ -112,7 +112,7 @@ ci_bias_corrected <- function(x, level, point_estimate) {
   
   ci_vec <- stats::quantile(x[["stat"]], probs = new_probs)
   
-  tibble::tibble(lower = ci_vec[[1]], upper = ci_vec[[2]])
+  make_ci_df(ci_vec)
 }
 
 check_ci_args <- function(x, level, type, point_estimate){
@@ -145,3 +145,6 @@ check_ci_args <- function(x, level, type, point_estimate){
   }
 }
 
+make_ci_df <- function(ci_vec) {
+  tibble::tibble(lower_ci = ci_vec[[1]], upper_ci = ci_vec[[2]])
+}
