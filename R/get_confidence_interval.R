@@ -64,6 +64,11 @@ get_confidence_interval <- function(x, level = 0.95, type = "percentile",
                                     point_estimate = NULL) {
   check_ci_args(x, level, type, point_estimate)
   
+  # Inform if no `level` was explicitly supplied
+  if (!("level" %in% rlang::call_args_names(match.call()))) {
+    message_glue("Using `level = {level}` to compute confidence interval.")
+  }
+  
   switch(
     type,
     percentile = ci_percentile(x, level),

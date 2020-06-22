@@ -8,11 +8,18 @@ test_that("get_confidence_interval works", {
     `97.5%` = unname(quantile(test_df[["stat"]], 0.975))
   )
   
-  expect_equal(test_df %>% get_confidence_interval(), perc_basic_out)
+  # Default usage
+  expect_message(
+    expect_equal(test_df %>% get_confidence_interval(), perc_basic_out),
+    "Using `level = 0.95`"
+  )
   
   # Type "percentile"
-  expect_equal(
-    test_df %>% get_confidence_interval(type = "percentile"), perc_basic_out
+  expect_message(
+    expect_equal(
+      test_df %>% get_confidence_interval(type = "percentile"), perc_basic_out
+    ),
+    "Using `level = 0.95`"
   )
   expect_equal(
     test_df %>% get_confidence_interval(level = 0.5, type = "percentile"),
@@ -25,10 +32,13 @@ test_that("get_confidence_interval works", {
   # Type "se"
   se_basic_out <- tibble::tibble(lower = -1.965, upper = 2.008)
   
-  expect_equal(
-    test_df %>% get_confidence_interval(type = "se", point_estimate = point),
-    se_basic_out,
-    tolerance = 1e-3
+  expect_message(
+    expect_equal(
+      test_df %>% get_confidence_interval(type = "se", point_estimate = point),
+      se_basic_out,
+      tolerance = 1e-3
+    ),
+    "Using `level = 0.95`"
   )
   expect_equal(
     test_df %>%
@@ -37,23 +47,31 @@ test_that("get_confidence_interval works", {
     tolerance = 1e-3
   )
   ## Check that data frame input is processed correctly
-  expect_equal(
-    test_df %>%
-      get_confidence_interval(
-        type = "se", point_estimate = data.frame(p = point)
-      ),
-    se_basic_out,
-    tolerance = 1e-3
+  expect_message(
+    expect_equal(
+      test_df %>%
+        get_confidence_interval(
+          type = "se", point_estimate = data.frame(p = point)
+        ),
+      se_basic_out,
+      tolerance = 1e-3
+    ),
+    "Using `level = 0.95`"
   )
   
   # Type "bias-corrected"
   bias_basic_out <- tibble::tibble(lower = -1.692, upper = 2.276)
   
-  expect_equal(
-    test_df %>%
-      get_confidence_interval(type = "bias-corrected", point_estimate = point),
-    bias_basic_out,
-    tolerance = 1e-3
+  expect_message(
+    expect_equal(
+      test_df %>%
+        get_confidence_interval(
+          type = "bias-corrected", point_estimate = point
+        ),
+      bias_basic_out,
+      tolerance = 1e-3
+    ),
+    "Using `level = 0.95`"
   )
   expect_equal(
     test_df %>%
@@ -64,13 +82,16 @@ test_that("get_confidence_interval works", {
     tolerance = 1e-3
   )
   ## Check that data frame input is processed correctly
-  expect_equal(
-    test_df %>%
-      get_confidence_interval(
-        type = "bias-corrected", point_estimate = data.frame(p = point)
-      ),
-    bias_basic_out,
-    tolerance = 1e-3
+  expect_message(
+    expect_equal(
+      test_df %>%
+        get_confidence_interval(
+          type = "bias-corrected", point_estimate = data.frame(p = point)
+        ),
+      bias_basic_out,
+      tolerance = 1e-3
+    ),
+    "Using `level = 0.95`"
   )
 })
 
