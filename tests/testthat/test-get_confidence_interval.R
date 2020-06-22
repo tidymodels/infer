@@ -1,26 +1,27 @@
-context("conf_int")
+context("get_confidence_interval")
 
-test_that("get_confidence_interval works", {
-  point <- mean(test_df[["stat"]])
-  
-  perc_basic_out <- tibble::tibble(
-    `2.5%`  = unname(quantile(test_df[["stat"]], 0.025)),
-    `97.5%` = unname(quantile(test_df[["stat"]], 0.975))
-  )
-  
-  # Default usage
+point <- mean(test_df[["stat"]])
+
+perc_def_out <- tibble::tibble(
+  `2.5%`  = unname(quantile(test_df[["stat"]], 0.025)),
+  `97.5%` = unname(quantile(test_df[["stat"]], 0.975))
+)
+
+test_that("get_confidence_interval works with defaults", {
   expect_message(
-    expect_equal(test_df %>% get_confidence_interval(), perc_basic_out),
+    expect_equal(test_df %>% get_confidence_interval(), perc_def_out),
     "Using `level = 0.95`"
   )
-  
-  # Type "percentile"
+})
+
+test_that("get_confidence_interval works with `type = 'percentile'`", {
   expect_message(
     expect_equal(
-      test_df %>% get_confidence_interval(type = "percentile"), perc_basic_out
+      test_df %>% get_confidence_interval(type = "percentile"), perc_def_out
     ),
     "Using `level = 0.95`"
   )
+  
   expect_equal(
     test_df %>% get_confidence_interval(level = 0.5, type = "percentile"),
     tibble::tibble(
@@ -28,51 +29,39 @@ test_that("get_confidence_interval works", {
       `75%` = unname(quantile(test_df[["stat"]], 0.75))
     )
   )
+})
   
-  # Type "se"
-  se_basic_out <- tibble::tibble(lower = -1.965, upper = 2.008)
-  
+test_that("get_confidence_interval works with `type = 'se'`", {  
   expect_message(
     expect_equal(
       test_df %>% get_confidence_interval(type = "se", point_estimate = point),
-      se_basic_out,
+      tibble::tibble(lower = -1.965, upper = 2.008),
       tolerance = 1e-3
     ),
     "Using `level = 0.95`"
   )
+  
   expect_equal(
     test_df %>%
       get_confidence_interval(level = 0.5, type = "se", point_estimate = point),
     tibble::tibble(lower = -0.662, upper = 0.705),
     tolerance = 1e-3
   )
-  ## Check that data frame input is processed correctly
-  expect_message(
-    expect_equal(
-      test_df %>%
-        get_confidence_interval(
-          type = "se", point_estimate = data.frame(p = point)
-        ),
-      se_basic_out,
-      tolerance = 1e-3
-    ),
-    "Using `level = 0.95`"
-  )
-  
-  # Type "bias-corrected"
-  bias_basic_out <- tibble::tibble(lower = -1.692, upper = 2.276)
-  
+})
+
+test_that("get_confidence_interval works with `type = 'bias-corrected'`", {
   expect_message(
     expect_equal(
       test_df %>%
         get_confidence_interval(
           type = "bias-corrected", point_estimate = point
         ),
-      bias_basic_out,
+      tibble::tibble(lower = -1.692, upper = 2.276),
       tolerance = 1e-3
     ),
     "Using `level = 0.95`"
   )
+  
   expect_equal(
     test_df %>%
       get_confidence_interval(
@@ -81,18 +70,29 @@ test_that("get_confidence_interval works", {
     tibble::tibble(lower = -0.594, upper = 0.815),
     tolerance = 1e-3
   )
-  ## Check that data frame input is processed correctly
-  expect_message(
-    expect_equal(
-      test_df %>%
-        get_confidence_interval(
-          type = "bias-corrected", point_estimate = data.frame(p = point)
-        ),
-      bias_basic_out,
-      tolerance = 1e-3
-    ),
-    "Using `level = 0.95`"
+})
+
+test_that("get_confidence_interval supports data frame `point_estimate`", {
+  point_df <- data.frame(p = point)
+  
+  expect_equal(
+    test_df %>% get_confidence_interval(type = "se", point_estimate = point),
+    test_df %>% get_confidence_interval(type = "se", point_estimate = point_df)
   )
+  expect_equal(
+    test_df %>%
+      get_confidence_interval(type = "bias-corrected", point_estimate = point),
+    test_df %>%
+      get_confidence_interval(
+        type = "bias-corrected", point_estimate = point_df
+      )
+  )
+})
+
+test_that("get_confidence_interval messages with no explicit `level`", {
+  expect_message(get_confidence_interval(test_df), "Using `level = 0.95`")
+  expect_silent(get_confidence_interval(test_df, level = 0.95))
+  expect_silent(get_confidence_interval(test_df, 0.95))
 })
 
 test_that("get_confidence_interval checks input", {
