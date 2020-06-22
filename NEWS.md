@@ -1,5 +1,15 @@
 # infer (development version)
 
+## Breaking changes
+
+- `get_confidence_interval()` now uses consistent column names ('lower_ci' and 'upper_ci') in output (#317).
+
+## New functionality
+
+- Implement new type `"bias-corrected"` for `get_confidence_interval()` to produce bias-corrected confidence intervals (#237, #318). Thanks to @davidbaniadam for initial implementation.
+
+## Other
+
 # infer 0.5.2
 
 - Warn the user when a p-value of 0 is reported (#257, #273)
