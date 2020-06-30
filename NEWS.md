@@ -1,14 +1,17 @@
-# infer (development version)
+# infer 0.5.3
 
 ## Breaking changes
 
-- `get_confidence_interval()` now uses consistent column names ('lower_ci' and 'upper_ci') in output (#317).
+- `get_confidence_interval()` now uses column names ('lower_ci' and 'upper_ci') 
+in output that are consistent with other infer functionality (#317).
 
 ## New functionality
 
 - Implement new type `"bias-corrected"` for `get_confidence_interval()` to produce bias-corrected confidence intervals (#237, #318). Thanks to @davidbaniadam for initial implementation.
 
 ## Other
+
+- Fix CRAN check failures related to long double errors.
 
 # infer 0.5.2
 

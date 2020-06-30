@@ -1,7 +1,7 @@
 ## Test environments
 * local OS X install, R 4.0.0
 * ubuntu 16.04 (on travis-ci), oldrel, release, devel
-* win-builder (release, devel)
+* win-builder (devel)
 * rhub: debian-gcc-devel-nold
 
 ## R CMD check results
@@ -10,4 +10,5 @@
 
 ## Reverse dependencies
 
-There is one reverse dependency: moderndive. No problems found.
+We checked five reverse dependencies, two of which are on CRAN, with the
+remainder on bioconductor, and found no new issues.
