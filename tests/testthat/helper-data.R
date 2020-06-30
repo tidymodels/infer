@@ -1,5 +1,7 @@
 set.seed(4242)
 
+eps <- if (capabilities("long.double")) {sqrt(.Machine$double.eps)} else {0.01}
+
 gss_tbl <- tibble::as_tibble(gss) %>%
   dplyr::filter(!(is.na(sex) | is.na(college))) %>%
   dplyr::mutate(partyid = as.character(partyid)) %>%

@@ -77,7 +77,8 @@ test_that("get_confidence_interval supports data frame `point_estimate`", {
   
   expect_equal(
     test_df %>% get_confidence_interval(type = "se", point_estimate = point),
-    test_df %>% get_confidence_interval(type = "se", point_estimate = point_df)
+    test_df %>% get_confidence_interval(type = "se", point_estimate = point_df),
+    tolerance = eps
   )
   expect_equal(
     test_df %>%
@@ -85,7 +86,8 @@ test_that("get_confidence_interval supports data frame `point_estimate`", {
     test_df %>%
       get_confidence_interval(
         type = "bias-corrected", point_estimate = point_df
-      )
+      ),
+    tolerance = eps
   )
 })
 

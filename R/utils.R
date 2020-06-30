@@ -343,6 +343,7 @@ sanitize_hypothesis_params_point <- function(dots, x) {
 }
 
 sanitize_hypothesis_params_proportion <- function(p, x) {
+  eps <- if (capabilities("long.double")) {sqrt(.Machine$double.eps)} else {0.01}
   if(anyNA(p)) {
     stop_glue('`p` should not contain missing values.')
   }
@@ -359,7 +360,7 @@ sanitize_hypothesis_params_proportion <- function(p, x) {
     p <- c(p, 1 - p)
     names(p) <- get_success_then_response_levels(x)
   } else {
-    if (sum(p) != 1) {
+    if (sum(p) < 1 - eps | sum(p) > 1 + eps) {
       stop_glue(
         "Make sure the hypothesized values for the `p` parameters sum to 1. ",
         "Please try again."

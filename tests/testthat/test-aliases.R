@@ -5,7 +5,8 @@ test_that("aliases work", {
     gss_calc %>%
       get_pvalue(obs_stat = -0.2, direction = "right") %>%
       dplyr::pull(),
-    expected = 1
+    expected = 1,
+    tolerance = eps
   )
   
   expect_silent(test_df %>% get_ci())

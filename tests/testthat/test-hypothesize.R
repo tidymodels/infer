@@ -150,7 +150,7 @@ test_that(
   expect_error(
     mtcars_df %>%
       specify(response = vs, success = "1") %>%
-      hypothesize(null = "point", p = c("0" = 0.5, "1" = 0.5 + .Machine$double.eps)),
+      hypothesize(null = "point", p = c("0" = 0.5, "1" = 0.5 + (eps *2))),
     "Make sure the hypothesized values for the `p` parameters sum to 1. Please try again."
   )
 })
