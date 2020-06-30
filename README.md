@@ -75,10 +75,19 @@ efficient as possible. Please review our
 [contributing](https://github.com/tidymodels/infer/blob/master/CONTRIBUTING.md)
 and
 [conduct](https://github.com/tidymodels/infer/blob/master/CONDUCT.md)
-guidelines. Please see the open
-[issues](https://github.com/tidymodels/infer/issues) for more specific
-fixes/additions needing attention. By participating in this project you
-agree to abide by its terms.
+guidelines. By participating in this project you agree to abide by its
+terms.
+
+For questions and discussions about tidymodels packages, modeling, and
+machine learning, please [post on RStudio
+Community](https://rstd.io/tidymodels-community). If you think you have
+encountered a bug, please [submit an
+issue](https://github.com/tidymodels/infer/issues). Either way, learn how
+to create and share a [reprex](https://rstd.io/reprex) (a minimal,
+reproducible example), to clearly communicate about your code. Check out
+further details on [contributing guidelines for tidymodels
+packages](https://www.tidymodels.org/contribute/) and [how to get
+help](https://www.tidymodels.org/help/).
 
 ### Examples
 
@@ -98,18 +107,18 @@ data(gss)
 str(gss)
 ```
 
-    ## Classes 'tbl_df', 'tbl' and 'data.frame':    500 obs. of  11 variables:
-    ##  $ year   : num  2014 1994 1998 1996 1994 ...
-    ##  $ age    : num  36 34 24 42 31 32 48 36 30 33 ...
+    ## tibble [500 × 11] (S3: tbl_df/tbl/data.frame)
+    ##  $ year   : num [1:500] 2014 1994 1998 1996 1994 ...
+    ##  $ age    : num [1:500] 36 34 24 42 31 32 48 36 30 33 ...
     ##  $ sex    : Factor w/ 2 levels "male","female": 1 2 1 1 1 2 2 2 2 2 ...
     ##  $ college: Factor w/ 2 levels "no degree","degree": 2 1 2 1 2 1 1 2 2 1 ...
     ##  $ partyid: Factor w/ 5 levels "dem","ind","rep",..: 2 3 2 2 3 3 1 2 3 1 ...
-    ##  $ hompop : num  3 4 1 4 2 4 2 1 5 2 ...
-    ##  $ hours  : num  50 31 40 40 40 53 32 20 40 40 ...
+    ##  $ hompop : num [1:500] 3 4 1 4 2 4 2 1 5 2 ...
+    ##  $ hours  : num [1:500] 50 31 40 40 40 53 32 20 40 40 ...
     ##  $ income : Ord.factor w/ 12 levels "lt $1000"<"$1000 to 2999"<..: 12 11 12 12 12 12 12 12 12 10 ...
     ##  $ class  : Factor w/ 6 levels "lower class",..: 3 2 2 2 3 3 2 3 3 2 ...
     ##  $ finrela: Factor w/ 6 levels "far below average",..: 2 2 2 4 4 3 2 4 3 1 ...
-    ##  $ weight : num  0.896 1.083 0.55 1.086 1.083 ...
+    ##  $ weight : num [1:500] 0.896 1.083 0.55 1.086 1.083 ...
 
 As an example, we’ll run an analysis of variance on `age` and `partyid`,
 testing whether the age of a respondent is independent of their
@@ -153,10 +162,10 @@ null_distn %>%
     ## # A tibble: 1 x 1
     ##   p_value
     ##     <dbl>
-    ## 1   0.056
+    ## 1   0.055
 
-Note that the formula and non-formula interfaces (i.e. `age ~ partyid`
-vs. `response = age, explanatory = partyid`) work for all implemented
+Note that the formula and non-formula interfaces (i.e. `age ~ partyid`
+vs. `response = age, explanatory = partyid`) work for all implemented
 inference procedures in `infer`. Use whatever is more natural for you.
 If you will be doing modeling using functions like `lm()` and `glm()`,
 though, we recommend you begin to use the formula `y ~ x` notation as
