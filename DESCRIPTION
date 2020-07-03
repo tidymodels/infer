@@ -32,7 +32,7 @@ Imports:
     grDevices,
     purrr
 Depends:
-    R (>= 3.1.2)
+    R (>= 3.5.0)
 Suggests: 
     broom,
     devtools (>= 1.12.0),
