@@ -7,6 +7,8 @@ matrix:
     env: VDIFFR_RUN_TESTS=false
   - r: release
   - r: devel
+    # ...or devel, re: r-lib/vdiffr#86
+    env: VDIFFR_RUN_TESTS=false
 
 warnings_are_errors: true
 sudo: required
