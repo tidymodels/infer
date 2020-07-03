@@ -7,7 +7,9 @@ in output that are consistent with other infer functionality (#317).
 
 ## New functionality
 
-- Implement new type `"bias-corrected"` for `get_confidence_interval()` to produce bias-corrected confidence intervals (#237, #318). Thanks to @davidbaniadam for initial implementation.
+- `get_confidence_interval()` can now produce bias-corrected confidence intervals
+by setting `type = "bias-corrected"`. Thanks to @davidbaniadam for the 
+initial implementation (#237, #318)!
 
 ## Other
 
