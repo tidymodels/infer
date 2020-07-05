@@ -5,6 +5,8 @@ library(vdiffr)
 
 # shade_p_value -----------------------------------------------------------
 test_that("shade_p_value works", {
+  skip_if(getRversion() < 4.1)
+  
   # Adding `shade_p_value()` to simulation plot
   expect_doppelganger(
     "pval-sim-right", gss_viz_sim + shade_p_value(1, "right")
@@ -55,6 +57,8 @@ test_that("shade_p_value works", {
 })
 
 test_that("shade_p_value accepts synonyms for 'direction'", {
+  skip_if(getRversion() < 4.1)
+  
   expect_doppelganger(
     "pval-direction-right", gss_viz_sim + shade_p_value(1, "greater")
   )
@@ -76,6 +80,8 @@ test_that("shade_p_value accepts synonyms for 'direction'", {
 })
 
 test_that("shade_p_value uses extra aesthetic", {
+  skip_if(getRversion() < 4.1)
+  
   expect_doppelganger(
     "pval-extra-aes-1",
     gss_viz_sim + shade_p_value(1, "two_sided", alpha = 1)
@@ -91,12 +97,16 @@ test_that("shade_p_value uses extra aesthetic", {
 })
 
 test_that("shade_p_value accepts `NULL` as `obs_stat`",  {
+  skip_if(getRversion() < 4.1)
+  
   expect_doppelganger(
     "pval-null-obs_stat", gss_viz_sim + shade_p_value(NULL, "left")
   )
 })
 
 test_that("shade_p_value throws errors", {
+  skip_if(getRversion() < 4.1)
+  
   expect_error(gss_viz_sim + shade_p_value("a", "right"), "numeric")
   expect_error(gss_viz_sim + shade_p_value(1, 1), "character")
   expect_error(gss_viz_sim + shade_p_value(1, "right", color = "x"), "color")
@@ -121,6 +131,8 @@ test_that("shade_p_value throws errors", {
 
 # norm_direction ----------------------------------------------------------
 test_that("norm_direction works", {
+  skip_if(getRversion() < 4.1)
+  
   expect_equal(norm_direction("left"), "left")
   expect_equal(norm_direction("less"), "left")
   expect_equal(norm_direction("right"), "right")
