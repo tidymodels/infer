@@ -1,3 +1,7 @@
+## infer 0.5.3
+
+This release fixes failing CRAN checks related to long-double support.
+
 ## Test environments
 * local OS X install, R 4.0.2
 * ubuntu 16.04 (on travis-ci), oldrel, release, devel
