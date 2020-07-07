@@ -43,7 +43,8 @@ Suggests:
     stringr,
     testthat,
     covr,
-    vdiffr
+    vdiffr,
+    fs
 URL: https://github.com/tidymodels/infer,
      https://infer.netlify.com/
 BugReports: https://github.com/tidymodels/infer/issues
