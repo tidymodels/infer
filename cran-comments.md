@@ -1,8 +1,11 @@
 ## infer 0.5.3
 
 This release fixes failing CRAN checks related to long-double support. This
-submission is a resubmission following an automated pretest failure
-related to visual testing failures on the most recent R-devel version.
+submission is a resubmission following an automated pretest failure due to
+a warning resulting from the newly released sf package.
+
+The previous submission was also a resubmission following an automated pretest 
+failure related to visual testing failures on the most recent R-devel version.
 
 ## Test environments
 * local OS X install, R 4.0.2
