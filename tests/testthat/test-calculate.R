@@ -431,7 +431,7 @@ test_that("calculate doesn't depend on order of `p` (#122)", {
   expect_equal(
     calc_chisq(c("rep" = 0.25, "dem" = 0.5, "ind" = 0.25)),
     calc_chisq(c("ind" = 0.25, "rep" = 0.25, "dem" = 0.5)),
-    tolerance = 1e-5
+    tolerance = eps
   )
 })
 
@@ -449,18 +449,18 @@ test_that("calc_impl.sum works", {
       specify(hours ~ NULL) %>%
       calculate(stat = "sum") %>%
       `[[`(1),
-    sum(gss_tbl$hours)
+    sum(gss_tbl$hours),
+    tolerance = eps
   )
 
   gen_gss_tbl16 <- gss_tbl %>%
     specify(hours ~ NULL) %>%
     generate(10)
-# Temporarily remove because of failing noLD test
- # expect_equal(
- #   gen_gss_tbl16 %>% calculate(stat = "sum"),
- #   gen_gss_tbl16 %>% dplyr::summarise(stat = sum(hours)),
- #   tolerance = .Machine$double.eps^0.25
- # )
+
+  expect_equivalent(
+    gen_gss_tbl16 %>% calculate(stat = "sum"),
+    gen_gss_tbl16 %>% dplyr::summarise(stat = sum(hours))
+  )
 })
 
 test_that("calc_impl_success_f works", {
@@ -478,7 +478,8 @@ test_that("calc_impl.count works", {
       specify(college ~ NULL, success = "no degree") %>%
       calculate(stat = "count") %>%
       `[[`(1),
-    sum(gss_tbl$college == "no degree")
+    sum(gss_tbl$college == "no degree"),
+    tolerance = eps
   )
 
   expect_equivalent(
@@ -503,7 +504,7 @@ test_that("calc_impl.odds_ratio works", {
       calculate(stat = "odds ratio", order = c("female", "male")) %>%
       dplyr::pull(),
     expected = base_odds_ratio,
-    tolerance = .001)
+    tolerance = eps)
 })
 
 test_that("calc_impl.ratio_of_props works", {
@@ -516,7 +517,7 @@ test_that("calc_impl.ratio_of_props works", {
       calculate(stat = "ratio of props", order = c("male", "female")) %>%
       dplyr::pull(),
     expected = base_ratio_of_props,
-    tolerance = .001)
+    tolerance = eps)
   
 })
 
