@@ -24,14 +24,15 @@ Default value is 0.95.}
 
 \item{type}{A string giving which method should be used for creating the
 confidence interval. The default is \code{"percentile"} with \code{"se"}
-corresponding to (multiplier * standard error) as the other option.}
+corresponding to (multiplier * standard error) and \code{"bias-corrected"} for
+bias-corrected interval as other options.}
 
 \item{point_estimate}{A numeric value or a 1x1 data frame set to \code{NULL} by
-default. Needed to be provided if \code{type = "se"}.}
+default. Needed to be provided if \code{type} is \code{"se"} or \code{"bias-corrected"}.}
 }
 \value{
-A 1 x 2 tibble with values corresponding to lower and upper values in
-the confidence interval.
+A 1 x 2 tibble with 'lower_ci' and 'upper_ci' columns. Values
+correspond to lower and upper bounds of the confidence interval.
 }
 \description{
 Compute a confidence interval around a summary statistic. Only
@@ -63,11 +64,13 @@ gss \%>\%
   generate(reps = 1000, type = "bootstrap") \%>\%
   # finding the null distribution
   calculate(stat = "mean") \%>\%
-  get_confidence_interval(point_estimate = point_estimate,
-                          # at the 95\% confidence level
-                          level = .95,
-                          # using the standard error method
-                          type = "se")
+  get_confidence_interval(
+    point_estimate = point_estimate,
+    # at the 95\% confidence level
+    level = 0.95,
+    # using the standard error method
+    type = "se"
+  )
   
 # More in-depth explanation of how to use the infer package
 \dontrun{

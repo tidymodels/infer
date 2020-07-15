@@ -1,3 +1,20 @@
+# infer 0.5.3
+
+## Breaking changes
+
+- `get_confidence_interval()` now uses column names ('lower_ci' and 'upper_ci') 
+in output that are consistent with other infer functionality (#317).
+
+## New functionality
+
+- `get_confidence_interval()` can now produce bias-corrected confidence intervals
+by setting `type = "bias-corrected"`. Thanks to @davidbaniadam for the 
+initial implementation (#237, #318)!
+
+## Other
+
+- Fix CRAN check failures related to long double errors.
+
 # infer 0.5.2
 
 - Warn the user when a p-value of 0 is reported (#257, #273)

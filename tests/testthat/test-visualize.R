@@ -5,58 +5,60 @@ library(vdiffr)
 
 set.seed(42)
 
-Sepal.Width_resamp <- iris %>%
-  specify(Sepal.Width ~ NULL) %>%
+hours_resamp <- gss_tbl %>%
+  specify(hours ~ NULL) %>%
   hypothesize(null = "point", med = 3) %>%
   generate(reps = 10, type = "bootstrap") %>%
   calculate(stat = "median")
 
-obs_slope <- lm(Sepal.Length ~ Sepal.Width, data = iris_tbl) %>%
+obs_slope <- lm(age ~ hours, data = gss_tbl) %>%
   broom::tidy() %>%
-  dplyr::filter(term == "Sepal.Width") %>%
+  dplyr::filter(term == "hours") %>%
   dplyr::select(estimate) %>%
   dplyr::pull()
 
-obs_diff <- iris_tbl %>%
-  group_by(Sepal.Length.Group) %>%
-  summarize(prop = mean(Sepal.Width.Group == ">5")) %>%
+obs_diff <- gss_tbl %>%
+  group_by(college) %>%
+  summarize(prop = mean(college == "no degree")) %>%
   summarize(diff(prop)) %>%
   pull()
 
 obs_z <- sqrt(
   stats::prop.test(
-    x = table(iris_tbl$Sepal.Length.Group, iris_tbl$Sepal.Width.Group),
-    n = nrow(iris_tbl),
+    x = table(gss_tbl$college, gss_tbl$sex),
+    n = nrow(gss_tbl),
     alternative = "two.sided",
     correct = FALSE
   )$statistic
 )
 
-obs_diff_mean <- iris_tbl %>%
-  group_by(Sepal.Length.Group) %>%
-  summarize(mean_sepal_width = mean(Sepal.Width)) %>%
+obs_diff_mean <- gss_tbl %>%
+  group_by(college) %>%
+  summarize(mean_sepal_width = mean(hours)) %>%
   summarize(diff(mean_sepal_width)) %>%
   pull()
 
-obs_t <- iris_tbl %>%
-  t_stat(Sepal.Width ~ Sepal.Length.Group, order = c("<=5", ">5"))
+obs_t <- gss_tbl %>%
+  t_stat(hours ~ college, order = c("no degree", "degree"))
 
 obs_F <- anova(
-    aov(formula = Sepal.Width ~ Species, data = iris_tbl)
+    aov(formula = hours ~ partyid, data = gss_tbl)
   )$`F value`[1]
 
 test_that("visualize basic tests", {
-  expect_doppelganger("visualize", visualize(Sepal.Width_resamp))
+  skip_if(getRversion() > "4.0.2")
+  
+  expect_doppelganger("visualize", visualize(hours_resamp))
   
   # visualise also works
-  expect_doppelganger("visualise", visualise(Sepal.Width_resamp))
+  expect_doppelganger("visualise", visualise(hours_resamp))
   
-  expect_error(Sepal.Width_resamp %>% visualize(bins = "yep"))
+  expect_error(hours_resamp %>% visualize(bins = "yep"))
   expect_doppelganger(
     "vis-sim-right-1",
     expect_warning(
-      iris_tbl %>%
-        specify(Sepal.Length ~ Sepal.Width) %>%
+      gss_tbl %>%
+        specify(age ~ hours) %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
         calculate(stat = "slope") %>%
@@ -67,22 +69,22 @@ test_that("visualize basic tests", {
 
   # obs_stat not specified
   expect_error(
-    iris_tbl %>%
-      specify(Sepal.Width.Group ~ Sepal.Length.Group, success = "large") %>%
+    gss_tbl %>%
+      specify(sex ~ college, success = "female") %>%
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
-      calculate(stat = "diff in props", order = c(">5", "<=5")) %>%
+      calculate(stat = "diff in props", order = c("no degree", "degree")) %>%
       visualize(direction = "both")
   )
 
   expect_doppelganger(
     "vis-sim-both-1",
     expect_warning(
-      iris_tbl %>%
-        specify(Sepal.Width.Group ~ Sepal.Length.Group, success = "large") %>%
+      gss_tbl %>%
+        specify(sex ~ college, success = "female") %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
-        calculate(stat = "diff in props", order = c(">5", "<=5")) %>%
+        calculate(stat = "diff in props", order = c("no degree", "degree")) %>%
         visualize(direction = "both", obs_stat = obs_diff),
       "deprecated"
     )
@@ -91,10 +93,10 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-theor-none-1",
     expect_warning(
-      iris_tbl %>%
-        specify(Sepal.Width.Group ~ Sepal.Length.Group, success = "large") %>%
+      gss_tbl %>%
+        specify(sex ~ college, success = "female") %>%
         hypothesize(null = "independence") %>%
-        calculate(stat = "z", order = c(">5", "<=5")) %>%
+        calculate(stat = "z", order = c("no degree", "degree")) %>%
         visualize(method = "theoretical")
     )
   )
@@ -102,11 +104,11 @@ test_that("visualize basic tests", {
   # diff in props and z on different scales
   expect_error(
     expect_warning(
-      iris_tbl %>%
-        specify(Sepal.Width.Group ~ Sepal.Length.Group, success = "large") %>%
+      gss_tbl %>%
+        specify(sex ~ college, success = "female") %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
-        calculate(stat = "diff in props", order = c(">5", "<=5")) %>%
+        calculate(stat = "diff in props", order = c("no degree", "degree")) %>%
         visualize(method = "both", direction = "both", obs_stat = obs_diff)
     )
   )
@@ -114,11 +116,11 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-sim-none-1",
     expect_silent(
-      iris_tbl %>%
-        specify(Sepal.Width.Group ~ Sepal.Length.Group, success = "large") %>%
+      gss_tbl %>%
+        specify(sex ~ college, success = "female") %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
-        calculate(stat = "diff in props", order = c(">5", "<=5")) %>%
+        calculate(stat = "diff in props", order = c("no degree", "degree")) %>%
         visualize()
     )
   )
@@ -126,11 +128,11 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-both-both-1",
     expect_warning(
-      iris_tbl %>%
-        specify(Sepal.Width.Group ~ Sepal.Length.Group, success = "large") %>%
+      gss_tbl %>%
+        specify(sex ~ college, success = "female") %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
-        calculate(stat = "z", order = c(">5", "<=5")) %>%
+        calculate(stat = "z", order = c("no degree", "degree")) %>%
         visualize(method = "both", direction = "both", obs_stat = obs_z)
     )
   )
@@ -138,11 +140,11 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-both-both-2",
     expect_warning(
-      iris_tbl %>%
-        specify(Sepal.Width.Group ~ Sepal.Length.Group, success = "large") %>%
+      gss_tbl %>%
+        specify(sex ~ college, success = "female") %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
-        calculate(stat = "z", order = c("<=5", ">5")) %>%
+        calculate(stat = "z", order = c("degree", "no degree")) %>%
         visualize(method = "both", direction = "both", obs_stat = -obs_z)
     )
   )
@@ -150,11 +152,11 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-both-left-1",
     expect_warning(
-      iris_tbl %>%
-        specify(Sepal.Length ~ Sepal.Width.Group) %>%
+      gss_tbl %>%
+        specify(age ~ sex) %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
-        calculate(stat = "t", order = c("small", "large")) %>%
+        calculate(stat = "t", order = c("female", "male")) %>%
         visualize(method = "both", direction = "left", obs_stat = obs_t)
     )
   )
@@ -162,11 +164,11 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-theor-left-1",
     expect_warning(
-      iris_tbl %>%
-        specify(Sepal.Length ~ Sepal.Width.Group) %>%
+      gss_tbl %>%
+        specify(age ~ sex) %>%
         hypothesize(null = "independence") %>%
 #         generate(reps = 100, type = "permute") %>%
-        calculate(stat = "t", order = c("small", "large")) %>%
+        calculate(stat = "t", order = c("female", "male")) %>%
         visualize(method = "theoretical", direction = "left", obs_stat = obs_t)
     )
   )
@@ -174,8 +176,8 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-both-none-1",
     expect_warning(
-      iris_tbl %>%
-        specify(Petal.Width ~ NULL) %>%
+      gss_tbl %>%
+        specify(hours ~ NULL) %>%
         hypothesize(null = "point", mu = 1) %>%
         generate(reps = 100) %>%
         calculate(stat = "t") %>%
@@ -186,8 +188,8 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-theor-none-2",
     expect_warning(
-      iris_tbl %>%
-        specify(Sepal.Length ~ Sepal.Length.Group) %>%
+      gss_tbl %>%
+        specify(age ~ college) %>%
         hypothesize(null = "independence") %>%
         visualize(method = "theoretical")
     )
@@ -196,8 +198,8 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-theor-none-3",
     expect_warning(
-      iris_tbl %>%
-        specify(Sepal.Length ~ Species) %>%
+      gss_tbl %>%
+        specify(age ~ partyid) %>%
         hypothesize(null = "independence") %>%
         visualize(method = "theoretical")
     )
@@ -206,8 +208,8 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-both-right-1",
     expect_warning(
-      iris_tbl %>%
-        specify(Sepal.Length ~ Species) %>%
+      gss_tbl %>%
+        specify(age ~ partyid) %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
         calculate(stat = "F") %>%
@@ -218,11 +220,11 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-both-left-2",
     expect_warning(
-      iris_tbl %>%
-        specify(Sepal.Width.Group ~ Sepal.Length.Group, success = "large") %>%
+      gss_tbl %>%
+        specify(sex ~ college, success = "female") %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
-        calculate(stat = "z", order = c(">5", "<=5")) %>%
+        calculate(stat = "z", order = c("no degree", "degree")) %>%
         visualize(method = "both", direction = "left", obs_stat = obs_z)
     )
   )
@@ -230,8 +232,8 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-both-right-2",
     expect_warning(
-      iris_tbl %>%
-        specify(Sepal.Width.Group ~ Species, success = "large") %>%
+      gss_tbl %>%
+        specify(sex ~ partyid, success = "female") %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
         calculate(stat = "Chisq") %>%
@@ -242,22 +244,24 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-theor-right-1",
     expect_warning(
-      iris_tbl %>%
-        specify(Sepal.Width.Group ~ Species, success = "large") %>%
+      gss_tbl %>%
+        specify(sex ~ partyid, success = "female") %>%
         hypothesize(null = "independence") %>%
 #         calculate(stat = "Chisq") %>%
-        visualize(method = "theoretical", obs_stat = obs_F, direction = "right")
+        visualize(method = "theoretical", 
+                  obs_stat = obs_F, 
+                  direction = "right")
     )
   )
 
   expect_doppelganger(
     "vis-both-none-2",
     expect_warning(
-      iris_tbl %>%
-        specify(Species ~ NULL) %>%
+      gss_tbl %>%
+        specify(partyid ~ NULL) %>%
         hypothesize(
           null = "point",
-          p = c("setosa" = 0.4, "versicolor" = 0.4, "virginica" = 0.2)
+          p = c("dem" = 0.4, "rep" = 0.4, "ind" = 0.2)
         ) %>%
         generate(reps = 100, type = "simulate") %>%
         calculate(stat = "Chisq") %>%
@@ -267,11 +271,11 @@ test_that("visualize basic tests", {
 
   # traditional instead of theoretical
   expect_error(
-    iris_tbl %>%
-      specify(Species ~ NULL) %>%
+    gss_tbl %>%
+      specify(partyid ~ NULL) %>%
       hypothesize(
         null = "point",
-        p = c("setosa" = 0.4, "versicolor" = 0.4, "virginica" = 0.2)
+        p = c("dem" = 0.4, "rep" = 0.4, "ind" = 0.2)
       ) %>%
 #       generate(reps = 100, type = "simulate") %>%
 #       calculate(stat = "Chisq") %>%
@@ -281,11 +285,11 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-theor-none-4",
     expect_warning(
-      iris_tbl %>%
-        specify(Species ~ NULL) %>%
+      gss_tbl %>%
+        specify(partyid ~ NULL) %>%
         hypothesize(
           null = "point",
-          p = c("setosa" = 0.4, "versicolor" = 0.4, "virginica" = 0.2)
+          p = c("dem" = 0.4, "rep" = 0.4, "ind" = 0.2)
         ) %>%
 #         generate(reps = 100, type = "simulate") %>%
 #         calculate(stat = "Chisq") %>%
@@ -296,11 +300,11 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-sim-both-2",
     expect_warning(
-      iris_tbl %>%
-        specify(Petal.Width ~ Sepal.Width.Group) %>%
+      gss_tbl %>%
+        specify(hours ~ sex) %>%
         hypothesize(null = "independence") %>%
         generate(reps = 10, type = "permute") %>%
-        calculate(stat = "diff in means", order = c("large", "small")) %>%
+        calculate(stat = "diff in means", order = c("female", "male")) %>%
         visualize(direction = "both", obs_stat = obs_diff_mean),
       "deprecated"
     )
@@ -309,25 +313,30 @@ test_that("visualize basic tests", {
   # Produces warning first for not checking conditions but would also error
   expect_error(
     expect_warning(
-      iris_tbl %>%
-        specify(Petal.Width ~ Sepal.Width.Group) %>%
+      gss_tbl %>%
+        specify(hours ~ sex) %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
-        calculate(stat = "diff in means", order = c("large", "small")) %>%
-        visualize(method = "both", direction = "both", obs_stat = obs_diff_mean)
+        calculate(stat = "diff in means", 
+                  order = c("female", "male")) %>%
+        visualize(method = "both", 
+                  direction = "both", 
+                  obs_stat = obs_diff_mean)
     )
   )
 
   expect_doppelganger(
     "vis-theor-both-1",
     expect_warning(
-      iris_tbl %>%
-        specify(Petal.Width ~ Sepal.Width.Group) %>%
+      gss_tbl %>%
+        specify(hours ~ sex) %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
-        calculate(stat = "diff in means", order = c("large", "small")) %>%
+        calculate(stat = "diff in means", order = c("female", "male")) %>%
         visualize(
-          method = "theoretical", direction = "both", obs_stat = obs_diff_mean
+          method = "theoretical", 
+          direction = "both",
+          obs_stat = obs_diff_mean
         )
     )
   )
@@ -335,8 +344,8 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-theor-both-2",
     expect_warning(
-      iris_tbl %>%
-        specify(Sepal.Width.Group ~ NULL, success = "small") %>%
+      gss_tbl %>%
+        specify(sex ~ NULL, success = "female") %>%
         hypothesize(null = "point", p = 0.8) %>%
 #         generate(reps = 100, type = "simulate") %>%
 #         calculate(stat = "z") %>%
@@ -351,30 +360,34 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-sim-left-1",
     expect_warning(
-      iris_tbl %>%
-        specify(Petal.Width ~ NULL) %>%
+      gss_tbl %>%
+        specify(hours ~ NULL) %>%
         hypothesize(null = "point", mu = 1.3) %>%
         generate(reps = 100, type = "bootstrap") %>%
         calculate(stat = "mean") %>%
-        visualize(direction = "left", obs_stat = mean(iris$Petal.Width)),
+        visualize(direction = "left", obs_stat = mean(gss_tbl$hours)),
       "deprecated"
     )
   )
 })
 
 test_that("mirror_obs_stat works", {
+  skip_if(getRversion() > "4.0.2")
+  
   expect_equal(mirror_obs_stat(1:10, 4), c(`60%` = 6.4))
 })
 
 test_that("obs_stat as a data.frame works", {
-  mean_petal_width <- iris_tbl %>%
-    specify(Petal.Width ~ NULL) %>%
+  skip_if(getRversion() > "4.0.2")
+  
+  mean_petal_width <- gss_tbl %>%
+    specify(hours ~ NULL) %>%
     calculate(stat = "mean")
   expect_doppelganger(
     "df-obs_stat-1",
     expect_warning(
-      iris_tbl %>%
-        specify(Petal.Width ~ NULL) %>%
+      gss_tbl %>%
+        specify(hours ~ NULL) %>%
         hypothesize(null = "point", mu = 4) %>%
         generate(reps = 100, type = "bootstrap") %>%
         calculate(stat = "mean") %>%
@@ -387,8 +400,8 @@ test_that("obs_stat as a data.frame works", {
   expect_doppelganger(
     "df-obs_stat-2",
     expect_warning(
-      iris_tbl %>%
-        specify(Petal.Width ~ NULL) %>%
+      gss_tbl %>%
+        specify(hours ~ NULL) %>%
         hypothesize(null = "point", mu = 4) %>%
         generate(reps = 100, type = "bootstrap") %>%
         calculate(stat = "mean") %>%
@@ -398,13 +411,14 @@ test_that("obs_stat as a data.frame works", {
 })
 
 test_that('method = "both" behaves nicely', {
+  skip_if(getRversion() > "4.0.2")
   # stop_glue(
   #   '`generate()` and `calculate()` are both required to be done prior ',
   #   'to `visualize(method = "both")`'
   # )
   expect_error(
-    iris_tbl %>%
-      specify(Petal.Width ~ NULL) %>%
+    gss_tbl %>%
+      specify(hours ~ NULL) %>%
       hypothesize(null = "point", mu = 4) %>%
       generate(reps = 100, type = "bootstrap") %>%
 #       calculate(stat = "mean") %>%
@@ -414,44 +428,46 @@ test_that('method = "both" behaves nicely', {
   expect_doppelganger(
     "method-both",
     expect_warning(
-      iris_tbl %>%
-        specify(Petal.Width ~ Sepal.Length.Group) %>%
+      gss_tbl %>%
+        specify(hours ~ college) %>%
         hypothesize(null = "point", mu = 4) %>%
         generate(reps = 10, type = "bootstrap") %>%
-        calculate(stat = "t", order = c(">5", "<=5")) %>%
+        calculate(stat = "t", order = c("no degree", "degree")) %>%
         visualize(method = "both")
     )
   )
 })
 
 test_that("Traditional right-tailed tests have warning if not right-tailed", {
+  skip_if(getRversion() > "4.0.2")
+  
   expect_warning(
-    iris_tbl %>%
-      specify(Sepal.Width.Group ~ Species, success = "large") %>%
+    gss_tbl %>%
+      specify(sex ~ partyid, success = "female") %>%
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "Chisq") %>%
       visualize(method = "both", obs_stat = 2, direction = "left")
   )
   expect_warning(
-    iris_tbl %>%
-      specify(Sepal.Length ~ Species) %>%
+    gss_tbl %>%
+      specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "F") %>%
       visualize(method = "both", obs_stat = 2, direction = "two_sided")
   )
   expect_warning(
-    iris_tbl %>%
-      specify(Sepal.Width.Group ~ Species, success = "large") %>%
+    gss_tbl %>%
+      specify(sex ~ partyid, success = "female") %>%
       hypothesize(null = "independence") %>%
 #       generate(reps = 100, type = "permute") %>%
       calculate(stat = "Chisq") %>%
       visualize(method = "theoretical", obs_stat = 2, direction = "left")
   )
   expect_warning(
-    iris_tbl %>%
-      specify(Sepal.Length ~ Species) %>%
+    gss_tbl %>%
+      specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
 #       generate(reps = 100, type = "permute") %>%
       calculate(stat = "F") %>%
@@ -460,47 +476,51 @@ test_that("Traditional right-tailed tests have warning if not right-tailed", {
 })
 
 test_that("confidence interval plots are working", {
-  iris_boot <- iris_tbl %>%
-    specify(Sepal.Width.Group ~ Sepal.Length.Group, success = "large") %>%
+  skip_if(getRversion() > "4.0.2")
+  
+  gss_tbl_boot <- gss_tbl %>%
+    specify(sex ~ college, success = "female") %>%
     generate(reps = 100) %>%
-    calculate(stat = "diff in props", order = c(">5", "<=5"))
+    calculate(stat = "diff in props", order = c("no degree", "degree"))
 
   df_error <- tibble::tibble(col1 = rnorm(5), col2 = rnorm(5))
   vec_error <- 1:10
 
-  perc_ci <- iris_boot %>% get_ci()
+  perc_ci <- gss_tbl_boot %>% get_ci()
 
-  expect_error(iris_boot %>% visualize(endpoints = df_error))
+  expect_error(gss_tbl_boot %>% visualize(endpoints = df_error))
 
-  expect_warning(iris_boot %>% visualize(endpoints = vec_error))
+  expect_warning(gss_tbl_boot %>% visualize(endpoints = vec_error))
 
   expect_doppelganger(
     "ci-vis",
     expect_warning(
-      iris_boot %>% visualize(endpoints = perc_ci, direction = "between"),
+      gss_tbl_boot %>% visualize(endpoints = perc_ci, direction = "between"),
       "deprecated"
     )
   )
 
-  expect_warning(iris_boot %>% visualize(obs_stat = 3, endpoints = perc_ci))
+  expect_warning(gss_tbl_boot %>% visualize(obs_stat = 3, endpoints = perc_ci))
 })
 
 test_that("title adapts to not hypothesis testing workflow", {
+  skip_if(getRversion() > "4.0.2")
+  
   set.seed(100)
-  iris_boot_tbl <- iris_tbl %>% 
-    specify(response = Sepal.Width) %>% 
+  gss_tbl_boot_tbl <- gss_tbl %>% 
+    specify(response = hours) %>% 
     generate(reps = 100, type = "bootstrap")
   
   expect_doppelganger(
     "vis-no-hypothesize-sim",
-    iris_boot_tbl %>% 
+    gss_tbl_boot_tbl %>% 
       calculate(stat = "mean") %>%
       visualize()
   )
   expect_doppelganger(
     "vis-no-hypothesize-both",
     expect_warning(
-      iris_boot_tbl %>% 
+      gss_tbl_boot_tbl %>% 
         calculate(stat = "t") %>%
         visualize(method = "both")
     )
@@ -508,6 +528,8 @@ test_that("title adapts to not hypothesis testing workflow", {
 })
 
 test_that("warn_right_tail_test works", {
+  skip_if(getRversion() > "4.0.2")
+  
   expect_warn_right_tail <- function(stat_name) {
     warn_regex <- paste0(stat_name, ".*right-tailed")
     
@@ -522,8 +544,10 @@ test_that("warn_right_tail_test works", {
 })
 
 test_that("visualize warns about removing `NaN`", {
-  dist <- iris_boot_tbl <- iris_tbl %>% 
-    specify(response = Sepal.Width) %>% 
+  skip_if(getRversion() > "4.0.2")
+  
+  dist <- gss_tbl_boot_tbl <- gss_tbl %>% 
+    specify(response = hours) %>% 
     generate(reps = 10, type = "bootstrap") %>% 
     calculate("mean")
   

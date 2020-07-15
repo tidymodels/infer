@@ -8,338 +8,327 @@ test_that("x is a tibble", {
 
 test_that("stat argument is appropriate", {
   # stat is a string
-  expect_error(calculate(iris_df, stat = 3))
+  expect_error(calculate(gss_tbl, stat = 3))
 
   # stat is one of the implemented options
-  gen_iris_slope <- iris_df %>%
-    specify(Sepal.Length ~ Sepal.Width) %>%
+  gen_gss_slope <- gss_tbl %>%
+    specify(hours ~ age) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_error(calculate(gen_iris_slope, stat = "slopee"))
-  expect_error(calculate(gen_iris_slope, stat = "stdev"))
-  expect_error(calculate(gen_iris_slope, stat = "stat"))
+  expect_error(calculate(gen_gss_slope, stat = "slopee"))
+  expect_error(calculate(gen_gss_slope, stat = "stdev"))
+  expect_error(calculate(gen_gss_slope, stat = "stat"))
 })
 
 test_that("response attribute has been set", {
   expect_error(
-    tibble::as_tibble(iris) %>% calculate(stat = "median")
+    tibble::as_tibble(gss) %>% calculate(stat = "median")
   )
 })
 
 test_that("variable chosen is of appropriate class (one var problems)", {
   # One sample chisq example
-  gen_iris1 <- iris %>%
-    specify(Species ~ NULL) %>%
+  gen_gss1 <- gss_tbl %>%
+    specify(partyid ~ NULL) %>%
     hypothesize(
       null = "point",
-      p = c("setosa" = .5, "versicolor" = .25, "virginica" = .25)
+      p = c("dem" = .5, "rep" = .25, "ind" = .25)
     ) %>%
     generate(reps = 10, type = "simulate")
-  expect_error(calculate(gen_iris1, stat = "mean"))
+  expect_error(calculate(gen_gss1, stat = "mean"))
 
   # One mean example
-  gen_iris_num <- iris %>%
-    specify(Sepal.Width ~ NULL) %>%
-    hypothesize(null = "point", mu = 3) %>%
+  gen_gss_num <- gss_tbl %>%
+    specify(hours ~ NULL) %>%
+    hypothesize(null = "point", mu = 40) %>%
     generate(reps = 10, type = "bootstrap")
-  expect_error(calculate(gen_iris_num, stat = "prop"))
-  expect_silent(calculate(gen_iris_num, stat = "mean"))
-  expect_error(calculate(gen_iris_num, stat = "median"))
-  expect_error(calculate(gen_iris_num, stat = "sd"))
+  expect_error(calculate(gen_gss_num, stat = "prop"))
+  expect_silent(calculate(gen_gss_num, stat = "mean"))
+  expect_error(calculate(gen_gss_num, stat = "median"))
+  expect_error(calculate(gen_gss_num, stat = "sd"))
 
-  gen_iris_num2 <- iris %>%
-    specify(Sepal.Width ~ NULL) %>%
-    hypothesize(null = "point", med = 3) %>%
+  gen_gss_num2 <- gss_tbl %>%
+    specify(hours ~ NULL) %>%
+    hypothesize(null = "point", med = 40) %>%
     generate(reps = 10, type = "bootstrap")
-  expect_error(calculate(gen_iris_num2, stat = "prop"))
-  expect_error(calculate(gen_iris_num2, stat = "mean"))
-  expect_silent(calculate(gen_iris_num2, stat = "median"))
-  expect_error(calculate(gen_iris_num2, stat = "sd"))
+  expect_error(calculate(gen_gss_num2, stat = "prop"))
+  expect_error(calculate(gen_gss_num2, stat = "mean"))
+  expect_silent(calculate(gen_gss_num2, stat = "median"))
+  expect_error(calculate(gen_gss_num2, stat = "sd"))
 
-  gen_iris_num3 <- iris %>%
-    specify(Sepal.Width ~ NULL) %>%
+  gen_gss_num3 <- gss_tbl %>%
+    specify(hours ~ NULL) %>%
     hypothesize(null = "point", sigma = 0.6) %>%
     generate(reps = 10, type = "bootstrap")
-  expect_error(calculate(gen_iris_num3, stat = "prop"))
-  expect_error(calculate(gen_iris_num3, stat = "mean"))
-  expect_error(calculate(gen_iris_num3, stat = "median"))
-  expect_silent(calculate(gen_iris_num3, stat = "sd"))
+  expect_error(calculate(gen_gss_num3, stat = "prop"))
+  expect_error(calculate(gen_gss_num3, stat = "mean"))
+  expect_error(calculate(gen_gss_num3, stat = "median"))
+  expect_silent(calculate(gen_gss_num3, stat = "sd"))
 })
 
 test_that("grouping (explanatory) variable is a factor (two var problems)", {
-  gen_iris2 <- iris %>%
-    specify(Sepal.Width ~ Sepal.Length) %>%
+  gen_gss2 <- gss_tbl %>%
+    specify(hours ~ age) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_error(calculate(gen_iris2, stat = "diff in means"))
-  expect_error(calculate(gen_iris2, stat = "diff in medians"))
+  expect_error(calculate(gen_gss2, stat = "diff in means"))
+  expect_error(calculate(gen_gss2, stat = "diff in medians"))
   # Since shifts to "Slope with t"
   ## Not implemented
-  # expect_silent(calculate(gen_iris2, stat = "t"))
+  # expect_silent(calculate(gen_gss2, stat = "t"))
 })
 
 test_that("grouping (explanatory) variable is numeric (two var problems)", {
-  gen_iris2a <- iris %>%
-    specify(Species ~ Sepal.Length) %>%
+  gen_gss2a <- gss_tbl %>%
+    specify(partyid ~ hours) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_error(calculate(gen_iris2a, stat = "slope"))
+  expect_error(calculate(gen_gss2a, stat = "slope"))
   # Since shifts to "Slope with t"
-  expect_error(calculate(gen_iris2a, stat = "t"))
-  expect_error(calculate(gen_iris2a, stat = "diff in medians"))
+  expect_error(calculate(gen_gss2a, stat = "t"))
+  expect_error(calculate(gen_gss2a, stat = "diff in medians"))
 })
 
 test_that("response variable is a factor (two var problems)", {
-  gen_iris3 <- iris %>%
-    specify(Sepal.Width ~ Species) %>%
+  gen_gss3 <- gss_tbl %>%
+    specify(hours ~ partyid) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_error(calculate(gen_iris3, stat = "Chisq"))
+  expect_error(calculate(gen_gss3, stat = "Chisq"))
 
-  # Species has more than 2 levels
-  gen_iris4 <- iris %>%
-    dplyr::mutate(
-      Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")
-    ) %>%
-    specify(Sepal.Length.Group ~ Species, success = ">5") %>%
+  # explanatory has more than 2 levels
+  gen_gss4 <- gss_tbl %>%
+    specify(sex ~ partyid, success = "female") %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_error(calculate(gen_iris4, stat = "diff in props"))
-  expect_error(calculate(gen_iris4, stat = "ratio of props"))
-  expect_error(calculate(gen_iris4, stat = "odds ratio"))
+  expect_error(calculate(gen_gss4, stat = "diff in props"))
+  expect_error(calculate(gen_gss4, stat = "ratio of props"))
+  expect_error(calculate(gen_gss4, stat = "odds ratio"))
 
-  expect_error(calculate(gen_iris4, stat = "t"))
+  expect_error(calculate(gen_gss4, stat = "t"))
 
   # Check successful diff in props
-  gen_iris4a <- iris %>%
-    dplyr::mutate(
-      Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")
-    ) %>%
-    dplyr::mutate(
-      Sepal.Width.Group = dplyr::if_else(Sepal.Width > 3, "large", "small")
-    ) %>%
-    specify(Sepal.Length.Group ~ Sepal.Width.Group, success = ">5") %>%
+  gen_gss4a <- gss_tbl %>%
+    specify(college ~ sex, success = "no degree") %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
   expect_silent(
-    calculate(gen_iris4a, stat = "diff in props", order = c("large", "small"))
+    calculate(gen_gss4a, stat = "diff in props", order = c("female", "male"))
   )
   expect_silent(
-    calculate(gen_iris4a, stat = "ratio of props", order = c("large", "small"))
+    calculate(gen_gss4a, stat = "ratio of props", order = c("female", "male"))
   )
   expect_silent(
-    calculate(gen_iris4a, stat = "odds ratio", order = c("large", "small"))
+    calculate(gen_gss4a, stat = "odds ratio", order = c("female", "male"))
   )
   expect_silent(
-    calculate(gen_iris4a, stat = "z", order = c("large", "small"))
+    calculate(gen_gss4a, stat = "z", order = c("female", "male"))
   )
-  expect_warning(calculate(gen_iris4a, stat = "z"))
+  expect_warning(calculate(gen_gss4a, stat = "z"))
 })
 
-gen_iris5 <- iris %>%
-  specify(Species ~ Sepal.Width) %>%
+gen_gss5 <- gss_tbl %>%
+  specify(partyid ~ hours) %>%
   generate(reps = 10, type = "bootstrap")
 
 test_that("response variable is numeric (two var problems)", {
-  expect_error(calculate(gen_iris5, stat = "F"))
+  expect_error(calculate(gen_gss5, stat = "F"))
 })
 
 test_that("two sample mean-type problems are working", {
-  gen_iris5a <- iris %>%
-    dplyr::mutate(
-      Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")
-    ) %>%
-    specify(Sepal.Width ~ Sepal.Length.Group) %>%
+  gen_gss5a <- gss_tbl %>%
+    specify(hours ~ college) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_warning(calculate(gen_iris5a, stat = "diff in means"))
+  expect_warning(calculate(gen_gss5a, stat = "diff in means"))
   expect_silent(
-    calculate(gen_iris5a, stat = "diff in means", order = c(">5", "<=5"))
+    calculate(gen_gss5a, 
+              stat = "diff in means", 
+              order = c("no degree", "degree"))
   )
-  expect_warning(calculate(gen_iris5a, stat = "t"))
-  expect_silent(calculate(gen_iris5a, stat = "t", order = c(">5", "<=5")))
+  expect_warning(calculate(gen_gss5a, stat = "t"))
+  expect_silent(calculate(gen_gss5a, stat = "t", 
+                          order = c("no degree", "degree")))
 })
 
 test_that("properties of tibble passed-in are correct", {
-  expect_is(gen_iris5, "grouped_df")
-  expect_equal(ncol(gen_iris5), 3)
+  expect_is(gen_gss5, "grouped_df")
+  expect_equal(ncol(gen_gss5), 3)
 
-  gen_iris6 <- iris %>%
-    specify(Sepal.Length ~ NULL) %>%
+  gen_gss6 <- gss_tbl %>%
+    specify(hours ~ NULL) %>%
     generate(reps = 10)
-  expect_equal(ncol(gen_iris6), 2)
-  expect_error(calculate(gen_iris6))
+  expect_equal(ncol(gen_gss6), 2)
+  expect_error(calculate(gen_gss6))
 })
 
 test_that("order is working for diff in means", {
-  gen_iris7 <- iris %>%
-    dplyr::mutate(
-      Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")
-    ) %>%
-    specify(Sepal.Width ~ Sepal.Length.Group) %>%
+  gen_gss7 <- gss_tbl %>%
+    specify(hours ~ college) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
   expect_equal(
-    nrow(calculate(gen_iris7, stat = "diff in means", order = c(">5", "<=5"))),
+    nrow(calculate(gen_gss7, 
+                   stat = "diff in means", 
+                   order = c("no degree", "degree"))),
     10
   )
   expect_equal(
-    ncol(calculate(gen_iris7, stat = "diff in means", order = c(">5", "<=5"))),
+    ncol(calculate(gen_gss7, 
+                   stat = "diff in means", 
+                   order = c("no degree", "degree"))),
     2
   )
 })
 
 test_that("chi-square matches chisq.test value", {
-  gen_iris8 <- iris %>%
-    dplyr::mutate(
-      Petal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")
-    ) %>%
-    specify(Petal.Length.Group ~ Species, success = ">5") %>%
+  gen_gss8 <- gss_tbl %>%
+    specify(sex ~ partyid, success = "female") %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  infer_way <- calculate(gen_iris8, stat = "Chisq")
+  infer_way <- calculate(gen_gss8, stat = "Chisq")
   # chisq.test way
-  trad_way <- gen_iris8 %>%
+  suppressWarnings(
+  trad_way <- gen_gss8 %>%
     dplyr::group_by(replicate) %>%
     dplyr::do(broom::tidy(
-      stats::chisq.test(table(.$Petal.Length.Group, .$Species))
+      stats::chisq.test(table(.$sex, .$partyid))
     )) %>%
     dplyr::ungroup() %>%
     dplyr::select(replicate, stat = statistic)
+  )
   # Equal not including attributes
   expect_equivalent(infer_way, trad_way)
 
-  gen_iris9 <- iris %>%
-    specify(Species ~ NULL) %>%
+  gen_gss9 <- gss_tbl %>%
+    specify(partyid ~ NULL) %>%
     hypothesize(
       null = "point",
-      p = c("setosa" = 1/3, "versicolor" = 1/3, "virginica" = 1/3)
+      p = c("dem" = 1/3, "rep" = 1/3, "ind" = 1/3)
     ) %>%
     generate(reps = 10, type = "simulate")
-  infer_way <- calculate(gen_iris9, stat = "Chisq")
+  infer_way <- calculate(gen_gss9, stat = "Chisq")
   # chisq.test way
-  trad_way <- gen_iris9 %>%
+  trad_way <- gen_gss9 %>%
     dplyr::group_by(replicate) %>%
     dplyr::do(broom::tidy(
-      stats::chisq.test(table(.$Species))
+      stats::chisq.test(table(.$partyid))
     )) %>%
     dplyr::select(replicate, stat = statistic)
   expect_equivalent(infer_way, trad_way)
 
-  gen_iris9a <- iris %>%
-    specify(Species ~ NULL) %>%
+  gen_gss9a <- gss_tbl %>%
+    specify(partyid ~ NULL) %>%
     hypothesize(
       null = "point",
-      p = c("setosa" = 0.8, "versicolor" = 0.1, "virginica" = 0.1)
+      p = c("dem" = 0.8, "rep" = 0.1, "ind" = 0.1)
     ) %>%
     generate(reps = 10, type = "simulate")
-  infer_way <- calculate(gen_iris9a, stat = "Chisq")
+  infer_way <- calculate(gen_gss9a, stat = "Chisq")
   # chisq.test way
-  trad_way <- gen_iris9a %>%
+  trad_way <- gen_gss9a %>%
     dplyr::group_by(replicate) %>%
     dplyr::do(broom::tidy(
-      stats::chisq.test(table(.$Species), p = c(0.8, 0.1, 0.1))
+      stats::chisq.test(table(.$partyid), p = c(0.8, 0.1, 0.1))
     )) %>%
     dplyr::select(replicate, stat = statistic)
   expect_equivalent(infer_way, trad_way)
 })
 
 test_that("`order` is working", {
-  gen_iris10 <- iris %>%
-    dplyr::mutate(
-      Petal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")
-    ) %>%
-    specify(Petal.Width ~ Petal.Length.Group) %>%
+  gen_gss_tbl10 <- gss_tbl %>%
+    specify(hours ~ college) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
   expect_error(
-    calculate(gen_iris10, stat = "diff in means", order = c(TRUE, FALSE))
+    calculate(gen_gss_tbl10, stat = "diff in means", order = c(TRUE, FALSE))
   )
 
-  gen_iris11 <- iris %>%
-    dplyr::mutate(
-      Petal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")
-    ) %>%
-    specify(Petal.Width ~ Petal.Length.Group) %>%
+  gen_gss_tbl11 <- gss_tbl %>%
+    specify(hours ~ college) %>%
     generate(reps = 10, type = "bootstrap")
   expect_error(
-    calculate(gen_iris11, stat = "diff in medians", order = ">5")
+    calculate(gen_gss_tbl11, 
+              stat = "diff in medians", 
+              order = "no degree")
   )
   expect_error(
-    calculate(gen_iris11, stat = "diff in medians", order = c(NA, ">5"))
+    calculate(gen_gss_tbl11, 
+              stat = "diff in medians", 
+              order = c(NA, "no degree"))
   )
   expect_error(
-    calculate(gen_iris11, stat = "diff in medians", order = c(">5", "<=4"))
+    calculate(gen_gss_tbl11, 
+              stat = "diff in medians", 
+              order = c("no degree", "other"))
   )
   expect_silent(
-    calculate(gen_iris11, stat = "diff in medians", order = c(">5", "<=5"))
+    calculate(gen_gss_tbl11, 
+              stat = "diff in medians", 
+              order = c("no degree", "degree"))
   )
   expect_error(
-    calculate(gen_iris11, stat = "diff in means", order = c(">5", "<=4", ">4"))
+    calculate(gen_gss_tbl11, 
+              stat = "diff in means", 
+              order = c("no degree", "degree", "the last one"))
   )
   # order not given
-  expect_warning(calculate(gen_iris11, stat = "diff in means"),
+  expect_warning(calculate(gen_gss_tbl11, stat = "diff in means"),
                  "The statistic is based on a difference or ratio")
 })
 
-gen_iris12 <- iris %>%
-  dplyr::mutate(
-    Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")
-  ) %>%
-  specify(Sepal.Length.Group ~ NULL, success = ">5") %>%
+gen_gss_tbl12 <- gss_tbl %>%
+  specify(college ~ NULL, success = "no degree") %>%
   hypothesize(null = "point", p = 0.3) %>%
   generate(reps = 10, type = "simulate")
 
 test_that('success is working for stat = "prop"', {
-  expect_silent(gen_iris12 %>% calculate(stat = "prop"))
-  expect_silent(gen_iris12 %>% calculate(stat = "z"))
+  expect_silent(gen_gss_tbl12 %>% calculate(stat = "prop"))
+  expect_silent(gen_gss_tbl12 %>% calculate(stat = "z"))
 })
 
 test_that("NULL response gives error", {
-  iris_improp <- tibble::as_tibble(iris) %>%
-    dplyr::select(Sepal.Width, Sepal.Length)
+  gss_tbl_improp <- tibble::as_tibble(gss_tbl) %>%
+    dplyr::select(hours, age)
 
-  expect_error(iris_improp %>% calculate(stat = "mean"))
+  expect_error(gss_tbl_improp %>% calculate(stat = "mean"))
 })
 
 test_that("Permute F test works", {
-  gen_iris13 <- iris %>%
-    specify(Petal.Width ~ Species) %>%
+  gen_gss_tbl13 <- gss_tbl %>%
+    specify(hours ~ partyid) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_silent(calculate(gen_iris13, stat = "F"))
+  expect_silent(calculate(gen_gss_tbl13, stat = "F"))
 })
 
 test_that("Permute slope/correlation test works", {
-  gen_iris14 <- iris %>%
-    specify(Petal.Width ~ Petal.Length) %>%
+  gen_gss_tbl14 <- gss_tbl %>%
+    specify(hours ~ age) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_silent(calculate(gen_iris14, stat = "slope"))
-  expect_silent(calculate(gen_iris14, stat = "correlation"))
+  expect_silent(calculate(gen_gss_tbl14, stat = "slope"))
+  expect_silent(calculate(gen_gss_tbl14, stat = "correlation"))
 })
 
 test_that("order being given when not needed gives warning", {
-  gen_iris15 <- iris %>%
-    dplyr::mutate(
-      Petal.Length.Group = dplyr::if_else(Sepal.Length > 4, ">4", "<=4")
-    ) %>%
-    specify(Petal.Length.Group ~ Species, success = ">4") %>%
+  gen_gss_tbl15 <- gss_tbl %>%
+    specify(college ~ partyid, success = "no degree") %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
   expect_warning(
-    calculate(gen_iris15, stat = "Chisq", order = c("setosa", "virginica"))
+    calculate(gen_gss_tbl15, stat = "Chisq", order = c("dem", "ind"))
   )
 })
 
 ## Breaks oldrel build. Commented out for now.
 # test_that("warning given if calculate without generate", {
 #   expect_warning(
-#     iris %>%
-#       specify(Species ~ NULL) %>%
+#     gss_tbl %>%
+#       specify(partyid ~ NULL) %>%
 #       hypothesize(
 #         null = "point",
-#         p = c("setosa" = 0.4, "versicolor" = 0.4, "virginica" = 0.2)
+#         p = c("dem" = 0.4, "rep" = 0.4, "ind" = 0.2)
 #       ) %>%
 #       # generate(reps = 10, type = "simulate") %>%
 #       calculate(stat = "Chisq")
@@ -348,77 +337,79 @@ test_that("order being given when not needed gives warning", {
 
 test_that("specify() %>% calculate() works", {
   expect_silent(
-    iris_tbl %>% specify(Petal.Width ~ NULL) %>% calculate(stat = "mean")
+    gss_tbl %>% specify(hours ~ NULL) %>% calculate(stat = "mean")
   )
   expect_error(
-    iris_tbl %>%
-      specify(Petal.Width ~ NULL) %>%
+    gss_tbl %>%
+      specify(hours ~ NULL) %>%
       hypothesize(null = "point", mu = 4) %>%
       calculate(stat = "mean")
   )
 
   expect_error(
-    iris_tbl %>% specify(Species ~ NULL) %>% calculate(stat = "Chisq")
+    gss_tbl %>% specify(partyid ~ NULL) %>% calculate(stat = "Chisq")
   )
 })
 
 test_that("One sample t hypothesis test is working", {
   expect_message(
-    iris_tbl %>%
-      specify(Petal.Width ~ NULL) %>%
+    gss_tbl %>%
+      specify(hours ~ NULL) %>%
       hypothesize(null = "point", mu = 1) %>%
       generate(reps = 10) %>%
       calculate(stat = "t")
   )
   
   expect_message(
-    iris_tbl %>%
-      specify(response = Petal.Width) %>%
+    gss_tbl %>%
+      specify(response = hours) %>%
       calculate(stat = "t"),
     "the t-test will assume a null hypothesis"
   )
   
-  iris_tbl %>%
-    specify(response = Petal.Width) %>%
+  gss_tbl %>%
+    specify(response = hours) %>%
     calculate(stat = "t", mu = 1)
 })
 
 test_that("specify done before calculate", {
-  iris_mean <- iris_tbl %>%
-    dplyr::select(stat = Sepal.Width)
-  expect_error(calculate(iris_mean, stat = "mean"))
+  gss_tbl_mean <- gss_tbl %>%
+    dplyr::select(stat = hours)
+  expect_error(calculate(gss_tbl_mean, stat = "mean"))
 
-  iris_prop <- iris_tbl %>% dplyr::select(Sepal.Length.Group)
-  attr(iris_prop, "response") <- "Sepal.Length.Group"
-  expect_error(calculate(iris_prop, stat = "prop"))
-  expect_error(calculate(iris_prop, stat = "count"))
+  gss_tbl_prop <- gss_tbl %>% dplyr::select(college)
+  attr(gss_tbl_prop, "response") <- "college"
+  expect_error(calculate(gss_tbl_prop, stat = "prop"))
+  expect_error(calculate(gss_tbl_prop, stat = "count"))
 })
 
 test_that("chisq GoF has params specified for observed stat", {
-  no_params <- iris_df %>% specify(response = Species)
+  no_params <- gss_tbl %>% specify(response = partyid)
   expect_error(calculate(no_params, stat = "Chisq"))
 
-  params <- iris_df %>%
-    specify(response = Species) %>%
+  params <- gss_tbl %>%
+    specify(response = partyid) %>%
     hypothesize(
       null = "point",
-      p = c("setosa" = .5, "versicolor" = .25, "virginica" = .25)
+      p = c("dem" = .5, "rep" = .25, "ind" = .25)
     )
   expect_silent(calculate(params, stat = "Chisq"))
 })
 
 test_that("generate not done before calculate", {
-  iris_hyp <- iris_tbl %>%
-    specify(Sepal.Width ~ Sepal.Length.Group) %>%
+  gss_tbl_hyp <- gss_tbl %>%
+    specify(hours ~ college) %>%
     hypothesize(null = "independence")
-  attr(iris_hyp, "generate") <- TRUE
-  expect_warning(calculate(iris_hyp, stat = "t", order = c(">5", "<=5")))
+  attr(gss_tbl_hyp, "generate") <- TRUE
+  expect_warning(calculate(gss_tbl_hyp, 
+                           stat = "t", 
+                           order = c("no degree", "degree")))
 })
 
 test_that("One sample t bootstrap is working", {
   expect_message(
-    iris_tbl %>%
-      specify(Petal.Width ~ NULL) %>%
+    gss_tbl %>%
+      specify(hours ~ NULL) %>%
       generate(reps = 10) %>%
       calculate(stat = "t")
   )
@@ -428,8 +419,8 @@ test_that("calculate doesn't depend on order of `p` (#122)", {
   calc_chisq <- function(p) {
     set.seed(111)
 
-    iris %>%
-      specify(Species ~ NULL) %>%
+    gss_tbl %>%
+      specify(partyid ~ NULL) %>%
       hypothesize(null = "point", p = p) %>%
       generate(reps = 500, type = "simulate") %>%
       calculate("Chisq") %>% 
@@ -438,9 +429,9 @@ test_that("calculate doesn't depend on order of `p` (#122)", {
   }
 
   expect_equal(
-    calc_chisq(c("versicolor" = 0.25, "setosa" = 0.5, "virginica" = 0.25)),
-    calc_chisq(c("virginica" = 0.25, "versicolor" = 0.25, "setosa" = 0.5)),
-    tolerance = 1e-5
+    calc_chisq(c("rep" = 0.25, "dem" = 0.5, "ind" = 0.25)),
+    calc_chisq(c("ind" = 0.25, "rep" = 0.25, "dem" = 0.5)),
+    tolerance = eps
   )
 })
 
@@ -454,22 +445,22 @@ test_that("calc_impl_diff_f works", {
 
 test_that("calc_impl.sum works", {
   expect_equal(
-    iris_tbl %>%
-      specify(Petal.Width ~ NULL) %>%
+    gss_tbl %>%
+      specify(hours ~ NULL) %>%
       calculate(stat = "sum") %>%
       `[[`(1),
-    sum(iris_tbl$Petal.Width)
+    sum(gss_tbl$hours),
+    tolerance = eps
   )
 
-  gen_iris16 <- iris_tbl %>%
-    specify(Petal.Width ~ NULL) %>%
+  gen_gss_tbl16 <- gss_tbl %>%
+    specify(hours ~ NULL) %>%
     generate(10)
-# Temporarily remove because of failing noLD test
- # expect_equal(
- #   gen_iris16 %>% calculate(stat = "sum"),
- #   gen_iris16 %>% dplyr::summarise(stat = sum(Petal.Width)),
- #   tolerance = .Machine$double.eps^0.25
- # )
+
+  expect_equivalent(
+    gen_gss_tbl16 %>% calculate(stat = "sum"),
+    gen_gss_tbl16 %>% dplyr::summarise(stat = sum(hours))
+  )
 })
 
 test_that("calc_impl_success_f works", {
@@ -483,28 +474,29 @@ test_that("calc_impl_success_f works", {
 
 test_that("calc_impl.count works", {
   expect_equal(
-    iris_tbl %>%
-      specify(Sepal.Length.Group ~ NULL, success = ">5") %>%
+    gss_tbl %>%
+      specify(college ~ NULL, success = "no degree") %>%
       calculate(stat = "count") %>%
       `[[`(1),
-    sum(iris_tbl$Sepal.Length.Group == ">5")
+    sum(gss_tbl$college == "no degree"),
+    tolerance = eps
   )
 
   expect_equivalent(
-    gen_iris12 %>% calculate(stat = "count"),
-    gen_iris12 %>% dplyr::summarise(stat = sum(Sepal.Length.Group == ">5"))
+    gen_gss_tbl12 %>% calculate(stat = "count"),
+    gen_gss_tbl12 %>% dplyr::summarise(stat = sum(college == "no degree"))
   )
 })
 
 
-gss_biased <- gss %>% 
+gss_biased <- gss_tbl %>% 
   dplyr::filter(!(sex == "male" & college == "no degree" & age < 40))
 
 gss_tbl <- table(gss_biased$sex, gss_biased$college)
 
 test_that("calc_impl.odds_ratio works", {
-  base_odds_ratio <- {(gss_tbl[1,1] * gss_tbl[2,2]) / 
-    (gss_tbl[1,2] * gss_tbl[2,1])}
+  base_odds_ratio <- {(gss_tbl [1,1] * gss_tbl [2,2]) / 
+    (gss_tbl [1,2] * gss_tbl [2,1])}
   
   expect_equal(
     gss_biased %>% 
@@ -512,12 +504,12 @@ test_that("calc_impl.odds_ratio works", {
       calculate(stat = "odds ratio", order = c("female", "male")) %>%
       dplyr::pull(),
     expected = base_odds_ratio,
-    tolerance = .001)
+    tolerance = eps)
 })
 
 test_that("calc_impl.ratio_of_props works", {
-  base_ratio_of_props <- {(gss_tbl[1,2] / sum(gss_tbl[1,])) / 
-      (gss_tbl[2,2] / sum(gss_tbl[2,]))}
+  base_ratio_of_props <- {(gss_tbl [1,2] / sum(gss_tbl [1,])) / 
+      (gss_tbl [2,2] / sum(gss_tbl [2,]))}
   
   expect_equal(
     gss_biased %>% 
@@ -525,7 +517,7 @@ test_that("calc_impl.ratio_of_props works", {
       calculate(stat = "ratio of props", order = c("male", "female")) %>%
       dplyr::pull(),
     expected = base_ratio_of_props,
-    tolerance = .001)
+    tolerance = eps)
   
 })
 

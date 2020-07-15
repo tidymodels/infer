@@ -1,30 +1,21 @@
 context("wrappers")
 
-iris2 <- iris %>%
-  dplyr::filter(Species != "setosa") %>%
-  droplevels(.$Species)
-
-iris3 <- iris %>%
-  dplyr::mutate(
-    Sepal.Length.Group = dplyr::if_else(Sepal.Length > 5, ">5", "<=5")
-  )
-
 test_that("t_test works", {
   # Two Sample
-  expect_warning(iris2 %>% t_test(Sepal.Width ~ Species))
+  expect_warning(gss_tbl %>% t_test(hours ~ sex))
 
   expect_error(
-    iris2 %>% t_test(response = "Sepal.Width", explanatory = "Species")
+    gss_tbl %>% t_test(response = "hours", explanatory = "sex")
   )
   
-  new_way <- t_test(iris2, 
-                    Sepal.Width ~ Species, 
-                    order = c("versicolor", "virginica"))
-  new_way_alt <- t_test(iris2, 
-                    response = Sepal.Width,
-                    explanatory = Species,
-                    order = c("versicolor", "virginica"))
-  old_way <- t.test(Sepal.Width ~ Species, data = iris2) %>%
+  new_way <- t_test(gss_tbl, 
+                    hours ~ sex, 
+                    order = c("male", "female"))
+  new_way_alt <- t_test(gss_tbl, 
+                    response = hours,
+                    explanatory = sex,
+                    order = c("male", "female"))
+  old_way <- t.test(hours ~ sex, data = gss_tbl) %>%
     broom::glance() %>%
     dplyr::select(statistic, t_df = parameter, p_value = p.value, 
                   alternative, lower_ci = conf.low, upper_ci = conf.high)
@@ -33,18 +24,18 @@ test_that("t_test works", {
   expect_equal(new_way, old_way, tolerance = 1e-5)
   
   # check that the order argument changes output
-  new_way2 <- t_test(iris2, 
-                    Sepal.Width ~ Species, 
-                    order = c("virginica", "versicolor"))  
+  new_way2 <- t_test(gss_tbl, 
+                    hours ~ sex, 
+                    order = c("female", "male"))  
   expect_equal(new_way[["lower_ci"]], -new_way2[["upper_ci"]])
   expect_equal(new_way[["statistic"]], -new_way2[["statistic"]])
   
   # One Sample
-  new_way <- iris2 %>%
-    t_test(Sepal.Width ~ NULL, mu = 0)
-  new_way_alt <- iris2 %>%
-    t_test(response = Sepal.Width, mu = 0)
-  old_way <- t.test(x = iris2$Sepal.Width, mu = 0) %>%
+  new_way <- gss_tbl %>%
+    t_test(hours ~ NULL, mu = 0)
+  new_way_alt <- gss_tbl %>%
+    t_test(response = hours, mu = 0)
+  old_way <- t.test(x = gss_tbl$hours, mu = 0) %>%
     broom::glance() %>%
     dplyr::select(statistic, t_df = parameter, p_value = p.value, 
                   alternative, lower_ci = conf.low, upper_ci = conf.high)
@@ -54,29 +45,28 @@ test_that("t_test works", {
 })
 
 test_that("chisq_test works", {
-  # Independence
-  expect_silent(iris3 %>% 
-                  chisq_test(Sepal.Length.Group ~ Species))
-  new_way <- iris3 %>% 
-    chisq_test(Sepal.Length.Group ~ Species)
-  new_way_alt <- iris3 %>% 
-    chisq_test(response = Sepal.Length.Group, explanatory = Species)
-  old_way <- chisq.test(x = table(iris3$Species, iris3$Sepal.Length.Group)) %>%
+  # maleependence
+  expect_silent(gss_tbl %>% 
+                  chisq_test(college ~ partyid))
+  new_way <- gss_tbl %>% 
+    chisq_test(college ~ partyid)
+  new_way_alt <- gss_tbl %>% 
+    chisq_test(response = college, explanatory = partyid)
+  old_way <- chisq.test(x = table(gss_tbl$partyid, gss_tbl$college)) %>%
     broom::glance() %>%
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
 
-  expect_equal(new_way, new_way_alt, tolerance = .Machine$double.eps^0.25)
-  #temporary remove because of failing noLD
-  #expect_equal(new_way, old_way, tolerance = .Machine$double.eps^0.25)
+  expect_equal(new_way, new_way_alt, tolerance = eps)
+  expect_equal(new_way, old_way, tolerance = eps)
   
   # Goodness of Fit
-  expect_silent(iris3 %>% 
-                  chisq_test(response = Species, p = c(.3, .4, .3)))
-  new_way <- iris3 %>% 
-    chisq_test(Species ~ NULL, p = c(.3, .4, .3))
-  new_way_alt <- iris3 %>% 
-    chisq_test(response = Species, p = c(.3, .4, .3))
-  old_way <- chisq.test(x = table(iris3$Species), p = c(.3, .4, .3)) %>%
+  expect_silent(gss_tbl %>% 
+                  chisq_test(response = partyid, p = c(.3, .4, .3)))
+  new_way <- gss_tbl %>% 
+    chisq_test(partyid ~ NULL, p = c(.3, .4, .3))
+  new_way_alt <- gss_tbl %>% 
+    chisq_test(response = partyid, p = c(.3, .4, .3))
+  old_way <- chisq.test(x = table(gss_tbl$partyid), p = c(.3, .4, .3)) %>%
     broom::glance() %>%
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
   
@@ -84,100 +74,100 @@ test_that("chisq_test works", {
   expect_equal(new_way, old_way, tolerance = 1e-5)
   
   # check that function errors out when response is numeric
-  expect_error(chisq_test(x = iris2, response = Sepal.Length, explanatory = Species))
+  expect_error(chisq_test(x = gss_tbl, response = age, explanatory = partyid))
   
   # check that function errors out when explanatory is numeric
-  expect_error(chisq_test(x = iris2, response = Species, explanatory = Sepal.Length))
+  expect_error(chisq_test(x = gss_tbl, response = partyid, explanatory = age))
 
 })
 
 test_that("_stat functions work", {
-  # Test of independence
-  expect_silent(iris3 %>% chisq_stat(Sepal.Length.Group ~ Species))
-  another_way <- iris3 %>%
-    chisq_test(Sepal.Length.Group ~ Species) %>%
+  # Test of maleependence
+  expect_silent(gss_tbl %>% chisq_stat(college ~ partyid))
+  another_way <- gss_tbl %>%
+    chisq_test(college ~ partyid) %>%
     dplyr::select(statistic)
-  obs_stat_way <- iris3 %>% chisq_stat(Sepal.Length.Group ~ Species)
+  obs_stat_way <- gss_tbl %>% chisq_stat(college ~ partyid)
   one_more <- chisq.test(
-    table(iris3$Species, iris3$Sepal.Length.Group)
+    table(gss_tbl$partyid, gss_tbl$college)
   )$statistic
 
   expect_equivalent(dplyr::pull(another_way), obs_stat_way)
   expect_equivalent(one_more, obs_stat_way)
 
   # Goodness of Fit
- new_way <- iris3 %>%
-   chisq_test(Species ~ NULL) %>%
+ new_way <- gss_tbl %>%
+   chisq_test(partyid ~ NULL) %>%
    dplyr::select(statistic)
- obs_stat_way <- iris3 %>%
-   chisq_stat(Species ~ NULL)
- obs_stat_way_alt <- iris3 %>%
-   chisq_stat(response = Species)
+ obs_stat_way <- gss_tbl %>%
+   chisq_stat(partyid ~ NULL)
+ obs_stat_way_alt <- gss_tbl %>%
+   chisq_stat(response = partyid)
  
  expect_equivalent(dplyr::pull(new_way), obs_stat_way)
  expect_equivalent(dplyr::pull(new_way), obs_stat_way_alt)
  
  # robust to the named vector
- unordered_p <- iris3 %>%
-   chisq_test(response = Species, p = c(.2, .3, .5))
- ordered_p <- iris3 %>%
-   chisq_test(response = Species, p = c(virginica = .5, versicolor = .3, setosa = .2))
+ unordered_p <- gss_tbl %>%
+   chisq_test(response = partyid, p = c(.2, .3, .5))
+ ordered_p <- gss_tbl %>%
+   chisq_test(response = partyid, p = c(ind = .2, rep = .3, dem = .5))
  
  expect_equivalent(unordered_p, ordered_p)
 
   # Two sample t
   expect_silent(
-    iris2 %>% t_stat(
-      Sepal.Width ~ Species, order = c("virginica", "versicolor")
+    gss_tbl %>% t_stat(
+      hours ~ sex, order = c("male", "female")
     )
   )
-  another_way <- iris2 %>%
-    t_test(Sepal.Width ~ Species, order = c("virginica", "versicolor")) %>%
+  another_way <- gss_tbl %>%
+    t_test(hours ~ sex, order = c("male", "female")) %>%
     dplyr::select(statistic) %>%
     pull()
-  obs_stat_way <- iris2 %>%
-    t_stat(Sepal.Width ~ Species, order = c("virginica", "versicolor"))
-  obs_stat_way_alt <- iris2 %>%
-    t_stat(response = Sepal.Width,
-           explanatory = Species, 
-           order = c("virginica", "versicolor"))
+  obs_stat_way <- gss_tbl %>%
+    t_stat(hours ~ sex, order = c("male", "female"))
+  obs_stat_way_alt <- gss_tbl %>%
+    t_stat(response = hours,
+           explanatory = sex, 
+           order = c("male", "female"))
   
   expect_equivalent(another_way, obs_stat_way)
   expect_equivalent(another_way, obs_stat_way_alt)
 
   # One sample t
-  expect_silent(iris2 %>% t_stat(Sepal.Width ~ NULL))
-  another_way <- iris2 %>%
-    t_test(Sepal.Width ~ NULL) %>%
+  expect_silent(gss_tbl %>% t_stat(hours ~ NULL))
+  another_way <- gss_tbl %>%
+    t_test(hours ~ NULL) %>%
     dplyr::select(statistic) %>%
     pull()
-  obs_stat_way <- iris2 %>%
-    t_stat(Sepal.Width ~ NULL)
-  obs_stat_way_alt <- iris2 %>%
-    t_stat(response = Sepal.Width)
+  obs_stat_way <- gss_tbl %>%
+    t_stat(hours ~ NULL)
+  obs_stat_way_alt <- gss_tbl %>%
+    t_stat(response = hours)
   
   expect_equivalent(another_way, obs_stat_way)
   expect_equivalent(another_way, obs_stat_way_alt)
   
-  expect_error(chisq_stat(x = iris2, response = Sepal.Length, explanatory = Species))
-  expect_error(chisq_stat(x = iris2, response = Species, explanatory = Sepal.Length))
+  expect_error(chisq_stat(x = gss_tbl, response = age, explanatory = sex))
+  expect_error(chisq_stat(x = gss_tbl, response = sex, explanatory = age))
 })
 
 test_that("conf_int argument works", {
   expect_equal(
     names(
-      iris2 %>% 
-        t_test(Sepal.Width ~ Species, 
-               order = c("virginica", "versicolor"), conf_int = FALSE)
+      gss_tbl %>% 
+        t_test(hours ~ sex, 
+               order = c("male", "female"), conf_int = FALSE)
     ),
     c("statistic", "t_df", "p_value", "alternative"), 
     tolerance = 1e-5
   )
   expect_equal(
     names(
-      iris2 %>%
+      gss_tbl %>%
         t_test(
-          Sepal.Width ~ Species, order = c("virginica", "versicolor"),
+          hours ~ sex, order = c("male", "female"),
           conf_int = TRUE
         )
     ),
@@ -185,54 +175,57 @@ test_that("conf_int argument works", {
     tolerance = 1e-5
   )
 
-  ci_test <- iris2 %>%
+  ci_test <- gss_tbl %>%
     t_test(
-      Sepal.Width ~ Species, order = c("versicolor", "virginica"),
+      hours ~ sex, order = c("male", "female"),
       conf_int = TRUE, conf_level = 0.9
     )
   old_way <- t.test(
-    formula = Sepal.Width ~ Species, data = iris2, conf.level = 0.9
+    formula = hours ~ sex, data = gss_tbl, conf.level = 0.9
   )[["conf.int"]]
   expect_equal(ci_test$lower_ci[1], old_way[1], tolerance = 1e-5)
   expect_equal(ci_test$upper_ci[1], old_way[2], tolerance = 1e-5)
 
   expect_error(
-    iris2 %>%
+    gss_tbl %>%
       t_test(
-        Petal.Width ~ Species, order = c("versicolor", "virginica"),
+        hours ~ sex, order = c("female", "male"),
         conf_int = TRUE, conf_level = 1.1
       )
   )
 
   # Check that var.equal produces different results
-  # Thanks for finding this @EllaKaye!
-  iris_small <- iris2 %>% slice(1:6, 90:100)
+  # Thanks for fmaleing this @EllaKaye!
+  gss_tbl_small <- gss_tbl %>% slice(1:6, 90:100)
 
-  no_var_equal <- iris_small %>%
-    t_stat(Petal.Width ~ Species, order = c("versicolor", "virginica"))
+  no_var_equal <- gss_tbl_small %>%
+    t_stat(hours ~ sex, order = c("female", "male"))
   
-  var_equal <- iris_small %>%
+  var_equal <- gss_tbl_small %>%
     t_stat(
-      Petal.Width ~ Species, order = c("versicolor", "virginica"),
+      hours ~ sex, order = c("female", "male"),
       var.equal = TRUE
     ) 
   expect_false(no_var_equal == var_equal)
 
-  shortcut_no_var_equal <- iris_small %>%
-    specify(Petal.Width ~ Species) %>%
-    calculate(stat = "t", order = c("versicolor", "virginica"))
+  shortcut_no_var_equal <- gss_tbl_small %>%
+    specify(hours ~ sex) %>%
+    calculate(stat = "t", order = c("female", "male"))
 
-  shortcut_var_equal <- iris_small %>%
-    specify(Petal.Width ~ Species) %>%
+  shortcut_var_equal <- gss_tbl_small %>%
+    specify(hours ~ sex) %>%
     calculate(
-      stat = "t", order = c("versicolor", "virginica"),
+      stat = "t", order = c("female", "male"),
       var.equal = TRUE
     )
   expect_false(shortcut_no_var_equal == shortcut_var_equal)
 })
 
 # generate some data to test the prop.test wrapper
-df <- data.frame(resp = c(rep("c", 450), rep("d", 50), rep("c", 400), rep("d", 100)), 
+df <- data.frame(resp = c(rep("c", 450), 
+                          rep("d", 50), 
+                          rep("c", 400), 
+                          rep("d", 100)), 
                  exp = rep(c("a", "b"), each = 500))
 
 sum_df <- table(df)
