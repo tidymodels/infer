@@ -1,3 +1,7 @@
+# infer 0.5.3.9000 (development version)
+
+To be released as 0.5.4.
+
 # infer 0.5.3
 
 ## Breaking changes
