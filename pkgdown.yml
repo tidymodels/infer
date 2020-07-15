@@ -2,5 +2,5 @@ pandoc: '2.2'
 pkgdown: 1.5.1.9000
 pkgdown_sha: e38950d5d22babc2a245cb95b1e0480f073f2b80
 articles: []
-last_built: 2020-07-15T17:43Z
+last_built: 2020-07-15T17:44Z
 
