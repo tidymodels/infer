@@ -86,7 +86,7 @@ proportions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -166,16 +166,16 @@ proportions.</p>
     </div>
 
     <pre class="usage"><span class='fu'>prop_test</span>(
-  <span class='no'>x</span>,
-  <span class='no'>formula</span>,
-  <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>explanatory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>p</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"two-sided"</span>,
-  <span class='kw'>conf_int</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>conf_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='no'>...</span>
+  <span class='kw'>x</span>,
+  <span class='kw'>formula</span>,
+  response = <span class='kw'>NULL</span>,
+  explanatory = <span class='kw'>NULL</span>,
+  p = <span class='kw'>NULL</span>,
+  order = <span class='kw'>NULL</span>,
+  alternative = <span class='st'>"two-sided"</span>,
+  conf_int = <span class='fl'>TRUE</span>,
+  conf_level = <span class='fl'>0.95</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -240,21 +240,20 @@ two-sample test.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># proportion test for difference in proportions of </span>
 <span class='co'># college completion by respondent sex</span>
-<span class='fu'>prop_test</span>(<span class='no'>gss</span>,
-          <span class='no'>college</span> ~ <span class='no'>sex</span>,
-          <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"female"</span>, <span class='st'>"male"</span>))</div><div class='output co'>#&gt; # A tibble: 1 x 6
+<span class='fu'>prop_test</span>(<span class='kw'>gss</span>, 
+          <span class='kw'>college</span> <span class='op'>~</span> <span class='kw'>sex</span>,  
+          order = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"female"</span>, <span class='st'>"male"</span>))</div><div class='output co'>#&gt; # A tibble: 1 x 6
 #&gt;   statistic chisq_df p_value alternative lower_ci upper_ci
 #&gt;       &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;
-#&gt; 1 0.0000204        1   0.996 two.sided     -0.101   0.0917</div><div class='input'>
+#&gt; 1 0.0000204        1   0.996 two.sided     -0.101   0.0917</div><div class='input'>          
 <span class='co'># a one-proportion test for hypothesized null </span>
 <span class='co'># proportion of college completion of .2</span>
-<span class='fu'>prop_test</span>(<span class='no'>gss</span>,
-          <span class='no'>college</span> ~ <span class='kw'>NULL</span>,
-          <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>.2</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
+<span class='fu'>prop_test</span>(<span class='kw'>gss</span>,
+          <span class='kw'>college</span> <span class='op'>~</span> <span class='kw'>NULL</span>,
+          p = <span class='fl'>.2</span>)</div><div class='output co'>#&gt; # A tibble: 1 x 4
 #&gt;   statistic chisq_df   p_value alternative
 #&gt;       &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;      
-#&gt; 1      636.        1 2.98e-140 two.sided  </div><div class='input'>
-</div></pre>
+#&gt; 1      636.        1 2.98e-140 two.sided  </div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

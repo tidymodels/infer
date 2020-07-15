@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -123,7 +123,9 @@
 <a href="#introduction" class="anchor"></a>Introduction</h3>
 <p>In this vignette, we’ll walk through conducting a <span class="math inline">\(\chi^2\)</span> (chi-squared) test of independence and a chi-squared goodness of fit test using <code>infer</code>. We’ll start out with a chi-squared test of independence, which can be used to test the association between two categorical variables. Then, we’ll move on to a chi-squared goodness of fit test, which tests how well the distribution of one categorical variable can be approximated by some theoretical distribution.</p>
 <p>Throughout this vignette, we’ll make use of the <code>gss</code> dataset supplied by <code>infer</code>, which contains a sample of data from the General Social Survey. See <code><a href="../reference/gss.html">?gss</a></code> for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let’s suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="kw pkg">dplyr</span><span class="kw ns">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/reexports.html">glimpse</a></span>(<span class="no">gss</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw">dplyr</span>::<span class="fu"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span>(<span class="kw">gss</span>)
+</pre></div>
 <pre><code>## Rows: 500
 ## Columns: 11
 ## $ year    &lt;dbl&gt; 2014, 1994, 1998, 1996, 1994, 1996, 1990, 2016, 2000, 1998, 2…
@@ -146,62 +148,78 @@
 <p><img src="chi_squared_files/figure-html/plot-indep-1.png" width="576"></p>
 <p>If there were no relationship, we would expect to see the purple bars reaching to the same height, regardless of income class. Are the differences we see here, though, just due to random noise?</p>
 <p>First, to calculate the observed statistic, we can use <code><a href="../reference/specify.html">specify()</a></code> and <code><a href="../reference/calculate.html">calculate()</a></code>.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="co"># calculate the observed statistic</span>
-<span class="no">observed_indep_statistic</span> <span class="kw">&lt;-</span> <span class="no">gss</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span>(<span class="no">college</span> ~ <span class="no">finrela</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span>(<span class="kw">stat</span> <span class="kw">=</span> <span class="st">"Chisq"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="co"># calculate the observed statistic</span>
+<span class="kw">observed_indep_statistic</span> <span class="op">&lt;-</span> <span class="kw">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span>(<span class="kw">college</span> <span class="op">~</span> <span class="kw">finrela</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span>(stat = <span class="st">"Chisq"</span>)
+</pre></div>
 <p>The observed <span class="math inline">\(\chi^2\)</span> statistic is 30.6825. Now, we want to compare this statistic to a null distribution, generated under the assumption that these variables are not actually related, to get a sense of how likely it would be for us to see this observed statistic if there were actually no association between education and income.</p>
 <p>We can <code>generate</code> the null distribution in one of two ways—using randomization or theory-based methods. The randomization approach permutes the response and explanatory variables, so that each person’s educational attainment is matched up with a random income from the sample in order to break up any association between the two.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co"># generate the null distribution using randomization</span>
-<span class="no">null_distribution_simulated</span> <span class="kw">&lt;-</span> <span class="no">gss</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span>(<span class="no">college</span> ~ <span class="no">finrela</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="kw">null</span> <span class="kw">=</span> <span class="st">"independence"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/generate.html">generate</a></span>(<span class="kw">reps</span> <span class="kw">=</span> <span class="fl">1000</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"permute"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span>(<span class="kw">stat</span> <span class="kw">=</span> <span class="st">"Chisq"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="co"># generate the null distribution using randomization</span>
+<span class="kw">null_distribution_simulated</span> <span class="op">&lt;-</span> <span class="kw">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span>(<span class="kw">college</span> <span class="op">~</span> <span class="kw">finrela</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span>(null = <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span>(reps = <span class="fl">1000</span>, type = <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span>(stat = <span class="st">"Chisq"</span>)
+</pre></div>
 <p>Note that, in the line <code><a href="../reference/specify.html">specify(college ~ finrela)</a></code> above, we could use the equivalent syntax <code><a href="../reference/specify.html">specify(response = college, explanatory = finrela)</a></code>. The same goes in the code below, which generates the null distribution using theory-based methods instead of randomization.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co"># generate the null distribution by theoretical approximation</span>
-<span class="no">null_distribution_theoretical</span> <span class="kw">&lt;-</span> <span class="no">gss</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span>(<span class="no">college</span> ~ <span class="no">finrela</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="kw">null</span> <span class="kw">=</span> <span class="st">"independence"</span>) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="co"># generate the null distribution by theoretical approximation</span>
+<span class="kw">null_distribution_theoretical</span> <span class="op">&lt;-</span> <span class="kw">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span>(<span class="kw">college</span> <span class="op">~</span> <span class="kw">finrela</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span>(null = <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
   <span class="co"># note that we skip the generation step here!</span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span>(<span class="kw">stat</span> <span class="kw">=</span> <span class="st">"Chisq"</span>)</pre></body></html></div>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span>(stat = <span class="st">"Chisq"</span>)
+</pre></div>
 <p>To get a sense for what these distributions look like, and where our observed statistic falls, we can use <code><a href="../reference/visualize.html">visualize()</a></code>:</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="co"># visualize the null distribution and test statistic!</span>
-<span class="no">null_distribution_simulated</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/visualize.html">visualize</a></span>() +
-  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="no">observed_indep_statistic</span>,
-                <span class="kw">direction</span> <span class="kw">=</span> <span class="st">"greater"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="co"># visualize the null distribution and test statistic!</span>
+<span class="kw">null_distribution_simulated</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/visualize.html">visualize</a></span>() <span class="op">+</span> 
+  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="kw">observed_indep_statistic</span>,
+                direction = <span class="st">"greater"</span>)
+</pre></div>
 <p><img src="chi_squared_files/figure-html/visualize-indep-1.png" width="576"></p>
 <p>We could also visualize the observed statistic against the theoretical null distribution. Note that we skip the <code><a href="../reference/generate.html">generate()</a></code> and <code><a href="../reference/calculate.html">calculate()</a></code> steps when using the theoretical approach, and that we now need to provide <code>method = "theoretical"</code> to <code><a href="../reference/visualize.html">visualize()</a></code>.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="co"># visualize the theoretical null distribution and test statistic!</span>
-<span class="no">gss</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span>(<span class="no">college</span> ~ <span class="no">finrela</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="kw">null</span> <span class="kw">=</span> <span class="st">"independence"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/visualize.html">visualize</a></span>(<span class="kw">method</span> <span class="kw">=</span> <span class="st">"theoretical"</span>) +
-  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="no">observed_indep_statistic</span>,
-                <span class="kw">direction</span> <span class="kw">=</span> <span class="st">"greater"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="co"># visualize the theoretical null distribution and test statistic!</span>
+<span class="kw">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span>(<span class="kw">college</span> <span class="op">~</span> <span class="kw">finrela</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span>(null = <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/visualize.html">visualize</a></span>(method = <span class="st">"theoretical"</span>) <span class="op">+</span> 
+  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="kw">observed_indep_statistic</span>,
+                direction = <span class="st">"greater"</span>)
+</pre></div>
 <p><img src="chi_squared_files/figure-html/visualize-indep-theor-1.png" width="576"></p>
 <p>To visualize both the randomization-based and theoretical null distributions to get a sense of how the two relate, we can pipe the randomization-based null distribution into <code><a href="../reference/visualize.html">visualize()</a></code>, and further provide <code>method = "both"</code>.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="co"># visualize both null distributions and the test statistic!</span>
-<span class="no">null_distribution_simulated</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/visualize.html">visualize</a></span>(<span class="kw">method</span> <span class="kw">=</span> <span class="st">"both"</span>) +
-  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="no">observed_indep_statistic</span>,
-                <span class="kw">direction</span> <span class="kw">=</span> <span class="st">"greater"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="co"># visualize both null distributions and the test statistic!</span>
+<span class="kw">null_distribution_simulated</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/visualize.html">visualize</a></span>(method = <span class="st">"both"</span>) <span class="op">+</span> 
+  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="kw">observed_indep_statistic</span>,
+                direction = <span class="st">"greater"</span>)
+</pre></div>
 <p><img src="chi_squared_files/figure-html/visualize-indep-both-1.png" width="576"></p>
 <p>Either way, it looks like our observed test statistic would be <em>really</em> unlikely if there were actually no association between education and income. More exactly, we can calculate the p-value:</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="co"># calculate the p value from the observed statistic and null distribution</span>
-<span class="no">p_value_independence</span> <span class="kw">&lt;-</span> <span class="no">null_distribution_simulated</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="kw">obs_stat</span> <span class="kw">=</span> <span class="no">observed_indep_statistic</span>,
-              <span class="kw">direction</span> <span class="kw">=</span> <span class="st">"greater"</span>)
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="co"># calculate the p value from the observed statistic and null distribution</span>
+<span class="kw">p_value_independence</span> <span class="op">&lt;-</span> <span class="kw">null_distribution_simulated</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span>(obs_stat = <span class="kw">observed_indep_statistic</span>,
+              direction = <span class="st">"greater"</span>)
 
-<span class="no">p_value_independence</span></pre></body></html></div>
+<span class="kw">p_value_independence</span>
+</pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
 ## 1       0</code></pre>
 <p>Thus, if there were really no relationship between education and income, the probability that we would see a statistic as or more extreme than 30.6825 is approximately 0.</p>
 <p>Note that, equivalently to the steps shown above, the package supplies a wrapper function, <code>chisq_test</code>, to carry out Chi-Squared tests of independence on tidy data. The syntax goes like this:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/chisq_test.html">chisq_test</a></span>(<span class="no">gss</span>, <span class="no">college</span> ~ <span class="no">finrela</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit">
+<span class="fu"><a href="../reference/chisq_test.html">chisq_test</a></span>(<span class="kw">gss</span>, <span class="kw">college</span> <span class="op">~</span> <span class="kw">finrela</span>)
+</pre></div>
 <pre><code>## # A tibble: 1 x 3
 ##   statistic chisq_df   p_value
 ##       &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
@@ -214,58 +232,68 @@
 <p><img src="chi_squared_files/figure-html/gof-plot-1.png" width="576"></p>
 <p>It seems like a uniform distribution may not be the most appropriate description of the data–many more people describe their income as average than than any of the other options. Lets now test whether this difference in distributions is statistically significant.</p>
 <p>First, to carry out this hypothesis test, we would calculate our observed statistic.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="co"># calculating the null distribution</span>
-<span class="no">observed_gof_statistic</span> <span class="kw">&lt;-</span> <span class="no">gss</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span>(<span class="kw">response</span> <span class="kw">=</span> <span class="no">finrela</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="kw">null</span> <span class="kw">=</span> <span class="st">"point"</span>,
-              <span class="kw">p</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"far below average"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>,
-                    <span class="st">"below average"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>,
-                    <span class="st">"average"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>,
-                    <span class="st">"above average"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>,
-                    <span class="st">"far above average"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>,
-                    <span class="st">"DK"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span>(<span class="kw">stat</span> <span class="kw">=</span> <span class="st">"Chisq"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb13"><pre class="downlit">
+<span class="co"># calculating the null distribution</span>
+<span class="kw">observed_gof_statistic</span> <span class="op">&lt;-</span> <span class="kw">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span>(response = <span class="kw">finrela</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span>(null = <span class="st">"point"</span>,
+              p = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"far below average"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+                    <span class="st">"below average"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+                    <span class="st">"average"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+                    <span class="st">"above average"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+                    <span class="st">"far above average"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+                    <span class="st">"DK"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>)) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span>(stat = <span class="st">"Chisq"</span>)
+</pre></div>
 <p>The observed statistic is 487.984. Now, generating a null distribution, by just dropping in a call to <code><a href="../reference/generate.html">generate()</a></code>:</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="co"># generating a null distribution, assuming each income class is equally likely</span>
-<span class="no">null_distribution_gof</span> <span class="kw">&lt;-</span> <span class="no">gss</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span>(<span class="kw">response</span> <span class="kw">=</span> <span class="no">finrela</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span>(<span class="kw">null</span> <span class="kw">=</span> <span class="st">"point"</span>,
-              <span class="kw">p</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"far below average"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>,
-                    <span class="st">"below average"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>,
-                    <span class="st">"average"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>,
-                    <span class="st">"above average"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>,
-                    <span class="st">"far above average"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>,
-                    <span class="st">"DK"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/generate.html">generate</a></span>(<span class="kw">reps</span> <span class="kw">=</span> <span class="fl">1000</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"simulate"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span>(<span class="kw">stat</span> <span class="kw">=</span> <span class="st">"Chisq"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb14"><pre class="downlit">
+<span class="co"># generating a null distribution, assuming each income class is equally likely</span>
+<span class="kw">null_distribution_gof</span> <span class="op">&lt;-</span> <span class="kw">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span>(response = <span class="kw">finrela</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span>(null = <span class="st">"point"</span>,
+              p = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"far below average"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+                    <span class="st">"below average"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+                    <span class="st">"average"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+                    <span class="st">"above average"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+                    <span class="st">"far above average"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+                    <span class="st">"DK"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>)) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span>(reps = <span class="fl">1000</span>, type = <span class="st">"simulate"</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span>(stat = <span class="st">"Chisq"</span>)
+</pre></div>
 <p>Again, to get a sense for what these distributions look like, and where our observed statistic falls, we can use <code><a href="../reference/visualize.html">visualize()</a></code>:</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="co"># visualize the null distribution and test statistic!</span>
-<span class="no">null_distribution_gof</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/visualize.html">visualize</a></span>() +
-  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="no">observed_gof_statistic</span>,
-                <span class="kw">direction</span> <span class="kw">=</span> <span class="st">"greater"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb15"><pre class="downlit">
+<span class="co"># visualize the null distribution and test statistic!</span>
+<span class="kw">null_distribution_gof</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/visualize.html">visualize</a></span>() <span class="op">+</span> 
+  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span>(<span class="kw">observed_gof_statistic</span>,
+                direction = <span class="st">"greater"</span>)
+</pre></div>
 <p><img src="chi_squared_files/figure-html/visualize-indep-gof-1.png" width="576"></p>
 <p>This statistic seems like it would be <em>really</em> unlikely if income class self-identification actually followed a uniform distribution! How unlikely, though? Calculating the p-value:</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="co"># calculate the p-value</span>
-<span class="no">p_value_gof</span> <span class="kw">&lt;-</span> <span class="no">null_distribution_gof</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="no">observed_gof_statistic</span>,
-              <span class="kw">direction</span> <span class="kw">=</span> <span class="st">"greater"</span>)
+<div class="sourceCode" id="cb16"><pre class="downlit">
+<span class="co"># calculate the p-value</span>
+<span class="kw">p_value_gof</span> <span class="op">&lt;-</span> <span class="kw">null_distribution_gof</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span>(<span class="kw">observed_gof_statistic</span>,
+              direction = <span class="st">"greater"</span>)
 
-<span class="no">p_value_gof</span></pre></body></html></div>
+<span class="kw">p_value_gof</span>
+</pre></div>
 <pre><code>## # A tibble: 1 x 1
 ##   p_value
 ##     &lt;dbl&gt;
 ## 1       0</code></pre>
 <p>Thus, if each self-identified income class was equally likely to occur, the probability that we would see a distribution like the one we did is approximately 0.</p>
 <p>Again, equivalently to the steps shown above, the package supplies a wrapper function, <code>chisq_test</code>, to carry out Chi-Squared goodness of fit tests on tidy data. The syntax goes like this:</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="../reference/chisq_test.html">chisq_test</a></span>(<span class="no">gss</span>,
-           <span class="kw">response</span> <span class="kw">=</span> <span class="no">finrela</span>,
-           <span class="kw">p</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"far below average"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>,
-                    <span class="st">"below average"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>,
-                    <span class="st">"average"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>,
-                    <span class="st">"above average"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>,
-                    <span class="st">"far above average"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>,
-                    <span class="st">"DK"</span> <span class="kw">=</span> <span class="fl">1</span>/<span class="fl">6</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb18"><pre class="downlit">
+<span class="fu"><a href="../reference/chisq_test.html">chisq_test</a></span>(<span class="kw">gss</span>, 
+           response = <span class="kw">finrela</span>,
+           p = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"far below average"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+                    <span class="st">"below average"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+                    <span class="st">"average"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+                    <span class="st">"above average"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+                    <span class="st">"far above average"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+                    <span class="st">"DK"</span> = <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>))
+</pre></div>
 <pre><code>## # A tibble: 1 x 3
 ##   statistic chisq_df   p_value
 ##       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;

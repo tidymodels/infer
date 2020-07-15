@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -132,66 +132,83 @@
 <a href="#installation" class="anchor"></a>Installation</h3>
 <hr>
 <p>To install the current stable version of <code>infer</code> from CRAN:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"infer"</span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"infer"</span>)
+</pre></div>
 <p>To install the developmental stable version of <code>infer</code>, make sure to install <code>remotes</code> first. The <code>pkgdown</code> website for this version is at <a href="https://infer.netlify.com" class="uri">https://infer.netlify.com</a>.</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"remotes"</span>)
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"tidymodels/infer"</span>)</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"remotes"</span>)
+<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"tidymodels/infer"</span>)
+</pre></div>
 <p>To install the experimental version of <code>infer</code> (do so at your own risk), make sure to install <code>remotes</code> first.</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"remotes"</span>)
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"tidymodels/infer"</span>, <span class="kw">ref</span> <span class="kw">=</span> <span class="st">"develop"</span>)</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"remotes"</span>)
+<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"tidymodels/infer"</span>, ref = <span class="st">"develop"</span>)
+</pre></div>
 <p>To see documentation for the experimental version of <code>infer</code>, the <code>pkgdown</code> site is available at <a href="https://infer-dev.netlify.com" class="uri">https://infer-dev.netlify.com</a>.</p>
 </div>
 <div id="contributing" class="section level3">
 <h3 class="hasAnchor">
 <a href="#contributing" class="anchor"></a>Contributing</h3>
 <hr>
-<p>We welcome others helping us make this package as user-friendly and efficient as possible. Please review our <a href="https://github.com/tidymodels/infer/blob/master/CONTRIBUTING.md">contributing</a> and <a href="https://github.com/tidymodels/infer/blob/master/CONDUCT.md">conduct</a> guidelines. Please see the open <a href="https://github.com/tidymodels/infer/issues">issues</a> for more specific fixes/additions needing attention. By participating in this project you agree to abide by its terms.</p>
+<p>We welcome others helping us make this package as user-friendly and efficient as possible. Please review our <a href="https://github.com/tidymodels/infer/blob/master/CONTRIBUTING.md">contributing</a> and <a href="https://github.com/tidymodels/infer/blob/master/CONDUCT.md">conduct</a> guidelines. By participating in this project you agree to abide by its terms.</p>
+<p>For questions and discussions about tidymodels packages, modeling, and machine learning, please <a href="https://rstd.io/tidymodels-community">post on RStudio Community</a>. If you think you have encountered a bug, please <a href="https://github.com/tidymodels/infer/issues">submit an issue</a>. Either way, learn how to create and share a <a href="https://rstd.io/reprex">reprex</a> (a minimal, reproducible example), to clearly communicate about your code. Check out further details on <a href="https://www.tidymodels.org/contribute/">contributing guidelines for tidymodels packages</a> and <a href="https://www.tidymodels.org/help/">how to get help</a>.</p>
 </div>
 <div id="examples" class="section level3">
 <h3 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h3>
 <hr>
 <p>These examples are pulled from the “Full infer Pipeline Examples” vignette, accessible by calling <code><a href="articles/observed_stat_examples.html">vignette("observed_stat_examples")</a></code>. They make use of the <code>gss</code> dataset supplied by the package, providing a sample of data from the <a href="https://gss.norc.org">General Social Survey</a>. The data looks like this:</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="co"># load in the dataset</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">gss</span>)
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="co"># load in the dataset</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="kw">gss</span>)
 
 <span class="co"># take a glimpse at it</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="no">gss</span>)</pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">## Classes 'tbl_df', 'tbl' and 'data.frame':    500 obs. of  11 variables:</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">##  $ year   : num  2014 1994 1998 1996 1994 ...</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">##  $ age    : num  36 34 24 42 31 32 48 36 30 33 ...</a>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="kw">gss</span>)
+</pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">## tibble [500 × 11] (S3: tbl_df/tbl/data.frame)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">##  $ year   : num [1:500] 2014 1994 1998 1996 1994 ...</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">##  $ age    : num [1:500] 36 34 24 42 31 32 48 36 30 33 ...</a>
 <a class="sourceLine" id="cb5-4" data-line-number="4">##  $ sex    : Factor w/ 2 levels "male","female": 1 2 1 1 1 2 2 2 2 2 ...</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">##  $ college: Factor w/ 2 levels "no degree","degree": 2 1 2 1 2 1 1 2 2 1 ...</a>
 <a class="sourceLine" id="cb5-6" data-line-number="6">##  $ partyid: Factor w/ 5 levels "dem","ind","rep",..: 2 3 2 2 3 3 1 2 3 1 ...</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">##  $ hompop : num  3 4 1 4 2 4 2 1 5 2 ...</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">##  $ hours  : num  50 31 40 40 40 53 32 20 40 40 ...</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">##  $ hompop : num [1:500] 3 4 1 4 2 4 2 1 5 2 ...</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">##  $ hours  : num [1:500] 50 31 40 40 40 53 32 20 40 40 ...</a>
 <a class="sourceLine" id="cb5-9" data-line-number="9">##  $ income : Ord.factor w/ 12 levels "lt $1000"&lt;"$1000 to 2999"&lt;..: 12 11 12 12 12 12 12 12 12 10 ...</a>
 <a class="sourceLine" id="cb5-10" data-line-number="10">##  $ class  : Factor w/ 6 levels "lower class",..: 3 2 2 2 3 3 2 3 3 2 ...</a>
 <a class="sourceLine" id="cb5-11" data-line-number="11">##  $ finrela: Factor w/ 6 levels "far below average",..: 2 2 2 4 4 3 2 4 3 1 ...</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">##  $ weight : num  0.896 1.083 0.55 1.086 1.083 ...</a></code></pre></div>
+<a class="sourceLine" id="cb5-12" data-line-number="12">##  $ weight : num [1:500] 0.896 1.083 0.55 1.086 1.083 ...</a></code></pre></div>
 <p>As an example, we’ll run an analysis of variance on <code>age</code> and <code>partyid</code>, testing whether the age of a respondent is independent of their political party affiliation.</p>
 <p>Calculating the observed statistic,</p>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="no">F_hat</span> <span class="kw">&lt;-</span> <span class="no">gss</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/specify.html">specify</a></span>(<span class="no">age</span> ~ <span class="no">partyid</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/calculate.html">calculate</a></span>(<span class="kw">stat</span> <span class="kw">=</span> <span class="st">"F"</span>)</pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="kw">F_hat</span> <span class="op">&lt;-</span> <span class="kw">gss</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="reference/specify.html">specify</a></span>(<span class="kw">age</span> <span class="op">~</span> <span class="kw">partyid</span>) <span class="op">%&gt;%</span>
+  <span class="fu"><a href="reference/calculate.html">calculate</a></span>(stat = <span class="st">"F"</span>)
+</pre></div>
 <p>Then, generating the null distribution,</p>
-<div class="sourceCode" id="cb7"><pre class="r"><span class="no">null_distn</span> <span class="kw">&lt;-</span> <span class="no">gss</span> <span class="kw">%&gt;%</span>
-   <span class="fu"><a href="reference/specify.html">specify</a></span>(<span class="no">age</span> ~ <span class="no">partyid</span>) <span class="kw">%&gt;%</span>
-   <span class="fu"><a href="reference/hypothesize.html">hypothesize</a></span>(<span class="kw">null</span> <span class="kw">=</span> <span class="st">"independence"</span>) <span class="kw">%&gt;%</span>
-   <span class="fu"><a href="reference/generate.html">generate</a></span>(<span class="kw">reps</span> <span class="kw">=</span> <span class="fl">1000</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"permute"</span>) <span class="kw">%&gt;%</span>
-   <span class="fu"><a href="reference/calculate.html">calculate</a></span>(<span class="kw">stat</span> <span class="kw">=</span> <span class="st">"F"</span>)</pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw">null_distn</span> <span class="op">&lt;-</span> <span class="kw">gss</span> <span class="op">%&gt;%</span>
+   <span class="fu"><a href="reference/specify.html">specify</a></span>(<span class="kw">age</span> <span class="op">~</span> <span class="kw">partyid</span>) <span class="op">%&gt;%</span>
+   <span class="fu"><a href="reference/hypothesize.html">hypothesize</a></span>(null = <span class="st">"independence"</span>) <span class="op">%&gt;%</span>
+   <span class="fu"><a href="reference/generate.html">generate</a></span>(reps = <span class="fl">1000</span>, type = <span class="st">"permute"</span>) <span class="op">%&gt;%</span>
+   <span class="fu"><a href="reference/calculate.html">calculate</a></span>(stat = <span class="st">"F"</span>)
+</pre></div>
 <p>Visualizing the observed statistic alongside the null distribution,</p>
-<div class="sourceCode" id="cb8"><pre class="r"><span class="fu"><a href="reference/visualize.html">visualize</a></span>(<span class="no">null_distn</span>) +
-  <span class="fu"><a href="reference/shade_p_value.html">shade_p_value</a></span>(<span class="kw">obs_stat</span> <span class="kw">=</span> <span class="no">F_hat</span>, <span class="kw">direction</span> <span class="kw">=</span> <span class="st">"greater"</span>)</pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="fu"><a href="reference/visualize.html">visualize</a></span>(<span class="kw">null_distn</span>) <span class="op">+</span>
+  <span class="fu"><a href="reference/shade_p_value.html">shade_p_value</a></span>(obs_stat = <span class="kw">F_hat</span>, direction = <span class="st">"greater"</span>)
+</pre></div>
 <p><img src="README_files/figure-gfm/unnamed-chunk-6-1.png"><!-- --></p>
 <p>Calculating the p-value from the null distribution and observed statistic,</p>
-<div class="sourceCode" id="cb9"><pre class="r"><span class="no">null_distn</span> <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="reference/get_p_value.html">get_p_value</a></span>(<span class="kw">obs_stat</span> <span class="kw">=</span> <span class="no">F_hat</span>, <span class="kw">direction</span> <span class="kw">=</span> <span class="st">"greater"</span>)</pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="kw">null_distn</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="reference/get_p_value.html">get_p_value</a></span>(obs_stat = <span class="kw">F_hat</span>, direction = <span class="st">"greater"</span>)
+</pre></div>
 <div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">## # A tibble: 1 x 1</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">##   p_value</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">##     &lt;dbl&gt;</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">## 1   0.056</a></code></pre></div>
-<p>Note that the formula and non-formula interfaces (i.e. <code>age ~ partyid</code> vs. <code>response = age, explanatory = partyid</code>) work for all implemented inference procedures in <code>infer</code>. Use whatever is more natural for you. If you will be doing modeling using functions like <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> and <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>, though, we recommend you begin to use the formula <code>y ~ x</code> notation as soon as possible.</p>
+<a class="sourceLine" id="cb10-4" data-line-number="4">## 1   0.055</a></code></pre></div>
+<p>Note that the formula and non-formula interfaces (i.e. <code>age ~ partyid</code> vs. <code>response = age, explanatory = partyid</code>) work for all implemented inference procedures in <code>infer</code>. Use whatever is more natural for you. If you will be doing modeling using functions like <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> and <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>, though, we recommend you begin to use the formula <code>y ~ x</code> notation as soon as possible.</p>
 <p>Other resources are available in the package vignettes! See <code><a href="articles/observed_stat_examples.html">vignette("observed_stat_examples")</a></code> for more examples like the one above, and <code><a href="articles/infer.html">vignette("infer")</a></code> for discussion of the underlying principles of the package design.</p>
 </div>
 </div>

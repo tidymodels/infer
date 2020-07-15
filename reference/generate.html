@@ -87,7 +87,7 @@ Learn more in vignette(&quot;infer&quot;)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -162,12 +162,12 @@ Learn more in vignette(&quot;infer&quot;)." />
     </div>
 
     <div class="ref-description">
-    <p>Generation creates a null distribution from <code><a href='specify.html'>specify()</a></code> and (if needed)
-<code><a href='hypothesize.html'>hypothesize()</a></code> inputs.</p>
-<p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
+    <p>Generation creates a null distribution from <code>specify()</code> and (if needed)
+<code>hypothesize()</code> inputs.</p>
+<p>Learn more in <code>vignette("infer")</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>generate</span>(<span class='no'>x</span>, <span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>generate</span>(<span class='kw'>x</span>, reps = <span class='fl'>1</span>, type = <span class='kw'>NULL</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -209,17 +209,17 @@ replacement) from the input sample data.</p></li>
 <li><p><code>permute</code>: For each replicate, each input value will be randomly
 reassigned (without replacement) to a new output value in the sample.</p></li>
 <li><p><code>simulate</code>: A value will be sampled from a theoretical distribution
-with parameters specified in <code><a href='hypothesize.html'>hypothesize()</a></code> for each replicate. (This
+with parameters specified in <code>hypothesize()</code> for each replicate. (This
 option is currently only applicable for testing point estimates.)</p></li>
 </ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Generate a null distribution by taking 200 bootstrap samples</span>
-<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>hours</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>40</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>)</div><div class='output co'>#&gt; Response: hours (numeric)
+<span class='kw'>gss</span> <span class='op'>%&gt;%</span>
+ <span class='fu'>specify</span>(response = <span class='kw'>hours</span>) <span class='op'>%&gt;%</span>
+ <span class='fu'>hypothesize</span>(null = <span class='st'>"point"</span>, mu = <span class='fl'>40</span>) <span class='op'>%&gt;%</span>
+ <span class='fu'>generate</span>(reps = <span class='fl'>200</span>, type = <span class='st'>"bootstrap"</span>)</div><div class='output co'>#&gt; Response: hours (numeric)
 #&gt; Null Hypothesis: point
 #&gt; # A tibble: 100,000 x 2
 #&gt; # Groups:   replicate [200]
@@ -238,10 +238,10 @@ option is currently only applicable for testing point estimates.)</p></li>
 #&gt; # … with 99,990 more rows</div><div class='input'>
 <span class='co'># Generate a null distribution for the independence of</span>
 <span class='co'># two variables by permuting their values 1000 times</span>
-<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>partyid</span> ~ <span class='no'>age</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>)</div><div class='output co'>#&gt; Response: partyid (factor)
+<span class='kw'>gss</span> <span class='op'>%&gt;%</span>
+ <span class='fu'>specify</span>(<span class='kw'>partyid</span> <span class='op'>~</span> <span class='kw'>age</span>) <span class='op'>%&gt;%</span>
+ <span class='fu'>hypothesize</span>(null = <span class='st'>"independence"</span>) <span class='op'>%&gt;%</span>
+ <span class='fu'>generate</span>(reps = <span class='fl'>200</span>, type = <span class='st'>"permute"</span>)</div><div class='output co'>#&gt; Response: partyid (factor)
 #&gt; Explanatory: age (numeric)
 #&gt; Null Hypothesis: independence
 #&gt; # A tibble: 100,000 x 3
@@ -260,9 +260,10 @@ option is currently only applicable for testing point estimates.)</p></li>
 #&gt; 10 dem        33         1
 #&gt; # … with 99,990 more rows</div><div class='input'>
 <span class='co'># More in-depth explanation of how to use the infer package</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

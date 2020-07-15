@@ -85,7 +85,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -164,16 +164,16 @@
     </div>
 
     <pre class="usage"><span class='fu'>t_stat</span>(
-  <span class='no'>x</span>,
-  <span class='no'>formula</span>,
-  <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>explanatory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"two-sided"</span>,
-  <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>conf_int</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>conf_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='no'>...</span>
+  <span class='kw'>x</span>,
+  <span class='kw'>formula</span>,
+  response = <span class='kw'>NULL</span>,
+  explanatory = <span class='kw'>NULL</span>,
+  order = <span class='kw'>NULL</span>,
+  alternative = <span class='st'>"two-sided"</span>,
+  mu = <span class='fl'>0</span>,
+  conf_int = <span class='fl'>FALSE</span>,
+  conf_level = <span class='fl'>0.95</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -230,22 +230,21 @@ interval or not. <code>TRUE</code> by default.</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyr</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://tidyr.tidyverse.org'>tidyr</a></span>)
 
 <span class='co'># t test statistic for true mean number of hours worked</span>
 <span class='co'># per week of 40</span>
-<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
-   <span class='fu'>t_stat</span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>hours</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>40</span>)</div><div class='output co'>#&gt;        t 
+<span class='kw'>gss</span> <span class='op'>%&gt;%</span>
+   <span class='fu'>t_stat</span>(response = <span class='kw'>hours</span>, mu = <span class='fl'>40</span>)</div><div class='output co'>#&gt;        t 
 #&gt; 2.085191 </div><div class='input'>
 <span class='co'># t test statistic for number of hours worked per week</span>
 <span class='co'># by college degree status</span>
-<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
-   <span class='kw pkg'>tidyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://tidyr.tidyverse.org/reference/drop_na.html'>drop_na</a></span>(<span class='no'>college</span>) <span class='kw'>%&gt;%</span>
-   <span class='fu'>t_stat</span>(<span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>hours</span> ~ <span class='no'>college</span>,
-      <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"degree"</span>, <span class='st'>"no degree"</span>),
-      <span class='kw'>alternative</span> <span class='kw'>=</span> <span class='st'>"two-sided"</span>)</div><div class='output co'>#&gt;       t 
-#&gt; 1.11931 </div><div class='input'>
-</div></pre>
+<span class='kw'>gss</span> <span class='op'>%&gt;%</span>
+   <span class='kw'>tidyr</span>::<span class='fu'><a href='https://tidyr.tidyverse.org/reference/drop_na.html'>drop_na</a></span>(<span class='kw'>college</span>) <span class='op'>%&gt;%</span>
+   <span class='fu'>t_stat</span>(formula = <span class='kw'>hours</span> <span class='op'>~</span> <span class='kw'>college</span>,
+      order = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"degree"</span>, <span class='st'>"no degree"</span>),
+      alternative = <span class='st'>"two-sided"</span>)</div><div class='output co'>#&gt;       t 
+#&gt; 1.11931 </div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

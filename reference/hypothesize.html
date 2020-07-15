@@ -86,7 +86,7 @@ Learn more in vignette(&quot;infer&quot;)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -161,13 +161,13 @@ Learn more in vignette(&quot;infer&quot;)." />
     </div>
 
     <div class="ref-description">
-    <p>Declare a null hypothesis about variables selected in <code><a href='specify.html'>specify()</a></code>.</p>
-<p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
+    <p>Declare a null hypothesis about variables selected in <code>specify()</code>.</p>
+<p>Learn more in <code>vignette("infer")</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>hypothesize</span>(<span class='no'>x</span>, <span class='no'>null</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>med</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>hypothesize</span>(<span class='kw'>x</span>, <span class='kw'>null</span>, p = <span class='kw'>NULL</span>, mu = <span class='kw'>NULL</span>, med = <span class='kw'>NULL</span>, sigma = <span class='kw'>NULL</span>)
 
-<span class='fu'>hypothesise</span>(<span class='no'>x</span>, <span class='no'>null</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>med</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>hypothesise</span>(<span class='kw'>x</span>, <span class='kw'>null</span>, p = <span class='kw'>NULL</span>, mu = <span class='kw'>NULL</span>, med = <span class='kw'>NULL</span>, sigma = <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -210,9 +210,9 @@ variable data with parameter information stored as well.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># hypothesize independence of two variables</span>
-<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>college</span> ~ <span class='no'>partyid</span>, <span class='kw'>success</span> <span class='kw'>=</span> <span class='st'>"degree"</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'>hypothesize</span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>)</div><div class='output co'>#&gt; Response: college (factor)
+<span class='kw'>gss</span> <span class='op'>%&gt;%</span>
+ <span class='fu'>specify</span>(<span class='kw'>college</span> <span class='op'>~</span> <span class='kw'>partyid</span>, success = <span class='st'>"degree"</span>) <span class='op'>%&gt;%</span>
+ <span class='fu'>hypothesize</span>(null = <span class='st'>"independence"</span>)</div><div class='output co'>#&gt; Response: college (factor)
 #&gt; Explanatory: partyid (factor)
 #&gt; Null Hypothesis: independence
 #&gt; # A tibble: 500 x 2
@@ -228,11 +228,11 @@ variable data with parameter information stored as well.</p>
 #&gt;  8 degree    ind    
 #&gt;  9 degree    rep    
 #&gt; 10 no degree dem    
-#&gt; # … with 490 more rows</div><div class='input'>
+#&gt; # … with 490 more rows</div><div class='input'> 
 <span class='co'># hypothesize a mean number of hours worked per week of 40</span>
-<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>hours</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>hypothesize</span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>40</span>)</div><div class='output co'>#&gt; Response: hours (numeric)
+<span class='kw'>gss</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>specify</span>(response = <span class='kw'>hours</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'>hypothesize</span>(null = <span class='st'>"point"</span>, mu = <span class='fl'>40</span>)</div><div class='output co'>#&gt; Response: hours (numeric)
 #&gt; Null Hypothesis: point
 #&gt; # A tibble: 500 x 1
 #&gt;    hours
@@ -249,9 +249,10 @@ variable data with parameter information stored as well.</p>
 #&gt; 10    40
 #&gt; # … with 490 more rows</div><div class='input'>
 <span class='co'># More in-depth explanation of how to use the infer package</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

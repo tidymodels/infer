@@ -86,7 +86,7 @@ tests and tests of independence." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -165,7 +165,7 @@ tests and tests of independence." />
 tests and tests of independence.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>chisq_test</span>(<span class='no'>x</span>, <span class='no'>formula</span>, <span class='kw'>response</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>explanatory</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>chisq_test</span>(<span class='kw'>x</span>, <span class='kw'>formula</span>, response = <span class='kw'>NULL</span>, explanatory = <span class='kw'>NULL</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -199,24 +199,23 @@ explanatory variable.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># chi-squared test of independence for college completion </span>
 <span class='co'># status depending on one's self-identified income class</span>
-<span class='fu'>chisq_test</span>(<span class='no'>gss</span>, <span class='no'>college</span> ~ <span class='no'>finrela</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='output co'>#&gt; # A tibble: 1 x 3
+<span class='fu'>chisq_test</span>(<span class='kw'>gss</span>, <span class='kw'>college</span> <span class='op'>~</span> <span class='kw'>finrela</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Chi-squared approximation may be incorrect</span></div><div class='output co'>#&gt; # A tibble: 1 x 3
 #&gt;   statistic chisq_df   p_value
 #&gt;       &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
 #&gt; 1      30.7        5 0.0000108</div><div class='input'>
 <span class='co'># chi-squared goodness of fit test on whether self-identified </span>
 <span class='co'># income class follows a uniform distribution</span>
-<span class='fu'>chisq_test</span>(<span class='no'>gss</span>,
-           <span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>finrela</span>,
-           <span class='kw'>p</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"far below average"</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>6</span>,
-                 <span class='st'>"below average"</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>6</span>,
-                 <span class='st'>"average"</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>6</span>,
-                 <span class='st'>"above average"</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>6</span>,
-                 <span class='st'>"far above average"</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>6</span>,
-                 <span class='st'>"DK"</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='fl'>6</span>))</div><div class='output co'>#&gt; # A tibble: 1 x 3
+<span class='fu'>chisq_test</span>(<span class='kw'>gss</span>, 
+           response = <span class='kw'>finrela</span>,
+           p = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"far below average"</span> = <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,
+                 <span class='st'>"below average"</span> = <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,
+                 <span class='st'>"average"</span> = <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,
+                 <span class='st'>"above average"</span> = <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,
+                 <span class='st'>"far above average"</span> = <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,
+                 <span class='st'>"DK"</span> = <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>))</div><div class='output co'>#&gt; # A tibble: 1 x 3
 #&gt;   statistic chisq_df   p_value
 #&gt;       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
-#&gt; 1      488.        5 3.13e-103</div><div class='input'>
-</div></pre>
+#&gt; 1      488.        5 3.13e-103</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

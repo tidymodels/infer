@@ -87,7 +87,7 @@ Learn more in vignette(&quot;infer&quot;)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -162,18 +162,18 @@ Learn more in vignette(&quot;infer&quot;)." />
     </div>
 
     <div class="ref-description">
-    <p>Calculates summary statistics from outputs of <code><a href='generate.html'>generate()</a></code> or
-<code><a href='hypothesize.html'>hypothesize()</a></code>.</p>
-<p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
+    <p>Calculates summary statistics from outputs of <code>generate()</code> or
+<code>hypothesize()</code>.</p>
+<p>Learn more in <code>vignette("infer")</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>calculate</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>stat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>, <span class='st'>"sum"</span>, <span class='st'>"sd"</span>, <span class='st'>"prop"</span>, <span class='st'>"count"</span>, <span class='st'>"diff in means"</span>,
+  <span class='kw'>x</span>,
+  stat = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>, <span class='st'>"sum"</span>, <span class='st'>"sd"</span>, <span class='st'>"prop"</span>, <span class='st'>"count"</span>, <span class='st'>"diff in means"</span>,
     <span class='st'>"diff in medians"</span>, <span class='st'>"diff in props"</span>, <span class='st'>"Chisq"</span>, <span class='st'>"F"</span>, <span class='st'>"slope"</span>, <span class='st'>"correlation"</span>, <span class='st'>"t"</span>, <span class='st'>"z"</span>,
     <span class='st'>"ratio of props"</span>, <span class='st'>"odds ratio"</span>),
-  <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
+  order = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -181,8 +181,8 @@ Learn more in vignette(&quot;infer&quot;)." />
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>The output from <code><a href='generate.html'>generate()</a></code> for computation-based inference or the
-output from <code><a href='hypothesize.html'>hypothesize()</a></code> piped in to here for theory-based inference.</p></td>
+      <td><p>The output from <code>generate()</code> for computation-based inference or the
+output from <code>hypothesize()</code> piped in to here for theory-based inference.</p></td>
     </tr>
     <tr>
       <th>stat</th>
@@ -221,11 +221,11 @@ visualizations (with a warning) and raise an error in p-value calculations.</p>
     <pre class="examples"><div class='input'>
 <span class='co'># calculate a null distribution of hours worked per week under</span>
 <span class='co'># the null hypothesis that the mean is 40</span>
-<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>hours</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>40</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'>calculate</span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>)</div><div class='output co'>#&gt; # A tibble: 200 x 2
+<span class='kw'>gss</span> <span class='op'>%&gt;%</span>
+ <span class='fu'>specify</span>(response = <span class='kw'>hours</span>) <span class='op'>%&gt;%</span>
+ <span class='fu'>hypothesize</span>(null = <span class='st'>"point"</span>, mu = <span class='fl'>40</span>) <span class='op'>%&gt;%</span>
+ <span class='fu'>generate</span>(reps = <span class='fl'>200</span>, type = <span class='st'>"bootstrap"</span>) <span class='op'>%&gt;%</span>
+ <span class='fu'>calculate</span>(stat = <span class='st'>"mean"</span>)</div><div class='output co'>#&gt; # A tibble: 200 x 2
 #&gt;    replicate  stat
 #&gt;        &lt;int&gt; &lt;dbl&gt;
 #&gt;  1         1  39.2
@@ -241,11 +241,11 @@ visualizations (with a warning) and raise an error in p-value calculations.</p>
 #&gt; # … with 190 more rows</div><div class='input'>
 <span class='co'># calculate a null distribution assuming independence between age</span>
 <span class='co'># of respondent and whether they have a college degree</span>
-<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>age</span> ~ <span class='no'>college</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'>calculate</span>(<span class='st'>"diff in means"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"degree"</span>, <span class='st'>"no degree"</span>))</div><div class='output co'>#&gt; # A tibble: 200 x 2
+<span class='kw'>gss</span> <span class='op'>%&gt;%</span>
+ <span class='fu'>specify</span>(<span class='kw'>age</span> <span class='op'>~</span> <span class='kw'>college</span>) <span class='op'>%&gt;%</span>
+ <span class='fu'>hypothesize</span>(null = <span class='st'>"independence"</span>) <span class='op'>%&gt;%</span>
+ <span class='fu'>generate</span>(reps = <span class='fl'>200</span>, type = <span class='st'>"permute"</span>) <span class='op'>%&gt;%</span>
+ <span class='fu'>calculate</span>(<span class='st'>"diff in means"</span>, order = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"degree"</span>, <span class='st'>"no degree"</span>))</div><div class='output co'>#&gt; # A tibble: 200 x 2
 #&gt;    replicate     stat
 #&gt;        &lt;int&gt;    &lt;dbl&gt;
 #&gt;  1         1 -2.48   
@@ -260,9 +260,10 @@ visualizations (with a warning) and raise an error in p-value calculations.</p>
 #&gt; 10        10 -1.78   
 #&gt; # … with 190 more rows</div><div class='input'>
 <span class='co'># More in-depth explanation of how to use the infer package</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)
-}</div></pre>
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
