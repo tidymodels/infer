@@ -7,7 +7,7 @@
 \usage{
 rep_sample_n(tbl, size, replace = FALSE, reps = 1, prob = NULL)
 
-rep_slice_sample(tbl, n, replace = FALSE, reps = 1, weight_by = NULL)
+rep_slice_sample(.data, n = 1, replace = FALSE, weight_by = NULL, reps = 1)
 }
 \arguments{
 \item{tbl}{Data frame of population from which to sample.}
@@ -20,6 +20,8 @@ rep_slice_sample(tbl, n, replace = FALSE, reps = 1, weight_by = NULL)
 
 \item{prob}{A vector of sampling weights for each of the rows in \code{tbl}—must
 have length equal to \code{nrow(tbl)}.}
+
+\item{.data}{Data frame of population from which to sample.}
 
 \item{n}{Sample size of each sample.}
 

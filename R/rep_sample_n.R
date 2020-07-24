@@ -13,6 +13,7 @@
 #' @param reps Number of samples of size n = `size` to take.
 #' @param prob A vector of sampling weights for each of the rows in `tbl`—must
 #'   have length equal to `nrow(tbl)`.
+#' @param .data Data frame of population from which to sample.
 #' @param n Sample size of each sample.
 #' @param weight_by A vector of sampling weights for each of the rows 
 #'   in `tbl`—must have length equal to `nrow(tbl)`.
@@ -70,6 +71,6 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
 
 #' @rdname rep_sample_n
 #' @export
-rep_slice_sample <- function(tbl, n, replace = FALSE, reps = 1, weight_by = NULL) {
-  rep_sample_n(tbl, n, replace, reps, weight_by)
+rep_slice_sample <- function(.data, n = 1, replace = FALSE, weight_by = NULL, reps = 1) {
+  rep_sample_n(.data, n, replace, reps, weight_by)
 }
