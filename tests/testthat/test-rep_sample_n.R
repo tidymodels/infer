@@ -35,7 +35,7 @@ test_that("rep_sample_n is sensitive to the reps argument", {
   expect_equal(ncol(res1), 3)
   
   expect_equal(nrow(res1) / r1, nrow(res2) / r2)
-  expect_equal(nrow(res1), reps * s1)
+  expect_equal(nrow(res1), r1 * size)
 })
 
 test_that("rep_sample_n is sensitive to the replace argument", {
