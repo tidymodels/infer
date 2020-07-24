@@ -14,6 +14,11 @@
 #'
 #' @return A tibble of size `rep` times `size` rows corresponding to `rep`
 #'   samples of size n = `size` from `tbl`.
+#'   
+#' @details The [dplyr::sample_n()] function from that `rep_sample_n()` function 
+#' was originally written to supplement has been superseded 
+#' by [dplyr::slice_sample()]. `rep_slice_sample()` provides a light wrapper
+#' around `rep_sample_n()` that has a more similar interface to `slice_sample()`
 #'
 #' @examples
 #' suppressPackageStartupMessages(library(dplyr))
@@ -39,14 +44,8 @@
 #'   geom_density() +
 #'   labs(x = "p_hat", y = "Number of samples",
 #'   title = "Sampling distribution of p_hat from 1000 samples of size 50")
-#'
-#' @importFrom dplyr pull
-#' @importFrom dplyr inner_join
-#' @importFrom dplyr group_by
 #' @export
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
-  n <- nrow(tbl)
-
   check_type(tbl, is.data.frame)
   check_type(size, is.numeric)
   check_type(replace, is.logical)
@@ -55,33 +54,20 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
     check_type(prob, is.numeric)
   }
 
-  # assign non-uniform probabilities
-  # there should be a better way!!
-  # prob needs to be nrow(tbl) -- not just number of factor levels
-  if (!is.null(prob)) {
-    if (length(prob) != n) {
-      stop_glue(
-        "The argument `prob` must have length `nrow(tbl)` = {nrow(tbl)}"
-      )
-    }
+  1:reps %>%
+    purrr::map_dfr(
+      ~ tbl %>%
+        dplyr::slice_sample(n = size, weight_by = prob, replace = replace)
+    ) %>%
+    dplyr::mutate(
+      replicate = rep(1:reps, each = size), 
+      .before = dplyr::everything()
+    ) %>%
+    dplyr::group_by(replicate)
+}
 
-    prob <- tibble::tibble(vals = levels(dplyr::pull(tbl, 1))) %>%
-      dplyr::mutate(probs = prob) %>%
-      dplyr::inner_join(tbl) %>%
-      dplyr::select(probs) %>%
-      dplyr::pull()
-  }
-
-  i <- unlist(replicate(
-    reps,
-    sample.int(n, size, replace = replace, prob = prob),
-    simplify = FALSE
-  ))
-  rep_tbl <- cbind(
-    replicate = rep(1:reps, rep(size, reps)),
-    tbl[i, ]
-  )
-  rep_tbl <- tibble::as_tibble(rep_tbl)
-  names(rep_tbl)[-1] <- names(tbl)
-  dplyr::group_by(rep_tbl, replicate)
+#' @rdname rep_sample_n
+#' @export
+rep_slice_sample <- function(tbl, n, replace = FALSE, reps = 1, weight_by = NULL) {
+  rep_sample_n(tbl, n, replace, reps, weight_by)
 }

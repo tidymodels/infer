@@ -2,9 +2,12 @@
 % Please edit documentation in R/rep_sample_n.R
 \name{rep_sample_n}
 \alias{rep_sample_n}
+\alias{rep_slice_sample}
 \title{Perform repeated sampling}
 \usage{
 rep_sample_n(tbl, size, replace = FALSE, reps = 1, prob = NULL)
+
+rep_slice_sample(tbl, n, replace = FALSE, reps = 1, weight_by = NULL)
 }
 \arguments{
 \item{tbl}{Data frame of population from which to sample.}
@@ -25,6 +28,12 @@ samples of size n = \code{size} from \code{tbl}.
 \description{
 Perform repeated sampling of samples of size n. Useful for creating sampling
 distributions.
+}
+\details{
+The \code{\link[dplyr:sample_n]{dplyr::sample_n()}} function from that \code{rep_sample_n()} function
+was originally written to supplement has been superseded
+by \code{\link[dplyr:slice]{dplyr::slice_sample()}}. \code{rep_slice_sample()} provides a light wrapper
+around \code{rep_sample_n()} that has a more similar interface to \code{slice_sample()}
 }
 \examples{
 suppressPackageStartupMessages(library(dplyr))
@@ -50,5 +59,4 @@ ggplot(p_hats, aes(x = prop_hurricane)) +
   geom_density() +
   labs(x = "p_hat", y = "Number of samples",
   title = "Sampling distribution of p_hat from 1000 samples of size 50")
-
 }
