@@ -2,48 +2,50 @@
 #'
 #' @description
 #'
-#' Perform repeated sampling of samples of size n. Useful for creating sampling
-#' distributions.
+#' These functions extend the functionality of [dplyr::sample_n()] and 
+#' [dplyr::slice_sample()] by allowing for repeated sampling of data.
+#' This operation is especially helpful while creating sampling 
+#' distributions—see the examples below!
 #'
 #' @param tbl Data frame of population from which to sample.
 #' @param size Sample size of each sample.
 #' @param replace Should sampling be with replacement?
 #' @param reps Number of samples of size n = `size` to take.
-#' @param prob A vector of probability weights for obtaining the elements of the
-#'   vector being sampled.
+#' @param prob A vector of sampling weights for each of the rows in `tbl`—must
+#'   have length equal to `nrow(tbl)`.
+#' @param n Sample size of each sample.
+#' @param weight_by A vector of sampling weights for each of the rows 
+#'   in `tbl`—must have length equal to `nrow(tbl)`.
 #'
-#' @return A tibble of size `rep` times `size` rows corresponding to `rep`
-#'   samples of size n = `size` from `tbl`.
+#' @return A tibble of size `rep * size` rows corresponding to `reps`
+#'   samples of size `size` from `tbl`, grouped by `replicate`.
 #'   
 #' @details The [dplyr::sample_n()] function from that `rep_sample_n()` function 
 #' was originally written to supplement has been superseded 
 #' by [dplyr::slice_sample()]. `rep_slice_sample()` provides a light wrapper
-#' around `rep_sample_n()` that has a more similar interface to `slice_sample()`
+#' around `rep_sample_n()` that has a more similar interface to `slice_sample()`.
 #'
 #' @examples
-#' suppressPackageStartupMessages(library(dplyr))
-#' suppressPackageStartupMessages(library(ggplot2))
-#'
-#' # A virtual population of N = 10,010, of which 3091 are hurricanes
-#' population <- dplyr::storms %>%
-#'   select(status)
-#'
-#' # Take samples of size n = 50 storms without replacement; do this 1000 times
-#' samples <- population %>%
+#' library(dplyr)
+#' library(ggplot2)
+#' 
+#' # take 1000 samples of size n = 50, without replacement
+#' resamples <- gss %>%
 #'   rep_sample_n(size = 50, reps = 1000)
-#' samples
+#'   
+#' resamples
 #'
-#' # Compute p_hats for all 1000 samples = proportion hurricanes
-#' p_hats <- samples %>%
+#' # compute the proportion of respondents with a college
+#' # degree in each replicate
+#' p_hats <- resamples %>%
 #'   group_by(replicate) %>%
-#'   summarize(prop_hurricane = mean(status == "hurricane"))
-#' p_hats
+#'   summarize(prop_college = mean(college == "degree")) 
 #'
-#' # Plot sampling distribution
-#' ggplot(p_hats, aes(x = prop_hurricane)) +
+#' # plot sampling distribution
+#' ggplot(p_hats, aes(x = prop_college)) +
 #'   geom_density() +
 #'   labs(x = "p_hat", y = "Number of samples",
-#'   title = "Sampling distribution of p_hat from 1000 samples of size 50")
+#'   title = "Sampling distribution of p_hat")
 #' @export
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   check_type(tbl, is.data.frame)
