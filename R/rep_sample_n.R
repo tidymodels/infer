@@ -7,16 +7,12 @@
 #' This operation is especially helpful while creating sampling 
 #' distributions—see the examples below!
 #'
-#' @param tbl Data frame of population from which to sample.
-#' @param size Sample size of each sample.
+#' @param tbl,.data Data frame of population from which to sample.
+#' @param size,n Sample size of each sample.
 #' @param replace Should sampling be with replacement?
 #' @param reps Number of samples of size n = `size` to take.
-#' @param prob A vector of sampling weights for each of the rows in `tbl`—must
+#' @param prob,weight_by A vector of sampling weights for each of the rows in `tbl`—must
 #'   have length equal to `nrow(tbl)`.
-#' @param .data Data frame of population from which to sample.
-#' @param n Sample size of each sample.
-#' @param weight_by A vector of sampling weights for each of the rows 
-#'   in `tbl`—must have length equal to `nrow(tbl)`.
 #'
 #' @return A tibble of size `rep * size` rows corresponding to `reps`
 #'   samples of size `size` from `tbl`, grouped by `replicate`.
@@ -31,14 +27,14 @@
 #' library(ggplot2)
 #' 
 #' # take 1000 samples of size n = 50, without replacement
-#' resamples <- gss %>%
+#' slices <- gss %>%
 #'   rep_sample_n(size = 50, reps = 1000)
 #'   
-#' resamples
+#' slices
 #'
 #' # compute the proportion of respondents with a college
 #' # degree in each replicate
-#' p_hats <- resamples %>%
+#' p_hats <- slices %>%
 #'   group_by(replicate) %>%
 #'   summarize(prop_college = mean(college == "degree")) 
 #'

@@ -10,23 +10,16 @@ rep_sample_n(tbl, size, replace = FALSE, reps = 1, prob = NULL)
 rep_slice_sample(.data, n = 1, replace = FALSE, weight_by = NULL, reps = 1)
 }
 \arguments{
-\item{tbl}{Data frame of population from which to sample.}
+\item{tbl, .data}{Data frame of population from which to sample.}
 
-\item{size}{Sample size of each sample.}
+\item{size, n}{Sample size of each sample.}
 
 \item{replace}{Should sampling be with replacement?}
 
 \item{reps}{Number of samples of size n = \code{size} to take.}
 
-\item{prob}{A vector of sampling weights for each of the rows in \code{tbl}—must
+\item{prob, weight_by}{A vector of sampling weights for each of the rows in \code{tbl}—must
 have length equal to \code{nrow(tbl)}.}
-
-\item{.data}{Data frame of population from which to sample.}
-
-\item{n}{Sample size of each sample.}
-
-\item{weight_by}{A vector of sampling weights for each of the rows
-in \code{tbl}—must have length equal to \code{nrow(tbl)}.}
 }
 \value{
 A tibble of size \code{rep * size} rows corresponding to \code{reps}
@@ -49,14 +42,14 @@ library(dplyr)
 library(ggplot2)
 
 # take 1000 samples of size n = 50, without replacement
-resamples <- gss \%>\%
+slices <- gss \%>\%
   rep_sample_n(size = 50, reps = 1000)
   
-resamples
+slices
 
 # compute the proportion of respondents with a college
 # degree in each replicate
-p_hats <- resamples \%>\%
+p_hats <- slices \%>\%
   group_by(replicate) \%>\%
   summarize(prop_college = mean(college == "degree")) 
 
