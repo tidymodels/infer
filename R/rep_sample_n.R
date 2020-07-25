@@ -53,7 +53,7 @@
 #'   id = 1:5,
 #'   letter = factor(c("a", "b", "c", "d", "e"))
 #' )
-#' rep_sample_n(df, size = 4, reps = 2, prob = c(.5, .4, .3, .2, .1))
+#' rep_sample_n(df, size = 2, reps = 5, prob = c(.5, .4, .3, .2, .1))
 #' @export
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   check_type(tbl, is.data.frame)
