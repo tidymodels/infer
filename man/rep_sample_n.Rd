@@ -60,4 +60,13 @@ ggplot(p_hats, aes(x = prop_college)) +
     x = "p_hat", y = "Number of samples",
     title = "Sampling distribution of p_hat"
   )
+  
+# sampling with probability weights. Note probabilities are automatically 
+# renormalized to sum to 1
+library(tibble)
+df <- tibble(
+  id = 1:5,
+  letter = factor(c("a", "b", "c", "d", "e"))
+)
+rep_sample_n(df, size = 2, reps = 5, prob = c(.5, .4, .3, .2, .1))
 }
