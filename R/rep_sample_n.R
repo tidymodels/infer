@@ -54,17 +54,27 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   check_type(reps, is.numeric)
   if (!is.null(prob)) {
     check_type(prob, is.numeric)
+    if (length(prob) != nrow(tbl)) {
+      stop_glue(
+        "The argument `prob` must have length `nrow(tbl)` = {nrow(tbl)}"
+      )
+    }
   }
 
-  1:reps %>%
-    purrr::map_dfr(
-      ~ tbl %>%
-        dplyr::slice_sample(n = size, weight_by = prob, replace = replace)
-    ) %>%
-    dplyr::mutate(
-      replicate = rep(1:reps, each = size),
-      .before = dplyr::everything()
-    ) %>%
+  # Generate row indexes for every future replicate (this way it respects
+  # possibility of  `replace = FALSE`)
+  n <- nrow(tbl)
+  i <- unlist(replicate(
+    reps,
+    sample.int(n, size, replace = replace, prob = prob),
+    simplify = FALSE
+  ))
+
+  tbl %>%
+    dplyr::slice(i) %>%
+    dplyr::mutate(replicate = rep(seq_len(reps), each = size)) %>%
+    dplyr::select(replicate, dplyr::everything()) %>%
+    tibble::as_tibble() %>%
     dplyr::group_by(replicate)
 }
 
