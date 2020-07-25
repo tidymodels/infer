@@ -2,53 +2,71 @@
 % Please edit documentation in R/rep_sample_n.R
 \name{rep_sample_n}
 \alias{rep_sample_n}
+\alias{rep_slice_sample}
 \title{Perform repeated sampling}
 \usage{
 rep_sample_n(tbl, size, replace = FALSE, reps = 1, prob = NULL)
+
+rep_slice_sample(.data, n = 1, replace = FALSE, weight_by = NULL, reps = 1)
 }
 \arguments{
-\item{tbl}{Data frame of population from which to sample.}
+\item{tbl, .data}{Data frame of population from which to sample.}
 
-\item{size}{Sample size of each sample.}
+\item{size, n}{Sample size of each sample.}
 
 \item{replace}{Should sampling be with replacement?}
 
 \item{reps}{Number of samples of size n = \code{size} to take.}
 
-\item{prob}{A vector of probability weights for obtaining the elements of the
-vector being sampled.}
+\item{prob, weight_by}{A vector of sampling weights for each of the rows in
+\code{tbl}—must have length equal to \code{nrow(tbl)}.}
 }
 \value{
-A tibble of size \code{rep} times \code{size} rows corresponding to \code{rep}
-samples of size n = \code{size} from \code{tbl}.
+A tibble of size \code{rep * size} rows corresponding to \code{reps}
+samples of size \code{size} from \code{tbl}, grouped by \code{replicate}.
 }
 \description{
-Perform repeated sampling of samples of size n. Useful for creating sampling
-distributions.
+These functions extend the functionality of \code{\link[dplyr:sample_n]{dplyr::sample_n()}} and
+\code{\link[dplyr:slice]{dplyr::slice_sample()}} by allowing for repeated sampling of data.
+This operation is especially helpful while creating sampling
+distributions—see the examples below!
+}
+\details{
+The \code{\link[dplyr:sample_n]{dplyr::sample_n()}} function (to which \code{rep_sample_n()} was
+originally a supplement) has been superseded by \code{\link[dplyr:slice]{dplyr::slice_sample()}}.
+\code{rep_slice_sample()} provides a light wrapper around \code{rep_sample_n()} that
+has a more similar interface to \code{slice_sample()}.
 }
 \examples{
-suppressPackageStartupMessages(library(dplyr))
-suppressPackageStartupMessages(library(ggplot2))
+library(dplyr)
+library(ggplot2)
 
-# A virtual population of N = 10,010, of which 3091 are hurricanes
-population <- dplyr::storms \%>\%
-  select(status)
-
-# Take samples of size n = 50 storms without replacement; do this 1000 times
-samples <- population \%>\%
+# take 1000 samples of size n = 50, without replacement
+slices <- gss \%>\%
   rep_sample_n(size = 50, reps = 1000)
-samples
 
-# Compute p_hats for all 1000 samples = proportion hurricanes
-p_hats <- samples \%>\%
+slices
+
+# compute the proportion of respondents with a college
+# degree in each replicate
+p_hats <- slices \%>\%
   group_by(replicate) \%>\%
-  summarize(prop_hurricane = mean(status == "hurricane"))
-p_hats
+  summarize(prop_college = mean(college == "degree"))
 
-# Plot sampling distribution
-ggplot(p_hats, aes(x = prop_hurricane)) +
+# plot sampling distribution
+ggplot(p_hats, aes(x = prop_college)) +
   geom_density() +
-  labs(x = "p_hat", y = "Number of samples",
-  title = "Sampling distribution of p_hat from 1000 samples of size 50")
-
+  labs(
+    x = "p_hat", y = "Number of samples",
+    title = "Sampling distribution of p_hat"
+  )
+  
+# sampling with probability weights. Note probabilities are automatically 
+# renormalized to sum to 1
+library(tibble)
+df <- tibble(
+  id = 1:5,
+  letter = factor(c("a", "b", "c", "d", "e"))
+)
+rep_sample_n(df, size = 2, reps = 5, prob = c(.5, .4, .3, .2, .1))
 }

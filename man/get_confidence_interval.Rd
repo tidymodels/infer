@@ -36,7 +36,7 @@ correspond to lower and upper bounds of the confidence interval.
 }
 \description{
 Compute a confidence interval around a summary statistic. Only
-simulation-based methods are (currently only) supported.
+simulation-based methods are (currently) supported.
 
 Learn more in \code{vignette("infer")}.
 }
