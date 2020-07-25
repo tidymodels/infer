@@ -17,11 +17,10 @@
 #' @return A tibble of size `rep * size` rows corresponding to `reps`
 #'   samples of size `size` from `tbl`, grouped by `replicate`.
 #'
-#' @details The [dplyr::sample_n()] function from that `rep_sample_n()`
-#' function was originally written to supplement has been superseded by
-#' [dplyr::slice_sample()]. `rep_slice_sample()` provides a light wrapper
-#' around `rep_sample_n()` that has a more similar interface to
-#' `slice_sample()`.
+#' @details The [dplyr::sample_n()] function (to which `rep_sample_n()` was
+#' originally a supplement) has been superseded by [dplyr::slice_sample()].
+#' `rep_slice_sample()` provides a light wrapper around `rep_sample_n()` that
+#' has a more similar interface to `slice_sample()`.
 #'
 #' @examples
 #' library(dplyr)

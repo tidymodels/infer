@@ -32,11 +32,10 @@ This operation is especially helpful while creating sampling
 distributions—see the examples below!
 }
 \details{
-The \code{\link[dplyr:sample_n]{dplyr::sample_n()}} function from that \code{rep_sample_n()}
-function was originally written to supplement has been superseded by
-\code{\link[dplyr:slice]{dplyr::slice_sample()}}. \code{rep_slice_sample()} provides a light wrapper
-around \code{rep_sample_n()} that has a more similar interface to
-\code{slice_sample()}.
+The \code{\link[dplyr:sample_n]{dplyr::sample_n()}} function (to which \code{rep_sample_n()} was
+originally a supplement) has been superseded by \code{\link[dplyr:slice]{dplyr::slice_sample()}}.
+\code{rep_slice_sample()} provides a light wrapper around \code{rep_sample_n()} that
+has a more similar interface to \code{slice_sample()}.
 }
 \examples{
 library(dplyr)
