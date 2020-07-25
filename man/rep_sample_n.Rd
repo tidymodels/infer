@@ -18,8 +18,8 @@ rep_slice_sample(.data, n = 1, replace = FALSE, weight_by = NULL, reps = 1)
 
 \item{reps}{Number of samples of size n = \code{size} to take.}
 
-\item{prob, weight_by}{A vector of sampling weights for each of the rows in \code{tbl}—must
-have length equal to \code{nrow(tbl)}.}
+\item{prob, weight_by}{A vector of sampling weights for each of the rows in
+\code{tbl}—must have length equal to \code{nrow(tbl)}.}
 }
 \value{
 A tibble of size \code{rep * size} rows corresponding to \code{reps}
@@ -32,10 +32,11 @@ This operation is especially helpful while creating sampling
 distributions—see the examples below!
 }
 \details{
-The \code{\link[dplyr:sample_n]{dplyr::sample_n()}} function from that \code{rep_sample_n()} function
-was originally written to supplement has been superseded
-by \code{\link[dplyr:slice]{dplyr::slice_sample()}}. \code{rep_slice_sample()} provides a light wrapper
-around \code{rep_sample_n()} that has a more similar interface to \code{slice_sample()}.
+The \code{\link[dplyr:sample_n]{dplyr::sample_n()}} function from that \code{rep_sample_n()}
+function was originally written to supplement has been superseded by
+\code{\link[dplyr:slice]{dplyr::slice_sample()}}. \code{rep_slice_sample()} provides a light wrapper
+around \code{rep_sample_n()} that has a more similar interface to
+\code{slice_sample()}.
 }
 \examples{
 library(dplyr)
@@ -44,18 +45,20 @@ library(ggplot2)
 # take 1000 samples of size n = 50, without replacement
 slices <- gss \%>\%
   rep_sample_n(size = 50, reps = 1000)
-  
+
 slices
 
 # compute the proportion of respondents with a college
 # degree in each replicate
 p_hats <- slices \%>\%
   group_by(replicate) \%>\%
-  summarize(prop_college = mean(college == "degree")) 
+  summarize(prop_college = mean(college == "degree"))
 
 # plot sampling distribution
 ggplot(p_hats, aes(x = prop_college)) +
   geom_density() +
-  labs(x = "p_hat", y = "Number of samples",
-  title = "Sampling distribution of p_hat")
+  labs(
+    x = "p_hat", y = "Number of samples",
+    title = "Sampling distribution of p_hat"
+  )
 }
