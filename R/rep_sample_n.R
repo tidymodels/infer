@@ -48,6 +48,7 @@
 #'   
 #' # sampling with probability weights. Note probabilities are automatically 
 #' # renormalized to sum to 1
+#' library(tibble)
 #' df <- tibble(
 #'   id = 1:5,
 #'   letter = factor(c("a", "b", "c", "d", "e"))
