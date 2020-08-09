@@ -1,53 +1,105 @@
-Package: infer
 Type: Package
+Package: infer
 Title: Tidy Statistical Inference
 Version: 0.5.3.9000
-Authors@R: c(
-    person("Andrew", "Bray", email = "abray@reed.edu", role = c("aut", "cre")),
-    person("Chester", "Ismay", email = "chester.ismay@gmail.com", role = "aut"),
-    person("Evgeni", "Chasnovski", email = "evgeni.chasnovski@gmail.com", role = "aut"),
-    person("Ben", "Baumer", email = "ben.baumer@gmail.com", role = "aut", comment = c(ORCID = "0000-0002-3279-0516")),
-    person("Mine", "Cetinkaya-Rundel", email = "mine@stat.duke.edu", role = "aut"),
-    person("Simon", "Couch", email = "simonpatrickcouch@gmail.com", role = "ctb"),
-    person("Ted", "Laderas", email = "tedladeras@gmail.com", role = "ctb"),
-    person("Nick", "Solomon", email = "nick.solomon@datacamp.com", role = "ctb"),
-    person("Johanna", "Hardin", email = "Jo.Hardin@pomona.edu", role = "ctb"),
-    person("Albert Y.", "Kim", email = "albert.ys.kim@gmail.com", role = "ctb", comment = c(ORCID = "0000-0001-7824-306X")),
-    person("Neal", "Fultz", email = "nfultz@gmail.com", role = "ctb"),
-    person("Doug", "Friedman", email = "doug.nhp@gmail.com", role = "ctb"),
-    person("Richie", "Cotton", email = "richie@datacamp.com", role = "ctb"),
-    person("Brian", "Fannin", email = "captain@pirategrunt.com", role = "ctb"))
-Description: The objective of this package is to perform inference using an expressive statistical grammar that coheres with the tidy design framework. 
+Authors@R:
+    c(person(given = "Andrew",
+             family = "Bray",
+             role = c("aut", "cre"),
+             email = "abray@reed.edu"),
+      person(given = "Chester",
+             family = "Ismay",
+             role = "aut",
+             email = "chester.ismay@gmail.com",
+             comment = c(ORCID = "0000-0003-2820-2547")),
+      person(given = "Evgeni",
+             family = "Chasnovski",
+             role = "aut",
+             email = "evgeni.chasnovski@gmail.com",
+             comment = c(ORCID = "0000-0002-1617-4019")),
+      person(given = "Ben",
+             family = "Baumer",
+             role = "aut",
+             email = "ben.baumer@gmail.com",
+             comment = c(ORCID = "0000-0002-3279-0516")),
+      person(given = "Mine",
+             family = "Cetinkaya-Rundel",
+             role = "aut",
+             email = "mine@stat.duke.edu",
+             comment = c(ORCID = "0000-0001-6452-2420")),
+      person(given = "Simon",
+             family = "Couch",
+             role = "ctb",
+             email = "simonpatrickcouch@gmail.com"),
+      person(given = "Ted",
+             family = "Laderas",
+             role = "ctb",
+             email = "tedladeras@gmail.com",
+             comment = c(ORCID = "0000-0002-6207-7068")),
+      person(given = "Nick",
+             family = "Solomon",
+             role = "ctb",
+             email = "nick.solomon@datacamp.com"),
+      person(given = "Johanna",
+             family = "Hardin",
+             role = "ctb",
+             email = "Jo.Hardin@pomona.edu"),
+      person(given = "Albert Y.",
+             family = "Kim",
+             role = "ctb",
+             email = "albert.ys.kim@gmail.com",
+             comment = c(ORCID = "0000-0001-7824-306X")),
+      person(given = "Neal",
+             family = "Fultz",
+             role = "ctb",
+             email = "nfultz@gmail.com"),
+      person(given = "Doug",
+             family = "Friedman",
+             role = "ctb",
+             email = "doug.nhp@gmail.com"),
+      person(given = "Richie",
+             family = "Cotton",
+             role = "ctb",
+             email = "richie@datacamp.com",
+             comment = c(ORCID = "0000-0003-2504-802X")),
+      person(given = "Brian",
+             family = "Fannin",
+             role = "ctb",
+             email = "captain@pirategrunt.com"))
+Description: The objective of this package is to perform
+    inference using an expressive statistical grammar that coheres with
+    the tidy design framework.
 License: CC0
-Encoding: UTF-8
-LazyData: true
-Imports:
-    dplyr (>= 0.7.0),
-    methods,
-    tibble,
-    rlang (>= 0.2.0),
-    ggplot2,
-    magrittr,
-    glue (>= 1.3.0),
-    grDevices,
-    purrr
+URL: https://github.com/tidymodels/infer,
+    https://infer.netlify.com/
+BugReports: https://github.com/tidymodels/infer/issues
 Depends:
     R (>= 3.5.0)
-Suggests: 
+Imports:
+    dplyr (>= 0.7.0),
+    ggplot2,
+    glue (>= 1.3.0),
+    grDevices,
+    magrittr,
+    methods,
+    purrr,
+    rlang (>= 0.2.0),
+    tibble
+Suggests:
     broom,
+    covr,
     devtools (>= 1.12.0),
+    fs,
     knitr,
-    tidyr,
-    rmarkdown,
     nycflights13,
+    rmarkdown,
     stringr,
     testthat,
-    covr,
-    vdiffr,
-    fs
-URL: https://github.com/tidymodels/infer,
-     https://infer.netlify.com/
-BugReports: https://github.com/tidymodels/infer/issues
+    tidyr,
+    vdiffr
+VignetteBuilder:
+    knitr
+Encoding: UTF-8
+LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-VignetteBuilder: knitr
