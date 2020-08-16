@@ -246,11 +246,26 @@ test_that("chi-square works with factors with unused levels", {
     y = factor(c("e", "e", "f"))
   )
 
-  out <- test_tbl %>%
-    specify(y ~ x) %>%
-    calculate(stat = "Chisq") %>%
-    pull()
+  # Unused levels in explanatory variable
+  expect_warning(
+    out <- test_tbl %>%
+      specify(y ~ x) %>%
+      calculate(stat = "Chisq") %>%
+      pull(),
+    "Explanatory.*unused.*levels"
+  )
+  expect_true(!is.na(out))
 
+  # Unused levels in response variable
+  test_tbl[["x"]] <- factor(test_tbl[["x"]])
+  levels(test_tbl[["y"]]) <- c("e", "f", "g")
+  expect_warning(
+    out <- test_tbl %>%
+      specify(y ~ x) %>%
+      calculate(stat = "Chisq") %>%
+      pull(),
+    "Response.*unused.*levels"
+  )
   expect_true(!is.na(out))
 })
 

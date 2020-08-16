@@ -308,6 +308,17 @@ check_for_nan <- function(x, context) {
   }
 }
 
+has_unused_levels <- function(x) {
+  if (is.factor(x)) {
+    present_levels <- unique(as.character(x))
+    unused_levels <- setdiff(levels(x), present_levels)
+
+    length(unused_levels) > 0
+  } else {
+    FALSE
+  }
+}
+
 # Helpers for hypothesize() -----------------------------------------------
 
 match_null_hypothesis <- function(null) {
