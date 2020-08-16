@@ -240,6 +240,20 @@ test_that("chi-square matches chisq.test value", {
   expect_equivalent(infer_way, trad_way)
 })
 
+test_that("chi-square works with factors with unused levels", {
+  test_tbl <- tibble(
+    x = factor(c("a", "b", "c"), levels = c("a", "b", "c", "d")),
+    y = factor(c("e", "e", "f"))
+  )
+
+  out <- test_tbl %>%
+    specify(y ~ x) %>%
+    calculate(stat = "Chisq") %>%
+    pull()
+
+  expect_true(!is.na(out))
+})
+
 test_that("`order` is working", {
   gen_gss_tbl10 <- gss_tbl %>%
     specify(hours ~ college) %>%

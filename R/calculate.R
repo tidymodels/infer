@@ -310,10 +310,8 @@ calc_impl.Chisq <- function(type, x, order, ...) {
       dplyr::do(
         broom::tidy(
           suppressWarnings(stats::chisq.test(
-            table(
-              .[[as.character(attr(x, "response"))]],
-              .[[as.character(attr(x, "explanatory"))]]
-            )
+            .[[as.character(attr(x, "response"))]],
+            .[[as.character(attr(x, "explanatory"))]]
           ))
         )
       ) %>%
