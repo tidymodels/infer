@@ -266,21 +266,26 @@ calc_impl.diff_in_means <- calc_impl_diff_f(mean)
 calc_impl.diff_in_medians <- calc_impl_diff_f(stats::median)
 
 calc_impl.Chisq <- function(type, x, order, ...) {
-  ## The following could stand to be cleaned up
+  resp_var <- as.character(attr(x, "response"))
 
   if (is_nuat(x, "explanatory")) {
     # Chi-Square Goodness of Fit
     if (!is_nuat(x, "params")) {
       # When `hypothesize()` has been called
       p_levels <- get_par_levels(x)
-      x %>%
-        dplyr::summarize(
-          stat = suppressWarnings(stats::chisq.test(
-            # Ensure correct ordering of parameters
-            table(!!(attr(x, "response")))[p_levels],
-            p = attr(x, "params")
-          )$stat)
-        )
+      chisq_gof <- function(df) {
+        chisq <- suppressWarnings(stats::chisq.test(
+          # Ensure correct ordering of parameters
+          table(df[[resp_var]])[p_levels],
+          p = attr(x, "params")
+        ))
+
+        unname(chisq[["statistic"]])
+      }
+
+      result <- x %>%
+        dplyr::nest_by(.key = "data") %>%
+        dplyr::summarise(stat = chisq_gof(data), .groups = "drop")
     } else {
       # Straight from `specify()`
       stop_glue(
@@ -290,47 +295,35 @@ calc_impl.Chisq <- function(type, x, order, ...) {
       )
     }
   } else {
-    # This is not matching with chisq.test
-    # obs_tab <- x %>%
-    #   dplyr::filter(replicate == 1) %>%
-    #   dplyr::ungroup() %>%
-    #   dplyr::select(!!attr(x, "response"), !!(attr(x, "explanatory"))) %>%
-    #   table()
-    # expected <- outer(rowSums(obs_tab), colSums(obs_tab)) / n
-    # df_out <- x %>%
-    #   dplyr::summarize(
-    #     stat = sum(
-    #       (table(!!(attr(x, "response")), !!(attr(x, "explanatory"))) -
-    #          expected)^2 / expected,
-    #       ...)
-    #   )
-
     # Chi-Square Test of Independence
-    result <- x %>%
-      dplyr::do(
-        broom::tidy(
-          suppressWarnings(stats::chisq.test(
-            .[[as.character(attr(x, "response"))]],
-            .[[as.character(attr(x, "explanatory"))]]
-          ))
-        )
-      ) %>%
-      dplyr::ungroup()
+    expl_var <- as.character(attr(x, "explanatory"))
+    chisq_indep <- function(df) {
+      res <- suppressWarnings(stats::chisq.test(
+        x = df[[expl_var]],
+        y = df[[resp_var]]
+      ))
 
-    if (!is_nuat(x, "generate")) {
-      result <- result %>% dplyr::select(replicate, stat = statistic)
-    } else {
-      result <- result %>% dplyr::select(stat = statistic)
+      res[["statistic"]]
     }
 
-    copy_attrs(
-      to = result, from = x,
-      attrs = c(
-        "response", "success", "explanatory", "response_type",
-        "explanatory_type", "distr_param", "distr_param2", "theory_type"
-      )
-    )
+    result <- x %>%
+      dplyr::nest_by(.key = "data") %>%
+      dplyr::summarise(stat = chisq_indep(data), .groups = "drop")
   }
+
+  if (!is_nuat(x, "generate")) {
+    result <- result %>% dplyr::select(replicate, stat)
+  } else {
+    result <- result %>% dplyr::select(stat)
+  }
+
+  copy_attrs(
+    to = result, from = x,
+    attrs = c(
+      "response", "success", "explanatory", "response_type",
+      "explanatory_type", "distr_param", "distr_param2", "theory_type"
+    )
+  )
 }
 
 calc_impl.function_of_props <- function(type, x, order, operator, ...) {
