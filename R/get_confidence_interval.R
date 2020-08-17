@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' Compute a confidence interval around a summary statistic. Currently only
+#' Compute a confidence interval around a summary statistic. Currently, only
 #' simulation-based methods are supported.
 #'
 #' Learn more in `vignette("infer")`.

@@ -35,7 +35,7 @@ A 1 x 2 tibble with 'lower_ci' and 'upper_ci' columns. Values
 correspond to lower and upper bounds of the confidence interval.
 }
 \description{
-Compute a confidence interval around a summary statistic. Currently only
+Compute a confidence interval around a summary statistic. Currently, only
 simulation-based methods are supported.
 
 Learn more in \code{vignette("infer")}.

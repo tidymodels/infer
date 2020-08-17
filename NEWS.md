@@ -1,3 +1,10 @@
+# infer 0.5.3.9000 (development version)
+
+- `rep_sample_n()` no longer errors when supplied a `prob` argument (#279)
+- Added `rep_slice_sample()`, a light wrapper around `rep_sample_n()`, that
+more closely resembles `dplyr::slice_sample()` (the function that supersedes)
+`dplyr::sample_n()` (#325)
+
 # infer 0.5.3
 
 ## Breaking changes

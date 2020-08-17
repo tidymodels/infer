@@ -142,13 +142,16 @@ test_that("two sample mean-type problems are working", {
     generate(reps = 10, type = "permute")
   expect_warning(calculate(gen_gss5a, stat = "diff in means"))
   expect_silent(
-    calculate(gen_gss5a, 
-              stat = "diff in means", 
-              order = c("no degree", "degree"))
+    calculate(gen_gss5a,
+      stat = "diff in means",
+      order = c("no degree", "degree")
+    )
   )
   expect_warning(calculate(gen_gss5a, stat = "t"))
-  expect_silent(calculate(gen_gss5a, stat = "t", 
-                          order = c("no degree", "degree")))
+  expect_silent(calculate(gen_gss5a,
+    stat = "t",
+    order = c("no degree", "degree")
+  ))
 })
 
 test_that("properties of tibble passed-in are correct", {
@@ -168,15 +171,17 @@ test_that("order is working for diff in means", {
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
   expect_equal(
-    nrow(calculate(gen_gss7, 
-                   stat = "diff in means", 
-                   order = c("no degree", "degree"))),
+    nrow(calculate(gen_gss7,
+      stat = "diff in means",
+      order = c("no degree", "degree")
+    )),
     10
   )
   expect_equal(
-    ncol(calculate(gen_gss7, 
-                   stat = "diff in means", 
-                   order = c("no degree", "degree"))),
+    ncol(calculate(gen_gss7,
+      stat = "diff in means",
+      order = c("no degree", "degree")
+    )),
     2
   )
 })
@@ -189,13 +194,13 @@ test_that("chi-square matches chisq.test value", {
   infer_way <- calculate(gen_gss8, stat = "Chisq")
   # chisq.test way
   suppressWarnings(
-  trad_way <- gen_gss8 %>%
-    dplyr::group_by(replicate) %>%
-    dplyr::do(broom::tidy(
-      stats::chisq.test(table(.$sex, .$partyid))
-    )) %>%
-    dplyr::ungroup() %>%
-    dplyr::select(replicate, stat = statistic)
+    trad_way <- gen_gss8 %>%
+      dplyr::group_by(replicate) %>%
+      dplyr::do(broom::tidy(
+        stats::chisq.test(table(.$sex, .$partyid))
+      )) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(replicate, stat = statistic)
   )
   # Equal not including attributes
   expect_equivalent(infer_way, trad_way)
@@ -204,7 +209,7 @@ test_that("chi-square matches chisq.test value", {
     specify(partyid ~ NULL) %>%
     hypothesize(
       null = "point",
-      p = c("dem" = 1/3, "rep" = 1/3, "ind" = 1/3)
+      p = c("dem" = 1 / 3, "rep" = 1 / 3, "ind" = 1 / 3)
     ) %>%
     generate(reps = 10, type = "simulate")
   infer_way <- calculate(gen_gss9, stat = "Chisq")
@@ -235,6 +240,35 @@ test_that("chi-square matches chisq.test value", {
   expect_equivalent(infer_way, trad_way)
 })
 
+test_that("chi-square works with factors with unused levels", {
+  test_tbl <- tibble(
+    x = factor(c("a", "b", "c"), levels = c("a", "b", "c", "d")),
+    y = factor(c("e", "e", "f"))
+  )
+
+  # Unused levels in explanatory variable
+  expect_warning(
+    out <- test_tbl %>%
+      specify(y ~ x) %>%
+      calculate(stat = "Chisq") %>%
+      pull(),
+    "Explanatory.*unused.*levels"
+  )
+  expect_true(!is.na(out))
+
+  # Unused levels in response variable
+  test_tbl[["x"]] <- factor(test_tbl[["x"]])
+  levels(test_tbl[["y"]]) <- c("e", "f", "g")
+  expect_warning(
+    out <- test_tbl %>%
+      specify(y ~ x) %>%
+      calculate(stat = "Chisq") %>%
+      pull(),
+    "Response.*unused.*levels"
+  )
+  expect_true(!is.na(out))
+})
+
 test_that("`order` is working", {
   gen_gss_tbl10 <- gss_tbl %>%
     specify(hours ~ college) %>%
@@ -248,33 +282,40 @@ test_that("`order` is working", {
     specify(hours ~ college) %>%
     generate(reps = 10, type = "bootstrap")
   expect_error(
-    calculate(gen_gss_tbl11, 
-              stat = "diff in medians", 
-              order = "no degree")
+    calculate(gen_gss_tbl11,
+      stat = "diff in medians",
+      order = "no degree"
+    )
   )
   expect_error(
-    calculate(gen_gss_tbl11, 
-              stat = "diff in medians", 
-              order = c(NA, "no degree"))
+    calculate(gen_gss_tbl11,
+      stat = "diff in medians",
+      order = c(NA, "no degree")
+    )
   )
   expect_error(
-    calculate(gen_gss_tbl11, 
-              stat = "diff in medians", 
-              order = c("no degree", "other"))
+    calculate(gen_gss_tbl11,
+      stat = "diff in medians",
+      order = c("no degree", "other")
+    )
   )
   expect_silent(
-    calculate(gen_gss_tbl11, 
-              stat = "diff in medians", 
-              order = c("no degree", "degree"))
+    calculate(gen_gss_tbl11,
+      stat = "diff in medians",
+      order = c("no degree", "degree")
+    )
   )
   expect_error(
-    calculate(gen_gss_tbl11, 
-              stat = "diff in means", 
-              order = c("no degree", "degree", "the last one"))
+    calculate(gen_gss_tbl11,
+      stat = "diff in means",
+      order = c("no degree", "degree", "the last one")
+    )
   )
   # order not given
-  expect_warning(calculate(gen_gss_tbl11, stat = "diff in means"),
-                 "The statistic is based on a difference or ratio")
+  expect_warning(
+    calculate(gen_gss_tbl11, stat = "diff in means"),
+    "The statistic is based on a difference or ratio"
+  )
 })
 
 gen_gss_tbl12 <- gss_tbl %>%
@@ -359,14 +400,14 @@ test_that("One sample t hypothesis test is working", {
       generate(reps = 10) %>%
       calculate(stat = "t")
   )
-  
+
   expect_message(
     gss_tbl %>%
       specify(response = hours) %>%
       calculate(stat = "t"),
     "the t-test will assume a null hypothesis"
   )
-  
+
   gss_tbl %>%
     specify(response = hours) %>%
     calculate(stat = "t", mu = 1)
@@ -401,9 +442,10 @@ test_that("generate not done before calculate", {
     specify(hours ~ college) %>%
     hypothesize(null = "independence")
   attr(gss_tbl_hyp, "generate") <- TRUE
-  expect_warning(calculate(gss_tbl_hyp, 
-                           stat = "t", 
-                           order = c("no degree", "degree")))
+  expect_warning(calculate(gss_tbl_hyp,
+    stat = "t",
+    order = c("no degree", "degree")
+  ))
 })
 
 test_that("One sample t bootstrap is working", {
@@ -423,9 +465,8 @@ test_that("calculate doesn't depend on order of `p` (#122)", {
       specify(partyid ~ NULL) %>%
       hypothesize(null = "point", p = p) %>%
       generate(reps = 500, type = "simulate") %>%
-      calculate("Chisq") %>% 
+      calculate("Chisq") %>%
       get_p_value(obs_stat = 5, direction = "right")
-      
   }
 
   expect_equal(
@@ -466,7 +507,9 @@ test_that("calc_impl.sum works", {
 test_that("calc_impl_success_f works", {
   expect_true(
     is.function(calc_impl_success_f(
-      f = function(response, success, ...) {mean(response == success, ...)},
+      f = function(response, success, ...) {
+        mean(response == success, ...)
+      },
       output_name = "proportion"
     ))
   )
@@ -489,35 +532,39 @@ test_that("calc_impl.count works", {
 })
 
 
-gss_biased <- gss_tbl %>% 
+gss_biased <- gss_tbl %>%
   dplyr::filter(!(sex == "male" & college == "no degree" & age < 40))
 
 gss_tbl <- table(gss_biased$sex, gss_biased$college)
 
 test_that("calc_impl.odds_ratio works", {
-  base_odds_ratio <- {(gss_tbl [1,1] * gss_tbl [2,2]) / 
-    (gss_tbl [1,2] * gss_tbl [2,1])}
-  
+  base_odds_ratio <- {
+    (gss_tbl [1, 1] * gss_tbl [2, 2]) /
+      (gss_tbl [1, 2] * gss_tbl [2, 1])
+  }
+
   expect_equal(
-    gss_biased %>% 
+    gss_biased %>%
       specify(college ~ sex, success = "degree") %>%
       calculate(stat = "odds ratio", order = c("female", "male")) %>%
       dplyr::pull(),
     expected = base_odds_ratio,
-    tolerance = eps)
+    tolerance = eps
+  )
 })
 
 test_that("calc_impl.ratio_of_props works", {
-  base_ratio_of_props <- {(gss_tbl [1,2] / sum(gss_tbl [1,])) / 
-      (gss_tbl [2,2] / sum(gss_tbl [2,]))}
-  
+  base_ratio_of_props <- {
+    (gss_tbl [1, 2] / sum(gss_tbl [1, ])) /
+      (gss_tbl [2, 2] / sum(gss_tbl [2, ]))
+  }
+
   expect_equal(
-    gss_biased %>% 
+    gss_biased %>%
       specify(college ~ sex, success = "degree") %>%
       calculate(stat = "ratio of props", order = c("male", "female")) %>%
       dplyr::pull(),
     expected = base_ratio_of_props,
-    tolerance = eps)
-  
+    tolerance = eps
+  )
 })
-
