@@ -41,9 +41,9 @@ simulation-based methods are supported.
 Learn more in \code{vignette("infer")}.
 }
 \details{
-A null hypothesis is not required to compute a confidence interval,
-but including \code{hypothesize()} in a chain leading to \code{get_confidence_interval()}
-will not break anything.  This can be useful when computing a confidence
+A null hypothesis is not required to compute a confidence interval, but
+including \code{hypothesize()} in a chain leading to \code{get_confidence_interval()}
+will not break anything. This can be useful when computing a confidence
 interval after previously computing a p-value.
 }
 \section{Aliases}{
@@ -54,37 +54,33 @@ interval after previously computing a p-value.
 
 \examples{
 
-gss \%>\%
-  # we're interested in the number of hours worked per week
+boot_distr <- gss \%>\%
+  # We're interested in the number of hours worked per week
   specify(response = hours) \%>\%
-  # generate bootstrap samples
+  # Generate bootstrap samples
   generate(reps = 1000, type = "bootstrap") \%>\%
-  # calculate mean of each bootstrap sample
-  calculate(stat = "mean") \%>\%
-  # calculate the confidence interval around the point estimate
+  # Calculate mean of each bootstrap sample
+  calculate(stat = "mean")
+
+boot_distr \%>\%
+  # Calculate the confidence interval around the point estimate
   get_confidence_interval(
-    # at the 95\% confidence level; percentile method
+    # At the 95\% confidence level; percentile method
     level = 0.95
   )
 
-# for type = "se" or type = "bias-corrected" we need a point estimate
+# For type = "se" or type = "bias-corrected" we need a point estimate
 sample_mean <- gss \%>\%
   specify(response = hours) \%>\%
   calculate(stat = "mean") \%>\%
   dplyr::pull()
 
-gss \%>\%
-  # ...we're interested in the number of hours worked per week
-  specify(response = hours) \%>\%
-  # generating data points for a null distribution
-  generate(reps = 1000, type = "bootstrap") \%>\%
-  # finding the null distribution
-  calculate(stat = "mean") \%>\%
+boot_distr \%>\%
   get_confidence_interval(
     point_estimate = sample_mean,
-    # at the 95\% confidence level
+    # At the 95\% confidence level
     level = 0.95,
-    # using the standard error method
+    # Using the standard error method
     type = "se"
   )
 
