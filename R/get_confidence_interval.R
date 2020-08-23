@@ -2,9 +2,9 @@
 #'
 #' @description
 #'
-#' Compute a confidence interval around a summary statistic. Only 
-#' simulation-based methods are (currently) supported.
-#' 
+#' Compute a confidence interval around a summary statistic. Currently, only
+#' simulation-based methods are supported.
+#'
 #' Learn more in `vignette("infer")`.
 #'
 #' @param x Data frame of calculated statistics or containing attributes of
@@ -21,54 +21,71 @@
 #'
 #' @return A 1 x 2 tibble with 'lower_ci' and 'upper_ci' columns. Values
 #'   correspond to lower and upper bounds of the confidence interval.
+#`
+#' @details
+#'   A null hypothesis is not required to compute a confidence interval,
+#'   but including `hypothesize()` in a chain leading to `get_confidence_interval()`
+#'   will not break anything.  This can be useful when computing a confidence
+#'   interval after previously computing a p-value.
+#'
 #'
 #' @section Aliases:
-#' `get_ci()` is an alias of `get_confidence_interval()`.
-#' `conf_int()` is a deprecated alias of `get_confidence_interval()`.
+#'   `get_ci()` is an alias of `get_confidence_interval()`.
+#'   `conf_int()` is a deprecated alias of `get_confidence_interval()`.
 #'
 #' @examples
-#' 
-#' # find the point estimate---mean number of hours worked per week
-#' point_estimate <- gss %>%
+#'
+#' gss %>%
+#'   # we're interested in the number of hours worked per week
+#'   specify(response = hours) %>%
+#'   # generate bootstrap samples
+#'   generate(reps = 1000, type = "bootstrap") %>%
+#'   # calculate mean of each bootstrap sample
+#'   calculate(stat = "mean") %>%
+#'   # calculate the confidence interval around the point estimate
+#'   get_confidence_interval(
+#'     # at the 95% confidence level; percentile method
+#'     level = 0.95
+#'   )
+#'
+#' # for type = "se" or type = "bias-corrected" we need a point estimate
+#' sample_mean <- gss %>%
 #'   specify(response = hours) %>%
 #'   calculate(stat = "mean") %>%
 #'   dplyr::pull()
-#' 
-#' # starting with the gss dataset
+#'
 #' gss %>%
 #'   # ...we're interested in the number of hours worked per week
 #'   specify(response = hours) %>%
-#'   # hypothesizing that the mean is 40
-#'   hypothesize(null = "point", mu = 40) %>%
 #'   # generating data points for a null distribution
 #'   generate(reps = 1000, type = "bootstrap") %>%
 #'   # finding the null distribution
 #'   calculate(stat = "mean") %>%
 #    # calculate the confidence interval around the point estimate
 #'   get_confidence_interval(
-#'     point_estimate = point_estimate,
+#'     point_estimate = sample_mean,
 #'     # at the 95% confidence level
 #'     level = 0.95,
 #'     # using the standard error method
 #'     type = "se"
 #'   )
-#'   
+#'
 #' # More in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
-#' } 
-#'  
+#' }
+#'
 #' @name get_confidence_interval
 #' @export
 get_confidence_interval <- function(x, level = 0.95, type = "percentile",
                                     point_estimate = NULL) {
   check_ci_args(x, level, type, point_estimate)
-  
+
   # Inform if no `level` was explicitly supplied
   if (!("level" %in% rlang::call_args_names(match.call()))) {
     message_glue("Using `level = {level}` to compute confidence interval.")
   }
-  
+
   switch(
     type,
     percentile = ci_percentile(x, level),
@@ -88,30 +105,30 @@ get_ci <- function(x, level = 0.95, type = "percentile",
 
 ci_percentile <- function(x, level) {
   ci_vec <- stats::quantile(x[["stat"]], probs = (1 + c(-level, level)) / 2)
-  
+
   make_ci_df(ci_vec)
 }
 
 ci_se <- function(x, level, point_estimate) {
   point_estimate <- check_obs_stat(point_estimate)
-  
+
   multiplier <- stats::qnorm((1 + level) / 2)
   ci_vec <- point_estimate + c(-multiplier, multiplier) * stats::sd(x[["stat"]])
-  
+
   make_ci_df(ci_vec)
 }
 
 ci_bias_corrected <- function(x, level, point_estimate) {
   point_estimate <- check_obs_stat(point_estimate)
-  
+
   p <- mean(x[["stat"]] <= point_estimate)
-  z0 <- stats::qnorm(p) 
+  z0 <- stats::qnorm(p)
   # z_alpha_2 is z_(alpha/2)
   z_alpha_2 <- stats::qnorm((1 + c(-level, level)) / 2)
   new_probs <- stats::pnorm(2*z0 + z_alpha_2)
-  
+
   ci_vec <- stats::quantile(x[["stat"]], probs = new_probs)
-  
+
   make_ci_df(ci_vec)
 }
 
@@ -126,7 +143,7 @@ check_ci_args <- function(x, level, type, point_estimate){
   }
   check_type(x, is.data.frame)
   check_type(level, is.numeric)
-  
+
   if ((level <= 0) || (level >= 1)) {
     stop_glue("The value of `level` must be between 0 and 1 non-inclusive.")
   }
