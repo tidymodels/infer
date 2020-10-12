@@ -95,7 +95,7 @@ null_distn <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r viz, message = FALSE, warning = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = F_hat, direction = "greater")
 ```
