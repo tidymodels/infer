@@ -1,5 +1,5 @@
 
-# infer R Package <img src="https://github.com/tidymodels/infer/blob/master/figs/infer_gnome.png?raw=true" align="right" width=125 />
+# infer R Package <img src="https://github.com/tidymodels/infer/blob/master/figs/infer_gnome.png?raw=true" align="right" width=250 />
 
 -----
 
@@ -47,24 +47,13 @@ install.packages("infer")
 ```
 
 To install the developmental stable version of `infer`, make sure to
-install `remotes` first. The `pkgdown` website for this version is at
-<https://infer.netlify.com>.
+install `remotes` first. The `pkgdown` website for the package is at
+<https://infer.tidymodels.org>.
 
 ``` r
 install.packages("remotes")
 remotes::install_github("tidymodels/infer")
 ```
-
-To install the experimental version of `infer` (do so at your own risk),
-make sure to install `remotes` first.
-
-``` r
-install.packages("remotes")
-remotes::install_github("tidymodels/infer", ref = "develop")
-```
-
-To see documentation for the experimental version of `infer`, the
-`pkgdown` site is available at <https://infer-dev.netlify.com>.
 
 ### Contributing
 
@@ -82,8 +71,8 @@ For questions and discussions about tidymodels packages, modeling, and
 machine learning, please [post on RStudio
 Community](https://rstd.io/tidymodels-community). If you think you have
 encountered a bug, please [submit an
-issue](https://github.com/tidymodels/infer/issues). Either way, learn how
-to create and share a [reprex](https://rstd.io/reprex) (a minimal,
+issue](https://github.com/tidymodels/infer/issues). Either way, learn
+how to create and share a [reprex](https://rstd.io/reprex) (a minimal,
 reproducible example), to clearly communicate about your code. Check out
 further details on [contributing guidelines for tidymodels
 packages](https://www.tidymodels.org/contribute/) and [how to get
@@ -149,7 +138,7 @@ visualize(null_distn) +
   shade_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 Calculating the p-value from the null distribution and observed
 statistic,
