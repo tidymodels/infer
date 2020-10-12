@@ -95,9 +95,13 @@ null_distn <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r viz, message = FALSE, warning = FALSE}
+```{r viz, message = FALSE, warning = FALSE, eval = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = F_hat, direction = "greater")
+```
+
+```{r viz-graphic, message = FALSE, warning = FALSE, echo = FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/tidymodels/infer/master/README_files/figure-gfm/viz-1.png")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,

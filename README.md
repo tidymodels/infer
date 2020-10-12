@@ -138,7 +138,7 @@ visualize(null_distn) +
   shade_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
-![](README_files/figure-gfm/viz-1.png)<!-- -->
+![](https://raw.githubusercontent.com/tidymodels/infer/master/README_files/figure-gfm/viz-1.png)<!-- -->
 
 Calculating the p-value from the null distribution and observed
 statistic,
