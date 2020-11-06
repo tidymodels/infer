@@ -8,10 +8,10 @@ The previous submission was also a resubmission following an automated pretest
 failure related to visual testing failures on the most recent R-devel version.
 
 ## Test environments
-* local OS X install, R 4.0.2
-* ubuntu 16.04 (on travis-ci), oldrel, release, devel
-* win-builder (devel)
-* rhub: debian-gcc-devel-nold
+* local OS X install, R 3.6.3
+* ubuntu 16.04 (on github actions), release, devel
+* windows (on github actions), R 3.6.3, release
+* windows (on win-builder), devel
 
 ## R CMD check results
 
