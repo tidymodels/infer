@@ -287,3 +287,59 @@ test_that("generate() handles `x` response in case of 'simulate' (#299)", {
     c("x", "replicate")
   )
 })
+
+test_that("generate() handles `size` argument", {
+  expect_equal(
+    # simulate
+    data.frame(x = factor(rbinom(100, size = 1, prob = .5))) %>%
+      specify(response = x, success = "1") %>%
+      hypothesize(null = "point", p = .5) %>%
+      generate(100, type = "simulate") %>%
+      nrow(),
+    10000)
+  expect_equal(
+    data.frame(x = factor(rbinom(100, size = 1, prob = .5))) %>%
+      specify(response = x, success = "1") %>%
+      hypothesize(null = "point", p = .5) %>%
+      generate(100, size = 20, type = "simulate") %>%
+      nrow(),
+    2000)
+  
+  # permute
+  expect_equal(
+    data.frame(y = factor(rbinom(100, size = 1, prob = .5)),
+               x = "a") %>%
+      specify(y~x, success = "1") %>%
+      hypothesize(null = "independence") %>%
+      generate(100, type = "permute") %>%
+      nrow(),
+    10000)
+  expect_equal(
+    data.frame(y = factor(rbinom(100, size = 1, prob = .5)),
+               x = "a") %>%
+      specify(y~x, success = "1") %>%
+      hypothesize(null = "independence") %>%
+      generate(100, size = 20, type = "permute") %>%
+      nrow(),
+    2000)
+  
+  # bootstrap
+  expect_equal(
+    data.frame(y = factor(rbinom(100, size = 1, prob = .5)),
+               x = "a") %>%
+      specify(response = y, success = "1") %>%
+      generate(100, type = "bootstrap") %>%
+      nrow(),
+    10000)
+  expect_equal(
+    data.frame(y = factor(rbinom(100, size = 1, prob = .5)),
+               x = "a") %>%
+      specify(response = y, success = "1") %>%
+      generate(100, size = 20, type = "bootstrap") %>%
+      nrow(),
+    2000)
+  
+  
+})
+
+

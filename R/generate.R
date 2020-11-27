@@ -166,7 +166,9 @@ bootstrap <- function(x, reps = 1, ...) {
   }
 
   # Set variables for use in calculate()
-  result <- rep_sample_n(x, size = nrow(x), replace = TRUE, reps = reps)
+  size <- list(...)[["size"]]
+  size <- if(!is.null(size)){size}else{nrow(x)}
+  result <- rep_sample_n(x, size = size, replace = TRUE, reps = reps)
   result <- copy_attrs(to = result, from = x)
 
   append_infer_class(result)
@@ -174,9 +176,12 @@ bootstrap <- function(x, reps = 1, ...) {
 
 #' @importFrom dplyr bind_rows group_by
 permute <- function(x, reps = 1, ...) {
-  df_out <- replicate(reps, permute_once(x), simplify = FALSE) %>%
+  size <- list(...)[["size"]]
+  size <- if(!is.null(size)){size}else{nrow(x)}
+  
+  df_out <- replicate(reps, permute_once(x, size = size), simplify = FALSE) %>%
     dplyr::bind_rows() %>%
-    dplyr::mutate(replicate = rep(1:reps, each = nrow(x))) %>%
+    dplyr::mutate(replicate = rep(1:reps, each = size)) %>%
     dplyr::group_by(replicate)
 
   df_out <- copy_attrs(to = df_out, from = x)
@@ -189,9 +194,14 @@ permute_once <- function(x, ...) {
 
   if (is_hypothesized(x) && (attr(x, "null") == "independence")) {
     y <- pull(x, !!attr(x, "response"))
+    
+    size <- list(...)[["size"]]
+    size <- if(!is.null(size)){size}else{length(y)}
 
-    y_prime <- sample(y, size = length(y), replace = FALSE)
-    x[as.character(attr(x, "response"))] <- y_prime
+    y_prime <- sample(y, size = size, replace = size != length(y))
+    x <- x[1:size, ]
+    
+    x[as.character(attr(x, "response"))] <- y_prime 
     return(x)
   } else {
     stop_glue(
@@ -206,12 +216,18 @@ permute_once <- function(x, ...) {
 #' @importFrom rlang :=
 simulate <- function(x, reps = 1, ...) {
   fct_levels <- as.character(unique(dplyr::pull(x, !!attr(x, "response"))))
+  
+  size <- list(...)[["size"]]
+  size <- if(!is.null(size)){size}else{nrow(x)}
 
   col_simmed <- unlist(replicate(
     reps,
-    sample(fct_levels, size = nrow(x), replace = TRUE, prob = format_params(x)),
+    sample(fct_levels, size = size, replace = TRUE, prob = format_params(x)),
     simplify = FALSE
   ))
+  
+  # Adjust df size if need be
+  x <- x[1:size, ]
   
   # Precomputing `nrow(x)` is needed because it can be misinterpeted inside
   # `tibble()` in case `attr(x, "response")` is also `x` (see #299)
