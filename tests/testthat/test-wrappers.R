@@ -274,10 +274,14 @@ test_that("two sample prop_test works", {
   
   # check that the order argument changes output
   infer4 <- prop_test(df, resp ~ exp, order = c("b", "a"), conf_int = TRUE)
-  expect_equal(infer4[["lower_ci"]], -infer3[["upper_ci"]])
+  expect_equal(infer4[["lower_ci"]], -infer3[["upper_ci"]], tolerance = .001)
   
   expect_error(prop_test(bad_df, resp ~ exp))
   expect_error(prop_test(bad_df2, resp ~ exp))
+  
+  # check that the success argument changes output
+  infer5 <- prop_test(df, resp ~ exp, order = c("a", "b"), success = "d", conf_int = TRUE)
+  expect_equal(infer3[["upper_ci"]], -infer5[["lower_ci"]], tolerance = .001)
 })
 
 # ...and some data for the one sample wrapper
@@ -314,4 +318,9 @@ test_that("one sample prop_test works", {
   
   # expect message for unspecified p
   expect_message(prop_test(df_1, resp ~ NULL))
+  
+  # check that the success argument changes output
+  infer3 <- prop_test(df_1, resp ~ NULL, p = .2, success = "c")
+  infer4 <- prop_test(df_1, resp ~ NULL, p = .8, success = "d")
+  expect_equal(infer3[["chisq_df"]], infer4[["chisq_df"]], tolerance = .001)
 })

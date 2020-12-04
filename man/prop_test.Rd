@@ -14,6 +14,7 @@ prop_test(
   alternative = "two-sided",
   conf_int = TRUE,
   conf_level = 0.95,
+  success = NULL,
   ...
 )
 }
@@ -41,13 +42,24 @@ should be subtracted, where  \code{order = c("first", "second")} means
 sample tests.}
 
 \item{alternative}{Character string giving the direction of the alternative
-hypothesis. Options are \code{"two-sided"} (default), \code{"greater"}, or \code{"less"}.}
+hypothesis. Options are \code{"two-sided"} (default), \code{"greater"}, or \code{"less"}.
+Only used when testing the null that a single proportion equals a given
+value, or that two proportions are equal; ignored otherwise.}
 
 \item{conf_int}{A logical value for whether to report the confidence
 interval or not. \code{TRUE} by default, ignored if \code{p} is specified for a
-two-sample test.}
+two-sample test. Only used when testing the null that a single
+proportion equals a given value, or that two proportions are equal;
+ignored otherwise.}
 
-\item{conf_level}{A numeric value between 0 and 1. Default value is 0.95.}
+\item{conf_level}{A numeric value between 0 and 1. Default value is 0.95.
+Only used when testing the null that a single proportion equals a given
+value, or that two proportions are equal; ignored otherwise.}
+
+\item{success}{The level of \code{response} that will be considered a success, as
+a string. Only used when testing the null that a single
+proportion equals a given value, or that two proportions are equal;
+ignored otherwise.}
 
 \item{...}{Additional arguments for \link[stats:prop.test]{prop.test()}.}
 }
@@ -56,13 +68,13 @@ A tidier version of \link[stats:prop.test]{prop.test()} for equal or given
 proportions.
 }
 \examples{
-# proportion test for difference in proportions of 
+# two-sample proportion test for difference in proportions of 
 # college completion by respondent sex
 prop_test(gss, 
           college ~ sex,  
           order = c("female", "male"))
           
-# a one-proportion test for hypothesized null 
+# one-sample proportion test for hypothesized null 
 # proportion of college completion of .2
 prop_test(gss,
           college ~ NULL,

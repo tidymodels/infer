@@ -390,23 +390,33 @@ check_conf_level <- function(conf_level) {
 #'   `"first" - "second"`. Ignored for one-sample tests, and optional for two 
 #'   sample tests.
 #' @param alternative Character string giving the direction of the alternative
-#'   hypothesis. Options are `"two-sided"` (default), `"greater"`, or `"less"`.
+#'   hypothesis. Options are `"two-sided"` (default), `"greater"`, or `"less"`. 
+#'   Only used when testing the null that a single proportion equals a given 
+#'   value, or that two proportions are equal; ignored otherwise.
 #' @param p A numeric vector giving the hypothesized null proportion of
 #' success for each group.
 #' @param conf_int A logical value for whether to report the confidence
 #'   interval or not. `TRUE` by default, ignored if `p` is specified for a
-#'   two-sample test.
-#' @param conf_level A numeric value between 0 and 1. Default value is 0.95.
+#'   two-sample test. Only used when testing the null that a single 
+#'   proportion equals a given value, or that two proportions are equal; 
+#'   ignored otherwise.
+#' @param conf_level A numeric value between 0 and 1. Default value is 0.95. 
+#'   Only used when testing the null that a single proportion equals a given 
+#'   value, or that two proportions are equal; ignored otherwise.
+#' @param success The level of `response` that will be considered a success, as
+#'   a string. Only used when testing the null that a single 
+#'   proportion equals a given value, or that two proportions are equal; 
+#'   ignored otherwise.
 #' @param ... Additional arguments for [prop.test()][stats::prop.test()].
 #'
 #' @examples
-#' # proportion test for difference in proportions of 
+#' # two-sample proportion test for difference in proportions of 
 #' # college completion by respondent sex
 #' prop_test(gss, 
 #'           college ~ sex,  
 #'           order = c("female", "male"))
 #'           
-#' # a one-proportion test for hypothesized null 
+#' # one-sample proportion test for hypothesized null 
 #' # proportion of college completion of .2
 #' prop_test(gss,
 #'           college ~ NULL,
@@ -421,6 +431,7 @@ prop_test <- function(x, formula,
                       alternative = "two-sided", 
                       conf_int = TRUE,
                       conf_level = 0.95,
+                      success = NULL,
                       ...) {
   # Parse response and explanatory variables
   response    <- enquo(response)
@@ -446,6 +457,21 @@ prop_test <- function(x, formula,
     alternative <- "two.sided"
   }
   
+  # process "success" arg
+  if (!is.null(success)) {
+    if (!is.character(success)) {
+      stop_glue("`success` must be a string.")
+    }
+    if (!(success %in% levels(response_variable(x)))) {
+      stop_glue('{success} is not a valid level of {attr(x, "response")}.')
+    }
+    lvls <- levels(response_variable(x))
+    lvls <- c(success, lvls[lvls != success])
+  } else {
+    lvls <- levels(response_variable(x))
+    success <- lvls[1]
+  }
+  
   # two sample
   if (has_explanatory(x)) {
     
@@ -459,8 +485,8 @@ prop_test <- function(x, formula,
       mutate_if(is.logical, as.factor) %>%
       table()
     
-    # reorder according to the order argument
-    sum_table <- sum_table[, order]
+    # reorder according to the order and success arguments
+    sum_table <- sum_table[lvls, order]
     
     prelim <- stats::prop.test(x = sum_table,
                                alternative = alternative,
@@ -469,10 +495,8 @@ prop_test <- function(x, formula,
                                ...) %>%
       broom::glance()
   } else { # one sample
-    response_tbl <- x %>%
-      select(as.character((attr(x, "response")))) %>%
-      mutate_if(is.character, as.factor) %>%
-      mutate_if(is.logical, as.factor) %>%
+    response_tbl <- response_variable(x) %>%
+      relevel(success) %>%
       table()
     
     if (is.null(p)) {
@@ -490,7 +514,7 @@ prop_test <- function(x, formula,
       broom::glance()
   }
   
-  if (conf_int & is.null(p)) {
+  if (conf_int & is.null(p) & (prelim$parameter <= 2)) {
      results <- prelim %>%
        dplyr::select(statistic, 
                      chisq_df = parameter, 
@@ -499,12 +523,17 @@ prop_test <- function(x, formula,
                      lower_ci = conf.low, 
                      upper_ci = conf.high)
     
-  } else {
+  } else if (prelim$parameter <= 2) {
      results <- prelim %>%
        dplyr::select(statistic, 
                      chisq_df = parameter, 
                      p_value = p.value, 
                      alternative)
+  } else {
+    results <- prelim %>%
+      dplyr::select(statistic, 
+                    chisq_df = parameter, 
+                    p_value = p.value)
   }
   
   results
