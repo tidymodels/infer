@@ -4,6 +4,7 @@
 - Added `rep_slice_sample()`, a light wrapper around `rep_sample_n()`, that
 more closely resembles `dplyr::slice_sample()` (the function that supersedes)
 `dplyr::sample_n()` (#325)
+- Added a `success` argument to `prop_test()` (#343)
 
 # infer 0.5.3
 
