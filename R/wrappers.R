@@ -458,17 +458,17 @@ prop_test <- function(x, formula,
   }
   
   # process "success" arg
+  lvls <- levels(factor(response_variable(x)))
+  
   if (!is.null(success)) {
     if (!is.character(success)) {
       stop_glue("`success` must be a string.")
     }
-    if (!(success %in% levels(response_variable(x)))) {
+    if (!(success %in% lvls)) {
       stop_glue('{success} is not a valid level of {attr(x, "response")}.')
     }
-    lvls <- levels(factor(response_variable(x)))
     lvls <- c(success, lvls[lvls != success])
   } else {
-    lvls <- levels(response_variable(x))
     success <- lvls[1]
   }
   
