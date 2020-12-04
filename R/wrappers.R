@@ -465,7 +465,7 @@ prop_test <- function(x, formula,
     if (!(success %in% levels(response_variable(x)))) {
       stop_glue('{success} is not a valid level of {attr(x, "response")}.')
     }
-    lvls <- levels(response_variable(x))
+    lvls <- levels(factor(response_variable(x)))
     lvls <- c(success, lvls[lvls != success])
   } else {
     lvls <- levels(response_variable(x))
@@ -496,6 +496,7 @@ prop_test <- function(x, formula,
       broom::glance()
   } else { # one sample
     response_tbl <- response_variable(x) %>%
+      factor() %>%
       relevel(success) %>%
       table()
     
