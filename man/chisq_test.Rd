@@ -25,13 +25,13 @@ A tidier version of \link[stats:chisq.test]{chisq.test()} for goodness of fit
 tests and tests of independence.
 }
 \examples{
-# chi-squared test of independence for college completion 
+# chi-squared test of independence for college completion
 # status depending on one's self-identified income class
 chisq_test(gss, college ~ finrela)
 
-# chi-squared goodness of fit test on whether self-identified 
+# chi-squared goodness of fit test on whether self-identified
 # income class follows a uniform distribution
-chisq_test(gss, 
+chisq_test(gss,
            response = finrela,
            p = c("far below average" = 1/6,
                  "below average" = 1/6,

@@ -68,13 +68,13 @@ A tidier version of \link[stats:prop.test]{prop.test()} for equal or given
 proportions.
 }
 \examples{
-# two-sample proportion test for difference in proportions of 
+# two-sample proportion test for difference in proportions of
 # college completion by respondent sex
-prop_test(gss, 
-          college ~ sex,  
+prop_test(gss,
+          college ~ sex,
           order = c("female", "male"))
-          
-# one-sample proportion test for hypothesized null 
+
+# one-sample proportion test for hypothesized null
 # proportion of college completion of .2
 prop_test(gss,
           college ~ NULL,

@@ -7,29 +7,29 @@ test_that("t_test works", {
   expect_error(
     gss_tbl %>% t_test(response = "hours", explanatory = "sex")
   )
-  
-  new_way <- t_test(gss_tbl, 
-                    hours ~ sex, 
+
+  new_way <- t_test(gss_tbl,
+                    hours ~ sex,
                     order = c("male", "female"))
-  new_way_alt <- t_test(gss_tbl, 
+  new_way_alt <- t_test(gss_tbl,
                     response = hours,
                     explanatory = sex,
                     order = c("male", "female"))
   old_way <- t.test(hours ~ sex, data = gss_tbl) %>%
     broom::glance() %>%
-    dplyr::select(statistic, t_df = parameter, p_value = p.value, 
+    dplyr::select(statistic, t_df = parameter, p_value = p.value,
                   alternative, lower_ci = conf.low, upper_ci = conf.high)
-  
+
   expect_equal(new_way, new_way_alt, tolerance = 1e-5)
   expect_equal(new_way, old_way, tolerance = 1e-5)
-  
+
   # check that the order argument changes output
-  new_way2 <- t_test(gss_tbl, 
-                    hours ~ sex, 
-                    order = c("female", "male"))  
+  new_way2 <- t_test(gss_tbl,
+                    hours ~ sex,
+                    order = c("female", "male"))
   expect_equal(new_way[["lower_ci"]], -new_way2[["upper_ci"]])
   expect_equal(new_way[["statistic"]], -new_way2[["statistic"]])
-  
+
   # One Sample
   new_way <- gss_tbl %>%
     t_test(hours ~ NULL, mu = 0)
@@ -37,20 +37,20 @@ test_that("t_test works", {
     t_test(response = hours, mu = 0)
   old_way <- t.test(x = gss_tbl$hours, mu = 0) %>%
     broom::glance() %>%
-    dplyr::select(statistic, t_df = parameter, p_value = p.value, 
+    dplyr::select(statistic, t_df = parameter, p_value = p.value,
                   alternative, lower_ci = conf.low, upper_ci = conf.high)
-  
+
   expect_equal(new_way, new_way_alt, tolerance = 1e-5)
   expect_equal(new_way, old_way, tolerance = 1e-5)
 })
 
 test_that("chisq_test works", {
   # maleependence
-  expect_silent(gss_tbl %>% 
+  expect_silent(gss_tbl %>%
                   chisq_test(college ~ partyid))
-  new_way <- gss_tbl %>% 
+  new_way <- gss_tbl %>%
     chisq_test(college ~ partyid)
-  new_way_alt <- gss_tbl %>% 
+  new_way_alt <- gss_tbl %>%
     chisq_test(response = college, explanatory = partyid)
   old_way <- chisq.test(x = table(gss_tbl$partyid, gss_tbl$college)) %>%
     broom::glance() %>%
@@ -58,24 +58,24 @@ test_that("chisq_test works", {
 
   expect_equal(new_way, new_way_alt, tolerance = eps)
   expect_equal(new_way, old_way, tolerance = eps)
-  
+
   # Goodness of Fit
-  expect_silent(gss_tbl %>% 
+  expect_silent(gss_tbl %>%
                   chisq_test(response = partyid, p = c(.3, .4, .3)))
-  new_way <- gss_tbl %>% 
+  new_way <- gss_tbl %>%
     chisq_test(partyid ~ NULL, p = c(.3, .4, .3))
-  new_way_alt <- gss_tbl %>% 
+  new_way_alt <- gss_tbl %>%
     chisq_test(response = partyid, p = c(.3, .4, .3))
   old_way <- chisq.test(x = table(gss_tbl$partyid), p = c(.3, .4, .3)) %>%
     broom::glance() %>%
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
-  
+
   expect_equal(new_way, new_way_alt, tolerance = 1e-5)
   expect_equal(new_way, old_way, tolerance = 1e-5)
-  
+
   # check that function errors out when response is numeric
   expect_error(chisq_test(x = gss_tbl, response = age, explanatory = partyid))
-  
+
   # check that function errors out when explanatory is numeric
   expect_error(chisq_test(x = gss_tbl, response = partyid, explanatory = age))
 
@@ -103,16 +103,16 @@ test_that("_stat functions work", {
    chisq_stat(partyid ~ NULL)
  obs_stat_way_alt <- gss_tbl %>%
    chisq_stat(response = partyid)
- 
+
  expect_equivalent(dplyr::pull(new_way), obs_stat_way)
  expect_equivalent(dplyr::pull(new_way), obs_stat_way_alt)
- 
+
  # robust to the named vector
  unordered_p <- gss_tbl %>%
    chisq_test(response = partyid, p = c(.2, .3, .5))
  ordered_p <- gss_tbl %>%
    chisq_test(response = partyid, p = c(ind = .2, rep = .3, dem = .5))
- 
+
  expect_equivalent(unordered_p, ordered_p)
 
   # Two sample t
@@ -129,9 +129,9 @@ test_that("_stat functions work", {
     t_stat(hours ~ sex, order = c("male", "female"))
   obs_stat_way_alt <- gss_tbl %>%
     t_stat(response = hours,
-           explanatory = sex, 
+           explanatory = sex,
            order = c("male", "female"))
-  
+
   expect_equivalent(another_way, obs_stat_way)
   expect_equivalent(another_way, obs_stat_way_alt)
 
@@ -145,10 +145,10 @@ test_that("_stat functions work", {
     t_stat(hours ~ NULL)
   obs_stat_way_alt <- gss_tbl %>%
     t_stat(response = hours)
-  
+
   expect_equivalent(another_way, obs_stat_way)
   expect_equivalent(another_way, obs_stat_way_alt)
-  
+
   expect_error(chisq_stat(x = gss_tbl, response = age, explanatory = sex))
   expect_error(chisq_stat(x = gss_tbl, response = sex, explanatory = age))
 })
@@ -156,11 +156,11 @@ test_that("_stat functions work", {
 test_that("conf_int argument works", {
   expect_equal(
     names(
-      gss_tbl %>% 
-        t_test(hours ~ sex, 
+      gss_tbl %>%
+        t_test(hours ~ sex,
                order = c("male", "female"), conf_int = FALSE)
     ),
-    c("statistic", "t_df", "p_value", "alternative"), 
+    c("statistic", "t_df", "p_value", "alternative"),
     tolerance = 1e-5
   )
   expect_equal(
@@ -200,12 +200,12 @@ test_that("conf_int argument works", {
 
   no_var_equal <- gss_tbl_small %>%
     t_stat(hours ~ sex, order = c("female", "male"))
-  
+
   var_equal <- gss_tbl_small %>%
     t_stat(
       hours ~ sex, order = c("female", "male"),
       var.equal = TRUE
-    ) 
+    )
   expect_false(no_var_equal == var_equal)
 
   shortcut_no_var_equal <- gss_tbl_small %>%
@@ -222,18 +222,18 @@ test_that("conf_int argument works", {
 })
 
 # generate some data to test the prop.test wrapper
-df <- data.frame(resp = c(rep("c", 450), 
-                          rep("d", 50), 
-                          rep("c", 400), 
-                          rep("d", 100)), 
+df <- data.frame(resp = c(rep("c", 450),
+                          rep("d", 50),
+                          rep("c", 400),
+                          rep("d", 100)),
                  exp = rep(c("a", "b"), each = 500))
 
 sum_df <- table(df)
 
-bad_df <- data.frame(resp = 1:5, 
+bad_df <- data.frame(resp = 1:5,
                      exp = letters[1:5])
 
-bad_df2 <- data.frame(resp = letters[1:5], 
+bad_df2 <- data.frame(resp = letters[1:5],
                      exp = 1:5)
 
 test_that("two sample prop_test works", {
@@ -241,44 +241,44 @@ test_that("two sample prop_test works", {
   # run the tests with default args
   base <- prop.test(sum_df)
   infer <- prop_test(df, resp ~ exp, order = c("a", "b"))
-  
+
   # check that results are same
-  expect_equal(base[["statistic"]], 
-               infer[["statistic"]], 
+  expect_equal(base[["statistic"]],
+               infer[["statistic"]],
                tolerance = .001)
-  expect_equal(base[["parameter"]], 
+  expect_equal(base[["parameter"]],
                infer[["chisq_df"]])
-  expect_equal(base[["p.value"]], 
+  expect_equal(base[["p.value"]],
                infer[["p_value"]],
                tolerance = .001)
 
   # expect warning for unspecified order
   expect_warning(prop_test(df, resp ~ exp))
-  
+
   # check that the functions respond to "p" in the same way
   base2 <- prop.test(sum_df, p = c(.1, .1))
   infer2 <- prop_test(df, resp ~ exp, order = c("a", "b"), p = c(.1, .1))
-  expect_equal(base2[["statistic"]], 
-               infer2[["statistic"]], 
+  expect_equal(base2[["statistic"]],
+               infer2[["statistic"]],
                tolerance = .001)
-  expect_equal(base2[["parameter"]], 
+  expect_equal(base2[["parameter"]],
                infer2[["chisq_df"]])
-  expect_equal(base2[["p.value"]], 
+  expect_equal(base2[["p.value"]],
                infer2[["p_value"]],
                tolerance = .001)
-  
+
   # check confidence interval argument
   infer3 <- prop_test(df, resp ~ exp, order = c("a", "b"), conf_int = TRUE)
   expect_length(infer3, 6)
   expect_length(infer2, 4)
-  
+
   # check that the order argument changes output
   infer4 <- prop_test(df, resp ~ exp, order = c("b", "a"), conf_int = TRUE)
   expect_equal(infer4[["lower_ci"]], -infer3[["upper_ci"]], tolerance = .001)
-  
+
   expect_error(prop_test(bad_df, resp ~ exp))
   expect_error(prop_test(bad_df2, resp ~ exp))
-  
+
   # check that the success argument changes output
   infer5 <- prop_test(df, resp ~ exp, order = c("a", "b"), success = "d", conf_int = TRUE)
   expect_equal(infer3[["upper_ci"]], -infer5[["lower_ci"]], tolerance = .001)
@@ -291,34 +291,34 @@ df_1 <- df %>%
 sum_df_1 <- table(df_1)
 
 test_that("one sample prop_test works", {
-  
+
   # check that results with default args are the same
   base <- prop.test(sum_df_1)
   infer <- prop_test(df_1, resp ~ NULL, p = .5)
-  expect_equal(base[["statistic"]], 
-               infer[["statistic"]], 
+  expect_equal(base[["statistic"]],
+               infer[["statistic"]],
                tolerance = .001)
-  expect_equal(base[["parameter"]], 
+  expect_equal(base[["parameter"]],
                infer[["chisq_df"]])
-  expect_equal(base[["p.value"]], 
+  expect_equal(base[["p.value"]],
                infer[["p_value"]],
                tolerance = .001)
-  
+
   # check that the functions respond to "p" in the same way
   base2 <- prop.test(sum_df_1, p = .86)
   infer2 <- prop_test(df_1, resp ~ NULL, p = .86)
-  expect_equal(base2[["statistic"]], 
-               infer2[["statistic"]], 
+  expect_equal(base2[["statistic"]],
+               infer2[["statistic"]],
                tolerance = .001)
-  expect_equal(base2[["parameter"]], 
+  expect_equal(base2[["parameter"]],
                infer2[["chisq_df"]])
-  expect_equal(base2[["p.value"]], 
+  expect_equal(base2[["p.value"]],
                infer2[["p_value"]],
                tolerance = .001)
-  
+
   # expect message for unspecified p
   expect_message(prop_test(df_1, resp ~ NULL))
-  
+
   # check that the success argument changes output
   infer3 <- prop_test(df_1, resp ~ NULL, p = .2, success = "c")
   infer4 <- prop_test(df_1, resp ~ NULL, p = .8, success = "d")

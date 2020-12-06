@@ -29,15 +29,15 @@ test. Uses \link[stats:chisq.test]{chisq.test()}, which applies a continuity
 correction.
 }
 \examples{
-# chi-squared test statistic for test of independence 
-# of college completion status depending and one's 
+# chi-squared test statistic for test of independence
+# of college completion status depending and one's
 # self-identified income class
 chisq_stat(gss, college ~ finrela)
 
-# chi-squared test statistic for a goodness of fit 
-# test on whether self-identified income class 
+# chi-squared test statistic for a goodness of fit
+# test on whether self-identified income class
 # follows a uniform distribution
-chisq_stat(gss, 
+chisq_stat(gss,
            response = finrela,
            p = c("far below average" = 1/6,
                  "below average" = 1/6,

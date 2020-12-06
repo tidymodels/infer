@@ -60,7 +60,7 @@ gss \%>\%
       alternative = "two-sided")
 
 # see vignette("infer") for more explanation of the
-# intuition behind the infer package, and vignette("t_test") 
+# intuition behind the infer package, and vignette("t_test")
 # for more examples of t-tests using infer
 
 }
