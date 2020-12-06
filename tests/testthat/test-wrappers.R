@@ -196,7 +196,7 @@ test_that("conf_int argument works", {
 
   # Check that var.equal produces different results
   # Thanks for fmaleing this @EllaKaye!
-  gss_tbl_small <- gss_tbl %>% slice(1:6, 90:100)
+  gss_tbl_small <- gss_tbl %>% dplyr::slice(1:6, 90:100)
 
   no_var_equal <- gss_tbl_small %>%
     t_stat(hours ~ sex, order = c("female", "male"))
