@@ -461,12 +461,12 @@ prop_test <- function(x, formula,
   lvls <- levels(factor(response_variable(x)))
 
   if (!is.null(success)) {
-    if (!is.character(success)) {
-      stop_glue("`success` must be a string.")
-    }
+    check_type(success, rlang::is_string)
+
     if (!(success %in% lvls)) {
       stop_glue('{success} is not a valid level of {attr(x, "response")}.')
     }
+
     lvls <- c(success, lvls[lvls != success])
   } else {
     success <- lvls[1]
@@ -497,7 +497,7 @@ prop_test <- function(x, formula,
   } else { # one sample
     response_tbl <- response_variable(x) %>%
       factor() %>%
-      relevel(success) %>%
+      stats::relevel(success) %>%
       table()
 
     if (is.null(p)) {
@@ -515,21 +515,22 @@ prop_test <- function(x, formula,
       broom::glance()
   }
 
-  if (conf_int & is.null(p) & (prelim$parameter <= 2)) {
-     results <- prelim %>%
-       dplyr::select(statistic,
-                     chisq_df = parameter,
-                     p_value = p.value,
-                     alternative,
-                     lower_ci = conf.low,
-                     upper_ci = conf.high)
-
-  } else if (prelim$parameter <= 2) {
-     results <- prelim %>%
-       dplyr::select(statistic,
-                     chisq_df = parameter,
-                     p_value = p.value,
-                     alternative)
+  if (prelim$parameter <= 2) {
+    if (conf_int & is.null(p)) {
+       results <- prelim %>%
+         dplyr::select(statistic,
+                       chisq_df = parameter,
+                       p_value = p.value,
+                       alternative,
+                       lower_ci = conf.low,
+                       upper_ci = conf.high)
+    } else {
+       results <- prelim %>%
+         dplyr::select(statistic,
+                       chisq_df = parameter,
+                       p_value = p.value,
+                       alternative)
+    }
   } else {
     results <- prelim %>%
       dplyr::select(statistic,
