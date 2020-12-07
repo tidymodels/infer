@@ -226,7 +226,8 @@ df <- data.frame(resp = c(rep("c", 450),
                           rep("d", 50),
                           rep("c", 400),
                           rep("d", 100)),
-                 exp = rep(c("a", "b"), each = 500))
+                 exp = rep(c("a", "b"), each = 500),
+                 stringsAsFactors = FALSE)
 
 sum_df <- table(df)
 
@@ -323,4 +324,21 @@ test_that("one sample prop_test works", {
   infer3 <- prop_test(df_1, resp ~ NULL, p = .2, success = "c")
   infer4 <- prop_test(df_1, resp ~ NULL, p = .8, success = "d")
   expect_equal(infer3[["chisq_df"]], infer4[["chisq_df"]], tolerance = .001)
+})
+
+test_that("prop_test output dimensionality is correct", {
+  infer_1_sample <- prop_test(df, resp ~ NULL, p = .5)
+  infer_2_sample <- prop_test(df, resp ~ exp, order = c("a", "b"))
+  infer_2_sample_no_int <- prop_test(df, resp ~ exp, order = c("a", "b"), 
+                                     conf_int = FALSE)
+  
+  # introduce a third response level
+  df$resp[c(1:10, 490:510, 990:1000)] <- "e"
+  
+  infer_3_sample <- prop_test(df, resp ~ exp, order = c("a", "b"))
+  
+  expect_length(infer_1_sample, 4)
+  expect_length(infer_2_sample, 6)
+  expect_length(infer_2_sample_no_int, 4)
+  expect_length(infer_3_sample, 3)
 })

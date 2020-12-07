@@ -492,8 +492,7 @@ prop_test <- function(x, formula,
                                alternative = alternative,
                                conf.level = conf_level,
                                p = p,
-                               ...) %>%
-      broom::glance()
+                               ...)
   } else { # one sample
     response_tbl <- response_variable(x) %>%
       factor() %>%
@@ -511,13 +510,14 @@ prop_test <- function(x, formula,
                                alternative = alternative,
                                conf.level = conf_level,
                                p = p,
-                               ...) %>%
-      broom::glance()
+                               ...)
+      
   }
 
-  if (prelim$parameter <= 2) {
+  if (length(prelim$estimate) <= 2) {
     if (conf_int & is.null(p)) {
        results <- prelim %>%
+         broom::glance() %>%
          dplyr::select(statistic,
                        chisq_df = parameter,
                        p_value = p.value,
@@ -526,6 +526,7 @@ prop_test <- function(x, formula,
                        upper_ci = conf.high)
     } else {
        results <- prelim %>%
+         broom::glance() %>%
          dplyr::select(statistic,
                        chisq_df = parameter,
                        p_value = p.value,
@@ -533,6 +534,7 @@ prop_test <- function(x, formula,
     }
   } else {
     results <- prelim %>%
+      broom::glance() %>%
       dplyr::select(statistic,
                     chisq_df = parameter,
                     p_value = p.value)
