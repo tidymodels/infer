@@ -70,11 +70,11 @@ If you're interested in two variables--`age` and `partyid`, for example--you can
 ```{r specify-two, warning = FALSE, message = FALSE}
 # with the named arguments
 gss %>%
-  specify(age ~ partyid)
+  specify(response = age, explanatory = partyid)
 
 # as a formula
 gss %>%
-  specify(response = age, explanatory = partyid)
+  specify(age ~ partyid)
 ```
 
 If you're doing inference on one proportion or a difference in proportions, you will need to use the `success` argument to specify which level of your `response` variable is a success. For instance, if you're interested in the proportion of the population with a college degree, you might use the following code:
