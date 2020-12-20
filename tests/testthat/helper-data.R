@@ -1,5 +1,10 @@
 set.seed(4242)
 
+expect_doppelganger <- function(title, fig, path = NULL, ...) {
+  testthat::skip_if_not_installed("vdiffr")
+  vdiffr::expect_doppelganger(title, fig, path = path, ...)
+}
+
 eps <- if (capabilities("long.double")) {sqrt(.Machine$double.eps)} else {0.01}
 
 gss_tbl <- tibble::as_tibble(gss) %>%
