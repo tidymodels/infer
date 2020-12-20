@@ -420,6 +420,7 @@ check_conf_level <- function(conf_level) {
 #' # proportion of college completion of .2
 #' prop_test(gss,
 #'           college ~ NULL,
+#'           success = "degree",
 #'           p = .2)
 #'
 #' @export

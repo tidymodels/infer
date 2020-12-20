@@ -78,6 +78,7 @@ prop_test(gss,
 # proportion of college completion of .2
 prop_test(gss,
           college ~ NULL,
+          success = "degree",
           p = .2)
 
 }
