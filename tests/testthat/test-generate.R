@@ -1,5 +1,7 @@
 context("generate")
 
+source(test_path("test-aaa-helper-data.R"))
+
 hyp_prop <- mtcars_df %>%
   specify(response = am, success = "1") %>%
   hypothesize(null = "point", p = .5)

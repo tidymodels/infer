@@ -1,5 +1,7 @@
 context("specify")
 
+source(test_path("test-aaa-helper-data.R"))
+
 one_nonshift_mean <- mtcars_df %>% specify(response = mpg)
 
 one_nonshift_prop <- mtcars_df %>% specify(response = am, success = "1")

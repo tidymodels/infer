@@ -1,5 +1,7 @@
 context("get_confidence_interval")
 
+source(test_path("test-aaa-helper-data.R"))
+
 point <- mean(test_df[["stat"]])
 
 perc_def_out <- tibble::tibble(

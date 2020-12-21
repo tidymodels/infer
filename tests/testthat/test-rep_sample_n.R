@@ -1,5 +1,7 @@
 context("rep_sample_n")
 
+source(test_path("test-aaa-helper-data.R"))
+
 N <- 5
 population <- tibble::tibble(
   ball_id = 1:N,

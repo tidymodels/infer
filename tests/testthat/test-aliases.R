@@ -1,5 +1,7 @@
 context("aliases")
 
+source(test_path("test-aaa-helper-data.R"))
+
 test_that("aliases work", {
   expect_equal(
     gss_calc %>%

@@ -2,6 +2,7 @@ context("shade_confidence_interval")
 
 library(vdiffr)
 
+source(test_path("test-aaa-helper-data.R"))
 
 # shade_confidence_interval -----------------------------------------------
 test_that("shade_confidence_interval works", {

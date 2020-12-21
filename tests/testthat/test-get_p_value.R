@@ -1,5 +1,7 @@
 context("get_p_value")
 
+source(test_path("test-aaa-helper-data.R"))
+
 set.seed(2018)
 test_df <- tibble::tibble(
   stat = sample(c(

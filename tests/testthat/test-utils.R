@@ -1,5 +1,7 @@
 context("utils")
 
+source(test_path("test-aaa-helper-data.R"))
+
 test_that("append_infer_class works", {
   expect_equal(
     class(append_infer_class(structure("a", class = "b"))),

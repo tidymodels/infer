@@ -1,5 +1,7 @@
 context("wrappers")
 
+source(test_path("test-aaa-helper-data.R"))
+
 test_that("t_test works", {
   # Two Sample
   expect_warning(gss_tbl %>% t_test(hours ~ sex))

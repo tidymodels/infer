@@ -1,5 +1,7 @@
 context("hypothesize")
 
+source(test_path("test-aaa-helper-data.R"))
+
 one_mean <- mtcars_df %>%
   specify(response = mpg) %>% # formula alt: mpg ~ NULL
   hypothesize(null = "point", mu = 25)

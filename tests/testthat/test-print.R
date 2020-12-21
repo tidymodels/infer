@@ -1,5 +1,7 @@
 context("print")
 
+source(test_path("test-aaa-helper-data.R"))
+
 test_that("print works", {
   expect_output(print(
     gss_tbl %>%

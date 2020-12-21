@@ -1,5 +1,7 @@
 context("calculate")
 
+source(test_path("test-aaa-helper-data.R"))
+
 # calculate arguments
 test_that("x is a tibble", {
   vec <- 1:10

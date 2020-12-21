@@ -2,6 +2,7 @@ context("shade_p_value")
 
 library(vdiffr)
 
+source(test_path("test-aaa-helper-data.R"))
 
 # shade_p_value -----------------------------------------------------------
 test_that("shade_p_value works", {

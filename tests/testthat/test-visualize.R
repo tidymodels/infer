@@ -3,6 +3,8 @@ context("visualize")
 library(dplyr)
 library(vdiffr)
 
+source(test_path("test-aaa-helper-data.R"))
+
 set.seed(42)
 
 hours_resamp <- gss_tbl %>%
