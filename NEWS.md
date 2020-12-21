@@ -5,6 +5,7 @@
 more closely resembles `dplyr::slice_sample()` (the function that supersedes)
 `dplyr::sample_n()` (#325)
 - Added a `success` argument to `prop_test()` (#343)
+- Implemented the standardized proportion $z$ statistic for one categorical variable
 
 # infer 0.5.3
 

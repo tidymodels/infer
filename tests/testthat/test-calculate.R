@@ -568,3 +568,17 @@ test_that("calc_impl.ratio_of_props works", {
     tolerance = eps
   )
 })
+
+test_that("calc_impl.z works for one sample proportions", {
+  infer_obs_stat <- gss %>%
+    specify(response = sex, success = "female") %>%
+    hypothesize(null = "point", p = .5) %>%
+    calculate(stat = "z") %>%
+    dplyr::pull()
+  
+  base_obs_stat <- 
+    (mean(gss$sex == "female") - .5) / 
+    sqrt(.5^2 / nrow(gss))
+  
+  expect_equal(infer_obs_stat, base_obs_stat, tolerance = eps)
+})
