@@ -92,8 +92,10 @@ calculate <- function(x,
         "implemented) for `stat` = \"{stat}\". Are you missing ",
         "a `generate()` step?"
       )
-    } else if (!(stat %in% c("Chisq", "prop", "count")) &
-      !(stat == "t" & (attr(x, "theory_type") == "One sample t"))) {
+    } else if (
+      !(stat %in% c("Chisq", "prop", "count")) &
+      !(stat %in% c("t", "z") 
+        & (attr(x, "theory_type") %in% c("One sample t", "One sample prop z")))) {
       # From `hypothesize()` to `calculate()`
       # Catch-all if generate was not called
       # warning_glue(
@@ -484,16 +486,14 @@ calc_impl.z <- function(type, x, order, ...) {
 
     # When `hypothesize()` has been called
     success <- attr(x, "success")
-
-    p0 <- attr(x, "params")[1]
-    num_rows <- nrow(x) / length(unique(x$replicate))
-
     col <- attr(x, "response")
-    # if (is.null(success)) {
-    #   success <- quo(get_par_levels(x)[1])
-    # }
-    # Error given instead
-
+    p0 <- unname(attr(x, "params")[1])
+    if (!is_generated(x)) {
+      num_rows <- nrow(x)
+    } else {
+      num_rows <- nrow(x) / length(unique(x$replicate))
+    }
+      
     df_out <- x %>%
       dplyr::summarize(
         stat = (
