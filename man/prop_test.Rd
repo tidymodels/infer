@@ -90,7 +90,14 @@ prop_test(gss,
 # proportion of college completion of .2
 prop_test(gss,
           college ~ NULL,
-          success = "degree",
           p = .2)
+
+# report as a z-statistic rather than chi-square
+# and specify the success level of the response
+prop_test(gss,
+          college ~ NULL,
+          success = "degree",
+          p = .2,
+          z = TRUE)
 
 }

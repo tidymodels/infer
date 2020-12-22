@@ -428,8 +428,15 @@ check_conf_level <- function(conf_level) {
 #' # proportion of college completion of .2
 #' prop_test(gss,
 #'           college ~ NULL,
-#'           success = "degree",
 #'           p = .2)
+#' 
+#' # report as a z-statistic rather than chi-square
+#' # and specify the success level of the response
+#' prop_test(gss,
+#'           college ~ NULL,
+#'           success = "degree",
+#'           p = .2,
+#'           z = TRUE)
 #'
 #' @export
 prop_test <- function(x, formula,
