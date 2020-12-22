@@ -95,7 +95,8 @@ calculate <- function(x,
     } else if (
       !(stat %in% c("Chisq", "prop", "count")) &
       !(stat %in% c("t", "z") 
-        & (attr(x, "theory_type") %in% c("One sample t", "One sample prop z")))) {
+        & (attr(x, "theory_type") %in% 
+           c("One sample t", "One sample prop z", "Two sample props z")))) {
       # From `hypothesize()` to `calculate()`
       # Catch-all if generate was not called
       # warning_glue(
@@ -459,6 +460,10 @@ calc_impl.z <- function(type, x, order, ...) {
       explanatory_variable(x),
       levels = c(order[1], order[2])
     )
+    
+    if (!"replicate" %in% colnames(x)) {
+      x$replicate <- 1L
+    }
 
     aggregated <- x %>%
       dplyr::group_by(replicate, explan) %>%
@@ -478,7 +483,7 @@ calc_impl.z <- function(type, x, order, ...) {
         denom = sqrt(p_hat * (1 - p_hat) / n1 + p_hat * (1 - p_hat) / n2),
         stat = diff_prop / denom
       ) %>%
-      dplyr::select(-total_suc, -n1, -n2)
+      dplyr::select(stat)
 
     df_out
   } else if (attr(x, "theory_type") == "One sample prop z") {
