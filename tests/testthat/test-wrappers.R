@@ -328,6 +328,7 @@ test_that("one sample prop_test works", {
 
 test_that("prop_test output dimensionality is correct", {
   infer_1_sample <- prop_test(df, resp ~ NULL, p = .5)
+  infer_1_sample_z <- prop_test(df, resp ~ NULL, p = .5, z = TRUE)
   infer_2_sample <- prop_test(df, resp ~ exp, order = c("a", "b"))
   infer_2_sample_no_int <- prop_test(df, resp ~ exp, order = c("a", "b"), 
                                      conf_int = FALSE)
@@ -338,7 +339,16 @@ test_that("prop_test output dimensionality is correct", {
   infer_3_sample <- prop_test(df, resp ~ exp, order = c("a", "b"))
   
   expect_length(infer_1_sample, 4)
+  expect_length(infer_1_sample, length(infer_1_sample_z) + 1)
   expect_length(infer_2_sample, 6)
   expect_length(infer_2_sample_no_int, 4)
   expect_length(infer_3_sample, 3)
+})
+
+test_that("prop_test z argument works as expected", {
+  chi_res <- prop_test(df, resp ~ NULL, p = .5, correct = FALSE)
+    
+  z_res <- prop_test(df, resp ~ NULL, p = .5, z = TRUE)
+    
+  expect_equal(unname(chi_res$statistic), z_res$statistic^2, tolerance = eps)
 })
