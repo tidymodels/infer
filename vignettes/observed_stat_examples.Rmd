@@ -229,7 +229,40 @@ null_distn <- gss %>%
 
 ### One categorical variable (standardized proportion $z$)
 
-While the standardized proportion $z$ statistic has not yet been implemented in the randomization-based framework, the package supplies a wrapper around `prop.test` to allow for tests of a single proportion on tidy data.
+Calculating the observed statistic,
+
+```{r}
+p_hat <- gss %>%
+  specify(response = sex, success = "female") %>%
+  hypothesize(null = "point", p = .5) %>%
+  calculate(stat = "z")
+```
+
+Then, generating the null distribution,
+
+```{r}
+null_distn <- gss %>%
+  specify(response = sex, success = "female") %>%
+  hypothesize(null = "point", p = .5) %>%
+  generate(reps = 1000, type = "simulate") %>%
+  calculate(stat = "z")
+```
+
+Visualizing the observed statistic alongside the null distribution,
+
+```{r}
+visualize(null_distn) +
+  shade_p_value(obs_stat = p_hat, direction = "two-sided")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r}
+null_distn %>%
+  get_p_value(obs_stat = p_hat, direction = "two-sided")
+```
+
+The package also supplies a wrapper around `prop.test` for tests of a single proportion on tidy data.
 
 ```{r prop_test_1_grp}
 prop_test(gss,

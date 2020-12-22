@@ -1,7 +1,6 @@
 context("visualize")
 
 library(dplyr)
-library(vdiffr)
 
 set.seed(42)
 
