@@ -409,7 +409,7 @@ check_conf_level <- function(conf_level) {
 #'   ignored otherwise.
 #' @param correct A logical indicating whether Yates' continuity correction 
 #'   should be applied where possible. If `z = TRUE`, the `correct` argument will 
-#'   be overwritten as `FALSE`.
+#'   be overwritten as `FALSE`. Otherwise defaults to `correct = TRUE`.
 #' @param z A logical value for whether to report the statistic as a standard
 #'   normal deviate or a Pearson's chi-square statistic. \eqn{z^2}  is distributed
 #'   chi-square with 1 degree of freedom, though note that the user will likely
@@ -448,7 +448,7 @@ prop_test <- function(x, formula,
                       conf_int = TRUE,
                       conf_level = 0.95,
                       success = NULL,
-                      correct = TRUE,
+                      correct = NULL,
                       z = FALSE,
                       ...) {
   # Parse response and explanatory variables
@@ -456,7 +456,7 @@ prop_test <- function(x, formula,
   explanatory <- enquo(explanatory)
   x <- parse_variables(x = x, formula = formula,
                        response = response, explanatory = explanatory)
-  correct <- if (z) {FALSE} else {correct}
+  correct <- if (z) {FALSE} else if (is.null(correct)) {TRUE} else {correct}
 
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
@@ -569,7 +569,7 @@ prop_test <- function(x, formula,
 }
 
 calculate_z <- function(x, results, success, p, order) {
-  exp <- if (is.null(attr(x, "explanatory"))) {"NULL"} else {attr(x, "explanatory")}
+  exp <- if (has_explanatory(x)) {attr(x, "explanatory")} else {"NULL"}
   
   form <- as.formula(paste0(attr(x, "response"), " ~ ", exp))
   

@@ -15,7 +15,7 @@ prop_test(
   conf_int = TRUE,
   conf_level = 0.95,
   success = NULL,
-  correct = TRUE,
+  correct = NULL,
   z = FALSE,
   ...
 )
@@ -65,7 +65,7 @@ ignored otherwise.}
 
 \item{correct}{A logical indicating whether Yates' continuity correction
 should be applied where possible. If \code{z = TRUE}, the \code{correct} argument will
-be overwritten as \code{FALSE}.}
+be overwritten as \code{FALSE}. Otherwise defaults to \code{correct = TRUE}.}
 
 \item{z}{A logical value for whether to report the statistic as a standard
 normal deviate or a Pearson's chi-square statistic. \eqn{z^2}  is distributed

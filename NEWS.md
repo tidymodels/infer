@@ -4,7 +4,7 @@
 - Added `rep_slice_sample()`, a light wrapper around `rep_sample_n()`, that
 more closely resembles `dplyr::slice_sample()` (the function that supersedes)
 `dplyr::sample_n()` (#325)
-- Added a `success` and `z` argument to `prop_test()` (#343, #347)
+- Added a `success`, `correct`, and `z` argument to `prop_test()` (#343, #347)
 - Implemented the standardized proportion $z$ statistic for one categorical variable
 
 # infer 0.5.3
