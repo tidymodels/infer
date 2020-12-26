@@ -407,6 +407,14 @@ check_conf_level <- function(conf_level) {
 #'   a string. Only used when testing the null that a single
 #'   proportion equals a given value, or that two proportions are equal;
 #'   ignored otherwise.
+#' @param correct A logical indicating whether Yates' continuity correction 
+#'   should be applied where possible. If `z = TRUE`, the `correct` argument will 
+#'   be overwritten as `FALSE`. Otherwise defaults to `correct = TRUE`.
+#' @param z A logical value for whether to report the statistic as a standard
+#'   normal deviate or a Pearson's chi-square statistic. \eqn{z^2}  is distributed
+#'   chi-square with 1 degree of freedom, though note that the user will likely
+#'   need to turn off Yates' continuity correction by setting `correct = FALSE`
+#'   to see this connection.
 #' @param ... Additional arguments for [prop.test()][stats::prop.test()].
 #'
 #' @examples
@@ -421,6 +429,14 @@ check_conf_level <- function(conf_level) {
 #' prop_test(gss,
 #'           college ~ NULL,
 #'           p = .2)
+#' 
+#' # report as a z-statistic rather than chi-square
+#' # and specify the success level of the response
+#' prop_test(gss,
+#'           college ~ NULL,
+#'           success = "degree",
+#'           p = .2,
+#'           z = TRUE)
 #'
 #' @export
 prop_test <- function(x, formula,
@@ -432,12 +448,15 @@ prop_test <- function(x, formula,
                       conf_int = TRUE,
                       conf_level = 0.95,
                       success = NULL,
+                      correct = NULL,
+                      z = FALSE,
                       ...) {
   # Parse response and explanatory variables
   response    <- enquo(response)
   explanatory <- enquo(explanatory)
   x <- parse_variables(x = x, formula = formula,
                        response = response, explanatory = explanatory)
+  correct <- if (z) {FALSE} else if (is.null(correct)) {TRUE} else {correct}
 
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
@@ -492,6 +511,7 @@ prop_test <- function(x, formula,
                                alternative = alternative,
                                conf.level = conf_level,
                                p = p,
+                               correct = correct,
                                ...)
   } else { # one sample
     response_tbl <- response_variable(x) %>%
@@ -510,6 +530,7 @@ prop_test <- function(x, formula,
                                alternative = alternative,
                                conf.level = conf_level,
                                p = p,
+                               correct = correct,
                                ...)
       
   }
@@ -539,7 +560,33 @@ prop_test <- function(x, formula,
                     chisq_df = parameter,
                     p_value = p.value)
   }
+  
+  if (z) {
+    results <- calculate_z(x, results, success, p, order)
+  }
 
   results
 }
 
+calculate_z <- function(x, results, success, p, order) {
+  exp <- if (has_explanatory(x)) {attr(x, "explanatory")} else {"NULL"}
+  
+  form <- as.formula(paste0(attr(x, "response"), " ~ ", exp))
+  
+  stat <- x %>%
+    specify(formula = form, success = success) %>%
+    hypothesize(
+      null = if (has_explanatory(x)) {"independence"} else {"point"},
+      p = if (is.null(p) && !has_explanatory(x)) {.5} else {p}
+    ) %>%
+    calculate(
+      stat = "z",
+      order = if (has_explanatory(x)) {order} else {NULL}
+    ) %>%
+    dplyr::pull()
+  
+  results$statistic <- stat
+  results$chisq_df <- NULL
+  
+  results
+}

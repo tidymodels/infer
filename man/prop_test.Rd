@@ -15,6 +15,8 @@ prop_test(
   conf_int = TRUE,
   conf_level = 0.95,
   success = NULL,
+  correct = NULL,
+  z = FALSE,
   ...
 )
 }
@@ -61,6 +63,16 @@ a string. Only used when testing the null that a single
 proportion equals a given value, or that two proportions are equal;
 ignored otherwise.}
 
+\item{correct}{A logical indicating whether Yates' continuity correction
+should be applied where possible. If \code{z = TRUE}, the \code{correct} argument will
+be overwritten as \code{FALSE}. Otherwise defaults to \code{correct = TRUE}.}
+
+\item{z}{A logical value for whether to report the statistic as a standard
+normal deviate or a Pearson's chi-square statistic. \eqn{z^2}  is distributed
+chi-square with 1 degree of freedom, though note that the user will likely
+need to turn off Yates' continuity correction by setting \code{correct = FALSE}
+to see this connection.}
+
 \item{...}{Additional arguments for \link[stats:prop.test]{prop.test()}.}
 }
 \description{
@@ -79,5 +91,13 @@ prop_test(gss,
 prop_test(gss,
           college ~ NULL,
           p = .2)
+
+# report as a z-statistic rather than chi-square
+# and specify the success level of the response
+prop_test(gss,
+          college ~ NULL,
+          success = "degree",
+          p = .2,
+          z = TRUE)
 
 }
