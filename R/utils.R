@@ -9,7 +9,7 @@ append_infer_class <- function(x) {
 
 format_params <- function(x) {
   par_levels <- get_par_levels(x)
-  fct_levels <- as.character(unique(dplyr::pull(x, !!attr(x, "response"))))
+  fct_levels <- as.character(unique(response_variable(x)))
   attr(x, "params")[match(fct_levels, par_levels)]
 }
 
@@ -31,7 +31,7 @@ copy_attrs <- function(to, from,
   to
 }
 
-is_nuat <- function(x, at) {
+is_null_attr <- function(x, at) {
   is.null(attr(x, at))
 }
 
@@ -49,12 +49,13 @@ c_dedupl <- function(...) {
 }
 
 explanatory_variable <- function(x) {
-  x[[as.character(attr(x, "explanatory"))]]
+  if (!is.null(attr(x, "explanatory"))) {
+    x[[as.character(attr(x, "explanatory"))]]
+  } else {
+    NULL
+  }
 }
 
-# Other places in the code use
-# dplyr::pull(x, !!attr(x, "response"))
-# which seems to do the same thing
 response_variable <- function(x) {
   x[[as.character(attr(x, "response"))]]
 }
@@ -68,11 +69,11 @@ reorder_explanatory <- function(x, order) {
 }
 
 has_explanatory <- function(x) {
-  !is_nuat(x, "explanatory")
+  !is_null_attr(x, "explanatory")
 }
 
 has_response <- function(x) {
-  !is_nuat(x, "response")
+  !is_null_attr(x, "response")
 }
 
 is_color_string <- function(x) {
@@ -118,6 +119,54 @@ null_transformer <- function(text, envir) {
   }
 
   out
+}
+
+# simplify and standardize checks by grouping statistics based on
+# variable types
+# 
+# num = numeric, bin = binomial, mult = multinomial
+stat_types <- tibble::tribble(
+  ~resp,   ~exp,   ~stats,
+  "num",   "",     c(""),
+  "num",   "num",  c(""),
+  "num",   "bin",  c(""),
+  "num",   "mult", c(""),
+  "bin",   "",     c(""),
+  "bin",   "num",  c(""),
+  "bin",   "bin",  c(""),
+  "bin",   "mult", c(""),
+  "mult",  "",     c(""),
+  "mult",  "num",  c(""),
+  "mult",  "bin",  c(""),
+  "mult",  "mult", c(""),
+)
+
+determine_variable_type <- function(x, variable) {
+  var <- eval(rlang::parse_expr(paste0(variable, "_variable(x)")))
+  
+  res <- if (is.null(var)) {
+    NULL
+  } else if (inherits(var, "numeric")) {
+    "num"
+  } else if (length(unique(var)) == 2) {
+    "bin"
+  } else {
+    "mult"
+  }
+  
+  res
+}
+
+variable_types <- c(
+  "num"  = "numeric",
+  "bin"  = "factor",
+  "mult" = "factor"
+)
+
+variable_is <- function(x, which, type) {
+  var_attr <- attr(x, paste0(which, "_type"))
+  
+  unname(type == variable_types[names(variable_types) == var_attr])
 }
 
 check_order <- function(x, explanatory_variable, order, in_calculate = TRUE) {
@@ -188,7 +237,7 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
     )
   }
 
-  if (!("replicate" %in% names(x)) && !is_nuat(x, "generate")) {
+  if (!("replicate" %in% names(x)) && !is_null_attr(x, "generate")) {
     warning_glue(
       'A `generate()` step was not performed prior to `calculate()`. ',
       'Review carefully.'
@@ -319,6 +368,14 @@ has_unused_levels <- function(x) {
   }
 }
 
+is_generated <- function(x) {
+  attr(x, "generate")
+}
+
+is_hypothesized <- function(x){
+  !is.null(attr(x, "null"))
+}
+
 # Helpers for hypothesize() -----------------------------------------------
 
 match_null_hypothesis <- function(null) {
@@ -362,7 +419,7 @@ sanitize_hypothesis_params_proportion <- function(p, x) {
     stop_glue('`p` should only contain values between zero and one.')
   }
   if(length(p) == 1) {
-    if(is_nuat(x, "success")) {
+    if(is_null_attr(x, "success")) {
       stop_glue(
         "A point null regarding a proportion requires that `success` ",
         "be indicated in `specify()`."

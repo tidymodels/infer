@@ -77,7 +77,7 @@ calculate <- function(x,
     )
   }
 
-  if (is_nuat(x, "generate") || !attr(x, "generate")) {
+  if (is_null_attr(x, "generate") || !attr(x, "generate")) {
     if (!is_hypothesized(x)) {
       x$replicate <- 1L
     } else if (
@@ -114,7 +114,7 @@ calculate <- function(x,
       "diff in props", "ratio of props", "odds ratio"
     )) ||
       (
-        !is_nuat(x, "theory_type") &&
+        !is_null_attr(x, "theory_type") &&
           (attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))
       )
   ) {
@@ -127,7 +127,7 @@ calculate <- function(x,
       "diff in props", "ratio of props", "odds ratio"
     )) ||
       (
-        !is_nuat(x, "theory_type") &&
+        !is_null_attr(x, "theory_type") &&
           attr(x, "theory_type") %in% c("Two sample props z", "Two sample t")
       )
   )) {
@@ -149,9 +149,6 @@ calculate <- function(x,
       "Your choice of `stat` is invalid for the types of variables `specify`ed."
     )
   }
-  # else {
-  #   result <- append_infer_class(result)
-  # }
 
   result <- copy_attrs(to = result, from = x)
   attr(result, "stat") <- stat
@@ -198,7 +195,7 @@ calc_impl_success_f <- function(f, output_name) {
     #   )
     # }
 
-    if (is_nuat(x, "success")) {
+    if (is_null_attr(x, "success")) {
       stop_glue(
         'To calculate a {output_name}, the `"success"` argument must be ',
         "provided in `specify()`."
@@ -271,9 +268,9 @@ calc_impl.diff_in_medians <- calc_impl_diff_f(stats::median)
 calc_impl.Chisq <- function(type, x, order, ...) {
   resp_var <- as.character(attr(x, "response"))
 
-  if (is_nuat(x, "explanatory")) {
+  if (is_null_attr(x, "explanatory")) {
     # Chi-Square Goodness of Fit
-    if (!is_nuat(x, "params")) {
+    if (!is_null_attr(x, "params")) {
       # When `hypothesize()` has been called
       p_levels <- get_par_levels(x)
       chisq_gof <- function(df) {
@@ -323,7 +320,7 @@ calc_impl.Chisq <- function(type, x, order, ...) {
       dplyr::summarise(stat = chisq_indep(data), .groups = "drop")
   }
 
-  if (!is_nuat(x, "generate")) {
+  if (!is_null_attr(x, "generate")) {
     result <- result %>% dplyr::select(replicate, stat)
   } else {
     result <- result %>% dplyr::select(stat)
