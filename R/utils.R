@@ -141,12 +141,19 @@ stat_types <- tibble::tribble(
   "mult",  "mult", c(""),
 )
 
+# statistics for which theoretical distributions are not implemented
+untheorized_stats <- c(
+  "mean", "median", "sum", "sd", "prop", "count", "diff in means",
+  "diff in medians", "diff in props", "slope", "correlation",
+  "ratio of props", "odds ratio"
+)
+
 determine_variable_type <- function(x, variable) {
   var <- eval(rlang::parse_expr(paste0(variable, "_variable(x)")))
   
   res <- if (is.null(var)) {
     NULL
-  } else if (inherits(var, "numeric")) {
+  } else if (inherits(var, "numeric") || inherits(var, "integer")) {
     "num"
   } else if (length(unique(var)) == 2) {
     "bin"
@@ -237,7 +244,7 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
     )
   }
 
-  if (!("replicate" %in% names(x)) && !is_null_attr(x, "generate")) {
+  if (!("replicate" %in% names(x)) && !is_null_attr(x, "generated")) {
     warning_glue(
       'A `generate()` step was not performed prior to `calculate()`. ',
       'Review carefully.'
@@ -369,75 +376,12 @@ has_unused_levels <- function(x) {
 }
 
 is_generated <- function(x) {
-  attr(x, "generate")
+  attr(x, "generated")
 }
 
 is_hypothesized <- function(x){
   !is.null(attr(x, "null"))
 }
-
-# Helpers for hypothesize() -----------------------------------------------
-
-match_null_hypothesis <- function(null) {
-  null_hypothesis_types <- c("point", "independence")
-  if(length(null) != 1) {
-    stop_glue('You should specify exactly one type of null hypothesis.')
-  }
-  i <- pmatch(null, null_hypothesis_types)
-  if(is.na(i)) {
-    stop_glue('`null` should be either "point" or "independence".')
-  }
-  null_hypothesis_types[i]
-}
-
-sanitize_hypothesis_params_independence <- function(dots) {
-  if (length(dots) > 0) {
-    warning_glue(
-      "Parameter values are not specified when testing that two variables are ",
-      "independent."
-    )
-  }
-  NULL
-}
-
-sanitize_hypothesis_params_point <- function(dots, x) {
-  if(length(dots) != 1) {
-    stop_glue("You must specify exactly one of `p`, `mu`, `med`, or `sigma`.")
-  }
-  if (!is.null(dots$p)) {
-    dots$p <- sanitize_hypothesis_params_proportion(dots$p, x)
-  }
-  dots
-}
-
-sanitize_hypothesis_params_proportion <- function(p, x) {
-  eps <- if (capabilities("long.double")) {sqrt(.Machine$double.eps)} else {0.01}
-  if(anyNA(p)) {
-    stop_glue('`p` should not contain missing values.')
-  }
-  if(any(p < 0 | p > 1)) {
-    stop_glue('`p` should only contain values between zero and one.')
-  }
-  if(length(p) == 1) {
-    if(is_null_attr(x, "success")) {
-      stop_glue(
-        "A point null regarding a proportion requires that `success` ",
-        "be indicated in `specify()`."
-      )
-    }
-    p <- c(p, 1 - p)
-    names(p) <- get_success_then_response_levels(x)
-  } else {
-    if (sum(p) < 1 - eps | sum(p) > 1 + eps) {
-      stop_glue(
-        "Make sure the hypothesized values for the `p` parameters sum to 1. ",
-        "Please try again."
-      )
-    }
-  }
-  p
-}
-
 
 get_response_levels <- function(x) {
   as.character(unique(response_variable(x)))
@@ -450,27 +394,6 @@ get_success_then_response_levels <- function(x) {
     success_attr
   )
   c(success_attr, response_levels)
-}
-
-hypothesize_checks <- function(x, null) {
-  # error: x is not a dataframe
-  if (!sum(class(x) %in% c("data.frame", "tbl", "tbl_df", "grouped_df"))) {
-    stop_glue("x must be a data.frame or tibble")
-  }
-
-  if (!has_response(x)) {
-    stop_glue(
-      "The response variable is not set. Make sure to `specify()` it first."
-    )
-  }
-
-  if ((null == "independence") && !has_explanatory(x)) {
-    stop_glue(
-      'Please `specify()` an explanatory and a response variable when ',
-      'testing\n',
-      'a null hypothesis of `"independence"`.'
-    )
-  }
 }
 
 check_direction <- function(direction = c("less", "greater", "two_sided",

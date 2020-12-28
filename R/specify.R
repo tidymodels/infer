@@ -56,64 +56,18 @@ specify <- function(x, formula, response = NULL,
     mutate_if(is.logical, as.factor)
   
   # Parse response and explanatory variables
-  #response    <- if (!is.null(response)) {enquo(response)}
   response <- enquo(response)
-  #explanatory <- if (!is.null(explanatory)) {enquo(explanatory)}
   explanatory <- enquo(explanatory)
   x <- parse_variables(x = x, formula = formula, 
                        response = response, explanatory = explanatory)
-
-  # Process "success" arg
-  response_col <- response_variable(x)
   
-  if (!is.null(success)) {
-    if (!is.character(success)) {
-      stop_glue("`success` must be a string.")
-    }
-    if (!is.factor(response_col)) {
-      stop_glue(
-        "`success` should only be specified if the response is a categorical ",
-        "variable."
-      )
-    }
-    if (!(success %in% levels(response_col))) {
-      stop_glue('{success} is not a valid level of {attr(x, "response")}.')
-    }
-    if (sum(table(response_col) > 0) > 2) {
-      stop_glue(
-        "`success` can only be used if the response has two levels. ",
-        "`filter()` can reduce a variable to two levels."
-      )
-    }
-  }
-  
+  # Add attributes
   attr(x, "success") <- success
+  attr(x, "generated") <- FALSE
+  attr(x, "response_type") <- determine_variable_type(x, "response")
+  attr(x, "explanatory_type") <- determine_variable_type(x, "explanatory")
   
-  # To help determine theoretical distribution to plot
-  attr(x, "response_type") <- class(response_variable(x))
-  
-  if (is_nuat(x, "explanatory")) {
-    attr(x, "explanatory_type") <- NULL
-  } else {
-    attr(x, "explanatory_type") <- class(explanatory_variable(x))
-  }
-  
-  if (
-    (attr(x, "response_type") == "factor") && is.null(success) &&
-    (length(levels(response_variable(x))) == 2) &&
-    (
-      is_nuat(x, "explanatory_type") ||
-      (
-        !is_nuat(x, "explanatory_type") &&
-        (length(levels(explanatory_variable(x))) == 2)
-      )
-    )
-  ) {
-    stop_glue(
-      'A level of the response variable `{attr(x, "response")}` needs to be ',
-      'specified for the `success` argument in `specify()`.'
-    )
-  }
+  check_success_arg(x, success)
   
   # Determine params for theoretical fit
   x <- set_params(x)
@@ -172,6 +126,40 @@ parse_variables <- function(x, formula, response = NULL,
   check_vars_different(x)
   
   x
+}
+
+check_success_arg <- function(x, success) {
+  response_col <- response_variable(x)
+  
+  if (!is.null(success)) {
+    if (!is.character(success)) {
+      stop_glue("`success` must be a string.")
+    }
+    if (!is.factor(response_col)) {
+      stop_glue(
+        "`success` should only be specified if the response is a categorical ",
+        "variable."
+      )
+    }
+    if (!(success %in% levels(response_col))) {
+      stop_glue('{success} is not a valid level of {attr(x, "response")}.')
+    }
+    if (sum(table(response_col) > 0) > 2) {
+      stop_glue(
+        "`success` can only be used if the response has two levels. ",
+        "`filter()` can reduce a variable to two levels."
+      )
+    }
+  }
+  
+  if (attr(x, "response_type") == "bin" && is.null(success)) {
+    if (attr(x, "explanatory_type") %in% c("num", "mult")) {
+      stop_glue(
+        'A level of the response variable `{attr(x, "response")}` needs to be ',
+        'specified for the `success` argument in `specify()`.'
+      )
+    }
+  }
 }
 
 check_var_correct <- function(x, var_name) {
