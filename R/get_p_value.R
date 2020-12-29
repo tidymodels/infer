@@ -139,10 +139,6 @@ two_sided_p_value <- function(vec, obs_stat) {
   min(raw_res, 1)
 }
 
-is_generated <- function(x) {
-  !is.null(attr(x, "generate")) && attr(x, "generate")
-}
-
 # which_distribution <- function(x, theory_type, obs_stat, direction){
 #
 #   param <- attr(x, "distr_param")

@@ -361,7 +361,7 @@ warn_theoretical_layer <- function(data, do_warn = TRUE) {
   )
 
   if (
-    !is_nuat(data, "stat") &&
+    !is_null_attr(data, "stat") &&
     !(attr(data, "stat") %in% c("t", "z", "Chisq", "F"))
   ) {
     if (method == "theoretical") {

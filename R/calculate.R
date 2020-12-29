@@ -71,72 +71,28 @@ calculate <- function(x,
   check_args_and_attr(x, explanatory_variable(x), response_variable(x), stat)
   check_point_params(x, stat)
 
-  if (!has_response(x)) {
+  if (!is_generated(x)) {
+    x$replicate <- 1L
+  }
+  
+  if (!is_generated(x) && is_hypothesized(x) && stat %in% untheorized_stats) {
     stop_glue(
-      "The response variable is not set. Make sure to `specify()` it first."
+      "Theoretical distributions do not exist (or have not been ",
+      "implemented) for `stat` = \"{stat}\". Are you missing ",
+      "a `generate()` step or did you mistakenly include ",
+      "a `hypothesize()` step?"
     )
   }
 
-  if (is_null_attr(x, "generate") || !attr(x, "generate")) {
-    if (!is_hypothesized(x)) {
-      x$replicate <- 1L
-    } else if (
-      stat %in% c(
-        "mean", "median", "sum", "sd", "prop", "count", "diff in means",
-        "diff in medians", "diff in props", "slope", "correlation",
-        "ratio of props", "odds ratio"
-      )
-    ) {
-      stop_glue(
-        "Theoretical distributions do not exist (or have not been ",
-        "implemented) for `stat` = \"{stat}\". Are you missing ",
-        "a `generate()` step?"
-      )
-    } else if (
-      !(stat %in% c("Chisq", "prop", "count")) &
-      !(stat %in% c("t", "z") 
-        & (attr(x, "theory_type") %in% 
-           c("One sample t", "One sample prop z", "Two sample props z")))) {
-      # From `hypothesize()` to `calculate()`
-      # Catch-all if generate was not called
-      # warning_glue(
-      #   "You unexpectantly went from `hypothesize()` to ",
-      #   "`calculate()` skipping over `generate()`. Your current ",
-      #   "data frame is returned."
-      # )
-      return(x)
-    }
-  }
-
-  if (
-    (stat %in% c(
-      "diff in means", "diff in medians",
-      "diff in props", "ratio of props", "odds ratio"
-    )) ||
-      (
-        !is_null_attr(x, "theory_type") &&
-          (attr(x, "theory_type") %in% c("Two sample props z", "Two sample t"))
-      )
-  ) {
+  if (stat %in% c("diff in means", "diff in medians", 
+                  "diff in props", "ratio of props", "odds ratio") ||
+      attr(x, "theory_type") %in% c("Two sample props z", "Two sample t")) {
     order <- check_order(x, explanatory_variable(x), order)
-  }
-
-  if (!(
-    (stat %in% c(
-      "diff in means", "diff in medians",
-      "diff in props", "ratio of props", "odds ratio"
-    )) ||
-      (
-        !is_null_attr(x, "theory_type") &&
-          attr(x, "theory_type") %in% c("Two sample props z", "Two sample t")
-      )
-  )) {
-    if (!is.null(order)) {
-      warning_glue(
-        "Statistic is not based on a difference or ratio; the `order` argument",
-        " will be ignored. Check `?calculate` for details."
-      )
-    }
+  } else if (!is.null(order)) {
+    warning_glue(
+      "Statistic is not based on a difference or ratio; the `order` argument",
+      " will be ignored. Check `?calculate` for details."
+    )
   }
 
   # Use S3 method to match correct calculation
@@ -186,14 +142,6 @@ calc_impl.sd <- calc_impl_one_f(stats::sd)
 calc_impl_success_f <- function(f, output_name) {
   function(type, x, order, ...) {
     col <- base::setdiff(names(x), "replicate")
-
-    ## No longer needed with implementation of `check_point_params()`
-    # if (!is.factor(x[[col]])) {
-    #   stop_glue(
-    #     "Calculating a {stat} here is not appropriate since the `{col}` ",
-    #     "variable is not a factor."
-    #   )
-    # }
 
     if (is_null_attr(x, "success")) {
       stop_glue(
@@ -320,7 +268,7 @@ calc_impl.Chisq <- function(type, x, order, ...) {
       dplyr::summarise(stat = chisq_indep(data), .groups = "drop")
   }
 
-  if (!is_null_attr(x, "generate")) {
+  if (!is_null_attr(x, "generated")) {
     result <- result %>% dplyr::select(replicate, stat)
   } else {
     result <- result %>% dplyr::select(stat)
@@ -374,10 +322,7 @@ calc_impl.odds_ratio <- function(type, x, order, ...) {
 }
 
 calc_impl.t <- function(type, x, order, ...) {
-  # Two sample means
-
   if (attr(x, "theory_type") == "Two sample t") {
-    # Re-order levels
     x <- reorder_explanatory(x, order)
 
     df_out <- x %>%
@@ -386,42 +331,9 @@ calc_impl.t <- function(type, x, order, ...) {
           !!attr(x, "response") ~ !!attr(x, "explanatory"), ...
         )[["statistic"]]
       )
-  }
-
-  # Standardized slope and standardized correlation are commented out
-  # since there currently is no way to specify which one and
-  # the standardization formulas are different.
-  # # Standardized slope
-  # else if (
-  #   (attr(x, "theory_type") == "Slope/correlation with t") &&
-  #   (stat == "slope")
-  # ) {
-  #   explan_string <- as.character(attr(x, "explanatory"))
-  #
-  #   x %>%
-  #     dplyr::summarize(
-  #       stat = summary(stats::lm(
-  #         !!attr(x, "response") ~ !!attr(x, "explanatory")
-  #       ))[["coefficients"]][explan_string, "t value"]
-  #     )
-  # }
-  #
-  # # Standardized correlation
-  # else if (
-  #   (attr(x, "theory_type") == "Slope/correlation with t") &&
-  #   (stat == "correlation")
-  # ) {
-  #   x %>%
-  #     dplyr::summarize(
-  #       corr = cor(!!attr(x, "explanatory"), !!attr(x, "response"))
-  #     ) %>%
-  #     dplyr::mutate(stat = corr * (sqrt(nrow(x) - 2)) / sqrt(1 - corr ^ 2))
-  # }
-
-  # One sample mean
-  else if (attr(x, "theory_type") == "One sample t") {
-    # For bootstrap
+  } else if (attr(x, "theory_type") == "One sample t") {
     if (!is_hypothesized(x)) {
+      # For bootstrap
       if (is.null(list(...)$mu)) {
         message_glue(
           "No `mu` argument was hypothesized, so the t-test will ",
@@ -457,10 +369,6 @@ calc_impl.z <- function(type, x, order, ...) {
       explanatory_variable(x),
       levels = c(order[1], order[2])
     )
-    
-    if (!"replicate" %in% colnames(x)) {
-      x$replicate <- 1L
-    }
 
     aggregated <- x %>%
       dplyr::group_by(replicate, explan) %>%
@@ -490,11 +398,7 @@ calc_impl.z <- function(type, x, order, ...) {
     success <- attr(x, "success")
     col <- attr(x, "response")
     p0 <- unname(attr(x, "params")[1])
-    if (!is_generated(x)) {
-      num_rows <- nrow(x)
-    } else {
-      num_rows <- nrow(x) / length(unique(x$replicate))
-    }
+    num_rows <- nrow(x) / length(unique(x$replicate))
       
     df_out <- x %>%
       dplyr::summarize(
@@ -504,8 +408,5 @@ calc_impl.z <- function(type, x, order, ...) {
       )
 
     df_out
-
-    # Straight from `specify()` doesn't make sense
-    # since standardizing requires a hypothesized value
   }
 }

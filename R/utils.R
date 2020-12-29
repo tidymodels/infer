@@ -121,32 +121,33 @@ null_transformer <- function(text, envir) {
   out
 }
 
-# simplify and standardize checks by grouping statistics based on
+# Simplify and standardize checks by grouping statistics based on
 # variable types
 # 
 # num = numeric, bin = binomial, mult = multinomial
 stat_types <- tibble::tribble(
   ~resp,   ~exp,   ~stats,
-  "num",   "",     c(""),
-  "num",   "num",  c(""),
-  "num",   "bin",  c(""),
-  "num",   "mult", c(""),
-  "bin",   "",     c(""),
-  "bin",   "num",  c(""),
-  "bin",   "bin",  c(""),
-  "bin",   "mult", c(""),
-  "mult",  "",     c(""),
-  "mult",  "num",  c(""),
-  "mult",  "bin",  c(""),
-  "mult",  "mult", c(""),
+  "num",   "",     c("mean", "median", "sum", "sd", "t"),
+  "num",   "num",  c("slope", "correlation"),
+  "num",   "bin",  c("diff in means", "diff in medians", "t"),
+  "num",   "mult", c("F"),
+  "bin",   "",     c("prop", "count", "z"),
+  "bin",   "bin",  c("diff in props", "z", "ratio of props", "odds ratio"),
+  "bin",   "mult", c("Chisq"),
+  "mult",  "bin",  c("Chisq"),
+  "mult",  "mult", c("Chisq"),
 )
 
-# statistics for which theoretical distributions are not implemented
-untheorized_stats <- c(
-  "mean", "median", "sum", "sd", "prop", "count", "diff in means",
-  "diff in medians", "diff in props", "slope", "correlation",
+implemented_stats <-  c(
+  "mean", "median", "sum", "sd", "prop", "count",
+  "diff in means", "diff in medians", "diff in props",
+  "Chisq", "F", "slope", "correlation", "t", "z",
   "ratio of props", "odds ratio"
 )
+
+untheorized_stats <- implemented_stats[!implemented_stats %in% c(
+  "Chisq", "F", "t", "z"
+)]
 
 determine_variable_type <- function(x, variable) {
   var <- eval(rlang::parse_expr(paste0(variable, "_variable(x)")))
@@ -231,23 +232,10 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
                                 stat) {
   # Could also do `stat <- match.arg(stat)`
   # but that's not as helpful to beginners with the cryptic error msg
-  if (
-    !stat %in% c(
-      "mean", "median", "sum", "sd", "prop", "count", "diff in means",
-      "diff in medians", "diff in props", "Chisq", "F", "slope", "correlation",
-      "t", "z", "ratio of props", "odds ratio"
-    )
-  ) {
+  if (!stat %in% implemented_stats) {
     stop_glue(
       "You specified a string for `stat` that is not implemented. ",
       "Check your spelling and `?calculate` for current options."
-    )
-  }
-
-  if (!("replicate" %in% names(x)) && !is_null_attr(x, "generated")) {
-    warning_glue(
-      'A `generate()` step was not performed prior to `calculate()`. ',
-      'Review carefully.'
     )
   }
 

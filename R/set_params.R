@@ -13,7 +13,7 @@ set_params <- function(x) {
   # One variable
   if (
     has_response(x) && !has_explanatory(x) &&
-    !is_nuat(x, "response_type") && is_nuat(x, "explanatory_type")
+    !is_null_attr(x, "response_type") && is_null_attr(x, "explanatory_type")
   ) {
 
     # One mean
@@ -26,8 +26,7 @@ set_params <- function(x) {
     } else if (
       
       # One prop
-      (attr(x, "response_type") == "factor") && (num_response_levels == 2)
-    ) {
+      (attr(x, "response_type") == "bin")) {
       # No parameters since standard normal
       attr(x, "theory_type") <- "One sample prop z"
       # Changed to `"simulate"` when `p` provided in `hypothesize()`
@@ -42,42 +41,39 @@ set_params <- function(x) {
   # Two variables
   if (
     has_response(x) && has_explanatory(x) &
-    !is_nuat(x, "response_type") && !is_nuat(x, "explanatory_type")
+    !is_null_attr(x, "response_type") && !is_null_attr(x, "explanatory_type")
   ) {
     attr(x, "type") <- "bootstrap"
 
     # Response is numeric, explanatory is categorical
-    if (
-      (attr(x, "response_type") %in% c("integer", "numeric")) &
-      (attr(x, "explanatory_type") == "factor")
-    ) {
-      
+    if (variable_is(x, "response", "numeric") && 
+        variable_is(x, "explanatory", "factor")) {
       # Two sample means (t distribution)
       if (length(levels(explanatory_variable(x))) == 2) {
         attr(x, "theory_type") <- "Two sample t"
+        
         # Keep track of Satterthwaite degrees of freedom since lost when
         # in aggregation w/ calculate()/generate()
         attr(x, "distr_param") <- stats::t.test(
           response_variable(x) ~ explanatory_variable(x)
         )[["parameter"]]
       } else {
-        
         # >2 sample means (F distribution)
         attr(x, "theory_type") <- "ANOVA"
+        
         # Get numerator and denominator degrees of freedom
         degrees <- stats::anova(stats::aov(
           response_variable(x) ~ explanatory_variable(x)
         ))$Df
+        
         attr(x, "distr_param") <- degrees[1]
         attr(x, "distr_param2") <- degrees[2]
       }
     }
 
     # Response is categorical, explanatory is categorical
-    if (
-      (attr(x, "response_type") == "factor") &
-      (attr(x, "explanatory_type") == "factor")
-    ) {
+    if (variable_is(x, "response", "factor") && 
+        variable_is(x, "explanatory", "factor")) {
       attr(x, "type") <- "bootstrap"
 
       # Two sample proportions (z distribution)
@@ -88,9 +84,9 @@ set_params <- function(x) {
       ) {
         attr(x, "theory_type") <- "Two sample props z"
       } else {
-        
         # >2 sample proportions (chi-square test of indep)
         attr(x, "theory_type") <- "Chi-square test of indep"
+        
         attr(x, "distr_param") <- suppressWarnings(
           stats::chisq.test(
             table(response_variable(x), explanatory_variable(x))
@@ -100,19 +96,15 @@ set_params <- function(x) {
     }
 
     # Response is numeric, explanatory is numeric
-    if (
-      (attr(x, "response_type") %in% c("integer", "numeric")) &
-      (attr(x, "explanatory_type") %in% c("integer", "numeric"))
-    ) {
+    if (variable_is(x, "response", "numeric") && 
+        variable_is(x, "explanatory", "numeric")) {
       response_string <- as.character(attr(x, "response"))
       explanatory_string <- as.character(attr(x, "explanatory"))
+      
       attr(x, "theory_type") <- "Slope/correlation with t"
       attr(x, "distr_param") <- nrow(x) - 2
     }
   }
-
-#  if(is_nuat(x, "theory_type"))
-#     warning_glue("Theoretical type not yet implemented")
 
   x
 }
