@@ -50,10 +50,11 @@ specify <- function(x, formula, response = NULL,
                     explanatory = NULL, success = NULL) {
   check_type(x, is.data.frame)
 
-  # Convert all character and logical variables to be factor variables
+  # Standardize variable types
   x <- tibble::as_tibble(x) %>%
     mutate_if(is.character, as.factor) %>%
-    mutate_if(is.logical, as.factor)
+    mutate_if(is.logical, as.factor) %>%
+    mutate_if(is.integer, as.numeric)
   
   # Parse response and explanatory variables
   response <- enquo(response)
@@ -64,8 +65,12 @@ specify <- function(x, formula, response = NULL,
   # Add attributes
   attr(x, "success") <- success
   attr(x, "generated") <- FALSE
-  attr(x, "response_type") <- determine_variable_type(x, "response")
-  attr(x, "explanatory_type") <- determine_variable_type(x, "explanatory")
+  attr(x, "response_type") <- class(response_variable(x))
+  if (attr_is_null(x, "explanatory")) {
+    attr(x, "explanatory_type") <- NULL
+  } else {
+    attr(x, "explanatory_type") <- class(explanatory_variable(x))
+  }
   
   check_success_arg(x, success)
   

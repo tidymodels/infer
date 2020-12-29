@@ -150,7 +150,7 @@ sanitize_hypothesis_params_proportion <- function(p, x) {
   }
   
   if(length(p) == 1) {
-    if(is_null_attr(x, "success")) {
+    if(attr_is_null(x, "success")) {
       stop_glue(
         "A point null regarding a proportion requires that `success` ",
         "be indicated in `specify()`."

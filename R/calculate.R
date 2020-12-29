@@ -143,7 +143,7 @@ calc_impl_success_f <- function(f, output_name) {
   function(type, x, order, ...) {
     col <- base::setdiff(names(x), "replicate")
 
-    if (is_null_attr(x, "success")) {
+    if (attr_is_null(x, "success")) {
       stop_glue(
         'To calculate a {output_name}, the `"success"` argument must be ',
         "provided in `specify()`."
@@ -216,9 +216,9 @@ calc_impl.diff_in_medians <- calc_impl_diff_f(stats::median)
 calc_impl.Chisq <- function(type, x, order, ...) {
   resp_var <- as.character(attr(x, "response"))
 
-  if (is_null_attr(x, "explanatory")) {
+  if (attr_is_null(x, "explanatory")) {
     # Chi-Square Goodness of Fit
-    if (!is_null_attr(x, "params")) {
+    if (!attr_is_null(x, "params")) {
       # When `hypothesize()` has been called
       p_levels <- get_par_levels(x)
       chisq_gof <- function(df) {
@@ -268,7 +268,7 @@ calc_impl.Chisq <- function(type, x, order, ...) {
       dplyr::summarise(stat = chisq_indep(data), .groups = "drop")
   }
 
-  if (!is_null_attr(x, "generated")) {
+  if (!attr_is_null(x, "generated")) {
     result <- result %>% dplyr::select(replicate, stat)
   } else {
     result <- result %>% dplyr::select(stat)
@@ -341,13 +341,13 @@ calc_impl.t <- function(type, x, order, ...) {
         )
       }
 
-      x %>%
+      df_out <- x %>%
         dplyr::summarize(
           stat = stats::t.test(!!attr(x, "response"), ...)[["statistic"]]
         )
     } else {
       # For hypothesis testing
-      x %>%
+      df_out <- x %>%
         dplyr::summarize(
           stat = stats::t.test(
             !!attr(x, "response"),
@@ -357,6 +357,7 @@ calc_impl.t <- function(type, x, order, ...) {
         )
     }
   }
+  df_out
 }
 
 calc_impl.z <- function(type, x, order, ...) {

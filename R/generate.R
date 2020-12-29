@@ -104,7 +104,7 @@ use_auto_type <- function(auto_type) {
 }
 
 check_permutation_attributes <- function(x, attr) {
-  if (any(is_null_attr(x, "response"), is_null_attr(x, "explanatory"))) {
+  if (any(attr_is_null(x, "response"), attr_is_null(x, "explanatory"))) {
     stop_glue(
       "Please `specify()` an explanatory and a response variable",
       "when permuting.",

@@ -31,7 +31,7 @@ copy_attrs <- function(to, from,
   to
 }
 
-is_null_attr <- function(x, at) {
+attr_is_null <- function(x, at) {
   is.null(attr(x, at))
 }
 
@@ -69,11 +69,11 @@ reorder_explanatory <- function(x, order) {
 }
 
 has_explanatory <- function(x) {
-  !is_null_attr(x, "explanatory")
+  !attr_is_null(x, "explanatory")
 }
 
 has_response <- function(x) {
-  !is_null_attr(x, "response")
+  !attr_is_null(x, "response")
 }
 
 is_color_string <- function(x) {
@@ -121,23 +121,6 @@ null_transformer <- function(text, envir) {
   out
 }
 
-# Simplify and standardize checks by grouping statistics based on
-# variable types
-# 
-# num = numeric, bin = binomial, mult = multinomial
-stat_types <- tibble::tribble(
-  ~resp,   ~exp,   ~stats,
-  "num",   "",     c("mean", "median", "sum", "sd", "t"),
-  "num",   "num",  c("slope", "correlation"),
-  "num",   "bin",  c("diff in means", "diff in medians", "t"),
-  "num",   "mult", c("F"),
-  "bin",   "",     c("prop", "count", "z"),
-  "bin",   "bin",  c("diff in props", "z", "ratio of props", "odds ratio"),
-  "bin",   "mult", c("Chisq"),
-  "mult",  "bin",  c("Chisq"),
-  "mult",  "mult", c("Chisq"),
-)
-
 implemented_stats <-  c(
   "mean", "median", "sum", "sd", "prop", "count",
   "diff in means", "diff in medians", "diff in props",
@@ -148,34 +131,6 @@ implemented_stats <-  c(
 untheorized_stats <- implemented_stats[!implemented_stats %in% c(
   "Chisq", "F", "t", "z"
 )]
-
-determine_variable_type <- function(x, variable) {
-  var <- eval(rlang::parse_expr(paste0(variable, "_variable(x)")))
-  
-  res <- if (is.null(var)) {
-    NULL
-  } else if (inherits(var, "numeric") || inherits(var, "integer")) {
-    "num"
-  } else if (length(unique(var)) == 2) {
-    "bin"
-  } else {
-    "mult"
-  }
-  
-  res
-}
-
-variable_types <- c(
-  "num"  = "numeric",
-  "bin"  = "factor",
-  "mult" = "factor"
-)
-
-variable_is <- function(x, which, type) {
-  var_attr <- attr(x, paste0(which, "_type"))
-  
-  unname(type == variable_types[names(variable_types) == var_attr])
-}
 
 check_order <- function(x, explanatory_variable, order, in_calculate = TRUE) {
   unique_ex <- sort(unique(explanatory_variable))
