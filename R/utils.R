@@ -121,6 +121,23 @@ null_transformer <- function(text, envir) {
   out
 }
 
+# Simplify and standardize checks by grouping statistics based on
+# variable types
+# 
+# num = numeric, bin = binomial, mult = multinomial
+stat_types <- tibble::tribble(
+  ~resp,   ~exp,   ~stats,
+  "num",   "",     c("mean", "median", "sum", "sd", "t"),
+  "num",   "num",  c("slope", "correlation"),
+  "num",   "bin",  c("diff in means", "diff in medians", "t"),
+  "num",   "mult", c("F"),
+  "bin",   "",     c("prop", "count", "z"),
+  "bin",   "bin",  c("diff in props", "z", "ratio of props", "odds ratio"),
+  "bin",   "mult", c("Chisq"),
+  "mult",  "bin",  c("Chisq"),
+  "mult",  "mult", c("Chisq"),
+)
+
 implemented_stats <-  c(
   "mean", "median", "sum", "sd", "prop", "count",
   "diff in means", "diff in medians", "diff in props",
