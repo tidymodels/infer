@@ -124,7 +124,7 @@ null_transformer <- function(text, envir) {
 # Simplify and standardize checks by grouping statistics based on
 # variable types
 # 
-# num = numeric, bin = binomial, mult = multinomial
+# num = numeric, bin = binary, mult = multinomial
 stat_types <- tibble::tribble(
   ~resp,   ~exp,   ~stats,
   "num",   "",     c("mean", "median", "sum", "sd", "t"),
@@ -137,6 +137,29 @@ stat_types <- tibble::tribble(
   "mult",  "bin",  c("Chisq"),
   "mult",  "mult", c("Chisq"),
 )
+
+stat_type_desc <- tibble::tribble(
+  ~type,  ~description,
+  "num",  "numeric",
+  "bin",  "binary categorical",
+  "mult", "multinomial categorical"
+)
+
+determine_variable_type <- function(x, variable) {
+  var <- eval(rlang::parse_expr(paste0(variable, "_variable(x)")))
+  
+  res <- if (is.null(var)) {
+    ""
+  } else if (inherits(var, "numeric")) {
+    "num"
+  } else if (length(unique(var)) == 2) {
+    "bin"
+  } else {
+    "mult"
+  }
+  
+  res
+}
 
 implemented_stats <-  c(
   "mean", "median", "sum", "sd", "prop", "count",
@@ -209,51 +232,6 @@ check_args_and_attr <- function(x, explanatory_variable, response_variable,
       "You specified a string for `stat` that is not implemented. ",
       "Check your spelling and `?calculate` for current options."
     )
-  }
-
-  if (stat %in% c("F", "slope", "diff in means", "diff in medians")) {
-    if (has_explanatory(x) && !is.numeric(response_variable(x))) {
-      stop_glue(
-        'The response variable of `{attr(x, "response")}` is not appropriate\n',
-        "since '{stat}' is expecting the response variable to be numeric."
-      )
-    }
-  }
-
-  if (stat %in% c("diff in props", "ratio of props", "Chisq", "odds ratio")) {
-    if (has_explanatory(x) && !is.factor(response_variable(x))) {
-      stop_glue(
-        'The response variable of `{attr(x, "response")}` is not appropriate\n',
-        "since '{stat}' is expecting the response variable to be a factor."
-      )
-    }
-  }
-
-}
-
-check_for_numeric_stat <- function(x, stat) {
-  if (stat %in% c("mean", "median", "sum", "sd")) {
-    col <- base::setdiff(names(x), "replicate")
-
-    if (!is.numeric(x[[as.character(col)]])) {
-      stop_glue(
-        "Calculating a {stat} here is not appropriate\n",
-        "since the `{col}` variable is not numeric."
-      )
-    }
-  }
-}
-
-check_for_factor_stat <- function(x, stat, explanatory_variable) {
-  if (stat %in% c("diff in means", "diff in medians", "diff in props", 
-                  "F", "ratio of props", "odds ratio")) {
-    if (!is.factor(explanatory_variable)) {
-      stop_glue(
-        'The explanatory variable of `{attr(x, "explanatory")}` is not ',
-        "appropriate\n",
-        "since '{stat}` is expecting the explanatory variable to be a factor."
-      )
-    }
   }
 }
 

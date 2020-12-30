@@ -67,16 +67,23 @@ calculate <- function(x,
                       ...) {
   check_type(x, tibble::is_tibble)
   check_type(stat, rlang::is_string)
-  check_for_numeric_stat(x, stat)
-  check_for_factor_stat(x, stat, explanatory_variable(x))
-  check_args_and_attr(x, explanatory_variable(x), response_variable(x), stat)
+  check_variables_vs_stat(x, stat)
   check_point_params(x, stat)
 
   if (!is_generated(x)) {
     x$replicate <- 1L
   }
   
+  if (!stat %in% implemented_stats) {
+    stop_glue(
+      "You specified a string for `stat` that is not implemented. ",
+      "Check your spelling and `?calculate` for current options."
+    )
+  }
+  
   if (!is_generated(x) && is_hypothesized(x) && stat %in% untheorized_stats) {
+    # this probably ought to be a warning along the lines of having supplied
+    # too much information that won't be used
     stop_glue(
       "Theoretical distributions do not exist (or have not been ",
       "implemented) for `stat` = \"{stat}\". Are you missing ",
@@ -95,17 +102,11 @@ calculate <- function(x,
       " will be ignored. Check `?calculate` for details."
     )
   }
-
+  
   # Use S3 method to match correct calculation
   result <- calc_impl(
     structure(stat, class = gsub(" ", "_", stat)), x, order, ...
   )
-
-  if ("NULL" %in% class(result)) {
-    stop_glue(
-      "Your choice of `stat` is invalid for the types of variables `specify`ed."
-    )
-  }
 
   result <- copy_attrs(to = result, from = x)
   attr(result, "stat") <- stat
@@ -116,6 +117,43 @@ calculate <- function(x,
   }
 
   result
+}
+
+# Raise an error if the user supplies a test statistic that doesn't
+# make sense given the variable specified
+check_variables_vs_stat <- function(x, stat) {
+  res_type <- determine_variable_type(x, "response")
+  exp_type <- determine_variable_type(x, "explanatory")
+  
+  possible_stats <- stat_types %>%
+    dplyr::filter(resp == res_type & exp == exp_type) %>%
+    dplyr::pull(stats) %>%
+    unlist()
+
+  if (is.null(possible_stats)) {
+    stop_glue(
+      "The infer team has not implemented test statistics for the ",
+      "supplied variable types."
+    )
+  }
+  
+  if (!stat %in% possible_stats) {
+    stop_glue(
+      'The supplied test statistic "{stat}" is not well-defined for ',
+      'testing hypotheses related to a ', 
+      stat_type_desc$description[
+        determine_variable_type(x, "response") == stat_type_desc$type
+      ],
+      " response variable ({as.character(attr(x, 'response'))}) and ",
+      if (has_explanatory(x)) {
+        glue_null("a ", stat_type_desc$description[
+          determine_variable_type(x, "explanatory") == stat_type_desc$type
+        ], " explanatory variable ({as.character(attr(x, 'explanatory'))}).")
+      } else {
+        "no explanatory variable."
+      }
+    )
+  }
 }
 
 calc_impl <- function(type, x, order, ...) {
