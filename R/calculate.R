@@ -12,7 +12,8 @@
 #' @param stat A string giving the type of the statistic to calculate. Current
 #'   options include `"mean"`, `"median"`, `"sum"`, `"sd"`, `"prop"`, `"count"`,
 #'   `"diff in means"`, `"diff in medians"`, `"diff in props"`, `"Chisq"`,
-#'   `"F"`, `"t"`, `"z"`, `"ratio of props"`, `"slope"`, and `"correlation"`.
+#'   `"F"`, `"t"`, `"z"`, `"ratio of props"`, `"slope"`, 
+#'   `"odds ratio"`, and `"correlation"`.
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction, where `order =
 #'   c("first", "second")` means `("first" - "second")` Needed for inference on
@@ -79,7 +80,7 @@ calculate <- function(x,
     stop_glue(
       "Theoretical distributions do not exist (or have not been ",
       "implemented) for `stat` = \"{stat}\". Are you missing ",
-      "a `generate()` step or did you mistakenly include ",
+      "a `generate()` step or mistakenly including ",
       "a `hypothesize()` step?"
     )
   }
