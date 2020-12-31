@@ -81,16 +81,32 @@ calculate <- function(x,
     )
   }
   
+  # User supplied "too much" information - hypothesized a value for a point
+  # estimate that isn't relevant to the statistic calculation
   if (!is_generated(x) && is_hypothesized(x) && stat %in% untheorized_stats) {
-    # this probably ought to be a warning along the lines of having supplied
-    # too much information that won't be used
-    stop_glue(
-      "Theoretical distributions do not exist (or have not been ",
-      "implemented) for `stat` = \"{stat}\". Are you missing ",
-      "a `generate()` step or mistakenly including ",
-      "a `hypothesize()` step?"
+    null_type <- attr(x, "null")
+    null_param <- attr(x, "params")
+    
+    warning_glue(
+      "The {null_type} null hypothesis `{names(null_param)} = {unname(null_param)}`",
+      " does not inform calculation of the observed statistic (",
+      "{tolower(stat_desc$description[stat_desc$stat == stat])}) and will ",
+      "be ignored."
     )
   }
+  
+  # User didn't supply "enough" information - no hypothesis for a theorized
+  # statistic on a point estimate, so warn that a reasonable value was assumed.
+  if (!is_hypothesized(x) && !has_explanatory(x) && !stat %in% untheorized_stats) {
+    attr(x, "null") <- "point"
+    attr(x, "params") <- assume_null(x, stat)
+    
+    warning_glue(
+      "{stat_desc$description[stat_desc$stat == stat]} requires a null ",
+      "hypothesis to calculate the observed statistic. Output assumes ",
+      "the following null hypothesis: \n {list(attr(x, 'params'))}."
+    )
+  } 
 
   if (stat %in% c("diff in means", "diff in medians", 
                   "diff in props", "ratio of props", "odds ratio") ||
@@ -154,6 +170,16 @@ check_variables_vs_stat <- function(x, stat) {
       }
     )
   }
+}
+
+# When given no hypothesis for a theorized statistic, supply a reasonable value
+assume_null <- function(x, stat_) {
+  null_fn <- theorized_nulls %>%
+    dplyr::filter(stat == stat_) %>%
+    dplyr::pull(null_fn) %>%
+    `[[`(1)
+  
+  null_fn(x)
 }
 
 calc_impl <- function(type, x, order, ...) {
@@ -307,7 +333,7 @@ calc_impl.Chisq <- function(type, x, order, ...) {
       dplyr::summarise(stat = chisq_indep(data), .groups = "drop")
   }
 
-  if (!attr_is_null(x, "generated")) {
+  if (is_generated(x)) {
     result <- result %>% dplyr::select(replicate, stat)
   } else {
     result <- result %>% dplyr::select(stat)

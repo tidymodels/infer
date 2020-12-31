@@ -188,9 +188,10 @@ stat_types <- tibble::tribble(
   "num",   "bin",  c("diff in means", "diff in medians", "t"),
   "num",   "mult", c("F"),
   "bin",   "",     c("prop", "count", "z"),
-  "bin",   "bin",  c("diff in props", "z", "ratio of props", "odds ratio"),
+  "bin",   "bin",  c("diff in props", "z", "ratio of props", "odds ratio", "Chisq"),
   "bin",   "mult", c("Chisq"),
   "mult",  "bin",  c("Chisq"),
+  "mult",  "",     c("Chisq"),
   "mult",  "mult", c("Chisq"),
 )
 
@@ -232,6 +233,23 @@ implemented_stats <-  c(
 untheorized_stats <- implemented_stats[!implemented_stats %in% c(
   "Chisq", "F", "t", "z"
 )]
+
+# Given a statistic and theory type, assume a reasonable null
+p_null <- function(x) {
+  lvls <- levels(response_variable(x))
+  num_lvls <- length(lvls)
+  probs <- 1 / num_lvls
+  
+  setNames(rep(probs, num_lvls), paste0("p.", lvls))
+}
+
+# The "point" column is a function(x) whose output gives attr(x, "params")
+theorized_nulls <- tibble::tribble(
+  ~stat,    ~null_fn,
+  "Chisq", p_null,
+  "t",     function(x) {setNames(0, "mu")},
+  "z",     p_null
+)
 
 determine_variable_type <- function(x, variable) {
   var <- eval(rlang::parse_expr(paste0(variable, "_variable(x)")))
