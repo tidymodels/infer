@@ -14,6 +14,16 @@ format_params <- function(x) {
   attr(x, "params")[match(fct_levels, par_levels)]
 }
 
+print_params <- function(x) {
+  if (length(attr(x, "params")) == 2) {
+    ": \np = .5"
+  } else {
+    paste0("s: \np = ", 
+           capture.output(dput(setNames(attr(x, 'params'), get_par_levels(x)))), 
+           collapse = "")
+  }
+}
+
 get_par_levels <- function(x) {
   par_names <- names(attr(x, "params"))
   gsub("^.\\.", "", par_names)

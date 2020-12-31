@@ -87,8 +87,9 @@ calculate <- function(x,
     null_type <- attr(x, "null")
     null_param <- attr(x, "params")
     
-    warning_glue(
-      "The {null_type} null hypothesis `{names(null_param)} = {unname(null_param)}`",
+    message_glue(
+      "Message: The {null_type} null hypothesis ",
+      "`{names(null_param)} = {unname(null_param)}`",
       " does not inform calculation of the observed statistic (",
       "{tolower(stat_desc$description[stat_desc$stat == stat])}) and will ",
       "be ignored."
@@ -104,7 +105,7 @@ calculate <- function(x,
     warning_glue(
       "{stat_desc$description[stat_desc$stat == stat]} requires a null ",
       "hypothesis to calculate the observed statistic. Output assumes ",
-      "the following null hypothesis: \n {list(attr(x, 'params'))}."
+      "the following null value{print_params(x)}."
     )
   } 
 
