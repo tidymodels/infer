@@ -70,7 +70,7 @@ t_test <- function(x, formula,
                        response = response, explanatory = explanatory)
 
   # match with old "dot" syntax in t.test
-  if (alternative %in% c("two-sided", "two_sided", "two sided")) {
+  if (alternative %in% c("two-sided", "two_sided", "two sided", "two.sided")) {
     alternative <- "two.sided"
   }
 
@@ -176,7 +176,7 @@ t_stat <- function(x, formula,
                        response = response, explanatory = explanatory)
 
   # match with old "dot" syntax in t.test
-  if (alternative %in% c("two-sided", "two_sided", "two sided")) {
+  if (alternative %in% c("two-sided", "two_sided", "two sided", "two.sided")) {
     alternative <- "two.sided"
   }
 
@@ -456,7 +456,7 @@ prop_test <- function(x, formula,
     )
   }
   # match with old "dot" syntax in t.test
-  if (alternative %in% c("two-sided", "two_sided", "two sided")) {
+  if (alternative %in% c("two-sided", "two_sided", "two sided", "two.sided")) {
     alternative <- "two.sided"
   }
 

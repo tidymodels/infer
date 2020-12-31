@@ -12,7 +12,7 @@
 #'   extreme than this).
 #' @param direction A character string. Options are `"less"`, `"greater"`, or
 #'   `"two-sided"`. Can also use `"left"`, `"right"`, `"both"`, 
-#'   `"two_sided"`, or `"two sided"`.
+#'   `"two_sided"`, or `"two sided"`, `"two.sided"`.
 #'
 #' @return A 1x1 [tibble][tibble::tibble] with value between 0 and 1.
 #'

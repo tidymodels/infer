@@ -74,6 +74,9 @@ test_that("shade_p_value accepts synonyms for 'direction'", {
   expect_doppelganger(
     "pval-direction-both", gss_viz_sim + shade_p_value(1, "two sided")
   )
+  expect_doppelganger(
+    "pval-direction-both", gss_viz_sim + shade_p_value(1, "two.sided")
+  )
 })
 
 test_that("shade_p_value uses extra aesthetic", {
@@ -138,4 +141,5 @@ test_that("norm_direction works", {
   expect_equal(norm_direction("two-sided"), "both")
   expect_equal(norm_direction("two_sided"), "both")
   expect_equal(norm_direction("two sided"), "both")
+  expect_equal(norm_direction("two.sided"), "both")
 })

@@ -50,6 +50,11 @@ test_that("get_p_value works", {
     get_p_value(test_df, 4, "both"),
     tolerance = eps
   )
+  expect_equal(
+    get_p_value(test_df, 4, "two.sided"), 
+    get_p_value(test_df, 4, "both"),
+    tolerance = eps
+  )
 })
 
 test_that("theoretical p-value not supported error", {

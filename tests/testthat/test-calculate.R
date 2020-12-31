@@ -441,7 +441,7 @@ test_that("generate not done before calculate", {
   gss_tbl_hyp <- gss_tbl %>%
     specify(hours ~ college) %>%
     hypothesize(null = "independence")
-  attr(gss_tbl_hyp, "generate") <- TRUE
+  attr(gss_tbl_hyp, "generated") <- TRUE
   expect_warning(calculate(gss_tbl_hyp,
     stat = "t",
     order = c("no degree", "degree")

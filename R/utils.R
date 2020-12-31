@@ -23,7 +23,7 @@ copy_attrs <- function(to, from,
                        attrs = c(
                          "response", "success", "explanatory", "response_type",
                          "explanatory_type", "distr_param", "distr_param2",
-                         "null", "params", "theory_type", "generate", "type"
+                         "null", "params", "theory_type", "generated", "type"
                        )) {
   for (at in attrs) {
     attr(to, at) <- attr(from, at)
@@ -383,17 +383,18 @@ check_for_nan <- function(x, context) {
 
 check_direction <- function(direction = c("less", "greater", "two_sided",
                                           "left", "right", "both",
-                                          "two-sided", "two sided")) {
+                                          "two-sided", "two sided", 
+                                          "two.sided")) {
   check_type(direction, is.character)
 
   if (
     !(direction %in% c("less", "greater", "two_sided", "left", "right", 
-                       "both", "two-sided", "two sided"))
+                       "both", "two-sided", "two sided", "two.sided"))
   ) {
     stop_glue(
       'The provided value for `direction` is not appropriate. Possible values ',
       'are "less", "greater", "two-sided", "left", "right", "both", ',
-      '"two_sided", or "two sided"'
+      '"two_sided", "two sided", or "two.sided".'
     )
   }
 }

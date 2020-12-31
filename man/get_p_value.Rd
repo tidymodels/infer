@@ -17,7 +17,7 @@ extreme than this).}
 
 \item{direction}{A character string. Options are \code{"less"}, \code{"greater"}, or
 \code{"two-sided"}. Can also use \code{"left"}, \code{"right"}, \code{"both"},
-\code{"two_sided"}, or \code{"two sided"}.}
+\code{"two_sided"}, or \code{"two sided"}, \code{"two.sided"}.}
 }
 \value{
 A 1x1 \link[tibble:tibble]{tibble} with value between 0 and 1.
