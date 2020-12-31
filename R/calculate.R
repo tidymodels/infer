@@ -94,7 +94,7 @@ calculate <- function(x,
 
   if (stat %in% c("diff in means", "diff in medians", 
                   "diff in props", "ratio of props", "odds ratio") ||
-      attr(x, "theory_type") %in% c("Two sample props z", "Two sample t")) {
+      theory_type(x) %in% c("Two sample props z", "Two sample t")) {
     order <- check_order(x, explanatory_variable(x), order)
   } else if (!is.null(order)) {
     warning_glue(
@@ -214,7 +214,7 @@ calc_impl.F <- function(type, x, order, ...) {
   x %>%
     dplyr::summarize(
       stat = stats::anova(
-        stats::lm(!!(attr(x, "response")) ~ !!(attr(x, "explanatory")))
+        stats::lm(!!(response_expr(x)) ~ !!(explanatory_expr(x)))
       )$`F value`[1]
     )
 }
@@ -223,7 +223,7 @@ calc_impl.slope <- function(type, x, order, ...) {
   x %>%
     dplyr::summarize(
       stat = stats::coef(
-        stats::lm(!!(attr(x, "response")) ~ !!(attr(x, "explanatory")))
+        stats::lm(!!(response_expr(x)) ~ !!(explanatory_expr(x)))
       )[2]
     )
 }
@@ -231,19 +231,19 @@ calc_impl.slope <- function(type, x, order, ...) {
 calc_impl.correlation <- function(type, x, order, ...) {
   x %>%
     dplyr::summarize(
-      stat = stats::cor(!!attr(x, "explanatory"), !!attr(x, "response"))
+      stat = stats::cor(!!explanatory_expr(x), !!response_expr(x))
     )
 }
 
 calc_impl_diff_f <- function(f) {
   function(type, x, order, ...) {
     x %>%
-      dplyr::group_by(replicate, !!attr(x, "explanatory"), .drop = FALSE) %>%
-      dplyr::summarize(value = f(!!attr(x, "response"), ...)) %>%
+      dplyr::group_by(replicate, !!explanatory_expr(x), .drop = FALSE) %>%
+      dplyr::summarize(value = f(!!response_expr(x), ...)) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(
-        stat = value[!!(attr(x, "explanatory")) == order[1]] -
-          value[!!(attr(x, "explanatory")) == order[2]]
+        stat = value[!!(explanatory_expr(x)) == order[1]] -
+          value[!!(explanatory_expr(x)) == order[2]]
       )
   }
 }
@@ -253,7 +253,7 @@ calc_impl.diff_in_means <- calc_impl_diff_f(mean)
 calc_impl.diff_in_medians <- calc_impl_diff_f(stats::median)
 
 calc_impl.Chisq <- function(type, x, order, ...) {
-  resp_var <- as.character(attr(x, "response"))
+  resp_var <- response_name(x)
 
   if (attr_is_null(x, "explanatory")) {
     # Chi-Square Goodness of Fit
@@ -283,7 +283,7 @@ calc_impl.Chisq <- function(type, x, order, ...) {
     }
   } else {
     # Chi-Square Test of Independence
-    expl_var <- as.character(attr(x, "explanatory"))
+    expl_var <- explanatory_name(x)
     chisq_indep <- function(df) {
       res <- suppressWarnings(stats::chisq.test(
         x = df[[expl_var]],
@@ -323,16 +323,16 @@ calc_impl.Chisq <- function(type, x, order, ...) {
 }
 
 calc_impl.function_of_props <- function(type, x, order, operator, ...) {
-  col <- attr(x, "response")
+  col <- response_expr(x)
   success <- attr(x, "success")
 
   x %>%
-    dplyr::group_by(replicate, !!attr(x, "explanatory"), .drop = FALSE) %>%
+    dplyr::group_by(replicate, !!explanatory_expr(x), .drop = FALSE) %>%
     dplyr::summarize(prop = mean(!!sym(col) == success, ...)) %>%
     dplyr::summarize(
       stat = operator(
-        prop[!!attr(x, "explanatory") == order[1]],
-        prop[!!attr(x, "explanatory") == order[2]]
+        prop[!!explanatory_expr(x) == order[1]],
+        prop[!!explanatory_expr(x) == order[2]]
       )
     )
 }
@@ -346,31 +346,31 @@ calc_impl.ratio_of_props <- function(type, x, order, ...) {
 }
 
 calc_impl.odds_ratio <- function(type, x, order, ...) {
-  col <- attr(x, "response")
+  col <- response_expr(x)
   success <- attr(x, "success")
 
   x %>%
-    dplyr::group_by(replicate, !!attr(x, "explanatory"), .drop = FALSE) %>%
+    dplyr::group_by(replicate, !!explanatory_expr(x), .drop = FALSE) %>%
     dplyr::summarize(prop = mean(!!sym(col) == success, ...)) %>%
     dplyr::summarize(
-      prop_1 = prop[!!attr(x, "explanatory") == order[1]],
-      prop_2 = prop[!!attr(x, "explanatory") == order[2]],
+      prop_1 = prop[!!explanatory_expr(x) == order[1]],
+      prop_2 = prop[!!explanatory_expr(x) == order[2]],
       stat = (prop_1 / prop_2) / ((1 - prop_1) / (1 - prop_2))
     ) %>%
     dplyr::select(stat)
 }
 
 calc_impl.t <- function(type, x, order, ...) {
-  if (attr(x, "theory_type") == "Two sample t") {
+  if (theory_type(x) == "Two sample t") {
     x <- reorder_explanatory(x, order)
 
     df_out <- x %>%
       dplyr::summarize(
         stat = stats::t.test(
-          !!attr(x, "response") ~ !!attr(x, "explanatory"), ...
+          !!response_expr(x) ~ !!explanatory_expr(x), ...
         )[["statistic"]]
       )
-  } else if (attr(x, "theory_type") == "One sample t") {
+  } else if (theory_type(x) == "One sample t") {
     if (!is_hypothesized(x)) {
       # For bootstrap
       if (is.null(list(...)$mu)) {
@@ -382,14 +382,14 @@ calc_impl.t <- function(type, x, order, ...) {
 
       df_out <- x %>%
         dplyr::summarize(
-          stat = stats::t.test(!!attr(x, "response"), ...)[["statistic"]]
+          stat = stats::t.test(!!response_expr(x), ...)[["statistic"]]
         )
     } else {
       # For hypothesis testing
       df_out <- x %>%
         dplyr::summarize(
           stat = stats::t.test(
-            !!attr(x, "response"),
+            !!response_expr(x),
             mu = attr(x, "params"),
             ...
           )[["statistic"]]
@@ -401,8 +401,8 @@ calc_impl.t <- function(type, x, order, ...) {
 
 calc_impl.z <- function(type, x, order, ...) {
   # Two sample proportions
-  if (attr(x, "theory_type") == "Two sample props z") {
-    col <- attr(x, "response")
+  if (theory_type(x) == "Two sample props z") {
+    col <- response_expr(x)
     success <- attr(x, "success")
 
     x$explan <- factor(
@@ -431,12 +431,12 @@ calc_impl.z <- function(type, x, order, ...) {
       dplyr::select(stat)
 
     df_out
-  } else if (attr(x, "theory_type") == "One sample prop z") {
+  } else if (theory_type(x) == "One sample prop z") {
     # One sample proportion
 
     # When `hypothesize()` has been called
     success <- attr(x, "success")
-    col <- attr(x, "response")
+    col <- response_expr(x)
     p0 <- unname(attr(x, "params")[1])
     num_rows <- nrow(x) / length(unique(x$replicate))
       

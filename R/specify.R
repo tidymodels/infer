@@ -79,9 +79,7 @@ specify <- function(x, formula, response = NULL,
 
   # Select variables
   x <- x %>%
-    select(one_of(c(
-      as.character((attr(x, "response"))), as.character(attr(x, "explanatory"))
-    )))
+    select(one_of(c(response_name(x), explanatory_name(x))))
 
   is_complete <- stats::complete.cases(x)
   if (!all(is_complete)) {
@@ -147,7 +145,7 @@ check_success_arg <- function(x, success) {
       )
     }
     if (!(success %in% levels(response_col))) {
-      stop_glue('{success} is not a valid level of {attr(x, "response")}.')
+      stop_glue('{success} is not a valid level of {response_name(x)}.')
     }
     if (sum(table(response_col) > 0) > 2) {
       stop_glue(
@@ -160,7 +158,7 @@ check_success_arg <- function(x, success) {
   if (attr(x, "response_type") == "bin" && is.null(success)) {
     if (attr(x, "explanatory_type") %in% c("num", "mult")) {
       stop_glue(
-        'A level of the response variable `{attr(x, "response")}` needs to be ',
+        'A level of the response variable `{response_name(x)}` needs to be ',
         'specified for the `success` argument in `specify()`.'
       )
     }
@@ -191,10 +189,7 @@ check_var_correct <- function(x, var_name) {
 
 check_vars_different <- function(x) {
   if (has_response(x) && has_explanatory(x)) {
-    res_var <- as.character(attr(x, "response"))
-    exp_var <- as.character(attr(x, "explanatory"))
-    
-    if (identical(res_var, exp_var)) {
+    if (identical(response_name(x), explanatory_name(x))) {
       stop_glue(
         "The response and explanatory variables must be different from one ",
         "another."

@@ -120,13 +120,13 @@ bootstrap <- function(x, reps = 1, ...) {
     # to that specified in `hypothesize`
     if (!is.null(attr(attr(x, "params"), "names"))){
       if (identical(attr(attr(x, "params"), "names"), "mu")) {
-        col <- as.character(attr(x, "response"))
+        col <- response_name(x)
         x[[col]] <- x[[col]] - mean(x[[col]], na.rm = TRUE) + attr(x, "params")
     }
 
     # Similarly for median
       else if (identical(attr(attr(x, "params"), "names"), "med")) {
-        col <- as.character(attr(x, "response"))
+        col <- response_name(x)
         x[[col]] <- x[[col]] -
           stats::median(x[[col]], na.rm = TRUE) + attr(x, "params")
       }
@@ -156,10 +156,10 @@ permute_once <- function(x, ...) {
   dots <- list(...)
 
   if (is_hypothesized(x) && (attr(x, "null") == "independence")) {
-    y <- pull(x, !!attr(x, "response"))
+    y <- pull(x, !!response_expr(x))
 
     y_prime <- sample(y, size = length(y), replace = FALSE)
-    x[as.character(attr(x, "response"))] <- y_prime
+    x[response_name(x)] <- y_prime
     return(x)
   } else {
     stop_glue(
@@ -183,7 +183,7 @@ simulate <- function(x, reps = 1, ...) {
   
   x_nrow <- nrow(x)
   rep_tbl <- tibble::tibble(
-    !!attr(x, "response") := as.factor(col_simmed),
+    !!response_expr(x) := as.factor(col_simmed),
     replicate = as.factor(rep(1:reps, rep(x_nrow, reps)))
   )
 

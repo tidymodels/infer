@@ -46,7 +46,7 @@ c_dedupl <- function(...) {
 }
 
 reorder_explanatory <- function(x, order) {
-  x[[as.character(attr(x, "explanatory"))]] <- factor(
+  x[[explanatory_name(x)]] <- factor(
     explanatory_variable(x),
     levels = c(order[1], order[2])
   )
@@ -54,16 +54,36 @@ reorder_explanatory <- function(x, order) {
 }
 
 # Getters, setters, and indicators ------------------------------------------
+explanatory_expr <- function(x) {
+  attr(x, "explanatory")
+}
+
+explanatory_name <- function(x) {
+  as.character(explanatory_expr(x))
+}
+
 explanatory_variable <- function(x) {
-  if (!is.null(attr(x, "explanatory"))) {
-    x[[as.character(attr(x, "explanatory"))]]
+  if (!is.null(explanatory_expr(x))) {
+    x[[explanatory_name(x)]]
   } else {
     NULL
   }
 }
 
+response_expr <- function(x) {
+  attr(x, "response")
+}
+
+response_name <- function(x) {
+  as.character(response_expr(x))
+}
+
 response_variable <- function(x) {
-  x[[as.character(attr(x, "response"))]]
+  x[[response_name(x)]]
+}
+
+theory_type <- function(x) {
+  attr(x, "theory_type")
 }
 
 get_response_levels <- function(x) {

@@ -11,11 +11,11 @@ print.infer <- function(x, ...) {
   header <- character(3)
   if ("response" %in% attrs) {
     header[1] <- glue_null(
-      'Response: {attr(x, "response")} ({attr(x, "response_type")})'
+      'Response: {response_name(x)} ({attr(x, "response_type")})'
     )
     if ("explanatory" %in% attrs) {
       header[2] <- glue_null(
-        'Explanatory: {attr(x, "explanatory")} ({attr(x, "explanatory_type")})'
+        'Explanatory: {explanatory_name(x)} ({attr(x, "explanatory_type")})'
       )
     }
   }

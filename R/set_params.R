@@ -104,15 +104,12 @@ set_params <- function(x) {
       (attr(x, "response_type") %in% c("integer", "numeric")) &
       (attr(x, "explanatory_type") %in% c("integer", "numeric"))
     ) {
-      response_string <- as.character(attr(x, "response"))
-      explanatory_string <- as.character(attr(x, "explanatory"))
+      response_string <- response_name(x)
+      explanatory_string <- explanatory_name(x)
       attr(x, "theory_type") <- "Slope/correlation with t"
       attr(x, "distr_param") <- nrow(x) - 2
     }
   }
-  
-  #  if(attr_is_null(x, "theory_type"))
-  #     warning_glue("Theoretical type not yet implemented")
-  
+
   x
 }
