@@ -217,6 +217,27 @@ check_visualize_args <- function(data, bins, method, dens_color,
   TRUE
 }
 
+# a function for checking arguments to functions that are added as layers
+# to visualize()d objects to make sure they weren't mistakenly piped
+check_for_piped_visualize <- function(...) {
+  
+  is_ggplot_output <- vapply(list(...), ggplot2::is.ggplot, logical(1))
+  
+  if (any(is_ggplot_output)) {
+    
+    called_function <- sys.call(-1)[[1]]
+    
+    stop_glue(
+      "It looks like you piped the result of `visualize()` into ",
+      "`{called_function}()` (using `%>%`) rather than adding the result of ",
+      "`{called_function}()` as a layer with `+`. Consider changing",
+      "`%>%` to `+`."
+    )
+  }
+  
+  TRUE
+}
+
 warn_deprecated_args <- function(obs_stat, endpoints) {
   if (!is.null(obs_stat)) {
     warning_glue(

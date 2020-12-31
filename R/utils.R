@@ -1,3 +1,4 @@
+# Miscellaneous Helpers -----------------------------------------------
 append_infer_class <- function(x) {
   x_cl <- class(x)
   if (x_cl[1] != "infer") {
@@ -31,10 +32,6 @@ copy_attrs <- function(to, from,
   to
 }
 
-attr_is_null <- function(x, at) {
-  is.null(attr(x, at))
-}
-
 # Wrapper for deduplication by name after doing `c(...)`
 c_dedupl <- function(...) {
   l <- c(...)
@@ -48,6 +45,15 @@ c_dedupl <- function(...) {
   }
 }
 
+reorder_explanatory <- function(x, order) {
+  x[[as.character(attr(x, "explanatory"))]] <- factor(
+    explanatory_variable(x),
+    levels = c(order[1], order[2])
+  )
+  x
+}
+
+# Getters, setters, and indicators ------------------------------------------
 explanatory_variable <- function(x) {
   if (!is.null(attr(x, "explanatory"))) {
     x[[as.character(attr(x, "explanatory"))]]
@@ -60,12 +66,40 @@ response_variable <- function(x) {
   x[[as.character(attr(x, "response"))]]
 }
 
-reorder_explanatory <- function(x, order) {
-  x[[as.character(attr(x, "explanatory"))]] <- factor(
-    explanatory_variable(x),
-    levels = c(order[1], order[2])
+get_response_levels <- function(x) {
+  as.character(unique(response_variable(x)))
+}
+
+get_success_then_response_levels <- function(x) {
+  success_attr <- attr(x, "success")
+  response_levels <- setdiff(
+    get_response_levels(x),
+    success_attr
   )
-  x
+  c(success_attr, response_levels)
+}
+
+has_unused_levels <- function(x) {
+  if (is.factor(x)) {
+    present_levels <- unique(as.character(x))
+    unused_levels <- setdiff(levels(x), present_levels)
+    
+    length(unused_levels) > 0
+  } else {
+    FALSE
+  }
+}
+
+is_generated <- function(x) {
+  attr(x, "generated")
+}
+
+is_hypothesized <- function(x){
+  !is.null(attr(x, "null"))
+}
+
+attr_is_null <- function(x, at) {
+  is.null(attr(x, at))
 }
 
 has_explanatory <- function(x) {
@@ -80,6 +114,8 @@ is_color_string <- function(x) {
   rlang::is_string(x) &&
     tryCatch(is.matrix(grDevices::col2rgb(x)), error = function(e) {FALSE})
 }
+
+# Messaging, warning, and erroring ------------------------------------------
 
 stop_glue <- function(..., .sep = "", .envir = parent.frame(),
                       call. = FALSE, .domain = NULL) {
@@ -121,9 +157,9 @@ null_transformer <- function(text, envir) {
   out
 }
 
-# Simplify and standardize checks by grouping statistics based on
-# variable types
-# 
+# Helpers for test statistics --------------------------------------
+
+# Simplify and standardize checks by grouping statistics based on variable types
 # num = numeric, bin = binary (dichotomous), mult = multinomial
 stat_types <- tibble::tribble(
   ~resp,   ~exp,   ~stats,
@@ -166,6 +202,17 @@ stat_desc <- tibble::tribble(
   "odds ratio",        "An odds ratio" 
 )
 
+implemented_stats <-  c(
+  "mean", "median", "sum", "sd", "prop", "count",
+  "diff in means", "diff in medians", "diff in props",
+  "Chisq", "F", "slope", "correlation", "t", "z",
+  "ratio of props", "odds ratio"
+)
+
+untheorized_stats <- implemented_stats[!implemented_stats %in% c(
+  "Chisq", "F", "t", "z"
+)]
+
 determine_variable_type <- function(x, variable) {
   var <- eval(rlang::parse_expr(paste0(variable, "_variable(x)")))
   
@@ -182,16 +229,7 @@ determine_variable_type <- function(x, variable) {
   res
 }
 
-implemented_stats <-  c(
-  "mean", "median", "sum", "sd", "prop", "count",
-  "diff in means", "diff in medians", "diff in props",
-  "Chisq", "F", "slope", "correlation", "t", "z",
-  "ratio of props", "odds ratio"
-)
-
-untheorized_stats <- implemented_stats[!implemented_stats %in% c(
-  "Chisq", "F", "t", "z"
-)]
+# Argument checking --------------------------------------------------------
 
 check_order <- function(x, explanatory_variable, order, in_calculate = TRUE) {
   unique_ex <- sort(unique(explanatory_variable))
@@ -323,38 +361,6 @@ check_for_nan <- function(x, context) {
   }
 }
 
-has_unused_levels <- function(x) {
-  if (is.factor(x)) {
-    present_levels <- unique(as.character(x))
-    unused_levels <- setdiff(levels(x), present_levels)
-
-    length(unused_levels) > 0
-  } else {
-    FALSE
-  }
-}
-
-is_generated <- function(x) {
-  attr(x, "generated")
-}
-
-is_hypothesized <- function(x){
-  !is.null(attr(x, "null"))
-}
-
-get_response_levels <- function(x) {
-  as.character(unique(response_variable(x)))
-}
-
-get_success_then_response_levels <- function(x) {
-  success_attr <- attr(x, "success")
-  response_levels <- setdiff(
-    get_response_levels(x),
-    success_attr
-  )
-  c(success_attr, response_levels)
-}
-
 check_direction <- function(direction = c("less", "greater", "two_sided",
                                           "left", "right", "both",
                                           "two-sided", "two sided")) {
@@ -446,27 +452,4 @@ parse_type <- function(f_name) {
     f_name,
     regexec("is[_\\.]([[:alnum:]_\\.]+)$", f_name)
   )[[1]][2]
-}
-
-# Helpers for visualize() Utilities -----------------------------------------------
-
-# a function for checking arguments to functions that are added as layers
-# to visualize()d objects to make sure they weren't mistakenly piped
-check_for_piped_visualize <- function(...) {
-  
-  is_ggplot_output <- vapply(list(...), ggplot2::is.ggplot, logical(1))
-  
-  if (any(is_ggplot_output)) {
-    
-    called_function <- sys.call(-1)[[1]]
-    
-    stop_glue(
-      "It looks like you piped the result of `visualize()` into ",
-      "`{called_function}()` (using `%>%`) rather than adding the result of ",
-      "`{called_function}()` as a layer with `+`. Consider changing",
-      "`%>%` to `+`."
-    )
-  }
-  
-  TRUE
 }
