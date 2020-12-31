@@ -139,8 +139,8 @@ check_variables_vs_stat <- function(x, stat) {
   
   if (!stat %in% possible_stats) {
     stop_glue(
-      'The supplied test statistic "{stat}" is not well-defined for ',
-      'testing hypotheses related to a ', 
+      stat_desc$description[stat_desc$stat == stat],
+      ' is not well-defined for a ',
       stat_type_desc$description[
         determine_variable_type(x, "response") == stat_type_desc$type
       ],

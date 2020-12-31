@@ -124,7 +124,7 @@ null_transformer <- function(text, envir) {
 # Simplify and standardize checks by grouping statistics based on
 # variable types
 # 
-# num = numeric, bin = binary, mult = multinomial
+# num = numeric, bin = binary (dichotomous), mult = multinomial
 stat_types <- tibble::tribble(
   ~resp,   ~exp,   ~stats,
   "num",   "",     c("mean", "median", "sum", "sd", "t"),
@@ -141,8 +141,29 @@ stat_types <- tibble::tribble(
 stat_type_desc <- tibble::tribble(
   ~type,  ~description,
   "num",  "numeric",
-  "bin",  "binary categorical",
+  "bin",  "dichotomous categorical",
   "mult", "multinomial categorical"
+)
+
+stat_desc <- tibble::tribble(
+  ~stat,               ~description,
+  "mean",              "A mean",
+  "median",            "A median", 
+  "sum",               "A sum",
+  "sd",                "A standard deviation",
+  "prop",              "A proportion", 
+  "count",             "A count", 
+  "diff in means",     "A difference in means", 
+  "diff in medians",   "A difference in medians", 
+  "diff in props",     "A difference in proportions", 
+  "Chisq",             "A chi-square statistic", 
+  "F",                 "An F statistic", 
+  "slope",             "A slope", 
+  "correlation",       "A correlation", 
+  "t",                 "A t statistic", 
+  "z",                 "A z statistic", 
+  "ratio of props",    "A ratio of proportions",  
+  "odds ratio",        "An odds ratio" 
 )
 
 determine_variable_type <- function(x, variable) {
