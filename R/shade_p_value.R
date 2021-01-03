@@ -262,7 +262,7 @@ norm_direction <- function(direction) {
     direction,
     less = , left = "left",
     greater = , right = "right",
-    two_sided = , `two-sided` = , `two sided` = , both = "both"
+    two_sided = , `two-sided` = , `two sided` = , `two.sided` = , both = "both"
   )
 }
 

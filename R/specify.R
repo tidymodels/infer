@@ -155,8 +155,11 @@ check_success_arg <- function(x, success) {
     }
   }
   
-  if (attr(x, "response_type") == "bin" && is.null(success)) {
-    if (attr(x, "explanatory_type") %in% c("num", "mult")) {
+  if (attr(x, "response_type") == "factor" && 
+      is.null(success) &&
+      length(levels(response_variable(x))) == 2) {
+    if (attr_is_null(x, "explanatory_type") ||
+        length(levels(explanatory_variable(x))) == 2) {
       stop_glue(
         'A level of the response variable `{response_name(x)}` needs to be ',
         'specified for the `success` argument in `specify()`.'

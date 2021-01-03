@@ -81,20 +81,6 @@ get_p_value <- function(x, obs_stat, direction) {
   check_direction(direction)
 
   simulation_based_p_value(x = x, obs_stat = obs_stat, direction = direction)
-
-  ## Theoretical-based p-value
-  # Could be more specific
-  # else if(is.null(attr(x, "theory_type")) || is.null(attr(x, "distr_param")))
-  #   stop_glue("Attributes have not been set appropriately. ",
-  #             "Check your {{infer}} pipeline again.")
-
-  # if(!("stat" %in% names(x))){
-  #    # Theoretical distribution
-  #  which_distribution(x,
-  #                     theory_type <- attr(x, "theory_type"),
-  #                     obs_stat = obs_stat,
-  #                     direction = direction)
-  # }
 }
 
 #' @rdname get_p_value
