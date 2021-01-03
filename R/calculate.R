@@ -2,8 +2,11 @@
 #'
 #' @description
 #'
-#' Calculates summary statistics from outputs of [generate()] or
-#' [hypothesize()].
+#' Given the output of [specify()] and/or [hypothesize()], this function will
+#' return the observed statistic specified with the `stat` argument. Some test
+#' statistics, such as `Chisq`, `t`, and `z`, require a null hypothesis. If
+#' provided the output of [generate()], the function will calculate the
+#' supplied `stat` for each `replicate`.
 #'
 #' Learn more in `vignette("infer")`.
 #'
@@ -15,11 +18,13 @@
 #'   `"F"`, `"t"`, `"z"`, `"ratio of props"`, `"slope"`, 
 #'   `"odds ratio"`, and `"correlation"`.
 #' @param order A string vector of specifying the order in which the levels of
-#'   the explanatory variable should be ordered for subtraction, where `order =
-#'   c("first", "second")` means `("first" - "second")` Needed for inference on
-#'   difference in means, medians, or proportions and t and z statistics.
+#'   the explanatory variable should be ordered for subtraction (or division
+#'   for ratio-based statistics), where `order = c("first", "second")` means 
+#'   `("first" - "second")`, or the analogue for ratios. Needed for inference on
+#'   difference in means, medians, proportions, ratios, t, and z statistics.
 #' @param ... To pass options like `na.rm = TRUE` into functions like
-#'   [mean()][base::mean()], [sd()][stats::sd()], etc.
+#'   [mean()][base::mean()], [sd()][stats::sd()], etc. Can also be used to
+#'   supply hypothesized null values for the `"t"` statistic.
 #'
 #' @return A tibble containing a `stat` column of calculated statistics.
 #'
@@ -39,6 +44,11 @@
 #'   hypothesize(null = "point", mu = 40) %>%
 #'   generate(reps = 200, type = "bootstrap") %>%
 #'   calculate(stat = "mean")
+#'   
+#' # calculate the corresponding observed statistic
+#' gss %>%
+#'   specify(response = hours) %>%
+#'   calculate(stat = "mean")
 #'
 #' # calculate a null distribution assuming independence between age
 #' # of respondent and whether they have a college degree
@@ -47,7 +57,18 @@
 #'   hypothesize(null = "independence") %>%
 #'   generate(reps = 200, type = "permute") %>%
 #'   calculate("diff in means", order = c("degree", "no degree"))
-#'
+#'   
+#' # calculate the corresponding observed statistic
+#' gss %>%
+#'   specify(age ~ college) %>%
+#'   calculate("diff in means", order = c("degree", "no degree"))
+#'   
+#' # some statistics require a null hypothesis
+#'  gss %>%
+#'    specify(response = hours) %>% 
+#'    hypothesize(null = "point", mu = 40) %>%
+#'    calculate(stat = "t")
+#'    
 #' # More in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
