@@ -15,11 +15,17 @@ format_params <- function(x) {
 }
 
 print_params <- function(x) {
-  if (length(attr(x, "params")) == 2) {
-    ": \np = .5"
+  params <- attr(x, "params")
+  if (length(params) == 1) {
+    paste0(": `", names(params), " = ", unname(params), "`", collapse = "")
+  } else if (length(params) == 2) {
+    ": `p = .5`"
   } else {
-    paste0("s: \np = ", 
-           capture.output(dput(setNames(attr(x, 'params'), get_par_levels(x)))), 
+    p_vector <- paste0(capture.output(dput(setNames(params, get_par_levels(x)))), 
+                       collapse = "")
+    paste0("s: `p = ", 
+           p_vector,
+           "`",
            collapse = "")
   }
 }

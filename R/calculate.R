@@ -107,7 +107,7 @@ calculate <- function(x,
     
     warning_glue(
       "{stat_desc$description[stat_desc$stat == stat]} requires a null ",
-      "hypothesis to calculate the observed statistic. Output assumes ",
+      "hypothesis to calculate the observed statistic. \nOutput assumes ",
       "the following null value{print_params(x)}."
     )
   } 
