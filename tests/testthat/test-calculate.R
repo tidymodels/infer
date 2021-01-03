@@ -380,14 +380,14 @@ test_that("specify() %>% calculate() works", {
   expect_silent(
     gss_tbl %>% specify(hours ~ NULL) %>% calculate(stat = "mean")
   )
-  expect_error(
+  expect_message(
     gss_tbl %>%
       specify(hours ~ NULL) %>%
       hypothesize(null = "point", mu = 4) %>%
       calculate(stat = "mean")
   )
 
-  expect_error(
+  expect_warning(
     gss_tbl %>% specify(partyid ~ NULL) %>% calculate(stat = "Chisq")
   )
 })
@@ -401,11 +401,11 @@ test_that("One sample t hypothesis test is working", {
       calculate(stat = "t")
   )
 
-  expect_message(
+  expect_warning(
     gss_tbl %>%
       specify(response = hours) %>%
       calculate(stat = "t"),
-    "the t-test will assume a null hypothesis"
+    "A t statistic requires"
   )
 
   gss_tbl %>%
@@ -426,7 +426,7 @@ test_that("specify done before calculate", {
 
 test_that("chisq GoF has params specified for observed stat", {
   no_params <- gss_tbl %>% specify(response = partyid)
-  expect_error(calculate(no_params, stat = "Chisq"))
+  expect_warning(calculate(no_params, stat = "Chisq"))
 
   params <- gss_tbl %>%
     specify(response = partyid) %>%
@@ -437,22 +437,11 @@ test_that("chisq GoF has params specified for observed stat", {
   expect_silent(calculate(params, stat = "Chisq"))
 })
 
-test_that("generate not done before calculate", {
-  gss_tbl_hyp <- gss_tbl %>%
-    specify(hours ~ college) %>%
-    hypothesize(null = "independence")
-  attr(gss_tbl_hyp, "generated") <- TRUE
-  expect_warning(calculate(gss_tbl_hyp,
-    stat = "t",
-    order = c("no degree", "degree")
-  ))
-})
-
 test_that("One sample t bootstrap is working", {
-  expect_message(
+  expect_warning(
     gss_tbl %>%
       specify(hours ~ NULL) %>%
-      generate(reps = 10) %>%
+      generate(reps = 10, type = "bootstrap") %>%
       calculate(stat = "t")
   )
 })

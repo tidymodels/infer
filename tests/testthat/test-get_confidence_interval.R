@@ -1,5 +1,10 @@
 context("get_confidence_interval")
 
+set.seed(2018)
+test_df <- gss_calc[1:20,]
+test_df$stat <- c(
+  -5, -4, -4, -4, -1, -0.5, rep(0, 6), 1, 1, 3.999, 4, 4, 4.001, 5, 5
+)
 point <- mean(test_df[["stat"]])
 
 perc_def_out <- tibble::tibble(
@@ -35,7 +40,7 @@ test_that("get_confidence_interval works with `type = 'se'`", {
   expect_message(
     expect_equal(
       test_df %>% get_confidence_interval(type = "se", point_estimate = point),
-      tibble::tibble(lower_ci = -1.965, upper_ci = 2.008),
+      tibble::tibble(lower_ci = -5.653, upper_ci = 6.603),
       tolerance = 1e-3
     ),
     "Using `level = 0.95`"
@@ -44,7 +49,7 @@ test_that("get_confidence_interval works with `type = 'se'`", {
   expect_equal(
     test_df %>%
       get_confidence_interval(level = 0.5, type = "se", point_estimate = point),
-    tibble::tibble(lower_ci = -0.662, upper_ci = 0.705),
+    tibble::tibble(lower_ci = -1.633, upper_ci = 2.583),
     tolerance = 1e-3
   )
 })
@@ -56,7 +61,7 @@ test_that("get_confidence_interval works with `type = 'bias-corrected'`", {
         get_confidence_interval(
           type = "bias-corrected", point_estimate = point
         ),
-      tibble::tibble(lower_ci = -1.692, upper_ci = 2.276),
+      tibble::tibble(lower_ci = -4.00, upper_ci = 5),
       tolerance = 1e-3
     ),
     "Using `level = 0.95`"
@@ -67,7 +72,7 @@ test_that("get_confidence_interval works with `type = 'bias-corrected'`", {
       get_confidence_interval(
         level = 0.5, type = "bias-corrected", point_estimate = point
       ),
-    tibble::tibble(lower_ci = -0.594, upper_ci = 0.815),
+    tibble::tibble(lower_ci = 0, upper_ci = 4.0007),
     tolerance = 1e-3
   )
 })

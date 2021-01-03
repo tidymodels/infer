@@ -1,11 +1,10 @@
 context("get_p_value")
 
 set.seed(2018)
-test_df <- tibble::tibble(
-  stat = sample(c(
-    -5, -4, -4, -4, -1, -0.5, rep(0, 6), 1, 1, 3.999, 4, 4, 4.001, 5, 5
-  ))
-)
+test_df <- gss_calc[1:20,]
+test_df$stat <- sample(c(
+  -5, -4, -4, -4, -1, -0.5, rep(0, 6), 1, 1, 3.999, 4, 4, 4.001, 5, 5
+))
 
 test_that("direction is appropriate", {
   expect_error(test_df %>% get_p_value(obs_stat = 0.5, direction = "righ"))
@@ -71,31 +70,26 @@ test_that("theoretical p-value not supported error", {
 })
 
 test_that("get_p_value warns in case of zero p-value", {
-  stat_df <- tibble::tibble(stat = 1:10)
-  
   expect_warning(
-    get_p_value(stat_df, obs_stat = -10, direction = "left"),
+    get_p_value(gss_calc, obs_stat = -10, direction = "left"),
     "be cautious"
   )
 })
 
 test_that("get_p_value throws error in case of `NaN` stat", {
-  stat_df <- tibble::tibble(stat = 1:10)
-  obs_stat <- 2.71
-  
-  stat_df$stat[1] <- NaN
+  gss_calc$stat[1] <- NaN
   expect_error(
-    get_p_value(stat_df, obs_stat, "both"),
+    get_p_value(gss_calc, 0, "both"),
     "1 calculated statistic was `NaN`.*not well-defined"
   )
   
-  stat_df$stat[2] <- NaN
+  gss_calc$stat[2] <- NaN
   expect_error(
-    get_p_value(stat_df, obs_stat, "both"),
+    get_p_value(gss_calc, 0, "both"),
     "2 calculated statistics were `NaN`.*not well-defined"
   )
   
   # In the case that _all_ values are NaN, error should have different text
-  stat_df$stat <- NaN
-  expect_error(get_p_value(stat_df, obs_stat, "both"), "All calculated stat")
+  gss_calc$stat <- NaN
+  expect_error(get_p_value(gss_calc, 0, "both"), "All calculated stat")
 })
