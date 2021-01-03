@@ -98,7 +98,10 @@ calculate <- function(x,
   
   # User didn't supply "enough" information - no hypothesis for a theorized
   # statistic on a point estimate, so warn that a reasonable value was assumed.
-  if (!is_hypothesized(x) && !has_explanatory(x) && !stat %in% untheorized_stats) {
+  if (!is_hypothesized(x)          && 
+      !has_explanatory(x)          && 
+      !stat %in% untheorized_stats &&
+      !(stat == "t" && "mu" %in% names(list(...)))) {
     attr(x, "null") <- "point"
     attr(x, "params") <- assume_null(x, stat)
     
