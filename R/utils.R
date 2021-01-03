@@ -116,14 +116,10 @@ get_success_then_response_levels <- function(x) {
 }
 
 has_unused_levels <- function(x) {
-  if (is.factor(x)) {
-    present_levels <- unique(as.character(x))
-    unused_levels <- setdiff(levels(x), present_levels)
-    
-    length(unused_levels) > 0
-  } else {
-    FALSE
-  }
+  present_levels <- unique(as.character(x))
+  unused_levels <- setdiff(levels(x), present_levels)
+  
+  length(unused_levels) > 0
 }
 
 is_generated <- function(x) {
@@ -259,7 +255,7 @@ p_null <- function(x) {
   setNames(rep(probs, num_lvls), paste0("p.", lvls))
 }
 
-# The "point" column is a function(x) whose output gives attr(x, "params")
+# The "null_fn" column is a function(x) whose output gives attr(x, "params")
 theorized_nulls <- tibble::tribble(
   ~stat,    ~null_fn,
   "Chisq", p_null,
@@ -287,12 +283,7 @@ determine_variable_type <- function(x, variable) {
 
 check_order <- function(x, explanatory_variable, order, in_calculate = TRUE) {
   unique_ex <- sort(unique(explanatory_variable))
-  if (length(unique_ex) != 2) {
-    stop_glue(
-      "Statistic is based on a difference or ratio; the explanatory variable ", 
-      "should have two levels."
-    )
-  }
+  
   if (is.null(order) & in_calculate) {
     # Default to subtracting/dividing the first (alphabetically) level by the 
     # second, unless the explanatory variable is a factor (in which case order 
@@ -336,18 +327,6 @@ check_order <- function(x, explanatory_variable, order, in_calculate = TRUE) {
   order
 }
 
-check_args_and_attr <- function(x, explanatory_variable, response_variable,
-                                stat) {
-  # Could also do `stat <- match.arg(stat)`
-  # but that's not as helpful to beginners with the cryptic error msg
-  if (!stat %in% implemented_stats) {
-    stop_glue(
-      "You specified a string for `stat` that is not implemented. ",
-      "Check your spelling and `?calculate` for current options."
-    )
-  }
-}
-
 check_point_params <- function(x, stat) {
   param_names <- attr(attr(x, "params"), "names")
   hyp_text <- 'to be set in `hypothesize()`.'
@@ -365,18 +344,6 @@ check_point_params <- function(x, stat) {
       if (!(stat == "median") && ("med" %in% param_names)) {
         stop_glue('`"med"` does not correspond to `stat = "{stat}"`.')
       }
-      ## Tests unable to get to
-      # if ((stat == "sigma") && !("sd" %in% param_names)) {
-      #   stop_glue('`stat == "sd"` requires `"sigma"` {hyp_text}')
-      # }
-      if (!(stat == "sd") && ("sigma" %in% param_names)) {
-        stop_glue('`"sigma"` does not correspond to `stat = "{stat}"`.')
-      }
-
-      ## Tests unable to get to
-      # if ((stat == "prop") && !any(grepl("p.", param_names))) {
-      #   stop_glue('`stat == "prop"` requires `"p"` {hyp_text}')
-      # }
     }
   }
 }

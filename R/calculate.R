@@ -95,13 +95,6 @@ calculate <- function(x,
     x$replicate <- 1L
   }
   
-  if (!stat %in% implemented_stats) {
-    stop_glue(
-      "You specified a string for `stat` that is not implemented. ",
-      "Check your spelling and `?calculate` for current options."
-    )
-  }
-  
   # User supplied "too much" information - hypothesized a value for a point
   # estimate that isn't relevant to the statistic calculation
   if (!is_generated(x) && is_hypothesized(x) && stat %in% untheorized_stats) {
@@ -163,6 +156,13 @@ calculate <- function(x,
 # Raise an error if the user supplies a test statistic that doesn't
 # make sense given the variable specified
 check_variables_vs_stat <- function(x, stat) {
+  if (!stat %in% implemented_stats) {
+    stop_glue(
+      "You specified a string for `stat` that is not implemented. ",
+      "Check your spelling and `?calculate` for current options."
+    )
+  }
+  
   res_type <- determine_variable_type(x, "response")
   exp_type <- determine_variable_type(x, "explanatory")
   
@@ -233,13 +233,6 @@ calc_impl_success_f <- function(f, output_name) {
   function(type, x, order, ...) {
     col <- base::setdiff(names(x), "replicate")
 
-    if (attr_is_null(x, "success")) {
-      stop_glue(
-        'To calculate a {output_name}, the `"success"` argument must be ',
-        "provided in `specify()`."
-      )
-    }
-
     success <- attr(x, "success")
     x %>%
       dplyr::group_by(replicate) %>%
@@ -308,30 +301,20 @@ calc_impl.Chisq <- function(type, x, order, ...) {
 
   if (attr_is_null(x, "explanatory")) {
     # Chi-Square Goodness of Fit
-    if (!attr_is_null(x, "params")) {
-      # When `hypothesize()` has been called
-      p_levels <- get_par_levels(x)
-      chisq_gof <- function(df) {
-        chisq <- suppressWarnings(stats::chisq.test(
-          # Ensure correct ordering of parameters
-          table(df[[resp_var]])[p_levels],
-          p = attr(x, "params")
-        ))
-
-        unname(chisq[["statistic"]])
-      }
-
-      result <- x %>%
-        dplyr::nest_by(.key = "data") %>%
-        dplyr::summarise(stat = chisq_gof(data), .groups = "drop")
-    } else {
-      # Straight from `specify()`
-      stop_glue(
-        "In order to calculate a Chi-Square Goodness of Fit statistic, ",
-        "hypothesized values must be given for the `p` parameter in the ",
-        "`hypothesize()` function prior to using `calculate()`"
-      )
+    p_levels <- get_par_levels(x)
+    chisq_gof <- function(df) {
+      chisq <- suppressWarnings(stats::chisq.test(
+        # Ensure correct ordering of parameters
+        table(df[[resp_var]])[p_levels],
+        p = attr(x, "params")
+      ))
+      
+      unname(chisq[["statistic"]])
     }
+    
+    result <- x %>%
+      dplyr::nest_by(.key = "data") %>%
+      dplyr::summarise(stat = chisq_gof(data), .groups = "drop")
   } else {
     # Chi-Square Test of Independence
     expl_var <- explanatory_name(x)
@@ -424,13 +407,6 @@ calc_impl.t <- function(type, x, order, ...) {
   } else if (theory_type(x) == "One sample t") {
     if (!is_hypothesized(x)) {
       # For bootstrap
-      if (is.null(list(...)$mu)) {
-        message_glue(
-          "No `mu` argument was hypothesized, so the t-test will ",
-          "assume a null hypothesis `mu = 0`."
-        )
-      }
-
       df_out <- x %>%
         dplyr::summarize(
           stat = stats::t.test(!!response_expr(x), ...)[["statistic"]]
