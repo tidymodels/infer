@@ -571,3 +571,45 @@ test_that("calc_impl.z works for one sample proportions", {
   
   expect_equal(infer_obs_stat, base_obs_stat, tolerance = eps)
 })
+
+test_that("calculate warns informatively with insufficient null", {
+  expect_warning(
+    gss %>%
+      specify(response = sex, success = "female") %>%
+      calculate(stat = "z"),
+    "following null value: `p = .5`"
+  )
+  
+  expect_warning(
+    gss %>%
+      specify(hours ~ NULL) %>%
+      calculate(stat = "t"),
+    "following null value: `mu = 0`"
+  )
+  
+  expect_warning(
+    gss %>%
+      specify(response = partyid) %>%
+      calculate(stat = "Chisq"),
+    "the following null values: `p = c(dem = 0.2",
+    fixed = TRUE
+  )
+})
+
+test_that("calculate messages informatively with excessive null", {
+  expect_message(
+    gss %>%
+      specify(hours ~ NULL) %>%
+      hypothesize(null = "point", mu = 40) %>%
+      calculate(stat = "mean"),
+    "point null hypothesis `mu = 40` does not inform calculation"
+  )
+  
+  expect_message(
+    gss %>%
+      specify(hours ~ NULL) %>%
+      hypothesize(null = "point", sigma = 10) %>%
+      calculate(stat = "sd"),
+    "point null hypothesis `sigma = 10` does not inform calculation"
+  )
+})

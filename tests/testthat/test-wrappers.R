@@ -324,6 +324,10 @@ test_that("one sample prop_test works", {
   infer3 <- prop_test(df_1, resp ~ NULL, p = .2, success = "c")
   infer4 <- prop_test(df_1, resp ~ NULL, p = .8, success = "d")
   expect_equal(infer3[["chisq_df"]], infer4[["chisq_df"]], tolerance = .001)
+  expect_error(
+    prop_test(df_1, resp ~ NULL, p = .2, success = "b"),
+    "b is not a valid level"
+  )
 })
 
 test_that("prop_test output dimensionality is correct", {
@@ -332,6 +336,7 @@ test_that("prop_test output dimensionality is correct", {
   infer_2_sample <- prop_test(df, resp ~ exp, order = c("a", "b"))
   infer_2_sample_no_int <- prop_test(df, resp ~ exp, order = c("a", "b"), 
                                      conf_int = FALSE)
+  infer_2_sample_z <- prop_test(df, resp ~ exp, order = c("a", "b"), z = TRUE)
   
   # introduce a third response level
   df$resp[c(1:10, 490:510, 990:1000)] <- "e"
@@ -342,6 +347,7 @@ test_that("prop_test output dimensionality is correct", {
   expect_length(infer_1_sample, length(infer_1_sample_z) + 1)
   expect_length(infer_2_sample, 6)
   expect_length(infer_2_sample_no_int, 4)
+  expect_length(infer_2_sample_z, length(infer_2_sample) - 1)
   expect_length(infer_3_sample, 3)
 })
 
