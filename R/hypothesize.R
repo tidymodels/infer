@@ -46,6 +46,7 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
   hypothesize_checks(x, null)
 
   attr(x, "null") <- null
+  attr(x, "hypothesized") <- TRUE
   
   dots <- compact(list(p = p, mu = mu, med = med, sigma = sigma))
 

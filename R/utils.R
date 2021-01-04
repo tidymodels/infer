@@ -39,7 +39,8 @@ copy_attrs <- function(to, from,
                        attrs = c(
                          "response", "success", "explanatory", "response_type",
                          "explanatory_type", "distr_param", "distr_param2",
-                         "null", "params", "theory_type", "generated", "type"
+                         "null", "params", "theory_type", "generated", "type",
+                         "hypothesized"
                        )) {
   for (at in attrs) {
     attr(to, at) <- attr(from, at)
@@ -127,7 +128,7 @@ is_generated <- function(x) {
 }
 
 is_hypothesized <- function(x){
-  !is.null(attr(x, "null"))
+  attr(x, "hypothesized")
 }
 
 attr_is_null <- function(x, at) {

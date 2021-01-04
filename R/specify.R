@@ -65,6 +65,7 @@ specify <- function(x, formula, response = NULL,
   # Add attributes
   attr(x, "success") <- success
   attr(x, "generated") <- FALSE
+  attr(x, "hypothesized") <- FALSE
   attr(x, "response_type") <- class(response_variable(x))
   if (attr_is_null(x, "explanatory")) {
     attr(x, "explanatory_type") <- NULL
