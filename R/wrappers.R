@@ -76,7 +76,7 @@ t_test <- function(x, formula,
 
   # two sample
   if (has_explanatory(x)) {
-    order <- check_order(x, explanatory_variable(x), order, in_calculate = FALSE)
+    order <- check_order(x, order, in_calculate = FALSE, stat = NULL)
     x <- reorder_explanatory(x, order)
     prelim <- stats::t.test(formula = as.formula(paste0(response_name(x),
                                                         " ~ ",
@@ -182,7 +182,7 @@ t_stat <- function(x, formula,
 
   # two sample
   if (has_explanatory(x)) {
-    order <- check_order(x, explanatory_variable(x), order, in_calculate = FALSE)
+    order <- check_order(x, order, in_calculate = FALSE, stat = NULL)
     x <- reorder_explanatory(x, order)
     prelim <- stats::t.test(formula = as.formula(paste0(response_name(x),
                                                         " ~ ",
@@ -478,7 +478,7 @@ prop_test <- function(x, formula,
   # two sample
   if (has_explanatory(x)) {
 
-    order <- check_order(x, explanatory_variable(x), order, in_calculate = FALSE)
+    order <- check_order(x, order, in_calculate = FALSE, stat = NULL)
 
     # make a summary table to supply to prop.test
     sum_table <- x %>%

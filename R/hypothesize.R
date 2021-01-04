@@ -78,9 +78,7 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
   
   res <- append_infer_class(tibble::as_tibble(x))
   
-  res <- copy_attrs(to = res, from = x)
-  
-  res
+  copy_attrs(to = res, from = x)
 }
 
 #' @rdname hypothesize

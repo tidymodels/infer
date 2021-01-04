@@ -265,7 +265,11 @@ theorized_nulls <- tibble::tribble(
 )
 
 determine_variable_type <- function(x, variable) {
-  var <- eval(rlang::parse_expr(paste0(variable, "_variable(x)")))
+  var <- switch(
+    variable,
+    response = response_variable(x),
+    explanatory = explanatory_variable(x)
+  )
   
   res <- if (is.null(var)) {
     ""
@@ -282,7 +286,24 @@ determine_variable_type <- function(x, variable) {
 
 # Argument checking --------------------------------------------------------
 
-check_order <- function(x, explanatory_variable, order, in_calculate = TRUE) {
+check_order <- function(x, order, in_calculate = TRUE, stat) {
+  # If there doesn't need to be an order argument, warn if there is one,
+  # and otherwise, skip checks
+  if (!(theory_type(x) %in% c("Two sample props z", "Two sample t") ||
+        is.null(stat) ||
+        stat %in% c("diff in means", "diff in medians", 
+                    "diff in props", "ratio of props", "odds ratio"))) {
+    if (!is.null(order)) {
+       warning_glue(
+        "Statistic is not based on a difference or ratio; the `order` argument",
+        " will be ignored. Check `?calculate` for details."
+      )
+    } else {
+      return(order)
+    }
+  } 
+  
+  explanatory_variable <- explanatory_variable(x)
   unique_ex <- sort(unique(explanatory_variable))
   
   if (is.null(order) & in_calculate) {

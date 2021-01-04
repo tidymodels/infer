@@ -90,52 +90,15 @@ calculate <- function(x,
   check_type(stat, rlang::is_string)
   check_variables_vs_stat(x, stat)
   check_point_params(x, stat)
+  
+  order <- check_order(x, order, in_calculate = TRUE, stat)
 
   if (!is_generated(x)) {
     x$replicate <- 1L
   }
   
-  # User supplied "too much" information - hypothesized a value for a point
-  # estimate that isn't relevant to the statistic calculation
-  if (!is_generated(x) && is_hypothesized(x) && stat %in% untheorized_stats) {
-    null_type <- attr(x, "null")
-    null_param <- attr(x, "params")
-    
-    message_glue(
-      "Message: The {null_type} null hypothesis ",
-      "`{names(null_param)} = {unname(null_param)}`",
-      " does not inform calculation of the observed statistic (",
-      "{tolower(stat_desc$description[stat_desc$stat == stat])}) and will ",
-      "be ignored."
-    )
-  }
-  
-  # User didn't supply "enough" information - no hypothesis for a theorized
-  # statistic on a point estimate, so warn that a reasonable value was assumed.
-  if (!is_hypothesized(x)          && 
-      !has_explanatory(x)          && 
-      !stat %in% untheorized_stats &&
-      !(stat == "t" && "mu" %in% names(list(...)))) {
-    attr(x, "null") <- "point"
-    attr(x, "params") <- assume_null(x, stat)
-    
-    warning_glue(
-      "{stat_desc$description[stat_desc$stat == stat]} requires a null ",
-      "hypothesis to calculate the observed statistic. \nOutput assumes ",
-      "the following null value{print_params(x)}."
-    )
-  } 
-
-  if (stat %in% c("diff in means", "diff in medians", 
-                  "diff in props", "ratio of props", "odds ratio") ||
-      theory_type(x) %in% c("Two sample props z", "Two sample t")) {
-    order <- check_order(x, explanatory_variable(x), order)
-  } else if (!is.null(order)) {
-    warning_glue(
-      "Statistic is not based on a difference or ratio; the `order` argument",
-      " will be ignored. Check `?calculate` for details."
-    )
-  }
+  x <- message_on_excessive_null(x, stat)
+  x <- warn_on_insufficient_null(x, stat, ...)
   
   # Use S3 method to match correct calculation
   result <- calc_impl(
@@ -205,6 +168,46 @@ assume_null <- function(x, stat_) {
     `[[`(1)
   
   null_fn(x)
+}
+
+
+# User supplied "too much" information - hypothesized a value for a point
+# estimate that isn't relevant to the statistic calculation
+message_on_excessive_null <- function(x, stat) {
+  if (!is_generated(x) && is_hypothesized(x) && stat %in% untheorized_stats) {
+    null_type <- attr(x, "null")
+    null_param <- attr(x, "params")
+    
+    message_glue(
+      "Message: The {null_type} null hypothesis ",
+      "`{names(null_param)} = {unname(null_param)}`",
+      " does not inform calculation of the observed statistic (",
+      "{tolower(stat_desc$description[stat_desc$stat == stat])}) and will ",
+      "be ignored."
+    )
+  }
+  
+  x
+}
+
+# User didn't supply "enough" information - no hypothesis for a theorized
+# statistic on a point estimate, so warn that a reasonable value was assumed.
+warn_on_insufficient_null <- function(x, stat, ...) {
+  if (!is_hypothesized(x)          && 
+      !has_explanatory(x)          && 
+      !stat %in% untheorized_stats &&
+      !(stat == "t" && "mu" %in% names(list(...)))) {
+    attr(x, "null") <- "point"
+    attr(x, "params") <- assume_null(x, stat)
+    
+    warning_glue(
+      "{stat_desc$description[stat_desc$stat == stat]} requires a null ",
+      "hypothesis to calculate the observed statistic. \nOutput assumes ",
+      "the following null value{print_params(x)}."
+    )
+  } 
+  
+  x
 }
 
 calc_impl <- function(type, x, order, ...) {
