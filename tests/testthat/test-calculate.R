@@ -572,24 +572,6 @@ test_that("calc_impl.z works for one sample proportions", {
   expect_equal(infer_obs_stat, base_obs_stat, tolerance = eps)
 })
 
-test_that("calculate errors informatively after generate with needed null", {
-  expect_error(
-    gss %>%
-      specify(response = sex, success = "female") %>%
-      generate(reps = 10, type = "bootstrap") %>%
-      calculate(stat = "z"),
-    "Please define the null hypothesis"
-  )
-  
-  expect_error(
-    gss %>%
-      specify(response = hours) %>%
-      generate(reps = 10, type = "bootstrap") %>%
-      calculate(stat = "mean"),
-    "Please define the null hypothesis"
-  )
-})
-
 test_that("calculate warns informatively with insufficient null", {
   expect_warning(
     gss %>%

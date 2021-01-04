@@ -95,12 +95,6 @@ calculate <- function(x,
     x$replicate <- 1L
   }
   
-  if (!is_hypothesized(x) && is_generated(x)) {
-    stop_glue(
-      "Please define the null hypothesis with `hypothesize()` ",
-      "to calculate a distribution of statistics.")
-  }
-  
   # User supplied "too much" information - hypothesized a value for a point
   # estimate that isn't relevant to the statistic calculation
   if (!is_generated(x) && is_hypothesized(x) && stat %in% untheorized_stats) {
