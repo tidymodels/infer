@@ -16,18 +16,17 @@ format_params <- function(x) {
 
 print_params <- function(x) {
   params <- attr(x, "params")
-  if (length(params) == 1) {
-    paste0(": `", names(params), " = ", unname(params), "`", collapse = "")
-  } else if (length(params) == 2) {
-    ": `p = .5`"
-  } else {
-    p_vector <- paste0(capture.output(dput(setNames(params, get_par_levels(x)))), 
-                       collapse = "")
-    paste0("s: `p = ", 
-           p_vector,
-           "`",
-           collapse = "")
-  }
+  
+  switch(
+    as.character(length(params)),
+    "1" = glue_null(": `{names(params)} = {unname(params)}`"),
+    "2" = glue_null(": `p = .5`"),
+          glue_null("s: `p = c({put_params(x, params)})`")
+  )
+}
+
+put_params <- function(x, params) {
+  paste0(get_par_levels(x), " = ", params, collapse = ", ")
 }
 
 get_par_levels <- function(x) {
