@@ -184,7 +184,7 @@ current implementations being
 They now live in `specify()`.
 - Updated documentation with examples
 - Created `pkgdown` site materials
-    - Deployed to https://infer.netlify.com
+    - Deployed to https://https://infer.tidymodels.org/
 
 
 # infer 0.0.1
