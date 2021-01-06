@@ -143,16 +143,12 @@ check_variables_vs_stat <- function(x, stat) {
   
   if (!stat %in% possible_stats) {
     stop_glue(
-      stat_desc$description[stat_desc$stat == stat],
-      ' is not well-defined for a ',
-      stat_type_desc$description[
-        determine_variable_type(x, "response") == stat_type_desc$type
-      ],
-      " response variable ({as.character(attr(x, 'response'))}) and ",
+      "{get_stat_desc(stat)} is not well-defined for a ",
+      "{get_stat_type_desc(x, 'response')} response ", 
+      "variable ({as.character(attr(x, 'response'))}) and ",
       if (has_explanatory(x)) {
-        glue_null("a ", stat_type_desc$description[
-          determine_variable_type(x, "explanatory") == stat_type_desc$type
-        ], " explanatory variable ({as.character(attr(x, 'explanatory'))}).")
+        glue_null("a {get_stat_type_desc(x, 'explanatory')} explanatory ", 
+                  "variable ({as.character(attr(x, 'explanatory'))}).")
       } else {
         "no explanatory variable."
       }
@@ -182,7 +178,7 @@ message_on_excessive_null <- function(x, stat) {
       "Message: The {null_type} null hypothesis ",
       "`{names(null_param)} = {unname(null_param)}`",
       " does not inform calculation of the observed statistic (",
-      "{tolower(stat_desc$description[stat_desc$stat == stat])}) and will ",
+      "{tolower(get_stat_desc(stat))}) and will ",
       "be ignored."
     )
   }
@@ -201,7 +197,7 @@ warn_on_insufficient_null <- function(x, stat, ...) {
     attr(x, "params") <- assume_null(x, stat)
     
     warning_glue(
-      "{stat_desc$description[stat_desc$stat == stat]} requires a null ",
+      "{get_stat_desc(stat)} requires a null ",
       "hypothesis to calculate the observed statistic. \nOutput assumes ",
       "the following null value{print_params(x)}."
     )
@@ -302,7 +298,7 @@ calc_impl.diff_in_medians <- calc_impl_diff_f(stats::median)
 calc_impl.Chisq <- function(type, x, order, ...) {
   resp_var <- response_name(x)
 
-  if (attr_is_null(x, "explanatory")) {
+  if (has_attr(x, "explanatory")) {
     # Chi-Square Goodness of Fit
     p_levels <- get_par_levels(x)
     chisq_gof <- function(df) {

@@ -130,16 +130,16 @@ is_hypothesized <- function(x){
   attr(x, "hypothesized")
 }
 
-attr_is_null <- function(x, at) {
+has_attr <- function(x, at) {
   is.null(attr(x, at))
 }
 
 has_explanatory <- function(x) {
-  !attr_is_null(x, "explanatory")
+  !has_attr(x, "explanatory")
 }
 
 has_response <- function(x) {
-  !attr_is_null(x, "response")
+  !has_attr(x, "response")
 }
 
 is_color_string <- function(x) {
@@ -214,6 +214,12 @@ stat_type_desc <- tibble::tribble(
   "mult", "multinomial categorical"
 )
 
+get_stat_type_desc <- function(x, variable) {
+  stat_type_desc$description[
+    determine_variable_type(x, variable) == stat_type_desc$type
+  ]
+}
+
 stat_desc <- tibble::tribble(
   ~stat,               ~description,
   "mean",              "A mean",
@@ -234,6 +240,10 @@ stat_desc <- tibble::tribble(
   "ratio of props",    "A ratio of proportions",  
   "odds ratio",        "An odds ratio" 
 )
+
+get_stat_desc <- function(stat) {
+  stat_desc$description[stat_desc$stat == stat]
+}
 
 implemented_stats <-  c(
   "mean", "median", "sum", "sd", "prop", "count",
@@ -270,7 +280,7 @@ determine_variable_type <- function(x, variable) {
     explanatory = explanatory_variable(x)
   )
   
-  res <- if (is.null(var)) {
+  if (is.null(var)) {
     ""
   } else if (inherits(var, "numeric")) {
     "num"
@@ -279,8 +289,6 @@ determine_variable_type <- function(x, variable) {
   } else {
     "mult"
   }
-  
-  res
 }
 
 # Argument checking --------------------------------------------------------
