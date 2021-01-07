@@ -214,10 +214,8 @@ stat_type_desc <- tibble::tribble(
   "mult", "multinomial categorical"
 )
 
-get_stat_type_desc <- function(x, variable) {
-  stat_type_desc$description[
-    determine_variable_type(x, variable) == stat_type_desc$type
-  ]
+get_stat_type_desc <- function(stat_type) {
+  stat_type_desc$description[stat_type_desc$type == stat_type]
 }
 
 stat_desc <- tibble::tribble(

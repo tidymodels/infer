@@ -125,12 +125,12 @@ check_variables_vs_stat <- function(x, stat) {
       "Check your spelling and `?calculate` for current options."
     )
   }
-  
-  res_type <- determine_variable_type(x, "response")
-  exp_type <- determine_variable_type(x, "explanatory")
-  
+
+  response_type <- determine_variable_type(x, "response")
+  explanatory_type <- determine_variable_type(x, "explanatory")
+
   possible_stats <- stat_types %>%
-    dplyr::filter(resp == res_type & exp == exp_type) %>%
+    dplyr::filter(resp == response_type & exp == explanatory_type) %>%
     dplyr::pull(stats) %>%
     unlist()
 
@@ -140,18 +140,21 @@ check_variables_vs_stat <- function(x, stat) {
       "supplied variable types."
     )
   }
-  
+
   if (!stat %in% possible_stats) {
+    if (has_explanatory(x)) {
+      msg_tail <- glue_null(
+        "a {get_stat_type_desc(explanatory_type)} explanatory variable ",
+        "({explanatory_name(x)})."
+      )
+    } else {
+      msg_tail <- "no explanatory variable."
+    }
+
     stop_glue(
       "{get_stat_desc(stat)} is not well-defined for a ",
-      "{get_stat_type_desc(x, 'response')} response ", 
-      "variable ({as.character(attr(x, 'response'))}) and ",
-      if (has_explanatory(x)) {
-        glue_null("a {get_stat_type_desc(x, 'explanatory')} explanatory ", 
-                  "variable ({as.character(attr(x, 'explanatory'))}).")
-      } else {
-        "no explanatory variable."
-      }
+      "{get_stat_type_desc(response_type)} response variable ",
+      "({response_name(x)}) and ", msg_tail
     )
   }
 }
