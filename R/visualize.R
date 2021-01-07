@@ -382,7 +382,7 @@ warn_theoretical_layer <- function(data, do_warn = TRUE) {
   )
 
   if (
-    !has_attr(data, "stat") &&
+    has_attr(data, "stat") &&
     !(attr(data, "stat") %in% c("t", "z", "Chisq", "F"))
   ) {
     if (method == "theoretical") {

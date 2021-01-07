@@ -131,15 +131,15 @@ is_hypothesized <- function(x){
 }
 
 has_attr <- function(x, at) {
-  is.null(attr(x, at))
+  !is.null(attr(x, at, exact = TRUE))
 }
 
 has_explanatory <- function(x) {
-  !has_attr(x, "explanatory")
+  has_attr(x, "explanatory")
 }
 
 has_response <- function(x) {
-  !has_attr(x, "response")
+  has_attr(x, "response")
 }
 
 is_color_string <- function(x) {

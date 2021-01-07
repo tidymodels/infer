@@ -67,7 +67,7 @@ specify <- function(x, formula, response = NULL,
   attr(x, "generated") <- FALSE
   attr(x, "hypothesized") <- FALSE
   attr(x, "response_type") <- class(response_variable(x))
-  if (has_attr(x, "explanatory")) {
+  if (!has_attr(x, "explanatory")) {
     attr(x, "explanatory_type") <- NULL
   } else {
     attr(x, "explanatory_type") <- class(explanatory_variable(x))
@@ -159,7 +159,7 @@ check_success_arg <- function(x, success) {
   if ((attr(x, "response_type") == "factor" && 
       is.null(success) &&
       length(levels(response_variable(x))) == 2) &&
-     ((has_attr(x, "explanatory_type") ||
+     ((!has_attr(x, "explanatory_type") ||
        length(levels(explanatory_variable(x))) == 2))) {
       stop_glue(
         'A level of the response variable `{response_name(x)}` needs to be ',

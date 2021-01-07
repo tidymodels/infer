@@ -298,7 +298,7 @@ calc_impl.diff_in_medians <- calc_impl_diff_f(stats::median)
 calc_impl.Chisq <- function(type, x, order, ...) {
   resp_var <- response_name(x)
 
-  if (has_attr(x, "explanatory")) {
+  if (!has_attr(x, "explanatory")) {
     # Chi-Square Goodness of Fit
     p_levels <- get_par_levels(x)
     chisq_gof <- function(df) {

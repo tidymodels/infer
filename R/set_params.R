@@ -13,7 +13,7 @@ set_params <- function(x) {
   # One variable
   if (
     has_response(x) && !has_explanatory(x) &&
-    !has_attr(x, "response_type") && has_attr(x, "explanatory_type")
+    has_attr(x, "response_type") && !has_attr(x, "explanatory_type")
   ) {
     
     # One mean
@@ -42,7 +42,7 @@ set_params <- function(x) {
   # Two variables
   if (
     has_response(x) && has_explanatory(x) &
-    !has_attr(x, "response_type") && !has_attr(x, "explanatory_type")
+    has_attr(x, "response_type") && has_attr(x, "explanatory_type")
   ) {
     attr(x, "type") <- "bootstrap"
     
