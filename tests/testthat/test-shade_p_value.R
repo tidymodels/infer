@@ -1,8 +1,5 @@
 context("shade_p_value")
 
-library(vdiffr)
-
-
 # shade_p_value -----------------------------------------------------------
 test_that("shade_p_value works", {
   skip_if(getRversion() > "4.0.2")

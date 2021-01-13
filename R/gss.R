@@ -2,7 +2,8 @@
 #' 
 #' The General Social Survey is a high-quality survey which gathers data on 
 #' American society and opinions, conducted since 1972. This data set is a 
-#' sample of 500 entries from the GSS, including demographic markers and some 
+#' sample of 500 entries from the GSS, spanning years 1973-2018,
+#' including demographic markers and some 
 #' economic variables. Note that this data is included for demonstration only, 
 #' and should not be assumed to provide accurate estimates relating to the GSS. 
 #' However, due to the high quality of the GSS, the unweighted data will 

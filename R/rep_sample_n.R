@@ -2,86 +2,93 @@
 #'
 #' @description
 #'
-#' Perform repeated sampling of samples of size n. Useful for creating sampling
-#' distributions.
+#' These functions extend the functionality of [dplyr::sample_n()] and
+#' [dplyr::slice_sample()] by allowing for repeated sampling of data.
+#' This operation is especially helpful while creating sampling
+#' distributions—see the examples below!
 #'
-#' @param tbl Data frame of population from which to sample.
-#' @param size Sample size of each sample.
+#' @param tbl,.data Data frame of population from which to sample.
+#' @param size,n Sample size of each sample.
 #' @param replace Should sampling be with replacement?
 #' @param reps Number of samples of size n = `size` to take.
-#' @param prob A vector of probability weights for obtaining the elements of the
-#'   vector being sampled.
+#' @param prob,weight_by A vector of sampling weights for each of the rows in
+#' `tbl`—must have length equal to `nrow(tbl)`.
 #'
-#' @return A tibble of size `rep` times `size` rows corresponding to `rep`
-#'   samples of size n = `size` from `tbl`.
+#' @return A tibble of size `rep * size` rows corresponding to `reps`
+#'   samples of size `size` from `tbl`, grouped by `replicate`.
+#'
+#' @details The [dplyr::sample_n()] function (to which `rep_sample_n()` was
+#' originally a supplement) has been superseded by [dplyr::slice_sample()].
+#' `rep_slice_sample()` provides a light wrapper around `rep_sample_n()` that
+#' has a more similar interface to `slice_sample()`.
 #'
 #' @examples
-#' suppressPackageStartupMessages(library(dplyr))
-#' suppressPackageStartupMessages(library(ggplot2))
+#' library(dplyr)
+#' library(ggplot2)
 #'
-#' # A virtual population of N = 10,010, of which 3091 are hurricanes
-#' population <- dplyr::storms %>%
-#'   select(status)
-#'
-#' # Take samples of size n = 50 storms without replacement; do this 1000 times
-#' samples <- population %>%
+#' # take 1000 samples of size n = 50, without replacement
+#' slices <- gss %>%
 #'   rep_sample_n(size = 50, reps = 1000)
-#' samples
 #'
-#' # Compute p_hats for all 1000 samples = proportion hurricanes
-#' p_hats <- samples %>%
+#' slices
+#'
+#' # compute the proportion of respondents with a college
+#' # degree in each replicate
+#' p_hats <- slices %>%
 #'   group_by(replicate) %>%
-#'   summarize(prop_hurricane = mean(status == "hurricane"))
-#' p_hats
+#'   summarize(prop_college = mean(college == "degree"))
 #'
-#' # Plot sampling distribution
-#' ggplot(p_hats, aes(x = prop_hurricane)) +
+#' # plot sampling distribution
+#' ggplot(p_hats, aes(x = prop_college)) +
 #'   geom_density() +
-#'   labs(x = "p_hat", y = "Number of samples",
-#'   title = "Sampling distribution of p_hat from 1000 samples of size 50")
-#'
-#' @importFrom dplyr pull
-#' @importFrom dplyr inner_join
-#' @importFrom dplyr group_by
+#'   labs(
+#'     x = "p_hat", y = "Number of samples",
+#'     title = "Sampling distribution of p_hat"
+#'   )
+#'   
+#' # sampling with probability weights. Note probabilities are automatically 
+#' # renormalized to sum to 1
+#' library(tibble)
+#' df <- tibble(
+#'   id = 1:5,
+#'   letter = factor(c("a", "b", "c", "d", "e"))
+#' )
+#' rep_sample_n(df, size = 2, reps = 5, prob = c(.5, .4, .3, .2, .1))
 #' @export
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
-  n <- nrow(tbl)
-
   check_type(tbl, is.data.frame)
   check_type(size, is.numeric)
   check_type(replace, is.logical)
   check_type(reps, is.numeric)
   if (!is.null(prob)) {
     check_type(prob, is.numeric)
-  }
-
-  # assign non-uniform probabilities
-  # there should be a better way!!
-  # prob needs to be nrow(tbl) -- not just number of factor levels
-  if (!is.null(prob)) {
-    if (length(prob) != n) {
+    if (length(prob) != nrow(tbl)) {
       stop_glue(
         "The argument `prob` must have length `nrow(tbl)` = {nrow(tbl)}"
       )
     }
-
-    prob <- tibble::tibble(vals = levels(dplyr::pull(tbl, 1))) %>%
-      dplyr::mutate(probs = prob) %>%
-      dplyr::inner_join(tbl) %>%
-      dplyr::select(probs) %>%
-      dplyr::pull()
   }
 
+  # Generate row indexes for every future replicate (this way it respects
+  # possibility of  `replace = FALSE`)
+  n <- nrow(tbl)
   i <- unlist(replicate(
     reps,
     sample.int(n, size, replace = replace, prob = prob),
     simplify = FALSE
   ))
-  rep_tbl <- cbind(
-    replicate = rep(1:reps, rep(size, reps)),
-    tbl[i, ]
-  )
-  rep_tbl <- tibble::as_tibble(rep_tbl)
-  names(rep_tbl)[-1] <- names(tbl)
-  dplyr::group_by(rep_tbl, replicate)
+
+  tbl %>%
+    dplyr::slice(i) %>%
+    dplyr::mutate(replicate = rep(seq_len(reps), each = size)) %>%
+    dplyr::select(replicate, dplyr::everything()) %>%
+    tibble::as_tibble() %>%
+    dplyr::group_by(replicate)
+}
+
+#' @rdname rep_sample_n
+#' @export
+rep_slice_sample <- function(.data, n = 1, replace = FALSE, weight_by = NULL,
+                             reps = 1) {
+  rep_sample_n(.data, n, replace, reps, weight_by)
 }

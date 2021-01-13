@@ -4,7 +4,6 @@
 ^README\.Rmd$
 ^figs$
 ^profiles*
-^\.travis\.yml$
 ^examples*
 ^codecov\.yml$
 ^docs*

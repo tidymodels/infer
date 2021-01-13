@@ -12,8 +12,6 @@
 <!--https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg-->
 
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)
-[![Travis-CI Build
-Status](https://travis-ci.org/tidymodels/infer.svg?branch=master)](https://travis-ci.org/tidymodels/infer)
 [![Coverage
 Status](https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg)](https://codecov.io/github/tidymodels/infer/?branch=master)
 
@@ -47,8 +45,8 @@ install.packages("infer")
 ```
 
 To install the developmental stable version of `infer`, make sure to
-install `remotes` first. The `pkgdown` website for the package is at
-<https://infer.tidymodels.org>.
+install `remotes` first. The `pkgdown` website for this version is at
+<https://https://infer.tidymodels.org/>.
 
 ``` r
 install.packages("remotes")

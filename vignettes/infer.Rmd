@@ -68,11 +68,11 @@ We can see that the `infer` class has been appended on top of the dataframe clas
 If you're interested in two variables--`age` and `partyid`, for example--you can `specify` their relationship in one of two (equivalent) ways:
 
 ```{r specify-two, warning = FALSE, message = FALSE}
-# with the named arguments
+# as a formula
 gss %>%
   specify(age ~ partyid)
 
-# as a formula
+# with the named arguments
 gss %>%
   specify(response = age, explanatory = partyid)
 ```

@@ -52,18 +52,18 @@ visualizations (with a warning) and raise an error in p-value calculations.
 # calculate a null distribution of hours worked per week under
 # the null hypothesis that the mean is 40
 gss \%>\%
- specify(response = hours) \%>\%
- hypothesize(null = "point", mu = 40) \%>\%
- generate(reps = 200, type = "bootstrap") \%>\%
- calculate(stat = "mean")
+  specify(response = hours) \%>\%
+  hypothesize(null = "point", mu = 40) \%>\%
+  generate(reps = 200, type = "bootstrap") \%>\%
+  calculate(stat = "mean")
 
 # calculate a null distribution assuming independence between age
 # of respondent and whether they have a college degree
 gss \%>\%
- specify(age ~ college) \%>\%
- hypothesize(null = "independence") \%>\%
- generate(reps = 200, type = "permute") \%>\%
- calculate("diff in means", order = c("degree", "no degree"))
+  specify(age ~ college) \%>\%
+  hypothesize(null = "independence") \%>\%
+  generate(reps = 200, type = "permute") \%>\%
+  calculate("diff in means", order = c("degree", "no degree"))
 
 # More in-depth explanation of how to use the infer package
 \dontrun{

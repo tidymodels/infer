@@ -1,3 +1,15 @@
+# infer 0.5.4
+
+- `rep_sample_n()` no longer errors when supplied a `prob` argument (#279)
+- Added `rep_slice_sample()`, a light wrapper around `rep_sample_n()`, that
+more closely resembles `dplyr::slice_sample()` (the function that supersedes
+`dplyr::sample_n()`) (#325)
+- Added a `success`, `correct`, and `z` argument to `prop_test()` 
+(#343, #347, #353)
+- Implemented observed statistic calculation for the standardized proportion 
+$z$ statistic (#351, #353)
+- Various bug fixes and improvements to documentation and errors.
+
 # infer 0.5.3
 
 ## Breaking changes
@@ -172,7 +184,7 @@ current implementations being
 They now live in `specify()`.
 - Updated documentation with examples
 - Created `pkgdown` site materials
-    - Deployed to https://infer.netlify.com
+    - Deployed to https://https://infer.tidymodels.org/
 
 
 # infer 0.0.1

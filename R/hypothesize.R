@@ -75,7 +75,8 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
       }
     }
   )
-  append_infer_class(tibble::as_tibble(x))
+  res <- append_infer_class(tibble::as_tibble(x))
+  copy_attrs(res, x, "params")
 }
 
 is_hypothesized <- function(x){

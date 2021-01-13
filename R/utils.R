@@ -124,7 +124,7 @@ check_order <- function(x, explanatory_variable, order, in_calculate = TRUE) {
   unique_ex <- sort(unique(explanatory_variable))
   if (length(unique_ex) != 2) {
     stop_glue(
-      "Statistic is based on a difference or ratio; the explanatory variable", 
+      "Statistic is based on a difference or ratio; the explanatory variable ", 
       "should have two levels."
     )
   }
@@ -305,6 +305,17 @@ check_for_nan <- function(x, context) {
       "{num_nans_msg}. Simulation-based p-values are not well-defined for ",
       "null distributions with non-finite values. {calc_ref}."
     )
+  }
+}
+
+has_unused_levels <- function(x) {
+  if (is.factor(x)) {
+    present_levels <- unique(as.character(x))
+    unused_levels <- setdiff(levels(x), present_levels)
+
+    length(unused_levels) > 0
+  } else {
+    FALSE
   }
 }
 

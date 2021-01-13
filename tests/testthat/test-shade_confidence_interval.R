@@ -1,8 +1,5 @@
 context("shade_confidence_interval")
 
-library(vdiffr)
-
-
 # shade_confidence_interval -----------------------------------------------
 test_that("shade_confidence_interval works", {
   skip_if(getRversion() > "4.0.2")
