@@ -1,3 +1,7 @@
+# infer 0.5.4.9000
+
+To be released as 0.6.0.
+
 # infer 0.5.4
 
 - `rep_sample_n()` no longer errors when supplied a `prob` argument (#279)
