@@ -2,7 +2,7 @@
 output: github_document
 ---
 
-# infer R Package <img src="https://github.com/tidymodels/infer/blob/master/figs/infer_gnome.png?raw=true" align="right" width=125 />
+# infer R Package <img src="https://github.com/tidymodels/infer/blob/master/figs/infer_gnome.png?raw=true" align="right" width=250 />
 
 
 
@@ -43,22 +43,12 @@ To install the current stable version of `infer` from CRAN:
 install.packages("infer")
 ```
 
-
-To install the developmental stable version of `infer`, make sure to install `remotes` first. The `pkgdown` website for this version is at <https://infer.netlify.com>.
+To install the developmental stable version of `infer`, make sure to install `remotes` first. The `pkgdown` website for this version is at <https://https://infer.tidymodels.org/>.
 
 ```{r, eval = FALSE}
 install.packages("remotes")
 remotes::install_github("tidymodels/infer")
 ```
-
-To install the experimental version of `infer` (do so at your own risk), make sure to install `remotes` first.
-
-```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("tidymodels/infer", ref = "develop")
-```
-
-To see documentation for the experimental version of `infer`, the `pkgdown` site is available at <https://infer-dev.netlify.com>.
 
 ### Contributing
 
@@ -104,9 +94,13 @@ null_distn <- gss %>%
 
 Visualizing the observed statistic alongside the null distribution,
 
-```{r, message = FALSE, warning = FALSE}
+```{r viz, message = FALSE, warning = FALSE, eval = FALSE}
 visualize(null_distn) +
   shade_p_value(obs_stat = F_hat, direction = "greater")
+```
+
+```{r viz-graphic, message = FALSE, warning = FALSE, echo = FALSE}
+knitr::include_graphics("https://raw.githubusercontent.com/tidymodels/infer/master/README_files/figure-gfm/viz-1.png")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,

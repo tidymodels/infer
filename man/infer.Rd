@@ -19,7 +19,7 @@ For an overview of how to use the core functionality, see \code{vignette("infer"
 Useful links:
 \itemize{
   \item \url{https://github.com/tidymodels/infer}
-  \item \url{https://infer.netlify.com/}
+  \item \url{https://infer.tidymodels.org/}
   \item Report bugs at \url{https://github.com/tidymodels/infer/issues}
 }
 
