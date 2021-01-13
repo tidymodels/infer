@@ -92,7 +92,7 @@
         <a class="navbar-brand" href="../index.html">infer</a>
         <div class="info hidden-xs hidden-sm">
           <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4</span>
         </div>
       </div>
     </div>
@@ -136,7 +136,7 @@
 </li>
         <li>
   <a href="https://github.com/tidymodels/infer">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -157,6 +157,19 @@
       <small>Source: <a href='https://github.com/tidymodels/infer/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="infer-054" class="section level1">
+<h1 class="page-header" data-toc-text="0.5.4">
+<a href="#infer-054" class="anchor"></a>infer 0.5.4<small> Unreleased </small>
+</h1>
+<ul>
+<li>
+<code><a href="../reference/rep_sample_n.html">rep_sample_n()</a></code> no longer errors when supplied a <code>prob</code> argument (<a href='https://github.com/tidymodels/infer/issues/279'>#279</a>)</li>
+<li>Added <code><a href="../reference/rep_sample_n.html">rep_slice_sample()</a></code>, a light wrapper around <code><a href="../reference/rep_sample_n.html">rep_sample_n()</a></code>, that more closely resembles <code><a href="https://dplyr.tidyverse.org/reference/slice.html">dplyr::slice_sample()</a></code> (the function that supersedes <code><a href="https://dplyr.tidyverse.org/reference/sample_n.html">dplyr::sample_n()</a></code>) (<a href='https://github.com/tidymodels/infer/issues/325'>#325</a>)</li>
+<li>Added a <code>success</code>, <code>correct</code>, and <code>z</code> argument to <code><a href="../reference/prop_test.html">prop_test()</a></code> (<a href='https://github.com/tidymodels/infer/issues/343'>#343</a>, <a href='https://github.com/tidymodels/infer/issues/347'>#347</a>, <a href='https://github.com/tidymodels/infer/issues/353'>#353</a>)</li>
+<li>Implemented observed statistic calculation for the standardized proportion <span class="math inline"><em>z</em></span> statistic (<a href='https://github.com/tidymodels/infer/issues/351'>#351</a>, <a href='https://github.com/tidymodels/infer/issues/353'>#353</a>)</li>
+<li>Various bug fixes and improvements to documentation and errors.</li>
+</ul>
+</div>
     <div id="infer-053" class="section level1">
 <h1 class="page-header" data-toc-text="0.5.3">
 <a href="#infer-053" class="anchor"></a>infer 0.5.3<small> 2020-07-14 </small>
@@ -430,7 +443,7 @@
 <li>Updated documentation with examples</li>
 <li>Created <code>pkgdown</code> site materials
 <ul>
-<li>Deployed to <a href="https://infer.netlify.com" class="uri">https://infer.netlify.com</a>
+<li>Deployed to <a href="https://https://infer.tidymodels.org/" class="uri">https://https://infer.tidymodels.org/</a>
 </li>
 </ul>
 </li>

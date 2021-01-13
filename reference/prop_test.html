@@ -95,7 +95,7 @@ proportions." />
         <a class="navbar-brand" href="../index.html">infer</a>
         <div class="info hidden-xs hidden-sm">
           <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4</span>
         </div>
       </div>
     </div>
@@ -139,7 +139,7 @@ proportions." />
 </li>
         <li>
   <a href="https://github.com/tidymodels/infer">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -176,6 +176,9 @@ proportions.</p>
   alternative <span class='op'>=</span> <span class='st'>"two-sided"</span>,
   conf_int <span class='op'>=</span> <span class='cn'>TRUE</span>,
   conf_level <span class='op'>=</span> <span class='fl'>0.95</span>,
+  success <span class='op'>=</span> <span class='cn'>NULL</span>,
+  correct <span class='op'>=</span> <span class='cn'>NULL</span>,
+  z <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -219,17 +222,44 @@ sample tests.</p></td>
     <tr>
       <th>alternative</th>
       <td><p>Character string giving the direction of the alternative
-hypothesis. Options are <code>"two-sided"</code> (default), <code>"greater"</code>, or <code>"less"</code>.</p></td>
+hypothesis. Options are <code>"two-sided"</code> (default), <code>"greater"</code>, or <code>"less"</code>.
+Only used when testing the null that a single proportion equals a given
+value, or that two proportions are equal; ignored otherwise.</p></td>
     </tr>
     <tr>
       <th>conf_int</th>
       <td><p>A logical value for whether to report the confidence
 interval or not. <code>TRUE</code> by default, ignored if <code>p</code> is specified for a
-two-sample test.</p></td>
+two-sample test. Only used when testing the null that a single
+proportion equals a given value, or that two proportions are equal;
+ignored otherwise.</p></td>
     </tr>
     <tr>
       <th>conf_level</th>
-      <td><p>A numeric value between 0 and 1. Default value is 0.95.</p></td>
+      <td><p>A numeric value between 0 and 1. Default value is 0.95.
+Only used when testing the null that a single proportion equals a given
+value, or that two proportions are equal; ignored otherwise.</p></td>
+    </tr>
+    <tr>
+      <th>success</th>
+      <td><p>The level of <code>response</code> that will be considered a success, as
+a string. Only used when testing the null that a single
+proportion equals a given value, or that two proportions are equal;
+ignored otherwise.</p></td>
+    </tr>
+    <tr>
+      <th>correct</th>
+      <td><p>A logical indicating whether Yates' continuity correction
+should be applied where possible. If <code>z = TRUE</code>, the <code>correct</code> argument will
+be overwritten as <code>FALSE</code>. Otherwise defaults to <code>correct = TRUE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>z</th>
+      <td><p>A logical value for whether to report the statistic as a standard
+normal deviate or a Pearson's chi-square statistic. \(z^2\)  is distributed
+chi-square with 1 degree of freedom, though note that the user will likely
+need to turn off Yates' continuity correction by setting <code>correct = FALSE</code>
+to see this connection.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -239,16 +269,16 @@ two-sample test.</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># proportion test for difference in proportions of </span>
+    <pre class="examples"><div class='input'><span class='co'># two-sample proportion test for difference in proportions of</span>
 <span class='co'># college completion by respondent sex</span>
-<span class='fu'>prop_test</span><span class='op'>(</span><span class='va'>gss</span>, 
-          <span class='va'>college</span> <span class='op'>~</span> <span class='va'>sex</span>,  
+<span class='fu'>prop_test</span><span class='op'>(</span><span class='va'>gss</span>,
+          <span class='va'>college</span> <span class='op'>~</span> <span class='va'>sex</span>,
           order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"female"</span>, <span class='st'>"male"</span><span class='op'>)</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 1 x 6</span><span>
 #&gt;   statistic chisq_df p_value alternative lower_ci upper_ci
 #&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> 0.000</span><span style='text-decoration: underline;'>020</span><span>4        1   0.996 two.sided     -</span><span style='color: #BB0000;'>0.101</span><span>   0.091</span><span style='text-decoration: underline;'>7</span><span></div><div class='input'>          
-<span class='co'># a one-proportion test for hypothesized null </span>
+#&gt; </span><span style='color: #555555;'>1</span><span> 0.000</span><span style='text-decoration: underline;'>020</span><span>4        1   0.996 two.sided     -</span><span style='color: #BB0000;'>0.101</span><span>   0.091</span><span style='text-decoration: underline;'>7</span><span></div><div class='input'>
+<span class='co'># one-sample proportion test for hypothesized null</span>
 <span class='co'># proportion of college completion of .2</span>
 <span class='fu'>prop_test</span><span class='op'>(</span><span class='va'>gss</span>,
           <span class='va'>college</span> <span class='op'>~</span> <span class='cn'>NULL</span>,
@@ -257,6 +287,17 @@ two-sample test.</p></td>
 #&gt;   statistic chisq_df   p_value alternative
 #&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      
 #&gt; </span><span style='color: #555555;'>1</span><span>      636.        1 2.98</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-140</span><span> two.sided  </div><div class='input'>
+<span class='co'># report as a z-statistic rather than chi-square</span>
+<span class='co'># and specify the success level of the response</span>
+<span class='fu'>prop_test</span><span class='op'>(</span><span class='va'>gss</span>,
+          <span class='va'>college</span> <span class='op'>~</span> <span class='cn'>NULL</span>,
+          success <span class='op'>=</span> <span class='st'>"degree"</span>,
+          p <span class='op'>=</span> <span class='fl'>.2</span>,
+          z <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 1 x 3</span><span>
+#&gt;   statistic  p_value alternative
+#&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      
+#&gt; </span><span style='color: #555555;'>1</span><span>      8.27 1.30</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-16</span><span> two.sided  </div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
