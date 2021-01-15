@@ -1,0 +1,84 @@
+#' Calculate observed statistics
+#'
+#' @description
+#'
+#' This function is a wrapper around the core verbs of infer that can be used
+#' to calculate observed statistics from data.
+#'
+#' Learn more in `vignette("infer")`.
+#'
+#' @inheritParams specify
+#' @inheritParams hypothesize
+#' @inheritParams calculate
+#'
+#' @return A tibble containing a `stat` column containing the calculated statistic.
+#'
+#' @examples
+#' # calculating the observed mean number of hours worked per week
+#' gss %>%
+#'   observe(hours ~ NULL, stat = "mean")
+#' 
+#' # equivalently, calculating the same statistic with the core verbs
+#' gss %>%
+#'   specify(response = hours) %>%
+#'   calculate(stat = "mean")
+#' 
+#' # calculating a t statistic for hypothesized mu = 40 hours worked/week
+#' gss %>%
+#'   observe(hours ~ NULL, stat = "t", null = "point", mu = 40)
+#' 
+#' # equivalently, calculating the same statistic with the core verbs
+#' gss %>%
+#'   specify(response = hours) %>%
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   calculate(stat = "t")
+#' 
+#' # similarly for a difference in means in age based on whether
+#' # the respondent has a college degree
+#' observe(
+#'   gss,
+#'   age ~ college,
+#'   stat = "diff in means",
+#'   order = c("degree", "no degree")
+#' )
+#' 
+#' # equivalently, calculating the same statistic with the core verbs
+#' gss %>%
+#'   specify(age ~ college) %>%
+#'   calculate("diff in means", order = c("degree", "no degree"))
+#'   
+#' # for a more in-depth explanation of how to use the infer package
+#' \dontrun{
+#' vignette("infer")
+#' }
+#'
+#' @export
+observe <- function(
+    x,
+    # specify arguments
+    formula, response = NULL, explanatory = NULL, success = NULL,
+    # hypothesize arguments
+    null = NULL, p = NULL, mu = NULL, med = NULL, sigma = NULL,
+    # calculate arguments
+    stat = c("mean", "median", "sum", "sd", "prop", "count", "diff in means", 
+             "diff in medians", "diff in props", "Chisq", "F", "slope", 
+             "correlation", "t", "z", "ratio of props", "odds ratio"),
+    order = NULL,
+    ...) {
+    
+  # use hypothesize() if appropriate (or needed to pass an informative
+  # message/warning). otherwise, ignore pipe directly to calculate().
+  if (!all(sapply(list(p, mu, med, sigma), is.null))) {
+    hypothesize_fn <- hypothesize
+  } else {
+    hypothesize_fn <- function(x, ...) {identity(x)}
+  }
+  
+  x %>%
+    specify(formula, response, explanatory, success) %>%
+    hypothesize_fn(
+      null = if (has_explanatory(.)) {"independence"} else {"point"}, 
+      p, mu, med, sigma
+    ) %>%
+    calculate(stat, order, ...)
+}
