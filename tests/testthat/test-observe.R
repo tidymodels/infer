@@ -1,0 +1,103 @@
+context("observe")
+
+test_that("observe() output is equal to core verbs", {
+  expect_equal(
+    gss %>%
+      observe(hours ~ NULL, stat = "mean"),
+    gss %>%
+      specify(response = hours) %>%
+      calculate(stat = "mean")
+  )
+  
+  expect_equal(
+    gss %>%
+      observe(hours ~ NULL, stat = "t", null = "point", mu = 40),
+    gss %>%
+      specify(response = hours) %>%
+      hypothesize(null = "point", mu = 40) %>%
+      calculate(stat = "t")
+  )
+
+  expect_equal(
+    observe(
+      gss,
+      age ~ college,
+      stat = "diff in means",
+      order = c("degree", "no degree")
+    ),
+    gss %>%
+      specify(age ~ college) %>%
+      calculate("diff in means", order = c("degree", "no degree"))
+  )
+})
+
+test_that("observe messages/warns/errors informatively", {
+  expect_equal(
+    capture.output(
+      gss %>%
+        observe(hours ~ NULL, stat = "mean", mu = 40), 
+      type = "message"
+    ),
+    capture.output(
+      gss %>%
+        specify(hours ~ NULL) %>%
+        hypothesize(null = "point", mu = 40) %>%
+        calculate(stat = "mean"), 
+      type = "message"
+    ),
+  )
+  
+  expect_warning(
+    expect_equal(
+      capture.output(
+        gss %>%
+          observe(hours ~ NULL, stat = "t"), 
+        type = "message"
+      ),
+      capture.output(
+        gss %>%
+          specify(hours ~ NULL) %>%
+          calculate(stat = "t"), 
+        type = "message"
+      ),
+    )
+  )
+  
+  expect_error(
+    expect_equal(
+      capture.output(
+        gss %>%
+          observe(hours ~ age, stat = "diff in means"), 
+        type = "message"
+      ),
+      capture.output(
+        gss %>%
+          specify(hours ~ age) %>%
+          calculate(stat = "diff in means"), 
+        type = "message"
+      ),
+    )
+  )
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
