@@ -2,8 +2,8 @@
 #'
 #' @description
 #'
-#' This function is a wrapper around the core verbs of infer that can be used
-#' to calculate observed statistics from data.
+#' This function is a wrapper around [specify()], [hypothesize()], and
+#' [calculate()] that can be used to calculate observed statistics from data.
 #'
 #' Learn more in `vignette("infer")`.
 #'
@@ -11,7 +11,7 @@
 #' @inheritParams hypothesize
 #' @inheritParams calculate
 #'
-#' @return A tibble containing a `stat` column containing the calculated statistic.
+#' @return A 1-column tibble containing the calculated statistic `stat`.
 #'
 #' @examples
 #' # calculating the observed mean number of hours worked per week
@@ -67,13 +67,14 @@ observe <- function(
     ...) {
     
   # use hypothesize() if appropriate (or needed to pass an informative
-  # message/warning). otherwise, ignore pipe directly to calculate().
+  # message/warning). otherwise, pipe directly to calculate().
   if (!all(sapply(list(p, mu, med, sigma), is.null))) {
     hypothesize_fn <- hypothesize
   } else {
     hypothesize_fn <- function(x, ...) {identity(x)}
   }
   
+  # pass arguments on to core verbs
   specify(
     x = x, 
     formula = formula, 

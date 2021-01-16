@@ -71,11 +71,11 @@ difference in means, medians, proportions, ratios, t, and z statistics.}
 supply hypothesized null values for the \code{"t"} statistic.}
 }
 \value{
-A tibble containing a \code{stat} column containing the calculated statistic.
+A 1-column tibble containing the calculated statistic \code{stat}.
 }
 \description{
-This function is a wrapper around the core verbs of infer that can be used
-to calculate observed statistics from data.
+This function is a wrapper around \code{\link[=specify]{specify()}}, \code{\link[=hypothesize]{hypothesize()}}, and
+\code{\link[=calculate]{calculate()}} that can be used to calculate observed statistics from data.
 
 Learn more in \code{vignette("infer")}.
 }
