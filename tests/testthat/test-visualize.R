@@ -38,7 +38,7 @@ obs_diff_mean <- gss_tbl %>%
   pull()
 
 obs_t <- gss_tbl %>%
-  t_stat(hours ~ college, order = c("no degree", "degree"))
+  observe(hours ~ college, order = c("no degree", "degree"), stat = "t")
 
 obs_F <- anova(
     aov(formula = hours ~ partyid, data = gss_tbl)

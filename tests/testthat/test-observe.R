@@ -95,3 +95,26 @@ test_that("observe() works with either specify() interface", {
       observe(response = hours, stat = "mean")
   )
 })
+
+test_that("observe() output is the same as the old wrappers", {
+  expect_equal(
+    gss_tbl %>%
+      observe(college ~ partyid, stat = "Chisq") %>%
+      dplyr::pull(),
+    expect_warning(
+      gss_tbl %>%
+        chisq_stat(college ~ partyid)
+    )
+  )
+  
+  expect_equal(
+    gss_tbl %>% 
+      observe(stat = "t", hours ~ sex, order = c("male", "female")) %>%
+      dplyr::pull(),
+    expect_warning(
+      gss_tbl %>% 
+        t_stat(hours ~ sex, order = c("male", "female"))
+    )
+  )
+})
+

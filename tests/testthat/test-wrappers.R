@@ -187,8 +187,7 @@ test_that("_stat functions work", {
   expect_error(
     expect_warning(
       chisq_stat(x = gss_tbl, response = age, explanatory = sex)
-    ),
-    "deprecated in favor of the more general"
+    )
   )
   
   expect_error(
