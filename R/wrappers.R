@@ -56,6 +56,7 @@ t_test <- function(x, formula,
                    conf_int = TRUE,
                    conf_level = 0.95,
                    ...) {
+  
   check_conf_level(conf_level)
 
   # convert all character and logical variables to be factor variables
@@ -116,6 +117,7 @@ t_test <- function(x, formula,
 #' @description
 #'
 #' A shortcut wrapper function to get the observed test statistic for a t test.
+#' This function has been deprecated in favor of the more general [observe()].
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
@@ -162,6 +164,12 @@ t_stat <- function(x, formula,
                    conf_int = FALSE,
                    conf_level = 0.95,
                    ...) {
+  .Deprecated(
+    new = "observe",
+    msg = c("The t_stat() wrapper has been deprecated in favor of the more " ,
+            "general observe(). Please use that function instead.")
+  )
+  
   check_conf_level(conf_level)
 
   # convert all character and logical variables to be factor variables
@@ -281,7 +289,8 @@ chisq_test <- function(x, formula, response = NULL,
 #'
 #' A shortcut wrapper function to get the observed test statistic for a chisq
 #' test. Uses [chisq.test()][stats::chisq.test()], which applies a continuity
-#' correction.
+#' correction. This function has been deprecated in favor of the more 
+#' general [observe()].
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param formula A formula with the response variable on the left and the
@@ -313,6 +322,12 @@ chisq_test <- function(x, formula, response = NULL,
 #' @export
 chisq_stat <- function(x, formula, response = NULL,
                        explanatory = NULL, ...) {
+  .Deprecated(
+    new = "observe",
+    msg = c("The chisq_stat() wrapper has been deprecated in favor of the ", 
+            "more general observe(). Please use that function instead.")
+  )
+  
   # Parse response and explanatory variables
   response    <- enquo(response)
   explanatory <- enquo(explanatory)
