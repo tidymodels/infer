@@ -74,11 +74,23 @@ observe <- function(
     hypothesize_fn <- function(x, ...) {identity(x)}
   }
   
-  x %>%
-    specify(formula, response, explanatory, success) %>%
-    hypothesize_fn(
-      null = if (has_explanatory(.)) {"independence"} else {"point"}, 
-      p, mu, med, sigma
-    ) %>%
-    calculate(stat, order, ...)
+  specify(
+    x = x, 
+    formula = formula, 
+    response = {{response}}, 
+    explanatory = {{explanatory}}, 
+    success = success
+  ) %>%
+  hypothesize_fn(
+    null = if (has_explanatory(.)) {"independence"} else {"point"}, 
+    p = p, 
+    mu = mu, 
+    med = med, 
+    sigma = sigma
+  ) %>%
+  calculate(
+    stat = stat, 
+    order = order, 
+    ...
+  )
 }

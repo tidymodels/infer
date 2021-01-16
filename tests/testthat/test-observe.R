@@ -80,24 +80,18 @@ test_that("observe messages/warns/errors informatively", {
   )
 })
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+test_that("observe() works with either specify() interface", {
+  expect_equal(
+    gss %>%
+      observe(hours ~ NULL, stat = "mean"),
+    gss %>%
+      observe(response = hours, stat = "mean")
+  )
+  
+  expect_equal(
+    gss %>%
+      observe(formula = hours ~ NULL, stat = "mean"),
+    gss %>%
+      observe(response = hours, stat = "mean")
+  )
+})
