@@ -5,17 +5,17 @@
 #' @noRd
 set_params <- function(x) {
   attr(x, "theory_type") <- NULL
-
+  
   if (has_response(x)) {
     num_response_levels <- length(levels(response_variable(x)))
   }
-
+  
   # One variable
   if (
     has_response(x) && !has_explanatory(x) &&
-    !is_nuat(x, "response_type") && is_nuat(x, "explanatory_type")
+    has_attr(x, "response_type") && !has_attr(x, "explanatory_type")
   ) {
-
+    
     # One mean
     if (attr(x, "response_type") %in% c("integer", "numeric")) {
       attr(x, "theory_type") <- "One sample t"
@@ -38,14 +38,14 @@ set_params <- function(x) {
       attr(x, "type") <- "simulate"
     }
   }
-
+  
   # Two variables
   if (
     has_response(x) && has_explanatory(x) &
-    !is_nuat(x, "response_type") && !is_nuat(x, "explanatory_type")
+    has_attr(x, "response_type") && has_attr(x, "explanatory_type")
   ) {
     attr(x, "type") <- "bootstrap"
-
+    
     # Response is numeric, explanatory is categorical
     if (
       (attr(x, "response_type") %in% c("integer", "numeric")) &
@@ -72,14 +72,14 @@ set_params <- function(x) {
         attr(x, "distr_param2") <- degrees[2]
       }
     }
-
+    
     # Response is categorical, explanatory is categorical
     if (
       (attr(x, "response_type") == "factor") &
       (attr(x, "explanatory_type") == "factor")
     ) {
       attr(x, "type") <- "bootstrap"
-
+      
       # Two sample proportions (z distribution)
       # Parameter(s) not needed since standard normal
       if (
@@ -98,21 +98,18 @@ set_params <- function(x) {
         )
       }
     }
-
+    
     # Response is numeric, explanatory is numeric
     if (
       (attr(x, "response_type") %in% c("integer", "numeric")) &
       (attr(x, "explanatory_type") %in% c("integer", "numeric"))
     ) {
-      response_string <- as.character(attr(x, "response"))
-      explanatory_string <- as.character(attr(x, "explanatory"))
+      response_string <- response_name(x)
+      explanatory_string <- explanatory_name(x)
       attr(x, "theory_type") <- "Slope/correlation with t"
       attr(x, "distr_param") <- nrow(x) - 2
     }
   }
-
-#  if(is_nuat(x, "theory_type"))
-#     warning_glue("Theoretical type not yet implemented")
 
   x
 }

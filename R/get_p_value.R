@@ -12,7 +12,7 @@
 #'   extreme than this).
 #' @param direction A character string. Options are `"less"`, `"greater"`, or
 #'   `"two-sided"`. Can also use `"left"`, `"right"`, `"both"`, 
-#'   `"two_sided"`, or `"two sided"`.
+#'   `"two_sided"`, or `"two sided"`, `"two.sided"`.
 #'
 #' @return A 1x1 [tibble][tibble::tibble] with value between 0 and 1.
 #'
@@ -81,20 +81,6 @@ get_p_value <- function(x, obs_stat, direction) {
   check_direction(direction)
 
   simulation_based_p_value(x = x, obs_stat = obs_stat, direction = direction)
-
-  ## Theoretical-based p-value
-  # Could be more specific
-  # else if(is.null(attr(x, "theory_type")) || is.null(attr(x, "distr_param")))
-  #   stop_glue("Attributes have not been set appropriately. ",
-  #             "Check your {{infer}} pipeline again.")
-
-  # if(!("stat" %in% names(x))){
-  #    # Theoretical distribution
-  #  which_distribution(x,
-  #                     theory_type <- attr(x, "theory_type"),
-  #                     obs_stat = obs_stat,
-  #                     direction = direction)
-  # }
 }
 
 #' @rdname get_p_value
@@ -137,10 +123,6 @@ two_sided_p_value <- function(vec, obs_stat) {
   raw_res <- 2 * min(left_pval, right_pval)
   
   min(raw_res, 1)
-}
-
-is_generated <- function(x) {
-  !is.null(attr(x, "generate")) && attr(x, "generate")
 }
 
 # which_distribution <- function(x, theory_type, obs_stat, direction){

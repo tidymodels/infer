@@ -50,79 +50,37 @@ specify <- function(x, formula, response = NULL,
                     explanatory = NULL, success = NULL) {
   check_type(x, is.data.frame)
 
-  # Convert all character and logical variables to be factor variables
+  # Standardize variable types
   x <- tibble::as_tibble(x) %>%
     mutate_if(is.character, as.factor) %>%
-    mutate_if(is.logical, as.factor)
+    mutate_if(is.logical, as.factor) %>%
+    mutate_if(is.integer, as.numeric)
   
   # Parse response and explanatory variables
-  #response    <- if (!is.null(response)) {enquo(response)}
   response <- enquo(response)
-  #explanatory <- if (!is.null(explanatory)) {enquo(explanatory)}
   explanatory <- enquo(explanatory)
   x <- parse_variables(x = x, formula = formula, 
                        response = response, explanatory = explanatory)
-
-  # Process "success" arg
-  response_col <- response_variable(x)
   
-  if (!is.null(success)) {
-    if (!is.character(success)) {
-      stop_glue("`success` must be a string.")
-    }
-    if (!is.factor(response_col)) {
-      stop_glue(
-        "`success` should only be specified if the response is a categorical ",
-        "variable."
-      )
-    }
-    if (!(success %in% levels(response_col))) {
-      stop_glue('{success} is not a valid level of {attr(x, "response")}.')
-    }
-    if (sum(table(response_col) > 0) > 2) {
-      stop_glue(
-        "`success` can only be used if the response has two levels. ",
-        "`filter()` can reduce a variable to two levels."
-      )
-    }
-  }
-  
+  # Add attributes
   attr(x, "success") <- success
-  
-  # To help determine theoretical distribution to plot
+  attr(x, "generated") <- FALSE
+  attr(x, "hypothesized") <- FALSE
   attr(x, "response_type") <- class(response_variable(x))
-  
-  if (is_nuat(x, "explanatory")) {
+  if (!has_attr(x, "explanatory")) {
     attr(x, "explanatory_type") <- NULL
   } else {
     attr(x, "explanatory_type") <- class(explanatory_variable(x))
   }
   
-  if (
-    (attr(x, "response_type") == "factor") && is.null(success) &&
-    (length(levels(response_variable(x))) == 2) &&
-    (
-      is_nuat(x, "explanatory_type") ||
-      (
-        !is_nuat(x, "explanatory_type") &&
-        (length(levels(explanatory_variable(x))) == 2)
-      )
-    )
-  ) {
-    stop_glue(
-      'A level of the response variable `{attr(x, "response")}` needs to be ',
-      'specified for the `success` argument in `specify()`.'
-    )
-  }
+  check_success_arg(x, success)
   
   # Determine params for theoretical fit
   x <- set_params(x)
 
   # Select variables
   x <- x %>%
-    select(one_of(c(
-      as.character((attr(x, "response"))), as.character(attr(x, "explanatory"))
-    )))
+    select(one_of(c(response_name(x), explanatory_name(x))))
 
   is_complete <- stats::complete.cases(x)
   if (!all(is_complete)) {
@@ -174,6 +132,43 @@ parse_variables <- function(x, formula, response = NULL,
   x
 }
 
+check_success_arg <- function(x, success) {
+  response_col <- response_variable(x)
+  
+  if (!is.null(success)) {
+    if (!is.character(success)) {
+      stop_glue("`success` must be a string.")
+    }
+    if (!is.factor(response_col)) {
+      stop_glue(
+        "`success` should only be specified if the response is a categorical ",
+        "variable."
+      )
+    }
+    if (!(success %in% levels(response_col))) {
+      stop_glue('{success} is not a valid level of {response_name(x)}.')
+    }
+    if (sum(table(response_col) > 0) > 2) {
+      stop_glue(
+        "`success` can only be used if the response has two levels. ",
+        "`filter()` can reduce a variable to two levels."
+      )
+    }
+  }
+  
+  if ((attr(x, "response_type") == "factor" && 
+      is.null(success) &&
+      length(levels(response_variable(x))) == 2) &&
+     ((!has_attr(x, "explanatory_type") ||
+       length(levels(explanatory_variable(x))) == 2))) {
+      stop_glue(
+        'A level of the response variable `{response_name(x)}` needs to be ',
+        'specified for the `success` argument in `specify()`.'
+      )
+    }
+  
+}
+
 check_var_correct <- function(x, var_name) {
   var <- attr(x, var_name)
   
@@ -198,10 +193,7 @@ check_var_correct <- function(x, var_name) {
 
 check_vars_different <- function(x) {
   if (has_response(x) && has_explanatory(x)) {
-    res_var <- as.character(attr(x, "response"))
-    exp_var <- as.character(attr(x, "explanatory"))
-    
-    if (identical(res_var, exp_var)) {
+    if (identical(response_name(x), explanatory_name(x))) {
       stop_glue(
         "The response and explanatory variables must be different from one ",
         "another."

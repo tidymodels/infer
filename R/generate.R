@@ -54,15 +54,16 @@
 #' @importFrom dplyr group_by
 #' @export
 generate <- function(x, reps = 1, type = NULL, ...) {
+  # Check type argument, warning if necessary
   type <- sanitize_generation_type(type)
   auto_type <- sanitize_generation_type(attr(x, "type"))
-  type <- if(!is.null(type)) { # User specifies type
+  type <- if(!is.null(type)) {
     compare_type_vs_auto_type(type, auto_type)
-  } else { # Use default
+  } else {
     use_auto_type(auto_type)
   }
 
-  attr(x, "generate") <- TRUE
+  attr(x, "generated") <- TRUE
 
   switch(
     type,
@@ -75,19 +76,18 @@ generate <- function(x, reps = 1, type = NULL, ...) {
   )
 }
 
-
+# Check that type argument is an implemented type
 sanitize_generation_type <- function(x) {
-  if(is.null(x)) return(x)
+  if (is.null(x)) return(x)
   match.arg(x, GENERATION_TYPES)
 }
 
+# Ensure that the supplied type matches what would be assumed from input
 compare_type_vs_auto_type <- function(type, auto_type) {
   if(is.null(auto_type)) {
-    # No default; use whatever they specified.
     return(type)
   }
   if (auto_type != type) {
-    # User is overriding the default, so warn of potential stupidity.
     warning_glue(
       "You have given `type = \"{type}\"`, but `type` is expected",
       "to be `\"{auto_type}\"`. This workflow is untested and",
@@ -99,21 +99,12 @@ compare_type_vs_auto_type <- function(type, auto_type) {
 }
 
 use_auto_type <- function(auto_type) {
-  ## Commented out since no way to currently get to this
-  ## All variable types specified have an auto_type set 
-  # if(is.null(auto_type)) {
-  #   stop_glue(
-  #     "There is no default `type`;",
-  #     "please set it to one of {toString(shQuote(GENERATION_TYPES))}.",
-  #     .sep = " "
-  #   )
-  # }
   message_glue('Setting `type = "{auto_type}"` in `generate()`.')
   auto_type
 }
 
 check_permutation_attributes <- function(x, attr) {
-  if (any(is_nuat(x, "response"), is_nuat(x, "explanatory"))) {
+  if (any(!has_attr(x, "response"), !has_attr(x, "explanatory"))) {
     stop_glue(
       "Please `specify()` an explanatory and a response variable",
       "when permuting.",
@@ -129,39 +120,16 @@ bootstrap <- function(x, reps = 1, ...) {
     # to that specified in `hypothesize`
     if (!is.null(attr(attr(x, "params"), "names"))){
       if (identical(attr(attr(x, "params"), "names"), "mu")) {
-        col <- as.character(attr(x, "response"))
-#      if (attr(x, "theory_type") != "One sample t") {
+        col <- response_name(x)
         x[[col]] <- x[[col]] - mean(x[[col]], na.rm = TRUE) + attr(x, "params")
-#      }
-
-      # Standardize after centering above
-      #####
-      # Determining whether or not to implement this t transformation
-      #####
-      # else {
-      #   std_error <- stats::sd(x[[col]], na.rm = TRUE) /
-      #     sqrt(length(x[[col]]))
-      #   x[[col]] <- (x[[col]] - mean(x[[col]], na.rm = TRUE)) / std_error
-      # }
     }
 
     # Similarly for median
       else if (identical(attr(attr(x, "params"), "names"), "med")) {
-        col <- as.character(attr(x, "response"))
+        col <- response_name(x)
         x[[col]] <- x[[col]] -
           stats::median(x[[col]], na.rm = TRUE) + attr(x, "params")
       }
-
-    # Implement confidence interval for bootstrapped proportions?
-    # Implement z transformation?
-
-    # Similarly for sd
-    ## Temporarily removed since this implementation does not scale correctly
-    # else if (identical(attr(attr(x, "params"), "names"), "sigma")) {
-    #   col <- as.character(attr(x, "response"))
-    #   x[[col]] <- x[[col]] -
-    #     stats::sd(x[[col]], na.rm = TRUE) + attr(x, "params")
-    # }
     }
   }
 
@@ -188,10 +156,10 @@ permute_once <- function(x, ...) {
   dots <- list(...)
 
   if (is_hypothesized(x) && (attr(x, "null") == "independence")) {
-    y <- pull(x, !!attr(x, "response"))
+    y <- pull(x, !!response_expr(x))
 
     y_prime <- sample(y, size = length(y), replace = FALSE)
-    x[as.character(attr(x, "response"))] <- y_prime
+    x[response_name(x)] <- y_prime
     return(x)
   } else {
     stop_glue(
@@ -205,7 +173,7 @@ permute_once <- function(x, ...) {
 #' @importFrom tibble tibble
 #' @importFrom rlang :=
 simulate <- function(x, reps = 1, ...) {
-  fct_levels <- as.character(unique(dplyr::pull(x, !!attr(x, "response"))))
+  fct_levels <- as.character(unique(response_variable(x)))
 
   col_simmed <- unlist(replicate(
     reps,
@@ -213,11 +181,9 @@ simulate <- function(x, reps = 1, ...) {
     simplify = FALSE
   ))
   
-  # Precomputing `nrow(x)` is needed because it can be misinterpeted inside
-  # `tibble()` in case `attr(x, "response")` is also `x` (see #299)
   x_nrow <- nrow(x)
   rep_tbl <- tibble::tibble(
-    !!attr(x, "response") := as.factor(col_simmed),
+    !!response_expr(x) := as.factor(col_simmed),
     replicate = as.factor(rep(1:reps, rep(x_nrow, reps)))
   )
 

@@ -70,23 +70,17 @@ t_test <- function(x, formula,
                        response = response, explanatory = explanatory)
 
   # match with old "dot" syntax in t.test
-  if (alternative %in% c("two-sided", "two_sided", "two sided")) {
+  if (alternative %in% c("two-sided", "two_sided", "two sided", "two.sided")) {
     alternative <- "two.sided"
   }
 
   # two sample
   if (has_explanatory(x)) {
-    # if (!is.null(order)) {
-    #   x[[as.character(attr(x, "explanatory"))]] <- factor(explanatory_variable(x),
-    #                                                       levels = c(order[1],
-    #                                                                  order[2]),
-    #                                                       ordered = TRUE)
-    # }
-    order <- check_order(x, explanatory_variable(x), order, in_calculate = FALSE)
+    order <- check_order(x, order, in_calculate = FALSE, stat = NULL)
     x <- reorder_explanatory(x, order)
-    prelim <- stats::t.test(formula = as.formula(paste0(attr(x, "response"),
+    prelim <- stats::t.test(formula = as.formula(paste0(response_name(x),
                                                         " ~ ",
-                                                        attr(x, "explanatory"))),
+                                                        explanatory_name(x))),
                             data = x,
                             alternative = alternative,
                             mu = mu,
@@ -182,23 +176,17 @@ t_stat <- function(x, formula,
                        response = response, explanatory = explanatory)
 
   # match with old "dot" syntax in t.test
-  if (alternative %in% c("two-sided", "two_sided", "two sided")) {
+  if (alternative %in% c("two-sided", "two_sided", "two sided", "two.sided")) {
     alternative <- "two.sided"
   }
 
   # two sample
   if (has_explanatory(x)) {
-    # if (!is.null(order)) {
-    #   x[[as.character(attr(x, "explanatory"))]] <- factor(explanatory_variable(x),
-    #                                                       levels = c(order[1],
-    #                                                                  order[2]),
-    #                                                       ordered = TRUE)
-    # }
-    order <- check_order(x, explanatory_variable(x), order, in_calculate = FALSE)
+    order <- check_order(x, order, in_calculate = FALSE, stat = NULL)
     x <- reorder_explanatory(x, order)
-    prelim <- stats::t.test(formula = as.formula(paste0(attr(x, "response"),
+    prelim <- stats::t.test(formula = as.formula(paste0(response_name(x),
                                                         " ~ ",
-                                                        attr(x, "explanatory"))),
+                                                        explanatory_name(x))),
                             data = x,
                             alternative = alternative,
                             mu = mu,
@@ -265,22 +253,20 @@ chisq_test <- function(x, formula, response = NULL,
 
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
-      'The response variable of `{attr(x, "response")}` is not appropriate\n',
+      'The response variable of `{response_name(x)}` is not appropriate\n',
       "since the response variable is expected to be categorical."
     )
   }
   if (has_explanatory(x) &&
       !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
-      'The explanatory variable of `{attr(x, "explanatory")}` is not appropriate\n',
+      'The explanatory variable of `{explanatory_name(x)}` is not appropriate\n',
       "since the explanatory variable is expected to be categorical."
     )
   }
 
   x <- x %>%
-    select(one_of(c(
-      as.character((attr(x, "response"))), as.character(attr(x, "explanatory"))
-    ))) %>%
+    select(one_of(c(response_name(x), explanatory_name(x)))) %>%
     mutate_if(is.character, as.factor) %>%
     mutate_if(is.logical, as.factor)
 
@@ -335,22 +321,20 @@ chisq_stat <- function(x, formula, response = NULL,
 
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
-      'The response variable of `{attr(x, "response")}` is not appropriate\n',
+      'The response variable of `{response_name(x)}` is not appropriate\n',
       "since the response variable is expected to be categorical."
     )
   }
   if (has_explanatory(x) &&
       !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
-      'The explanatory variable of `{attr(x, "explanatory")}` is not appropriate\n',
+      'The explanatory variable of `{explanatory_name(x)}` is not appropriate\n',
       "since the response variable is expected to be categorical."
     )
   }
 
   x <- x %>%
-    select(one_of(c(
-      as.character((attr(x, "response"))), as.character(attr(x, "explanatory"))
-    ))) %>%
+    select(one_of(c(response_name(x), explanatory_name(x)))) %>%
     mutate_if(is.character, as.factor) %>%
     mutate_if(is.logical, as.factor)
 
@@ -460,19 +444,19 @@ prop_test <- function(x, formula,
 
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
-      'The response variable of `{attr(x, "response")}` is not appropriate\n',
+      'The response variable of `{response_name(x)}` is not appropriate\n',
       "since the response variable is expected to be categorical."
     )
   }
   if (has_explanatory(x) &&
       !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
-      'The explanatory variable of `{attr(x, "explanatory")}` is not appropriate\n',
+      'The explanatory variable of `{explanatory_name(x)}` is not appropriate\n',
       "since the explanatory variable is expected to be categorical."
     )
   }
   # match with old "dot" syntax in t.test
-  if (alternative %in% c("two-sided", "two_sided", "two sided")) {
+  if (alternative %in% c("two-sided", "two_sided", "two sided", "two.sided")) {
     alternative <- "two.sided"
   }
 
@@ -483,7 +467,7 @@ prop_test <- function(x, formula,
     check_type(success, rlang::is_string)
 
     if (!(success %in% lvls)) {
-      stop_glue('{success} is not a valid level of {attr(x, "response")}.')
+      stop_glue('{success} is not a valid level of {response_name(x)}.')
     }
 
     lvls <- c(success, lvls[lvls != success])
@@ -494,12 +478,11 @@ prop_test <- function(x, formula,
   # two sample
   if (has_explanatory(x)) {
 
-    order <- check_order(x, explanatory_variable(x), order, in_calculate = FALSE)
+    order <- check_order(x, order, in_calculate = FALSE, stat = NULL)
 
     # make a summary table to supply to prop.test
     sum_table <- x %>%
-      select(as.character((attr(x, "response"))),
-             as.character(attr(x, "explanatory"))) %>%
+      select(response_name(x), explanatory_name(x)) %>%
       mutate_if(is.character, as.factor) %>%
       mutate_if(is.logical, as.factor) %>%
       table()
@@ -569,9 +552,9 @@ prop_test <- function(x, formula,
 }
 
 calculate_z <- function(x, results, success, p, order) {
-  exp <- if (has_explanatory(x)) {attr(x, "explanatory")} else {"NULL"}
+  exp <- if (has_explanatory(x)) {explanatory_name(x)} else {"NULL"}
   
-  form <- as.formula(paste0(attr(x, "response"), " ~ ", exp))
+  form <- as.formula(paste0(response_name(x), " ~ ", exp))
   
   stat <- x %>%
     specify(formula = form, success = success) %>%

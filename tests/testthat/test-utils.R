@@ -54,3 +54,10 @@ test_that("c_dedupl returns input when unnamed", {
 test_that("hypothesize errors out when x isn't a dataframe",
           expect_error(hypothesize(c(1, 2, 3), null = "point"), 
                        "x must be a data.frame or tibble"))
+
+test_that("p_null supplies appropriate params", {
+  expect_equal(
+    gss %>% specify(partyid ~ NULL) %>% p_null(),
+    c(p.dem = 0.2, p.ind = 0.2, p.rep = 0.2, p.other = 0.2, p.DK = 0.2)
+  )
+})
