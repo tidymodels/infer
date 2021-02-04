@@ -8,7 +8,12 @@
 #' distributions—see the examples below!
 #'
 #' @param tbl,.data Data frame of population from which to sample.
-#' @param size,n Sample size of each sample.
+#' @param size,n,prop `size` and `n` refer to the sample size of each sample. 
+#' The `size` argument to `rep_sample_n()` is required (if `prop` is not 
+#' supplied), while `n` defaults to 1 in `rep_slice_sample()`. `prop`, an 
+#' argument to both functions, refers to the proportion of rows to sample in 
+#' each sample, and is rounded down in the case that `prop * nrow(tbl)` is 
+#' not an integer. Please only supply one of these arguments.
 #' @param replace Should sampling be with replacement?
 #' @param reps Number of samples of size n = `size` to take.
 #' @param prob,weight_by A vector of sampling weights for each of the rows in
@@ -55,11 +60,27 @@
 #' )
 #' rep_sample_n(df, size = 2, reps = 5, prob = c(.5, .4, .3, .2, .1))
 #' @export
-rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
+rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, 
+                         prob = NULL, prop = NULL) {
+  rep_sample_internal(tbl, size, replace, reps, prob, NULL, prop,
+                      in_slice = FALSE, missing_size = missing(size))
+}
+
+#' @rdname rep_sample_n
+#' @export
+rep_slice_sample <- function(.data, n = 1, replace = FALSE, weight_by = NULL,
+                             reps = 1, prop = NULL) {
+  rep_sample_internal(.data, NULL, replace, reps, weight_by, n, prop,
+                      in_slice = TRUE, missing_size = missing(n))
+}
+
+rep_sample_internal <- function(tbl, size, replace = FALSE, reps = 1, 
+                                prob = NULL, n, prop, in_slice, missing_size) {
   check_type(tbl, is.data.frame)
-  check_type(size, is.numeric)
   check_type(replace, is.logical)
   check_type(reps, is.numeric)
+  check_slice_size(size, n, prop, in_slice, missing_size)
+  
   if (!is.null(prob)) {
     check_type(prob, is.numeric)
     if (length(prob) != nrow(tbl)) {
@@ -68,16 +89,17 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
       )
     }
   }
-
+  
   # Generate row indexes for every future replicate (this way it respects
   # possibility of  `replace = FALSE`)
-  n <- nrow(tbl)
+  nrow <- nrow(tbl)
+  if (in_slice) {size <- n}
   i <- unlist(replicate(
     reps,
-    sample.int(n, size, replace = replace, prob = prob),
+    sample.int(nrow, size, replace = replace, prob = prob),
     simplify = FALSE
   ))
-
+  
   tbl %>%
     dplyr::slice(i) %>%
     dplyr::mutate(replicate = rep(seq_len(reps), each = size)) %>%
@@ -86,9 +108,25 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
     dplyr::group_by(replicate)
 }
 
-#' @rdname rep_sample_n
-#' @export
-rep_slice_sample <- function(.data, n = 1, replace = FALSE, weight_by = NULL,
-                             reps = 1) {
-  rep_sample_n(.data, n, replace, reps, weight_by)
+# an internal helper to check the arguments related to the size of the slice.
+check_slice_size <- function(size, n, prop, in_slice, missing_size) {
+  if (!xor(missing_size, is.null(prop))) {
+    size_arg <- if (in_slice) {"n"} else {"size"}
+    
+    stop_glue("Please supply exactly one of {size_arg} or prop.")
+  }
+  
+  if (missing_size) {check_type(prop, is.numeric)}
+  if (!missing_size) {
+    if (in_slice) {
+      check_type(n, is.numeric)
+    } else {
+      check_type(size, is.numeric)
+    }
+  }
+  
+  
 }
+
+
+

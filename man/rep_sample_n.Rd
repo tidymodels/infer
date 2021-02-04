@@ -5,14 +5,26 @@
 \alias{rep_slice_sample}
 \title{Perform repeated sampling}
 \usage{
-rep_sample_n(tbl, size, replace = FALSE, reps = 1, prob = NULL)
+rep_sample_n(tbl, size, replace = FALSE, reps = 1, prob = NULL, prop = NULL)
 
-rep_slice_sample(.data, n = 1, replace = FALSE, weight_by = NULL, reps = 1)
+rep_slice_sample(
+  .data,
+  n = 1,
+  replace = FALSE,
+  weight_by = NULL,
+  reps = 1,
+  prop = NULL
+)
 }
 \arguments{
 \item{tbl, .data}{Data frame of population from which to sample.}
 
-\item{size, n}{Sample size of each sample.}
+\item{size, n, prop}{\code{size} and \code{n} refer to the sample size of each sample.
+The \code{size} argument to \code{rep_sample_n()} is required (if \code{prop} is not
+supplied), while \code{n} defaults to 1 in \code{rep_slice_sample()}. \code{prop}, an
+argument to both functions, refers to the proportion of rows to sample in
+each sample, and is rounded down in the case that \code{prop * nrow(tbl)} is
+not an integer. Please only supply one of these arguments.}
 
 \item{replace}{Should sampling be with replacement?}
 
