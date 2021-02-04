@@ -78,9 +78,20 @@ test_that("observe messages/warns/errors informatively", {
       ),
     )
   )
+  
+  expect_error(
+    expect_equal(
+      gss %>%
+        observe(explanatory = age, stat = "diff in means"), 
+      gss %>%
+        specify(explanatory = age) %>%
+        calculate(stat = "diff in means")
+    )
+  )
 })
 
 test_that("observe() works with either specify() interface", {
+  # unnamed formula argument
   expect_equal(
     gss %>%
       observe(hours ~ NULL, stat = "mean"),
@@ -90,9 +101,41 @@ test_that("observe() works with either specify() interface", {
   
   expect_equal(
     gss %>%
+      observe(
+        hours ~ college, 
+        stat = "diff in means", 
+        order = c("degree", "no degree")
+      ),
+    gss %>%
+      specify(hours ~ college) %>%
+      calculate(stat = "diff in means", order = c("degree", "no degree"))
+  )
+  
+  # named formula argument
+  expect_equal(
+    gss %>%
       observe(formula = hours ~ NULL, stat = "mean"),
     gss %>%
       observe(response = hours, stat = "mean")
+  )
+  
+  expect_equal(
+    gss %>%
+      observe(formula = hours ~ NULL, stat = "mean"),
+    gss %>%
+      observe(response = hours, stat = "mean")
+  )
+  
+  expect_equal(
+    gss %>%
+      observe(
+        formula = hours ~ college, 
+        stat = "diff in means", 
+        order = c("degree", "no degree")
+      ),
+    gss %>%
+      specify(formula = hours ~ college) %>%
+      calculate(stat = "diff in means", order = c("degree", "no degree"))
   )
 })
 

@@ -74,8 +74,10 @@ supply hypothesized null values for the \code{"t"} statistic.}
 A 1-column tibble containing the calculated statistic \code{stat}.
 }
 \description{
-This function is a wrapper around \code{\link[=specify]{specify()}}, \code{\link[=hypothesize]{hypothesize()}}, and
-\code{\link[=calculate]{calculate()}} that can be used to calculate observed statistics from data.
+This function is a wrapper that calls \code{\link[=specify]{specify()}}, \code{\link[=hypothesize]{hypothesize()}}, and
+\code{\link[=calculate]{calculate()}} consecutively that can be used to calculate observed
+statistics from data. \code{\link[=hypothesize]{hypothesize()}} will only be called if a point
+null hypothesis parameter is supplied.
 
 Learn more in \code{vignette("infer")}.
 }

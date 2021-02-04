@@ -2,8 +2,10 @@
 #'
 #' @description
 #'
-#' This function is a wrapper around [specify()], [hypothesize()], and
-#' [calculate()] that can be used to calculate observed statistics from data.
+#' This function is a wrapper that calls [specify()], [hypothesize()], and
+#' [calculate()] consecutively that can be used to calculate observed 
+#' statistics from data. [hypothesize()] will only be called if a point
+#' null hypothesis parameter is supplied.
 #'
 #' Learn more in `vignette("infer")`.
 #'
@@ -71,7 +73,7 @@ observe <- function(
   if (!all(sapply(list(p, mu, med, sigma), is.null))) {
     hypothesize_fn <- hypothesize
   } else {
-    hypothesize_fn <- function(x, ...) {identity(x)}
+    hypothesize_fn <- function(x, ...) {x}
   }
   
   # pass arguments on to core verbs
