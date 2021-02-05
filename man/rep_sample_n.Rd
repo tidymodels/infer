@@ -5,7 +5,14 @@
 \alias{rep_slice_sample}
 \title{Perform repeated sampling}
 \usage{
-rep_sample_n(tbl, size, replace = FALSE, reps = 1, prob = NULL, prop = NULL)
+rep_sample_n(
+  tbl,
+  size = NULL,
+  replace = FALSE,
+  reps = 1,
+  prob = NULL,
+  prop = NULL
+)
 
 rep_slice_sample(
   .data,

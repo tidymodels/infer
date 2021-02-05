@@ -60,7 +60,7 @@
 #' )
 #' rep_sample_n(df, size = 2, reps = 5, prob = c(.5, .4, .3, .2, .1))
 #' @export
-rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, 
+rep_sample_n <- function(tbl, size = NULL, replace = FALSE, reps = 1, 
                          prob = NULL, prop = NULL) {
   rep_sample_internal(tbl, size, replace, reps, prob, NULL, prop,
                       in_slice = FALSE, missing_size = missing(size))
@@ -79,7 +79,8 @@ rep_sample_internal <- function(tbl, size, replace = FALSE, reps = 1,
   check_type(tbl, is.data.frame)
   check_type(replace, is.logical)
   check_type(reps, is.numeric)
-  check_slice_size(size, n, prop, in_slice, missing_size)
+  
+  size <- process_slice_size(size, n, prop, in_slice, missing_size, nrow(tbl))
   
   if (!is.null(prob)) {
     check_type(prob, is.numeric)
@@ -92,11 +93,9 @@ rep_sample_internal <- function(tbl, size, replace = FALSE, reps = 1,
   
   # Generate row indexes for every future replicate (this way it respects
   # possibility of  `replace = FALSE`)
-  nrow <- nrow(tbl)
-  if (in_slice) {size <- n}
   i <- unlist(replicate(
     reps,
-    sample.int(nrow, size, replace = replace, prob = prob),
+    sample.int(nrow(tbl), size, replace = replace, prob = prob),
     simplify = FALSE
   ))
   
@@ -108,25 +107,32 @@ rep_sample_internal <- function(tbl, size, replace = FALSE, reps = 1,
     dplyr::group_by(replicate)
 }
 
-# an internal helper to check the arguments related to the size of the slice.
-check_slice_size <- function(size, n, prop, in_slice, missing_size) {
+# an internal helper to check relevant arguments and determine the 
+# appropriate sample size
+process_slice_size <- function(size, n, prop, in_slice, missing_size, n_pop) {
   if (!xor(missing_size, is.null(prop))) {
     size_arg <- if (in_slice) {"n"} else {"size"}
     
-    stop_glue("Please supply exactly one of {size_arg} or prop.")
+    stop_glue("Please supply one of the `{size_arg}` or `prop` arguments.")
   }
   
-  if (missing_size) {check_type(prop, is.numeric)}
   if (!missing_size) {
     if (in_slice) {
       check_type(n, is.numeric)
+      
+      return(n)
     } else {
       check_type(size, is.numeric)
+      
+      return(size)
     }
   }
   
+  check_type(prop, is.numeric)
   
+  if (prop > 1 || prop <= 0) {
+    stop_glue("The `prop` argument must be a number in the interval (0, 1].")
+  }
+  
+  return(floor(n_pop * prop))
 }
-
-
-
