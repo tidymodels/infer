@@ -30,11 +30,19 @@
 #' @examples
 #' library(dplyr)
 #' library(ggplot2)
+#' library(tibble)
 #'
 #' # take 1000 samples of size n = 50, without replacement
 #' slices <- gss %>%
-#'   rep_sample_n(size = 50, reps = 1000)
+#'   rep_slice_sample(n = 50, reps = 1000)
 #'
+#' slices
+#' 
+#' # refer to the sample size as a proportion of the total 
+#' # number of rows with the prop argument
+#' slices <- gss %>%
+#'   rep_slice_sample(prop = .1, reps = 1000)
+#'   
 #' slices
 #'
 #' # compute the proportion of respondents with a college
@@ -53,12 +61,12 @@
 #'   
 #' # sampling with probability weights. Note probabilities are automatically 
 #' # renormalized to sum to 1
-#' library(tibble)
 #' df <- tibble(
 #'   id = 1:5,
 #'   letter = factor(c("a", "b", "c", "d", "e"))
 #' )
-#' rep_sample_n(df, size = 2, reps = 5, prob = c(.5, .4, .3, .2, .1))
+#' 
+#' rep_slice_sample(df, n = 2, reps = 5, weight_by = c(.5, .4, .3, .2, .1))
 #' @export
 rep_sample_n <- function(tbl, size = NULL, replace = FALSE, reps = 1, 
                          prob = NULL, prop = NULL) {

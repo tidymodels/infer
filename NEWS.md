@@ -12,8 +12,9 @@ not supply sufficient information to calculate an observed statistic
 - Implemented the standardized proportion $z$ statistic for one categorical variable
 - Added `two.sided` as an acceptable alias for `two_sided` for the 
 `direction` argument in `get_p_value()` and `shade_p_value()` (#355)
-more closely resembles `dplyr::slice_sample()` (the function that supersedes
-`dplyr::sample_n()`) (#325)
+- Added a `prop` argument to `rep_slice_sample()` and `rep_sample_n()` as
+an alternative to the `n`/`size` arguments for specifying the proportion
+of rows in the supplied data to sample per replicate (#361)
 - Various bug fixes and improvements to internal consistency
 
 # infer 0.5.4
