@@ -49,6 +49,13 @@ x_bar <- gss %>%
   calculate(stat = "mean")
 ```
 
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+x_bar <- gss %>%
+  observe(response = hours, stat = "mean")
+```
+
 Then, generating the null distribution,
 
 ```{r}
@@ -84,11 +91,11 @@ t_bar <- gss %>%
   calculate(stat = "t")
 ```
 
-Alternatively, using the wrapper to calculate the test statistic, 
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
 t_bar <- gss %>%
-  t_stat(response = hours, mu = 40)
+  observe(response = hours, null = "point", mu = 40, stat = "t")
 ```
 
 Then, generating the null distribution,
@@ -158,6 +165,13 @@ x_tilde <- gss %>%
   calculate(stat = "median")
 ```
 
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+x_tilde <- gss %>%
+  observe(response = age, stat = "median")
+```
+
 Then, generating the null distribution,
 
 ```{r}
@@ -190,6 +204,13 @@ Calculating the observed statistic,
 p_hat <- gss %>%
   specify(response = sex, success = "female") %>%
   calculate(stat = "prop")
+```
+
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+p_hat <- gss %>%
+  observe(response = sex, success = "female", stat = "prop")
 ```
 
 Then, generating the null distribution,
@@ -238,6 +259,13 @@ p_hat <- gss %>%
   calculate(stat = "z")
 ```
 
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+p_hat <- gss %>%
+  observe(response = sex, success = "female", null = "point", p = .5, stat = "z")
+```
+
 Then, generating the null distribution,
 
 ```{r}
@@ -282,6 +310,14 @@ d_hat <- gss %>%
   calculate(stat = "diff in props", order = c("female", "male"))
 ```
 
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+d_hat <- gss %>% 
+  observe(college ~ sex, success = "no degree", 
+          stat = "diff in props", order = c("female", "male"))
+```
+
 Then, generating the null distribution,
 
 ```{r}
@@ -314,6 +350,14 @@ Calculating the observed statistic,
 r_hat <- gss %>% 
   specify(college ~ sex, success = "no degree") %>%
   calculate(stat = "ratio of props", order = c("female", "male"))
+```
+
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+r_hat <- gss %>% 
+  observe(college ~ sex, success = "no degree",
+          stat = "ratio of props", order = c("female", "male"))
 ```
 
 Then, generating the null distribution,
@@ -382,6 +426,14 @@ Finding the standardized observed statistic,
 z_hat <- gss %>% 
   specify(college ~ sex, success = "no degree") %>%
   calculate(stat = "z", order = c("female", "male"))
+```
+
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+z_hat <- gss %>% 
+  observe(college ~ sex, success = "no degree",
+          stat = "z", order = c("female", "male"))
 ```
 
 Then, generating the null distribution,
@@ -462,17 +514,19 @@ Chisq_hat <- gss %>%
   calculate(stat = "Chisq")
 ```
 
-Alternatively, using the `chisq_stat` wrapper to calculate the test statistic,
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
 Chisq_hat <- gss %>%
-  chisq_stat(response = finrela,
-             p = c("far below average" = 1/6,
-                   "below average" = 1/6,
-                   "average" = 1/6,
-                   "above average" = 1/6,
-                   "far above average" = 1/6,
-                   "DK" = 1/6))
+  observe(response = finrela,
+          null = "point",
+          p = c("far below average" = 1/6,
+                "below average" = 1/6,
+                "average" = 1/6,
+                "above average" = 1/6,
+                "far above average" = 1/6,
+                "DK" = 1/6),
+          stat = "Chisq")
 ```
 
 Then, generating the null distribution,
@@ -559,11 +613,11 @@ Chisq_hat <- gss %>%
   calculate(stat = "Chisq")
 ```
 
-Alternatively, using the wrapper to calculate the test statistic,
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
 Chisq_hat <- gss %>%
-  chisq_stat(formula = finrela ~ sex)
+  observe(formula = finrela ~ sex, stat = "Chisq")
 ```
 
 Then, generating the null distribution,
@@ -632,6 +686,14 @@ d_hat <- gss %>%
   calculate(stat = "diff in means", order = c("degree", "no degree"))
 ```
 
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+d_hat <- gss %>% 
+  observe(age ~ college,
+          stat = "diff in means", order = c("degree", "no degree"))
+```
+
 Then, generating the null distribution,
 
 ```{r}
@@ -664,6 +726,14 @@ Finding the standardized observed statistic,
 t_hat <- gss %>% 
   specify(age ~ college) %>% 
   calculate(stat = "t", order = c("degree", "no degree"))
+```
+
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+t_hat <- gss %>% 
+  observe(age ~ college,
+          stat = "t", order = c("degree", "no degree"))
 ```
 
 Then, generating the null distribution,
@@ -727,6 +797,14 @@ d_hat <- gss %>%
   calculate(stat = "diff in medians", order = c("degree", "no degree"))
 ```
 
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+d_hat <- gss %>% 
+  observe(age ~ college,
+          stat = "diff in medians", order = c("degree", "no degree"))
+```
+
 Then, generating the null distribution,
 
 ```{r}
@@ -759,6 +837,13 @@ Calculating the observed statistic,
 F_hat <- gss %>% 
   specify(age ~ partyid) %>%
   calculate(stat = "F")
+```
+
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+F_hat <- gss %>% 
+  observe(age ~ partyid, stat = "F")
 ```
 
 Then, generating the null distribution,
@@ -820,6 +905,13 @@ slope_hat <- gss %>%
   calculate(stat = "slope")
 ```
 
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+slope_hat <- gss %>% 
+  observe(hours ~ age, stat = "slope")
+```
+
 Then, generating the null distribution,
 
 ```{r}
@@ -852,6 +944,13 @@ Calculating the observed statistic,
 correlation_hat <- gss %>% 
   specify(hours ~ age) %>% 
   calculate(stat = "correlation")
+```
+
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+correlation_hat <- gss %>% 
+  observe(hours ~ age, stat = "correlation")
 ```
 
 Then, generating the null distribution,
@@ -893,6 +992,13 @@ Finding the observed statistic,
 x_bar <- gss %>% 
   specify(response = hours) %>%
   calculate(stat = "mean")
+```
+
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+x_bar <- gss %>% 
+  observe(response = hours, stat = "mean")
 ```
 
 Then, generating the null distribution,
@@ -937,6 +1043,15 @@ t_hat <- gss %>%
   calculate(stat = "t")
 ```
 
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+t_hat <- gss %>% 
+  observe(response = hours,
+          null = "point", mu = 40,
+          stat = "t")
+```
+
 Then, generating the null distribution,
 
 ```{r}
@@ -979,6 +1094,13 @@ Finding the observed statistic,
 p_hat <- gss %>% 
    specify(response = sex, success = "female") %>%
    calculate(stat = "prop")
+```
+
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+p_hat <- gss %>% 
+   observe(response = sex, success = "female", stat = "prop")
 ```
 
 Then, generating the null distribution,
@@ -1027,6 +1149,14 @@ d_hat <- gss %>%
   calculate(stat = "diff in means", order = c("degree", "no degree"))
 ```
 
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+d_hat <- gss %>%
+  observe(hours ~ college,
+          stat = "diff in means", order = c("degree", "no degree"))
+```
+
 Then, generating the null distribution,
 
 ```{r}
@@ -1067,6 +1197,14 @@ Finding the standardized point estimate,
 t_hat <- gss %>%
   specify(hours ~ college) %>%
   calculate(stat = "t", order = c("degree", "no degree"))
+```
+
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+t_hat <- gss %>%
+  observe(hours ~ college,
+          stat = "t", order = c("degree", "no degree"))
 ```
 
 Then, generating the null distribution,
@@ -1112,6 +1250,14 @@ d_hat <- gss %>%
   calculate(stat = "diff in props", order = c("female", "male"))
 ```
 
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+d_hat <- gss %>% 
+  observe(college ~ sex, success = "degree",
+          stat = "diff in props", order = c("female", "male"))
+```
+
 Then, generating the null distribution,
 
 ```{r}
@@ -1152,6 +1298,14 @@ Finding the standardized point estimate,
 z_hat <- gss %>% 
   specify(college ~ sex, success = "degree") %>%
   calculate(stat = "z", order = c("female", "male"))
+```
+
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+z_hat <- gss %>% 
+  observe(college ~ sex, success = "degree",
+          stat = "z", order = c("female", "male"))
 ```
 
 Then, generating the null distribution,
@@ -1197,6 +1351,13 @@ slope_hat <- gss %>%
   calculate(stat = "slope")
 ```
 
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+slope_hat <- gss %>% 
+  observe(hours ~ age, stat = "slope")
+```
+
 Then, generating the null distribution,
 
 ```{r}
@@ -1237,6 +1398,13 @@ Finding the observed statistic,
 correlation_hat <- gss %>% 
   specify(hours ~ age) %>%
   calculate(stat = "correlation")
+```
+
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+correlation_hat <- gss %>% 
+  observe(hours ~ age, stat = "correlation")
 ```
 
 Then, generating the null distribution,

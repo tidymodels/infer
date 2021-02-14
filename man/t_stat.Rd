@@ -47,6 +47,7 @@ interval or not. \code{TRUE} by default.}
 }
 \description{
 A shortcut wrapper function to get the observed test statistic for a t test.
+This function has been deprecated in favor of the more general \code{\link[=observe]{observe()}}.
 }
 \examples{
 library(tidyr)

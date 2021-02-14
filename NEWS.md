@@ -9,6 +9,8 @@ for the variables specified
 an observed statistic, and
    * supply a warning and assume a reasonable null value when the user does 
 not supply sufficient information to calculate an observed statistic
+- Added `observe()`, a wrapper function around `specify()`, `hypothesize()`, and 
+`calculate()`, to calculate observed statistics.
 - Implemented the standardized proportion $z$ statistic for one categorical variable
 - Added `two.sided` as an acceptable alias for `two_sided` for the 
 `direction` argument in `get_p_value()` and `shade_p_value()` (#355)

@@ -83,11 +83,19 @@ test_that("chisq_test works", {
 
 test_that("_stat functions work", {
   # Test of maleependence
-  expect_silent(gss_tbl %>% chisq_stat(college ~ partyid))
+  expect_warning(
+    gss_tbl %>% chisq_stat(college ~ partyid),
+    "deprecated in favor of the more general"
+  )
+  
   another_way <- gss_tbl %>%
     chisq_test(college ~ partyid) %>%
     dplyr::select(statistic)
-  obs_stat_way <- gss_tbl %>% chisq_stat(college ~ partyid)
+  
+  expect_warning(
+    obs_stat_way <- gss_tbl %>% chisq_stat(college ~ partyid),
+    "deprecated in favor of the more general"
+  )
   one_more <- chisq.test(
     table(gss_tbl$partyid, gss_tbl$college)
   )$statistic
@@ -96,14 +104,21 @@ test_that("_stat functions work", {
   expect_equivalent(one_more, obs_stat_way)
 
   # Goodness of Fit
- new_way <- gss_tbl %>%
-   chisq_test(partyid ~ NULL) %>%
-   dplyr::select(statistic)
- obs_stat_way <- gss_tbl %>%
-   chisq_stat(partyid ~ NULL)
- obs_stat_way_alt <- gss_tbl %>%
-   chisq_stat(response = partyid)
-
+  new_way <- gss_tbl %>%
+    chisq_test(partyid ~ NULL) %>%
+    dplyr::select(statistic)
+    
+  expect_warning(
+    obs_stat_way <- gss_tbl %>%
+      chisq_stat(partyid ~ NULL),
+    "deprecated in favor of the more general"
+  )
+  expect_warning(
+   obs_stat_way_alt <- gss_tbl %>%
+     chisq_stat(response = partyid),
+   "deprecated in favor of the more general"
+  )
+  
  expect_equivalent(dplyr::pull(new_way), obs_stat_way)
  expect_equivalent(dplyr::pull(new_way), obs_stat_way_alt)
 
@@ -116,41 +131,71 @@ test_that("_stat functions work", {
  expect_equivalent(unordered_p, ordered_p)
 
   # Two sample t
-  expect_silent(
+  expect_warning(
     gss_tbl %>% t_stat(
       hours ~ sex, order = c("male", "female")
-    )
+    ),
+    "deprecated in favor of the more general"
   )
   another_way <- gss_tbl %>%
     t_test(hours ~ sex, order = c("male", "female")) %>%
     dplyr::select(statistic) %>%
     pull()
-  obs_stat_way <- gss_tbl %>%
-    t_stat(hours ~ sex, order = c("male", "female"))
-  obs_stat_way_alt <- gss_tbl %>%
-    t_stat(response = hours,
-           explanatory = sex,
-           order = c("male", "female"))
+  
+  expect_warning(
+    obs_stat_way <- gss_tbl %>%
+      t_stat(hours ~ sex, order = c("male", "female")),
+    "deprecated in favor of the more general"
+  )
+  
+  expect_warning(
+    obs_stat_way_alt <- gss_tbl %>%
+      t_stat(response = hours,
+             explanatory = sex,
+             order = c("male", "female")),
+    "deprecated in favor of the more general"
+  )
 
   expect_equivalent(another_way, obs_stat_way)
   expect_equivalent(another_way, obs_stat_way_alt)
 
   # One sample t
-  expect_silent(gss_tbl %>% t_stat(hours ~ NULL))
+  expect_warning(
+    gss_tbl %>% t_stat(hours ~ NULL),
+    "deprecated in favor of the more general"
+  )
+  
   another_way <- gss_tbl %>%
     t_test(hours ~ NULL) %>%
     dplyr::select(statistic) %>%
     pull()
-  obs_stat_way <- gss_tbl %>%
-    t_stat(hours ~ NULL)
-  obs_stat_way_alt <- gss_tbl %>%
-    t_stat(response = hours)
-
+  
+  expect_warning(
+    obs_stat_way <- gss_tbl %>%
+      t_stat(hours ~ NULL),
+    "deprecated in favor of the more general"
+  )
+  expect_warning(
+    obs_stat_way_alt <- gss_tbl %>%
+      t_stat(response = hours),
+    "deprecated in favor of the more general"
+  )
+  
   expect_equivalent(another_way, obs_stat_way)
   expect_equivalent(another_way, obs_stat_way_alt)
 
-  expect_error(chisq_stat(x = gss_tbl, response = age, explanatory = sex))
-  expect_error(chisq_stat(x = gss_tbl, response = sex, explanatory = age))
+  expect_error(
+    expect_warning(
+      chisq_stat(x = gss_tbl, response = age, explanatory = sex)
+    )
+  )
+  
+  expect_error(
+    expect_warning(
+      chisq_stat(x = gss_tbl, response = sex, explanatory = age),
+      "deprecated in favor of the more general"
+    )
+  )
 })
 
 test_that("conf_int argument works", {
@@ -198,14 +243,21 @@ test_that("conf_int argument works", {
   # Thanks for fmaleing this @EllaKaye!
   gss_tbl_small <- gss_tbl %>% dplyr::slice(1:6, 90:100)
 
-  no_var_equal <- gss_tbl_small %>%
-    t_stat(hours ~ sex, order = c("female", "male"))
-
-  var_equal <- gss_tbl_small %>%
-    t_stat(
-      hours ~ sex, order = c("female", "male"),
-      var.equal = TRUE
-    )
+  expect_warning(
+    no_var_equal <- gss_tbl_small %>%
+      t_stat(hours ~ sex, order = c("female", "male")),
+    "deprecated in favor of the more general"
+  )
+  
+  expect_warning(
+    var_equal <- gss_tbl_small %>%
+      t_stat(
+        hours ~ sex, order = c("female", "male"),
+        var.equal = TRUE
+      ),
+    "deprecated in favor of the more general"
+  )
+  
   expect_false(no_var_equal == var_equal)
 
   shortcut_no_var_equal <- gss_tbl_small %>%
