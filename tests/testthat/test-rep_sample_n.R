@@ -71,6 +71,20 @@ test_that("rep_sample_n is sensitive to the prob argument", {
   expect_true(all(res1$color == "red"))
 })
 
+test_that("rep_slice_sample is sensitive to the prop argument", {
+  set.seed(1)
+  res1 <- rep_slice_sample(population, n = 1)
+  
+  set.seed(1)
+  res2 <- rep_slice_sample(population, prop = .2)
+  
+  set.seed(1)
+  res3 <- rep_slice_sample(population, prop = .21)
+  
+  expect_equal(res1, res2)
+  expect_equal(res1, res3)
+})
+
 test_that("rep_sample_n errors with bad arguments", {
   expect_error(
     population %>%
@@ -91,6 +105,26 @@ test_that("rep_sample_n errors with bad arguments", {
     population %>%
       rep_sample_n(size = 2, reps = "a lot")
   )
+  
+  expect_error(
+    rep_slice_sample(population, n = 1, prop = .2),
+    "Please supply one of the `n` or `prop` arguments."
+  )
+  
+  expect_error(
+    rep_slice_sample(population, prop = 0),
+    "must be a number in the interval \\(0, 1\\]."
+  )
+  
+  expect_error(
+    rep_slice_sample(population, prop = 10),
+    "must be a number in the interval \\(0, 1\\]."
+  )
+  
+  expect_error(
+    rep_sample_n(population, prop = .1),
+    "unused argument \\(prop = 0.1\\)"
+  )
 })
 
 test_that("rep_slice_sample works", {
@@ -101,4 +135,13 @@ test_that("rep_slice_sample works", {
   res2 <- rep_slice_sample(population, n = 2, reps = 5, weight_by = rep(1 / N, N))
 
   expect_equal(res1, res2)
+  
+  set.seed(1)
+  res3 <- rep_sample_n(population, size = floor(nrow(population)/2), 
+                       reps = 5, prob = rep(1 / N, N))
+  
+  set.seed(1)
+  res4 <- rep_slice_sample(population, prop = .5, reps = 5, weight_by = rep(1 / N, N))
+  
+  expect_equal(res3, res4)
 })
