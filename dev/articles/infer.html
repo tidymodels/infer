@@ -35,6 +35,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -49,7 +51,7 @@
       <div class="navbar-brand-container">
         <a class="navbar-brand" href="../index.html">infer</a>
         <div class="info hidden-xs hidden-sm">
-          <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
+          <span class="partof">part of <a href="https://github.com/tidymodels" class="external-link">tidymodels</a></span>
           <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.5.4.9000</span>
         </div>
       </div>
@@ -93,7 +95,7 @@
   <a href="../CONDUCT.html">Code of Conduct</a>
 </li>
         <li>
-  <a href="https://github.com/tidymodels/infer">
+  <a href="https://github.com/tidymodels/infer" class="external-link">
     <span class="fas fa-github fa-lg"></span>
      
   </a>
@@ -114,7 +116,7 @@
       <h1 data-toc-skip>Getting to Know infer</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/master/vignettes/infer.Rmd"><code>vignettes/infer.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/master/vignettes/infer.Rmd" class="external-link"><code>vignettes/infer.Rmd</code></a></small>
       <div class="hidden name"><code>infer.Rmd</code></div>
 
     </div>
@@ -140,10 +142,10 @@
 <p>Throughout this vignette, we make use of <code>gss</code>, a dataset supplied by <code>infer</code> containing a sample of 500 observations of 11 variables from the <em>General Social Survey</em>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load in the dataset</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span>
 
 <span class="co"># take a look at its structure</span>
-<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
+<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
 <pre><code>## Rows: 500
 ## Columns: 11
 ## $ year    &lt;dbl&gt; 2014, 1994, 1998, 1996, 1994, 1996, 1990, 2016, 2000, 1998, 2…
@@ -185,7 +187,7 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gss</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">age</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "infer"      "tbl_df"     "tbl"        "data.frame"</code></pre>
 <p>We can see that the <code>infer</code> class has been appended on top of the dataframe classes–this new class stores some extra metadata.</p>
 <p>If you’re interested in two variables–<code>age</code> and <code>partyid</code>, for example–you can <code>specify</code> their relationship in one of two (equivalent) ways:</p>
@@ -391,7 +393,7 @@
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">college</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span><span class="st">"diff in means"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span><span class="st">"diff in means"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 1,000 x 2
 ##    replicate   stat
 ##  *     &lt;int&gt;  &lt;dbl&gt;
@@ -437,7 +439,7 @@
   <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">point_estimate</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></code></pre></div>
 <p><img src="infer_files/figure-html/visualize2-1.png" width="576"></p>
-<p>Notice that <code>infer</code> has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code> operator to apply the <code>shade_p_value</code> function. This is because <code>visualize</code> outputs a plot object from <code>ggplot2</code> instead of a data frame, and the <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code> operator is needed to add the p-value layer to the plot object.) The red bar looks like it’s slightly far out on the right tail of the null distribution, so observing a sample mean of 41.382 hours would be somewhat unlikely if the mean was actually 40 hours. How unlikely, though?</p>
+<p>Notice that <code>infer</code> has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the <code><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">+</a></code> operator to apply the <code>shade_p_value</code> function. This is because <code>visualize</code> outputs a plot object from <code>ggplot2</code> instead of a data frame, and the <code><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">+</a></code> operator is needed to add the p-value layer to the plot object.) The red bar looks like it’s slightly far out on the right tail of the null distribution, so observing a sample mean of 41.382 hours would be somewhat unlikely if the mean was actually 40 hours. How unlikely, though?</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get a two-tailed p-value</span>
 <span class="va">p_value</span> <span class="op">&lt;-</span> <span class="va">null_dist</span> <span class="op">%&gt;%</span>
@@ -516,7 +518,7 @@
 <div class="author">
   <p>
     Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Ben Baumer, Mine Cetinkaya-Rundel.
-    Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
+    Site built by <a href="https://pkgdown.r-lib.org" class="external-link">pkgdown</a>.
   </p>
 </div>
 
@@ -525,6 +527,8 @@
 
   
 
+
+  
 
   </body>
 </html>

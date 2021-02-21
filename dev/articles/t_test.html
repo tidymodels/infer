@@ -35,6 +35,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -49,7 +51,7 @@
       <div class="navbar-brand-container">
         <a class="navbar-brand" href="../index.html">infer</a>
         <div class="info hidden-xs hidden-sm">
-          <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
+          <span class="partof">part of <a href="https://github.com/tidymodels" class="external-link">tidymodels</a></span>
           <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.5.4.9000</span>
         </div>
       </div>
@@ -93,7 +95,7 @@
   <a href="../CONDUCT.html">Code of Conduct</a>
 </li>
         <li>
-  <a href="https://github.com/tidymodels/infer">
+  <a href="https://github.com/tidymodels/infer" class="external-link">
     <span class="fas fa-github fa-lg"></span>
      
   </a>
@@ -114,7 +116,7 @@
       <h1 data-toc-skip>Tidy t-Tests with infer</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/master/vignettes/t_test.Rmd"><code>vignettes/t_test.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/master/vignettes/t_test.Rmd" class="external-link"><code>vignettes/t_test.Rmd</code></a></small>
       <div class="hidden name"><code>t_test.Rmd</code></div>
 
     </div>
@@ -127,7 +129,7 @@
 <p>In this vignette, we’ll walk through conducting t-tests using <code>infer</code>. We’ll start out with a 1-sample t-test, which compares a sample mean to a hypothesized true mean value. Then, we’ll discuss paired t-tests, which are a special use case of 1-sample t-tests, and evaluate whether differences in paired values (e.g. some measure taken of a person before and after an experiment) differ from 0. Finally, we’ll wrap up with 2-sample t-tests, testing the difference in means of two populations using a sample of data drawn from them.</p>
 <p>Throughout this vignette, we’ll make use of the <code>gss</code> dataset supplied by <code>infer</code>, which contains a sample of data from the General Social Survey. See <code><a href="../reference/gss.html">?gss</a></code> for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let’s suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
 <pre><code>## Rows: 500
 ## Columns: 11
 ## $ year    &lt;dbl&gt; 2014, 1994, 1998, 1996, 1994, 1996, 1990, 2016, 2000, 1998, 2…
@@ -202,8 +204,8 @@
 <div id="paired-t-test" class="section level3">
 <h3 class="hasAnchor">
 <a href="#paired-t-test" class="anchor"></a>Paired t-Test</h3>
-<p>You might be interested in running a paired t-Test. Paired t-tests can be used in situations when there is a natural pairing between values in distributions—a common example would be two columns, <code>before</code> and <code>after</code>, say, that contain measurements from a patient before and after some treatment. To compare these two distributions, then, we’re not necessarily interested in how the two distributions look different altogether, but how these two measurements from each individual change across time. (Pairings don’t necessarily have to be over time; another common usage is measurements from two married people, for example.) Thus, we can create a new column (see <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> from the <code>dplyr</code> package if you’re not sure how to do this) that is the difference between the two: <code>difference = after - before</code>, and then examine <em>this</em> distribution to see how each individuals’ measurements changed over time.</p>
-<p>Once we’ve <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>d that new <code>difference</code> column, we can run a 1-sample t-Test on it, where our null hypothesis is that <code>mu = 0</code> (i.e. the difference between these measurements before and after treatment is, on average, 0). To do so, we’d use the procedure outlined in the above section.</p>
+<p>You might be interested in running a paired t-Test. Paired t-tests can be used in situations when there is a natural pairing between values in distributions—a common example would be two columns, <code>before</code> and <code>after</code>, say, that contain measurements from a patient before and after some treatment. To compare these two distributions, then, we’re not necessarily interested in how the two distributions look different altogether, but how these two measurements from each individual change across time. (Pairings don’t necessarily have to be over time; another common usage is measurements from two married people, for example.) Thus, we can create a new column (see <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code> from the <code>dplyr</code> package if you’re not sure how to do this) that is the difference between the two: <code>difference = after - before</code>, and then examine <em>this</em> distribution to see how each individuals’ measurements changed over time.</p>
+<p>Once we’ve <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code>d that new <code>difference</code> column, we can run a 1-sample t-Test on it, where our null hypothesis is that <code>mu = 0</code> (i.e. the difference between these measurements before and after treatment is, on average, 0). To do so, we’d use the procedure outlined in the above section.</p>
 </div>
 <div id="sample-t-test-1" class="section level3">
 <h3 class="hasAnchor">
@@ -217,7 +219,7 @@
 <code class="sourceCode R"><span class="co"># calculate the observed statistic</span>
 <span class="va">observed_statistic</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">college</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">observed_statistic</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 1
@@ -234,7 +236,7 @@
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">college</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>We can also generate the null distribution using the theoretical <span class="math inline">\(t\)</span> distribution. The code to do that looks like this:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># generate the null distribution with the theoretical t</span>
@@ -242,7 +244,7 @@
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">college</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="co"># generate() isn't used for the theoretical version!</span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Again, note that, in the lines <code><a href="../reference/specify.html">specify(hours ~ college)</a></code> in the above two chunks, we could have used the syntax <code><a href="../reference/specify.html">specify(response = hours, explanatory = college)</a></code> instead!</p>
 <p>To get a sense for what these distributions look like, and where our observed statistic falls, we can use <code><a href="../reference/visualize.html">visualize()</a></code>. First, to do this with the randomization-based distribution:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
@@ -286,7 +288,7 @@
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/t_test.html">t_test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">gss</span>, 
        formula <span class="op">=</span> <span class="va">hours</span> <span class="op">~</span> <span class="va">college</span>, 
-       order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span>,
+       order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span>,
        alternative <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 6
 ##   statistic  t_df p_value alternative lower_ci upper_ci
@@ -311,7 +313,7 @@
 <div class="author">
   <p>
     Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Ben Baumer, Mine Cetinkaya-Rundel.
-    Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
+    Site built by <a href="https://pkgdown.r-lib.org" class="external-link">pkgdown</a>.
   </p>
 </div>
 
@@ -320,6 +322,8 @@
 
   
 
+
+  
 
   </body>
 </html>

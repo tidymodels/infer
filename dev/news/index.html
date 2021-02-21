@@ -73,9 +73,15 @@
   gtag('config', 'UA-115082821-1');
 </script>
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -170,8 +176,9 @@
 <li>supply a warning and assume a reasonable null value when the user does not supply sufficient information to calculate an observed statistic</li>
 </ul>
 </li>
+<li>Added <code><a href="../reference/observe.html">observe()</a></code>, a wrapper function around <code><a href="../reference/specify.html">specify()</a></code>, <code><a href="../reference/hypothesize.html">hypothesize()</a></code>, and <code><a href="../reference/calculate.html">calculate()</a></code>, to calculate observed statistics.</li>
 <li>Implemented the standardized proportion <span class="math inline"><em>z</em></span> statistic for one categorical variable</li>
-<li>Added <code>two.sided</code> as an acceptable alias for <code>two_sided</code> for the <code>direction</code> argument in <code><a href="../reference/get_p_value.html">get_p_value()</a></code> and <code><a href="../reference/shade_p_value.html">shade_p_value()</a></code> (<a href='https://github.com/tidymodels/infer/issues/355'>#355</a>) more closely resembles <code><a href="https://dplyr.tidyverse.org/reference/slice.html">dplyr::slice_sample()</a></code> (the function that supersedes <code><a href="https://dplyr.tidyverse.org/reference/sample_n.html">dplyr::sample_n()</a></code>) (<a href='https://github.com/tidymodels/infer/issues/325'>#325</a>)</li>
+<li>Added <code>two.sided</code> as an acceptable alias for <code>two_sided</code> for the <code>direction</code> argument in <code><a href="../reference/get_p_value.html">get_p_value()</a></code> and <code><a href="../reference/shade_p_value.html">shade_p_value()</a></code> (<a href='https://github.com/tidymodels/infer/issues/355'>#355</a>) more closely resembles <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">dplyr::slice_sample()</a></code> (the function that supersedes <code><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">dplyr::sample_n()</a></code>) (<a href='https://github.com/tidymodels/infer/issues/325'>#325</a>)</li>
 <li>Various bug fixes and improvements to internal consistency</li>
 </ul>
 </div>
@@ -182,7 +189,7 @@
 <ul>
 <li>
 <code><a href="../reference/rep_sample_n.html">rep_sample_n()</a></code> no longer errors when supplied a <code>prob</code> argument (<a href='https://github.com/tidymodels/infer/issues/279'>#279</a>)</li>
-<li>Added <code><a href="../reference/rep_sample_n.html">rep_slice_sample()</a></code>, a light wrapper around <code><a href="../reference/rep_sample_n.html">rep_sample_n()</a></code>, that more closely resembles <code><a href="https://dplyr.tidyverse.org/reference/slice.html">dplyr::slice_sample()</a></code> (the function that supersedes) <code><a href="https://dplyr.tidyverse.org/reference/sample_n.html">dplyr::sample_n()</a></code> (<a href='https://github.com/tidymodels/infer/issues/325'>#325</a>)</li>
+<li>Added <code><a href="../reference/rep_sample_n.html">rep_slice_sample()</a></code>, a light wrapper around <code><a href="../reference/rep_sample_n.html">rep_sample_n()</a></code>, that more closely resembles <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">dplyr::slice_sample()</a></code> (the function that supersedes) <code><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">dplyr::sample_n()</a></code> (<a href='https://github.com/tidymodels/infer/issues/325'>#325</a>)</li>
 <li>Added a <code>success</code>, <code>correct</code>, and <code>z</code> argument to <code><a href="../reference/prop_test.html">prop_test()</a></code> (<a href='https://github.com/tidymodels/infer/issues/343'>#343</a>, <a href='https://github.com/tidymodels/infer/issues/347'>#347</a>, <a href='https://github.com/tidymodels/infer/issues/353'>#353</a>)</li>
 <li>Implemented observed statistic calculation for the standardized proportion <span class="math inline"><em>z</em></span> statistic (<a href='https://github.com/tidymodels/infer/issues/351'>#351</a>, <a href='https://github.com/tidymodels/infer/issues/353'>#353</a>)</li>
 <li>Various bug fixes and improvements to documentation and errors.</li>
@@ -230,7 +237,7 @@
 <li>Increase coverage of theoretical methods in documentation (<a href='https://github.com/tidymodels/infer/issues/278'>#278</a>, <a href='https://github.com/tidymodels/infer/issues/280'>#280</a>)</li>
 <li>Drop missing values and reduce size of <code>gss</code> dataset used in examples (<a href='https://github.com/tidymodels/infer/issues/282'>#282</a>)</li>
 <li>Add <code>stat = "ratio of props"</code> and <code>stat = "odds ratio"</code> to <code>calculate</code> (<a href='https://github.com/tidymodels/infer/issues/285'>#285</a>)</li>
-<li>Add <code><a href="../reference/prop_test.html">prop_test()</a></code>, a tidy interface to <code><a href="https://rdrr.io/r/stats/prop.test.html">prop.test()</a></code> (<a href='https://github.com/tidymodels/infer/issues/284'>#284</a>, <a href='https://github.com/tidymodels/infer/issues/287'>#287</a>)</li>
+<li>Add <code><a href="../reference/prop_test.html">prop_test()</a></code>, a tidy interface to <code><a href="https://rdrr.io/r/stats/prop.test.html" class="external-link">prop.test()</a></code> (<a href='https://github.com/tidymodels/infer/issues/284'>#284</a>, <a href='https://github.com/tidymodels/infer/issues/287'>#287</a>)</li>
 <li>Updates to <code><a href="../reference/visualize.html">visualize()</a></code> for compatibility with <code>ggplot2</code> v3.3.0 (<a href='https://github.com/tidymodels/infer/issues/289'>#289</a>)</li>
 <li>Fix error when bootstrapping with small samples and raise warnings/errors when appropriate (<a href='https://github.com/tidymodels/infer/issues/239'>#239</a>, <a href='https://github.com/tidymodels/infer/issues/244'>#244</a>, <a href='https://github.com/tidymodels/infer/issues/291'>#291</a>)</li>
 <li>Fix unit test failures resulting from breaking changes in <code>dplyr</code> v1.0.0</li>
@@ -336,7 +343,7 @@
 <li>Fixed <code><a href="../reference/t_stat.html">t_stat()</a></code> to use <code>...</code> so <code>var.equal</code> works</li>
 <li>With the help of <a href='https://github.com/echasnovski'>@echasnovski</a>, fixed <code>var.equal = TRUE</code> for <code>specify() %&gt;% calculate(stat = "t")</code>
 </li>
-<li>Use custom functions for error, warning, message, and <code><a href="https://rdrr.io/r/base/paste.html">paste()</a></code> handling (<a href='https://github.com/tidymodels/infer/issues/155'>#155</a>)</li>
+<li>Use custom functions for error, warning, message, and <code><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste()</a></code> handling (<a href='https://github.com/tidymodels/infer/issues/155'>#155</a>)</li>
 </ul>
 </div>
     <div id="infer-030" class="section level1">
@@ -399,7 +406,7 @@
 </li>
 <li>Added implementation of one sample <code><a href="../reference/t_test.html">t_test()</a></code> by passing in the <code>mu</code> argument to <code>t.test</code> from <code><a href="../reference/hypothesize.html">hypothesize()</a></code>
 </li>
-<li>Tweaked <code>pkgdown</code> page to include ToDo’s using <a href="https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml">{dplyr}</a> example</li>
+<li>Tweaked <code>pkgdown</code> page to include ToDo’s using <a href="https://github.com/tidyverse/dplyr/blob/master/_pkgdown.yml" class="external-link">{dplyr}</a> example</li>
 </ul>
 </div>
     <div id="infer-020" class="section level1">
@@ -411,7 +418,7 @@
 <li>Added many new files: <code>CONDUCT.md</code>, <code>CONTRIBUTING.md</code>, and <code>TO-DO.md</code>
 </li>
 <li>Updated README file with more development information</li>
-<li>Added wrapper functions <code><a href="../reference/t_test.html">t_test()</a></code> and <code><a href="../reference/chisq_test.html">chisq_test()</a></code> that use a formula interface and provide an intuitive wrapper to <code><a href="https://rdrr.io/r/stats/t.test.html">t.test()</a></code> and <code><a href="https://rdrr.io/r/stats/chisq.test.html">chisq.test()</a></code>
+<li>Added wrapper functions <code><a href="../reference/t_test.html">t_test()</a></code> and <code><a href="../reference/chisq_test.html">chisq_test()</a></code> that use a formula interface and provide an intuitive wrapper to <code><a href="https://rdrr.io/r/stats/t.test.html" class="external-link">t.test()</a></code> and <code><a href="https://rdrr.io/r/stats/chisq.test.html" class="external-link">chisq.test()</a></code>
 </li>
 <li>Created <code>stat = "z"</code> and <code>stat = "t"</code> options</li>
 <li>Added many new arguments to <code><a href="../reference/visualize.html">visualize()</a></code> to prescribe colors to shade and use for observed statistics and theoretical density curves</li>
@@ -461,8 +468,7 @@
 <li>Updated documentation with examples</li>
 <li>Created <code>pkgdown</code> site materials
 <ul>
-<li>Deployed to <a href="https://https://infer.tidymodels.org/" class="uri">https://https://infer.tidymodels.org/</a>
-</li>
+<li>Deployed to https://https://infer.tidymodels.org/</li>
 </ul>
 </li>
 </ul>
@@ -503,6 +509,8 @@
 
   
 
+
+  
 
   </body>
 </html>

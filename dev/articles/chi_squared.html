@@ -35,6 +35,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -49,7 +51,7 @@
       <div class="navbar-brand-container">
         <a class="navbar-brand" href="../index.html">infer</a>
         <div class="info hidden-xs hidden-sm">
-          <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
+          <span class="partof">part of <a href="https://github.com/tidymodels" class="external-link">tidymodels</a></span>
           <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.5.4.9000</span>
         </div>
       </div>
@@ -93,7 +95,7 @@
   <a href="../CONDUCT.html">Code of Conduct</a>
 </li>
         <li>
-  <a href="https://github.com/tidymodels/infer">
+  <a href="https://github.com/tidymodels/infer" class="external-link">
     <span class="fas fa-github fa-lg"></span>
      
   </a>
@@ -114,7 +116,7 @@
       <h1 data-toc-skip>Tidy Chi-Squared Tests with infer</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/master/vignettes/chi_squared.Rmd"><code>vignettes/chi_squared.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/master/vignettes/chi_squared.Rmd" class="external-link"><code>vignettes/chi_squared.Rmd</code></a></small>
       <div class="hidden name"><code>chi_squared.Rmd</code></div>
 
     </div>
@@ -127,7 +129,7 @@
 <p>In this vignette, we’ll walk through conducting a <span class="math inline">\(\chi^2\)</span> (chi-squared) test of independence and a chi-squared goodness of fit test using <code>infer</code>. We’ll start out with a chi-squared test of independence, which can be used to test the association between two categorical variables. Then, we’ll move on to a chi-squared goodness of fit test, which tests how well the distribution of one categorical variable can be approximated by some theoretical distribution.</p>
 <p>Throughout this vignette, we’ll make use of the <code>gss</code> dataset supplied by <code>infer</code>, which contains a sample of data from the General Social Survey. See <code><a href="../reference/gss.html">?gss</a></code> for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let’s suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
 <pre><code>## Rows: 500
 ## Columns: 11
 ## $ year    &lt;dbl&gt; 2014, 1994, 1998, 1996, 1994, 1996, 1990, 2016, 2000, 1998, 2…
@@ -231,7 +233,7 @@
 <span class="va">observed_gof_statistic</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">finrela</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>,
-              p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"far below average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+              p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"far below average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
                     <span class="st">"below average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
                     <span class="st">"average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
                     <span class="st">"above average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
@@ -244,7 +246,7 @@
 <span class="va">null_distribution_gof</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">finrela</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>,
-              p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"far below average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+              p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"far below average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
                     <span class="st">"below average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
                     <span class="st">"average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
                     <span class="st">"above average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
@@ -277,7 +279,7 @@
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/chisq_test.html">chisq_test</a></span><span class="op">(</span><span class="va">gss</span>, 
            response <span class="op">=</span> <span class="va">finrela</span>,
-           p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"far below average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
+           p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"far below average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
                     <span class="st">"below average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
                     <span class="st">"average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
                     <span class="st">"above average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
@@ -305,7 +307,7 @@
 <div class="author">
   <p>
     Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Ben Baumer, Mine Cetinkaya-Rundel.
-    Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
+    Site built by <a href="https://pkgdown.r-lib.org" class="external-link">pkgdown</a>.
   </p>
 </div>
 
@@ -314,6 +316,8 @@
 
   
 
+
+  
 
   </body>
 </html>

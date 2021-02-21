@@ -36,6 +36,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -136,30 +138,30 @@
 <hr>
 <p>To install the current stable version of <code>infer</code> from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"infer"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"infer"</span><span class="op">)</span></code></pre></div>
 <p>To install the developmental stable version of <code>infer</code>, make sure to install <code>remotes</code> first. The <code>pkgdown</code> website for this version is at <a href="https://https://infer.tidymodels.org/" class="uri">https://https://infer.tidymodels.org/</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"tidymodels/infer"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"tidymodels/infer"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="contributing" class="section level3">
 <h3 class="hasAnchor">
 <a href="#contributing" class="anchor"></a>Contributing</h3>
 <hr>
-<p>We welcome others helping us make this package as user-friendly and efficient as possible. Please review our <a href="https://github.com/tidymodels/infer/blob/master/CONTRIBUTING.md">contributing</a> and <a href="https://github.com/tidymodels/infer/blob/master/CONDUCT.md">conduct</a> guidelines. By participating in this project you agree to abide by its terms.</p>
-<p>For questions and discussions about tidymodels packages, modeling, and machine learning, please <a href="https://rstd.io/tidymodels-community">post on RStudio Community</a>. If you think you have encountered a bug, please <a href="https://github.com/tidymodels/infer/issues">submit an issue</a>. Either way, learn how to create and share a <a href="https://rstd.io/reprex">reprex</a> (a minimal, reproducible example), to clearly communicate about your code. Check out further details on <a href="https://www.tidymodels.org/contribute/">contributing guidelines for tidymodels packages</a> and <a href="https://www.tidymodels.org/help/">how to get help</a>.</p>
+<p>We welcome others helping us make this package as user-friendly and efficient as possible. Please review our <a href="https://github.com/tidymodels/infer/blob/master/CONTRIBUTING.md" class="external-link">contributing</a> and <a href="https://github.com/tidymodels/infer/blob/master/CONDUCT.md" class="external-link">conduct</a> guidelines. By participating in this project you agree to abide by its terms.</p>
+<p>For questions and discussions about tidymodels packages, modeling, and machine learning, please <a href="https://rstd.io/tidymodels-community" class="external-link">post on RStudio Community</a>. If you think you have encountered a bug, please <a href="https://github.com/tidymodels/infer/issues" class="external-link">submit an issue</a>. Either way, learn how to create and share a <a href="https://rstd.io/reprex" class="external-link">reprex</a> (a minimal, reproducible example), to clearly communicate about your code. Check out further details on <a href="https://www.tidymodels.org/contribute/" class="external-link">contributing guidelines for tidymodels packages</a> and <a href="https://www.tidymodels.org/help/" class="external-link">how to get help</a>.</p>
 </div>
 <div id="examples" class="section level3">
 <h3 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h3>
 <hr>
-<p>These examples are pulled from the “Full infer Pipeline Examples” vignette, accessible by calling <code><a href="articles/observed_stat_examples.html">vignette("observed_stat_examples")</a></code>. They make use of the <code>gss</code> dataset supplied by the package, providing a sample of data from the <a href="https://gss.norc.org">General Social Survey</a>. The data looks like this:</p>
+<p>These examples are pulled from the “Full infer Pipeline Examples” vignette, accessible by calling <code><a href="articles/observed_stat_examples.html">vignette("observed_stat_examples")</a></code>. They make use of the <code>gss</code> dataset supplied by the package, providing a sample of data from the <a href="https://gss.norc.org" class="external-link">General Social Survey</a>. The data looks like this:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load in the dataset</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span>
 
 <span class="co"># take a glimpse at it</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## tibble [500 × 11] (S3: tbl_df/tbl/data.frame)</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="co">##  $ year   : num [1:500] 2014 1994 1998 1996 1994 ...</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="co">##  $ age    : num [1:500] 36 34 24 42 31 32 48 36 30 33 ...</span></span>
@@ -198,7 +200,7 @@
 <span id="cb9-2"><a href="#cb9-2"></a><span class="co">##   p_value</span></span>
 <span id="cb9-3"><a href="#cb9-3"></a><span class="co">##     &lt;dbl&gt;</span></span>
 <span id="cb9-4"><a href="#cb9-4"></a><span class="co">## 1   0.055</span></span></code></pre></div>
-<p>Note that the formula and non-formula interfaces (i.e. <code>age ~ partyid</code> vs. <code>response = age, explanatory = partyid</code>) work for all implemented inference procedures in <code>infer</code>. Use whatever is more natural for you. If you will be doing modeling using functions like <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> and <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>, though, we recommend you begin to use the formula <code>y ~ x</code> notation as soon as possible.</p>
+<p>Note that the formula and non-formula interfaces (i.e. <code>age ~ partyid</code> vs. <code>response = age, explanatory = partyid</code>) work for all implemented inference procedures in <code>infer</code>. Use whatever is more natural for you. If you will be doing modeling using functions like <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> and <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code>, though, we recommend you begin to use the formula <code>y ~ x</code> notation as soon as possible.</p>
 <p>Other resources are available in the package vignettes! See <code><a href="articles/observed_stat_examples.html">vignette("observed_stat_examples")</a></code> for more examples like the one above, and <code><a href="articles/infer.html">vignette("infer")</a></code> for discussion of the underlying principles of the package design.</p>
 </div>
 </div>
@@ -206,7 +208,7 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=infer">https://​cloud.r-project.org/​package=infer</a>
 </li>
@@ -216,20 +218,23 @@
 </li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>CC0</li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CONTRIBUTING.html">Contributing guide</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Andrew Bray <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Chester Ismay <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-2820-2547" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
@@ -240,14 +245,15 @@
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=infer"><img src="https://www.r-pkg.org/badges/version/infer" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://codecov.io/github/tidymodels/infer/?branch=master"><img src="https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg" alt="Coverage Status"></a></li>
+<li><a href="https://cran.r-project.org/package=infer" class="external-link"><img src="https://www.r-pkg.org/badges/version/infer" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://codecov.io/github/tidymodels/infer/?branch=master" class="external-link"><img src="https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg" alt="Coverage Status"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
@@ -267,6 +273,8 @@
 
   
 
+
+  
 
   </body>
 </html>
