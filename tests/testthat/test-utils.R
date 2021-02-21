@@ -73,6 +73,49 @@ test_that("glue_null works", {
   )
 })
 
+test_that("check_type works", {
+  x_var <- 1L
+
+  expect_silent(check_type(x_var, is.integer))
+
+  expect_error(check_type(x_var, is.character), "x_var.*character.*integer")
+  expect_error(
+    check_type(x_var, is.character, "symbolic"), "x_var.*symbolic.*integer"
+  )
+
+  x_df <- data.frame(x = TRUE)
+  expect_silent(check_type(x_df, is.data.frame))
+  expect_error(
+    check_type(x_df, is.logical), "x_df.*logical.*data\\.frame"
+  )
+})
+
+test_that("check_type allows `NULL`", {
+  input <- NULL
+  expect_silent(check_type(input, is.numeric, allow_null = TRUE))
+})
+
+test_that("check_type allows custom name for `x`", {
+  input <- "a"
+  expect_error(check_type(input, is.numeric, x_name = "aaa"), "^`aaa`")
+})
+
+test_that("check_type allows extra arguments for `predicate`", {
+  is_geq <- function(x, min_val) {
+    x >= min_val
+  }
+  expect_silent(check_type(1, is_geq, min_val = 0))
+  expect_error(check_type(1, is_geq, min_val = 2))
+})
+
+test_that("check_type allows formula `predicate`", {
+  expect_silent(check_type(1, ~ is.numeric(.) && (. > 0)))
+
+  # By default type should be inferred as the whole formula
+  expect_error(check_type("a", ~ is.numeric(.)), "'~is\\.numeric\\(\\.\\)'")
+})
+
+
 test_that("get_type works", {
   expect_equal(get_type(data.frame(x = 1)), "data.frame")
   expect_equal(get_type(list(x = 1)), "list")

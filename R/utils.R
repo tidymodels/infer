@@ -464,33 +464,52 @@ check_obs_stat <- function(obs_stat) {
 #' Throw an error in case object is not of desired type.
 #'
 #' @param x An object to check.
-#' @param predicate A function to perform check. A good idea is to use function
-#'   named `is.*()` or `is_*()` with possible `<package>::` prefix.
-#' @param type A string for desired type. If `NULL`, type is taken from parsing
-#'   original name of supplied `predicate`: all alphanumeric with '_' and '.'
-#'   characters (until the name end) after the first appearance of either `is.`
-#'   or `is_`. In case of a doubt supply `type` explicitly.
+#' @param predicate A function to perform check or a formula (as input for
+#'   `rlang::as_function()`). A good idea is to use function named `is.*()` or
+#'   `is_*()` with possible `<package>::` prefix.
+#' @param type_name A string for desired type name. If `NULL`, type is taken
+#'   from parsing original name of supplied `predicate`: all alphanumeric with
+#'   '_' and '.' characters (until the name end) after the first appearance of
+#'   either `is.` or `is_`. In case of a doubt supply `type_name` explicitly.
+#' @param x_name String to be used as variable name instead of supplied one
+#'   (default).
+#' @param allow_null If `TRUE` then error isn't thrown if `x` is `NULL`, no
+#'   matter what `predicate(x)` returns.
+#' @param ... Arguments to be passed to `predicate`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' x <- 1
 #' check_type(x, is.numeric)
 #' check_type(x, is.logical)
 #' check_type(x, rlang::is_string, "character of length 1")
+#' check_type(
+#'   x,
+#'   ~ is.character(.) && (length(.) == 1),
+#'   "character of length 1"
+#' )
 #' }
 #'
 #' @keywords internal
 #' @noRd
-check_type <- function(x, predicate, type = NULL) {
-  x_name <- deparse(rlang::enexpr(x))
-  if (is.null(type)) {
-    predicate_name <- deparse(rlang::enexpr(predicate))
-    type <- parse_type(predicate_name)
+check_type <- function(x, predicate, type_name = NULL, x_name = NULL,
+                        allow_null = FALSE, ...) {
+  if (is.null(x_name)) {
+    x_name <- deparse(substitute(x))
   }
 
-  if (!isTRUE(predicate(x))) {
+  if (is.null(type_name)) {
+    predicate_name <- deparse(rlang::enexpr(predicate))
+    type_name <- parse_type(predicate_name)
+  }
+
+  predicate <- rlang::as_function(predicate)
+
+  is_pred_true <- (allow_null && is.null(x)) || isTRUE(predicate(x, ...))
+
+  if (!is_pred_true) {
     # Not using "must be of type" because of 'tibble' and 'string' cases
-    stop_glue("`{x_name}` must be '{type}', not '{get_type(x)}'.")
+    stop_glue("`{x_name}` must be '{type_name}', not '{get_type(x)}'.")
   }
 
   x
@@ -506,8 +525,14 @@ get_type <- function(x) {
 }
 
 parse_type <- function(f_name) {
-  regmatches(
+  res <- regmatches(
     f_name,
     regexec("is[_\\.]([[:alnum:]_\\.]+)$", f_name)
   )[[1]][2]
+
+  if (is.na(res)) {
+    res <- f_name
+  }
+
+  res
 }
