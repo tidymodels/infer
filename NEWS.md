@@ -2,6 +2,18 @@
 
 To be released as 0.6.0.
 
+## Breaking changes
+
+- Added a `prop` argument to `rep_slice_sample()` as an alternative to the `n`
+argument for specifying the proportion of rows in the supplied data to sample
+per replicate (#361, #362, #363). This changes order of arguments of
+`rep_slice_sample()` (in order to be more aligned with `dplyr::slice_sample()`)
+which might break code if it didn't use named arguments (like
+`rep_slice_sample(df, 5, TRUE)`). To fix this, use named arguments (like
+`rep_slice_sample(df, 5, replicate = TRUE)`).
+
+## Improvements
+
 - Improved behavioral consistency of `calculate()`. The package will now
    * supply a consistent error when the supplied `stat` argument isn't well-defined
 for the variables specified
@@ -14,9 +26,6 @@ not supply sufficient information to calculate an observed statistic
 - Implemented the standardized proportion $z$ statistic for one categorical variable
 - Added `two.sided` as an acceptable alias for `two_sided` for the 
 `direction` argument in `get_p_value()` and `shade_p_value()` (#355)
-- Added a `prop` argument to `rep_slice_sample()` as an alternative to the `n` 
-argument for specifying the proportion of rows in the supplied data to sample 
-per replicate (#361, #362, #363)
 - Various bug fixes and improvements to internal consistency
 
 # infer 0.5.4
