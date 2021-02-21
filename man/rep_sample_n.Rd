@@ -9,22 +9,23 @@ rep_sample_n(tbl, size, replace = FALSE, reps = 1, prob = NULL)
 
 rep_slice_sample(
   .data,
-  n = 1,
+  n = NULL,
+  prop = NULL,
   replace = FALSE,
   weight_by = NULL,
-  reps = 1,
-  prop = NULL
+  reps = 1
 )
 }
 \arguments{
 \item{tbl, .data}{Data frame of population from which to sample.}
 
 \item{size, n, prop}{\code{size} and \code{n} refer to the sample size of each sample.
-The \code{size} argument to \code{rep_sample_n()} is required, while \code{n} defaults to
-1 in \code{rep_slice_sample()}. \code{prop}, an argument to \code{rep_slice_sample()},
-refers to the proportion of rows to sample in each sample, and is rounded
-down in the case that \code{prop * nrow(.data)} is not an integer. When using
-\code{rep_slice_sample()}, please only supply one of \code{n} or \code{prop}.}
+The \code{size} argument to \code{rep_sample_n()} is required, while in
+\code{rep_slice_sample()} sample size defaults to 1 if not specified. \code{prop}, an
+argument to \code{rep_slice_sample()}, refers to the proportion of rows to sample
+in each sample, and is rounded down in the case that \code{prop * nrow(.data)} is
+not an integer. When using \code{rep_slice_sample()}, please only supply one of
+\code{n} or \code{prop}.}
 
 \item{replace}{Should samples be taken with replacement?}
 
@@ -44,10 +45,18 @@ This operation is especially helpful while creating sampling
 distributions—see the examples below!
 }
 \details{
-The \code{\link[dplyr:sample_n]{dplyr::sample_n()}} function (to which \code{rep_sample_n()} was
-originally a supplement) has been superseded by \code{\link[dplyr:slice]{dplyr::slice_sample()}}.
-\code{rep_sample_n()} now provides a light wrapper around \code{rep_slice_sample()},
-which has a more similar interface to \code{slice_sample()}.
+\code{rep_sample_n()} and \code{rep_slice_sample()} are designed to behave similar to
+their dplyr counterparts. As such, they have at least the following
+differences:
+\itemize{
+\item In case \code{replace = FALSE} having \code{size} bigger than number of data rows in
+\code{rep_sample_n()} will give an error. In \code{rep_slice_sample()} having such \code{n}
+or \code{prop > 1} will give warning and output sample size will be set to number
+of rows in data.
+}
+
+Note that the \code{\link[dplyr:sample_n]{dplyr::sample_n()}} function  has been superseded by
+\code{\link[dplyr:slice]{dplyr::slice_sample()}}.
 }
 \examples{
 library(dplyr)
@@ -73,8 +82,8 @@ ggplot(p_hats, aes(x = prop_college)) +
     x = "p_hat", y = "Number of samples",
     title = "Sampling distribution of p_hat"
   )
-  
-# sampling with probability weights. Note probabilities are automatically 
+
+# sampling with probability weights. Note probabilities are automatically
 # renormalized to sum to 1
 df <- tibble(
   id = 1:5,
