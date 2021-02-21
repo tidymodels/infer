@@ -147,6 +147,15 @@ is_color_string <- function(x) {
     tryCatch(is.matrix(grDevices::col2rgb(x)), error = function(e) {FALSE})
 }
 
+is_single_number <- function(x, min_val = -Inf, max_val = Inf,
+                             include_min_val = TRUE, include_max_val = TRUE) {
+  left_compare <- if (include_min_val) {`>=`} else {`>`}
+  right_compare <- if (include_max_val) {`<=`} else {`<`}
+
+  is.numeric(x) && (length(x) == 1) && is.finite(x) &&
+    left_compare(x, min_val) && right_compare(x, max_val)
+}
+
 # Messaging, warning, and erroring ------------------------------------------
 
 stop_glue <- function(..., .sep = "", .envir = parent.frame(),

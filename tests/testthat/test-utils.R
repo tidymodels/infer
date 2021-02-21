@@ -13,6 +13,38 @@ test_that("append_infer_class works", {
 
 null_val <- NULL
 
+test_that("is_single_number works", {
+  # Basic usage
+  expect_true(is_single_number(1))
+  expect_true(is_single_number(1L))
+  expect_false(is_single_number("a"))
+  expect_false(is_single_number(1:2))
+
+  # Infinity and `NA` are not allowed
+  expect_false(is_single_number(Inf))
+  expect_false(is_single_number(-Inf))
+  expect_false(is_single_number(NA_real_))
+
+  # Using boundaries
+  expect_true(is_single_number(1, min_val = -10))
+  expect_false(is_single_number(1, min_val = 10))
+
+  expect_true(is_single_number(1, max_val = 10))
+  expect_false(is_single_number(1, max_val = -10))
+
+  expect_true(is_single_number(1, min_val = -10, max_val = 10))
+  expect_false(is_single_number(1, min_val = -10, max_val = 0))
+  expect_false(is_single_number(1, min_val = 10, max_val = 100))
+
+  # Using boundary inclusivity
+  ## Inclusive by default
+  expect_true(is_single_number(1, min_val = 1))
+  expect_true(is_single_number(1, max_val = 1))
+
+  expect_false(is_single_number(1, min_val = 1, include_min_val = FALSE))
+  expect_false(is_single_number(1, max_val = 1, include_max_val = FALSE))
+})
+
 test_that("stop_glue handles `NULL`", {
   expect_error(stop_glue("Hello {null_val}", "!"), "NULL")
 })
