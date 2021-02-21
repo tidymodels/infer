@@ -45,6 +45,14 @@ test_that("is_single_number works", {
   expect_false(is_single_number(1, max_val = 1, include_max_val = FALSE))
 })
 
+test_that("is_truefalse works", {
+  expect_true(is_truefalse(TRUE))
+  expect_true(is_truefalse(FALSE))
+  expect_false(is_truefalse(c(TRUE, TRUE)))
+  expect_false(is_truefalse("a"))
+  expect_false(is_truefalse(1L))
+})
+
 test_that("stop_glue handles `NULL`", {
   expect_error(stop_glue("Hello {null_val}", "!"), "NULL")
 })

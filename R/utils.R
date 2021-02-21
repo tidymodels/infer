@@ -156,6 +156,10 @@ is_single_number <- function(x, min_val = -Inf, max_val = Inf,
     left_compare(x, min_val) && right_compare(x, max_val)
 }
 
+is_truefalse <- function(x) {
+  identical(x, TRUE) || identical(x, FALSE)
+}
+
 # Messaging, warning, and erroring ------------------------------------------
 
 stop_glue <- function(..., .sep = "", .envir = parent.frame(),
