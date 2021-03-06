@@ -56,7 +56,7 @@ observed_f_statistic <- gss %>%
 
 The observed $F$ statistic is `r observed_f_statistic`. Now, we want to compare this statistic to a null distribution, generated under the assumption that age and political party affiliation are not actually related, to get a sense of how likely it would be for us to see this observed statistic if there were actually no association between the two variables.
 
-We can `generate` the null distribution using randomization. The randomization approach permutes the response and explanatory variables, so that each person's educational attainment is matched up with a random income from the sample in order to break up any association between the two.
+We can `generate` the null distribution using randomization. The randomization approach permutes the response and explanatory variables, so that each person's party affiliation is matched up with a random age from the sample in order to break up any association between the two.
 
 ```{r generate-null-f, warning = FALSE, message = FALSE}
 # generate the null distribution using randomization
