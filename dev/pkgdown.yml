@@ -7,7 +7,7 @@ articles:
   infer: infer.html
   observed_stat_examples: observed_stat_examples.html
   t_test: t_test.html
-last_built: 2021-03-06T19:54Z
+last_built: 2021-03-07T07:47Z
 urls:
   reference: https://infer.tidymodels.org/reference
   article: https://infer.tidymodels.org/articles
