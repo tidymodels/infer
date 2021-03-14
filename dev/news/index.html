@@ -168,6 +168,16 @@
 <a href="#infer-0549000" class="anchor"></a>infer 0.5.4.9000<small> Unreleased </small>
 </h1>
 <p>To be released as 0.6.0.</p>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<ul>
+<li>Added a <code>prop</code> argument to <code><a href="../reference/rep_sample_n.html">rep_slice_sample()</a></code> as an alternative to the <code>n</code> argument for specifying the proportion of rows in the supplied data to sample per replicate (<a href='https://github.com/tidymodels/infer/issues/361'>#361</a>, <a href='https://github.com/tidymodels/infer/issues/362'>#362</a>, <a href='https://github.com/tidymodels/infer/issues/363'>#363</a>). This changes order of arguments of <code><a href="../reference/rep_sample_n.html">rep_slice_sample()</a></code> (in order to be more aligned with <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">dplyr::slice_sample()</a></code>) which might break code if it didn’t use named arguments (like <code><a href="../reference/rep_sample_n.html">rep_slice_sample(df, 5, TRUE)</a></code>). To fix this, use named arguments (like <code><a href="../reference/rep_sample_n.html">rep_slice_sample(df, 5, replicate = TRUE)</a></code>).</li>
+</ul>
+</div>
+<div id="improvements" class="section level2">
+<h2 class="hasAnchor">
+<a href="#improvements" class="anchor"></a>Improvements</h2>
 <ul>
 <li>Improved behavioral consistency of <code><a href="../reference/calculate.html">calculate()</a></code>. The package will now
 <ul>
@@ -178,9 +188,17 @@
 </li>
 <li>Added <code><a href="../reference/observe.html">observe()</a></code>, a wrapper function around <code><a href="../reference/specify.html">specify()</a></code>, <code><a href="../reference/hypothesize.html">hypothesize()</a></code>, and <code><a href="../reference/calculate.html">calculate()</a></code>, to calculate observed statistics.</li>
 <li>Implemented the standardized proportion <span class="math inline"><em>z</em></span> statistic for one categorical variable</li>
-<li>Added <code>two.sided</code> as an acceptable alias for <code>two_sided</code> for the <code>direction</code> argument in <code><a href="../reference/get_p_value.html">get_p_value()</a></code> and <code><a href="../reference/shade_p_value.html">shade_p_value()</a></code> (<a href='https://github.com/tidymodels/infer/issues/355'>#355</a>) more closely resembles <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">dplyr::slice_sample()</a></code> (the function that supersedes <code><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">dplyr::sample_n()</a></code>) (<a href='https://github.com/tidymodels/infer/issues/325'>#325</a>)</li>
+<li>Added <code>two.sided</code> as an acceptable alias for <code>two_sided</code> for the <code>direction</code> argument in <code><a href="../reference/get_p_value.html">get_p_value()</a></code> and <code><a href="../reference/shade_p_value.html">shade_p_value()</a></code> (<a href='https://github.com/tidymodels/infer/issues/355'>#355</a>)</li>
 <li>Various bug fixes and improvements to internal consistency</li>
 </ul>
+</div>
+<div id="other" class="section level2">
+<h2 class="hasAnchor">
+<a href="#other" class="anchor"></a>Other</h2>
+<ul>
+<li>Added Simon P. Couch as an author. Long deserved for his reliable maintenance and improvements of the package.</li>
+</ul>
+</div>
 </div>
     <div id="infer-054" class="section level1">
 <h1 class="page-header" data-toc-text="0.5.4">
@@ -189,7 +207,7 @@
 <ul>
 <li>
 <code><a href="../reference/rep_sample_n.html">rep_sample_n()</a></code> no longer errors when supplied a <code>prob</code> argument (<a href='https://github.com/tidymodels/infer/issues/279'>#279</a>)</li>
-<li>Added <code><a href="../reference/rep_sample_n.html">rep_slice_sample()</a></code>, a light wrapper around <code><a href="../reference/rep_sample_n.html">rep_sample_n()</a></code>, that more closely resembles <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">dplyr::slice_sample()</a></code> (the function that supersedes) <code><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">dplyr::sample_n()</a></code> (<a href='https://github.com/tidymodels/infer/issues/325'>#325</a>)</li>
+<li>Added <code><a href="../reference/rep_sample_n.html">rep_slice_sample()</a></code>, a light wrapper around <code><a href="../reference/rep_sample_n.html">rep_sample_n()</a></code>, that more closely resembles <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">dplyr::slice_sample()</a></code> (the function that supersedes <code><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">dplyr::sample_n()</a></code>) (<a href='https://github.com/tidymodels/infer/issues/325'>#325</a>)</li>
 <li>Added a <code>success</code>, <code>correct</code>, and <code>z</code> argument to <code><a href="../reference/prop_test.html">prop_test()</a></code> (<a href='https://github.com/tidymodels/infer/issues/343'>#343</a>, <a href='https://github.com/tidymodels/infer/issues/347'>#347</a>, <a href='https://github.com/tidymodels/infer/issues/353'>#353</a>)</li>
 <li>Implemented observed statistic calculation for the standardized proportion <span class="math inline"><em>z</em></span> statistic (<a href='https://github.com/tidymodels/infer/issues/351'>#351</a>, <a href='https://github.com/tidymodels/infer/issues/353'>#353</a>)</li>
 <li>Various bug fixes and improvements to documentation and errors.</li>
@@ -199,9 +217,9 @@
 <h1 class="page-header" data-toc-text="0.5.3">
 <a href="#infer-053" class="anchor"></a>infer 0.5.3<small> 2020-07-14 </small>
 </h1>
-<div id="breaking-changes" class="section level2">
+<div id="breaking-changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<a href="#breaking-changes-1" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>
 <code><a href="../reference/get_confidence_interval.html">get_confidence_interval()</a></code> now uses column names (‘lower_ci’ and ‘upper_ci’) in output that are consistent with other infer functionality (<a href='https://github.com/tidymodels/infer/issues/317'>#317</a>).</li>
@@ -215,9 +233,9 @@
 <code><a href="../reference/get_confidence_interval.html">get_confidence_interval()</a></code> can now produce bias-corrected confidence intervals by setting <code>type = "bias-corrected"</code>. Thanks to <a href='https://github.com/davidbaniadam'>@davidbaniadam</a> for the initial implementation (<a href='https://github.com/tidymodels/infer/issues/237'>#237</a>, <a href='https://github.com/tidymodels/infer/issues/318'>#318</a>)!</li>
 </ul>
 </div>
-<div id="other" class="section level2">
+<div id="other-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#other" class="anchor"></a>Other</h2>
+<a href="#other-1" class="anchor"></a>Other</h2>
 <ul>
 <li>Fix CRAN check failures related to long double errors.</li>
 </ul>
@@ -258,9 +276,9 @@
 <h1 class="page-header" data-toc-text="0.5.0">
 <a href="#infer-050" class="anchor"></a>infer 0.5.0<small> 2019-09-27 </small>
 </h1>
-<div id="breaking-changes-1" class="section level2">
+<div id="breaking-changes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes-1" class="anchor"></a>Breaking changes</h2>
+<a href="#breaking-changes-2" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>
 <code><a href="../reference/shade_confidence_interval.html">shade_confidence_interval()</a></code> now plots vertical lines starting from zero (previously - from the bottom of a plot) (<a href='https://github.com/tidymodels/infer/issues/234'>#234</a>).</li>
@@ -268,9 +286,9 @@
 <code><a href="../reference/shade_p_value.html">shade_p_value()</a></code> now uses “area under the curve” approach to shading (<a href='https://github.com/tidymodels/infer/issues/229'>#229</a>).</li>
 </ul>
 </div>
-<div id="other-1" class="section level2">
+<div id="other-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#other-1" class="anchor"></a>Other</h2>
+<a href="#other-2" class="anchor"></a>Other</h2>
 <ul>
 <li>Updated <code><a href="../reference/chisq_test.html">chisq_test()</a></code> to take arguments in a response/explanatory format, perform goodness of fit tests, and default to the approximation approach (<a href='https://github.com/tidymodels/infer/issues/241'>#241</a>).</li>
 <li>Updated <code><a href="../reference/chisq_stat.html">chisq_stat()</a></code> to do goodness of fit (<a href='https://github.com/tidymodels/infer/issues/241'>#241</a>).</li>
@@ -292,9 +310,9 @@
 <h1 class="page-header" data-toc-text="0.4.0">
 <a href="#infer-040" class="anchor"></a>infer 0.4.0<small> 2018-11-15 </small>
 </h1>
-<div id="breaking-changes-2" class="section level2">
+<div id="breaking-changes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#breaking-changes-2" class="anchor"></a>Breaking changes</h2>
+<a href="#breaking-changes-3" class="anchor"></a>Breaking changes</h2>
 <ul>
 <li>Changed method of computing two-sided p-value to a more conventional one. It also makes <code><a href="../reference/get_p_value.html">get_pvalue()</a></code> and <code><a href="../reference/visualize.html">visualize()</a></code> more aligned (<a href='https://github.com/tidymodels/infer/issues/205'>#205</a>).</li>
 </ul>
@@ -318,9 +336,9 @@
 <code><a href="../reference/shade_confidence_interval.html">shade_confidence_interval()</a></code> - {ggplot2}-like layer function to add information about confidence interval region to <code><a href="../reference/visualize.html">visualize()</a></code> output. Has alias <code><a href="../reference/shade_confidence_interval.html">shade_ci()</a></code>.</li>
 </ul>
 </div>
-<div id="other-2" class="section level2">
+<div id="other-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#other-2" class="anchor"></a>Other</h2>
+<a href="#other-3" class="anchor"></a>Other</h2>
 <ul>
 <li>Account for <code>NULL</code> value in left hand side of formula in <code><a href="../reference/specify.html">specify()</a></code> (<a href='https://github.com/tidymodels/infer/issues/156'>#156</a>) and <code>type</code> in <code><a href="../reference/generate.html">generate()</a></code> (<a href='https://github.com/tidymodels/infer/issues/157'>#157</a>).</li>
 <li>Update documentation code to follow tidyverse style guide (<a href='https://github.com/tidymodels/infer/issues/159'>#159</a>).</li>
@@ -499,7 +517,7 @@
 
 <div class="author">
   <p>
-    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Ben Baumer, Mine Cetinkaya-Rundel.
+    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Simon Couch, Ben Baumer, Mine Cetinkaya-Rundel.
     Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
   </p>
 </div>
