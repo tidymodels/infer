@@ -28,6 +28,10 @@ not supply sufficient information to calculate an observed statistic
 `direction` argument in `get_p_value()` and `shade_p_value()` (#355)
 - Various bug fixes and improvements to internal consistency
 
+## Other
+
+- Added Simon P. Couch as an author. Long deserved for his reliable maintenance and improvements of the package.
+
 # infer 0.5.4
 
 - `rep_sample_n()` no longer errors when supplied a `prob` argument (#279)
