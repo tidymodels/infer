@@ -1039,7 +1039,7 @@ Finding the observed statistic,
 ```{r}
 t_hat <- gss %>% 
   specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
+  hypothesize(null = "point", mu = 40) %>% # I'm a little bit confused why there is a hypothesize step when we want to get a confidence interval
   calculate(stat = "t")
 ```
 
@@ -1057,7 +1057,7 @@ Then, generating the null distribution,
 ```{r}
 boot <- gss %>%
    specify(response = hours) %>%
-   hypothesize(null = "point", mu = 40) %>%
+   hypothesize(null = "point", mu = 40) %>% # the same as here
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "t")
 ```
@@ -1082,7 +1082,7 @@ standard_error_ci <- boot %>%
   get_ci(type = "se", point_estimate = t_hat)
 
 visualize(boot) +
-  shade_confidence_interval(endpoints = standard_error_ci)
+  shade_confidence_interval(endpoints = standard_error_ci) # this result is much different to the previous percentile's one
 ```
 
 
