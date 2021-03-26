@@ -419,7 +419,7 @@ calc_impl.t <- function(type, x, order, ...) {
         dplyr::summarize(
           stat = stats::t.test(
             !!response_expr(x),
-            mu = attr(x, "params"),
+            mu = attr(!!x, "params"),
             ...
           )[["statistic"]]
         )

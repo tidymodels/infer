@@ -26,6 +26,8 @@ not supply sufficient information to calculate an observed statistic
 - Implemented the standardized proportion $z$ statistic for one categorical variable
 - Added `two.sided` as an acceptable alias for `two_sided` for the 
 `direction` argument in `get_p_value()` and `shade_p_value()` (#355)
+- Fixed bug in `calculate()` for `stat = "t"` to allow for handling
+columns named `x`
 - Various bug fixes and improvements to internal consistency
 
 ## Other
