@@ -613,3 +613,25 @@ test_that("calculate messages informatively with excessive null", {
     "point null hypothesis `sigma = 10` does not inform calculation"
   )
 })
+
+test_that("calculate can handle variables named x", {
+  expect_silent({
+    t_0 <- data.frame(x = 1:10) %>% 
+      specify(response = x) %>% 
+      hypothesise(null = "point", mu = 0) %>% 
+      calculate(stat = "t")
+  })
+  
+  expect_silent({
+    t_1 <- data.frame(sample = 1:10) %>% 
+      specify(response = sample) %>% 
+      hypothesise(null = "point", mu = 0) %>% 
+      calculate(stat = "t")
+  })
+  
+  expect_equal(
+    unname(t_0$stat),
+    unname(t_1$stat),
+    tolerance = .001
+  )
+})
