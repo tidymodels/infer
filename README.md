@@ -46,7 +46,7 @@ install.packages("infer")
 
 To install the developmental stable version of `infer`, make sure to
 install `remotes` first. The `pkgdown` website for this version is at
-<https://https://infer.tidymodels.org/>.
+<https://infer.tidymodels.org/>.
 
 ``` r
 install.packages("remotes")

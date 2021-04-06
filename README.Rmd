@@ -43,7 +43,7 @@ To install the current stable version of `infer` from CRAN:
 install.packages("infer")
 ```
 
-To install the developmental stable version of `infer`, make sure to install `remotes` first. The `pkgdown` website for this version is at <https://https://infer.tidymodels.org/>.
+To install the developmental stable version of `infer`, make sure to install `remotes` first. The `pkgdown` website for this version is at <https://infer.tidymodels.org/>.
 
 ```{r, eval = FALSE}
 install.packages("remotes")
