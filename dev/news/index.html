@@ -191,6 +191,7 @@
 <li>Added <code>two.sided</code> as an acceptable alias for <code>two_sided</code> for the <code>direction</code> argument in <code><a href="../reference/get_p_value.html">get_p_value()</a></code> and <code><a href="../reference/shade_p_value.html">shade_p_value()</a></code> (<a href='https://github.com/tidymodels/infer/issues/355'>#355</a>)</li>
 <li>Fixed bug in <code><a href="../reference/calculate.html">calculate()</a></code> for <code>stat = "t"</code> to allow for handling columns named <code>x</code>
 </li>
+<li>Fixed bug in <code>shade_p_value</code> where the package would erroneously warn when <code>stat = "diff in props"</code> and one of the variables was a factor with more than two levels.</li>
 <li>Various bug fixes and improvements to internal consistency</li>
 </ul>
 </div>
