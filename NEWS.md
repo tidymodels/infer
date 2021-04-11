@@ -28,6 +28,9 @@ not supply sufficient information to calculate an observed statistic
 `direction` argument in `get_p_value()` and `shade_p_value()` (#355)
 - Fixed bug in `calculate()` for `stat = "t"` to allow for handling
 columns named `x`
+- Fixed bug in `shade_p_value` where the package would erroneously warn when
+  `stat = "diff in props"` and one of the variables was a factor with more than
+  two levels.
 - Various bug fixes and improvements to internal consistency
 
 ## Other

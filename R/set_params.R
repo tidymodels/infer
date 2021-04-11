@@ -83,8 +83,8 @@ set_params <- function(x) {
       # Two sample proportions (z distribution)
       # Parameter(s) not needed since standard normal
       if (
-        (length(levels(response_variable(x))) == 2) &
-        (length(levels(explanatory_variable(x))) == 2)
+        (length(unique(response_variable(x))) == 2) &
+        (length(unique(explanatory_variable(x))) == 2)
       ) {
         attr(x, "theory_type") <- "Two sample props z"
       } else {
