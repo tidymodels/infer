@@ -6,18 +6,32 @@ test_that("x is a tibble", {
   expect_error(calculate(vec, stat = "mean"))
 })
 
-test_that("stat argument is appropriate", {
+test_that("calculate checks `stat` argument", {
   # stat is a string
   expect_error(calculate(gss_tbl, stat = 3))
 
-  # stat is one of the implemented options
+  # stat is one of the implemented options with informative error
   gen_gss_slope <- gss_tbl %>%
     specify(hours ~ age) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_error(calculate(gen_gss_slope, stat = "slopee"))
-  expect_error(calculate(gen_gss_slope, stat = "stdev"))
-  expect_error(calculate(gen_gss_slope, stat = "stat"))
+
+  expect_error(
+    calculate(gen_gss_slope, stat = "slopee"),
+    '`stat` must be one of.*Did you mean "slope"'
+  )
+  expect_error(
+    calculate(gen_gss_slope, stat = "stdev"),
+    "`stat` must be one of"
+  )
+  expect_error(
+    calculate(gen_gss_slope, stat = "stat"),
+    "`stat` must be one of"
+  )
+  expect_error(
+    calculate(gen_gss_slope, stat = "chi sq"),
+    '`stat` must be one of.*Did you mean "Chisq"'
+  )
 })
 
 test_that("response attribute has been set", {

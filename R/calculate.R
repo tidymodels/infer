@@ -87,7 +87,7 @@ calculate <- function(x,
                       order = NULL,
                       ...) {
   check_type(x, tibble::is_tibble)
-  check_type(stat, rlang::is_string)
+  check_calculate_stat(stat)
   check_variables_vs_stat(x, stat)
   check_point_params(x, stat)
   
@@ -114,6 +114,12 @@ calculate <- function(x,
   }
 
   result
+}
+
+check_calculate_stat <- function(stat) {
+  check_type(stat, rlang::is_string)
+
+  rlang::arg_match(stat, implemented_stats)
 }
 
 # Raise an error if the user supplies a test statistic that doesn't
