@@ -31,6 +31,7 @@ columns named `x`
 - Fixed bug in `shade_p_value` where the package would erroneously warn when
   `stat = "diff in props"` and one of the variables was a factor with more than
   two levels.
+- Update `calculate()` to allow lowercase aliases for `stat` argument (#373).
 - Various bug fixes and improvements to internal consistency
 
 ## Other
