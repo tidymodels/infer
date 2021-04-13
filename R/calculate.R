@@ -14,8 +14,8 @@
 #'   output from [hypothesize()] piped in to here for theory-based inference.
 #' @param stat A string giving the type of the statistic to calculate. Current
 #'   options include `"mean"`, `"median"`, `"sum"`, `"sd"`, `"prop"`, `"count"`,
-#'   `"diff in means"`, `"diff in medians"`, `"diff in props"`, `"Chisq"`,
-#'   `"F"`, `"t"`, `"z"`, `"ratio of props"`, `"slope"`, 
+#'   `"diff in means"`, `"diff in medians"`, `"diff in props"`, `"Chisq"` (or
+#'   `"chisq"`), `"F"` (or `"f"`), `"t"`, `"z"`, `"ratio of props"`, `"slope"`,
 #'   `"odds ratio"`, and `"correlation"`.
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction (or division
@@ -87,7 +87,7 @@ calculate <- function(x,
                       order = NULL,
                       ...) {
   check_type(x, tibble::is_tibble)
-  check_calculate_stat(stat)
+  stat <- check_calculate_stat(stat)
   check_variables_vs_stat(x, stat)
   check_point_params(x, stat)
   
@@ -119,19 +119,20 @@ calculate <- function(x,
 check_calculate_stat <- function(stat) {
   check_type(stat, rlang::is_string)
 
-  rlang::arg_match(stat, implemented_stats)
+  # Check for possible `stat` aliases
+  alias_match_id <- match(stat, implemented_stats_aliases[["alias"]])
+  if (!is.na(alias_match_id)) {
+    stat <- implemented_stats_aliases[["target"]][alias_match_id]
+  } else {
+    rlang::arg_match(stat, implemented_stats)
+  }
+
+  stat
 }
 
 # Raise an error if the user supplies a test statistic that doesn't
 # make sense given the variable specified
 check_variables_vs_stat <- function(x, stat) {
-  if (!stat %in% implemented_stats) {
-    stop_glue(
-      "You specified a string for `stat` that is not implemented. ",
-      "Check your spelling and `?calculate` for current options."
-    )
-  }
-
   response_type <- determine_variable_type(x, "response")
   explanatory_type <- determine_variable_type(x, "explanatory")
 

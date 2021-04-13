@@ -32,6 +32,19 @@ test_that("calculate checks `stat` argument", {
     calculate(gen_gss_slope, stat = "chi sq"),
     '`stat` must be one of.*Did you mean "Chisq"'
   )
+
+  # stat can be one of the allowed aliases
+  chisq_df <- gss %>% specify(formula = finrela ~ sex)
+  expect_equal(
+    calculate(chisq_df, stat = "Chisq")[["stat"]],
+    calculate(chisq_df, stat = "chisq")[["stat"]]
+  )
+
+  f_df <- gss %>% specify(age ~ partyid)
+  expect_equal(
+    calculate(f_df, stat = "F")[["stat"]],
+    calculate(f_df, stat = "f")[["stat"]]
+  )
 })
 
 test_that("response attribute has been set", {

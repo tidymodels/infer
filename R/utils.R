@@ -256,11 +256,19 @@ get_stat_desc <- function(stat) {
   stat_desc$description[stat_desc$stat == stat]
 }
 
+# Values of `stat` argument of `calculate()`
 implemented_stats <-  c(
   "mean", "median", "sum", "sd", "prop", "count",
   "diff in means", "diff in medians", "diff in props",
   "Chisq", "F", "slope", "correlation", "t", "z",
   "ratio of props", "odds ratio"
+)
+
+implemented_stats_aliases <- tibble::tribble(
+  ~ alias, ~ target,
+  # Allow case insensitive stat names
+  "f",     "F",
+  "chisq", "Chisq"
 )
 
 untheorized_stats <- implemented_stats[!implemented_stats %in% c(

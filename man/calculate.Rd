@@ -19,8 +19,8 @@ output from \code{\link[=hypothesize]{hypothesize()}} piped in to here for theor
 
 \item{stat}{A string giving the type of the statistic to calculate. Current
 options include \code{"mean"}, \code{"median"}, \code{"sum"}, \code{"sd"}, \code{"prop"}, \code{"count"},
-\code{"diff in means"}, \code{"diff in medians"}, \code{"diff in props"}, \code{"Chisq"},
-\code{"F"}, \code{"t"}, \code{"z"}, \code{"ratio of props"}, \code{"slope"},
+\code{"diff in means"}, \code{"diff in medians"}, \code{"diff in props"}, \code{"Chisq"} (or
+\code{"chisq"}), \code{"F"} (or \code{"f"}), \code{"t"}, \code{"z"}, \code{"ratio of props"}, \code{"slope"},
 \code{"odds ratio"}, and \code{"correlation"}.}
 
 \item{order}{A string vector of specifying the order in which the levels of
