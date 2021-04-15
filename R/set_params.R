@@ -7,7 +7,7 @@ set_params <- function(x) {
   attr(x, "theory_type") <- NULL
   
   if (has_response(x)) {
-    num_response_levels <- length(levels(response_variable(x)))
+    num_response_levels <- length(unique(response_variable(x)))
   }
   
   # One variable
@@ -53,7 +53,7 @@ set_params <- function(x) {
     ) {
       
       # Two sample means (t distribution)
-      if (length(levels(explanatory_variable(x))) == 2) {
+      if (length(unique(explanatory_variable(x))) == 2) {
         attr(x, "theory_type") <- "Two sample t"
         # Keep track of Satterthwaite degrees of freedom since lost when
         # in aggregation w/ calculate()/generate()
