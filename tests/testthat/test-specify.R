@@ -94,4 +94,24 @@ test_that("specify messages when dropping unused levels", {
       specify(age ~ partyid),
     "Dropping unused factor levels c\\(\"ind\", \"other\""
   )
+  
+  expect_message(
+    gss %>%  
+      dplyr::filter(partyid %in% c("rep", "dem")) %>%
+      specify(partyid ~ age),
+    "Dropping unused factor levels c\\(\"ind\", \"other\""
+  )
+  
+  expect_message(
+    gss %>%  
+      dplyr::filter(partyid %in% c("rep", "dem")) %>%
+      specify(partyid ~ NULL),
+    "Dropping unused factor levels c\\(\"ind\", \"other\""
+  )
+  
+  expect_silent(
+    gss %>%  
+      dplyr::filter(partyid %in% c("rep", "dem")) %>%
+      specify(age ~ NULL)
+  )
 })
