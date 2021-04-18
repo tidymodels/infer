@@ -236,7 +236,7 @@ variable data.</p>
 <span class='co'># specify a relationship between variables as a formula...</span>
 <span class='va'>gss</span> <span class='op'>%&gt;%</span>
   <span class='fu'>specify</span><span class='op'>(</span><span class='va'>age</span> <span class='op'>~</span> <span class='va'>partyid</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Response: age (numeric)
+</div><div class='output co'>#&gt; <span class='message'>Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.</span></div><div class='output co'>#&gt; Response: age (numeric)
 #&gt; Explanatory: partyid (factor)
 #&gt; </span><span style='color: #949494;'># A tibble: 500 x 2</span><span>
 #&gt;      age partyid
@@ -255,7 +255,7 @@ variable data.</p>
 <span class='co'># ...or with named arguments!</span>
 <span class='va'>gss</span> <span class='op'>%&gt;%</span>
   <span class='fu'>specify</span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>age</span>, explanatory <span class='op'>=</span> <span class='va'>partyid</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Response: age (numeric)
+</div><div class='output co'>#&gt; <span class='message'>Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.</span></div><div class='output co'>#&gt; Response: age (numeric)
 #&gt; Explanatory: partyid (factor)
 #&gt; </span><span style='color: #949494;'># A tibble: 500 x 2</span><span>
 #&gt;      age partyid
