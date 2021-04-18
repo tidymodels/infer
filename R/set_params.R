@@ -16,7 +16,7 @@ set_params <- function(x) {
     )
   }
   
-  if (has_response(x)) {
+  if (has_explanatory(x)) {
     num_explanatory_levels <- length(unique(explanatory_variable(x)))
     
     check_factor_levels(
@@ -132,7 +132,7 @@ set_params <- function(x) {
 
 check_factor_levels <- function(x, type, name) {
   if (is.factor(x)) {
-    unused <- levels(x)[!levels(x) %in% unique(x)]
+    unused <- setdiff(levels(x), unique(x))
     
     if (length(unused) > 0) {
       message_glue(
