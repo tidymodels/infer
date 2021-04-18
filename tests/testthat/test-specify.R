@@ -86,3 +86,32 @@ test_that("is_complete works", {
 test_that("specify doesn't have NSE issues (#256)", {
   expect_silent(specify(tibble(x = 1:10), x ~ NULL))
 })
+
+test_that("specify messages when dropping unused levels", {
+  expect_message(
+    gss %>%  
+      dplyr::filter(partyid %in% c("rep", "dem")) %>%
+      specify(age ~ partyid),
+    "Dropping unused factor levels c\\(\"ind\", \"other\""
+  )
+  
+  expect_message(
+    gss %>%  
+      dplyr::filter(partyid %in% c("rep", "dem")) %>%
+      specify(partyid ~ age),
+    "Dropping unused factor levels c\\(\"ind\", \"other\""
+  )
+  
+  expect_message(
+    gss %>%  
+      dplyr::filter(partyid %in% c("rep", "dem")) %>%
+      specify(partyid ~ NULL),
+    "Dropping unused factor levels c\\(\"ind\", \"other\""
+  )
+  
+  expect_silent(
+    gss %>%  
+      dplyr::filter(partyid %in% c("rep", "dem")) %>%
+      specify(age ~ NULL)
+  )
+})

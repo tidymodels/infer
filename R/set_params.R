@@ -7,7 +7,23 @@ set_params <- function(x) {
   attr(x, "theory_type") <- NULL
   
   if (has_response(x)) {
-    num_response_levels <- length(levels(response_variable(x)))
+    num_response_levels <- length(unique(response_variable(x)))
+    
+    check_factor_levels(
+      response_variable(x), 
+      "response", 
+      response_name(x)
+    )
+  }
+  
+  if (has_explanatory(x)) {
+    num_explanatory_levels <- length(unique(explanatory_variable(x)))
+    
+    check_factor_levels(
+      explanatory_variable(x), 
+      "explanatory", 
+      explanatory_name(x)
+    )
   }
   
   # One variable
@@ -53,7 +69,7 @@ set_params <- function(x) {
     ) {
       
       # Two sample means (t distribution)
-      if (length(levels(explanatory_variable(x))) == 2) {
+      if (num_explanatory_levels == 2) {
         attr(x, "theory_type") <- "Two sample t"
         # Keep track of Satterthwaite degrees of freedom since lost when
         # in aggregation w/ calculate()/generate()
@@ -83,8 +99,8 @@ set_params <- function(x) {
       # Two sample proportions (z distribution)
       # Parameter(s) not needed since standard normal
       if (
-        (length(unique(response_variable(x))) == 2) &
-        (length(unique(explanatory_variable(x))) == 2)
+        (num_response_levels == 2) &
+        (num_explanatory_levels == 2)
       ) {
         attr(x, "theory_type") <- "Two sample props z"
       } else {
@@ -112,4 +128,17 @@ set_params <- function(x) {
   }
 
   x
+}
+
+check_factor_levels <- function(x, type, name) {
+  if (is.factor(x)) {
+    unused <- setdiff(levels(x), unique(x))
+    
+    if (length(unused) > 0) {
+      message_glue(
+        "Dropping unused factor levels {list(unused)} from the ",
+        "supplied {type} variable '{name}'."
+      )
+    }
+  }
 }
