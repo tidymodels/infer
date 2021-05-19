@@ -274,24 +274,24 @@ test_that("chi-square works with factors with unused levels", {
   )
 
   # Unused levels in explanatory variable
-  expect_warning(
+  expect_message(
     out <- test_tbl %>%
       specify(y ~ x) %>%
       calculate(stat = "Chisq") %>%
       pull(),
-    "Explanatory.*unused.*levels"
+    "Dropping unused factor levels.*explanatory"
   )
   expect_true(!is.na(out))
 
   # Unused levels in response variable
   test_tbl[["x"]] <- factor(test_tbl[["x"]])
   levels(test_tbl[["y"]]) <- c("e", "f", "g")
-  expect_warning(
+  expect_message(
     out <- test_tbl %>%
       specify(y ~ x) %>%
       calculate(stat = "Chisq") %>%
       pull(),
-    "Response.*unused.*levels"
+    "Dropping unused factor levels.*response"
   )
   expect_true(!is.na(out))
 })

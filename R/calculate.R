@@ -336,14 +336,6 @@ calc_impl.Chisq <- function(type, x, order, ...) {
       res[["statistic"]]
     }
 
-    # Warn about possible unused factor levels
-    if (has_unused_levels(x[[expl_var]])) {
-      warning_glue("Explanatory variable has unused factor levels.")
-    }
-    if (has_unused_levels(x[[resp_var]])) {
-      warning_glue("Response variable has unused factor levels.")
-    }
-
     # Compute result
     result <- x %>%
       dplyr::nest_by(.key = "data") %>%

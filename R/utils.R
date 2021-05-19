@@ -115,13 +115,6 @@ get_success_then_response_levels <- function(x) {
   c(success_attr, response_levels)
 }
 
-has_unused_levels <- function(x) {
-  present_levels <- unique(as.character(x))
-  unused_levels <- setdiff(levels(x), present_levels)
-  
-  length(unused_levels) > 0
-}
-
 is_generated <- function(x) {
   attr(x, "generated")
 }
