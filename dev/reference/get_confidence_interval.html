@@ -174,14 +174,14 @@ simulation-based methods are supported.</p>
 <p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_confidence_interval</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>get_confidence_interval</span><span class='op'>(</span>
   <span class='va'>x</span>,
   level <span class='op'>=</span> <span class='fl'>0.95</span>,
   type <span class='op'>=</span> <span class='st'>"percentile"</span>,
   point_estimate <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span>
 
-<span class='fu'>get_ci</span><span class='op'>(</span><span class='va'>x</span>, level <span class='op'>=</span> <span class='fl'>0.95</span>, type <span class='op'>=</span> <span class='st'>"percentile"</span>, point_estimate <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+<span class='fu'>get_ci</span><span class='op'>(</span><span class='va'>x</span>, level <span class='op'>=</span> <span class='fl'>0.95</span>, type <span class='op'>=</span> <span class='st'>"percentile"</span>, point_estimate <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -229,49 +229,51 @@ interval after previously computing a p-value.</p>
 <code><a href='deprecated.html'>conf_int()</a></code> is a deprecated alias of <code>get_confidence_interval()</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='va'>boot_distr</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'>%&gt;%</span>
-  <span class='co'># We're interested in the number of hours worked per week</span>
-  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='co'># Generate bootstrap samples</span>
-  <span class='fu'><a href='generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"bootstrap"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='co'># Calculate mean of each bootstrap sample</span>
-  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span>
-
-<span class='va'>boot_distr</span> <span class='op'>%&gt;%</span>
-  <span class='co'># Calculate the confidence interval around the point estimate</span>
-  <span class='fu'>get_confidence_interval</span><span class='op'>(</span>
-    <span class='co'># At the 95% confidence level; percentile method</span>
-    level <span class='op'>=</span> <span class='fl'>0.95</span>
-  <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 x 2</span><span>
-#&gt;   lower_ci upper_ci
-#&gt;      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>     40.1     42.7</div><div class='input'>
-<span class='co'># For type = "se" or type = "bias-corrected" we need a point estimate</span>
-<span class='va'>sample_mean</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='va'>boot_distr</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>get_confidence_interval</span><span class='op'>(</span>
-    point_estimate <span class='op'>=</span> <span class='va'>sample_mean</span>,
-    <span class='co'># At the 95% confidence level</span>
-    level <span class='op'>=</span> <span class='fl'>0.95</span>,
-    <span class='co'># Using the standard error method</span>
-    type <span class='op'>=</span> <span class='st'>"se"</span>
-  <span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 1 x 2</span><span>
-#&gt;   lower_ci upper_ci
-#&gt;      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>     40.1     42.7</div><div class='input'>
-<span class='co'># More in-depth explanation of how to use the infer package</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span><span class='op'>(</span><span class='st'>"infer"</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-</div></span></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'></span>
+<span class='r-in'><span class='va'>boot_distr</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># We're interested in the number of hours worked per week</span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># Generate bootstrap samples</span></span>
+<span class='r-in'>  <span class='fu'><a href='generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"bootstrap"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># Calculate mean of each bootstrap sample</span></span>
+<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>boot_distr</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># Calculate the confidence interval around the point estimate</span></span>
+<span class='r-in'>  <span class='fu'>get_confidence_interval</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='co'># At the 95% confidence level; percentile method</span></span>
+<span class='r-in'>    level <span class='op'>=</span> <span class='fl'>0.95</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 x 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   lower_ci upper_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      <span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span><span>     40.1     42.7</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># For type = "se" or type = "bias-corrected" we need a point estimate</span></span>
+<span class='r-in'><span class='va'>sample_mean</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>boot_distr</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>get_confidence_interval</span><span class='op'>(</span></span>
+<span class='r-in'>    point_estimate <span class='op'>=</span> <span class='va'>sample_mean</span>,</span>
+<span class='r-in'>    <span class='co'># At the 95% confidence level</span></span>
+<span class='r-in'>    level <span class='op'>=</span> <span class='fl'>0.95</span>,</span>
+<span class='r-in'>    <span class='co'># Using the standard error method</span></span>
+<span class='r-in'>    type <span class='op'>=</span> <span class='st'>"se"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 x 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   lower_ci upper_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      <span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span><span>     40.1     42.7</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># More in-depth explanation of how to use the infer package</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span><span class='op'>(</span><span class='st'>"infer"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

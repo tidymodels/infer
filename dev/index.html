@@ -115,7 +115,7 @@
   <div class="contents col-md-9">
 <div id="infer-r-package-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#infer-r-package-" class="anchor"></a>infer R Package <img src="https://github.com/tidymodels/infer/blob/master/figs/infer_gnome.png?raw=true" align="right" width="250">
+<a href="#infer-r-package-" class="anchor" aria-hidden="true"></a>infer R Package <img src="https://github.com/tidymodels/infer/blob/master/figs/infer_gnome.png?raw=true" align="right" width="250">
 </h1></div>
 <hr>
 <!--figs/infer.svg--><!--http://www.r-pkg.org/badges/version/infer--><!--figs/master.svg--><!--https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg-->
@@ -134,7 +134,7 @@
 <p><img src="https://raw.githubusercontent.com/tidymodels/infer/master/figs/ht-diagram.png"><!-- --></p>
 <div id="installation" class="section level3">
 <h3 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h3>
+<a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h3>
 <hr>
 <p>To install the current stable version of <code>infer</code> from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -146,14 +146,14 @@
 </div>
 <div id="contributing" class="section level3">
 <h3 class="hasAnchor">
-<a href="#contributing" class="anchor"></a>Contributing</h3>
+<a href="#contributing" class="anchor" aria-hidden="true"></a>Contributing</h3>
 <hr>
 <p>We welcome others helping us make this package as user-friendly and efficient as possible. Please review our <a href="https://github.com/tidymodels/infer/blob/master/CONTRIBUTING.md" class="external-link">contributing</a> and <a href="https://github.com/tidymodels/infer/blob/master/CONDUCT.md" class="external-link">conduct</a> guidelines. By participating in this project you agree to abide by its terms.</p>
 <p>For questions and discussions about tidymodels packages, modeling, and machine learning, please <a href="https://rstd.io/tidymodels-community" class="external-link">post on RStudio Community</a>. If you think you have encountered a bug, please <a href="https://github.com/tidymodels/infer/issues" class="external-link">submit an issue</a>. Either way, learn how to create and share a <a href="https://rstd.io/reprex" class="external-link">reprex</a> (a minimal, reproducible example), to clearly communicate about your code. Check out further details on <a href="https://www.tidymodels.org/contribute/" class="external-link">contributing guidelines for tidymodels packages</a> and <a href="https://www.tidymodels.org/help/" class="external-link">how to get help</a>.</p>
 </div>
 <div id="examples" class="section level3">
 <h3 class="hasAnchor">
-<a href="#examples" class="anchor"></a>Examples</h3>
+<a href="#examples" class="anchor" aria-hidden="true"></a>Examples</h3>
 <hr>
 <p>These examples are pulled from the “Full infer Pipeline Examples” vignette, accessible by calling <code><a href="articles/observed_stat_examples.html">vignette("observed_stat_examples")</a></code>. They make use of the <code>gss</code> dataset supplied by the package, providing a sample of data from the <a href="https://gss.norc.org" class="external-link">General Social Survey</a>. The data looks like this:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -177,15 +177,15 @@
 <p>As an example, we’ll run an analysis of variance on <code>age</code> and <code>partyid</code>, testing whether the age of a respondent is independent of their political party affiliation.</p>
 <p>Calculating the observed statistic,</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">F_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">F_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span></code></pre></div>
 <p>Then, generating the null distribution,</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">null_distn</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span>
-   <span class="fu"><a href="reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op">%&gt;%</span>
-   <span class="fu"><a href="reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-   <span class="fu"><a href="reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">null_distn</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
+   <span class="fu"><a href="reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
+   <span class="fu"><a href="reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
+   <span class="fu"><a href="reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
    <span class="fu"><a href="reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span></code></pre></div>
 <p>Visualizing the observed statistic alongside the null distribution,</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -194,7 +194,7 @@
 <p><img src="https://raw.githubusercontent.com/tidymodels/infer/master/README_files/figure-gfm/viz-1.png"><!-- --></p>
 <p>Calculating the p-value from the null distribution and observed statistic,</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">null_distn</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">null_distn</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="reference/get_p_value.html">get_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">F_hat</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">## # A tibble: 1 x 1</span></span>
 <span id="cb9-2"><a href="#cb9-2"></a><span class="co">##   p_value</span></span>
