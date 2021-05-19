@@ -22,7 +22,8 @@ if (getRversion() >= "2.15.1") {
       "parameter", "p.value", "xmin", "x_min", "xmax", "x_max", "density",
       "denom", "diff_prop", "group_num", "n1", "n2", "num_suc", "p_hat",
       "total_suc", "explan", "probs", "conf.low", "conf.high", "prop_1",
-      "prop_2", "data", "setNames", "resp", "capture.output", "stats"
+      "prop_2", "data", "setNames", "resp", "capture.output", "stats",
+      "estimate"
     )
   )
 }

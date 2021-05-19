@@ -100,12 +100,12 @@ t_test <- function(x, formula,
     results <- prelim %>%
       dplyr::select(
         statistic, t_df = parameter, p_value = p.value, alternative,
-        lower_ci = conf.low, upper_ci = conf.high
+        estimate, lower_ci = conf.low, upper_ci = conf.high
       )
   } else {
     results <- prelim %>%
       dplyr::select(
-        statistic, t_df = parameter, p_value = p.value, alternative
+        statistic, t_df = parameter, p_value = p.value, alternative, estimate
       )
   }
 

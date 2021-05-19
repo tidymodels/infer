@@ -18,7 +18,8 @@ test_that("t_test works", {
   old_way <- t.test(hours ~ sex, data = gss_tbl) %>%
     broom::glance() %>%
     dplyr::select(statistic, t_df = parameter, p_value = p.value,
-                  alternative, lower_ci = conf.low, upper_ci = conf.high)
+                  alternative, estimate, 
+                  lower_ci = conf.low, upper_ci = conf.high)
 
   expect_equal(new_way, new_way_alt, tolerance = 1e-5)
   expect_equal(new_way, old_way, tolerance = 1e-5)
@@ -38,7 +39,8 @@ test_that("t_test works", {
   old_way <- t.test(x = gss_tbl$hours, mu = 0) %>%
     broom::glance() %>%
     dplyr::select(statistic, t_df = parameter, p_value = p.value,
-                  alternative, lower_ci = conf.low, upper_ci = conf.high)
+                  alternative, estimate, 
+                  lower_ci = conf.low, upper_ci = conf.high)
 
   expect_equal(new_way, new_way_alt, tolerance = 1e-5)
   expect_equal(new_way, old_way, tolerance = 1e-5)
@@ -205,7 +207,7 @@ test_that("conf_int argument works", {
         t_test(hours ~ sex,
                order = c("male", "female"), conf_int = FALSE)
     ),
-    c("statistic", "t_df", "p_value", "alternative"),
+    c("statistic", "t_df", "p_value", "alternative", "estimate"),
     tolerance = 1e-5
   )
   expect_equal(
@@ -216,7 +218,8 @@ test_that("conf_int argument works", {
           conf_int = TRUE
         )
     ),
-    c("statistic", "t_df", "p_value", "alternative", "lower_ci", "upper_ci"),
+    c("statistic", "t_df", "p_value", "alternative", 
+      "estimate", "lower_ci", "upper_ci"),
     tolerance = 1e-5
   )
 
