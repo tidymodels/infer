@@ -238,10 +238,10 @@
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/t_test.html">t_test</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 1 x 6
-##   statistic  t_df p_value alternative lower_ci upper_ci
-##       &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;
-## 1      2.09   499  0.0376 two.sided       40.1     42.7</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##   statistic  t_df p_value alternative estimate lower_ci upper_ci
+##       &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1      2.09   499  0.0376 two.sided       41.4     40.1     42.7</code></pre>
 </div>
 <div id="one-numerical-variable-median" class="section level3">
 <h3 class="hasAnchor">

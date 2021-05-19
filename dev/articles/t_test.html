@@ -191,10 +191,10 @@
 <p>Note that, equivalently to the steps shown above, the package supplies a wrapper function, <code>t_test</code>, to carry out 1-sample t-Tests on tidy data. The syntax looks like this:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/t_test.html">t_test</a></span><span class="op">(</span><span class="va">gss</span>, response <span class="op">=</span> <span class="va">hours</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 1 x 6
-##   statistic  t_df p_value alternative lower_ci upper_ci
-##       &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;
-## 1      2.09   499  0.0376 two.sided       40.1     42.7</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##   statistic  t_df p_value alternative estimate lower_ci upper_ci
+##       &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1      2.09   499  0.0376 two.sided       41.4     40.1     42.7</code></pre>
 <p>Also, to just calculate the observed statistic, the package supplies the wrapper <code><a href="../reference/t_stat.html">t_stat()</a></code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/t_stat.html">t_stat</a></span><span class="op">(</span><span class="va">gss</span>, response <span class="op">=</span> <span class="va">hours</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></code></pre></div>
@@ -290,10 +290,10 @@
        formula <span class="op">=</span> <span class="va">hours</span> <span class="op">~</span> <span class="va">college</span>, 
        order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span>,
        alternative <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 1 x 6
-##   statistic  t_df p_value alternative lower_ci upper_ci
-##       &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;
-## 1      1.12  366.   0.264 two.sided      -1.16     4.24</code></pre>
+<pre><code>## # A tibble: 1 x 7
+##   statistic  t_df p_value alternative estimate lower_ci upper_ci
+##       &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+## 1      1.12  366.   0.264 two.sided       1.54    -1.16     4.24</code></pre>
 <p>In the above example, we specified the relationship with the syntax <code>formula = hours ~ college</code>; we could have also written <code>response = hours, explanatory = college</code>.</p>
 </div>
   </div>
