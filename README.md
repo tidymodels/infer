@@ -1,7 +1,6 @@
 
-# infer R Package <img src="https://github.com/tidymodels/infer/blob/master/figs/infer_gnome.png?raw=true" align="right" width=250 />
+# infer R Package <img src="https://github.com/tidymodels/infer/blob/master/figs/infer_gnome.png?raw=true" align="right" width=280 />
 
------
 
 <!--figs/infer.svg-->
 
