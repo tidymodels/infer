@@ -75,12 +75,18 @@ explanatory_expr <- function(x) {
 }
 
 explanatory_name <- function(x) {
-  as.character(explanatory_expr(x))
+  all.vars(explanatory_expr(x))
 }
 
+# if there is more than one explanatory variable, return a data frame.
+# if there's one, return a vector. otherwise, return NULL.
 explanatory_variable <- function(x) {
   if (!is.null(explanatory_expr(x))) {
-    x[[explanatory_name(x)]]
+    if (length(explanatory_name(x)) > 1) {
+      x[explanatory_name(x)]
+    } else {
+      x[[explanatory_name(x)]]
+    }
   } else {
     NULL
   }
@@ -121,6 +127,10 @@ is_generated <- function(x) {
 
 is_hypothesized <- function(x){
   attr(x, "hypothesized")
+}
+
+is_mlr <- function(x) {
+  length(explanatory_name(x)) > 1
 }
 
 has_attr <- function(x, at) {

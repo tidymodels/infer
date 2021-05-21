@@ -274,7 +274,7 @@ chisq_test <- function(x, formula, response = NULL,
   }
 
   x <- x %>%
-    select(one_of(c(response_name(x), explanatory_name(x)))) %>%
+    select(any_of(c(response_name(x), explanatory_name(x)))) %>%
     mutate_if(is.character, as.factor) %>%
     mutate_if(is.logical, as.factor)
 
@@ -349,7 +349,7 @@ chisq_stat <- function(x, formula, response = NULL,
   }
 
   x <- x %>%
-    select(one_of(c(response_name(x), explanatory_name(x)))) %>%
+    select(any_of(c(response_name(x), explanatory_name(x)))) %>%
     mutate_if(is.character, as.factor) %>%
     mutate_if(is.logical, as.factor)
 
