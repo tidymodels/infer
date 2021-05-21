@@ -122,6 +122,7 @@ test_that("user can specify multiple explanatory variables", {
   expect_true(inherits(x, "infer"))
   expect_true(inherits(explanatory_variable(x), "tbl_df"))
   expect_true(inherits(explanatory_name(x), "character"))
+  expect_true(inherits(explanatory_expr(x), "call"))
   
   expect_equal(explanatory_name(x), c("sex", "college"))
   expect_equal(response_name(x), "hours")

@@ -76,7 +76,8 @@ specify <- function(x, formula, response = NULL,
   if (!has_attr(x, "explanatory")) {
     attr(x, "explanatory_type") <- NULL
   } else {
-    attr(x, "explanatory_type") <- map_chr(as.data.frame(explanatory_variable(x)), class)
+    attr(x, "explanatory_type") <- 
+      purrr::map_chr(as.data.frame(explanatory_variable(x)), class)
   }
   
   x <- 
