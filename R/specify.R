@@ -41,8 +41,7 @@
 #' vignette("infer")
 #' }
 #'
-#' @importFrom rlang f_lhs
-#' @importFrom rlang f_rhs
+#' @importFrom rlang f_lhs f_rhs get_expr
 #' @importFrom dplyr mutate_if select any_of
 #' @importFrom methods hasArg
 #' @export
@@ -67,32 +66,9 @@ specify <- function(x, formula, response = NULL,
   attr(x, "generated") <- FALSE
   attr(x, "hypothesized") <- FALSE
   
-  if (!has_attr(x, "response")) {
-    attr(x, "response_type") <- NULL
-  } else {
-    attr(x, "response_type") <- class(response_variable(x))
-  }
-  
-  if (!has_attr(x, "explanatory")) {
-    attr(x, "explanatory_type") <- NULL
-  } else {
-    attr(x, "explanatory_type") <- 
-      purrr::map_chr(as.data.frame(explanatory_variable(x)), class)
-  }
-  
-  x <- 
-    check_variables(
-      x = x, 
-      formula = formula, 
-      response = response, 
-      explanatory = explanatory,
-      success = success
-    )
-  
+  # Check the success argument
   check_success_arg(x, success)
   
-  # Determine params for theoretical fit
-  x <- set_params(x)
   # Select variables
   x <- x %>%
     select(any_of(c(response_name(x), explanatory_name(x))))
@@ -132,35 +108,32 @@ parse_variables <- function(x, formula, response, explanatory) {
     attr(x, "explanatory") <- f_rhs(formula)
   }
   
-  x
-}
-
-# Call parse variables based on the class of the explanatory variable.
-# If there's more than one, then the class will inherit from a data frame,
-# and specify will hold off on parsing variables.
-check_variables <- function(x, 
-                            formula, response = NULL, explanatory = NULL, 
-                            success = NULL) {
-  UseMethod("check_variables", explanatory_variable(x))
-}
-
-check_variables.data.frame <- function(x, formula, response, explanatory, 
-                                       success) {
-  x
-}
-
-#' @importFrom rlang get_expr
-check_variables.default <- function(x, formula, response, explanatory, 
-                                    success) {
   # Check response and explanatory variables to be appropriate for later use
   if (!has_response(x)) {
     stop_glue("Please supply a response variable that is not `NULL`.")
   }
+  
   check_var_correct(x, "response")
   check_var_correct(x, "explanatory")
   
   # If there's an explanatory var
   check_vars_different(x)
+  
+  if (!has_attr(x, "response")) {
+    attr(x, "response_type") <- NULL
+  } else {
+    attr(x, "response_type") <- class(response_variable(x))
+  }
+  
+  if (!has_attr(x, "explanatory")) {
+    attr(x, "explanatory_type") <- NULL
+  } else {
+    attr(x, "explanatory_type") <- 
+      purrr::map_chr(as.data.frame(explanatory_variable(x)), class)
+  }
+  
+  # Determine params for theoretical fit
+  x <- set_params(x)
   
   x
 }
@@ -214,7 +187,7 @@ check_var_correct <- function(x, var_name) {
       )
     }
     
-    if (!(as.character(var) %in% names(x))) {
+    if (any(!(all.vars(var) %in% names(x)))) {
       stop_glue(
         'The {var_name} variable `{var}` cannot be found in this dataframe.'
       )

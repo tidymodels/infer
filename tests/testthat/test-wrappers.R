@@ -4,13 +4,8 @@ test_that("t_test works", {
   # Two Sample
   expect_warning(gss_tbl %>% t_test(hours ~ sex))
 
-  expect_equal(
-    expect_warning(
-      gss_tbl %>% t_test(response = "hours", explanatory = "sex")
-    ),
-    expect_warning(
-      gss_tbl %>% t_test(response = hours, explanatory = sex)
-    )
+  expect_error(
+    gss_tbl %>% t_test(response = "hours", explanatory = "sex")
   )
     
   new_way <- t_test(gss_tbl,
