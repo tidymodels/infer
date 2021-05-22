@@ -662,3 +662,22 @@ test_that("calculate can handle variables named x", {
     tolerance = .001
   )
 })
+
+test_that("calculate errors out with multiple explanatory variables", {
+  expect_error(
+    gss %>% 
+      specify(hours ~ age + college) %>%
+      hypothesize(null = "independence") %>%
+      calculate(stat = "t"),
+    "Multiple explanatory variables"
+  )
+  
+  expect_error(
+    gss %>% 
+      specify(hours ~ age + college) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 3, type = "permute") %>% 
+      calculate(stat = "t"),
+    "Multiple explanatory variables"
+  )
+})
