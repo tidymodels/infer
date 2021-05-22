@@ -287,3 +287,39 @@ test_that("generate() handles `x` response in case of 'simulate' (#299)", {
     c("x", "replicate")
   )
 })
+
+test_that("generate() can permute with multiple explanatory variables", {
+  # if the y variable is the one being permuted and the x's
+  # are being left alone, then each age + college combination
+  # should exist in every replicate
+  expect_true(
+    gss %>% 
+      # add random noise to make the variable truly continuous
+      dplyr::mutate(age = age + rnorm(nrow(gss))) %>%
+      specify(hours ~ age + college) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 3, type = "permute") %>%
+      dplyr::ungroup() %>%
+      dplyr::count(age, college) %>%
+      dplyr::pull(n) %>%
+      `==`(3) %>%
+      all()
+  )
+  
+  x <- gss %>% 
+    specify(hours ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 3, type = "permute")
+  
+  expect_true(inherits(x, "infer"))
+  expect_true(inherits(explanatory_variable(x), "tbl_df"))
+  expect_true(inherits(explanatory_name(x), "character"))
+  expect_true(inherits(explanatory_expr(x), "call"))
+  
+  expect_equal(explanatory_name(x), c("age", "college"))
+  expect_equal(response_name(x), "hours")
+  
+  expect_equal(nrow(x), 1500)
+  expect_equal(ncol(x), 4)
+})
+
