@@ -102,10 +102,12 @@ parse_variables <- function(x, formula, response, explanatory) {
   
   attr(x, "response")    <- get_expr(response)
   attr(x, "explanatory") <- get_expr(explanatory)
+  attr(x, "formula") <- NULL
   
   if (methods::hasArg(formula)) {
     attr(x, "response")    <- f_lhs(formula)
     attr(x, "explanatory") <- f_rhs(formula)
+    attr(x, "formula") <- formula
   }
   
   # Check response and explanatory variables to be appropriate for later use

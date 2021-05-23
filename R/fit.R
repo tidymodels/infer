@@ -40,7 +40,33 @@ generics::fit
 #' vignette("infer")
 #' }
 #'
+#' @importMethodsFrom parsnip fit.model_spec
+#' @method fit infer
+#' @export fit.infer
 #' @export
 fit.infer <- function(object, ...) {
-  invisible(TRUE)
+  # Extract the formula if it was supplied to specify, otherwise
+  # construct it out of the explanatory and response arguments
+  formula <- get_formula(object)
+  
+  parsnip::linear_reg() %>% 
+    parsnip::set_engine("lm") %>%
+    fit(
+      formula = formula,
+      data = tibble::as_tibble(object)
+    ) %>%
+    tidy()
+}
+
+get_formula <- function(x) {
+  if (has_attr(x, "formula")) {
+    return(attr(x, "formula"))
+  } else {
+    as.formula(
+      glue_null(
+        '{response_name(x)} ~ 
+         {paste0(explanatory_name(x), collapse = " + ")}'
+      )
+    )
+  }
 }
