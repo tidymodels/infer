@@ -4,7 +4,7 @@
 \alias{fit.infer}
 \title{Fit linear models to infer objects}
 \usage{
-fit.infer(object, ...)
+\method{fit}{infer}(object, ...)
 }
 \arguments{
 \item{...}{Currently ignored.}

@@ -39,7 +39,7 @@ copy_attrs <- function(to, from,
                          "response", "success", "explanatory", "response_type",
                          "explanatory_type", "distr_param", "distr_param2",
                          "null", "params", "theory_type", "generated", "type",
-                         "hypothesized"
+                         "hypothesized", "formula"
                        )) {
   for (at in attrs) {
     attr(to, at) <- attr(from, at)
