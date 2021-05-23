@@ -1,0 +1,46 @@
+#' @importFrom generics fit
+#' @export
+generics::fit
+
+#' Fit linear models to infer objects
+#'
+#' @description
+#' 
+#' Given the output of an infer core function, this function will fit
+#' a model according to the formula and data supplied earlier in the
+#' pipeline. If passed the output of [specify()] or [hypothesize()], the
+#' function will fit one model. If passed the output of [generate()],
+#' it will fit a model to each data resample, denoted in the `replicate` column.
+#'
+#' Learn more in `vignette("infer")`.
+#'
+#' @param x Output from an infer function---likely [generate()] or 
+#' [hypothesize()]---which specifies the formula and data to fit a model to.
+#  Should likely be an engine param here.
+#' @param ... Currently ignored.
+#'
+#' @return 
+#' A tibble. If the input had not been passed to [generate()], the tibble
+#' will contain `term` and `stat` columns. If it had been, there will also
+#' be a `replicate` column.
+#' 
+#' \itemize{
+#'   \item `replicate`: Only supplied if the input object had been previously
+#'   passed to [generate()]. A number corresponding to which resample of the
+#'   original data set the model was fitted to.
+#'   \item `term`: The explanatory variable (or intercept) in question.
+#'   \item `stat`: The model coefficient for the given resample (`replicate`) and 
+#'   explanatory variable (`term`).
+#' }
+#'
+#' @examples
+#' 
+#' # More in-depth explanation of how to use the infer package
+#' \dontrun{
+#' vignette("infer")
+#' }
+#'
+#' @export
+fit.infer <- function(object, ...) {
+  invisible(TRUE)
+}
