@@ -26,11 +26,13 @@ generics::fit
 #' 
 #' \itemize{
 #'   \item `replicate`: Only supplied if the input object had been previously
-#'   passed to [generate()]. A number corresponding to which resample of the
-#'   original data set the model was fitted to.
+#'     passed to [generate()]. A number corresponding to which resample of the
+#'     original data set the model was fitted to.
 #'   \item `term`: The explanatory variable (or intercept) in question.
-#'   \item `stat`: The model coefficient for the given resample (`replicate`) and 
-#'   explanatory variable (`term`).
+#'   \item `estimate`: The model coefficient for the given resample (`replicate`) and 
+#'     explanatory variable (`term`).
+#'   \item `stat`: The value of a t-statistic under the null hypothesis that 
+#'     the regression estimate is non-zero.
 #' }
 #'
 #' @examples
@@ -49,13 +51,18 @@ fit.infer <- function(object, ...) {
   # construct it out of the explanatory and response arguments
   formula <- get_formula(object)
   
-  parsnip::linear_reg() %>% 
-    parsnip::set_engine("lm") %>%
-    fit(
-      formula = formula,
-      data = tibble::as_tibble(object)
-    ) %>%
-    tidy()
+  if (is_generated(object)) {
+    object %>%
+      tidyr::nest(data = -replicate) %>%
+      dplyr::rowwise() %>%
+      dplyr::mutate(
+        model = list(fit_linear_model(object = data, formula = formula))
+      ) %>%
+      dplyr::select(replicate, model) %>%
+      tidyr::unnest(model)
+  } else {
+    fit_linear_model(object, formula)
+  }
 }
 
 get_formula <- function(x) {
@@ -69,4 +76,15 @@ get_formula <- function(x) {
       )
     )
   }
+}
+
+fit_linear_model <- function(object, formula) {
+  parsnip::linear_reg() %>% 
+    parsnip::set_engine("lm") %>%
+    fit(
+      formula = formula,
+      data = tibble::as_tibble(object)
+    ) %>%
+    tidy() %>%
+    dplyr::select(term, estimate, stat = statistic)
 }

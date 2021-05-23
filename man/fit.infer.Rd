@@ -22,8 +22,10 @@ be a \code{replicate} column.
 passed to \code{\link[=generate]{generate()}}. A number corresponding to which resample of the
 original data set the model was fitted to.
 \item \code{term}: The explanatory variable (or intercept) in question.
-\item \code{stat}: The model coefficient for the given resample (\code{replicate}) and
+\item \code{estimate}: The model coefficient for the given resample (\code{replicate}) and
 explanatory variable (\code{term}).
+\item \code{stat}: The value of a t-statistic under the null hypothesis that
+the regression estimate is non-zero.
 }
 }
 \description{
