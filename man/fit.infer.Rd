@@ -4,13 +4,18 @@
 \alias{fit.infer}
 \title{Fit linear models to infer objects}
 \usage{
-\method{fit}{infer}(object, ...)
+\method{fit}{infer}(object, engine, ...)
 }
 \arguments{
-\item{...}{Currently ignored.}
-
-\item{x}{Output from an infer function---likely \code{\link[=generate]{generate()}} or
+\item{object}{Output from an infer function---likely \code{\link[=generate]{generate()}} or
 \code{\link[=hypothesize]{hypothesize()}}---which specifies the formula and data to fit a model to.}
+
+\item{engine}{A string specifying which package or system will be used to
+fit the model. See \code{\link[parsnip:linear_reg]{parsnip::linear_reg()}} for information on possible
+values. Defaults to the base \code{\link[stats:lm]{stats::lm()}} function.}
+
+\item{...}{Any optional arguments to pass along to the chosen computational
+engine. See \code{\link[parsnip:linear_reg]{parsnip::linear_reg()}} for more information.}
 }
 \value{
 A tibble. If the input had not been passed to \code{\link[=generate]{generate()}}, the tibble
