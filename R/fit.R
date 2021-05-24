@@ -94,5 +94,10 @@ fit_linear_model <- function(object, formula, engine, ...) {
       data = tibble::as_tibble(object)
     ) %>%
     generics::tidy() %>%
-    dplyr::select(term, estimate, stat = statistic)
+    dplyr::select(
+      .,
+      term, 
+      estimate, 
+      if ("statistic" %in% colnames(.)) {stat = statistic}
+    )
 }
