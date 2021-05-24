@@ -14,10 +14,13 @@ generics::fit
 #'
 #' Learn more in `vignette("infer")`.
 #'
-#' @param x Output from an infer function---likely [generate()] or 
+#' @param object Output from an infer function---likely [generate()] or 
 #' [hypothesize()]---which specifies the formula and data to fit a model to.
-#  Should likely be an engine param here.
-#' @param ... Currently ignored.
+#' @param engine A string specifying which package or system will be used to 
+#'   fit the model. See [parsnip::linear_reg()] for information on possible 
+#'   values. Defaults to the base [stats::lm()] function.
+#' @param ... Any optional arguments to pass along to the chosen computational 
+#'   engine. See [parsnip::linear_reg()] for more information.
 #'
 #' @return 
 #' A tibble. If the input had not been passed to [generate()], the tibble
@@ -41,12 +44,11 @@ generics::fit
 #' \dontrun{
 #' vignette("infer")
 #' }
-#'
-#' @importMethodsFrom parsnip fit.model_spec
+#' 
 #' @method fit infer
 #' @export fit.infer
 #' @export
-fit.infer <- function(object, ...) {
+fit.infer <- function(object, engine, ...) {
   # Extract the formula if it was supplied to specify, otherwise
   # construct it out of the explanatory and response arguments
   formula <- get_formula(object)
@@ -56,12 +58,16 @@ fit.infer <- function(object, ...) {
       tidyr::nest(data = -replicate) %>%
       dplyr::rowwise() %>%
       dplyr::mutate(
-        model = list(fit_linear_model(object = data, formula = formula))
+        model = list(fit_linear_model(
+          object = data, 
+          formula = formula, 
+          engine = engine, 
+          ...))
       ) %>%
       dplyr::select(replicate, model) %>%
       tidyr::unnest(model)
   } else {
-    fit_linear_model(object, formula)
+    fit_linear_model(object, formula, engine = engine, ...)
   }
 }
 
@@ -78,13 +84,13 @@ get_formula <- function(x) {
   }
 }
 
-fit_linear_model <- function(object, formula) {
-  parsnip::linear_reg() %>% 
-    parsnip::set_engine("lm") %>%
+fit_linear_model <- function(object, formula, engine, ...) {
+  parsnip::linear_reg(...) %>% 
+    parsnip::set_engine(engine) %>%
     fit(
       formula = formula,
       data = tibble::as_tibble(object)
     ) %>%
-    tidy() %>%
+    generics::tidy() %>%
     dplyr::select(term, estimate, stat = statistic)
 }

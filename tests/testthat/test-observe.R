@@ -5,7 +5,7 @@ test_that("observe() output is equal to core verbs", {
     gss %>%
       observe(hours ~ NULL, stat = "mean"),
     gss %>%
-      specify(response = hours) %>%
+      specify(hours ~ NULL) %>%
       calculate(stat = "mean")
   )
   
@@ -13,7 +13,7 @@ test_that("observe() output is equal to core verbs", {
     gss %>%
       observe(hours ~ NULL, stat = "t", null = "point", mu = 40),
     gss %>%
-      specify(response = hours) %>%
+      specify(hours ~ NULL) %>%
       hypothesize(null = "point", mu = 40) %>%
       calculate(stat = "t")
   )
@@ -92,7 +92,7 @@ test_that("observe messages/warns/errors informatively", {
 
 test_that("observe() works with either specify() interface", {
   # unnamed formula argument
-  expect_equal(
+  expect_equivalent(
     gss %>%
       observe(hours ~ NULL, stat = "mean"),
     gss %>%
@@ -112,14 +112,14 @@ test_that("observe() works with either specify() interface", {
   )
   
   # named formula argument
-  expect_equal(
+  expect_equivalent(
     gss %>%
       observe(formula = hours ~ NULL, stat = "mean"),
     gss %>%
       observe(response = hours, stat = "mean")
   )
   
-  expect_equal(
+  expect_equivalent(
     gss %>%
       observe(formula = hours ~ NULL, stat = "mean"),
     gss %>%
