@@ -69,6 +69,7 @@ NULL
 #' @export
 get_p_value <- function(x, obs_stat, direction) {
   check_type(x, is.data.frame)
+  check_if_mlr(x, "get_p_value")
   if (!is_generated(x) & is_hypothesized(x)) {
     stop_glue(
       "Theoretical p-values are not yet supported.",
