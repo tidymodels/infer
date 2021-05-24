@@ -74,6 +74,7 @@
 get_confidence_interval <- function(x, level = 0.95, type = "percentile",
                                     point_estimate = NULL) {
   check_ci_args(x, level, type, point_estimate)
+  check_if_mlr(x, "get_confidence_interval")
 
   # Inform if no `level` was explicitly supplied
   if (!("level" %in% rlang::call_args_names(match.call()))) {

@@ -87,7 +87,7 @@ calculate <- function(x,
                       order = NULL,
                       ...) {
   check_type(x, tibble::is_tibble)
-  check_if_mlr(x)
+  check_if_mlr(x, "calculate")
   stat <- check_calculate_stat(stat)
   check_variables_vs_stat(x, stat)
   check_point_params(x, stat)
@@ -117,9 +117,9 @@ calculate <- function(x,
   result
 }
 
-check_if_mlr <- function(x) {
+check_if_mlr <- function(x, fn) {
   if (is_mlr(x)) {
-    stop_glue("Multiple explanatory variables are not supported in calculate().")
+    stop_glue("Multiple explanatory variables are not supported in {fn}().")
   }
 }
 

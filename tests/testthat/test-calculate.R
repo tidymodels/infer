@@ -669,7 +669,7 @@ test_that("calculate errors out with multiple explanatory variables", {
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
       calculate(stat = "t"),
-    "Multiple explanatory variables"
+    "Multiple explanatory variables.*in calculate"
   )
   
   expect_error(
@@ -678,6 +678,6 @@ test_that("calculate errors out with multiple explanatory variables", {
       hypothesize(null = "independence") %>%
       generate(reps = 3, type = "permute") %>% 
       calculate(stat = "t"),
-    "Multiple explanatory variables"
+    "Multiple explanatory variables.*in calculate"
   )
 })
