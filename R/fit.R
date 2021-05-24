@@ -48,7 +48,7 @@ generics::fit
 #' @method fit infer
 #' @export fit.infer
 #' @export
-fit.infer <- function(object, engine, ...) {
+fit.infer <- function(object, engine = "lm", ...) {
   # Extract the formula if it was supplied to specify, otherwise
   # construct it out of the explanatory and response arguments
   formula <- get_formula(object)
@@ -75,10 +75,12 @@ get_formula <- function(x) {
   if (has_attr(x, "formula")) {
     return(attr(x, "formula"))
   } else {
+    exp <- paste0(explanatory_name(x), collapse = " + ")
+    
     as.formula(
       glue_null(
         '{response_name(x)} ~ 
-         {paste0(explanatory_name(x), collapse = " + ")}'
+         {if (exp == "") NULL else exp}'
       )
     )
   }
