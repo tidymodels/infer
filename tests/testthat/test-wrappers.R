@@ -7,7 +7,7 @@ test_that("t_test works", {
   expect_error(
     gss_tbl %>% t_test(response = "hours", explanatory = "sex")
   )
-
+    
   new_way <- t_test(gss_tbl,
                     hours ~ sex,
                     order = c("male", "female"))

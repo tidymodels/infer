@@ -87,6 +87,7 @@ calculate <- function(x,
                       order = NULL,
                       ...) {
   check_type(x, tibble::is_tibble)
+  check_if_mlr(x)
   stat <- check_calculate_stat(stat)
   check_variables_vs_stat(x, stat)
   check_point_params(x, stat)
@@ -116,9 +117,16 @@ calculate <- function(x,
   result
 }
 
-check_calculate_stat <- function(stat) {
-  check_type(stat, rlang::is_string)
+check_if_mlr <- function(x) {
+  if (is_mlr(x)) {
+    stop_glue("Multiple explanatory variables are not supported in calculate().")
+  }
+}
 
+check_calculate_stat <- function(stat) {
+  
+  check_type(stat, rlang::is_string)
+  
   # Check for possible `stat` aliases
   alias_match_id <- match(stat, implemented_stats_aliases[["alias"]])
   if (!is.na(alias_match_id)) {

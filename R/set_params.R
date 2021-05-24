@@ -16,6 +16,10 @@ set_params <- function(x) {
     )
   }
   
+  if (is_mlr(x)) {
+    return(x)
+  }
+  
   if (has_explanatory(x)) {
     num_explanatory_levels <- length(unique(explanatory_variable(x)))
     
