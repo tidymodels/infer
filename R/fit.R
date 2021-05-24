@@ -98,6 +98,10 @@ fit_linear_model <- function(object, formula, engine, ...) {
       .,
       term, 
       estimate, 
-      if ("statistic" %in% colnames(.)) {stat = statistic}
+      dplyr::contains("statistic")
+    ) %>%
+    dplyr::rename_with(
+      ~ "stat", 
+      dplyr::contains("statistic")
     )
 }
