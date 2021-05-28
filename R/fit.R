@@ -103,5 +103,11 @@ fit_linear_model <- function(object, formula, engine, ...) {
     dplyr::rename_with(
       ~ "stat", 
       dplyr::contains("statistic")
+    ) %>%
+    dplyr::mutate(
+      term = dplyr::case_when(
+        term == "(Intercept)" ~ "intercept", 
+        TRUE ~ term
+      )
     )
 }
