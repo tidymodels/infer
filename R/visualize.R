@@ -125,7 +125,6 @@ visualize <- function(data, bins = 15, method = "simulation",
                       endpoints_color = "mediumaquamarine",
                       ci_fill = "turquoise",
                       ...) {
-  check_if_mlr(data, "visualize")
   data <- check_for_nan(data, "visualize")
   check_visualize_args(
     data, bins, method, dens_color, obs_stat, obs_stat_color,
@@ -152,6 +151,11 @@ visualize <- function(data, bins = 15, method = "simulation",
   if (!is.null(direction) && (direction == "between")) {
     infer_plot <- infer_plot +
       shade_confidence_interval(endpoints, endpoints_color, ci_fill, ...)
+  }
+  
+  if (is_mlr(data)) {
+    infer_plot <- infer_plot +
+      facet_layer(data)
   }
 
   infer_plot
@@ -458,6 +462,12 @@ title_labels_layer <- function(data) {
   )
 }
 
+facet_layer <- function(data) {
+  list(
+    ggplot2::facet_wrap(ggplot2::vars(term), scales = "free_x")
+  )
+} 
+
 check_shade_confidence_interval_args <- function(color, fill) {
   check_type(color, is_color_string, "color string")
   if (!is.null(fill)) {
@@ -467,6 +477,11 @@ check_shade_confidence_interval_args <- function(color, fill) {
 
 short_theory_type <- function(x) {
   theory_attr <- attr(x, "theory_type")
+  
+  if (!has_attr(x, "theory_type")) {
+    return("")
+  }
+  
   theory_types <- list(
     t = c("Two sample t", "Slope with t", "One sample t"),
     `F` = "ANOVA",

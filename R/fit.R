@@ -54,7 +54,7 @@ fit.infer <- function(object, engine = "lm", ...) {
   formula <- get_formula(object)
   
   if (is_generated(object)) {
-    object %>%
+    x <- object %>%
       tidyr::nest(data = -replicate) %>%
       dplyr::rowwise() %>%
       dplyr::mutate(
@@ -67,8 +67,10 @@ fit.infer <- function(object, engine = "lm", ...) {
       dplyr::select(replicate, model) %>%
       tidyr::unnest(model)
   } else {
-    fit_linear_model(object, formula, engine = engine, ...)
+    x <- fit_linear_model(object, formula, engine = engine, ...)
   }
+  
+  copy_attrs(x, object)
 }
 
 get_formula <- function(x) {
