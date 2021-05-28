@@ -45,7 +45,7 @@ test_that("fit_linear_model helper works", {
   )
   
   expect_equal(
-    c("(Intercept)", "age", "collegedegree"),
+    c("intercept", "age", "collegedegree"),
     x3_m$term
   )
 })
