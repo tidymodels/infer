@@ -69,7 +69,6 @@ NULL
 #' @export
 get_p_value <- function(x, obs_stat, direction) {
   check_type(x, is.data.frame)
-  check_if_mlr(x, "get_p_value")
   if (!is_generated(x) & is_hypothesized(x)) {
     stop_glue(
       "Theoretical p-values are not yet supported.",
@@ -78,10 +77,37 @@ get_p_value <- function(x, obs_stat, direction) {
     )
   }
   check_for_nan(x, "get_p_value")
-  obs_stat <- check_obs_stat(obs_stat)
   check_direction(direction)
-
-  simulation_based_p_value(x = x, obs_stat = obs_stat, direction = direction)
+  
+  if (is_mlr(x)) {
+    # check that x and obs stat reference the same variables
+    check_mlr_x_and_obs_stat(x, obs_stat)
+    
+    # split up x and obs_stat by term
+    term_data <- x %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by(term) %>%
+      dplyr::group_split() %>%
+      purrr::map(copy_attrs, x)
+    
+    term_obs_stats <- obs_stat %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by(term) %>%
+      dplyr::group_split()
+    
+    purrr::map2_dfr(
+      term_data,
+      purrr::map(term_obs_stats, purrr::pluck, "stat"),
+      simulation_based_p_value,
+      direction = direction
+    ) %>%
+      dplyr::mutate(
+        term = purrr::map_chr(term_obs_stats, purrr::pluck, "term"),
+        .before = dplyr::everything()
+      )
+  } else {
+    simulation_based_p_value(x = x, obs_stat = obs_stat, direction = direction)
+  }
 }
 
 #' @rdname get_p_value
@@ -91,6 +117,8 @@ get_pvalue <- function(x, obs_stat, direction) {
 }
 
 simulation_based_p_value <- function(x, obs_stat, direction) {
+  obs_stat <- check_obs_stat(obs_stat)
+  
   if (direction %in% c("less", "left")) {
     pval <- left_p_value(x[["stat"]], obs_stat)
   } else if (direction %in% c("greater", "right")) {
@@ -124,6 +152,25 @@ two_sided_p_value <- function(vec, obs_stat) {
   raw_res <- 2 * min(left_pval, right_pval)
   
   min(raw_res, 1)
+}
+
+check_mlr_x_and_obs_stat <- function(x, obs_stat) {
+  if (any(!unique(x$term) %in% unique(obs_stat$term)) ||
+      any(!unique(obs_stat$term) %in% unique(x$term))) {
+    stop_glue(
+      "The explanatory variables used to generate the distribution of ",
+      "null fits are not the same used to fit the observed data."
+    )
+  }
+  
+  if (response_name(x) != response_name(obs_stat)) {
+    stop_glue(
+      "The response variable of the null fits ({response_name(x)}) is not ",
+      "the same as that of the observed fit ({response_name(obs_stat)})."
+    )
+  }
+  
+  invisible(TRUE)
 }
 
 # which_distribution <- function(x, theory_type, obs_stat, direction){
