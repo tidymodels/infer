@@ -99,12 +99,7 @@ fit_linear_model <- function(object, formula, engine, ...) {
     dplyr::select(
       .,
       term, 
-      estimate, 
-      dplyr::contains("statistic")
-    ) %>%
-    dplyr::rename_with(
-      ~ "stat", 
-      dplyr::contains("statistic")
+      estimate
     ) %>%
     dplyr::mutate(
       term = dplyr::case_when(
