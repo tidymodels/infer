@@ -95,6 +95,7 @@ get_p_value <- function(x, obs_stat, direction) {
       dplyr::group_by(term) %>%
       dplyr::group_split()
     
+    # calculate the p value for each term and then add the term column back in
     purrr::map2_dfr(
       term_data,
       purrr::map(term_obs_stats, purrr::pluck, "estimate"),
