@@ -93,3 +93,50 @@ test_that("get_p_value throws error in case of `NaN` stat", {
   gss_calc$stat <- NaN
   expect_error(get_p_value(gss_calc, 0, "both"), "All calculated stat")
 })
+
+test_that("get_p_value can handle multiple explanatory variables", {
+  set.seed(1)
+  
+  null_fits <- gss[1:50,] %>%
+    specify(hours ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 10, type = "permute") %>%
+    fit()
+  
+  obs_fit <- gss[1:50,] %>%
+    specify(hours ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    fit()
+  
+  expect_equivalent(
+    get_p_value(null_fits, obs_fit, "both"),
+    structure(
+      list(term = c("age", "collegedegree", "intercept"), 
+           p_value = c(0.6, 0.4, 0.6)), 
+      row.names = c(NA, -3L), 
+      class = c("tbl_df", "tbl", "data.frame")
+    )
+  )
+  
+  # errors out when it ought to
+  obs_fit_2 <- gss[1:50,] %>%
+    specify(hours ~ age) %>%
+    hypothesize(null = "independence") %>%
+    fit()
+  
+  expect_error(
+    get_p_value(null_fits, obs_fit_2, "both"),
+    "explanatory variables.*are not the same used"
+  )
+  
+  obs_fit_3 <- 
+    obs_fit_2 <- gss[1:50,] %>%
+    specify(year ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    fit()
+  
+  expect_error(
+    get_p_value(null_fits, obs_fit_3, "both"),
+    "response variable.*\\(hours\\) is not the same.*observed fit \\(year\\)."
+  )
+})
