@@ -125,6 +125,74 @@ visualize <- function(data, bins = 15, method = "simulation",
                       endpoints_color = "mediumaquamarine",
                       ci_fill = "turquoise",
                       ...) {
+  attr(data, "viz_method") <- method
+  attr(data, "viz_bins") <- bins
+  
+  if (is_mlr(data)) {
+    term_data <- data %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by(term) %>%
+      dplyr::group_split() %>%
+      purrr::map(copy_attrs, data) %>%
+      purrr::map(copy_attrs, data, c("viz_method", "viz_bins"))
+    
+    plots <- purrr::map2(
+      term_data,
+      purrr::map(term_data, purrr::pluck, "term", 1),
+      visualize_term,
+      bins = bins, 
+      method = method, 
+      dens_color = dens_color, 
+      obs_stat = obs_stat, 
+      obs_stat_color = obs_stat_color,
+      pvalue_fill = pvalue_fill, 
+      direction = direction, 
+      endpoints = endpoints, 
+      endpoints_color = endpoints_color, 
+      ci_fill = ci_fill, 
+      ...
+    )
+    
+    return(
+      patchwork::wrap_plots(plots) +
+        title_layer(term_data[[1]])
+    )
+  } else {
+    return(
+      visualize_term(
+        data,
+        "stat",
+        bins = bins, 
+        method = method, 
+        dens_color = dens_color, 
+        obs_stat = obs_stat, 
+        obs_stat_color = obs_stat_color,
+        pvalue_fill = pvalue_fill, 
+        direction = direction, 
+        endpoints = endpoints, 
+        endpoints_color = endpoints_color, 
+        ci_fill = ci_fill, 
+        ...
+      ) + title_layer(data)
+    )
+  }
+}
+
+#' @rdname visualize
+#' @export
+visualise <- visualize
+
+
+visualize_term <- function(data, term, bins = 15, method = "simulation",
+                           dens_color = "black",
+                           obs_stat = NULL,
+                           obs_stat_color = "red2",
+                           pvalue_fill = "pink",
+                           direction = NULL,
+                           endpoints = NULL,
+                           endpoints_color = "mediumaquamarine",
+                           ci_fill = "turquoise",
+                           ...) {
   data <- check_for_nan(data, "visualize")
   check_visualize_args(
     data, bins, method, dens_color, obs_stat, obs_stat_color,
@@ -133,37 +201,22 @@ visualize <- function(data, bins = 15, method = "simulation",
   warn_deprecated_args(obs_stat, endpoints)
   endpoints <- impute_endpoints(endpoints)
   obs_stat <- impute_obs_stat(obs_stat, direction, endpoints)
-
-  # Add `method` to `data` attributes to enable later possibility of
-  # complicated computation of p-value regions (in case `direction = "both"`)
-  # in `shade_p_value()`.
-  attr(data, "viz_method") <- method
-  attr(data, "viz_bins") <- bins
-
+  
   infer_plot <- ggplot(data) +
     simulation_layer(data, ...) +
     theoretical_layer(data, dens_color, ...) +
-    title_labels_layer(data) +
+    labels_layer(data, term) +
     shade_p_value(
       obs_stat, direction, obs_stat_color, pvalue_fill, ...
     )
-
+  
   if (!is.null(direction) && (direction == "between")) {
     infer_plot <- infer_plot +
       shade_confidence_interval(endpoints, endpoints_color, ci_fill, ...)
   }
   
-  if (is_mlr(data)) {
-    infer_plot <- infer_plot +
-      facet_layer(data)
-  }
-
   infer_plot
 }
-
-#' @rdname visualize
-#' @export
-visualise <- visualize
 
 check_visualize_args <- function(data, bins, method, dens_color,
                                  obs_stat, obs_stat_color,
@@ -428,7 +481,7 @@ theory_curve <- function(method, d_fun, q_fun, args_list, dens_color) {
   res
 }
 
-title_labels_layer <- function(data) {
+title_layer <- function(data) {
   method <- get_viz_method(data)
   theory_type <- short_theory_type(data)
   
@@ -444,27 +497,33 @@ title_labels_layer <- function(data) {
       "Distribution"
     )
   }
-
+  
   title_string <- switch(
     method,
     simulation = "Simulation-Based {distr_name}",
     theoretical = "Theoretical {theory_type} {distr_name}",
     both = "Simulation-Based and Theoretical {theory_type} {distr_name}s"
   )
+  
+  list(ggtitle(glue_null(title_string)))
+}
 
-  x_lab <- switch(method, simulation = "stat", "{theory_type} stat")
+labels_layer <- function(data, term) {
+  method <- get_viz_method(data)
+  theory_type <- short_theory_type(data)
+  
+  x_lab <- switch(method, simulation = "{term}", "{theory_type} stat")
   y_lab <- switch(method, simulation = "count", "density")
 
   list(
-    ggtitle(glue_null(title_string)),
     xlab(glue_null(x_lab)),
     ylab(glue_null(y_lab))
   )
 }
 
-facet_layer <- function(data) {
+facet_layer <- function() {
   list(
-    ggplot2::facet_wrap(ggplot2::vars(term), scales = "free_x")
+    ggplot2::facet_wrap(~term, scales = "free_x")
   )
 } 
 
