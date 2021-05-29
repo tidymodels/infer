@@ -130,6 +130,7 @@ visualize <- function(data, bins = 15, method = "simulation",
   
   if (is_mlr(data)) {
     term_data <- data %>%
+      dplyr::rename(stat = estimate) %>%
       dplyr::ungroup() %>%
       dplyr::group_by(term) %>%
       dplyr::group_split() %>%

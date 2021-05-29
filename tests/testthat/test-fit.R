@@ -32,15 +32,15 @@ test_that("fit_linear_model helper works", {
   
   expect_equal(x3_m, x4_m)
   expect_equal(nrow(x3_m), 3)
-  expect_equal(ncol(x3_m), 3)
+  expect_equal(ncol(x3_m), 2)
   
   expect_equal(
-    c("term", "estimate", "stat"), 
+    c("term", "estimate"), 
     colnames(x3_m)
   )
   
   expect_equal(
-    c("character", "numeric", "numeric"),
+    c("character", "numeric"),
     purrr::map_chr(x3_m, class) %>% unname()
   )
   

@@ -97,7 +97,7 @@ get_p_value <- function(x, obs_stat, direction) {
     
     purrr::map2_dfr(
       term_data,
-      purrr::map(term_obs_stats, purrr::pluck, "stat"),
+      purrr::map(term_obs_stats, purrr::pluck, "estimate"),
       simulation_based_p_value,
       direction = direction
     ) %>%
@@ -120,11 +120,11 @@ simulation_based_p_value <- function(x, obs_stat, direction) {
   obs_stat <- check_obs_stat(obs_stat)
   
   if (direction %in% c("less", "left")) {
-    pval <- left_p_value(x[["stat"]], obs_stat)
+    pval <- left_p_value(x[[ncol(x)]], obs_stat)
   } else if (direction %in% c("greater", "right")) {
-    pval <- right_p_value(x[["stat"]], obs_stat)
+    pval <- right_p_value(x[[ncol(x)]], obs_stat)
   } else {
-    pval <- two_sided_p_value(x[["stat"]], obs_stat)
+    pval <- two_sided_p_value(x[[ncol(x)]], obs_stat)
   }
   
   if (abs(pval) < 1e-16) {
