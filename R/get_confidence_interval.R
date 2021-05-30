@@ -7,20 +7,31 @@
 #'
 #' Learn more in `vignette("infer")`.
 #'
-#' @param x Data frame of calculated statistics or containing attributes of
-#'   theoretical distribution values. Currently, dependent on statistics being
-#'   stored in `stat` column as created in [calculate()] function.
+#' @param x A data frame containing a distribution of [calculate()]d statistics 
+#'   or [`fit()`][fit.infer()]ted coefficient estimates. This object should 
+#'   have been passed to [generate()] before being supplied to [calculate()] 
+#'   to [`fit()`][fit.infer()].
 #' @param level A numerical value between 0 and 1 giving the confidence level.
 #'   Default value is 0.95.
 #' @param type A string giving which method should be used for creating the
 #'   confidence interval. The default is `"percentile"` with `"se"`
 #'   corresponding to (multiplier * standard error) and `"bias-corrected"` for
 #'   bias-corrected interval as other options.
-#' @param point_estimate A numeric value or a 1x1 data frame set to `NULL` by
-#'   default. Needed to be provided if `type` is `"se"` or `"bias-corrected"`.
+#' @param point_estimate A data frame containing the observed statistic (in a 
+#'   [calculate()]-based workflow) or observed fit (in a 
+#'   [`fit()`][fit.infer()]-based workflow). This object is likely the output 
+#'   of [calculate()] or [`fit()`][fit.infer()] and need not
+#'   to have been passed to [generate()]. Set to `NULL` by
+#'   default. Must be provided if `type` is `"se"` or `"bias-corrected"`.
 #'
-#' @return A 1 x 2 tibble with 'lower_ci' and 'upper_ci' columns. Values
-#'   correspond to lower and upper bounds of the confidence interval.
+#' @return A [tibble][tibble::tibble] containing the following columns:
+#' 
+#' \itemize{
+#'   \item `term`: The explanatory variable (or intercept) in question. Only 
+#'     supplied if the input had been previously passed to [`fit()`][fit.infer()].
+#'   \item `lower_ci`, `upper_ci`: The lower and upper bounds of the confidence 
+#'     interval, respectively.
+#' }
 #'
 #' @details
 #' A null hypothesis is not required to compute a confidence interval, but
@@ -64,7 +75,7 @@
 #'     type = "se"
 #'   )
 #'   
-#' # using a model fitting workflow instead -----------------------
+#' # using a model fitting workflow -----------------------
 #' 
 #' # fit a linear model predicting number of hours worked per
 #' # week using respondent age and degree status.

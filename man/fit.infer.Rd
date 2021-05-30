@@ -18,9 +18,7 @@ values. Defaults to the base \code{\link[stats:lm]{stats::lm()}} function.}
 engine. See \code{\link[parsnip:linear_reg]{parsnip::linear_reg()}} for more information.}
 }
 \value{
-A tibble. If the input had not been passed to \code{\link[=generate]{generate()}}, the tibble
-will contain \code{term} and \code{estimate} columns. If it had been, there will also
-be a \code{replicate} column.
+A \link[tibble:tibble]{tibble} containing the following columns:
 
 \itemize{
 \item \code{replicate}: Only supplied if the input object had been previously

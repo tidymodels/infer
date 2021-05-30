@@ -3,18 +3,32 @@
 #' @description
 #'
 #' Compute a p-value from a null distribution and observed statistic. 
-#' Simulation-based methods are (currently only) supported.
 #' 
 #' Learn more in `vignette("infer")`.
 #'
-#' @param x Data frame of calculated statistics as returned by [generate()]
-#' @param obs_stat A numeric value or a 1x1 data frame (as extreme or more
-#'   extreme than this).
+#' @param x A data frame containing a distribution of [calculate()]d statistics 
+#'   or [`fit()`][fit.infer()]ted coefficient estimates. This object should 
+#'   have been passed to [generate()] before being supplied to 
+#'   [calculate()] to [`fit()`][fit.infer()].
+#' @param obs_stat A data frame containing the observed statistic (in a 
+#'   [calculate()]-based workflow) or observed fit (in a 
+#'   [`fit()`][fit.infer()]-based workflow). This object is likely the output 
+#'   of [calculate()] or [`fit()`][fit.infer()] and need not
+#'   to have been passed to [generate()].
 #' @param direction A character string. Options are `"less"`, `"greater"`, or
 #'   `"two-sided"`. Can also use `"left"`, `"right"`, `"both"`, 
 #'   `"two_sided"`, or `"two sided"`, `"two.sided"`.
 #'
-#' @return A 1x1 [tibble][tibble::tibble] with value between 0 and 1.
+#' @return A [tibble][tibble::tibble] containing the following columns:
+#' 
+#' \itemize{
+#'   \item `term`: The explanatory variable (or intercept) in question. Only 
+#'     supplied if the input had been previously passed to [`fit()`][fit.infer()].
+#'   \item `p_value`: A value in \[0, 1\] giving the probability that a
+#'     statistic/coefficient as or more extreme than the observed 
+#'     statistic/coefficient would occur if the null hypothesis were true.
+#' }
+#' 
 #'
 #' @section Aliases:
 #' `get_pvalue()` is an alias of `get_p_value()`.
@@ -41,8 +55,7 @@
 #' # find the point estimate---mean number of hours worked per week
 #' point_estimate <- gss %>%
 #'   specify(response = hours) %>%
-#'   calculate(stat = "mean") %>%
-#'   dplyr::pull()
+#'   calculate(stat = "mean")
 #' 
 #' # starting with the gss dataset
 #' gss %>%
@@ -57,7 +70,7 @@
 #    # calculate the p-value for the point estimate
 #'   get_p_value(obs_stat = point_estimate, direction = "two-sided")
 #'   
-#' # using a model fitting workflow instead -----------------------
+#' # using a model fitting workflow -----------------------
 #' 
 #' # fit a linear model predicting number of hours worked per
 #' # week using respondent age and degree status.
