@@ -156,7 +156,10 @@ visualize <- function(data, bins = 15, method = "simulation",
     
     return(
       patchwork::wrap_plots(plots) +
-        title_layer(term_data[[1]])
+        title_layer(
+          term_data[[1]], 
+          title_fn = patchwork::plot_annotation
+        )
     )
   } else {
     return(
@@ -482,7 +485,7 @@ theory_curve <- function(method, d_fun, q_fun, args_list, dens_color) {
   res
 }
 
-title_layer <- function(data) {
+title_layer <- function(data, title_fn = ggplot2::ggtitle) {
   method <- get_viz_method(data)
   theory_type <- short_theory_type(data)
   
@@ -499,14 +502,20 @@ title_layer <- function(data) {
     )
   }
   
+  if (is_fitted(data)) {
+    plural <- "s"
+  } else {
+    plural <- ""
+  }
+  
   title_string <- switch(
     method,
-    simulation = "Simulation-Based {distr_name}",
-    theoretical = "Theoretical {theory_type} {distr_name}",
+    simulation = "Simulation-Based {distr_name}{plural}",
+    theoretical = "Theoretical {theory_type} {distr_name}{plural}",
     both = "Simulation-Based and Theoretical {theory_type} {distr_name}s"
   )
   
-  list(ggtitle(glue_null(title_string)))
+  list(title_fn(glue_null(title_string)))
 }
 
 labels_layer <- function(data, term) {
