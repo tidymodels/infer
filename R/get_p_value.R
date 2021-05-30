@@ -57,6 +57,30 @@
 #    # calculate the p-value for the point estimate
 #'   get_p_value(obs_stat = point_estimate, direction = "two-sided")
 #'   
+#' # using a model fitting workflow instead -----------------------
+#' 
+#' # fit a linear model predicting number of hours worked per
+#' # week using respondent age and degree status.
+#' observed_fit <- gss %>%
+#'   specify(hours ~ age + college) %>%
+#'   hypothesize(null = "independence") %>%
+#'   fit()
+#' 
+#' observed_fit
+#' 
+#' # fit 20 models to resamples of the gss dataset, where the response 
+#' # `hours` is permuted in each. note that this code is the same as 
+#' # the above except for the addition of the `generate` step.
+#' null_fits <- gss %>%
+#'   specify(hours ~ age + college) %>%
+#'   hypothesize(null = "independence") %>%
+#'   generate(reps = 20, type = "permute") %>%
+#'   fit()
+#' 
+#' null_fits
+#' 
+#' get_p_value(null_fits, obs_stat = observed_fit, direction = "two-sided")
+#'   
 #' # More in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
