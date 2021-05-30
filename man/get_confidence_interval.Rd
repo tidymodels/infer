@@ -15,9 +15,10 @@ get_confidence_interval(
 get_ci(x, level = 0.95, type = "percentile", point_estimate = NULL)
 }
 \arguments{
-\item{x}{Data frame of calculated statistics or containing attributes of
-theoretical distribution values. Currently, dependent on statistics being
-stored in \code{stat} column as created in \code{\link[=calculate]{calculate()}} function.}
+\item{x}{A data frame containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
+or \code{\link[=fit.infer]{fit()}}ted coefficient estimates. This object should
+have been passed to \code{\link[=generate]{generate()}} before being supplied to \code{\link[=calculate]{calculate()}}
+to \code{\link[=fit.infer]{fit()}}.}
 
 \item{level}{A numerical value between 0 and 1 giving the confidence level.
 Default value is 0.95.}
@@ -27,12 +28,22 @@ confidence interval. The default is \code{"percentile"} with \code{"se"}
 corresponding to (multiplier * standard error) and \code{"bias-corrected"} for
 bias-corrected interval as other options.}
 
-\item{point_estimate}{A numeric value or a 1x1 data frame set to \code{NULL} by
-default. Needed to be provided if \code{type} is \code{"se"} or \code{"bias-corrected"}.}
+\item{point_estimate}{A data frame containing the observed statistic (in a
+\code{\link[=calculate]{calculate()}}-based workflow) or observed fit (in a
+\code{\link[=fit.infer]{fit()}}-based workflow). This object is likely the output
+of \code{\link[=calculate]{calculate()}} or \code{\link[=fit.infer]{fit()}} and need not
+to have been passed to \code{\link[=generate]{generate()}}. Set to \code{NULL} by
+default. Must be provided if \code{type} is \code{"se"} or \code{"bias-corrected"}.}
 }
 \value{
-A 1 x 2 tibble with 'lower_ci' and 'upper_ci' columns. Values
-correspond to lower and upper bounds of the confidence interval.
+A \link[tibble:tibble]{tibble} containing the following columns:
+
+\itemize{
+\item \code{term}: The explanatory variable (or intercept) in question. Only
+supplied if the input had been previously passed to \code{\link[=fit.infer]{fit()}}.
+\item \code{lower_ci}, \code{upper_ci}: The lower and upper bounds of the confidence
+interval, respectively.
+}
 }
 \description{
 Compute a confidence interval around a summary statistic. Currently, only
@@ -84,7 +95,7 @@ boot_distr \%>\%
     type = "se"
   )
   
-# using a model fitting workflow instead -----------------------
+# using a model fitting workflow -----------------------
 
 # fit a linear model predicting number of hours worked per
 # week using respondent age and degree status.

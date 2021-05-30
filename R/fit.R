@@ -22,10 +22,7 @@ generics::fit
 #' @param ... Any optional arguments to pass along to the chosen computational 
 #'   engine. See [parsnip::linear_reg()] for more information.
 #'
-#' @return 
-#' A tibble. If the input had not been passed to [generate()], the tibble
-#' will contain `term` and `estimate` columns. If it had been, there will also
-#' be a `replicate` column.
+#' @return A [tibble][tibble::tibble] containing the following columns:
 #' 
 #' \itemize{
 #'   \item `replicate`: Only supplied if the input object had been previously
