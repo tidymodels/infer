@@ -4,7 +4,7 @@
 \alias{fit.infer}
 \title{Fit linear models to infer objects}
 \usage{
-\method{fit}{infer}(object, engine, ...)
+\method{fit}{infer}(object, engine = "lm", ...)
 }
 \arguments{
 \item{object}{Output from an infer function---likely \code{\link[=generate]{generate()}} or
@@ -19,7 +19,7 @@ engine. See \code{\link[parsnip:linear_reg]{parsnip::linear_reg()}} for more inf
 }
 \value{
 A tibble. If the input had not been passed to \code{\link[=generate]{generate()}}, the tibble
-will contain \code{term} and \code{stat} columns. If it had been, there will also
+will contain \code{term} and \code{estimate} columns. If it had been, there will also
 be a \code{replicate} column.
 
 \itemize{
@@ -29,8 +29,6 @@ original data set the model was fitted to.
 \item \code{term}: The explanatory variable (or intercept) in question.
 \item \code{estimate}: The model coefficient for the given resample (\code{replicate}) and
 explanatory variable (\code{term}).
-\item \code{stat}: The value of a t-statistic under the null hypothesis that
-the regression estimate is non-zero.
 }
 }
 \description{
@@ -43,10 +41,29 @@ it will fit a model to each data resample, denoted in the \code{replicate} colum
 Learn more in \code{vignette("infer")}.
 }
 \examples{
+# fit a linear model predicting number of hours worked per
+# week using respondent age and degree status.
+observed_fit <- gss \%>\%
+  specify(hours ~ age + college) \%>\%
+  hypothesize(null = "independence") \%>\%
+  fit()
+
+observed_fit
+
+# fit 20 models to resamples of the gss dataset, where the response 
+# `hours` is permuted in each. note that this code is the same as 
+# the above except for the addition of the `generate` step.
+null_fits <- gss \%>\%
+  specify(hours ~ age + college) \%>\%
+  hypothesize(null = "independence") \%>\%
+  generate(reps = 20, type = "permute") \%>\%
+  fit()
+
+null_fits
 
 # More in-depth explanation of how to use the infer package
 \dontrun{
 vignette("infer")
-}
+}  
 
 }
