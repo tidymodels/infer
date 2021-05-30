@@ -70,7 +70,10 @@ fit.infer <- function(object, engine = "lm", ...) {
     x <- fit_linear_model(object, formula, engine = engine, ...)
   }
   
-  copy_attrs(x, object)
+  x <- copy_attrs(x, object)
+  attr(x, "fitted") <- TRUE
+  
+  x
 }
 
 get_formula <- function(x) {

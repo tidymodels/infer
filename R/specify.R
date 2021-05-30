@@ -65,6 +65,7 @@ specify <- function(x, formula, response = NULL,
   attr(x, "success") <- success
   attr(x, "generated") <- FALSE
   attr(x, "hypothesized") <- FALSE
+  attr(x, "fitted") <- FALSE
   
   # Check the success argument
   check_success_arg(x, success)

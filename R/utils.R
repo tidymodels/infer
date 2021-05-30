@@ -39,7 +39,7 @@ copy_attrs <- function(to, from,
                          "response", "success", "explanatory", "response_type",
                          "explanatory_type", "distr_param", "distr_param2",
                          "null", "params", "theory_type", "generated", "type",
-                         "hypothesized", "formula"
+                         "hypothesized", "formula", "fitted"
                        )) {
   for (at in attrs) {
     attr(to, at) <- attr(from, at)
@@ -127,6 +127,10 @@ is_generated <- function(x) {
 
 is_hypothesized <- function(x){
   attr(x, "hypothesized")
+}
+
+is_fitted <- function(x){
+  attr(x, "fitted")
 }
 
 is_mlr <- function(x) {

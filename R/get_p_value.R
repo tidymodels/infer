@@ -79,7 +79,7 @@ get_p_value <- function(x, obs_stat, direction) {
   check_for_nan(x, "get_p_value")
   check_direction(direction)
   
-  if (is_mlr(x)) {
+  if (is_fitted(x)) {
     # check that x and obs stat reference the same variables
     check_mlr_x_and_obs_stat(x, obs_stat)
     
