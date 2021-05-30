@@ -130,3 +130,84 @@ test_that("get_confidence_interval checks input", {
     '`point_estimate`.*"bias-corrected"'
   )
 })
+
+
+test_that("get_confidence_interval can handle multiple explanatory variables", {
+  # generate example objects
+  set.seed(1)
+  
+  null_fits <- gss[1:50,] %>%
+    specify(hours ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 10, type = "permute") %>%
+    fit()
+  
+  obs_fit <- gss[1:50,] %>%
+    specify(hours ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    fit()
+  
+  # check each ci type
+  expect_equivalent(
+    get_confidence_interval(null_fits, point_estimate = obs_fit, level = .95),
+    structure(
+      list(
+        term = c("age", "collegedegree", "intercept"), 
+        lower_ci = c(-0.2139, -6.6020, 36.4537), 
+        upper_ci = c(0.1064, 8.7479, 50.8005)), 
+      row.names = c(NA, -3L), 
+      class = c("tbl_df", "tbl", "data.frame")
+    ),
+    tolerance = 1e-3
+  )
+  
+  expect_equivalent(
+    get_confidence_interval(null_fits, point_estimate = obs_fit, 
+                            level = .95, type = "se"),
+    structure(
+      list(
+        term = c("age", "collegedegree", "intercept"), 
+        lower_ci = c(-0.3809, -13.6182, 36.8694), 
+        upper_ci = c(0.1124, 6.1680, 59.1752)), 
+      row.names = c(NA, -3L), 
+      class = c("tbl_df", "tbl", "data.frame")
+    ),
+    tolerance = 1e-3
+  )
+  
+  expect_equivalent(
+    get_confidence_interval(null_fits, point_estimate = obs_fit, 
+                            level = .95, type = "bias-corrected"),
+    structure(
+      list(
+        term = c("age", "collegedegree", "intercept"), 
+        lower_ci = c(-0.2177, -7.1506, 37.2941), 
+        upper_ci = c(0.0806, 1.9707, 51.0512)), 
+      row.names = c(NA, -3L), 
+      class = c("tbl_df", "tbl", "data.frame")
+    ),
+    tolerance = 1e-3
+  )
+  
+  # errors out when it ought to
+  obs_fit_2 <- gss[1:50,] %>%
+    specify(hours ~ age) %>%
+    hypothesize(null = "independence") %>%
+    fit()
+  
+  expect_error(
+    get_confidence_interval(null_fits, point_estimate = obs_fit_2, level = .95),
+    "explanatory variables.*are not the same used"
+  )
+  
+  obs_fit_3 <- 
+    obs_fit_2 <- gss[1:50,] %>%
+    specify(year ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    fit()
+  
+  expect_error(
+    get_confidence_interval(null_fits, point_estimate = obs_fit_3, level = .95),
+    "response variable.*\\(hours\\) is not the same.*observed fit \\(year\\)."
+  )
+})
