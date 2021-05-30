@@ -284,3 +284,43 @@ mirror_obs_stat <- function(vector, observation) {
   
   stats::quantile(vector, probs = 1 - obs_percentile)
 }
+
+# utils for patchwork -----------------------------------
+
+x_axis_label <- function(x) {
+  x %>% purrr::pluck("labels", "x")
+}
+
+# grab the "locations" of each patch, named by x (term) axis.
+# the last patch is only accessible by grab_last_patch.
+locate_patches <- function(x) {
+  locations <- 
+    paste0(
+      "x$patches$plots[[", 
+      1:length(x$patches$plots),
+      "]]",
+      sep = ""
+    )
+}
+
+# given the output of locate_patches and a list entry 
+# name, return the patch at that location
+grab_patch <- function(x, term) {
+  if (term == "..last") {
+    x$patches <- NULL
+    class(x) <- setdiff(class(x), 'patchwork')
+    x
+  } else {
+    rlang::eval_tidy(
+      rlang::parse_expr(
+        locate_patches(x)[[term]]
+      )
+    )
+  }
+}
+
+# loads in a patch, shades the p value for the relevant term,
+# and then places the patch back in place
+shade_patch <- function(x, term) {
+  inivisible(TRUE)
+}
