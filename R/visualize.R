@@ -128,7 +128,7 @@ visualize <- function(data, bins = 15, method = "simulation",
   attr(data, "viz_method") <- method
   attr(data, "viz_bins") <- bins
   
-  if (is_mlr(data)) {
+  if (is_fitted(data)) {
     term_data <- data %>%
       dplyr::rename(stat = estimate) %>%
       dplyr::ungroup() %>%
