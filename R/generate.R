@@ -11,6 +11,9 @@
 #' @param reps The number of resamples to generate.
 #' @param type Currently either `bootstrap`, `permute`, or `simulate` 
 #' (see below).
+#' @param cols If `type = "permute"`, a set of unquoted column names in the 
+#' data to permute (independently of each other). Defaults to only the 
+#' response variable.
 #' @param ... Currently ignored.
 #'
 #' @return A tibble containing `reps` generated datasets, indicated by the
@@ -53,7 +56,8 @@
 #'
 #' @importFrom dplyr group_by
 #' @export
-generate <- function(x, reps = 1, type = NULL, ...) {
+generate <- function(x, reps = 1, type = NULL, 
+                     cols = !!response_expr(x), ...) {
   # Check type argument, warning if necessary
   type <- sanitize_generation_type(type)
   auto_type <- sanitize_generation_type(attr(x, "type"))
@@ -62,6 +66,8 @@ generate <- function(x, reps = 1, type = NULL, ...) {
   } else {
     use_auto_type(auto_type)
   }
+  cols <- rlang::enquo(cols)
+  check_cols(x, cols, type, missing(cols))
 
   attr(x, "generated") <- TRUE
 
@@ -70,7 +76,7 @@ generate <- function(x, reps = 1, type = NULL, ...) {
     bootstrap = bootstrap(x, reps, ...),
     permute = {
       check_permutation_attributes(x)
-      permute(x, reps, ...)
+      permute(x, reps, cols, ...)
     },
     simulate = simulate(x, reps, ...)
   )
@@ -113,6 +119,37 @@ check_permutation_attributes <- function(x, attr) {
   }
 }
 
+check_cols <- function(x, cols, type, missing) {
+  if (!rlang::is_symbolic(rlang::get_expr(cols))) {
+    stop_glue(
+      "The `cols` argument should be one or more unquoted variable names ",
+      "(not strings in quotation marks)."
+    )
+  }
+  
+  col_names <- all.vars(rlang::get_expr(cols))
+  
+  if (!missing && type != "permute") {
+    warning_glue(
+      'The `cols` argument is only relevant to the "permute" ',
+      'generation type and will be ignored.'
+    )
+  }
+  
+  if (any(!col_names %in% colnames(x))) {
+    bad_cols <- col_names[!col_names %in% colnames(x)]
+    
+    plurals <- if (length(bad_cols) > 1) {
+        c("s", "are")} else {
+        c("", "is")}
+    
+    stop_glue(
+      'The column{plurals[1]} `{list(bad_cols)}` provided to',
+      ' the `cols` argument {plurals[2]} not in the supplied data.'
+    )
+  }
+}
+
 bootstrap <- function(x, reps = 1, ...) {
   # Check if hypothesis test chosen
   if (is_hypothesized(x)) {
@@ -141,8 +178,8 @@ bootstrap <- function(x, reps = 1, ...) {
 }
 
 #' @importFrom dplyr bind_rows group_by
-permute <- function(x, reps = 1, ...) {
-  df_out <- replicate(reps, permute_once(x), simplify = FALSE) %>%
+permute <- function(x, reps = 1, cols, ...) {
+  df_out <- replicate(reps, permute_once(x, cols), simplify = FALSE) %>%
     dplyr::bind_rows() %>%
     dplyr::mutate(replicate = rep(1:reps, each = nrow(x))) %>%
     dplyr::group_by(replicate)
@@ -152,20 +189,30 @@ permute <- function(x, reps = 1, ...) {
   append_infer_class(df_out)
 }
 
-permute_once <- function(x, ...) {
+permute_once <- function(x, cols, ...) {
   dots <- list(...)
 
   if (is_hypothesized(x) && (attr(x, "null") == "independence")) {
-    y <- pull(x, !!response_expr(x))
-
-    y_prime <- sample(y, size = length(y), replace = FALSE)
-    x[response_name(x)] <- y_prime
-    return(x)
+    # for each column, determine whether it should be permuted
+    needs_permuting <- colnames(x) %in% all.vars(rlang::get_expr(cols))
+    
+    # pass each to permute_column with its associated logical
+    out <- purrr::map2_dfc(x, needs_permuting, permute_column)
+    
+    copy_attrs(out, x)
   } else {
     stop_glue(
       "Permuting should be done only when doing independence hypothesis test. ",
       "See `hypothesize()`."
     )
+  }
+}
+
+permute_column <- function(col, permute) {
+  if (permute) {
+    sample(col, size = length(col), replace = FALSE)
+  } else {
+    col
   }
 }
 
