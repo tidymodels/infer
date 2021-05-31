@@ -106,7 +106,14 @@ get_formula <- function(x) {
 }
 
 fit_linear_model <- function(object, formula, engine, ...) {
-  parsnip::linear_reg(...) %>% 
+  dots <- list(...)
+  
+  if ((!"penalty" %in% names(dots)) && 
+                 engine == "glmnet") {
+    dots[["penalty"]] <- 0
+  }
+  
+  do.call(parsnip::linear_reg, dots) %>% 
     parsnip::set_engine(engine) %>%
     fit(
       formula = formula,

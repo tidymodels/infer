@@ -1,9 +1,9 @@
 context("fit.infer")
 
-x1 <- gss %>% specify(response = hours)
-x2 <- gss %>% specify(hours ~ NULL)
-x3 <- gss %>% specify(response = hours, explanatory = c(age, college))
-x4 <- gss %>% specify(hours ~ age + college)
+x1 <- gss[1:100,] %>% specify(response = hours)
+x2 <- gss[1:100,] %>% specify(hours ~ NULL)
+x3 <- gss[1:100,] %>% specify(response = hours, explanatory = c(age, college))
+x4 <- gss[1:100,] %>% specify(hours ~ age + college)
 
 test_that("get_formula helper works", {
   expect_false(has_attr(x1, "formula"))
@@ -66,4 +66,22 @@ test_that("fit.infer can handle generated objects", {
     colnames(x3_fit),
     colnames(x3_gen_fit)[colnames(x3_gen_fit) != "replicate"]
   )
+})
+
+test_that("fit.infer is sensitive to engine arguments", {
+  lm_fit <- x3 %>% fit(engine = "lm")
+  glmnet_fit_1 <- x3 %>% fit(engine = "glmnet")
+  glmnet_fit_2 <- x3 %>% fit(engine = "glmnet", penalty = .1)
+  
+  expect_equal(nrow(lm_fit), nrow(glmnet_fit_1))
+  expect_equal(nrow(lm_fit), nrow(glmnet_fit_2))
+  
+  expect_equal(ncol(lm_fit), ncol(glmnet_fit_1))
+  expect_equal(ncol(lm_fit), ncol(glmnet_fit_2))
+  
+  expect_true(all(lm_fit$term == glmnet_fit_1$term))
+  expect_true(all(lm_fit$term == glmnet_fit_2$term))
+  
+  expect_false(all(lm_fit$estimate == glmnet_fit_1$estimate))
+  expect_false(all(glmnet_fit_1$estimate == glmnet_fit_2$estimate))
 })
