@@ -119,7 +119,12 @@ get_confidence_interval <- function(x, level = 0.95, type = "percentile",
   
   if (is_fitted(x)) {
     # check that x and point estimate reference the same variables
-    check_mlr_x_and_obs_stat(x, point_estimate)
+    check_mlr_x_and_obs_stat(
+      x, 
+      point_estimate, 
+      "get_confidence_interval", 
+      "point_estimate"
+    )
     
     # split up x and point estimate by term
     term_data <- x %>%

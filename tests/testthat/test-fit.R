@@ -69,6 +69,8 @@ test_that("fit.infer can handle generated objects", {
 })
 
 test_that("fit.infer is sensitive to engine arguments", {
+  skip_if_not_installed("glmnet")
+  
   lm_fit <- x3 %>% fit(engine = "lm")
   glmnet_fit_1 <- x3 %>% fit(engine = "glmnet")
   glmnet_fit_2 <- x3 %>% fit(engine = "glmnet", penalty = .1)

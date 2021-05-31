@@ -99,7 +99,8 @@ Suggests:
     rmarkdown,
     stringr,
     testthat,
-    vdiffr
+    vdiffr,
+    glmnet
 VignetteBuilder:
     knitr
 Encoding: UTF-8
