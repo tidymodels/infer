@@ -118,7 +118,12 @@ get_p_value <- function(x, obs_stat, direction) {
   
   if (is_fitted(x)) {
     # check that x and obs stat reference the same variables
-    check_mlr_x_and_obs_stat(x, obs_stat)
+    check_mlr_x_and_obs_stat(
+      x, 
+      obs_stat, 
+      "get_p_value", 
+      "obs_stat"
+    )
     
     # split up x and obs_stat by term
     term_data <- x %>%
@@ -192,24 +197,7 @@ two_sided_p_value <- function(vec, obs_stat) {
   min(raw_res, 1)
 }
 
-check_mlr_x_and_obs_stat <- function(x, obs_stat) {
-  if (any(!unique(x$term) %in% unique(obs_stat$term)) ||
-      any(!unique(obs_stat$term) %in% unique(x$term))) {
-    stop_glue(
-      "The explanatory variables used to generate the distribution of ",
-      "null fits are not the same used to fit the observed data."
-    )
-  }
-  
-  if (response_name(x) != response_name(obs_stat)) {
-    stop_glue(
-      "The response variable of the null fits ({response_name(x)}) is not ",
-      "the same as that of the observed fit ({response_name(obs_stat)})."
-    )
-  }
-  
-  invisible(TRUE)
-}
+
 
 # which_distribution <- function(x, theory_type, obs_stat, direction){
 #

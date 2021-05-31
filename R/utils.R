@@ -130,7 +130,7 @@ is_hypothesized <- function(x){
 }
 
 is_fitted <- function(x){
-  attr(x, "fitted")
+  isTRUE(attr(x, "fitted"))
 }
 
 is_mlr <- function(x) {
@@ -476,6 +476,39 @@ check_obs_stat <- function(obs_stat) {
   }
 
   obs_stat
+}
+
+check_mlr_x_and_obs_stat <- function(x, obs_stat, fn, arg) {
+  if (!is_fitted(obs_stat)) {
+    stop_glue(
+      "The `{arg}` argument should be the output of `fit()`. ",
+      "See the documentation with `?{fn}`."
+    )
+  }
+  
+  if (!is_generated(x)) {
+    stop_glue(
+      "The `x` argument needs to be passed to `generate()` ",
+      "before `fit()`."
+    )
+  }
+  
+  if (any(!unique(x$term) %in% unique(obs_stat$term)) ||
+      any(!unique(obs_stat$term) %in% unique(x$term))) {
+    stop_glue(
+      "The explanatory variables used to generate the distribution of ",
+      "null fits are not the same used to fit the observed data."
+    )
+  }
+  
+  if (response_name(x) != response_name(obs_stat)) {
+    stop_glue(
+      "The response variable of the null fits ({response_name(x)}) is not ",
+      "the same as that of the observed fit ({response_name(obs_stat)})."
+    )
+  }
+  
+  invisible(TRUE)
 }
 
 #' Check object type

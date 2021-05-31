@@ -132,7 +132,7 @@ test_that("get_confidence_interval checks input", {
 })
 
 
-test_that("get_confidence_interval can handle multiple explanatory variables", {
+test_that("get_confidence_interval can handle fitted objects", {
   # generate example objects
   set.seed(1)
   
@@ -211,3 +211,35 @@ test_that("get_confidence_interval can handle multiple explanatory variables", {
     "response variable.*\\(hours\\) is not the same.*observed fit \\(year\\)."
   )
 })
+
+test_that("get_confidence_interval can handle bad args with fitted objects", {
+  set.seed(1)
+  
+  null_fits <- gss[1:50,] %>%
+    specify(hours ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 10, type = "permute") %>%
+    fit()
+  
+  obs_fit <- gss[1:50,] %>%
+    specify(hours ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    fit()
+  
+  expect_error(
+    get_confidence_interval(null_fits, point_estimate = "boop", level = .95),
+    "`point_estimate` arg.*output of `fit\\(\\)`. See.*`?get_con"
+  )
+  
+  expect_error(
+    get_confidence_interval(null_fits, point_estimate = obs_fit$estimate, 
+                            level = .95),
+    "`point_estimate` arg.*output of `fit\\(\\)`. See.*`?get_con"
+  )
+  
+  expect_error(
+    get_confidence_interval(obs_fit, point_estimate = null_fits, level = .95),
+    "`x` argument.*be passed to `generate\\(\\)`"
+  )
+})
+
