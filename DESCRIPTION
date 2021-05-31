@@ -88,8 +88,7 @@ Imports:
     parsnip,
     broom,
     tidyr,
-    generics,
-    patchwork
+    generics
 Suggests:
     covr,
     devtools (>= 1.12.0),
