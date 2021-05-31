@@ -323,3 +323,90 @@ test_that("generate() can permute with multiple explanatory variables", {
   expect_equal(ncol(x), 4)
 })
 
+test_that("generate is sensitive to the cols argument", {
+  # default argument works appropriately
+  expect_equal({ 
+      set.seed(1)
+      
+      gss[1:10,] %>%
+        specify(hours ~ age + college) %>%
+        hypothesize(null = "independence") %>%
+        generate(reps = 2, type = "permute")
+      }, { 
+      set.seed(1)
+      
+      gss[1:10,] %>%
+        specify(hours ~ age + college) %>%
+        hypothesize(null = "independence") %>%
+        generate(reps = 2, type = "permute", cols = hours)
+  })
+  
+  # permuting changes output
+  expect_silent(
+    perm_age <- gss[1:10,] %>%
+      specify(hours ~ age + college) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 2, type = "permute", cols = age)
+  )
+  
+  expect_false(all(perm_age$age[1:10] == perm_age$age[11:20]))
+  expect_true(all(perm_age$hours[1:10] == perm_age$hours[11:20]))
+  expect_true(all(perm_age$college[1:10] == perm_age$college[11:20]))
+  
+  expect_silent(
+    perm_college <- gss[1:10,] %>%
+      specify(hours ~ age + college) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 2, type = "permute", cols = college)
+  )
+  
+  expect_true(all(perm_college$age[1:10] == perm_college$age[11:20]))
+  expect_true(all(perm_college$hours[1:10] == perm_college$hours[11:20]))
+  expect_false(all(perm_college$college[1:10] == perm_college$college[11:20]))
+  
+  expect_silent(
+    perm_college_age <- gss[1:10,] %>%
+      specify(hours ~ age + college) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 2, type = "permute", cols = c(college, age))
+  )
+  
+  expect_false(all(perm_college_age$age[1:10] == perm_college_age$age[11:20]))
+  expect_true(all(perm_college_age$hours[1:10] == perm_college_age$hours[11:20]))
+  expect_false(all(perm_college_age$college[1:10] == perm_college_age$college[11:20]))
+})
+
+test_that("cols argument prompts when it ought to", {
+  expect_error(
+    gss[1:10,] %>%
+      specify(hours ~ age + college) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 2, type = "permute", cols = c(howdy)),
+    "column `howdy`.*is not in the supplied data."
+  )
+  
+  expect_error(
+    gss[1:10,] %>%
+      specify(hours ~ age + college) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 2, type = "permute", cols = c(howdy, doo)),
+    'columns `c\\("howdy", "doo"\\)`.*are not in the supplied data.'
+  )
+  
+  expect_warning(
+    gss[1:10,] %>%
+      specify(hours ~ NULL) %>%
+      hypothesize(null = "point", mu = 40) %>%
+      generate(reps = 2, type = "bootstrap", cols = c(hours)),
+    "is only relevant to.*will be ignored."
+  )
+  
+  expect_error(
+    gss[1:10,] %>%
+      specify(hours ~ age + college) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 2, type = "permute", cols = "hours"),
+    'unquoted variable names'
+  )
+})
+
