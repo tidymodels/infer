@@ -125,78 +125,7 @@ visualize <- function(data, bins = 15, method = "simulation",
                       endpoints_color = "mediumaquamarine",
                       ci_fill = "turquoise",
                       ...) {
-  attr(data, "viz_method") <- method
-  attr(data, "viz_bins") <- bins
-  
-  if (is_fitted(data)) {
-    term_data <- data %>%
-      dplyr::rename(stat = estimate) %>%
-      dplyr::ungroup() %>%
-      dplyr::group_by(term) %>%
-      dplyr::group_split() %>%
-      purrr::map(copy_attrs, data) %>%
-      purrr::map(copy_attrs, data, c("viz_method", "viz_bins"))
-    
-    plots <- purrr::map2(
-      term_data,
-      purrr::map(term_data, purrr::pluck, "term", 1),
-      visualize_term,
-      bins = bins, 
-      method = method, 
-      dens_color = dens_color, 
-      obs_stat = obs_stat, 
-      obs_stat_color = obs_stat_color,
-      pvalue_fill = pvalue_fill, 
-      direction = direction, 
-      endpoints = endpoints, 
-      endpoints_color = endpoints_color, 
-      ci_fill = ci_fill, 
-      ...
-    )
-    
-    return(
-      patchwork::wrap_plots(plots) +
-        title_layer(
-          term_data[[1]], 
-          title_fn = patchwork::plot_annotation
-        )
-    )
-  } else {
-    return(
-      visualize_term(
-        data,
-        "stat",
-        bins = bins, 
-        method = method, 
-        dens_color = dens_color, 
-        obs_stat = obs_stat, 
-        obs_stat_color = obs_stat_color,
-        pvalue_fill = pvalue_fill, 
-        direction = direction, 
-        endpoints = endpoints, 
-        endpoints_color = endpoints_color, 
-        ci_fill = ci_fill, 
-        ...
-      ) + title_layer(data)
-    )
-  }
-}
-
-#' @rdname visualize
-#' @export
-visualise <- visualize
-
-
-visualize_term <- function(data, term, bins = 15, method = "simulation",
-                           dens_color = "black",
-                           obs_stat = NULL,
-                           obs_stat_color = "red2",
-                           pvalue_fill = "pink",
-                           direction = NULL,
-                           endpoints = NULL,
-                           endpoints_color = "mediumaquamarine",
-                           ci_fill = "turquoise",
-                           ...) {
+  check_if_mlr(data, "visualize")
   data <- check_for_nan(data, "visualize")
   check_visualize_args(
     data, bins, method, dens_color, obs_stat, obs_stat_color,
@@ -206,10 +135,16 @@ visualize_term <- function(data, term, bins = 15, method = "simulation",
   endpoints <- impute_endpoints(endpoints)
   obs_stat <- impute_obs_stat(obs_stat, direction, endpoints)
   
+  # Add `method` to `data` attributes to enable later possibility of
+  # complicated computation of p-value regions (in case `direction = "both"`)
+  # in `shade_p_value()`.
+  attr(data, "viz_method") <- method
+  attr(data, "viz_bins") <- bins
+  
   infer_plot <- ggplot(data) +
     simulation_layer(data, ...) +
     theoretical_layer(data, dens_color, ...) +
-    labels_layer(data, term) +
+    title_labels_layer(data) +
     shade_p_value(
       obs_stat, direction, obs_stat_color, pvalue_fill, ...
     )
@@ -221,6 +156,10 @@ visualize_term <- function(data, term, bins = 15, method = "simulation",
   
   infer_plot
 }
+
+#' @rdname visualize
+#' @export
+visualise <- visualize
 
 check_visualize_args <- function(data, bins, method, dens_color,
                                  obs_stat, obs_stat_color,
@@ -243,14 +182,14 @@ check_visualize_args <- function(data, bins, method, dens_color,
       "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector."
     )
   }
-
+  
   if (!(method %in% c("simulation", "theoretical", "both"))) {
     stop_glue(
       'Provide `method` with one of three options: `"theoretical"`, `"both"`, ',
       'or `"simulation"`. `"simulation"` is the default.'
     )
   }
-
+  
   if (method == "both") {
     if (!("stat" %in% names(data))) {
       stop_glue(
@@ -258,7 +197,7 @@ check_visualize_args <- function(data, bins, method, dens_color,
         'to `visualize(method = "both")`'
       )
     }
-
+    
     if (
       ("replicate" %in% names(data)) && (length(unique(data$replicate)) < 100)
     ) {
@@ -268,14 +207,14 @@ check_visualize_args <- function(data, bins, method, dens_color,
       )
     }
   }
-
+  
   if (!is.null(obs_stat) && !is.null(endpoints)) {
     warning_glue(
       "Values for both `endpoints` and `obs_stat` were given when only one ",
       "should be set. Ignoring `obs_stat` values."
     )
   }
-
+  
   TRUE
 }
 
@@ -308,7 +247,7 @@ warn_deprecated_args <- function(obs_stat, endpoints) {
       "Use `shade_p_value()` instead."
     )
   }
-
+  
   if (!is.null(endpoints)) {
     warning_glue(
       "`visualize()` should no longer be used to plot a confidence interval. Arguments ",
@@ -316,7 +255,7 @@ warn_deprecated_args <- function(obs_stat, endpoints) {
       "Use `shade_confidence_interval()` instead."
     )
   }
-
+  
   TRUE
 }
 
@@ -328,23 +267,23 @@ impute_endpoints <- function(endpoints) {
     )
     endpoints <- endpoints[1:2]
   }
-
+  
   if (is.data.frame(endpoints)) {
     if ((nrow(endpoints) != 1) || (ncol(endpoints) != 2)) {
       stop_glue(
         "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector."
       )
     }
-
+    
     endpoints <- unlist(endpoints)
   }
-
+  
   endpoints
 }
 
 impute_obs_stat <- function(obs_stat, direction, endpoints) {
   obs_stat <- check_obs_stat(obs_stat)
-
+  
   if (
     !is.null(direction) &&
     (is.null(obs_stat) + is.null(endpoints) != 1)
@@ -354,14 +293,14 @@ impute_obs_stat <- function(obs_stat, direction, endpoints) {
       "or the observed statistic `obs_stat` to be provided."
     )
   }
-
+  
   obs_stat
 }
 
 simulation_layer <- function(data, ...) {
   method <- get_viz_method(data)
   bins <- get_viz_bins(data)
-
+  
   if (method == "theoretical") {
     return(list())
   }
@@ -369,7 +308,7 @@ simulation_layer <- function(data, ...) {
   # Manual computation of breaks is needed to fix histogram shape in future plot
   # buildings, e.g. after adding p-value areas.
   bin_breaks <- compute_bin_breaks(data, bins)
-
+  
   if (method == "simulation") {
     if (length(unique(data$stat)) >= 10) {
       res <- list(
@@ -390,7 +329,7 @@ simulation_layer <- function(data, ...) {
       )
     )
   }
-
+  
   res
 }
 
@@ -403,15 +342,15 @@ compute_bin_breaks <- function(data, bins) {
 
 theoretical_layer <- function(data, dens_color, ..., do_warn = TRUE) {
   method <- get_viz_method(data)
-
+  
   if (method == "simulation") {
     return(list())
   }
-
+  
   warn_theoretical_layer(data, do_warn)
-
+  
   theory_type <- short_theory_type(data)
-
+  
   switch(
     theory_type,
     t = theory_curve(
@@ -437,12 +376,12 @@ warn_theoretical_layer <- function(data, do_warn = TRUE) {
   }
   
   method <- get_viz_method(data)
-
+  
   warning_glue(
     "Check to make sure the conditions have been met for the theoretical ",
     "method. {{infer}} currently does not check these for you."
   )
-
+  
   if (
     has_attr(data, "stat") &&
     !(attr(data, "stat") %in% c("t", "z", "Chisq", "F"))
@@ -464,7 +403,7 @@ warn_theoretical_layer <- function(data, do_warn = TRUE) {
 theory_curve <- function(method, d_fun, q_fun, args_list, dens_color) {
   if (method == "theoretical") {
     x_range <- do.call(q_fun, c(p = list(c(0.001, 0.999)), args_list))
-
+    
     res <- list(
       ggplot2::geom_path(
         data = data.frame(x = x_range), mapping = aes(x = x),
@@ -481,11 +420,11 @@ theory_curve <- function(method, d_fun, q_fun, args_list, dens_color) {
       )
     )
   }
-
+  
   res
 }
 
-title_layer <- function(data, title_fn = ggplot2::ggtitle) {
+title_labels_layer <- function(data) {
   method <- get_viz_method(data)
   theory_type <- short_theory_type(data)
   
@@ -502,40 +441,22 @@ title_layer <- function(data, title_fn = ggplot2::ggtitle) {
     )
   }
   
-  if (is_fitted(data)) {
-    plural <- "s"
-  } else {
-    plural <- ""
-  }
-  
   title_string <- switch(
     method,
-    simulation = "Simulation-Based {distr_name}{plural}",
-    theoretical = "Theoretical {theory_type} {distr_name}{plural}",
+    simulation = "Simulation-Based {distr_name}",
+    theoretical = "Theoretical {theory_type} {distr_name}",
     both = "Simulation-Based and Theoretical {theory_type} {distr_name}s"
   )
   
-  list(title_fn(glue_null(title_string)))
-}
-
-labels_layer <- function(data, term) {
-  method <- get_viz_method(data)
-  theory_type <- short_theory_type(data)
-  
-  x_lab <- switch(method, simulation = "{term}", "{theory_type} stat")
+  x_lab <- switch(method, simulation = "stat", "{theory_type} stat")
   y_lab <- switch(method, simulation = "count", "density")
-
+  
   list(
+    ggtitle(glue_null(title_string)),
     xlab(glue_null(x_lab)),
     ylab(glue_null(y_lab))
   )
 }
-
-facet_layer <- function() {
-  list(
-    ggplot2::facet_wrap(~term, scales = "free_x")
-  )
-} 
 
 check_shade_confidence_interval_args <- function(color, fill) {
   check_type(color, is_color_string, "color string")
@@ -546,20 +467,15 @@ check_shade_confidence_interval_args <- function(color, fill) {
 
 short_theory_type <- function(x) {
   theory_attr <- attr(x, "theory_type")
-  
-  if (!has_attr(x, "theory_type")) {
-    return("")
-  }
-  
   theory_types <- list(
     t = c("Two sample t", "Slope with t", "One sample t"),
     `F` = "ANOVA",
     z = c("One sample prop z", "Two sample props z"),
     `Chi-Square` = c("Chi-square test of indep", "Chi-square Goodness of Fit")
   )
-
+  
   is_type <- vapply(theory_types, function(x) {theory_attr %in% x}, logical(1))
-
+  
   names(theory_types)[which(is_type)[1]]
 }
 

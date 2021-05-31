@@ -588,30 +588,3 @@ parse_type <- function(f_name) {
 
   res
 }
-
-# utils for patchwork -----------------------------------
-# used inside of shade_p_value and shade_confidence_interval
-
-# adapted from thomasp85/patchwork's source code at
-# https://github.com/thomasp85/patchwork/blob/79223d3002e7bd7e715a270685c6507d684b2622/R/add_plot.R#L26-L41
-get_patches <- function(plot) {
-  # the first n-1 patches
-  patches <- plot$patches
-  
-  # the nth patch is the rest of the object
-  plot$patches <- NULL
-  class(plot) <- setdiff(class(plot), 'patchwork')
-  
-  patches <- c(patches$plots, list(plot))
-  
-  setNames(
-    patches,
-    c(purrr::map_chr(patches, x_axis_label))
-  )
-}
-
-# extract the x axis label from a ggplot -- these are unique
-# ids for terms in visualize() workflows
-x_axis_label <- function(x) {
-  x %>% purrr::pluck("labels", "x")
-}
