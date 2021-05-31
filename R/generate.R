@@ -66,8 +66,8 @@ generate <- function(x, reps = 1, type = NULL,
   } else {
     use_auto_type(auto_type)
   }
-  cols <- rlang::enquo(cols)
-  check_cols(x, cols, type, missing(cols))
+  
+  check_cols(x, rlang::enquo(cols), type, missing(cols))
 
   attr(x, "generated") <- TRUE
 
@@ -76,7 +76,7 @@ generate <- function(x, reps = 1, type = NULL,
     bootstrap = bootstrap(x, reps, ...),
     permute = {
       check_permutation_attributes(x)
-      permute(x, reps, cols, ...)
+      permute(x, reps, rlang::enquo(cols), ...)
     },
     simulate = simulate(x, reps, ...)
   )
