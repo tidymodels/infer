@@ -115,6 +115,7 @@
 #' @importFrom ggplot2 xlab ylab geom_vline geom_rect geom_bar
 #' @importFrom stats dt qt df qf dnorm qnorm dchisq qchisq
 #' @family visualization functions
+#' @family auxillary functions
 #' @export
 visualize <- function(data, bins = 15, method = "simulation",
                       dens_color = "black",

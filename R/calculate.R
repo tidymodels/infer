@@ -74,6 +74,9 @@
 #' vignette("infer")
 #' }
 #'
+#' @seealso [visualize()], [get_p_value()], and [get_confidence_interval()]
+#' to extract value from this function's outputs.
+#'
 #' @importFrom dplyr group_by summarize n
 #' @importFrom rlang !! sym quo enquo eval_tidy
 #' @family core functions
