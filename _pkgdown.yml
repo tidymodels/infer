@@ -74,3 +74,5 @@ reference:
     - gss
     - deprecated
     - rep_sample_n
+    - "`%>%`"
+    - print.infer
