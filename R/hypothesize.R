@@ -38,6 +38,7 @@
 #' }
 #'
 #' @importFrom purrr compact
+#' @family core functions
 #' @export
 hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) {
 

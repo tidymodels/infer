@@ -64,3 +64,10 @@ vignette("infer")
 }
 
 }
+\seealso{
+Other core functions: 
+\code{\link{calculate}()},
+\code{\link{hypothesize}()},
+\code{\link{specify}()}
+}
+\concept{core functions}

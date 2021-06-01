@@ -46,6 +46,7 @@
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
 #' @importFrom stats as.formula
+#' @family wrapper functions
 #' @export
 t_test <- function(x, formula,
                    response = NULL,
@@ -154,6 +155,8 @@ t_test <- function(x, formula,
 #'       order = c("degree", "no degree"),
 #'       alternative = "two-sided")
 #'
+#' @family wrapper functions
+#' @family functions for calculating observed statistics
 #' @export
 t_stat <- function(x, formula,
                    response = NULL,
@@ -250,6 +253,7 @@ t_stat <- function(x, formula,
 #'                  "far above average" = 1/6,
 #'                  "DK" = 1/6))
 #'
+#' @family wrapper functions
 #' @export
 chisq_test <- function(x, formula, response = NULL,
                        explanatory = NULL, ...) {
@@ -319,6 +323,8 @@ chisq_test <- function(x, formula, response = NULL,
 #'                  "far above average" = 1/6,
 #'                  "DK" = 1/6))
 #'
+#' @family wrapper functions
+#' @family functions for calculating observed statistics
 #' @export
 chisq_stat <- function(x, formula, response = NULL,
                        explanatory = NULL, ...) {
@@ -437,6 +443,7 @@ check_conf_level <- function(conf_level) {
 #'           p = .2,
 #'           z = TRUE)
 #'
+#' @family wrapper functions
 #' @export
 prop_test <- function(x, formula,
                       response = NULL,

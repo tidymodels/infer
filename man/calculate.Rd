@@ -94,3 +94,10 @@ vignette("infer")
 }
 
 }
+\seealso{
+Other core functions: 
+\code{\link{generate}()},
+\code{\link{hypothesize}()},
+\code{\link{specify}()}
+}
+\concept{core functions}

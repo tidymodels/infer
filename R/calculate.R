@@ -76,6 +76,7 @@
 #'
 #' @importFrom dplyr group_by summarize n
 #' @importFrom rlang !! sym quo enquo eval_tidy
+#' @family core functions
 #' @export
 calculate <- function(x,
                       stat = c(
