@@ -70,8 +70,8 @@ jobs:
       - name: Install MacOS r-devel dependencies
         if: runner.os == 'macOS'
         run: |
-          pak::pkg_install("processx"")
-          pak::pkg_install("ps"")
+          pak::pkg_install("processx")
+          pak::pkg_install("ps")
         shell: Rscript {0}
 
       - name: Session info
