@@ -90,3 +90,9 @@ vignette("infer")
 }
 
 }
+\seealso{
+Other auxillary functions: 
+\code{\link{get_p_value}()},
+\code{\link{visualize}()}
+}
+\concept{auxillary functions}

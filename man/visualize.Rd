@@ -164,5 +164,10 @@ vignette("infer")
 Other visualization functions: 
 \code{\link{shade_confidence_interval}()},
 \code{\link{shade_p_value}()}
+
+Other auxillary functions: 
+\code{\link{get_confidence_interval}()},
+\code{\link{get_p_value}()}
 }
+\concept{auxillary functions}
 \concept{visualization functions}
