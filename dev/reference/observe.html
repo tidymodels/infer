@@ -284,8 +284,8 @@ supply hypothesized null values for the <code>"t"</code> statistic.</p></td>
 <span class='r-in'>  <span class='fu'>observe</span><span class='op'>(</span><span class='va'>hours</span> <span class='op'>~</span> <span class='cn'>NULL</span>, stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 x 1</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    stat</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span><span>  41.4</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>  41.4</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># equivalently, calculating the same statistic with the core verbs</span></span>
 <span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
@@ -293,16 +293,16 @@ supply hypothesized null values for the <code>"t"</code> statistic.</p></td>
 <span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 x 1</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    stat</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span><span>  41.4</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>  41.4</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># calculating a t statistic for hypothesized mu = 40 hours worked/week</span></span>
 <span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>observe</span><span class='op'>(</span><span class='va'>hours</span> <span class='op'>~</span> <span class='cn'>NULL</span>, stat <span class='op'>=</span> <span class='st'>"t"</span>, null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 x 1</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    stat</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span><span>  2.09</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>  2.09</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># equivalently, calculating the same statistic with the core verbs</span></span>
 <span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
@@ -311,8 +311,8 @@ supply hypothesized null values for the <code>"t"</code> statistic.</p></td>
 <span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"t"</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 x 1</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    stat</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span><span>  2.09</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>  2.09</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># similarly for a difference in means in age based on whether</span></span>
 <span class='r-in'><span class='co'># the respondent has a college degree</span></span>
@@ -324,8 +324,8 @@ supply hypothesized null values for the <code>"t"</code> statistic.</p></td>
 <span class='r-in'><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 x 1</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    stat</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span><span> 0.941</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> 0.941</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># equivalently, calculating the same statistic with the core verbs</span></span>
 <span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
@@ -333,8 +333,8 @@ supply hypothesized null values for the <code>"t"</code> statistic.</p></td>
 <span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span><span class='st'>"diff in means"</span>, order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"degree"</span>, <span class='st'>"no degree"</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 x 1</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    stat</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span><span> 0.941</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> 0.941</span>
 <span class='r-in'>  </span>
 <span class='r-in'><span class='co'># for a more in-depth explanation of how to use the infer package</span></span>
 <span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>

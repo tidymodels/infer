@@ -282,8 +282,8 @@ to see this connection.</p></td>
 <span class='r-in'>          order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"female"</span>, <span class='st'>"male"</span><span class='op'>)</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 x 6</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   statistic chisq_df p_value alternative lower_ci upper_ci</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       <span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span><span> 0.000</span><span style='text-decoration: underline;'>020</span><span>4        1   0.996 two.sided     -</span><span style='color: #BB0000;'>0.101</span><span>   0.091</span><span style='text-decoration: underline;'>7</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> 0.000<span style='text-decoration: underline;'>020</span>4        1   0.996 two.sided     -<span style='color: #BB0000;'>0.101</span>   0.091<span style='text-decoration: underline;'>7</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># one-sample proportion test for hypothesized null</span></span>
 <span class='r-in'><span class='co'># proportion of college completion of .2</span></span>
@@ -292,8 +292,8 @@ to see this connection.</p></td>
 <span class='r-in'>          p <span class='op'>=</span> <span class='fl'>.2</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 x 4</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   statistic chisq_df   p_value alternative</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       <span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span><span>      636.        1 2.98</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-140</span><span> two.sided  </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>      636.        1 2.98<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-140</span> two.sided  </span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># report as a z-statistic rather than chi-square</span></span>
 <span class='r-in'><span class='co'># and specify the success level of the response</span></span>
@@ -304,8 +304,8 @@ to see this connection.</p></td>
 <span class='r-in'>          z <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 x 3</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   statistic  p_value alternative</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>       <span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span><span>      8.27 1.30</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-16</span><span> two.sided  </span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>      8.27 1.30<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-16</span> two.sided  </span>
 <span class='r-in'></span>
 </code></pre></div>
   </div>
