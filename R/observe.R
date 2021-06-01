@@ -54,6 +54,8 @@
 #' vignette("infer")
 #' }
 #'
+#' @family wrapper functions
+#' @family functions for calculating observed statistics
 #' @export
 observe <- function(
     x,
