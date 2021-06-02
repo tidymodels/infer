@@ -349,4 +349,25 @@ test_that("type = 'draw'/'simulate' superseding handled gracefully", {
       generate(type = "boop"),
     'should be one of "bootstrap", "permute", or "draw"'
   )
+  
+  # warns with either alias when given unexpected generate type
+  expect_error(
+    expect_warning(
+      mtcars_df %>%
+        specify(response = mpg) %>%
+        hypothesize(null = "point", mu = 20) %>%
+        generate(type = "draw"),
+      'have given `type = "draw"`.*expected to be `"bootstrap"`.*untested'
+    )
+  )
+  
+  expect_error(
+    expect_warning(
+      mtcars_df %>%
+        specify(response = mpg) %>%
+        hypothesize(null = "point", mu = 20) %>%
+        generate(type = "draw"),
+      'have given `type = "draw"`.*expected to be `"bootstrap"`.*untested'
+    )
+  )
 })
