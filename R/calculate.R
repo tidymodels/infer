@@ -118,8 +118,17 @@ calculate <- function(x,
 }
 
 check_if_mlr <- function(x, fn) {
+  if (fn == "calculate") {
+    suggestion <- paste0("When working with multiple explanatory",
+                         " variables, use fit() instead.")
+  } else {
+    suggestion <- ""
+  }
+    
   if (is_mlr(x)) {
-    stop_glue("Multiple explanatory variables are not supported in {fn}().")
+    stop_glue(
+      "Multiple explanatory variables are not supported in {fn}(). {suggestion}"
+    )
   }
 }
 

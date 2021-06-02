@@ -10,7 +10,7 @@
 #' @param x A data frame containing a distribution of [calculate()]d statistics 
 #'   or [`fit()`][fit.infer()]ted coefficient estimates. This object should 
 #'   have been passed to [generate()] before being supplied to [calculate()] 
-#'   to [`fit()`][fit.infer()].
+#'   or [`fit()`][fit.infer()].
 #' @param level A numerical value between 0 and 1 giving the confidence level.
 #'   Default value is 0.95.
 #' @param type A string giving which method should be used for creating the
@@ -186,6 +186,7 @@ switch_ci <- function(type, x, level, point_estimate) {
 }
 
 ci_percentile <- function(x, level) {
+  # x[[ncol(x)]] pulls out the stat or estimate column
   ci_vec <- stats::quantile(x[[ncol(x)]], probs = (1 + c(-level, level)) / 2)
 
   make_ci_df(ci_vec)
@@ -203,12 +204,14 @@ ci_se <- function(x, level, point_estimate) {
 ci_bias_corrected <- function(x, level, point_estimate) {
   point_estimate <- check_obs_stat(point_estimate)
 
+  # x[[ncol(x)]] pulls out the stat or estimate column
   p <- mean(x[[ncol(x)]] <= point_estimate)
   z0 <- stats::qnorm(p)
   # z_alpha_2 is z_(alpha/2)
   z_alpha_2 <- stats::qnorm((1 + c(-level, level)) / 2)
   new_probs <- stats::pnorm(2 * z0 + z_alpha_2)
 
+  # x[[ncol(x)]] pulls out the stat or estimate column
   ci_vec <- stats::quantile(x[[ncol(x)]], probs = new_probs)
 
   make_ci_df(ci_vec)

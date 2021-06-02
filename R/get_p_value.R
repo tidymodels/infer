@@ -8,7 +8,7 @@
 #'
 #' @param x A data frame containing a distribution of [calculate()]d statistics 
 #'   or [`fit()`][fit.infer()]ted coefficient estimates. This object should 
-#'   have been passed to [generate()] before being supplied to 
+#'   have been passed to [generate()] before being supplied or 
 #'   [calculate()] to [`fit()`][fit.infer()].
 #' @param obs_stat A data frame containing the observed statistic (in a 
 #'   [calculate()]-based workflow) or observed fit (in a 
@@ -162,6 +162,7 @@ get_pvalue <- function(x, obs_stat, direction) {
 simulation_based_p_value <- function(x, obs_stat, direction) {
   obs_stat <- check_obs_stat(obs_stat)
   
+  # x[[ncol(x)]] pulls out the stat or estimate column
   if (direction %in% c("less", "left")) {
     pval <- left_p_value(x[[ncol(x)]], obs_stat)
   } else if (direction %in% c("greater", "right")) {

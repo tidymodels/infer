@@ -12,7 +12,7 @@ get_pvalue(x, obs_stat, direction)
 \arguments{
 \item{x}{A data frame containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
 or \code{\link[=fit.infer]{fit()}}ted coefficient estimates. This object should
-have been passed to \code{\link[=generate]{generate()}} before being supplied to
+have been passed to \code{\link[=generate]{generate()}} before being supplied or
 \code{\link[=calculate]{calculate()}} to \code{\link[=fit.infer]{fit()}}.}
 
 \item{obs_stat}{A data frame containing the observed statistic (in a
