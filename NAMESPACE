@@ -2,7 +2,6 @@
 
 S3method(print,infer)
 export("%>%")
-export(GENERATION_TYPES)
 export(calculate)
 export(chisq_stat)
 export(chisq_test)
