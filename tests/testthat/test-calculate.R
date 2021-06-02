@@ -61,7 +61,7 @@ test_that("variable chosen is of appropriate class (one var problems)", {
       null = "point",
       p = c("dem" = .5, "rep" = .25, "ind" = .25)
     ) %>%
-    generate(reps = 10, type = "simulate")
+    generate(reps = 10, type = "draw")
   expect_error(calculate(gen_gss1, stat = "mean"))
 
   # One mean example
@@ -238,7 +238,7 @@ test_that("chi-square matches chisq.test value", {
       null = "point",
       p = c("dem" = 1 / 3, "rep" = 1 / 3, "ind" = 1 / 3)
     ) %>%
-    generate(reps = 10, type = "simulate")
+    generate(reps = 10, type = "draw")
   infer_way <- calculate(gen_gss9, stat = "Chisq")
   # chisq.test way
   trad_way <- gen_gss9 %>%
@@ -255,7 +255,7 @@ test_that("chi-square matches chisq.test value", {
       null = "point",
       p = c("dem" = 0.8, "rep" = 0.1, "ind" = 0.1)
     ) %>%
-    generate(reps = 10, type = "simulate")
+    generate(reps = 10, type = "draw")
   infer_way <- calculate(gen_gss9a, stat = "Chisq")
   # chisq.test way
   trad_way <- gen_gss9a %>%
@@ -348,7 +348,7 @@ test_that("`order` is working", {
 gen_gss_tbl12 <- gss_tbl %>%
   specify(college ~ NULL, success = "no degree") %>%
   hypothesize(null = "point", p = 0.3) %>%
-  generate(reps = 10, type = "simulate")
+  generate(reps = 10, type = "draw")
 
 test_that('success is working for stat = "prop"', {
   expect_silent(gen_gss_tbl12 %>% calculate(stat = "prop"))
@@ -398,7 +398,7 @@ test_that("order being given when not needed gives warning", {
 #         null = "point",
 #         p = c("dem" = 0.4, "rep" = 0.4, "ind" = 0.2)
 #       ) %>%
-#       # generate(reps = 10, type = "simulate") %>%
+#       # generate(reps = 10, type = "draw") %>%
 #       calculate(stat = "Chisq")
 #   )
 # })
@@ -480,7 +480,7 @@ test_that("calculate doesn't depend on order of `p` (#122)", {
     gss_tbl %>%
       specify(partyid ~ NULL) %>%
       hypothesize(null = "point", p = p) %>%
-      generate(reps = 500, type = "simulate") %>%
+      generate(reps = 500, type = "draw") %>%
       calculate("Chisq") %>%
       get_p_value(obs_stat = 5, direction = "right")
   }
