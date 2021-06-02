@@ -85,7 +85,6 @@ Imports:
     purrr,
     rlang (>= 0.2.0),
     tibble,
-    parsnip,
     broom,
     tidyr,
     generics
@@ -98,8 +97,7 @@ Suggests:
     rmarkdown,
     stringr,
     testthat,
-    vdiffr,
-    glmnet
+    vdiffr
 VignetteBuilder:
     knitr
 Encoding: UTF-8

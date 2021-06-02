@@ -86,13 +86,13 @@
 #' 
 #' observed_fit
 #' 
-#' # fit 20 models to resamples of the gss dataset, where the response 
+#' # fit 100 models to resamples of the gss dataset, where the response 
 #' # `hours` is permuted in each. note that this code is the same as 
 #' # the above except for the addition of the `generate` step.
 #' null_fits <- gss %>%
 #'   specify(hours ~ age + college) %>%
 #'   hypothesize(null = "independence") %>%
-#'   generate(reps = 20, type = "permute") %>%
+#'   generate(reps = 100, type = "permute") %>%
 #'   fit()
 #' 
 #' null_fits

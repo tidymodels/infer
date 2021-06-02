@@ -7,18 +7,16 @@ generics::fit
 #' @description
 #' 
 #' Given the output of an infer core function, this function will fit
-#' a model according to the formula and data supplied earlier in the
-#' pipeline. If passed the output of [specify()] or [hypothesize()], the
-#' function will fit one model. If passed the output of [generate()],
-#' it will fit a model to each data resample, denoted in the `replicate` column.
+#' a model using [stats::glm()] according to the formula and data supplied 
+#' earlier in the pipeline. If passed the output of [specify()] or 
+#' [hypothesize()], the function will fit one model. If passed the output 
+#' of [generate()], it will fit a model to each data resample, denoted in 
+#' the `replicate` column.
 #'
 #' Learn more in `vignette("infer")`.
 #'
 #' @param object Output from an infer function---likely [generate()] or 
 #' [hypothesize()]---which specifies the formula and data to fit a model to.
-#' @param engine A string specifying which package or system will be used to 
-#'   fit the model. See [parsnip::linear_reg()] for information on possible 
-#'   values. Defaults to the base [stats::lm()] function.
 #' @param ... Any optional arguments to pass along to the chosen computational 
 #'   engine. See [parsnip::linear_reg()] for more information.
 #'
@@ -43,13 +41,13 @@ generics::fit
 #' 
 #' observed_fit
 #' 
-#' # fit 20 models to resamples of the gss dataset, where the response 
+#' # fit 100 models to resamples of the gss dataset, where the response 
 #' # `hours` is permuted in each. note that this code is the same as 
 #' # the above except for the addition of the `generate` step.
 #' null_fits <- gss %>%
 #'   specify(hours ~ age + college) %>%
 #'   hypothesize(null = "independence") %>%
-#'   generate(reps = 20, type = "permute") %>%
+#'   generate(reps = 100, type = "permute") %>%
 #'   fit()
 #' 
 #' null_fits
@@ -62,7 +60,7 @@ generics::fit
 #' @method fit infer
 #' @export fit.infer
 #' @export
-fit.infer <- function(object, engine = "lm", ...) {
+fit.infer <- function(object, ...) {
   # Extract the formula if it was supplied to specify, otherwise
   # construct it out of the explanatory and response arguments
   formula <- get_formula(object)
@@ -74,14 +72,13 @@ fit.infer <- function(object, engine = "lm", ...) {
       dplyr::mutate(
         model = list(fit_linear_model(
           object = data, 
-          formula = formula, 
-          engine = engine, 
+          formula = formula,
           ...))
       ) %>%
       dplyr::select(replicate, model) %>%
       tidyr::unnest(model)
   } else {
-    x <- fit_linear_model(object, formula, engine = engine, ...)
+    x <- fit_linear_model(object, formula, ...)
   }
   
   x <- copy_attrs(x, object)
@@ -105,19 +102,11 @@ get_formula <- function(x) {
   }
 }
 
-fit_linear_model <- function(object, formula, engine, ...) {
-  dots <- list(...)
-  
-  if ((!"penalty" %in% names(dots)) && 
-                 engine == "glmnet") {
-    dots[["penalty"]] <- 0
-  }
-  
-  do.call(parsnip::linear_reg, dots) %>% 
-    parsnip::set_engine(engine) %>%
-    fit(
+fit_linear_model <- function(object, formula, ...) {
+  stats::glm(
       formula = formula,
-      data = tibble::as_tibble(object)
+      data = object,
+      ...
     ) %>%
     generics::tidy() %>%
     dplyr::select(

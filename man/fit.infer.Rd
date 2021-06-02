@@ -4,15 +4,11 @@
 \alias{fit.infer}
 \title{Fit linear models to infer objects}
 \usage{
-\method{fit}{infer}(object, engine = "lm", ...)
+\method{fit}{infer}(object, ...)
 }
 \arguments{
 \item{object}{Output from an infer function---likely \code{\link[=generate]{generate()}} or
 \code{\link[=hypothesize]{hypothesize()}}---which specifies the formula and data to fit a model to.}
-
-\item{engine}{A string specifying which package or system will be used to
-fit the model. See \code{\link[parsnip:linear_reg]{parsnip::linear_reg()}} for information on possible
-values. Defaults to the base \code{\link[stats:lm]{stats::lm()}} function.}
 
 \item{...}{Any optional arguments to pass along to the chosen computational
 engine. See \code{\link[parsnip:linear_reg]{parsnip::linear_reg()}} for more information.}
@@ -31,10 +27,11 @@ explanatory variable (\code{term}).
 }
 \description{
 Given the output of an infer core function, this function will fit
-a model according to the formula and data supplied earlier in the
-pipeline. If passed the output of \code{\link[=specify]{specify()}} or \code{\link[=hypothesize]{hypothesize()}}, the
-function will fit one model. If passed the output of \code{\link[=generate]{generate()}},
-it will fit a model to each data resample, denoted in the \code{replicate} column.
+a model using \code{\link[stats:glm]{stats::glm()}} according to the formula and data supplied
+earlier in the pipeline. If passed the output of \code{\link[=specify]{specify()}} or
+\code{\link[=hypothesize]{hypothesize()}}, the function will fit one model. If passed the output
+of \code{\link[=generate]{generate()}}, it will fit a model to each data resample, denoted in
+the \code{replicate} column.
 
 Learn more in \code{vignette("infer")}.
 }
@@ -48,13 +45,13 @@ observed_fit <- gss \%>\%
 
 observed_fit
 
-# fit 20 models to resamples of the gss dataset, where the response 
+# fit 100 models to resamples of the gss dataset, where the response 
 # `hours` is permuted in each. note that this code is the same as 
 # the above except for the addition of the `generate` step.
 null_fits <- gss \%>\%
   specify(hours ~ age + college) \%>\%
   hypothesize(null = "independence") \%>\%
-  generate(reps = 20, type = "permute") \%>\%
+  generate(reps = 100, type = "permute") \%>\%
   fit()
 
 null_fits
