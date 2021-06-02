@@ -52,6 +52,7 @@
 #' }
 #'
 #' @importFrom dplyr group_by
+#' @family core functions
 #' @export
 generate <- function(x, reps = 1, type = NULL, ...) {
   # Check type argument, warning if necessary

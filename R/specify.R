@@ -44,6 +44,7 @@
 #' @importFrom rlang f_lhs f_rhs get_expr
 #' @importFrom dplyr mutate_if select any_of
 #' @importFrom methods hasArg
+#' @family core functions
 #' @export
 specify <- function(x, formula, response = NULL,
                     explanatory = NULL, success = NULL) {

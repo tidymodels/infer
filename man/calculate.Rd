@@ -94,3 +94,13 @@ vignette("infer")
 }
 
 }
+\seealso{
+\code{\link[=visualize]{visualize()}}, \code{\link[=get_p_value]{get_p_value()}}, and \code{\link[=get_confidence_interval]{get_confidence_interval()}}
+to extract value from this function's outputs.
+
+Other core functions: 
+\code{\link{generate}()},
+\code{\link{hypothesize}()},
+\code{\link{specify}()}
+}
+\concept{core functions}

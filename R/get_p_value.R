@@ -66,6 +66,7 @@
 NULL
 
 #' @rdname get_p_value
+#' @family auxillary functions
 #' @export
 get_p_value <- function(x, obs_stat, direction) {
   check_type(x, is.data.frame)

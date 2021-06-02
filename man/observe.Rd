@@ -121,3 +121,17 @@ vignette("infer")
 }
 
 }
+\seealso{
+Other wrapper functions: 
+\code{\link{chisq_stat}()},
+\code{\link{chisq_test}()},
+\code{\link{prop_test}()},
+\code{\link{t_stat}()},
+\code{\link{t_test}()}
+
+Other functions for calculating observed statistics: 
+\code{\link{chisq_stat}()},
+\code{\link{t_stat}()}
+}
+\concept{functions for calculating observed statistics}
+\concept{wrapper functions}

@@ -82,5 +82,8 @@ vignette("infer")
 
 }
 \seealso{
-\code{\link[=shade_p_value]{shade_p_value()}} to add information about p-value region.
+Other visualization functions: 
+\code{\link{shade_p_value}()},
+\code{\link{visualize}()}
 }
+\concept{visualization functions}
