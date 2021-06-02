@@ -323,3 +323,30 @@ test_that("generate() can permute with multiple explanatory variables", {
   expect_equal(ncol(x), 4)
 })
 
+test_that("type = 'draw'/'simulate' superseding handled gracefully", {
+  # message on type = 'simulate'
+  expect_message(
+    mtcars_df %>%
+      specify(response = am, success = "1") %>%
+      hypothesize(null = "point", p = .5) %>%
+      generate(type = "simulate"),
+    '"simulate" generation type.*renamed to `type = "draw"`.*quiet'
+  )
+  
+  # don't message on type = 'draw'
+  expect_silent(
+    mtcars_df %>%
+      specify(response = am, success = "1") %>%
+      hypothesize(null = "point", p = .5) %>%
+      generate(type = "draw")
+  )
+
+  # mention new generation types when supplied a bad one
+  expect_error(
+    mtcars_df %>%
+      specify(response = am, success = "1") %>%
+      hypothesize(null = "point", p = .5) %>%
+      generate(type = "boop"),
+    'should be one of "bootstrap", "permute", or "draw"'
+  )
+})

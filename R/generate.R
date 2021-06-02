@@ -96,8 +96,8 @@ sanitize_generation_type <- function(x) {
   
   if (x == "simulate") {
     message_glue(
-      'The "simulate" generation type has been superseded in favor ',
-      'of `type = "draw"`.'
+      'The "simulate" generation type has been renamed to `type = "draw"`. ',
+      'Use `type = "draw"` instead to quiet this message.'
     )
   }
   
