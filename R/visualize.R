@@ -1,3 +1,7 @@
+#' @importFrom ggplot2 ggplot_add
+#' @export
+ggplot2::ggplot_add
+
 #' Visualize statistical inference
 #'
 #' @description
@@ -155,7 +159,7 @@ visualize <- function(data, bins = 15, method = "simulation",
     )
     
     return(
-      patchwork::wrap_plots(plots) +
+      patchwork::wrap_plots(plots, ncol = 1) +
         title_layer(
           term_data[[1]], 
           title_fn = patchwork::plot_annotation
@@ -569,4 +573,26 @@ get_viz_method <- function(data) {
 
 get_viz_bins <- function(data) {
   attr(data, "viz_bins")
+}
+
+#' @method ggplot_add infer_layer
+#' @export
+ggplot_add.infer_layer <- function(object, plot, object_name) {
+  # a method for the `+` operator for infer objects.
+  # - object to add (arguments to the RHS of the `+`)
+  # - plot is the existing plot (on the LHS of the `+`)
+  # - object_name is the name of the function (called on the RHS of the `+`)
+  #
+  # output is the actual output of the addition - this allows for
+  # a more %>%-esque programming style
+  #
+  # the biggest advantage this offers us is that we can
+  # overwrite existing elements, i.e. subsetting into the patchwork,
+  # modifying its elements (for p-value and confidence interval shading),
+  # and then overwriting them.
+  for (o in object) {
+    plot <- plot %+% o
+  }
+  
+  plot
 }

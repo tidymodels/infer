@@ -110,7 +110,9 @@ shade_p_value <- function(obs_stat, direction,
   )
   segment_layer <- do.call(ggplot2::geom_segment, segment_args)
   
-  c(res, list(segment_layer))
+  res <- c(res, list(segment_layer))
+  
+  structure(res, class = "infer_layer")
 }
 
 #' @rdname shade_p_value

@@ -119,7 +119,9 @@ shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
   )
   segment_layer <- do.call(ggplot2::geom_segment, segment_args)
   
-  c(res, list(segment_layer))
+  res <- c(res, list(segment_layer))
+  
+  structure(res, class = "infer_layer")
 }
 
 #' @rdname shade_confidence_interval
