@@ -62,10 +62,21 @@ NULL
 #' @export
 shade_p_value <- function(obs_stat, direction,
                           color = "red2", fill = "pink", ...) {
+  structure("howdy!", class = "infer_layer")
+}
+
+#' @rdname shade_p_value
+#' @export
+shade_pvalue <- shade_p_value
+
+shade_p_value_term <- function(plot, obs_stat, direction,
+                               color = "red2", fill = "pink", ...) {
   # argument checking
   check_for_piped_visualize(obs_stat, direction, color, fill)
   obs_stat <- check_obs_stat(obs_stat)
   check_shade_p_value_args(obs_stat, direction, color, fill)
+  
+  term <- x_axis_label(plot)
   
   res <- list()
   if (is.null(obs_stat)) {
@@ -115,9 +126,6 @@ shade_p_value <- function(obs_stat, direction,
   structure(res, class = "infer_layer")
 }
 
-#' @rdname shade_p_value
-#' @export
-shade_pvalue <- shade_p_value
 
 check_shade_p_value_args <- function(obs_stat, direction, color, fill) {
   if (!is.null(obs_stat)) {

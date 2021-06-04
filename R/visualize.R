@@ -166,22 +166,25 @@ visualize <- function(data, bins = 15, method = "simulation",
         )
     )
   } else {
+    res <- visualize_term(
+      data,
+      "stat",
+      bins = bins, 
+      method = method, 
+      dens_color = dens_color, 
+      obs_stat = obs_stat, 
+      obs_stat_color = obs_stat_color,
+      pvalue_fill = pvalue_fill, 
+      direction = direction, 
+      endpoints = endpoints, 
+      endpoints_color = endpoints_color, 
+      ci_fill = ci_fill, 
+      ...
+    ) + 
+      title_layer(data)
+    
     return(
-      visualize_term(
-        data,
-        "stat",
-        bins = bins, 
-        method = method, 
-        dens_color = dens_color, 
-        obs_stat = obs_stat, 
-        obs_stat_color = obs_stat_color,
-        pvalue_fill = pvalue_fill, 
-        direction = direction, 
-        endpoints = endpoints, 
-        endpoints_color = endpoints_color, 
-        ci_fill = ci_fill, 
-        ...
-      ) + title_layer(data)
+      patchwork::wrap_plots(res)
     )
   }
 }
@@ -579,9 +582,9 @@ get_viz_bins <- function(data) {
 #' @export
 ggplot_add.infer_layer <- function(object, plot, object_name) {
   # a method for the `+` operator for infer objects.
-  # - object to add (arguments to the RHS of the `+`)
+  # - "object to add" (arguments to the RHS of the `+`)
   # - plot is the existing plot (on the LHS of the `+`)
-  # - object_name is the name of the function (called on the RHS of the `+`)
+  # - object_name is the unevaluated call on the RHS of the `+`
   #
   # output is the actual output of the addition - this allows for
   # a more %>%-esque programming style
@@ -590,9 +593,44 @@ ggplot_add.infer_layer <- function(object, plot, object_name) {
   # overwrite existing elements, i.e. subsetting into the patchwork,
   # modifying its elements (for p-value and confidence interval shading),
   # and then overwriting them.
-  for (o in object) {
-    plot <- plot %+% o
-  }
+  #
+  # both shade_p_value and shade_confidence_interval now just dispatch here
+  # and execute term-wise along a patchwork object, so "object" is only a
+  # stand-in classed object that sends to the right place
   
-  plot
+  # process object_name (shade_* call) ----------------------------------
+  shade_call <- rlang::parse_expr(object_name)
+  shade_fn <- rlang::call_name(shade_call)
+  shade_args <- rlang::call_args(shade_call)
+  
+  # process plot (patchwork object) -------------------------------------
+  # use a for loop to invoke the `[[.patchwork` method
+  n_patches <- length(plot$patches$plots) + 1
+  
+  plots <- vector("list", n_patches)
+  
+  for (i in 1:n_patches) {
+    args <- shade_args
+    args[["plot"]] <- plot[[i]]
+    
+    plots[[i]] <- 
+      rlang::call2(
+        paste0(shade_fn, "_term"),
+        shade_args
+      )
+  }
+
+  
 }
+
+
+
+
+
+
+
+
+
+
+
+
