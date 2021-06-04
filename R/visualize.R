@@ -216,10 +216,8 @@ visualize_term <- function(data, term, bins = 15, method = "simulation",
   infer_plot <- ggplot(data) +
     simulation_layer(data, ...) +
     theoretical_layer(data, dens_color, ...) +
-    labels_layer(data, term) +
-    shade_p_value(
-      obs_stat, direction, obs_stat_color, pvalue_fill, ...
-    )
+    labels_layer(data, term) #+
+    #shade_p_value(obs_stat, direction, obs_stat_color, pvalue_fill, ...)
   
   if (!is.null(direction) && (direction == "between")) {
     infer_plot <- infer_plot +
@@ -327,7 +325,18 @@ warn_deprecated_args <- function(obs_stat, endpoints) {
   TRUE
 }
 
-impute_endpoints <- function(endpoints) {
+impute_endpoints <- function(endpoints, plot = NULL) {
+  if (is_fitted(endpoints)) {
+    x_lab <- x_axis_label(plot)
+    
+    endpoints <- 
+      endpoints %>% 
+      dplyr::filter(term == x_lab) %>% 
+      dplyr::select(-term)
+    
+    return(unlist(endpoints))
+  }
+  
   if (is.vector(endpoints) && (length(endpoints) != 2)) {
     warning_glue(
       "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector. ",
@@ -607,20 +616,20 @@ ggplot_add.infer_layer <- function(object, plot, object_name) {
   # use a for loop to invoke the `[[.patchwork` method
   n_patches <- length(plot$patches$plots) + 1
   
-  plots <- vector("list", n_patches)
+  new_plot <- plot
   
   for (i in 1:n_patches) {
     args <- shade_args
     args[["plot"]] <- plot[[i]]
     
-    plots[[i]] <- 
-      rlang::call2(
+    new_plot[[i]] <- 
+      do.call(
         paste0(shade_fn, "_term"),
-        shade_args
+        args
       )
   }
-
   
+  new_plot
 }
 
 

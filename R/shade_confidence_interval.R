@@ -82,10 +82,8 @@ shade_confidence_interval_term <- function(plot, endpoints,
   
   dots <- list(...)
   
-  endpoints <- impute_endpoints(endpoints)
+  endpoints <- impute_endpoints(endpoints, plot)
   check_shade_confidence_interval_args(color, fill)
-  
-  term <- x_axis_label(plot)
   
   res <- list()
   if (is.null(endpoints)) {
@@ -129,7 +127,7 @@ shade_confidence_interval_term <- function(plot, endpoints,
   
   res <- c(res, list(segment_layer))
   
-  structure(res, class = "infer_layer")
+  plot + res
 }
 
 #' @rdname shade_confidence_interval

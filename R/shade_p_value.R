@@ -73,7 +73,7 @@ shade_p_value_term <- function(plot, obs_stat, direction,
                                color = "red2", fill = "pink", ...) {
   # argument checking
   check_for_piped_visualize(obs_stat, direction, color, fill)
-  obs_stat <- check_obs_stat(obs_stat)
+  obs_stat <- check_obs_stat(obs_stat, plot)
   check_shade_p_value_args(obs_stat, direction, color, fill)
   
   term <- x_axis_label(plot)
@@ -123,7 +123,7 @@ shade_p_value_term <- function(plot, obs_stat, direction,
   
   res <- c(res, list(segment_layer))
   
-  structure(res, class = "infer_layer")
+  plot + res
 }
 
 

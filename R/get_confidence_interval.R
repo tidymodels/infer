@@ -158,7 +158,8 @@ get_confidence_interval <- function(x, level = 0.95, type = "percentile",
       dplyr::mutate(
         term = purrr::map_chr(term_estimates, purrr::pluck, "term"),
         .before = dplyr::everything()
-      )
+      ) %>%
+      copy_attrs(x)
   } else {
     check_ci_args(x, level, type, point_estimate)
     
