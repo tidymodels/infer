@@ -2,9 +2,12 @@
 % Please edit documentation in R/print_methods.R
 \name{print.infer}
 \alias{print.infer}
+\alias{print.infer_layer}
 \title{Print methods}
 \usage{
 \method{print}{infer}(x, ...)
+
+\method{print}{infer_layer}(x)
 }
 \arguments{
 \item{x}{An object of class \code{infer}, i.e. output from \code{\link[=specify]{specify()}} or

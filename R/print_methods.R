@@ -1,10 +1,12 @@
 #' Print methods
 #'
 #' @param x An object of class `infer`, i.e. output from [specify()] or
-#'   [hypothesize()].
+#'   [hypothesize()], or of class `infer_layer`, i.e. output from
+#'   [shade_p_value()] or [shade_confidence_interval()].
 #' @param ... Arguments passed to methods.
 #' @importFrom glue glue_collapse
 #'
+#' @rdname print.infer
 #' @export
 print.infer <- function(x, ...) {
   attrs <- names(attributes(x))
@@ -28,4 +30,10 @@ print.infer <- function(x, ...) {
   cat("\n")
 
   NextMethod()
+}
+
+#' @rdname print.infer
+#' @export
+print.infer_layer <- function(x) {
+  cat(x)
 }
