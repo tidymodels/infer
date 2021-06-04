@@ -1,28 +1,33 @@
-#' Add information about p-value region(s)
+#' Shade histogram area beyond an observed statistic
 #'
 #' @description
 #'
-#' `shade_p_value()` plots p-value region(s) (using "area under the curve"
-#' approach) on top of the [visualize()] output. It should be used as
-#' \\{ggplot2\\} layer function (see examples). `shade_pvalue()` is its alias.
+#' `shade_confidence_interval()` plots a p-value region on top of
+#' [visualize()] output. The output is a ggplot2 layer that can be added with
+#' `+`. The function has a shorter alias, `shade_pvalue()`.
 #' 
 #' Learn more in `vignette("infer")`.
 #'
-#' @param obs_stat A numeric value or 1x1 data frame corresponding to what the
-#'   observed statistic is.
+#' @param obs_stat The observed statistic or estimate. For 
+#'   [calculate()]-based workflows, this will be a 1-element numeric vector or 
+#'   a `1 x 1` data frame containing the observed statistic. 
+#'   For [`fit()`][fit.infer()]-based workflows, a `(p + 1) x 2` data frame 
+#'   with columns `term` and `estimate` giving the observed estimate for
+#'   each term.
 #' @param direction A string specifying in which direction the shading should
 #'   occur. Options are `"less"`, `"greater"`, or `"two-sided"`. Can
 #'   also give `"left"`, `"right"`, `"both"`, `"two_sided"`, `"two sided"`,
-#'   or `"two.sided"`. 
-#'   If `NULL` then no shading is actually done.
+#'   or `"two.sided"`. If `NULL`, the function will not shade any area.
 #' @param color A character or hex string specifying the color of the observed
 #'   statistic as a vertical line on the plot.
 #' @param fill A character or hex string specifying the color to shade the
-#'   p-value region. If `NULL` then no shading is actually done.
+#'   p-value region. If `NULL`, the function will not shade any area.
 #' @param ... Other arguments passed along to \\{ggplot2\\} functions.
+#'   For expert use only.
 #'
-#' @return A list of \\{ggplot2\\} objects to be added to the `visualize()`
-#'   output.
+#' @return If added to an existing {infer} visualization, a \\{ggplot2\\} 
+#'   object displaying the supplied statistic on top of its corresponding
+#'   distribution. Otherwise, an `infer_layer` list.
 #'
 #' @seealso [shade_confidence_interval()] to add information about confidence
 #'   interval.
@@ -62,7 +67,7 @@ NULL
 #' @export
 shade_p_value <- function(obs_stat, direction,
                           color = "red2", fill = "pink", ...) {
-  structure("howdy!", class = "infer_layer")
+  structure("A p-value shading layer.", class = "infer_layer")
 }
 
 #' @rdname shade_p_value

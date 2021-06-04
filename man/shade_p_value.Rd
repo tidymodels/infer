@@ -3,38 +3,43 @@
 \name{shade_p_value}
 \alias{shade_p_value}
 \alias{shade_pvalue}
-\title{Add information about p-value region(s)}
+\title{Shade histogram area beyond an observed statistic}
 \usage{
 shade_p_value(obs_stat, direction, color = "red2", fill = "pink", ...)
 
 shade_pvalue(obs_stat, direction, color = "red2", fill = "pink", ...)
 }
 \arguments{
-\item{obs_stat}{A numeric value or 1x1 data frame corresponding to what the
-observed statistic is.}
+\item{obs_stat}{The observed statistic or estimate. For
+\code{\link[=calculate]{calculate()}}-based workflows, this will be a 1-element numeric vector or
+a \verb{1 x 1} data frame containing the observed statistic.
+For \code{\link[=fit.infer]{fit()}}-based workflows, a \verb{(p + 1) x 2} data frame
+with columns \code{term} and \code{estimate} giving the observed estimate for
+each term.}
 
 \item{direction}{A string specifying in which direction the shading should
 occur. Options are \code{"less"}, \code{"greater"}, or \code{"two-sided"}. Can
 also give \code{"left"}, \code{"right"}, \code{"both"}, \code{"two_sided"}, \code{"two sided"},
-or \code{"two.sided"}.
-If \code{NULL} then no shading is actually done.}
+or \code{"two.sided"}. If \code{NULL}, the function will not shade any area.}
 
 \item{color}{A character or hex string specifying the color of the observed
 statistic as a vertical line on the plot.}
 
 \item{fill}{A character or hex string specifying the color to shade the
-p-value region. If \code{NULL} then no shading is actually done.}
+p-value region. If \code{NULL}, the function will not shade any area.}
 
-\item{...}{Other arguments passed along to \\{ggplot2\\} functions.}
+\item{...}{Other arguments passed along to \\{ggplot2\\} functions.
+For expert use only.}
 }
 \value{
-A list of \\{ggplot2\\} objects to be added to the \code{visualize()}
-output.
+If added to an existing {infer} visualization, a \\{ggplot2\\}
+object displaying the supplied statistic on top of its corresponding
+distribution. Otherwise, an \code{infer_layer} list.
 }
 \description{
-\code{shade_p_value()} plots p-value region(s) (using "area under the curve"
-approach) on top of the \code{\link[=visualize]{visualize()}} output. It should be used as
-\\{ggplot2\\} layer function (see examples). \code{shade_pvalue()} is its alias.
+\code{shade_confidence_interval()} plots a p-value region on top of
+\code{\link[=visualize]{visualize()}} output. The output is a ggplot2 layer that can be added with
+\code{+}. The function has a shorter alias, \code{shade_pvalue()}.
 
 Learn more in \code{vignette("infer")}.
 }

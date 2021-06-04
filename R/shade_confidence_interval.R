@@ -2,23 +2,28 @@
 #'
 #' @description
 #'
-#' `shade_confidence_interval()` plots confidence interval region on top of the
-#' [visualize()] output. It should be used as \\{ggplot2\\} layer function (see
-#' examples). `shade_ci()` is its alias.
+#' `shade_confidence_interval()` plots a confidence interval region on top of
+#' [visualize()] output. The output is a ggplot2 layer that can be added with
+#' `+`. The function has a shorter alias, `shade_ci()`.
 #' 
 #' Learn more in `vignette("infer")`.
 #'
-#' @param endpoints A 2 element vector or a 1 x 2 data frame containing the
-#'   lower and upper values to be plotted. Most useful for visualizing
-#'   conference intervals.
+#' @param endpoints The lower and upper bounds of the interval to be plotted.
+#'   Likely, this will be the output of [get_confidence_interval()].
+#'   For [calculate()]-based workflows, this will be a 2-element vector 
+#'   or a `1 x 2` data frame containing the lower and upper values to be plotted. 
+#'   For [`fit()`][fit.infer()]-based workflows, a `(p + 1) x 3` data frame
+#'   with columns `term`, `lower_ci`, and `upper_ci`, giving the upper and
+#'   lower bounds for each regression term.
 #' @param color A character or hex string specifying the color of the
 #'   end points as a vertical lines on the plot.
 #' @param fill A character or hex string specifying the color to shade the
 #'   confidence interval. If `NULL` then no shading is actually done.
 #' @param ... Other arguments passed along to \\{ggplot2\\} functions.
 #' 
-#' @return A list of \\{ggplot2\\} objects to be added to the `visualize()`
-#'   output.
+#' @return If added to an existing {infer} visualization, a \\{ggplot2\\} 
+#'   object displaying the supplied intervals on top of its corresponding
+#'   distribution. Otherwise, an `infer_layer` list.
 #'
 #' @seealso [shade_p_value()] to add information about p-value region.
 #'
@@ -71,7 +76,7 @@ NULL
 #' @export
 shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
                                       fill = "turquoise", ...) {
-  structure("howdy!", class = "infer_layer")
+  structure("A confidence interval shading layer.", class = "infer_layer")
 }
 
 shade_confidence_interval_term <- function(plot, endpoints, 
