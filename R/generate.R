@@ -90,13 +90,13 @@ sanitize_generation_type <- function(x) {
   if (!x %in% c("bootstrap", "permute", "simulate", "draw")) {
     stop_glue(
       'The `type` argument should be one of "bootstrap", "permute", ',
-      'or "draw". See `?calculate` for more details.'
+      'or "draw". See `?generate` for more details.'
     )
   }
   
   if (x == "simulate") {
     message_glue(
-      'The "simulate" generation type has been renamed to `type = "draw"`. ',
+      'The `"simulate"` generation type has been renamed to `"draw"`. ',
       'Use `type = "draw"` instead to quiet this message.'
     )
   }

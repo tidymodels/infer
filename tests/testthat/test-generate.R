@@ -330,7 +330,7 @@ test_that("type = 'draw'/'simulate' superseding handled gracefully", {
       specify(response = am, success = "1") %>%
       hypothesize(null = "point", p = .5) %>%
       generate(type = "simulate"),
-    '"simulate" generation type.*renamed to `type = "draw"`.*quiet'
+    '`"simulate"` generation type.*renamed to `"draw"`.*quiet'
   )
   
   # don't message on type = 'draw'
