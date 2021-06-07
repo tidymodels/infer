@@ -49,9 +49,9 @@ slopes <- mtcars_df %>%
 test_that("auto `type` works (hypothesize)", {
   expect_equal(attr(one_mean, "type"), "bootstrap")
   expect_equal(attr(one_median, "type"), "bootstrap")
-  expect_equal(attr(one_prop, "type"), "simulate")
+  expect_equal(attr(one_prop, "type"), "draw")
   expect_equal(attr(two_props, "type"), "permute")
-  expect_equal(attr(gof_chisq, "type"), "simulate")
+  expect_equal(attr(gof_chisq, "type"), "draw")
   expect_equal(attr(indep_chisq, "type"), "permute")
   expect_equal(attr(two_means, "type"), "permute")
   expect_equal(attr(two_medians, "type"), "permute")

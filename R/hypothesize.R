@@ -63,7 +63,7 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
       attr(x, "params") <- unlist(params)
 
       if (!is.null(params$p)) {
-        attr(x, "type") <- "simulate"
+        attr(x, "type") <- "draw"
       } else {
         # Check one proportion test set up correctly
         if (is.factor(response_variable(x))) {
