@@ -1,13 +1,13 @@
 pandoc: 2.7.3
 pkgdown: 1.6.1.9001
-pkgdown_sha: b7b462438bc6252d40e9e5f223b0c56bf938f6d7
+pkgdown_sha: 900ef5471576f8f29508a7e7d94fae51390f2d96
 articles:
   anova: anova.html
   chi_squared: chi_squared.html
   infer: infer.html
   observed_stat_examples: observed_stat_examples.html
   t_test: t_test.html
-last_built: 2021-06-02T15:58Z
+last_built: 2021-06-07T23:46Z
 urls:
   reference: https://infer.tidymodels.org/reference
   article: https://infer.tidymodels.org/articles

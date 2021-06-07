@@ -189,8 +189,9 @@ Learn more in vignette(&quot;infer&quot;)." />
     </tr>
     <tr>
       <th>type</th>
-      <td><p>Currently either <code>bootstrap</code>, <code>permute</code>, or <code>simulate</code>
-(see below).</p></td>
+      <td><p>The method used to generate resamples of the observed
+data reflecting the null hypothesis. Currently one of
+<code>"bootstrap"</code>, <code>"permute"</code>, or <code>"draw"</code> (see below).</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -215,9 +216,11 @@ where a sample of size equal to the input sample size is drawn (with
 replacement) from the input sample data.</p></li>
 <li><p><code>permute</code>: For each replicate, each input value will be randomly
 reassigned (without replacement) to a new output value in the sample.</p></li>
-<li><p><code>simulate</code>: A value will be sampled from a theoretical distribution
-with parameters specified in <code><a href='hypothesize.html'>hypothesize()</a></code> for each replicate. (This
-option is currently only applicable for testing point estimates.)</p></li>
+<li><p><code>draw</code>: A value will be sampled from a theoretical distribution
+with parameters specified in <code><a href='hypothesize.html'>hypothesize()</a></code> for each replicate. This
+option is currently only applicable for testing point estimates. This
+generation type was previously called <code>"simulate"</code>, which has been
+superseded.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
