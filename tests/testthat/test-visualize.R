@@ -621,3 +621,63 @@ test_that("visualize warns about removing `NaN`", {
   dist$stat <- rep(NaN, nrow(dist))
   expect_error(visualize(dist), "All calculated stat")
 })
+
+test_that("visualize can handle multiple explanatory variables", {
+  # generate example objects
+  null_fits <- gss %>%
+    specify(hours ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 20, type = "permute") %>%
+    fit()
+  
+  obs_fit <- gss %>%
+    specify(hours ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    fit()
+  
+  conf_ints <- 
+    get_confidence_interval(
+      null_fits, 
+      point_estimate = observed_fit, 
+      level = .95
+    )
+  
+  # visualize with multiple panes
+  expect_doppelganger(
+    "viz-fit-bare", 
+    null_fits %>% 
+      visualize()
+  )
+  
+  # with p values shaded -- test each possible direction
+  expect_doppelganger(
+    "viz-fit-p-val-both", 
+    null_fits %>% 
+      visualize() +
+      shade_p_value(obs_stat = obs_fit, direction = "both")
+  )
+  
+  expect_doppelganger(
+    "viz-fit-p-val-left", 
+    null_fits %>% 
+      visualize() +
+      shade_p_value(obs_stat = obs_fit, direction = "left")
+  )
+  
+  expect_doppelganger(
+    "viz-fit-p-val-right", 
+    null_fits %>% 
+      visualize() +
+      shade_p_value(obs_stat = obs_fit, direction = "right")
+  )
+  
+  # with confidence intervals shaded
+  expect_doppelganger(
+    "viz-fit-conf-int", 
+    null_fits %>% 
+      visualize() +
+      shade_confidence_interval(endpoints = conf_ints)
+  )
+  
+  # shade_* functions should error with bad input
+})
