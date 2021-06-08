@@ -45,7 +45,7 @@ obs_F <- anova(
   )$`F value`[1]
 
 test_that("visualize warns with bad arguments", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   # warns when supplied deprecated args in what used to be
   # a valid way
@@ -100,7 +100,7 @@ test_that("visualize warns with bad arguments", {
 })
 
 test_that("visualize basic tests", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   expect_doppelganger("visualize", visualize(hours_resamp))
   
@@ -419,13 +419,13 @@ test_that("visualize basic tests", {
 })
 
 test_that("mirror_obs_stat works", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   expect_equal(mirror_obs_stat(1:10, 4), c(`60%` = 6.4))
 })
 
 test_that("obs_stat as a data.frame works", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   mean_petal_width <- gss_tbl %>%
     specify(hours ~ NULL) %>%
@@ -457,7 +457,7 @@ test_that("obs_stat as a data.frame works", {
 })
 
 test_that('method = "both" behaves nicely', {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   # stop_glue(
   #   '`generate()` and `calculate()` are both required to be done prior ',
   #   'to `visualize(method = "both")`'
@@ -485,7 +485,7 @@ test_that('method = "both" behaves nicely', {
 })
 
 test_that("Traditional right-tailed tests have warning if not right-tailed", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   expect_warning(
     gss_tbl %>%
@@ -529,7 +529,7 @@ test_that("Traditional right-tailed tests have warning if not right-tailed", {
 })
 
 test_that("confidence interval plots are working", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   gss_tbl_boot <- gss_tbl %>%
     specify(sex ~ college, success = "female") %>%
@@ -562,7 +562,7 @@ test_that("confidence interval plots are working", {
 })
 
 test_that("title adapts to not hypothesis testing workflow", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   set.seed(100)
   gss_tbl_boot_tbl <- gss_tbl %>% 
@@ -586,7 +586,7 @@ test_that("title adapts to not hypothesis testing workflow", {
 })
 
 test_that("warn_right_tail_test works", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   expect_warn_right_tail <- function(stat_name) {
     warn_regex <- paste0(stat_name, ".*right-tailed")
@@ -602,7 +602,7 @@ test_that("warn_right_tail_test works", {
 })
 
 test_that("visualize warns about removing `NaN`", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   dist <- gss_tbl_boot_tbl <- gss_tbl %>% 
     specify(response = hours) %>% 
@@ -623,6 +623,8 @@ test_that("visualize warns about removing `NaN`", {
 })
 
 test_that("visualize can handle multiple explanatory variables", {
+  skip_if(getRversion() < "4.1.0")
+  
   # generate example objects
   null_fits <- gss %>%
     specify(hours ~ age + college) %>%
@@ -638,7 +640,7 @@ test_that("visualize can handle multiple explanatory variables", {
   conf_ints <- 
     get_confidence_interval(
       null_fits, 
-      point_estimate = observed_fit, 
+      point_estimate = obs_fit, 
       level = .95
     )
   

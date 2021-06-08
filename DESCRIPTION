@@ -99,7 +99,7 @@ Suggests:
     rmarkdown,
     stringr,
     testthat,
-    vdiffr,
+    vdiffr (>= 1.0.0),
     glmnet
 VignetteBuilder:
     knitr
