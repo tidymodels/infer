@@ -9,17 +9,12 @@
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param reps The number of resamples to generate.
-#' @param type Currently either `bootstrap`, `permute`, or `simulate` 
-#' (see below).
-#' @param cols If `type = "permute"`, a set of unquoted column names in the 
-#' data to permute (independently of each other). Defaults to only the 
-#' response variable.
 #' @param type The method used to generate resamples of the observed
 #'   data reflecting the null hypothesis. Currently one of 
 #'   `"bootstrap"`, `"permute"`, or `"draw"` (see below).
 #' @param cols If `type = "permute"`, a set of unquoted column names in the 
-#' data to permute (independently of each other). Defaults to only the 
-#' response variable.
+#'   data to permute (independently of each other). Defaults to only the 
+#'   response variable.
 #' @param ... Currently ignored.
 #'
 #' @return A tibble containing `reps` generated datasets, indicated by the
