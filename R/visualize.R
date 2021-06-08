@@ -18,37 +18,15 @@ ggplot2::ggplot_add
 #'   `"simulation"` and `"theoretical"`.
 #' @param dens_color A character or hex string specifying the color of the
 #'   theoretical density curve.
-#' @param obs_stat A numeric value or 1x1 data frame corresponding to what the
-#'   observed statistic is. **Deprecated (see Details)**.
-#' @param obs_stat_color A character or hex string specifying the color of the
-#'   observed statistic as a vertical line on the plot. **Deprecated (see
-#'   Details)**.
-#' @param pvalue_fill A character or hex string specifying the color to shade
-#'   the p-value. In previous versions of the package this was the `shade_color`
-#'   argument. **Deprecated (see Details)**.
-#' @param direction A string specifying in which direction the shading should
-#'   occur. Options are `"less"`, `"greater"`, or `"two_sided"` for p-value. Can
-#'   also give `"left"`, `"right"`, or `"both"` for p-value. For confidence
-#'   intervals, use `"between"` and give the endpoint values in `endpoints`.
-#'   **Deprecated (see Details)**.
-#' @param endpoints A 2 element vector or a 1 x 2 data frame containing the
-#'   lower and upper values to be plotted. Most useful for visualizing
-#'   conference intervals. **Deprecated (see Details)**.
-#' @param endpoints_color A character or hex string specifying the color of the
-#'   observed statistic as a vertical line on the plot. **Deprecated (see
-#'   Details)**.
-#' @param ci_fill A character or hex string specifying the color to shade the
-#'   confidence interval. **Deprecated (see Details)**.
 #' @param ... Other arguments passed along to \\{ggplot2\\} functions.
 #'
-#' @details In order to make visualization workflow more straightforward and
-#' explicit `visualize()` now only should be used to plot statistics directly.
-#' That is why arguments not related to this task are deprecated and will be
-#' removed in a future release of \\{infer\\}.
-#'
-#' To add to plot information related to p-value use [shade_p_value()]. To add
-#' to plot information related to confidence interval use
-#' [shade_confidence_interval()].
+#' @details In order to make the visualization workflow more straightforward 
+#' and explicit, `visualize()` now only should be used to plot distributions
+#' of statistics directly. A number of arguments related to shading p-values and 
+#' confidence intervals are now deprecated in `visualize()` and should
+#' now be passed to [shade_p_value()] and [shade_confidence_interval()],
+#' respectively. [visualize()] will raise a warning if passed deprecated 
+#' arguments.
 #'
 #' @return A ggplot object showing the simulation-based distribution as a
 #'   histogram or bar graph. Also used to show the theoretical curves.
@@ -121,16 +99,11 @@ ggplot2::ggplot_add
 #' @export
 visualize <- function(data, bins = 15, method = "simulation",
                       dens_color = "black",
-                      obs_stat = NULL,
-                      obs_stat_color = "red2",
-                      pvalue_fill = "pink",
-                      direction = NULL,
-                      endpoints = NULL,
-                      endpoints_color = "mediumaquamarine",
-                      ci_fill = "turquoise",
                       ...) {
   attr(data, "viz_method") <- method
   attr(data, "viz_bins") <- bins
+  
+  dots <- check_dots_for_deprecated(list(...))
   
   if (is_fitted(data)) {
     term_data <- data %>%
@@ -147,15 +120,7 @@ visualize <- function(data, bins = 15, method = "simulation",
       visualize_term,
       bins = bins, 
       method = method, 
-      dens_color = dens_color, 
-      obs_stat = obs_stat, 
-      obs_stat_color = obs_stat_color,
-      pvalue_fill = pvalue_fill, 
-      direction = direction, 
-      endpoints = endpoints, 
-      endpoints_color = endpoints_color, 
-      ci_fill = ci_fill, 
-      ...
+      dots = dots
     )
     
     return(
@@ -171,15 +136,8 @@ visualize <- function(data, bins = 15, method = "simulation",
       "stat",
       bins = bins, 
       method = method, 
-      dens_color = dens_color, 
-      obs_stat = obs_stat, 
-      obs_stat_color = obs_stat_color,
-      pvalue_fill = pvalue_fill, 
-      direction = direction, 
-      endpoints = endpoints, 
-      endpoints_color = endpoints_color, 
-      ci_fill = ci_fill, 
-      ...
+      dens_color = dens_color,
+      dots = dots
     ) + 
       title_layer(data)
     
@@ -195,59 +153,42 @@ visualise <- visualize
 
 
 visualize_term <- function(data, term, bins = 15, method = "simulation",
-                           dens_color = "black",
-                           obs_stat = NULL,
-                           obs_stat_color = "red2",
-                           pvalue_fill = "pink",
-                           direction = NULL,
-                           endpoints = NULL,
-                           endpoints_color = "mediumaquamarine",
-                           ci_fill = "turquoise",
-                           ...) {
+                           dens_color = "black", dots) {
   data <- check_for_nan(data, "visualize")
-  check_visualize_args(
-    data, bins, method, dens_color, obs_stat, obs_stat_color,
-    pvalue_fill, direction, endpoints, endpoints_color, ci_fill
-  )
-  warn_deprecated_args(obs_stat, endpoints)
-  endpoints <- impute_endpoints(endpoints)
-  obs_stat <- impute_obs_stat(obs_stat, direction, endpoints)
-  
+  check_visualize_args(data, bins, method, dens_color)
+
   infer_plot <- ggplot(data) +
-    simulation_layer(data, ...) +
-    theoretical_layer(data, dens_color, ...) +
-    labels_layer(data, term) #+
-    #shade_p_value(obs_stat, direction, obs_stat_color, pvalue_fill, ...)
-  
-  if (!is.null(direction) && (direction == "between")) {
-    infer_plot <- infer_plot +
-      shade_confidence_interval(endpoints, endpoints_color, ci_fill, ...)
-  }
+    simulation_layer(data, dots = dots) +
+    theoretical_layer(data, dens_color, dots = dots) +
+    labels_layer(data, term)
   
   infer_plot
 }
 
-check_visualize_args <- function(data, bins, method, dens_color,
-                                 obs_stat, obs_stat_color,
-                                 pvalue_fill, direction,
-                                 endpoints, endpoints_color, ci_fill) {
+check_dots_for_deprecated <- function(dots) {
+  dep_args <- c("obs_stat", "obs_stat_color", "pvalue_fill", "direction",
+                "endpoints", "endpoints_color", "ci_fill")
+  
+  if (any(dep_args %in% names(dots))) {
+    bad_args <- dep_args[dep_args %in% names(dots)]
+    
+    warning_glue(
+      "The arguments `{list(bad_args)}` are deprecated in `visualize()` ",
+      "and will be ignored. They should now be passed to one of ",
+      "`shade_p_value()` or `shade_confidence_interval()`."
+    )
+    
+    dots[!dep_args %in% names(dots)]
+  }
+  
+  list(NULL)
+}
+
+check_visualize_args <- function(data, bins, method, dens_color) {
   check_type(data, is.data.frame)
   check_type(bins, is.numeric)
   check_type(method, is.character)
   check_type(dens_color, is.character)
-  check_type(obs_stat_color, is.character)
-  check_type(pvalue_fill, is.character)
-  if (!is.null(direction)) {
-    check_type(direction, is.character)
-  }
-  if (
-    is.data.frame(endpoints) &&
-    ((nrow(endpoints) != 1) || (ncol(endpoints) != 2))
-  ) {
-    stop_glue(
-      "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector."
-    )
-  }
 
   if (!(method %in% c("simulation", "theoretical", "both"))) {
     stop_glue(
@@ -274,13 +215,6 @@ check_visualize_args <- function(data, bins, method, dens_color,
     }
   }
 
-  if (!is.null(obs_stat) && !is.null(endpoints)) {
-    warning_glue(
-      "Values for both `endpoints` and `obs_stat` were given when only one ",
-      "should be set. Ignoring `obs_stat` values."
-    )
-  }
-
   TRUE
 }
 
@@ -302,26 +236,6 @@ check_for_piped_visualize <- function(...) {
     )
   }
   
-  TRUE
-}
-
-warn_deprecated_args <- function(obs_stat, endpoints) {
-  if (!is.null(obs_stat)) {
-    warning_glue(
-      "`visualize()` should no longer be used to plot a p-value. Arguments `obs_stat`, ",
-      "`obs_stat_color`, `pvalue_fill`, and `direction` are deprecated. ",
-      "Use `shade_p_value()` instead."
-    )
-  }
-
-  if (!is.null(endpoints)) {
-    warning_glue(
-      "`visualize()` should no longer be used to plot a confidence interval. Arguments ",
-      "`endpoints`, `endpoints_color`, and `ci_fill` are deprecated. ",
-      "Use `shade_confidence_interval()` instead."
-    )
-  }
-
   TRUE
 }
 
@@ -374,7 +288,7 @@ impute_obs_stat <- function(obs_stat, direction, endpoints) {
   obs_stat
 }
 
-simulation_layer <- function(data, ...) {
+simulation_layer <- function(data, dots = list(NULL)) {
   method <- get_viz_method(data)
   bins <- get_viz_bins(data)
 
@@ -389,20 +303,33 @@ simulation_layer <- function(data, ...) {
   if (method == "simulation") {
     if (length(unique(data$stat)) >= 10) {
       res <- list(
-        ggplot2::stat_bin(
-          mapping = aes(x = stat), bins = bins, color = "white", ...,
-          breaks = bin_breaks
+        do.call(
+          ggplot2::stat_bin,
+          c(list(mapping = aes(x = stat), 
+                 bins = bins, 
+                 color = "white", 
+                 breaks = bin_breaks), 
+            dots)
         )
       )
     } else {
       # Probably should be removed
-      res <- list(geom_bar(mapping = aes(x = stat), ...))
+      res <- list(
+        do.call(
+          c(list(mapping = aes(x = stat)), dots)
+        )
+      )
     }
   } else if (method == "both") {
     res <- list(
-      ggplot2::stat_bin(
-        mapping = aes(x = stat, y = ..density..), bins = bins,
-        color = "white", ..., breaks = bin_breaks
+      do.call(
+        ggplot2::stat_bin,
+        c(list(mapping = aes(x = stat, y = ..density..),
+               bins = bins,
+               color = "white", 
+               breaks = bin_breaks),
+          dots)
+        
       )
     )
   }
@@ -417,7 +344,7 @@ compute_bin_breaks <- function(data, bins) {
   c(g_tbl[["xmin"]][1], g_tbl[["xmax"]])
 }
 
-theoretical_layer <- function(data, dens_color, ..., do_warn = TRUE) {
+theoretical_layer <- function(data, dens_color, dots, do_warn = TRUE) {
   method <- get_viz_method(data)
 
   if (method == "simulation") {
