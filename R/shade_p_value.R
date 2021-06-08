@@ -67,7 +67,16 @@ NULL
 #' @export
 shade_p_value <- function(obs_stat, direction,
                           color = "red2", fill = "pink", ...) {
-  structure("A p-value shading layer.", class = "infer_layer")
+  structure(
+    "A p-value shading layer.", 
+    class = "infer_layer",
+    fn = "shade_p_value",
+    obs_stat = obs_stat,
+    direction = direction,
+    color = color,
+    fill = fill,
+    dots = list(...)
+  )
 }
 
 #' @rdname shade_p_value
@@ -75,7 +84,7 @@ shade_p_value <- function(obs_stat, direction,
 shade_pvalue <- shade_p_value
 
 shade_p_value_term <- function(plot, obs_stat, direction,
-                               color = "red2", fill = "pink", ...) {
+                               color = "red2", fill = "pink", dots) {
   # argument checking
   check_for_piped_visualize(obs_stat, direction, color, fill)
   obs_stat <- check_obs_stat(obs_stat, plot)
@@ -93,12 +102,12 @@ shade_p_value_term <- function(plot, obs_stat, direction,
     if (direction %in% c("less", "left", "greater", "right")) {
       tail_area <- one_tail_area(obs_stat, direction)
       
-      res <- c(res, geom_tail_area(tail_area, fill, ...))
+      res <- c(res, do.call(geom_tail_area, c(list(tail_area, fill), dots)))
     } else if (direction %in% c("two_sided", "both", 
                                 "two-sided", "two sided", "two.sided")) {
       tail_area <- two_tail_area(obs_stat, direction)
       
-      res <- c(res, geom_tail_area(tail_area, fill, ...))
+      res <- c(res, do.call(geom_tail_area, c(list(tail_area, fill), dots)))
     } else {
       warning_glue(
         '`direction` should be one of `"less"`, `"left"`, `"greater"`, ',
@@ -120,7 +129,7 @@ shade_p_value_term <- function(plot, obs_stat, direction,
       inherit.aes = FALSE
     ),
     # Extra arguments
-    list(...),
+    dots,
     # Default arguments that might be replaced in `...`
     list(size = 2)
   )

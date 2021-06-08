@@ -141,9 +141,7 @@ visualize <- function(data, bins = 15, method = "simulation",
     ) + 
       title_layer(data)
     
-    return(
-      patchwork::wrap_plots(res)
-    )
+    res
   }
 }
 
@@ -316,6 +314,7 @@ simulation_layer <- function(data, dots = list(NULL)) {
       # Probably should be removed
       res <- list(
         do.call(
+          ggplot2::geom_bar,
           c(list(mapping = aes(x = stat)), dots)
         )
       )
@@ -535,21 +534,33 @@ ggplot_add.infer_layer <- function(object, plot, object_name) {
   # stand-in classed object that sends to the right place
   
   # process object_name (shade_* call) ----------------------------------
-  shade_call <- rlang::parse_expr(object_name)
-  shade_fn <- rlang::call_name(shade_call)
-  shade_args <- rlang::call_args(shade_call)
+  shade_fn <- attr(object, "fn")
+  shade_args <- attributes(object)[!names(attributes(object)) %in% 
+                                    c("class", "fn")]
   
-  # process plot (patchwork object) -------------------------------------
-  # use a for loop to invoke the `[[.patchwork` method
-  n_patches <- length(plot$patches$plots) + 1
-  
-  new_plot <- plot
-  
-  for (i in 1:n_patches) {
-    args <- shade_args
-    args[["plot"]] <- plot[[i]]
+  # if a patchwork object, use a custom `infer_layer` `+.gg` method.
+  # otherwise, convert the `infer_layer` back to a list and call `+` again.
+  if (inherits(plot, "patchwork")) {
+    # use a for loop to invoke the `[[.patchwork` method
+    n_patches <- length(plot$patches$plots) + 1
     
-    new_plot[[i]] <- 
+    new_plot <- plot
+    
+    for (i in 1:n_patches) {
+      args <- shade_args
+      args[["plot"]] <- plot[[i]]
+      
+      new_plot[[i]] <- 
+        do.call(
+          paste0(shade_fn, "_term"),
+          args
+        )
+    }
+  } else {
+    args <- shade_args
+    args[["plot"]] <- plot
+    
+    new_plot <- 
       do.call(
         paste0(shade_fn, "_term"),
         args
@@ -558,15 +569,3 @@ ggplot_add.infer_layer <- function(object, plot, object_name) {
   
   new_plot
 }
-
-
-
-
-
-
-
-
-
-
-
-

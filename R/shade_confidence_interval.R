@@ -76,16 +76,23 @@ NULL
 #' @export
 shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
                                       fill = "turquoise", ...) {
-  structure("A confidence interval shading layer.", class = "infer_layer")
+  structure(
+    "A confidence interval shading layer.", 
+    class = "infer_layer",
+    fn = "shade_confidence_interval",
+    endpoints = endpoints,
+    direction = direction,
+    color = color,
+    fill = fill,
+    dots = list(...)
+  )
 }
 
 shade_confidence_interval_term <- function(plot, endpoints, 
                                            color = "mediumaquamarine",
-                                           fill = "turquoise", ...) {
+                                           fill = "turquoise", dots) {
   # argument checking
   check_for_piped_visualize(endpoints, color, fill)
-  
-  dots <- list(...)
   
   endpoints <- impute_endpoints(endpoints, plot)
   check_shade_confidence_interval_args(color, fill)
