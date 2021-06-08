@@ -14,6 +14,12 @@
 #' @param cols If `type = "permute"`, a set of unquoted column names in the 
 #' data to permute (independently of each other). Defaults to only the 
 #' response variable.
+#' @param type The method used to generate resamples of the observed
+#'   data reflecting the null hypothesis. Currently one of 
+#'   `"bootstrap"`, `"permute"`, or `"draw"` (see below).
+#' @param cols If `type = "permute"`, a set of unquoted column names in the 
+#' data to permute (independently of each other). Defaults to only the 
+#' response variable.
 #' @param ... Currently ignored.
 #'
 #' @return A tibble containing `reps` generated datasets, indicated by the
@@ -30,9 +36,11 @@
 #'   replacement) from the input sample data.
 #'   \item `permute`: For each replicate, each input value will be randomly 
 #'   reassigned (without replacement) to a new output value in the sample.
-#'   \item `simulate`: A value will be sampled from a theoretical distribution 
-#'   with parameters specified in [hypothesize()] for each replicate. (This 
-#'   option is currently only applicable for testing point estimates.)
+#'   \item `draw`: A value will be sampled from a theoretical distribution 
+#'   with parameters specified in [hypothesize()] for each replicate. This 
+#'   option is currently only applicable for testing point estimates. This
+#'   generation type was previously called `"simulate"`, which has been
+#'   superseded.
 #' }
 #'
 #' @examples
@@ -55,13 +63,14 @@
 #' }
 #'
 #' @importFrom dplyr group_by
+#' @family core functions
 #' @export
 generate <- function(x, reps = 1, type = NULL, 
                      cols = !!response_expr(x), ...) {
   # Check type argument, warning if necessary
   type <- sanitize_generation_type(type)
   auto_type <- sanitize_generation_type(attr(x, "type"))
-  type <- if(!is.null(type)) {
+  type <- if (!is.null(type)) {
     compare_type_vs_auto_type(type, auto_type)
   } else {
     use_auto_type(auto_type)
@@ -78,14 +87,32 @@ generate <- function(x, reps = 1, type = NULL,
       check_permutation_attributes(x)
       permute(x, reps, rlang::enquo(cols), ...)
     },
-    simulate = simulate(x, reps, ...)
+    draw = draw(x, reps, ...),
+    simulate = draw(x, reps, ...)
   )
 }
 
 # Check that type argument is an implemented type
 sanitize_generation_type <- function(x) {
   if (is.null(x)) return(x)
-  match.arg(x, GENERATION_TYPES)
+  
+  check_type(x, is.character)
+
+  if (!x %in% c("bootstrap", "permute", "simulate", "draw")) {
+    stop_glue(
+      'The `type` argument should be one of "bootstrap", "permute", ',
+      'or "draw". See `?generate` for more details.'
+    )
+  }
+  
+  if (x == "simulate") {
+    message_glue(
+      'The `"simulate"` generation type has been renamed to `"draw"`. ',
+      'Use `type = "draw"` instead to quiet this message.'
+    )
+  }
+  
+  x
 }
 
 # Ensure that the supplied type matches what would be assumed from input
@@ -93,7 +120,8 @@ compare_type_vs_auto_type <- function(type, auto_type) {
   if(is.null(auto_type)) {
     return(type)
   }
-  if (auto_type != type) {
+  if (auto_type != type &&
+      (any(!c(auto_type, type) %in% c("draw", "simulate")))) {
     warning_glue(
       "You have given `type = \"{type}\"`, but `type` is expected",
       "to be `\"{auto_type}\"`. This workflow is untested and",
@@ -219,7 +247,7 @@ permute_column <- function(col, permute) {
 #' @importFrom dplyr pull
 #' @importFrom tibble tibble
 #' @importFrom rlang :=
-simulate <- function(x, reps = 1, ...) {
+draw <- function(x, reps = 1, ...) {
   fct_levels <- as.character(unique(response_variable(x)))
 
   col_simmed <- unlist(replicate(

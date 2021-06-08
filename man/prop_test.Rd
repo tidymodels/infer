@@ -101,3 +101,12 @@ prop_test(gss,
           z = TRUE)
 
 }
+\seealso{
+Other wrapper functions: 
+\code{\link{chisq_stat}()},
+\code{\link{chisq_test}()},
+\code{\link{observe}()},
+\code{\link{t_stat}()},
+\code{\link{t_test}()}
+}
+\concept{wrapper functions}

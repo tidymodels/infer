@@ -24,8 +24,6 @@
 #' @return A list of \\{ggplot2\\} objects to be added to the `visualize()`
 #'   output.
 #'
-#' @seealso [shade_confidence_interval()] to add information about confidence
-#'   interval.
 #'
 #' @examples
 #' # find the point estimate---mean number of hours worked per week
@@ -59,6 +57,7 @@
 NULL
 
 #' @rdname shade_p_value
+#' @family visualization functions
 #' @export
 shade_p_value <- function(obs_stat, direction,
                           color = "red2", fill = "pink", ...) {
