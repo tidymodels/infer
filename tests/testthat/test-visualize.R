@@ -555,9 +555,11 @@ test_that("confidence interval plots are working", {
 
   expect_doppelganger(
     "ci-vis",
-    gss_tbl_boot %>% 
-      visualize() + 
-      shade_confidence_interval(endpoints = perc_ci, direction = "between")
+    expect_warning(
+      gss_tbl_boot %>% 
+        visualize() + 
+        shade_confidence_interval(endpoints = perc_ci, direction = "between")
+    )
   )
 })
 

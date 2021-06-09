@@ -71,8 +71,8 @@ shade_p_value <- function(obs_stat, direction,
     "A p-value shading layer.", 
     class = "infer_layer",
     fn = "shade_p_value",
-    obs_stat = obs_stat,
-    direction = direction,
+    obs_stat = if (is.null(obs_stat)) {NA} else {obs_stat},
+    direction = if (is.null(direction)) {NA} else {direction},
     color = color,
     fill = fill,
     dots = list(...)
@@ -85,6 +85,14 @@ shade_pvalue <- shade_p_value
 
 shade_p_value_term <- function(plot, obs_stat, direction,
                                color = "red2", fill = "pink", dots) {
+  if (all(is.na(obs_stat))) {
+    obs_stat <- NULL
+  }
+  
+  if (all(is.na(direction))) {
+    direction <- NULL
+  }
+  
   # argument checking
   check_for_piped_visualize(obs_stat, direction, color, fill)
   obs_stat <- check_obs_stat(obs_stat, plot)

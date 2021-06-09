@@ -80,8 +80,7 @@ shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
     "A confidence interval shading layer.", 
     class = "infer_layer",
     fn = "shade_confidence_interval",
-    endpoints = endpoints,
-    direction = direction,
+    endpoints = if (is.null(endpoints)) {NA} else {endpoints},
     color = color,
     fill = fill,
     dots = list(...)
@@ -91,6 +90,10 @@ shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
 shade_confidence_interval_term <- function(plot, endpoints, 
                                            color = "mediumaquamarine",
                                            fill = "turquoise", dots) {
+  if (all(is.na(endpoints))) {
+    endpoints <- NULL
+  }
+  
   # argument checking
   check_for_piped_visualize(endpoints, color, fill)
   
