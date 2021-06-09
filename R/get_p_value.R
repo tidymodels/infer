@@ -94,7 +94,7 @@
 #' 
 #' get_p_value(null_fits, obs_stat = observed_fit, direction = "two-sided")
 #'   
-#' # More in-depth explanation of how to use the infer package
+#' # more in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
 #' }  

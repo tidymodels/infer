@@ -56,7 +56,7 @@ null_fits <- gss \%>\%
 
 null_fits
 
-# More in-depth explanation of how to use the infer package
+# more in-depth explanation of how to use the infer package
 \dontrun{
 vignette("infer")
 }  

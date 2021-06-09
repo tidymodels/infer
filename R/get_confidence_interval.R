@@ -60,7 +60,7 @@
 #'     level = 0.95
 #'   )
 #'
-#' # For type = "se" or type = "bias-corrected" we need a point estimate
+#' # for type = "se" or type = "bias-corrected" we need a point estimate
 #' sample_mean <- gss %>%
 #'   specify(response = hours) %>%
 #'   calculate(stat = "mean") %>%
@@ -103,7 +103,7 @@
 #'   level = .95
 #' )
 #'
-#' # More in-depth explanation of how to use the infer package
+#' # more in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
 #' }
