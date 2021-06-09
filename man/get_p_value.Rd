@@ -10,21 +10,34 @@ get_p_value(x, obs_stat, direction)
 get_pvalue(x, obs_stat, direction)
 }
 \arguments{
-\item{x}{Data frame of calculated statistics as returned by \code{\link[=generate]{generate()}}}
+\item{x}{A data frame containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
+or \code{\link[=fit.infer]{fit()}}ted coefficient estimates. This object should
+have been passed to \code{\link[=generate]{generate()}} before being supplied or
+\code{\link[=calculate]{calculate()}} to \code{\link[=fit.infer]{fit()}}.}
 
-\item{obs_stat}{A numeric value or a 1x1 data frame (as extreme or more
-extreme than this).}
+\item{obs_stat}{A data frame containing the observed statistic (in a
+\code{\link[=calculate]{calculate()}}-based workflow) or observed fit (in a
+\code{\link[=fit.infer]{fit()}}-based workflow). This object is likely the output
+of \code{\link[=calculate]{calculate()}} or \code{\link[=fit.infer]{fit()}} and need not
+to have been passed to \code{\link[=generate]{generate()}}.}
 
 \item{direction}{A character string. Options are \code{"less"}, \code{"greater"}, or
 \code{"two-sided"}. Can also use \code{"left"}, \code{"right"}, \code{"both"},
 \code{"two_sided"}, or \code{"two sided"}, \code{"two.sided"}.}
 }
 \value{
-A 1x1 \link[tibble:tibble]{tibble} with value between 0 and 1.
+A \link[tibble:tibble]{tibble} containing the following columns:
+
+\itemize{
+\item \code{term}: The explanatory variable (or intercept) in question. Only
+supplied if the input had been previously passed to \code{\link[=fit.infer]{fit()}}.
+\item \code{p_value}: A value in [0, 1] giving the probability that a
+statistic/coefficient as or more extreme than the observed
+statistic/coefficient would occur if the null hypothesis were true.
+}
 }
 \description{
 Compute a p-value from a null distribution and observed statistic.
-Simulation-based methods are (currently only) supported.
 
 Learn more in \code{vignette("infer")}.
 }
@@ -56,8 +69,7 @@ raised to caution the user against reporting a p-value exactly equal to 0.
 # find the point estimate---mean number of hours worked per week
 point_estimate <- gss \%>\%
   specify(response = hours) \%>\%
-  calculate(stat = "mean") \%>\%
-  dplyr::pull()
+  calculate(stat = "mean")
 
 # starting with the gss dataset
 gss \%>\%
@@ -71,7 +83,31 @@ gss \%>\%
   calculate(stat = "mean") \%>\%
   get_p_value(obs_stat = point_estimate, direction = "two-sided")
   
-# More in-depth explanation of how to use the infer package
+# using a model fitting workflow -----------------------
+
+# fit a linear model predicting number of hours worked per
+# week using respondent age and degree status.
+observed_fit <- gss \%>\%
+  specify(hours ~ age + college) \%>\%
+  hypothesize(null = "independence") \%>\%
+  fit()
+
+observed_fit
+
+# fit 100 models to resamples of the gss dataset, where the response 
+# `hours` is permuted in each. note that this code is the same as 
+# the above except for the addition of the `generate` step.
+null_fits <- gss \%>\%
+  specify(hours ~ age + college) \%>\%
+  hypothesize(null = "independence") \%>\%
+  generate(reps = 100, type = "permute") \%>\%
+  fit()
+
+null_fits
+
+get_p_value(null_fits, obs_stat = observed_fit, direction = "two-sided")
+  
+# more in-depth explanation of how to use the infer package
 \dontrun{
 vignette("infer")
 }  

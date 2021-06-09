@@ -4,7 +4,7 @@
 \alias{generate}
 \title{Generate resamples, permutations, or simulations}
 \usage{
-generate(x, reps = 1, type = NULL, ...)
+generate(x, reps = 1, type = NULL, cols = !!response_expr(x), ...)
 }
 \arguments{
 \item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
@@ -14,6 +14,10 @@ generate(x, reps = 1, type = NULL, ...)
 \item{type}{The method used to generate resamples of the observed
 data reflecting the null hypothesis. Currently one of
 \code{"bootstrap"}, \code{"permute"}, or \code{"draw"} (see below).}
+
+\item{cols}{If \code{type = "permute"}, a set of unquoted column names in the
+data to permute (independently of each other). Defaults to only the
+response variable.}
 
 \item{...}{Currently ignored.}
 }
@@ -48,20 +52,20 @@ superseded.
 }
 
 \examples{
-# Generate a null distribution by taking 200 bootstrap samples
+# generate a null distribution by taking 200 bootstrap samples
 gss \%>\%
  specify(response = hours) \%>\%
  hypothesize(null = "point", mu = 40) \%>\%
  generate(reps = 200, type = "bootstrap")
 
-# Generate a null distribution for the independence of
+# generate a null distribution for the independence of
 # two variables by permuting their values 1000 times
 gss \%>\%
  specify(partyid ~ age) \%>\%
  hypothesize(null = "independence") \%>\%
  generate(reps = 200, type = "permute")
 
-# More in-depth explanation of how to use the infer package
+# more in-depth explanation of how to use the infer package
 \dontrun{
 vignette("infer")
 }

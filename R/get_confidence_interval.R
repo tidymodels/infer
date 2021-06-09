@@ -7,20 +7,31 @@
 #'
 #' Learn more in `vignette("infer")`.
 #'
-#' @param x Data frame of calculated statistics or containing attributes of
-#'   theoretical distribution values. Currently, dependent on statistics being
-#'   stored in `stat` column as created in [calculate()] function.
+#' @param x A data frame containing a distribution of [calculate()]d statistics 
+#'   or [`fit()`][fit.infer()]ted coefficient estimates. This object should 
+#'   have been passed to [generate()] before being supplied to [calculate()] 
+#'   or [`fit()`][fit.infer()].
 #' @param level A numerical value between 0 and 1 giving the confidence level.
 #'   Default value is 0.95.
 #' @param type A string giving which method should be used for creating the
 #'   confidence interval. The default is `"percentile"` with `"se"`
 #'   corresponding to (multiplier * standard error) and `"bias-corrected"` for
 #'   bias-corrected interval as other options.
-#' @param point_estimate A numeric value or a 1x1 data frame set to `NULL` by
-#'   default. Needed to be provided if `type` is `"se"` or `"bias-corrected"`.
+#' @param point_estimate A data frame containing the observed statistic (in a 
+#'   [calculate()]-based workflow) or observed fit (in a 
+#'   [`fit()`][fit.infer()]-based workflow). This object is likely the output 
+#'   of [calculate()] or [`fit()`][fit.infer()] and need not
+#'   to have been passed to [generate()]. Set to `NULL` by
+#'   default. Must be provided if `type` is `"se"` or `"bias-corrected"`.
 #'
-#' @return A 1 x 2 tibble with 'lower_ci' and 'upper_ci' columns. Values
-#'   correspond to lower and upper bounds of the confidence interval.
+#' @return A [tibble][tibble::tibble] containing the following columns:
+#' 
+#' \itemize{
+#'   \item `term`: The explanatory variable (or intercept) in question. Only 
+#'     supplied if the input had been previously passed to [`fit()`][fit.infer()].
+#'   \item `lower_ci`, `upper_ci`: The lower and upper bounds of the confidence 
+#'     interval, respectively.
+#' }
 #'
 #' @details
 #' A null hypothesis is not required to compute a confidence interval, but
@@ -49,7 +60,7 @@
 #'     level = 0.95
 #'   )
 #'
-#' # For type = "se" or type = "bias-corrected" we need a point estimate
+#' # for type = "se" or type = "bias-corrected" we need a point estimate
 #' sample_mean <- gss %>%
 #'   specify(response = hours) %>%
 #'   calculate(stat = "mean") %>%
@@ -63,8 +74,36 @@
 #'     # Using the standard error method
 #'     type = "se"
 #'   )
+#'   
+#' # using a model fitting workflow -----------------------
+#' 
+#' # fit a linear model predicting number of hours worked per
+#' # week using respondent age and degree status.
+#' observed_fit <- gss %>%
+#'   specify(hours ~ age + college) %>%
+#'   hypothesize(null = "independence") %>%
+#'   fit()
+#' 
+#' observed_fit
+#' 
+#' # fit 100 models to resamples of the gss dataset, where the response 
+#' # `hours` is permuted in each. note that this code is the same as 
+#' # the above except for the addition of the `generate` step.
+#' null_fits <- gss %>%
+#'   specify(hours ~ age + college) %>%
+#'   hypothesize(null = "independence") %>%
+#'   generate(reps = 100, type = "permute") %>%
+#'   fit()
+#' 
+#' null_fits
+#' 
+#' get_confidence_interval(
+#'   null_fits, 
+#'   point_estimate = observed_fit, 
+#'   level = .95
+#' )
 #'
-#' # More in-depth explanation of how to use the infer package
+#' # more in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
 #' }
@@ -74,19 +113,58 @@
 #' @export
 get_confidence_interval <- function(x, level = 0.95, type = "percentile",
                                     point_estimate = NULL) {
-  check_ci_args(x, level, type, point_estimate)
-
   # Inform if no `level` was explicitly supplied
   if (!("level" %in% rlang::call_args_names(match.call()))) {
     message_glue("Using `level = {level}` to compute confidence interval.")
   }
-
-  switch(
-    type,
-    percentile = ci_percentile(x, level),
-    se = ci_se(x, level, point_estimate),
-    `bias-corrected` = ci_bias_corrected(x, level, point_estimate)
-  )
+  
+  if (is_fitted(x)) {
+    # check that x and point estimate reference the same variables
+    check_mlr_x_and_obs_stat(
+      x, 
+      point_estimate, 
+      "get_confidence_interval", 
+      "point_estimate"
+    )
+    
+    # split up x and point estimate by term
+    term_data <- x %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by(term) %>%
+      dplyr::group_split() %>%
+      purrr::map(copy_attrs, x)
+    
+    term_estimates <- point_estimate %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by(term) %>%
+      dplyr::group_split()
+    
+    # check arguments for each term
+    purrr::map2_dfr(
+      term_data,
+      purrr::map(term_estimates, purrr::pluck, "estimate"),
+      check_ci_args,
+      level = level,
+      type = type
+    )
+    
+    # map over switch_ci and then add the term column back in
+    purrr::map2_dfr(
+      term_data,
+      purrr::map(term_estimates, purrr::pluck, "estimate"),
+      switch_ci,
+      level = level,
+      type = type
+    ) %>%
+      dplyr::mutate(
+        term = purrr::map_chr(term_estimates, purrr::pluck, "term"),
+        .before = dplyr::everything()
+      )
+  } else {
+    check_ci_args(x, level, type, point_estimate)
+    
+    switch_ci(type, x, level, point_estimate)
+  }
 }
 
 #' @rdname get_confidence_interval
@@ -99,8 +177,18 @@ get_ci <- function(x, level = 0.95, type = "percentile",
   )
 }
 
+switch_ci <- function(type, x, level, point_estimate) {
+  switch(
+    type,
+    percentile = ci_percentile(x, level),
+    se = ci_se(x, level, point_estimate),
+    `bias-corrected` = ci_bias_corrected(x, level, point_estimate)
+  )
+}
+
 ci_percentile <- function(x, level) {
-  ci_vec <- stats::quantile(x[["stat"]], probs = (1 + c(-level, level)) / 2)
+  # x[[ncol(x)]] pulls out the stat or estimate column
+  ci_vec <- stats::quantile(x[[ncol(x)]], probs = (1 + c(-level, level)) / 2)
 
   make_ci_df(ci_vec)
 }
@@ -109,7 +197,7 @@ ci_se <- function(x, level, point_estimate) {
   point_estimate <- check_obs_stat(point_estimate)
 
   multiplier <- stats::qnorm((1 + level) / 2)
-  ci_vec <- point_estimate + c(-multiplier, multiplier) * stats::sd(x[["stat"]])
+  ci_vec <- point_estimate + c(-multiplier, multiplier) * stats::sd(x[[ncol(x)]])
 
   make_ci_df(ci_vec)
 }
@@ -117,13 +205,15 @@ ci_se <- function(x, level, point_estimate) {
 ci_bias_corrected <- function(x, level, point_estimate) {
   point_estimate <- check_obs_stat(point_estimate)
 
-  p <- mean(x[["stat"]] <= point_estimate)
+  # x[[ncol(x)]] pulls out the stat or estimate column
+  p <- mean(x[[ncol(x)]] <= point_estimate)
   z0 <- stats::qnorm(p)
   # z_alpha_2 is z_(alpha/2)
   z_alpha_2 <- stats::qnorm((1 + c(-level, level)) / 2)
   new_probs <- stats::pnorm(2 * z0 + z_alpha_2)
 
-  ci_vec <- stats::quantile(x[["stat"]], probs = new_probs)
+  # x[[ncol(x)]] pulls out the stat or estimate column
+  ci_vec <- stats::quantile(x[[ncol(x)]], probs = new_probs)
 
   make_ci_df(ci_vec)
 }

@@ -3,18 +3,32 @@
 #' @description
 #'
 #' Compute a p-value from a null distribution and observed statistic. 
-#' Simulation-based methods are (currently only) supported.
 #' 
 #' Learn more in `vignette("infer")`.
 #'
-#' @param x Data frame of calculated statistics as returned by [generate()]
-#' @param obs_stat A numeric value or a 1x1 data frame (as extreme or more
-#'   extreme than this).
+#' @param x A data frame containing a distribution of [calculate()]d statistics 
+#'   or [`fit()`][fit.infer()]ted coefficient estimates. This object should 
+#'   have been passed to [generate()] before being supplied or 
+#'   [calculate()] to [`fit()`][fit.infer()].
+#' @param obs_stat A data frame containing the observed statistic (in a 
+#'   [calculate()]-based workflow) or observed fit (in a 
+#'   [`fit()`][fit.infer()]-based workflow). This object is likely the output 
+#'   of [calculate()] or [`fit()`][fit.infer()] and need not
+#'   to have been passed to [generate()].
 #' @param direction A character string. Options are `"less"`, `"greater"`, or
 #'   `"two-sided"`. Can also use `"left"`, `"right"`, `"both"`, 
 #'   `"two_sided"`, or `"two sided"`, `"two.sided"`.
 #'
-#' @return A 1x1 [tibble][tibble::tibble] with value between 0 and 1.
+#' @return A [tibble][tibble::tibble] containing the following columns:
+#' 
+#' \itemize{
+#'   \item `term`: The explanatory variable (or intercept) in question. Only 
+#'     supplied if the input had been previously passed to [`fit()`][fit.infer()].
+#'   \item `p_value`: A value in \[0, 1\] giving the probability that a
+#'     statistic/coefficient as or more extreme than the observed 
+#'     statistic/coefficient would occur if the null hypothesis were true.
+#' }
+#' 
 #'
 #' @section Aliases:
 #' `get_pvalue()` is an alias of `get_p_value()`.
@@ -41,8 +55,7 @@
 #' # find the point estimate---mean number of hours worked per week
 #' point_estimate <- gss %>%
 #'   specify(response = hours) %>%
-#'   calculate(stat = "mean") %>%
-#'   dplyr::pull()
+#'   calculate(stat = "mean")
 #' 
 #' # starting with the gss dataset
 #' gss %>%
@@ -57,7 +70,31 @@
 #    # calculate the p-value for the point estimate
 #'   get_p_value(obs_stat = point_estimate, direction = "two-sided")
 #'   
-#' # More in-depth explanation of how to use the infer package
+#' # using a model fitting workflow -----------------------
+#' 
+#' # fit a linear model predicting number of hours worked per
+#' # week using respondent age and degree status.
+#' observed_fit <- gss %>%
+#'   specify(hours ~ age + college) %>%
+#'   hypothesize(null = "independence") %>%
+#'   fit()
+#' 
+#' observed_fit
+#' 
+#' # fit 100 models to resamples of the gss dataset, where the response 
+#' # `hours` is permuted in each. note that this code is the same as 
+#' # the above except for the addition of the `generate` step.
+#' null_fits <- gss %>%
+#'   specify(hours ~ age + college) %>%
+#'   hypothesize(null = "independence") %>%
+#'   generate(reps = 100, type = "permute") %>%
+#'   fit()
+#' 
+#' null_fits
+#' 
+#' get_p_value(null_fits, obs_stat = observed_fit, direction = "two-sided")
+#'   
+#' # more in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
 #' }  
@@ -72,16 +109,48 @@ get_p_value <- function(x, obs_stat, direction) {
   check_type(x, is.data.frame)
   if (!is_generated(x) & is_hypothesized(x)) {
     stop_glue(
-      "Theoretical p-values are not yet supported.",
-      "`x` should be the result of calling `generate()`.",
-      .sep = " "
+      "Theoretical p-values are not yet supported. ",
+      "`x` should be the result of calling `generate()`."
     )
   }
   check_for_nan(x, "get_p_value")
-  obs_stat <- check_obs_stat(obs_stat)
   check_direction(direction)
-
-  simulation_based_p_value(x = x, obs_stat = obs_stat, direction = direction)
+  
+  if (is_fitted(x)) {
+    # check that x and obs stat reference the same variables
+    check_mlr_x_and_obs_stat(
+      x, 
+      obs_stat, 
+      "get_p_value", 
+      "obs_stat"
+    )
+    
+    # split up x and obs_stat by term
+    term_data <- x %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by(term) %>%
+      dplyr::group_split() %>%
+      purrr::map(copy_attrs, x)
+    
+    term_obs_stats <- obs_stat %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by(term) %>%
+      dplyr::group_split()
+    
+    # calculate the p value for each term and then add the term column back in
+    purrr::map2_dfr(
+      term_data,
+      purrr::map(term_obs_stats, purrr::pluck, "estimate"),
+      simulation_based_p_value,
+      direction = direction
+    ) %>%
+      dplyr::mutate(
+        term = purrr::map_chr(term_obs_stats, purrr::pluck, "term"),
+        .before = dplyr::everything()
+      )
+  } else {
+    simulation_based_p_value(x = x, obs_stat = obs_stat, direction = direction)
+  }
 }
 
 #' @rdname get_p_value
@@ -91,12 +160,15 @@ get_pvalue <- function(x, obs_stat, direction) {
 }
 
 simulation_based_p_value <- function(x, obs_stat, direction) {
+  obs_stat <- check_obs_stat(obs_stat)
+  
+  # x[[ncol(x)]] pulls out the stat or estimate column
   if (direction %in% c("less", "left")) {
-    pval <- left_p_value(x[["stat"]], obs_stat)
+    pval <- left_p_value(x[[ncol(x)]], obs_stat)
   } else if (direction %in% c("greater", "right")) {
-    pval <- right_p_value(x[["stat"]], obs_stat)
+    pval <- right_p_value(x[[ncol(x)]], obs_stat)
   } else {
-    pval <- two_sided_p_value(x[["stat"]], obs_stat)
+    pval <- two_sided_p_value(x[[ncol(x)]], obs_stat)
   }
   
   if (abs(pval) < 1e-16) {
@@ -125,6 +197,8 @@ two_sided_p_value <- function(vec, obs_stat) {
   
   min(raw_res, 1)
 }
+
+
 
 # which_distribution <- function(x, theory_type, obs_stat, direction){
 #

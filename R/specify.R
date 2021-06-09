@@ -36,7 +36,7 @@
 #' gss %>%
 #'   specify(response = age, explanatory = partyid)
 #'
-#' # More in-depth explanation of how to use the infer package
+#' # more in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
 #' }
@@ -66,6 +66,7 @@ specify <- function(x, formula, response = NULL,
   attr(x, "success") <- success
   attr(x, "generated") <- FALSE
   attr(x, "hypothesized") <- FALSE
+  attr(x, "fitted") <- FALSE
   
   # Check the success argument
   check_success_arg(x, success)
@@ -103,10 +104,12 @@ parse_variables <- function(x, formula, response, explanatory) {
   
   attr(x, "response")    <- get_expr(response)
   attr(x, "explanatory") <- get_expr(explanatory)
+  attr(x, "formula") <- NULL
   
   if (methods::hasArg(formula)) {
     attr(x, "response")    <- f_lhs(formula)
     attr(x, "explanatory") <- f_rhs(formula)
+    attr(x, "formula") <- formula
   }
   
   # Check response and explanatory variables to be appropriate for later use

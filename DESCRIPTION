@@ -84,9 +84,11 @@ Imports:
     methods,
     purrr,
     rlang (>= 0.2.0),
-    tibble
-Suggests:
+    tibble,
     broom,
+    tidyr,
+    generics
+Suggests:
     covr,
     devtools (>= 1.12.0),
     fs,
@@ -95,7 +97,6 @@ Suggests:
     rmarkdown,
     stringr,
     testthat,
-    tidyr,
     vdiffr
 VignetteBuilder:
     knitr

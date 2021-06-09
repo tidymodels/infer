@@ -93,3 +93,119 @@ test_that("get_p_value throws error in case of `NaN` stat", {
   gss_calc$stat <- NaN
   expect_error(get_p_value(gss_calc, 0, "both"), "All calculated stat")
 })
+
+test_that("get_p_value can handle fitted objects", {
+  set.seed(1)
+  
+  null_fits <- gss[1:50,] %>%
+    specify(hours ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 10, type = "permute") %>%
+    fit()
+  
+  obs_fit <- gss[1:50,] %>%
+    specify(hours ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    fit()
+  
+  expect_equivalent(
+    get_p_value(null_fits, obs_fit, "both"),
+    structure(
+      list(term = c("age", "collegedegree", "intercept"), 
+           p_value = c(0.6, 0.4, 0.6)), 
+      row.names = c(NA, -3L), 
+      class = c("tbl_df", "tbl", "data.frame")
+    )
+  )
+  
+  # errors out when it ought to
+  obs_fit_2 <- gss[1:50,] %>%
+    specify(hours ~ age) %>%
+    hypothesize(null = "independence") %>%
+    fit()
+  
+  expect_error(
+    get_p_value(null_fits, obs_fit_2, "both"),
+    "explanatory variables.*are not the same used"
+  )
+  
+  obs_fit_3 <- gss[1:50,] %>%
+    specify(year ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    fit()
+  
+  expect_error(
+    get_p_value(null_fits, obs_fit_3, "both"),
+    "response variable.*\\(hours\\) is not the same.*observed fit \\(year\\)."
+  )
+  
+  set.seed(1)
+  
+  null_fits_4 <- gss[1:50,] %>%
+    specify(hours ~ age) %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 10, type = "permute") %>%
+    fit()
+  
+  obs_fit_4 <- gss[1:50,] %>%
+    specify(hours ~ age) %>%
+    hypothesize(null = "independence") %>%
+    fit()
+  
+  obs_fit_4
+  
+  expect_equivalent(
+    get_p_value(null_fits_4, obs_fit_4, "both"),
+    structure(
+      list(
+        term = c("age", "intercept"), 
+        p_value = c(0.6, 0.6)), 
+      row.names = c(NA, -2L), 
+      class = c("tbl_df", "tbl", "data.frame")
+    )
+  )
+  
+  expect_equal(ncol(null_fits_4), ncol(obs_fit_4) + 1)
+  expect_equal(nrow(null_fits_4), nrow(obs_fit_4) * 10)
+  
+  expect_equal(ncol(obs_fit_4), ncol(obs_fit))
+  expect_equal(nrow(obs_fit_4), nrow(obs_fit) - 1)
+  
+  expect_true(is_fitted(obs_fit))
+  expect_true(is_fitted(obs_fit_2))
+  expect_true(is_fitted(obs_fit_3))
+  expect_true(is_fitted(obs_fit_4))
+  
+  expect_true(is_fitted(null_fits))
+  expect_true(is_fitted(null_fits_4))
+})
+
+test_that("get_p_value can handle bad args with fitted objects", {
+  set.seed(1)
+  
+  null_fits <- gss[1:50,] %>%
+    specify(hours ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 10, type = "permute") %>%
+    fit()
+  
+  obs_fit <- gss[1:50,] %>%
+    specify(hours ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    fit()
+  
+  expect_error(
+    get_p_value(null_fits, "boop", "both"),
+    "should be the output of `fit\\(\\)`."
+  )
+  
+  expect_error(
+    get_p_value(null_fits, obs_fit$estimate, "both"),
+    "should be the output of `fit\\(\\)`."
+  )
+  
+  expect_error(
+    get_p_value(obs_fit, null_fits, "both"),
+    "`x` should be the result of calling `generate\\(\\)`."
+  )
+})
