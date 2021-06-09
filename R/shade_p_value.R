@@ -67,6 +67,11 @@ NULL
 #' @export
 shade_p_value <- function(obs_stat, direction,
                           color = "red2", fill = "pink", ...) {
+  # since most of the logic for p-value shading is in shade_p_value_term, which 
+  # is only called by `+.gg`, we need to check for mistakenly piped inputs here
+  check_for_piped_visualize(obs_stat, direction, color, fill)
+  
+  # store inputs in classed output that can passed to a `ggplot_add` method
   structure(
     "A p-value shading layer.", 
     class = "infer_layer",
@@ -94,7 +99,6 @@ shade_p_value_term <- function(plot, obs_stat, direction,
   }
   
   # argument checking
-  check_for_piped_visualize(obs_stat, direction, color, fill)
   obs_stat <- check_obs_stat(obs_stat, plot)
   check_shade_p_value_args(obs_stat, direction, color, fill)
   

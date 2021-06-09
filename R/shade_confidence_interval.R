@@ -76,6 +76,11 @@ NULL
 #' @export
 shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
                                       fill = "turquoise", ...) {
+  # since most of the logic for shading is in shade_confidence_interval_term, which 
+  # is only called by `+.gg`, we need to check for mistakenly piped inputs here
+  check_for_piped_visualize(endpoints, color, fill)
+  
+  # store inputs in classed output that can passed to a `ggplot_add` method
   structure(
     "A confidence interval shading layer.", 
     class = "infer_layer",
@@ -95,8 +100,6 @@ shade_confidence_interval_term <- function(plot, endpoints,
   }
   
   # argument checking
-  check_for_piped_visualize(endpoints, color, fill)
-  
   endpoints <- impute_endpoints(endpoints, plot)
   check_shade_confidence_interval_args(color, fill)
   
