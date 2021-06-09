@@ -115,7 +115,6 @@ vignette("infer")
 }
 \seealso{
 Other auxillary functions: 
-\code{\link{get_confidence_interval}()},
-\code{\link{visualize}()}
+\code{\link{get_confidence_interval}()}
 }
 \concept{auxillary functions}

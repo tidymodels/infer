@@ -131,7 +131,6 @@ vignette("infer")
 }
 \seealso{
 Other auxillary functions: 
-\code{\link{get_p_value}()},
-\code{\link{visualize}()}
+\code{\link{get_p_value}()}
 }
 \concept{auxillary functions}

@@ -74,7 +74,6 @@ vignette("infer")
 }
 \seealso{
 Other visualization functions: 
-\code{\link{shade_confidence_interval}()},
-\code{\link{visualize}()}
+\code{\link{shade_confidence_interval}()}
 }
 \concept{visualization functions}

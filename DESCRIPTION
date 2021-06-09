@@ -87,7 +87,8 @@ Imports:
     tibble,
     broom,
     tidyr,
-    generics
+    generics,
+    patchwork
 Suggests:
     covr,
     devtools (>= 1.12.0),

@@ -88,7 +88,6 @@ vignette("infer")
 }
 \seealso{
 Other visualization functions: 
-\code{\link{shade_p_value}()},
-\code{\link{visualize}()}
+\code{\link{shade_p_value}()}
 }
 \concept{visualization functions}
