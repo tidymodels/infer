@@ -167,8 +167,8 @@ check_cols <- function(x, cols, type, missing) {
         c("", "is")}
     
     stop_glue(
-      'The column{plurals[1]} `{list(bad_cols)}` provided to',
-      ' the `cols` argument {plurals[2]} not in the supplied data.'
+      'The column{plurals[1]} `{list(bad_cols)}` provided to ',
+      'the `cols` argument {plurals[2]} not in the supplied data.'
     )
   }
 }

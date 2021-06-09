@@ -265,14 +265,14 @@ chisq_test <- function(x, formula, response = NULL,
 
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
-      'The response variable of `{response_name(x)}` is not appropriate\n',
+      'The response variable of `{response_name(x)}` is not appropriate ',
       "since the response variable is expected to be categorical."
     )
   }
   if (has_explanatory(x) &&
       !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
-      'The explanatory variable of `{explanatory_name(x)}` is not appropriate\n',
+      'The explanatory variable of `{explanatory_name(x)}` is not appropriate ',
       "since the explanatory variable is expected to be categorical."
     )
   }
@@ -342,14 +342,14 @@ chisq_stat <- function(x, formula, response = NULL,
 
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
-      'The response variable of `{response_name(x)}` is not appropriate\n',
+      'The response variable of `{response_name(x)}` is not appropriate ',
       "since the response variable is expected to be categorical."
     )
   }
   if (has_explanatory(x) &&
       !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
-      'The explanatory variable of `{explanatory_name(x)}` is not appropriate\n',
+      'The explanatory variable of `{explanatory_name(x)}` is not appropriate ',
       "since the response variable is expected to be categorical."
     )
   }
@@ -473,7 +473,7 @@ prop_test <- function(x, formula,
   if (has_explanatory(x) &&
       !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
     stop_glue(
-      'The explanatory variable of `{explanatory_name(x)}` is not appropriate\n',
+      'The explanatory variable of `{explanatory_name(x)}` is not appropriate ',
       "since the explanatory variable is expected to be categorical."
     )
   }

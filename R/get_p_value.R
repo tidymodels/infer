@@ -109,9 +109,8 @@ get_p_value <- function(x, obs_stat, direction) {
   check_type(x, is.data.frame)
   if (!is_generated(x) & is_hypothesized(x)) {
     stop_glue(
-      "Theoretical p-values are not yet supported.",
-      "`x` should be the result of calling `generate()`.",
-      .sep = " "
+      "Theoretical p-values are not yet supported. ",
+      "`x` should be the result of calling `generate()`."
     )
   }
   check_for_nan(x, "get_p_value")

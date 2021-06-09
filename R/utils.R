@@ -328,8 +328,8 @@ check_order <- function(x, order, in_calculate = TRUE, stat) {
                     "diff in props", "ratio of props", "odds ratio"))) {
     if (!is.null(order)) {
        warning_glue(
-        "Statistic is not based on a difference or ratio; the `order` argument",
-        " will be ignored. Check `?calculate` for details."
+        "Statistic is not based on a difference or ratio; the `order` argument ",
+        "will be ignored. Check `?calculate` for details."
       )
     } else {
       return(order)
