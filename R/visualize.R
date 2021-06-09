@@ -87,6 +87,23 @@ ggplot2::ggplot_add
 #' # use the simulation-based null distribution and supply
 #' # `method = "both"` to `visualize()`
 #' visualize(null_dist, method = "both")
+#' 
+#' \donttest{
+#' # to visualize distributions of coefficients for multiple
+#' # explanatory variables, use a `fit()`-based workflow
+#' 
+#' # fit 1000 models with the `hours` variable permuted
+#' null_fits <- gss %>%
+#'  specify(hours ~ age + college) %>%
+#'  hypothesize(null = "independence") %>%
+#'  generate(reps = 1000, type = "permute") %>%
+#'  fit()
+#'  
+#' null_fits
+#' 
+#' # visualize distributions of resulting coefficients
+#' visualize(null_fits)
+#' }
 #'
 #' # More in-depth explanation of how to use the infer package
 #' \dontrun{

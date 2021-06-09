@@ -53,6 +53,42 @@
 #'   visualize() +
 #'   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 #' 
+#' \donttest{
+#' # to visualize distributions of coefficients for multiple
+#' # explanatory variables, use a `fit()`-based workflow
+#' 
+#' # fit 1000 linear models with the `hours` variable permuted
+#' null_fits <- gss %>%
+#'  specify(hours ~ age + college) %>%
+#'  hypothesize(null = "independence") %>%
+#'  generate(reps = 1000, type = "permute") %>%
+#'  fit()
+#'  
+#' null_fits
+#' 
+#' # fit a linear model to the observed data
+#' obs_fit <- gss %>%
+#'   specify(hours ~ age + college) %>%
+#'   hypothesize(null = "independence") %>%
+#'   fit()
+#'
+#' obs_fit
+#' 
+#' # visualize distributions of coefficients 
+#' # generated under the null
+#' visualize(null_fits)
+#' 
+#' # add a p-value shading layer to juxtapose the null 
+#' # fits with the observed fit for each term
+#' visualize(null_fits) + 
+#'   shade_p_value(obs_fit, direction = "both")
+#' 
+#' # the direction argument will be applied 
+#' # to the plot for each term
+#' visualize(null_fits) + 
+#'   shade_p_value(obs_fit, direction = "left")
+#' }
+#' 
 #' # more in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
