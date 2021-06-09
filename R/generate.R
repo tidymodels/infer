@@ -154,7 +154,7 @@ check_cols <- function(x, cols, type, missing) {
   
   if (!missing && type != "permute") {
     warning_glue(
-      'The `cols` argument is only relevant to the "permute" ',
+      'The `cols` argument is only relevant for the "permute" ',
       'generation type and will be ignored.'
     )
   }
