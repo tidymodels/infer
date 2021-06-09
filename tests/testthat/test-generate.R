@@ -398,7 +398,7 @@ test_that("cols argument prompts when it ought to", {
       specify(hours ~ NULL) %>%
       hypothesize(null = "point", mu = 40) %>%
       generate(reps = 2, type = "bootstrap", cols = c(hours)),
-    "is only relevant to.*will be ignored."
+    "is only relevant for.*will be ignored."
   )
   
   expect_error(

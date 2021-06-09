@@ -12,7 +12,7 @@ get_pvalue(x, obs_stat, direction)
 \arguments{
 \item{x}{A data frame containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
 or \code{\link[=fit.infer]{fit()}}ted coefficient estimates. This object should
-have been passed to \code{\link[=generate]{generate()}} before being supplied to
+have been passed to \code{\link[=generate]{generate()}} before being supplied or
 \code{\link[=calculate]{calculate()}} to \code{\link[=fit.infer]{fit()}}.}
 
 \item{obs_stat}{A data frame containing the observed statistic (in a
@@ -94,20 +94,20 @@ observed_fit <- gss \%>\%
 
 observed_fit
 
-# fit 20 models to resamples of the gss dataset, where the response 
+# fit 100 models to resamples of the gss dataset, where the response 
 # `hours` is permuted in each. note that this code is the same as 
 # the above except for the addition of the `generate` step.
 null_fits <- gss \%>\%
   specify(hours ~ age + college) \%>\%
   hypothesize(null = "independence") \%>\%
-  generate(reps = 20, type = "permute") \%>\%
+  generate(reps = 100, type = "permute") \%>\%
   fit()
 
 null_fits
 
 get_p_value(null_fits, obs_stat = observed_fit, direction = "two-sided")
   
-# More in-depth explanation of how to use the infer package
+# more in-depth explanation of how to use the infer package
 \dontrun{
 vignette("infer")
 }  

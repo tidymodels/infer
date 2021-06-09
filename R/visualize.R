@@ -96,8 +96,6 @@ ggplot2::ggplot_add
 #' @importFrom ggplot2 ggplot geom_histogram aes ggtitle
 #' @importFrom ggplot2 xlab ylab geom_vline geom_rect geom_bar
 #' @importFrom stats dt qt df qf dnorm qnorm dchisq qchisq
-#' @family visualization functions
-#' @family auxillary functions
 #' @export
 visualize <- function(data, bins = 15, method = "simulation",
                       dens_color = "black",
@@ -156,7 +154,7 @@ visualize_term <- function(data, term, bins = 15, method = "simulation",
                            dens_color = "black", dots) {
   data <- check_for_nan(data, "visualize")
   check_visualize_args(data, bins, method, dens_color)
-
+  
   infer_plot <- ggplot(data) +
     simulation_layer(data, dots = dots) +
     theoretical_layer(data, dens_color, dots = dots) +
@@ -189,14 +187,14 @@ check_visualize_args <- function(data, bins, method, dens_color) {
   check_type(bins, is.numeric)
   check_type(method, is.character)
   check_type(dens_color, is.character)
-
+  
   if (!(method %in% c("simulation", "theoretical", "both"))) {
     stop_glue(
       'Provide `method` with one of three options: `"theoretical"`, `"both"`, ',
       'or `"simulation"`. `"simulation"` is the default.'
     )
   }
-
+  
   if (method == "both") {
     if (!("stat" %in% names(data))) {
       stop_glue(
@@ -204,7 +202,7 @@ check_visualize_args <- function(data, bins, method, dens_color) {
         'to `visualize(method = "both")`'
       )
     }
-
+    
     if (
       ("replicate" %in% names(data)) && (length(unique(data$replicate)) < 100)
     ) {
@@ -214,7 +212,7 @@ check_visualize_args <- function(data, bins, method, dens_color) {
       )
     }
   }
-
+  
   TRUE
 }
 
@@ -258,23 +256,23 @@ impute_endpoints <- function(endpoints, plot = NULL) {
     )
     endpoints <- endpoints[1:2]
   }
-
+  
   if (is.data.frame(endpoints)) {
     if ((nrow(endpoints) != 1) || (ncol(endpoints) != 2)) {
       stop_glue(
         "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector."
       )
     }
-
+    
     endpoints <- unlist(endpoints)
   }
-
+  
   endpoints
 }
 
 impute_obs_stat <- function(obs_stat, direction, endpoints) {
   obs_stat <- check_obs_stat(obs_stat)
-
+  
   if (
     !is.null(direction) &&
     (is.null(obs_stat) + is.null(endpoints) != 1)
@@ -284,14 +282,14 @@ impute_obs_stat <- function(obs_stat, direction, endpoints) {
       "or the observed statistic `obs_stat` to be provided."
     )
   }
-
+  
   obs_stat
 }
 
 simulation_layer <- function(data, dots = list(NULL)) {
   method <- get_viz_method(data)
   bins <- get_viz_bins(data)
-
+  
   if (method == "theoretical") {
     return(list())
   }
@@ -299,7 +297,7 @@ simulation_layer <- function(data, dots = list(NULL)) {
   # Manual computation of breaks is needed to fix histogram shape in future plot
   # buildings, e.g. after adding p-value areas.
   bin_breaks <- compute_bin_breaks(data, bins)
-
+  
   if (method == "simulation") {
     if (length(unique(data$stat)) >= 10) {
       res <- list(
@@ -334,7 +332,7 @@ simulation_layer <- function(data, dots = list(NULL)) {
       )
     )
   }
-
+  
   res
 }
 
@@ -347,15 +345,15 @@ compute_bin_breaks <- function(data, bins) {
 
 theoretical_layer <- function(data, dens_color, dots, do_warn = TRUE) {
   method <- get_viz_method(data)
-
+  
   if (method == "simulation") {
     return(list())
   }
-
+  
   warn_theoretical_layer(data, do_warn)
-
+  
   theory_type <- short_theory_type(data)
-
+  
   switch(
     theory_type,
     t = theory_curve(
@@ -381,12 +379,12 @@ warn_theoretical_layer <- function(data, do_warn = TRUE) {
   }
   
   method <- get_viz_method(data)
-
+  
   warning_glue(
     "Check to make sure the conditions have been met for the theoretical ",
     "method. {{infer}} currently does not check these for you."
   )
-
+  
   if (
     has_attr(data, "stat") &&
     !(attr(data, "stat") %in% c("t", "z", "Chisq", "F"))
@@ -408,7 +406,7 @@ warn_theoretical_layer <- function(data, do_warn = TRUE) {
 theory_curve <- function(method, d_fun, q_fun, args_list, dens_color) {
   if (method == "theoretical") {
     x_range <- do.call(q_fun, c(p = list(c(0.001, 0.999)), args_list))
-
+    
     res <- list(
       ggplot2::geom_path(
         data = data.frame(x = x_range), mapping = aes(x = x),
@@ -425,7 +423,7 @@ theory_curve <- function(method, d_fun, q_fun, args_list, dens_color) {
       )
     )
   }
-
+  
   res
 }
 
@@ -468,7 +466,7 @@ labels_layer <- function(data, term) {
   
   x_lab <- switch(method, simulation = "{term}", "{theory_type} stat")
   y_lab <- switch(method, simulation = "count", "density")
-
+  
   list(
     xlab(glue_null(x_lab)),
     ylab(glue_null(y_lab))
@@ -501,9 +499,9 @@ short_theory_type <- function(x) {
     z = c("One sample prop z", "Two sample props z"),
     `Chi-Square` = c("Chi-square test of indep", "Chi-square Goodness of Fit")
   )
-
+  
   is_type <- vapply(theory_types, function(x) {theory_attr %in% x}, logical(1))
-
+  
   names(theory_types)[which(is_type)[1]]
 }
 
@@ -538,7 +536,7 @@ ggplot_add.infer_layer <- function(object, plot, object_name) {
   # process object_name (shade_* call) ----------------------------------
   shade_fn <- attr(object, "fn")
   shade_args <- attributes(object)[!names(attributes(object)) %in% 
-                                    c("class", "fn")]
+                                     c("class", "fn")]
   
   # if a patchwork object, use a custom `infer_layer` `+.gg` method.
   # otherwise, convert the `infer_layer` back to a list and call `+` again.

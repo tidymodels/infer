@@ -85,11 +85,9 @@ Imports:
     purrr,
     rlang (>= 0.2.0),
     tibble,
-    parsnip,
     broom,
     tidyr,
-    generics,
-    patchwork
+    generics
 Suggests:
     covr,
     devtools (>= 1.12.0),
@@ -99,8 +97,7 @@ Suggests:
     rmarkdown,
     stringr,
     testthat,
-    vdiffr (>= 1.0.0),
-    glmnet
+    vdiffr (>= 1.0.0)
 VignetteBuilder:
     knitr
 Encoding: UTF-8

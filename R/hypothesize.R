@@ -32,7 +32,7 @@
 #'   specify(response = hours) %>%
 #'   hypothesize(null = "point", mu = 40)
 #'
-#' # More in-depth explanation of how to use the infer package
+#' # more in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
 #' }

@@ -18,7 +18,7 @@ get_ci(x, level = 0.95, type = "percentile", point_estimate = NULL)
 \item{x}{A data frame containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
 or \code{\link[=fit.infer]{fit()}}ted coefficient estimates. This object should
 have been passed to \code{\link[=generate]{generate()}} before being supplied to \code{\link[=calculate]{calculate()}}
-to \code{\link[=fit.infer]{fit()}}.}
+or \code{\link[=fit.infer]{fit()}}.}
 
 \item{level}{A numerical value between 0 and 1 giving the confidence level.
 Default value is 0.95.}
@@ -80,7 +80,7 @@ boot_distr \%>\%
     level = 0.95
   )
 
-# For type = "se" or type = "bias-corrected" we need a point estimate
+# for type = "se" or type = "bias-corrected" we need a point estimate
 sample_mean <- gss \%>\%
   specify(response = hours) \%>\%
   calculate(stat = "mean") \%>\%
@@ -106,13 +106,13 @@ observed_fit <- gss \%>\%
 
 observed_fit
 
-# fit 20 models to resamples of the gss dataset, where the response 
+# fit 100 models to resamples of the gss dataset, where the response 
 # `hours` is permuted in each. note that this code is the same as 
 # the above except for the addition of the `generate` step.
 null_fits <- gss \%>\%
   specify(hours ~ age + college) \%>\%
   hypothesize(null = "independence") \%>\%
-  generate(reps = 20, type = "permute") \%>\%
+  generate(reps = 100, type = "permute") \%>\%
   fit()
 
 null_fits
@@ -123,7 +123,7 @@ get_confidence_interval(
   level = .95
 )
 
-# More in-depth explanation of how to use the infer package
+# more in-depth explanation of how to use the infer package
 \dontrun{
 vignette("infer")
 }

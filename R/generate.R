@@ -13,8 +13,8 @@
 #'   data reflecting the null hypothesis. Currently one of 
 #'   `"bootstrap"`, `"permute"`, or `"draw"` (see below).
 #' @param cols If `type = "permute"`, a set of unquoted column names in the 
-#' data to permute (independently of each other). Defaults to only the 
-#' response variable.
+#'   data to permute (independently of each other). Defaults to only the 
+#'   response variable.
 #' @param ... Currently ignored.
 #'
 #' @return A tibble containing `reps` generated datasets, indicated by the
@@ -39,20 +39,20 @@
 #' }
 #'
 #' @examples
-#' # Generate a null distribution by taking 200 bootstrap samples
+#' # generate a null distribution by taking 200 bootstrap samples
 #' gss %>%
 #'  specify(response = hours) %>%
 #'  hypothesize(null = "point", mu = 40) %>%
 #'  generate(reps = 200, type = "bootstrap")
 #' 
-#' # Generate a null distribution for the independence of
+#' # generate a null distribution for the independence of
 #' # two variables by permuting their values 1000 times
 #' gss %>%
 #'  specify(partyid ~ age) %>%
 #'  hypothesize(null = "independence") %>%
 #'  generate(reps = 200, type = "permute")
 #' 
-#' # More in-depth explanation of how to use the infer package
+#' # more in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
 #' }
@@ -154,7 +154,7 @@ check_cols <- function(x, cols, type, missing) {
   
   if (!missing && type != "permute") {
     warning_glue(
-      'The `cols` argument is only relevant to the "permute" ',
+      'The `cols` argument is only relevant for the "permute" ',
       'generation type and will be ignored.'
     )
   }
@@ -167,8 +167,8 @@ check_cols <- function(x, cols, type, missing) {
         c("", "is")}
     
     stop_glue(
-      'The column{plurals[1]} `{list(bad_cols)}` provided to',
-      ' the `cols` argument {plurals[2]} not in the supplied data.'
+      'The column{plurals[1]} `{list(bad_cols)}` provided to ',
+      'the `cols` argument {plurals[2]} not in the supplied data.'
     )
   }
 }

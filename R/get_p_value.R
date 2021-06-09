@@ -8,7 +8,7 @@
 #'
 #' @param x A data frame containing a distribution of [calculate()]d statistics 
 #'   or [`fit()`][fit.infer()]ted coefficient estimates. This object should 
-#'   have been passed to [generate()] before being supplied to 
+#'   have been passed to [generate()] before being supplied or 
 #'   [calculate()] to [`fit()`][fit.infer()].
 #' @param obs_stat A data frame containing the observed statistic (in a 
 #'   [calculate()]-based workflow) or observed fit (in a 
@@ -81,20 +81,20 @@
 #' 
 #' observed_fit
 #' 
-#' # fit 20 models to resamples of the gss dataset, where the response 
+#' # fit 100 models to resamples of the gss dataset, where the response 
 #' # `hours` is permuted in each. note that this code is the same as 
 #' # the above except for the addition of the `generate` step.
 #' null_fits <- gss %>%
 #'   specify(hours ~ age + college) %>%
 #'   hypothesize(null = "independence") %>%
-#'   generate(reps = 20, type = "permute") %>%
+#'   generate(reps = 100, type = "permute") %>%
 #'   fit()
 #' 
 #' null_fits
 #' 
 #' get_p_value(null_fits, obs_stat = observed_fit, direction = "two-sided")
 #'   
-#' # More in-depth explanation of how to use the infer package
+#' # more in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
 #' }  
@@ -109,9 +109,8 @@ get_p_value <- function(x, obs_stat, direction) {
   check_type(x, is.data.frame)
   if (!is_generated(x) & is_hypothesized(x)) {
     stop_glue(
-      "Theoretical p-values are not yet supported.",
-      "`x` should be the result of calling `generate()`.",
-      .sep = " "
+      "Theoretical p-values are not yet supported. ",
+      "`x` should be the result of calling `generate()`."
     )
   }
   check_for_nan(x, "get_p_value")
@@ -163,6 +162,7 @@ get_pvalue <- function(x, obs_stat, direction) {
 simulation_based_p_value <- function(x, obs_stat, direction) {
   obs_stat <- check_obs_stat(obs_stat)
   
+  # x[[ncol(x)]] pulls out the stat or estimate column
   if (direction %in% c("less", "left")) {
     pval <- left_p_value(x[[ncol(x)]], obs_stat)
   } else if (direction %in% c("greater", "right")) {

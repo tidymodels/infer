@@ -19,15 +19,13 @@ test_that("fit_linear_model helper works", {
   x3_m <- 
     fit_linear_model(
       x3,
-      get_formula(x3),
-      "lm"
+      get_formula(x3)
     )
   
   x4_m <- 
     fit_linear_model(
       x3,
-      get_formula(x3),
-      "lm"
+      get_formula(x3)
     )
   
   expect_equal(x3_m, x4_m)
@@ -66,24 +64,4 @@ test_that("fit.infer can handle generated objects", {
     colnames(x3_fit),
     colnames(x3_gen_fit)[colnames(x3_gen_fit) != "replicate"]
   )
-})
-
-test_that("fit.infer is sensitive to engine arguments", {
-  skip_if_not_installed("glmnet")
-  
-  lm_fit <- x3 %>% fit(engine = "lm")
-  glmnet_fit_1 <- x3 %>% fit(engine = "glmnet")
-  glmnet_fit_2 <- x3 %>% fit(engine = "glmnet", penalty = .1)
-  
-  expect_equal(nrow(lm_fit), nrow(glmnet_fit_1))
-  expect_equal(nrow(lm_fit), nrow(glmnet_fit_2))
-  
-  expect_equal(ncol(lm_fit), ncol(glmnet_fit_1))
-  expect_equal(ncol(lm_fit), ncol(glmnet_fit_2))
-  
-  expect_true(all(lm_fit$term == glmnet_fit_1$term))
-  expect_true(all(lm_fit$term == glmnet_fit_2$term))
-  
-  expect_false(all(lm_fit$estimate == glmnet_fit_1$estimate))
-  expect_false(all(glmnet_fit_1$estimate == glmnet_fit_2$estimate))
 })
