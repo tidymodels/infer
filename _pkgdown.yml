@@ -48,3 +48,31 @@ navbar:
   right:
   - icon: fa-github fa-lg
     href: https://github.com/tidymodels/infer
+
+reference:
+  - title: Core Verbs
+    contents:
+    - specify
+    - hypothesize
+    - generate
+    - calculate
+  - title: Helpers
+    contents:
+    - get_p_value
+    - get_confidence_interval
+    - visualize
+    - shade_p_value
+    - shade_confidence_interval
+  - title: Wrappers
+    contents:
+    - observe
+    - ends_with("_test")
+    - ends_with("_stat")
+  - title: Miscellaneous
+    contents:
+    - infer
+    - gss
+    - deprecated
+    - rep_sample_n
+    - "`%>%`"
+    - print.infer

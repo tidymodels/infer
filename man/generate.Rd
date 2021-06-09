@@ -11,8 +11,9 @@ generate(x, reps = 1, type = NULL, cols = !!response_expr(x), ...)
 
 \item{reps}{The number of resamples to generate.}
 
-\item{type}{Currently either \code{bootstrap}, \code{permute}, or \code{simulate}
-(see below).}
+\item{type}{The method used to generate resamples of the observed
+data reflecting the null hypothesis. Currently one of
+\code{"bootstrap"}, \code{"permute"}, or \code{"draw"} (see below).}
 
 \item{cols}{If \code{type = "permute"}, a set of unquoted column names in the
 data to permute (independently of each other). Defaults to only the
@@ -42,9 +43,11 @@ where a sample of size equal to the input sample size is drawn (with
 replacement) from the input sample data.
 \item \code{permute}: For each replicate, each input value will be randomly
 reassigned (without replacement) to a new output value in the sample.
-\item \code{simulate}: A value will be sampled from a theoretical distribution
-with parameters specified in \code{\link[=hypothesize]{hypothesize()}} for each replicate. (This
-option is currently only applicable for testing point estimates.)
+\item \code{draw}: A value will be sampled from a theoretical distribution
+with parameters specified in \code{\link[=hypothesize]{hypothesize()}} for each replicate. This
+option is currently only applicable for testing point estimates. This
+generation type was previously called \code{"simulate"}, which has been
+superseded.
 }
 }
 
@@ -68,3 +71,10 @@ vignette("infer")
 }
 
 }
+\seealso{
+Other core functions: 
+\code{\link{calculate}()},
+\code{\link{hypothesize}()},
+\code{\link{specify}()}
+}
+\concept{core functions}

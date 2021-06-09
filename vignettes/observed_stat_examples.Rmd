@@ -272,7 +272,7 @@ Then, generating the null distribution,
 null_distn <- gss %>%
   specify(response = sex, success = "female") %>%
   hypothesize(null = "point", p = .5) %>%
-  generate(reps = 1000, type = "simulate") %>%
+  generate(reps = 1000, type = "draw") %>%
   calculate(stat = "z")
 ```
 
@@ -541,7 +541,7 @@ null_distn <- gss %>%
                     "above average" = 1/6,
                     "far above average" = 1/6,
                     "DK" = 1/6)) %>%
-  generate(reps = 1000, type = "simulate") %>%
+  generate(reps = 1000, type = "draw") %>%
   calculate(stat = "Chisq")
 ```
 

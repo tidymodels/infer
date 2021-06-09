@@ -64,3 +64,12 @@ gss \%>\%
 # for more examples of t-tests using infer
 
 }
+\seealso{
+Other wrapper functions: 
+\code{\link{chisq_stat}()},
+\code{\link{chisq_test}()},
+\code{\link{observe}()},
+\code{\link{prop_test}()},
+\code{\link{t_stat}()}
+}
+\concept{wrapper functions}

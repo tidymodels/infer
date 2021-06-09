@@ -19,15 +19,9 @@ If you are a beginner and need help with writing a test, mention this
 in the issue and we will try to help.
 
 It's also helpful to run `goodpractice::gp()` to ensure that lines of code are
-not over 80 columns and that all lines of code have tests written. Please do so
-prior to submitting any pull request and fix any suggestions from there.
+not over 80 characters and that all lines of code have tests written. Please do
+so prior to submitting any pull request and fix any suggestions from there.
 Reach out to us if you need any assistance there too.
-
-## Pull requests
-
-Pull requests should be against the `develop` branch NOT the `master` branch.
-You can set this when creating your pull request. Please make a separately
-named branch to submit.  Keep each branch for a complete specific issue.
 
 ## Code style
 

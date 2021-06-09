@@ -73,6 +73,8 @@ vignette("infer")
 
 }
 \seealso{
-\code{\link[=shade_confidence_interval]{shade_confidence_interval()}} to add information about confidence
-interval.
+Other visualization functions: 
+\code{\link{shade_confidence_interval}()},
+\code{\link{visualize}()}
 }
+\concept{visualization functions}

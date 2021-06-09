@@ -25,8 +25,6 @@
 #'   object displaying the supplied intervals on top of its corresponding
 #'   distribution. Otherwise, an `infer_layer` list.
 #'
-#' @seealso [shade_p_value()] to add information about p-value region.
-#'
 #' @examples
 #' # find the point estimate---mean number of hours worked per week
 #' point_estimate <- gss %>%
@@ -73,6 +71,7 @@
 NULL
 
 #' @rdname shade_confidence_interval
+#' @family visualization functions
 #' @export
 shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
                                       fill = "turquoise", ...) {

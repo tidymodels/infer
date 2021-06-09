@@ -30,8 +30,3 @@ p_value <- function(x, obs_stat, direction) {
   .Deprecated("get_p_value")
   get_p_value(x = x, obs_stat = obs_stat, direction = direction)
 }
-
-#' @rdname deprecated
-#' @export
-GENERATION_TYPES <- c("bootstrap", "permute",  "simulate")
-

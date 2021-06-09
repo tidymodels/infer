@@ -321,7 +321,7 @@ test_that("visualize basic tests", {
           null = "point",
           p = c("dem" = 0.4, "rep" = 0.4, "ind" = 0.2)
         ) %>%
-        generate(reps = 100, type = "simulate") %>%
+        generate(reps = 100, type = "draw") %>%
         calculate(stat = "Chisq") %>%
         visualize(method = "both")
     )
@@ -335,7 +335,7 @@ test_that("visualize basic tests", {
         null = "point",
         p = c("dem" = 0.4, "rep" = 0.4, "ind" = 0.2)
       ) %>%
-#       generate(reps = 100, type = "simulate") %>%
+#       generate(reps = 100, type = "draw") %>%
 #       calculate(stat = "Chisq") %>%
       visualize(method = "traditional")
   )
@@ -349,7 +349,7 @@ test_that("visualize basic tests", {
           null = "point",
           p = c("dem" = 0.4, "rep" = 0.4, "ind" = 0.2)
         ) %>%
-#         generate(reps = 100, type = "simulate") %>%
+#         generate(reps = 100, type = "draw") %>%
 #         calculate(stat = "Chisq") %>%
         visualize(method = "theoretical")
     )
@@ -399,7 +399,7 @@ test_that("visualize basic tests", {
       gss_tbl %>%
         specify(sex ~ NULL, success = "female") %>%
         hypothesize(null = "point", p = 0.8) %>%
-#         generate(reps = 100, type = "simulate") %>%
+#         generate(reps = 100, type = "draw") %>%
 #         calculate(stat = "z") %>%
         visualize(method = "theoretical") +
         shade_p_value(obs_stat = 2, direction = "both")

@@ -109,6 +109,7 @@
 #' }
 #'
 #' @name get_confidence_interval
+#' @family auxillary functions
 #' @export
 get_confidence_interval <- function(x, level = 0.95, type = "percentile",
                                     point_estimate = NULL) {

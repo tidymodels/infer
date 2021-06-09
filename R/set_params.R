@@ -50,12 +50,12 @@ set_params <- function(x) {
     ) {
       # No parameters since standard normal
       attr(x, "theory_type") <- "One sample prop z"
-      # Changed to `"simulate"` when `p` provided in `hypothesize()`
+      # Changed to `"draw"` when `p` provided in `hypothesize()`
       attr(x, "type") <- "bootstrap"
     } else {
       attr(x, "theory_type") <- "Chi-square Goodness of Fit"
       attr(x, "distr_param") <- num_response_levels - 1
-      attr(x, "type") <- "simulate"
+      attr(x, "type") <- "draw"
     }
   }
   
