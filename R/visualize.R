@@ -569,3 +569,9 @@ ggplot_add.infer_layer <- function(object, plot, object_name) {
   
   new_plot
 }
+
+# extract the x axis label from a ggplot -- these are unique
+# ids for terms in visualize() workflows
+x_axis_label <- function(x) {
+  x %>% purrr::pluck("labels", "x")
+}
