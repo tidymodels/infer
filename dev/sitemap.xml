@@ -46,6 +46,9 @@
     <loc>https://infer.tidymodels.org/reference/deprecated.html</loc>
   </url>
   <url>
+    <loc>https://infer.tidymodels.org/reference/fit.infer.html</loc>
+  </url>
+  <url>
     <loc>https://infer.tidymodels.org/reference/generate.html</loc>
   </url>
   <url>
@@ -77,6 +80,9 @@
   </url>
   <url>
     <loc>https://infer.tidymodels.org/reference/prop_test.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/reference/reexports.html</loc>
   </url>
   <url>
     <loc>https://infer.tidymodels.org/reference/rep_sample_n.html</loc>

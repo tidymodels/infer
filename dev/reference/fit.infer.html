@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Compute p-value — get_p_value • infer</title>
+<title>Fit linear models to infer objects — fit.infer • infer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -49,8 +49,13 @@
 
 
 
-<meta property="og:title" content="Compute p-value — get_p_value" />
-<meta property="og:description" content="Compute a p-value from a null distribution and observed statistic.
+<meta property="og:title" content="Fit linear models to infer objects — fit.infer" />
+<meta property="og:description" content="Given the output of an infer core function, this function will fit
+a model using stats::glm() according to the formula and data supplied
+earlier in the pipeline. If passed the output of specify() or
+hypothesize(), the function will fit one model. If passed the output
+of generate(), it will fit a model to each data resample, denoted in
+the replicate column.
 Learn more in vignette(&quot;infer&quot;)." />
 <meta name="twitter:card" content="summary" />
 
@@ -162,43 +167,36 @@ Learn more in vignette(&quot;infer&quot;)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Compute p-value</h1>
-    <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/get_p_value.R'><code>R/get_p_value.R</code></a></small>
-    <div class="hidden name"><code>get_p_value.Rd</code></div>
+    <h1>Fit linear models to infer objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/fit.R'><code>R/fit.R</code></a></small>
+    <div class="hidden name"><code>fit.infer.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Compute a p-value from a null distribution and observed statistic.</p>
+    <p>Given the output of an infer core function, this function will fit
+a model using <code><a href='https://rdrr.io/r/stats/glm.html'>stats::glm()</a></code> according to the formula and data supplied
+earlier in the pipeline. If passed the output of <code><a href='specify.html'>specify()</a></code> or
+<code><a href='hypothesize.html'>hypothesize()</a></code>, the function will fit one model. If passed the output
+of <code><a href='generate.html'>generate()</a></code>, it will fit a model to each data resample, denoted in
+the <code>replicate</code> column.</p>
 <p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>get_p_value</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>obs_stat</span>, <span class='va'>direction</span><span class='op'>)</span>
-
-<span class='fu'>get_pvalue</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>obs_stat</span>, <span class='va'>direction</span><span class='op'>)</span></code></pre></div>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='co'># S3 method for infer</span>
+<span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>A data frame containing a distribution of <code><a href='calculate.html'>calculate()</a></code>d statistics
-or <code><a href='fit.infer.html'>fit()</a></code>ted coefficient estimates. This object should
-have been passed to <code><a href='generate.html'>generate()</a></code> before being supplied or
-<code><a href='calculate.html'>calculate()</a></code> to <code><a href='fit.infer.html'>fit()</a></code>.</p></td>
+      <th>object</th>
+      <td><p>Output from an infer function---likely <code><a href='generate.html'>generate()</a></code> or
+<code><a href='hypothesize.html'>hypothesize()</a></code>---which specifies the formula and data to fit a model to.</p></td>
     </tr>
     <tr>
-      <th>obs_stat</th>
-      <td><p>A data frame containing the observed statistic (in a
-<code><a href='calculate.html'>calculate()</a></code>-based workflow) or observed fit (in a
-<code><a href='fit.infer.html'>fit()</a></code>-based workflow). This object is likely the output
-of <code><a href='calculate.html'>calculate()</a></code> or <code><a href='fit.infer.html'>fit()</a></code> and need not
-to have been passed to <code><a href='generate.html'>generate()</a></code>.</p></td>
-    </tr>
-    <tr>
-      <th>direction</th>
-      <td><p>A character string. Options are <code>"less"</code>, <code>"greater"</code>, or
-<code>"two-sided"</code>. Can also use <code>"left"</code>, <code>"right"</code>, <code>"both"</code>,
-<code>"two_sided"</code>, or <code>"two sided"</code>, <code>"two.sided"</code>.</p></td>
+      <th>...</th>
+      <td><p>Any optional arguments to pass along to the chosen computational
+engine. See <code>parsnip::linear_reg()</code> for more information.</p></td>
     </tr>
     </table>
 
@@ -206,67 +204,17 @@ to have been passed to <code><a href='generate.html'>generate()</a></code>.</p><
 
     <p>A <a href='https://tibble.tidyverse.org/reference/tibble.html'>tibble</a> containing the following columns:</p>
 <ul>
-<li><p><code>term</code>: The explanatory variable (or intercept) in question. Only
-supplied if the input had been previously passed to <code><a href='fit.infer.html'>fit()</a></code>.</p></li>
-<li><p><code>p_value</code>: A value in [0, 1] giving the probability that a
-statistic/coefficient as or more extreme than the observed
-statistic/coefficient would occur if the null hypothesis were true.</p></li>
+<li><p><code>replicate</code>: Only supplied if the input object had been previously
+passed to <code><a href='generate.html'>generate()</a></code>. A number corresponding to which resample of the
+original data set the model was fitted to.</p></li>
+<li><p><code>term</code>: The explanatory variable (or intercept) in question.</p></li>
+<li><p><code>estimate</code>: The model coefficient for the given resample (<code>replicate</code>) and
+explanatory variable (<code>term</code>).</p></li>
 </ul>
 
-    <h2 class="hasAnchor" id="aliases"><a class="anchor" href="#aliases"></a>Aliases</h2>
-
-    
-
-<p><code>get_pvalue()</code> is an alias of <code>get_p_value()</code>.
-<code>p_value</code> is a deprecated alias of <code>get_p_value()</code>.</p>
-    <h2 class="hasAnchor" id="zero-p-value"><a class="anchor" href="#zero-p-value"></a>Zero p-value</h2>
-
-    
-
-<p>Though a true p-value of 0 is impossible, <code>get_p_value()</code> may return 0 in
-some cases. This is due to the simulation-based nature of the {infer}
-package; the output of this function is an approximation based on
-the number of <code>reps</code> chosen in the <code><a href='generate.html'>generate()</a></code> step. When the observed
-statistic is very unlikely given the null hypothesis, and only a small
-number of <code>reps</code> have been generated to form a null distribution,
-it is possible that the observed statistic will be more extreme than
-every test statistic generated to form the null distribution, resulting
-in an approximate p-value of 0. In this case, the true p-value is a small
-value likely less than <code>3/reps</code> (based on a poisson approximation).</p>
-<p>In the case that a p-value of zero is reported, a warning message will be
-raised to caution the user against reporting a p-value exactly equal to 0.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other auxillary functions: 
-<code><a href='get_confidence_interval.html'>get_confidence_interval</a>()</code>,
-<code><a href='visualize.html'>visualize</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'></span>
-<span class='r-in'><span class='co'># find the point estimate---mean number of hours worked per week</span></span>
-<span class='r-in'><span class='va'>point_estimate</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># starting with the gss dataset</span></span>
-<span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='co'># ...we're interested in the number of hours worked per week</span></span>
-<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='co'># hypothesizing that the mean is 40</span></span>
-<span class='r-in'>  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='co'># generating data points for a null distribution</span></span>
-<span class='r-in'>  <span class='fu'><a href='generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"bootstrap"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='co'># finding the null distribution</span></span>
-<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'>get_p_value</span><span class='op'>(</span>obs_stat <span class='op'>=</span> <span class='va'>point_estimate</span>, direction <span class='op'>=</span> <span class='st'>"two-sided"</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 x 1</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   p_value</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>   0.036</span>
-<span class='r-in'>  </span>
-<span class='r-in'><span class='co'># using a model fitting workflow -----------------------</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># fit a linear model predicting number of hours worked per</span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='co'># fit a linear model predicting number of hours worked per</span></span>
 <span class='r-in'><span class='co'># week using respondent age and degree status.</span></span>
 <span class='r-in'><span class='va'>observed_fit</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>hours</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>college</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
@@ -295,31 +243,23 @@ raised to caution the user against reporting a p-value exactly equal to 0.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Groups:   replicate [100]</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    replicate term          estimate</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span>         1 intercept      40.1   </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span>         1 age             0.028<span style='text-decoration: underline;'>7</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span>         1 collegedegree   0.224 </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span>         2 intercept      45.4   </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span>         2 age            -<span style='color: #BB0000;'>0.101</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span>         2 collegedegree   0.109 </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span>         3 intercept      40.0   </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span>         3 age             0.034<span style='text-decoration: underline;'>4</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span>         3 collegedegree  -<span style='color: #BB0000;'>0.027</span><span style='color: #BB0000; text-decoration: underline;'>6</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span>         4 intercept      41.8   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span>         1 intercept     43.4    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span>         1 age           -<span style='color: #BB0000;'>0.045</span><span style='color: #BB0000; text-decoration: underline;'>7</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span>         1 collegedegree -<span style='color: #BB0000;'>0.481</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span>         2 intercept     41.2    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span>         2 age            0.005<span style='text-decoration: underline;'>65</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span>         2 collegedegree -<span style='color: #BB0000;'>0.212</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span>         3 intercept     40.3    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span>         3 age            0.031<span style='text-decoration: underline;'>4</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span>         3 collegedegree -<span style='color: #BB0000;'>0.510</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span>         4 intercept     40.5    </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 290 more rows</span></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='fu'>get_p_value</span><span class='op'>(</span><span class='va'>null_fits</span>, obs_stat <span class='op'>=</span> <span class='va'>observed_fit</span>, direction <span class='op'>=</span> <span class='st'>"two-sided"</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3 x 2</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   term          p_value</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> age              0.8 </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> collegedegree    0.24</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> intercept        0.62</span>
-<span class='r-in'>  </span>
 <span class='r-in'><span class='co'># more in-depth explanation of how to use the infer package</span></span>
 <span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span><span class='op'>(</span><span class='st'>"infer"</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>}</span>  </span>
-<span class='r-in'>  </span>
+<span class='r-in'></span>
 </code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
