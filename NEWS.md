@@ -1,6 +1,128 @@
 # infer 0.5.4.9000
 
-To be released as 0.6.0.
+To be released as 1.0.0
+
+v1.0.0 is the first major release of the {infer} package! This release fixes a number of bugs, makes several improvements to behavioral consistency of the package, and introduces support for randomization-based inference with multiple explanatory variables.
+
+## Behavioral consistency
+
+A major change to the package in this release is a set of standards for behavorial consistency of `calculate()`. Namely, the package will now
+
+* supply a consistent error when the supplied `stat` argument isn't well-defined
+for the variables `specify()`d
+
+``` r
+gss %>%
+  specify(response = hours) %>%
+  calculate(stat = "diff in means")
+#> Error: A difference in means is not well-defined for a 
+#> numeric response variable (hours) and no explanatory variable.
+```
+
+``` r
+gss %>%
+  specify(college ~ partyid, success = "degree") %>%
+  calculate(stat = "diff in props")
+#> Error: A difference in proportions is not well-defined for a dichotomous categorical 
+#> response variable (college) and a multinomial categorical explanatory variable (partyid).
+```
+
+* supply a consistent message when the user supplies unneeded information via `hypothesize()` to `calculate()` an observed statistic
+
+``` r
+# supply mu = 40 when it's not needed
+gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
+  calculate(stat = "mean")
+#> Message: The point null hypothesis `mu = 40` does not inform calculation of 
+#> the observed statistic (a mean) and will be ignored.
+#> # A tibble: 1 x 1
+#>    stat
+#>   <dbl>
+#> 1  41.4
+```
+
+and
+
+* supply a consistent warning and assume a reasonable null value when the user does not supply sufficient information to calculate an observed statistic
+
+``` r
+# don't hypothesize `p` when it's needed
+gss %>%
+    specify(response = sex, success = "female") %>%
+    calculate(stat = "z")
+#> # A tibble: 1 x 1
+#>    stat
+#>   <dbl>
+#> 1 -1.16
+#> Warning message:
+#> A z statistic requires a null hypothesis to calculate the observed statistic. 
+#> Output assumes the following null value: `p = .5`. 
+```
+
+or
+
+``` r
+# don't hypothesize `p` when it's needed
+gss %>%
+  specify(response = partyid) %>%
+  calculate(stat = "Chisq")
+#> # A tibble: 1 x 1
+#>    stat
+#>  <dbl>
+#> 1  334.
+#> Warning message:
+#> A chi-square statistic requires a null hypothesis to calculate the observed statistic. 
+#> Output assumes the following null values: `p = c(dem = 0.2, ind = 0.2, rep = 0.2, other = 0.2, DK = 0.2)`.
+```
+
+To accommodate this behavior, a number of new `calculate` methods were added or improved. Namely:
+
+- Implemented the standardized proportion $z$ statistic for one categorical variable
+- Extended `calculate()` with `stat = "t"` by passing `mu` to the `calculate()` method for `stat = "t"` to allow for calculation of `t` statistics for one numeric variable with hypothesized mean
+- Extended `calculate()` to allow lowercase aliases for `stat` arguments (#373).
+- Fixed bugs in `calculate()` for to allow for programmatic calculation of statistics
+- Fixed several bugs related to factors with unused levels (#374, #375, #397, #380).
+
+This behavorial consistency also allowed for the implementation of `observe()`, a wrapper function around `specify()`, `hypothesize()`, and `calculate()`, to calculate observed statistics. The function provides a shorthand alternative to calculating observed statistics from data:
+
+``` r
+# calculating the observed mean number of hours worked per week
+gss %>%
+  observe(hours ~ NULL, stat = "mean")
+#> # A tibble: 1 x 1
+#>    stat
+#>   <dbl>
+#> 1  41.4
+
+# equivalently, calculating the same statistic with the core verbs
+gss %>%
+  specify(response = hours) %>%
+  calculate(stat = "mean")
+#> # A tibble: 1 x 1
+#>    stat
+#>   <dbl>
+#> 1  41.4
+
+# calculating a t statistic for hypothesized mu = 40 hours worked/week
+gss %>%
+  observe(hours ~ NULL, stat = "t", null = "point", mu = 40)
+#> # A tibble: 1 x 1
+#>    stat
+#>   <dbl>
+#> 1  2.09
+
+# equivalently, calculating the same statistic with the core verbs
+gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
+  calculate(stat = "t")
+#> # A tibble: 1 x 1
+#>    stat
+#>   <dbl>
+#> 1  2.09
+```
 
 ## Breaking changes
 
@@ -14,23 +136,8 @@ which might break code if it didn't use named arguments (like
 
 ## Improvements
 
-- Improved behavioral consistency of `calculate()`. The package will now
-   * supply a consistent error when the supplied `stat` argument isn't well-defined
-for the variables specified
-   * supply a message when the user supplies unneeded information to calculate
-an observed statistic, and
-   * supply a warning and assume a reasonable null value when the user does 
-not supply sufficient information to calculate an observed statistic
-- Added `observe()`, a wrapper function around `specify()`, `hypothesize()`, and 
-`calculate()`, to calculate observed statistics.
-- Implemented the standardized proportion $z$ statistic for one categorical variable
 - Added `two.sided` as an acceptable alias for `two_sided` for the 
 `direction` argument in `get_p_value()` and `shade_p_value()` (#355)
-- Fixed bug in `calculate()` for `stat = "t"` to allow for handling
-columns named `x`
-- Fixed several bugs related to factors with unused levels (#374, #375, 
-#397, #380).
-- Update `calculate()` to allow lowercase aliases for `stat` argument (#373).
 - Various bug fixes and improvements to internal consistency
 
 ## Other
