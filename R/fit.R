@@ -110,7 +110,7 @@ fit_linear_model <- function(object, formula, ...) {
       data = object,
       ...
     ) %>%
-    generics::tidy() %>%
+    broom::tidy() %>%
     dplyr::select(
       .,
       term, 
