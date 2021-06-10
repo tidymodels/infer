@@ -6,7 +6,7 @@ v1.0.0 is the first major release of the {infer} package! By and large, the core
 
 ## Behavioral consistency
 
-A major change to the package in this release is a set of standards for behavorial consistency of `calculate()`. Namely, the package will now
+A major change to the package in this release is a set of standards for behavorial consistency of `calculate()` (#356). Namely, the package will now
 
 * supply a consistent error when the supplied `stat` argument isn't well-defined
 for the variables `specify()`d
@@ -85,7 +85,6 @@ To accommodate this behavior, a number of new `calculate` methods were added or 
 - Extended `calculate()` with `stat = "t"` by passing `mu` to the `calculate()` method for `stat = "t"` to allow for calculation of `t` statistics for one numeric variable with hypothesized mean
 - Extended `calculate()` to allow lowercase aliases for `stat` arguments (#373).
 - Fixed bugs in `calculate()` for to allow for programmatic calculation of statistics
-- Fixed several bugs related to factors with unused levels (#374, #375, #397, #380).
 
 This behavorial consistency also allowed for the implementation of `observe()`, a wrapper function around `specify()`, `hypothesize()`, and `calculate()`, to calculate observed statistics. The function provides a shorthand alternative to calculating observed statistics from data:
 
@@ -202,8 +201,16 @@ This feature allows for more detailed exploration of the effect of disrupting th
 
 Each of the auxillary functions `get_p_value()`, `get_confidence_interval()`, `visualize()`, `shade_p_value()`, and `shade_confidence_interval()` have methods to handle `fit()` output! See their help-files for example usage.
 
+## Improvements
+
+- Following extensive discussion, the `generate()` type `type = "simulate"` has been renamed to the more evocative `type = "draw"`. We will continue to support `type = "simulate"` indefinitely, though supplying that argument will now prompt a message notifying the user of its preferred alias. (#233, #390)
+- Fixed several bugs related to factors with unused levels. `specify()` will now drop unused factor levels and message that it has done so. (#374, #375, #397, #380)
+- Added `two.sided` as an acceptable alias for `two_sided` for the `direction` argument in `get_p_value()` and `shade_p_value()`. (#355)
+- Various improvements to documentation, including extending example sections in help-files, re-organizing the function reference in the {pkgdown} site, and linking more extensively among help-files.
+
 ## Breaking changes
 
+- Move forward with a number of planned deprecations. Namely, the `GENERATION_TYPES` object is now fully deprecated, and arguments that were relocated from `visualize()` to `shade_p_value()` and `shade_confidence_interval()` are now fully deprecated in `visualize()`. If supplied a deprecated argument, `visualize()` will warn the user and ignore the argument.
 - Added a `prop` argument to `rep_slice_sample()` as an alternative to the `n`
 argument for specifying the proportion of rows in the supplied data to sample
 per replicate (#361, #362, #363). This changes order of arguments of
@@ -212,10 +219,8 @@ which might break code if it didn't use named arguments (like
 `rep_slice_sample(df, 5, TRUE)`). To fix this, use named arguments (like
 `rep_slice_sample(df, 5, replicate = TRUE)`).
 
-## Improvements
+## Other
 
-- Added `two.sided` as an acceptable alias for `two_sided` for the 
-`direction` argument in `get_p_value()` and `shade_p_value()` (#355)
 - Added Simon P. Couch as an author. Long deserved for his reliable maintenance and improvements of the package.
 
 [1]: GAISE College Report ASA Revision Committee, "Guidelines for Assessment and Instruction in Statistics Education College Report 2016," http://www.amstat.org/education/gaise. 
