@@ -2,7 +2,7 @@
 
 To be released as 1.0.0
 
-v1.0.0 is the first major release of the {infer} package! This release fixes a number of bugs, makes several improvements to behavioral consistency of the package, and introduces support for randomization-based inference with multiple explanatory variables.
+v1.0.0 is the first major release of the {infer} package! By and large, the core verbs `specify()`, `hypothesize()`, `generate()`, and `calculate()` will interface as they did before. This release makes several improvements to behavioral consistency of the package and introduces support for randomization-based inference with multiple explanatory variables.
 
 ## Behavioral consistency
 
@@ -18,6 +18,8 @@ gss %>%
 #> Error: A difference in means is not well-defined for a 
 #> numeric response variable (hours) and no explanatory variable.
 ```
+
+or
 
 ``` r
 gss %>%
@@ -124,6 +126,82 @@ gss %>%
 #> 1  2.09
 ```
 
+We don't anticipate that these changes are "breaking" in the sense that code that previously worked will continue to, though it may now message or warn in a way that it did not used to or error with a different (and hopefully more informative) message.
+
+## Support for multiple regression
+
+The 2016 "Guidelines for Assessment and Instruction in Statistics Education" [1] state that, in introductory statistics courses, "[s]tudents should gain experience with how statistical models, including multivariable models, are used." In line with this recommendation, we introduce support for randomization-based inference with multiple explanatory variables via a new `fit.infer` core verb.
+
+If passed an `infer` object, the method will parse a formula out of the `formula` or `response` and `explanatory` arguments, and pass both it and `data` to a `stats::glm` call.
+
+``` r
+gss %>%
+  specify(hours ~ age + college) %>%
+  fit()
+#> # A tibble: 3 x 2
+#>   term          estimate
+#>   <chr>            <dbl>
+#> 1 intercept     40.6    
+#> 2 age            0.00596
+#> 3 collegedegree  1.53
+```
+
+Note that the function returns the model coefficients as `estimate` rather than their associated `t`-statistics as `stat`.
+
+If passed a `generate()`d object, the model will be fitted to each replicate.
+
+``` r
+gss %>%
+  specify(hours ~ age + college) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute") %>%
+  fit()
+#> # A tibble: 300 x 3
+#> # Groups:   replicate [100]
+#>    replicate term          estimate
+#>        <int> <chr>            <dbl>
+#>  1         1 intercept     44.4    
+#>  2         1 age           -0.0767 
+#>  3         1 collegedegree  0.121  
+#>  4         2 intercept     41.8    
+#>  5         2 age            0.00344
+#>  6         2 collegedegree -1.59   
+#>  7         3 intercept     38.3    
+#>  8         3 age            0.0761 
+#>  9         3 collegedegree  0.136  
+#> 10         4 intercept     43.1    
+#> # … with 290 more rows
+```
+
+If `type = "permute"`, a set of unquoted column names in the data to permute (independently of each other) can be passed via the `cols` argument to `generate`. It defaults to only the response variable.
+
+``` r
+gss %>%
+  specify(hours ~ age + college) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute", cols = c(age, college)) %>%
+  fit()
+#> # A tibble: 300 x 3
+#> # Groups:   replicate [100]
+#>    replicate term          estimate
+#>        <int> <chr>            <dbl>
+#>  1         1 intercept      39.4   
+#>  2         1 age             0.0748
+#>  3         1 collegedegree  -2.98  
+#>  4         2 intercept      42.8   
+#>  5         2 age            -0.0190
+#>  6         2 collegedegree  -1.83  
+#>  7         3 intercept      40.4   
+#>  8         3 age             0.0354
+#>  9         3 collegedegree  -1.31  
+#> 10         4 intercept      40.9   
+#> # … with 290 more rows
+```
+
+This feature allows for more detailed exploration of the effect of disrupting the correlation structure among explanatory variables on outputted model coefficients.
+
+Each of the auxillary functions `get_p_value()`, `get_confidence_interval()`, `visualize()`, `shade_p_value()`, and `shade_confidence_interval()` have methods to handle `fit()` output! See their help-files for example usage.
+
 ## Breaking changes
 
 - Added a `prop` argument to `rep_slice_sample()` as an alternative to the `n`
@@ -138,11 +216,9 @@ which might break code if it didn't use named arguments (like
 
 - Added `two.sided` as an acceptable alias for `two_sided` for the 
 `direction` argument in `get_p_value()` and `shade_p_value()` (#355)
-- Various bug fixes and improvements to internal consistency
-
-## Other
-
 - Added Simon P. Couch as an author. Long deserved for his reliable maintenance and improvements of the package.
+
+[1]: GAISE College Report ASA Revision Committee, "Guidelines for Assessment and Instruction in Statistics Education College Report 2016," http://www.amstat.org/education/gaise. 
 
 # infer 0.5.4
 
