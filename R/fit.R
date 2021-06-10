@@ -61,6 +61,8 @@ generics::fit
 #' @export fit.infer
 #' @export
 fit.infer <- function(object, ...) {
+  message_on_excessive_null(object, fn = "fit")
+  
   # Extract the formula if it was supplied to specify, otherwise
   # construct it out of the explanatory and response arguments
   formula <- get_formula(object)
