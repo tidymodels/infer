@@ -96,7 +96,6 @@ null_fits
 # fit a linear model to the observed data
 obs_fit <- gss \%>\%
   specify(hours ~ age + college) \%>\%
-  hypothesize(null = "independence") \%>\%
   fit()
 
 obs_fit

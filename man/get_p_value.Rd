@@ -89,7 +89,6 @@ gss \%>\%
 # week using respondent age and degree status.
 observed_fit <- gss \%>\%
   specify(hours ~ age + college) \%>\%
-  hypothesize(null = "independence") \%>\%
   fit()
 
 observed_fit

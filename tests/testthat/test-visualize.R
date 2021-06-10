@@ -636,7 +636,6 @@ test_that("visualize can handle multiple explanatory variables", {
   
   obs_fit <- gss %>%
     specify(hours ~ age + college) %>%
-    hypothesize(null = "independence") %>%
     fit()
   
   conf_ints <- 

@@ -144,7 +144,6 @@ test_that("get_confidence_interval can handle fitted objects", {
   
   obs_fit <- gss[1:50,] %>%
     specify(hours ~ age + college) %>%
-    hypothesize(null = "independence") %>%
     fit()
   
   # check each ci type
@@ -192,7 +191,6 @@ test_that("get_confidence_interval can handle fitted objects", {
   # errors out when it ought to
   obs_fit_2 <- gss[1:50,] %>%
     specify(hours ~ age) %>%
-    hypothesize(null = "independence") %>%
     fit()
   
   expect_error(
@@ -203,7 +201,6 @@ test_that("get_confidence_interval can handle fitted objects", {
   obs_fit_3 <- 
     obs_fit_2 <- gss[1:50,] %>%
     specify(year ~ age + college) %>%
-    hypothesize(null = "independence") %>%
     fit()
   
   expect_error(
@@ -223,7 +220,6 @@ test_that("get_confidence_interval can handle bad args with fitted objects", {
   
   obs_fit <- gss[1:50,] %>%
     specify(hours ~ age + college) %>%
-    hypothesize(null = "independence") %>%
     fit()
   
   expect_error(
