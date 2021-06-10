@@ -117,7 +117,6 @@ visualize(null_fits)
 # the null fits with the observed fit for each term
 visualize(null_fits) + 
   shade_confidence_interval(conf_ints)
-
 }
 
 # more in-depth explanation of how to use the infer package

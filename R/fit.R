@@ -1,7 +1,3 @@
-#' @importFrom generics fit
-#' @export
-generics::fit
-
 #' Fit linear models to infer objects
 #'
 #' @description
@@ -12,13 +8,19 @@ generics::fit
 #' [hypothesize()], the function will fit one model. If passed the output 
 #' of [generate()], it will fit a model to each data resample, denoted in 
 #' the `replicate` column.
+#' 
+#' infer provides a fit "method" for infer objects, meaning a way of carrying 
+#' out model fitting as applied to infer output. The "generic," imported from
+#' the generics package and re-exported from this package, provides the
+#' general form of `fit()` that points to infer's method when called on an
+#' infer object. That generic is also documented below.
 #'
 #' Learn more in `vignette("infer")`.
 #'
 #' @param object Output from an infer function---likely [generate()] or 
-#' [hypothesize()]---which specifies the formula and data to fit a model to.
-#' @param ... Any optional arguments to pass along to the chosen computational 
-#'   engine. See [parsnip::linear_reg()] for more information.
+#' [specify()]---which specifies the formula and data to fit a model to.
+#' @param ... Any optional arguments to pass along to the model fitting
+#' function. See [stats::glm()] for more information.
 #'
 #' @return A [tibble][tibble::tibble] containing the following columns:
 #' 
@@ -57,6 +59,7 @@ generics::fit
 #' vignette("infer")
 #' }  
 #' 
+#' @rdname fit
 #' @method fit infer
 #' @export fit.infer
 #' @export
@@ -88,6 +91,12 @@ fit.infer <- function(object, ...) {
   
   x
 }
+
+#' @rdname fit
+#' @importFrom generics fit
+#' @export
+generics::fit
+
 
 get_formula <- function(x) {
   if (has_attr(x, "formula")) {
