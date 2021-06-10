@@ -1026,6 +1026,8 @@ null_distn %>%
   get_p_value(obs_stat = obs_fit, direction = "two-sided")
 ```
 
+Note that this `fit()`-based workflow can be applied to use cases with differing numbers of explanatory variables and explanatory variable types.
+
 ## Confidence intervals
 
 ### One numerical (one mean)
@@ -1487,3 +1489,53 @@ visualize(boot) +
 ### Two numerical vars - t
 
 Not currently implemented since $t$ could refer to standardized slope or standardized correlation.
+
+### Multiple explanatory variables
+
+Calculating the observed fit,
+
+```{r}
+obs_fit <- gss %>%
+  specify(hours ~ age + college) %>%
+  fit()
+```
+
+Generating a distribution of fits with the response variable permuted,
+
+```{r}
+null_distn <- gss %>%
+  specify(hours ~ age + college) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  fit()
+```
+
+Alternatively, generating a distribution of fits where each explanatory variable is permuted independently,
+
+```{r}
+null_distn2 <- gss %>%
+  specify(hours ~ age + college) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute", cols = c(age, college)) %>%
+  fit()
+```
+
+Calculating confidence intervals from the null fits,
+
+```{r}
+conf_ints <- 
+  get_confidence_interval(
+    null_distn, 
+    level = .95, 
+    point_estimate = obs_fit
+  )
+```
+
+Visualizing the observed fit alongside the null fits,
+
+```{r}
+visualize(null_distn) +
+  shade_confidence_interval(endpoints = conf_ints)
+```
+
+Note that this `fit()`-based workflow can be applied to use cases with differing numbers of explanatory variables and explanatory variable types.
