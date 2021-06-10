@@ -65,3 +65,19 @@ test_that("fit.infer can handle generated objects", {
     colnames(x3_gen_fit)[colnames(x3_gen_fit) != "replicate"]
   )
 })
+
+test_that("fit.infer messages informatively on excessive null", {
+  expect_message(
+    gss %>%
+      specify(hours ~ age + college) %>%
+      hypothesize(null = "independence") %>%
+      fit(),
+    "independence null hypothesis does not inform.*the observed fit"
+  )
+  
+  expect_silent(
+    gss %>%
+      specify(hours ~ age + college) %>%
+      fit()
+  )
+})
