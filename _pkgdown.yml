@@ -56,11 +56,12 @@ reference:
     - hypothesize
     - generate
     - calculate
+    - fit.infer
   - title: Helpers
     contents:
+    - visualize
     - get_p_value
     - get_confidence_interval
-    - visualize
     - shade_p_value
     - shade_confidence_interval
   - title: Wrappers

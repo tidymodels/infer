@@ -1,9 +1,216 @@
 # infer 0.5.4.9000
 
-To be released as 0.6.0.
+To be released as 1.0.0
+
+v1.0.0 is the first major release of the {infer} package! By and large, the core verbs `specify()`, `hypothesize()`, `generate()`, and `calculate()` will interface as they did before. This release makes several improvements to behavioral consistency of the package and introduces support for randomization-based inference with multiple explanatory variables.
+
+## Behavioral consistency
+
+A major change to the package in this release is a set of standards for behavorial consistency of `calculate()` (#356). Namely, the package will now
+
+* supply a consistent error when the supplied `stat` argument isn't well-defined
+for the variables `specify()`d
+
+``` r
+gss %>%
+  specify(response = hours) %>%
+  calculate(stat = "diff in means")
+#> Error: A difference in means is not well-defined for a 
+#> numeric response variable (hours) and no explanatory variable.
+```
+
+or
+
+``` r
+gss %>%
+  specify(college ~ partyid, success = "degree") %>%
+  calculate(stat = "diff in props")
+#> Error: A difference in proportions is not well-defined for a dichotomous categorical 
+#> response variable (college) and a multinomial categorical explanatory variable (partyid).
+```
+
+* supply a consistent message when the user supplies unneeded information via `hypothesize()` to `calculate()` an observed statistic
+
+``` r
+# supply mu = 40 when it's not needed
+gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
+  calculate(stat = "mean")
+#> Message: The point null hypothesis `mu = 40` does not inform calculation of 
+#> the observed statistic (a mean) and will be ignored.
+#> # A tibble: 1 x 1
+#>    stat
+#>   <dbl>
+#> 1  41.4
+```
+
+and
+
+* supply a consistent warning and assume a reasonable null value when the user does not supply sufficient information to calculate an observed statistic
+
+``` r
+# don't hypothesize `p` when it's needed
+gss %>%
+    specify(response = sex, success = "female") %>%
+    calculate(stat = "z")
+#> # A tibble: 1 x 1
+#>    stat
+#>   <dbl>
+#> 1 -1.16
+#> Warning message:
+#> A z statistic requires a null hypothesis to calculate the observed statistic. 
+#> Output assumes the following null value: `p = .5`. 
+```
+
+or
+
+``` r
+# don't hypothesize `p` when it's needed
+gss %>%
+  specify(response = partyid) %>%
+  calculate(stat = "Chisq")
+#> # A tibble: 1 x 1
+#>    stat
+#>  <dbl>
+#> 1  334.
+#> Warning message:
+#> A chi-square statistic requires a null hypothesis to calculate the observed statistic. 
+#> Output assumes the following null values: `p = c(dem = 0.2, ind = 0.2, rep = 0.2, other = 0.2, DK = 0.2)`.
+```
+
+To accommodate this behavior, a number of new `calculate` methods were added or improved. Namely:
+
+- Implemented the standardized proportion $z$ statistic for one categorical variable
+- Extended `calculate()` with `stat = "t"` by passing `mu` to the `calculate()` method for `stat = "t"` to allow for calculation of `t` statistics for one numeric variable with hypothesized mean
+- Extended `calculate()` to allow lowercase aliases for `stat` arguments (#373).
+- Fixed bugs in `calculate()` for to allow for programmatic calculation of statistics
+
+This behavorial consistency also allowed for the implementation of `observe()`, a wrapper function around `specify()`, `hypothesize()`, and `calculate()`, to calculate observed statistics. The function provides a shorthand alternative to calculating observed statistics from data:
+
+``` r
+# calculating the observed mean number of hours worked per week
+gss %>%
+  observe(hours ~ NULL, stat = "mean")
+#> # A tibble: 1 x 1
+#>    stat
+#>   <dbl>
+#> 1  41.4
+
+# equivalently, calculating the same statistic with the core verbs
+gss %>%
+  specify(response = hours) %>%
+  calculate(stat = "mean")
+#> # A tibble: 1 x 1
+#>    stat
+#>   <dbl>
+#> 1  41.4
+
+# calculating a t statistic for hypothesized mu = 40 hours worked/week
+gss %>%
+  observe(hours ~ NULL, stat = "t", null = "point", mu = 40)
+#> # A tibble: 1 x 1
+#>    stat
+#>   <dbl>
+#> 1  2.09
+
+# equivalently, calculating the same statistic with the core verbs
+gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
+  calculate(stat = "t")
+#> # A tibble: 1 x 1
+#>    stat
+#>   <dbl>
+#> 1  2.09
+```
+
+We don't anticipate that these changes are "breaking" in the sense that code that previously worked will continue to, though it may now message or warn in a way that it did not used to or error with a different (and hopefully more informative) message.
+
+## Support for multiple regression
+
+The 2016 "Guidelines for Assessment and Instruction in Statistics Education" [1] state that, in introductory statistics courses, "[s]tudents should gain experience with how statistical models, including multivariable models, are used." In line with this recommendation, we introduce support for randomization-based inference with multiple explanatory variables via a new `fit.infer` core verb.
+
+If passed an `infer` object, the method will parse a formula out of the `formula` or `response` and `explanatory` arguments, and pass both it and `data` to a `stats::glm` call.
+
+``` r
+gss %>%
+  specify(hours ~ age + college) %>%
+  fit()
+#> # A tibble: 3 x 2
+#>   term          estimate
+#>   <chr>            <dbl>
+#> 1 intercept     40.6    
+#> 2 age            0.00596
+#> 3 collegedegree  1.53
+```
+
+Note that the function returns the model coefficients as `estimate` rather than their associated `t`-statistics as `stat`.
+
+If passed a `generate()`d object, the model will be fitted to each replicate.
+
+``` r
+gss %>%
+  specify(hours ~ age + college) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute") %>%
+  fit()
+#> # A tibble: 300 x 3
+#> # Groups:   replicate [100]
+#>    replicate term          estimate
+#>        <int> <chr>            <dbl>
+#>  1         1 intercept     44.4    
+#>  2         1 age           -0.0767 
+#>  3         1 collegedegree  0.121  
+#>  4         2 intercept     41.8    
+#>  5         2 age            0.00344
+#>  6         2 collegedegree -1.59   
+#>  7         3 intercept     38.3    
+#>  8         3 age            0.0761 
+#>  9         3 collegedegree  0.136  
+#> 10         4 intercept     43.1    
+#> # … with 290 more rows
+```
+
+If `type = "permute"`, a set of unquoted column names in the data to permute (independently of each other) can be passed via the `cols` argument to `generate`. It defaults to only the response variable.
+
+``` r
+gss %>%
+  specify(hours ~ age + college) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 100, type = "permute", cols = c(age, college)) %>%
+  fit()
+#> # A tibble: 300 x 3
+#> # Groups:   replicate [100]
+#>    replicate term          estimate
+#>        <int> <chr>            <dbl>
+#>  1         1 intercept      39.4   
+#>  2         1 age             0.0748
+#>  3         1 collegedegree  -2.98  
+#>  4         2 intercept      42.8   
+#>  5         2 age            -0.0190
+#>  6         2 collegedegree  -1.83  
+#>  7         3 intercept      40.4   
+#>  8         3 age             0.0354
+#>  9         3 collegedegree  -1.31  
+#> 10         4 intercept      40.9   
+#> # … with 290 more rows
+```
+
+This feature allows for more detailed exploration of the effect of disrupting the correlation structure among explanatory variables on outputted model coefficients.
+
+Each of the auxillary functions `get_p_value()`, `get_confidence_interval()`, `visualize()`, `shade_p_value()`, and `shade_confidence_interval()` have methods to handle `fit()` output! See their help-files for example usage.
+
+## Improvements
+
+- Following extensive discussion, the `generate()` type `type = "simulate"` has been renamed to the more evocative `type = "draw"`. We will continue to support `type = "simulate"` indefinitely, though supplying that argument will now prompt a message notifying the user of its preferred alias. (#233, #390)
+- Fixed several bugs related to factors with unused levels. `specify()` will now drop unused factor levels and message that it has done so. (#374, #375, #397, #380)
+- Added `two.sided` as an acceptable alias for `two_sided` for the `direction` argument in `get_p_value()` and `shade_p_value()`. (#355)
+- Various improvements to documentation, including extending example sections in help-files, re-organizing the function reference in the {pkgdown} site, and linking more extensively among help-files.
 
 ## Breaking changes
 
+- Move forward with a number of planned deprecations. Namely, the `GENERATION_TYPES` object is now fully deprecated, and arguments that were relocated from `visualize()` to `shade_p_value()` and `shade_confidence_interval()` are now fully deprecated in `visualize()`. If supplied a deprecated argument, `visualize()` will warn the user and ignore the argument.
 - Added a `prop` argument to `rep_slice_sample()` as an alternative to the `n`
 argument for specifying the proportion of rows in the supplied data to sample
 per replicate (#361, #362, #363). This changes order of arguments of
@@ -12,30 +219,11 @@ which might break code if it didn't use named arguments (like
 `rep_slice_sample(df, 5, TRUE)`). To fix this, use named arguments (like
 `rep_slice_sample(df, 5, replicate = TRUE)`).
 
-## Improvements
-
-- Improved behavioral consistency of `calculate()`. The package will now
-   * supply a consistent error when the supplied `stat` argument isn't well-defined
-for the variables specified
-   * supply a message when the user supplies unneeded information to calculate
-an observed statistic, and
-   * supply a warning and assume a reasonable null value when the user does 
-not supply sufficient information to calculate an observed statistic
-- Added `observe()`, a wrapper function around `specify()`, `hypothesize()`, and 
-`calculate()`, to calculate observed statistics.
-- Implemented the standardized proportion $z$ statistic for one categorical variable
-- Added `two.sided` as an acceptable alias for `two_sided` for the 
-`direction` argument in `get_p_value()` and `shade_p_value()` (#355)
-- Fixed bug in `calculate()` for `stat = "t"` to allow for handling
-columns named `x`
-- Fixed several bugs related to factors with unused levels (#374, #375, 
-#397, #380).
-- Update `calculate()` to allow lowercase aliases for `stat` argument (#373).
-- Various bug fixes and improvements to internal consistency
-
 ## Other
 
 - Added Simon P. Couch as an author. Long deserved for his reliable maintenance and improvements of the package.
+
+[1]: GAISE College Report ASA Revision Committee, "Guidelines for Assessment and Instruction in Statistics Education College Report 2016," http://www.amstat.org/education/gaise. 
 
 # infer 0.5.4
 
