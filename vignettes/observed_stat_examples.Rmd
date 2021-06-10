@@ -982,6 +982,50 @@ null_distn %>%
 
 Not currently implemented since $t$ could refer to standardized slope or standardized correlation.
 
+### Multiple explanatory variables
+
+Calculating the observed fit,
+
+```{r}
+obs_fit <- gss %>%
+  specify(hours ~ age + college) %>%
+  fit()
+```
+
+Generating a distribution of fits with the response variable permuted,
+
+```{r}
+null_distn <- gss %>%
+  specify(hours ~ age + college) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  fit()
+```
+
+Generating a distribution of fits where each explanatory variable is permuted independently,
+
+```{r}
+null_distn2 <- gss %>%
+  specify(hours ~ age + college) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute", cols = c(age, college)) %>%
+  fit()
+```
+
+Visualizing the observed fit alongside the null fits,
+
+```{r}
+visualize(null_distn) +
+  shade_p_value(obs_stat = obs_fit, direction = "two-sided")
+```
+
+Calculating p-values from the null distribution and observed fit,
+
+```{r}
+null_distn %>%
+  get_p_value(obs_stat = obs_fit, direction = "two-sided")
+```
+
 ## Confidence intervals
 
 ### One numerical (one mean)
