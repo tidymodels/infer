@@ -199,7 +199,7 @@ gss %>%
 
 This feature allows for more detailed exploration of the effect of disrupting the correlation structure among explanatory variables on outputted model coefficients.
 
-Each of the auxillary functions `get_p_value()`, `get_confidence_interval()`, `visualize()`, `shade_p_value()`, and `shade_confidence_interval()` have methods to handle `fit()` output! See their help-files for example usage.
+Each of the auxillary functions `get_p_value()`, `get_confidence_interval()`, `visualize()`, `shade_p_value()`, and `shade_confidence_interval()` have methods to handle `fit()` output! See their help-files for example usage. Note that `shade_*` functions now delay evaluation until they are added to an existing ggplot (e.g. that outputted by `visualize()`) with `+`.
 
 ## Improvements
 
