@@ -112,7 +112,7 @@ p_value <- null_distribution %>%
 p_value
 ```
 
-Thus, if there were really no relationship between age and political party affiliation, the probability that we would see a statistic as or more extreme than `r observed_f_statistic` is approximately `r p_value`.
+Thus, if there were really no relationship between age and political party affiliation, our approximation of the probability that we would see a statistic as or more extreme than `r observed_f_statistic` is approximately `r p_value`.
 
 To calculate the p-value using the true $F$ distribution, we can use the `pf` function from base R. This function allows us to situate the test statistic we calculated previously in the $F$ distribution with the appropriate degrees of freedom.
 

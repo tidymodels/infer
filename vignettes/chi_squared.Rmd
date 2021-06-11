@@ -133,7 +133,7 @@ To calculate the p-value using the true $\chi^2$ distribution, we can use the `p
 pchisq(observed_indep_statistic$stat, 5, lower.tail = FALSE)
 ```
 
-Note that, equivalently to the steps shown above, the package supplies a wrapper function, `chisq_test`, to carry out Chi-Squared tests of independence on tidy data. The syntax goes like this:
+Note that, equivalently to the theory-based approach shown above, the package supplies a wrapper function, `chisq_test`, to carry out Chi-Squared tests of independence on tidy data. The syntax goes like this:
 
 ```{r chisq-indep-wrapper, message = FALSE, warning = FALSE}
 chisq_test(gss, college ~ finrela)
@@ -219,7 +219,7 @@ To calculate the p-value using the true $\chi^2$ distribution, we can use the `p
 pchisq(observed_gof_statistic$stat, 5, lower.tail = FALSE)
 ```
 
-Again, equivalently to the steps shown above, the package supplies a wrapper function, `chisq_test`, to carry out Chi-Squared goodness of fit tests on tidy data. The syntax goes like this:
+Again, equivalently to the theory-based approach shown above, the package supplies a wrapper function, `chisq_test`, to carry out Chi-Squared goodness of fit tests on tidy data. The syntax goes like this:
 
 ```{r chisq-gof-wrapper, message = FALSE, warning = FALSE}
 chisq_test(gss, 

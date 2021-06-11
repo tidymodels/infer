@@ -21,7 +21,7 @@ devtools::load_all()
 
 ### Introduction
 
-In this vignette, we'll walk through conducting t-tests and their randomization-based analogue using `infer`. We'll start out with a 1-sample t-test, which compares a sample mean to a hypothesized true mean value. Then, we'll discuss paired t-tests, which are a special use case of 1-sample t-tests, and evaluate whether differences in paired values (e.g. some measure taken of a person before and after an experiment) differ from 0. Finally, we'll wrap up with 2-sample t-tests, testing the difference in means of two populations using a sample of data drawn from them.
+In this vignette, we'll walk through conducting $t$-tests and their randomization-based analogue using `infer`. We'll start out with a 1-sample $t$-test, which compares a sample mean to a hypothesized true mean value. Then, we'll discuss paired $t$-tests, which are a special use case of 1-sample $t$-tests, and evaluate whether differences in paired values (e.g. some measure taken of a person before and after an experiment) differ from 0. Finally, we'll wrap up with 2-sample $t$-tests, testing the difference in means of two populations using a sample of data drawn from them.
 
 Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
@@ -31,7 +31,7 @@ dplyr::glimpse(gss)
 
 ### 1-Sample t-Test
 
-The 1-sample t-test can be used to test whether a sample of continuous data could have plausibly come from a population with a specified mean. 
+The 1-sample $t$-test can be used to test whether a sample of continuous data could have plausibly come from a population with a specified mean. 
 
 As an example, we'll test whether the average American adult works 40 hours a week using data from the `gss`. To do so, we make use of the `hours` variable, giving the number of hours that respondents reported having worked in the previous week. The distribution of `hours` in the observed data looks like this:
 
@@ -47,7 +47,7 @@ gss %>%
 
 It looks like most respondents reported having worked 40 hours, but there's quite a bit of variability. Let's test whether we have evidence that the true mean number of hours that Americans work per week is 40.
 
-infer's randomization-based analogue to the 1-sample t-test is a 1-sample mean test. We'll start off showcasing that test before demonstrating how to carry out a theory-based t-test with the package.
+infer's randomization-based analogue to the 1-sample $t$-test is a 1-sample mean test. We'll start off showcasing that test before demonstrating how to carry out a theory-based $t$-test with the package.
 
 First, to calculate the observed statistic, we can use `specify()` and `calculate()`.
 
@@ -92,9 +92,9 @@ p_value_1_sample <- null_distribution_1_sample %>%
 p_value_1_sample
 ```
 
-Thus, if the true mean number of hours worked per week was really 40, the probability that we would see a test statistic as or more extreme than `r observed_statistic` is approximately `r p_value_1_sample`.
+Thus, if the true mean number of hours worked per week was really 40, our approximation of the probability that we would see a test statistic as or more extreme than `r observed_statistic` is approximately `r p_value_1_sample`.
 
-Analogously to the steps shown above, the package supplies a wrapper function, `t_test`, to carry out 1-sample t-tests on tidy data. Rather than using randomization, the wrappers carry out the theory-based t-test. The syntax looks like this:
+Analogously to the steps shown above, the package supplies a wrapper function, `t_test`, to carry out 1-sample $t$-tests on tidy data. Rather than using randomization, the wrappers carry out the theory-based $t$-test. The syntax looks like this:
 
 ```{r t-test-wrapper, message = FALSE, warning = FALSE}
 t_test(gss, response = hours, mu = 40)
@@ -111,26 +111,26 @@ observed_statistic <- gss %>%
   dplyr::pull()
 ```
 
-Note that this pipeline to calculate an observed statistic includes a call to `hypothesize()` since the `t` statistic requires a hypothesized mean value.
+Note that this pipeline to calculate an observed statistic includes a call to `hypothesize()` since the $t$ statistic requires a hypothesized mean value.
 
-Then, juxtaposing that `t` statistic with its associated distribution using the `pt` function:
+Then, juxtaposing that $t$ statistic with its associated distribution using the `pt` function:
 
 ```{r}
 pt(observed_statistic, df = nrow(gss) - 1, lower.tail = FALSE)*2
 ```
 
-Note that the resulting `t`-statistics from these two theory-based approaches are the same.
+Note that the resulting $t$-statistics from these two theory-based approaches are the same.
 
 ### Paired t-Test
 
-You might be interested in running a paired t-test. Paired t-tests can be used in situations when there is a natural pairing between values in distributions---a common example would be two columns, `before` and `after`, say, that contain measurements from a patient before and after some treatment. To compare these two distributions, then, we're not necessarily interested in how the two distributions look different altogether, but how these two measurements from each individual change across time. (Pairings don't necessarily have to be over time; another common usage is measurements from two married people, for example.) Thus, we can create a new column (see `mutate()` from the `dplyr` package if you're not sure how to do this) that is the difference between the two: `difference = after - before`, and then examine _this_ distribution to see how each individuals' measurements changed over time.
+You might be interested in running a paired $t$-test. Paired $t$-tests can be used in situations when there is a natural pairing between values in distributions---a common example would be two columns, `before` and `after`, say, that contain measurements from a patient before and after some treatment. To compare these two distributions, then, we're not necessarily interested in how the two distributions look different altogether, but how these two measurements from each individual change across time. (Pairings don't necessarily have to be over time; another common usage is measurements from two married people, for example.) Thus, we can create a new column (see `mutate()` from the `dplyr` package if you're not sure how to do this) that is the difference between the two: `difference = after - before`, and then examine _this_ distribution to see how each individuals' measurements changed over time.
 
-Once we've `mutate()`d that new `difference` column, we can run a 1-sample t-test on it, where our null hypothesis is that `mu = 0` (i.e. the difference between these measurements before and after treatment is, on average, 0). To do so, we'd use the procedure outlined in the above section.
+Once we've `mutate()`d that new `difference` column, we can run a 1-sample $t$-test on it, where our null hypothesis is that `mu = 0` (i.e. the difference between these measurements before and after treatment is, on average, 0). To do so, we'd use the procedure outlined in the above section.
 
 
 ### 2-Sample t-Test
 
-2-Sample t-Tests evaluate the difference in mean values of two populations using data randomly-sampled from the population that approximately follows a normal distribution. As an example, we'll test if Americans work the same number of hours a week regardless of whether they have a college degree or not using data from the `gss`. The `college` and `hours` variables allow us to do so:
+2-Sample $t$-tests evaluate the difference in mean values of two populations using data randomly-sampled from the population that approximately follows a normal distribution. As an example, we'll test if Americans work the same number of hours a week regardless of whether they have a college degree or not using data from the `gss`. The `college` and `hours` variables allow us to do so:
 
 ```{r plot-2-sample, echo = FALSE}
 gss %>%
@@ -145,7 +145,7 @@ It looks like both of these distributions are centered near 40 hours a week, but
 
 Again, note the warning about missing values---many respondents' values are missing. If we were actually carrying out this hypothesis test, we might look further into how this data was collected; it's possible that whether or not a value in either of these columns is missing is related to what that value would be. 
 
-infer's randomization-based analogue to the 2-sample t-test is a difference in means test. We'll start off showcasing that test before demonstrating how to carry out a theory-based t-test with the package.
+infer's randomization-based analogue to the 2-sample $t$-test is a difference in means test. We'll start off showcasing that test before demonstrating how to carry out a theory-based $t$-test with the package.
 
 As with the one-sample test, to calculate the observed difference in means, we can use `specify()` and `calculate()`.
 
@@ -201,7 +201,7 @@ p_value_2_sample
 
 Thus, if there were really no relationship between the number of hours worked a week and whether one has a college degree, the probability that we would see a statistic as or more extreme than `r observed_statistic` is approximately `r p_value_2_sample`.
 
-Note that, similarly to the steps shown above, the package supplies a wrapper function, `t_test`, to carry out 2-sample t-tests on tidy data. The syntax looks like this:
+Note that, similarly to the steps shown above, the package supplies a wrapper function, `t_test`, to carry out 2-sample $t$-tests on tidy data. The syntax looks like this:
 
 ```{r 2-sample-t-test-wrapper, message = FALSE, warning = FALSE}
 t_test(x = gss, 
@@ -225,9 +225,9 @@ observed_statistic <- gss %>%
 observed_statistic
 ```
 
-Note that this pipeline to calculate an observed statistic includes `hypothesize()` since the `t` statistic requires a hypothesized mean value.
+Note that this pipeline to calculate an observed statistic includes `hypothesize()` since the $t$ statistic requires a hypothesized mean value.
 
-Then, juxtaposing that `t` statistic with its associated distribution using the `pt` function:
+Then, juxtaposing that $t$ statistic with its associated distribution using the `pt` function:
 
 ```{r}
 pt(observed_statistic, df = nrow(gss) - 2, lower.tail = FALSE)*2
