@@ -31,7 +31,7 @@ Authors:
 \itemize{
   \item Chester Ismay \email{chester.ismay@gmail.com} (\href{https://orcid.org/0000-0003-2820-2547}{ORCID})
   \item Evgeni Chasnovski \email{evgeni.chasnovski@gmail.com} (\href{https://orcid.org/0000-0002-1617-4019}{ORCID})
-  \item Simon Couch \email{simonpatrickcouch@gmail.com}
+  \item Simon Couch \email{scouch2@jhu.edu} (\href{https://orcid.org/0000-0001-5676-5107}{ORCID})
   \item Ben Baumer \email{ben.baumer@gmail.com} (\href{https://orcid.org/0000-0002-3279-0516}{ORCID})
   \item Mine Cetinkaya-Rundel \email{mine@stat.duke.edu} (\href{https://orcid.org/0000-0001-6452-2420}{ORCID})
 }
