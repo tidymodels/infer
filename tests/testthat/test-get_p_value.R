@@ -201,6 +201,6 @@ test_that("get_p_value can handle bad args with fitted objects", {
   
   expect_error(
     get_p_value(obs_fit, null_fits, "both"),
-    "`x` should be the result of calling `generate\\(\\)`."
+    "be passed to `generate\\(\\)`"
   )
 })
