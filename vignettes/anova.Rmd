@@ -56,7 +56,7 @@ observed_f_statistic <- gss %>%
 
 The observed $F$ statistic is `r observed_f_statistic`. Now, we want to compare this statistic to a null distribution, generated under the assumption that age and political party affiliation are not actually related, to get a sense of how likely it would be for us to see this observed statistic if there were actually no association between the two variables.
 
-We can `generate` the null distribution using randomization. The randomization approach permutes the response and explanatory variables, so that each person's party affiliation is matched up with a random age from the sample in order to break up any association between the two.
+We can `generate` an approximation of the null distribution using randomization. The randomization approach permutes the response and explanatory variables, so that each person's party affiliation is matched up with a random age from the sample in order to break up any association between the two.
 
 ```{r generate-null-f, warning = FALSE, message = FALSE}
 # generate the null distribution using randomization
@@ -101,7 +101,7 @@ null_distribution %>%
                 direction = "greater")
 ```
 
-Either way, it looks like our observed test statistic would be _really_ unlikely if there were actually no association between age and political party affiliation. More exactly, we can calculate the p-value:
+Either way, it looks like our observed test statistic would be quite unlikely if there were actually no association between age and political party affiliation. More exactly, we can approximate the p-value from the randomization-based approximation to the null distribution:
 
 ```{r p-value-indep, warning = FALSE, message = FALSE}
 # calculate the p value from the observed statistic and null distribution
@@ -113,5 +113,13 @@ p_value
 ```
 
 Thus, if there were really no relationship between age and political party affiliation, the probability that we would see a statistic as or more extreme than `r observed_f_statistic` is approximately `r p_value`.
+
+To calculate the p-value using the true $F$ distribution, we can use the `pf` function from base R. This function allows us to situate the test statistic we calculated previously in the $F$ distribution with the appropriate degrees of freedom.
+
+```{r}
+pf(observed_f_statistic$stat, 3, 496, lower.tail = FALSE)
+```
+
+Note that, while the observed statistic stays the same, the resulting p-value differs slightly between these two approaches since the randomization-based empirical $F$ distribution is an approximation of the true $F$ distribution.
 
 The package currently does not supply a wrapper for tidy ANOVA tests.
