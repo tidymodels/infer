@@ -1,7 +1,15 @@
-#' Fit linear models to infer objects
-#'
-#' @description
+#' @importFrom generics fit
+#' @details 
+#' Read more about infer's [here][fit.infer()] function [here][fit.infer()] or 
+#' by running `?fit.infer` in your console.
 #' 
+#' @export
+generics::fit
+
+
+#' Fit linear models to infer objects
+#' 
+#' @description
 #' Given the output of an infer core function, this function will fit
 #' a model using [stats::glm()] according to the formula and data supplied 
 #' earlier in the pipeline. If passed the output of [specify()] or 
@@ -13,10 +21,10 @@
 #' out model fitting as applied to infer output. The "generic," imported from
 #' the generics package and re-exported from this package, provides the
 #' general form of `fit()` that points to infer's method when called on an
-#' infer object. That generic is also documented below.
+#' infer object. That generic is also documented here.
 #'
 #' Learn more in `vignette("infer")`.
-#'
+#' 
 #' @param object Output from an infer function---likely [generate()] or 
 #' [specify()]---which specifies the formula and data to fit a model to.
 #' @param ... Any optional arguments to pass along to the model fitting
@@ -58,7 +66,7 @@
 #' vignette("infer")
 #' }  
 #' 
-#' @rdname fit
+#' @rdname fit.infer
 #' @method fit infer
 #' @export fit.infer
 #' @export
@@ -91,10 +99,9 @@ fit.infer <- function(object, ...) {
   x
 }
 
-#' @rdname fit
-#' @importFrom generics fit
-#' @export
-generics::fit
+
+
+
 
 
 get_formula <- function(x) {
