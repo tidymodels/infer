@@ -175,8 +175,6 @@ null_dist <- gss %>%
   calculate(stat = "mean")
 ```
 
-(Notice the warning: `Removed 1244 rows containing missing values.` This would be worth noting if you were actually carrying out this hypothesis test.)
-
 Our point estimate `r point_estimate` seems *pretty* close to 40, but a little bit different. We might wonder if this difference is just due to random chance, or if the mean number of hours worked per week in the population really isn't 40.
 
 We could initially just visualize the null distribution.
