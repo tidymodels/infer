@@ -266,4 +266,49 @@ visualize(null_f_distn, method = "both") +
   shade_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
+### Multiple regression
+
+To accommodate randomization-based inference with multiple explanatory variables, the package implements an alternative workflow based on model fitting. Rather than `calculate()`ing statistics from resampled data, this side of the package allows you to `fit()` linear models on data resampled according to the null hypothesis, supplying model coefficients for each explanatory variable. For the most part, you can just switch out `calculate()` for `fit()` in your `calculate()`-based workflows.
+
+As an example, suppose that we want to fit `hours` worked per week using the respondent `age` and `college` completion status. We could first begin by fitting a linear model to the observed data.
+
+```{r}
+observed_fit <- gss %>%
+  specify(hours ~ age + college) %>%
+  fit()
+```
+
+Now, to generate null distributions for each of these terms, we can fit 1000 models to resamples of the `gss` dataset, where the response `hours` is permuted in each. Note that this code is the same as the above except for the addition of the `hypothesize` and `generate` step.
+
+```{r}
+null_fits <- gss %>%
+  specify(hours ~ age + college) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000, type = "permute") %>%
+  fit()
+
+null_fits
+```
+
+To permute variables other than the response variable, the `cols` argument to `generate()` allows you to choose any of the `specify()`ed variables to permute independently of each other.
+
+Beyond this point, observed fits and distributions from null fits interface exactly like analogous outputs from `calculate()`. For instance, we can use the following code to calculate a 95% confidence interval from these objects.
+
+```{r}
+get_confidence_interval(
+  null_fits, 
+  point_estimate = observed_fit, 
+  level = .95
+)
+```
+
+Or, we can shade p-values for each of these observed regression coefficients from the observed data.
+
+```{r}
+visualize(null_fits) + 
+  shade_p_value(observed_fit, direction = "both")
+```
+
+### Conclusion
+
 That's it! This vignette covers most all of the key functionality of infer. See `help(package = "infer")` for a full list of functions and vignettes.
