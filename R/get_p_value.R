@@ -160,6 +160,7 @@ get_pvalue <- function(x, obs_stat, direction) {
 }
 
 simulation_based_p_value <- function(x, obs_stat, direction) {
+  check_x_vs_obs_stat(x, obs_stat)
   obs_stat <- check_obs_stat(obs_stat)
   
   # x[[ncol(x)]] pulls out the stat or estimate column
@@ -198,7 +199,20 @@ two_sided_p_value <- function(vec, obs_stat) {
   min(raw_res, 1)
 }
 
-
+check_x_vs_obs_stat <- function(x, obs_stat) {
+  # check if x and obs_stat might have been mistakenly supplied
+  # in the reverse order
+  if (is_generated(obs_stat) &&
+      !is_generated(x)) {
+    stop_glue(
+      "The `obs_stat` argument has been passed to `generate()` while the ",
+      "`x` argument has not; this is an untested workflow. ", 
+      "Have you mistakenly switched those arguments?"
+    )
+  }
+  
+  invisible(TRUE)
+}
 
 # which_distribution <- function(x, theory_type, obs_stat, direction){
 #

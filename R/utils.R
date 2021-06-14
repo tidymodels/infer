@@ -122,7 +122,7 @@ get_success_then_response_levels <- function(x) {
 }
 
 is_generated <- function(x) {
-  attr(x, "generated")
+  isTRUE(attr(x, "generated"))
 }
 
 is_hypothesized <- function(x){
