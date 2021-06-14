@@ -33,7 +33,7 @@ earlier in the pipeline. If passed the output of \code{\link[=specify]{specify()
 of \code{\link[=generate]{generate()}}, it will fit a model to each data resample, denoted in
 the \code{replicate} column.
 
-infer provides a fit "method" for infer objects, meaning a way of carrying
+infer provides a fit "method" for infer objects, which is a way of carrying
 out model fitting as applied to infer output. The "generic," imported from
 the generics package and re-exported from this package, provides the
 general form of \code{fit()} that points to infer's method when called on an

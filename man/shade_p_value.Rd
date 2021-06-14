@@ -37,7 +37,7 @@ object displaying the supplied statistic on top of its corresponding
 distribution. Otherwise, an \code{infer_layer} list.
 }
 \description{
-\code{shade_confidence_interval()} plots a p-value region on top of
+\code{shade_p_value()} plots a p-value region on top of
 \code{\link[=visualize]{visualize()}} output. The output is a ggplot2 layer that can be added with
 \code{+}. The function has a shorter alias, \code{shade_pvalue()}.
 

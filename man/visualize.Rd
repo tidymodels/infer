@@ -39,8 +39,8 @@ and explicit, \code{visualize()} now only should be used to plot distributions
 of statistics directly. A number of arguments related to shading p-values and
 confidence intervals are now deprecated in \code{visualize()} and should
 now be passed to \code{\link[=shade_p_value]{shade_p_value()}} and \code{\link[=shade_confidence_interval]{shade_confidence_interval()}},
-respectively. \code{\link[=visualize]{visualize()}} will raise a warning if passed deprecated
-arguments.
+respectively. \code{\link[=visualize]{visualize()}} will raise a warning if deprecated arguments
+are supplied.
 }
 \examples{
   

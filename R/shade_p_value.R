@@ -2,7 +2,7 @@
 #'
 #' @description
 #'
-#' `shade_confidence_interval()` plots a p-value region on top of
+#' `shade_p_value()` plots a p-value region on top of
 #' [visualize()] output. The output is a ggplot2 layer that can be added with
 #' `+`. The function has a shorter alias, `shade_pvalue()`.
 #' 

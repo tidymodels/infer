@@ -25,8 +25,8 @@ ggplot2::ggplot_add
 #' of statistics directly. A number of arguments related to shading p-values and 
 #' confidence intervals are now deprecated in `visualize()` and should
 #' now be passed to [shade_p_value()] and [shade_confidence_interval()],
-#' respectively. [visualize()] will raise a warning if passed deprecated 
-#' arguments.
+#' respectively. [visualize()] will raise a warning if deprecated arguments
+#' are supplied.
 #'
 #' @return A ggplot object showing the simulation-based distribution as a
 #'   histogram or bar graph. Also used to show the theoretical curves.
@@ -360,7 +360,7 @@ compute_bin_breaks <- function(data, bins) {
   c(g_tbl[["xmin"]][1], g_tbl[["xmax"]])
 }
 
-theoretical_layer <- function(data, dens_color, dots, do_warn = TRUE) {
+theoretical_layer <- function(data, dens_color, dots = list(NULL), do_warn = TRUE) {
   method <- get_viz_method(data)
   
   if (method == "simulation") {
