@@ -1,6 +1,6 @@
 #' @importFrom generics fit
 #' @details 
-#' Read more about infer's [here][fit.infer()] function [here][fit.infer()] or 
+#' Read more about infer's [fit][fit.infer()] function [here][fit.infer()] or 
 #' by running `?fit.infer` in your console.
 #' 
 #' @export

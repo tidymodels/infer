@@ -7,7 +7,7 @@
 \alias{ggplot_add}
 \title{Objects exported from other packages}
 \details{
-Read more about infer's \link[=fit.infer]{here} function \link[=fit.infer]{here} or
+Read more about infer's \link[=fit.infer]{fit} function \link[=fit.infer]{here} or
 by running \code{?fit.infer} in your console.
 }
 \keyword{internal}
