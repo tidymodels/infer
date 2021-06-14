@@ -1,17 +1,12 @@
 
 # infer R Package <img src="https://github.com/tidymodels/infer/blob/master/figs/infer_gnome.png?raw=true" align="right" width=280 />
 
-
 <!--figs/infer.svg-->
-
 <!--http://www.r-pkg.org/badges/version/infer-->
-
 <!--figs/master.svg-->
-
 <!--https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg-->
 
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)
-[![Coverage
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)[![Coverage
 Status](https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg)](https://codecov.io/github/tidymodels/infer/?branch=master)
 
 The objective of this package is to perform statistical inference using
@@ -20,22 +15,28 @@ design framework. The package is centered around 4 main verbs,
 supplemented with many utilities to visualize and extract value from
 their outputs.
 
-  - `specify()` allows you to specify the variable, or relationship
+-   `specify()` allows you to specify the variable, or relationship
     between variables, that you’re interested in.
-  - `hypothesize()` allows you to declare the null hypothesis.
-  - `generate()` allows you to generate data reflecting the null
+-   `hypothesize()` allows you to declare the null hypothesis.
+-   `generate()` allows you to generate data reflecting the null
     hypothesis.
-  - `calculate()` allows you to calculate a distribution of statistics
+-   `calculate()` allows you to calculate a distribution of statistics
     from the generated data to form the null distribution.
 
 To learn more about the principles underlying the package design, see
 `vignette("infer")`.
 
-![](https://raw.githubusercontent.com/tidymodels/infer/master/figs/ht-diagram.png)<!-- -->
+<div class="figure">
+
+<img src="https://raw.githubusercontent.com/tidymodels/infer/master/figs/ht-diagram.png" alt="A diagram showing four steps to carry out randomization-based inference: specify hypothesis, generate data, calculate statistic, and visualize. From left to right, each step is connected by an arrow, while the diagram indicates that generating data and calculating statistics can happen iteratively."  />
+<p class="caption">
+</p>
+
+</div>
 
 ### Installation
 
------
+------------------------------------------------------------------------
 
 To install the current stable version of `infer` from CRAN:
 
@@ -54,7 +55,7 @@ remotes::install_github("tidymodels/infer")
 
 ### Contributing
 
------
+------------------------------------------------------------------------
 
 We welcome others helping us make this package as user-friendly and
 efficient as possible. Please review our
@@ -77,7 +78,7 @@ help](https://www.tidymodels.org/help/).
 
 ### Examples
 
------
+------------------------------------------------------------------------
 
 These examples are pulled from the “Full infer Pipeline Examples”
 vignette, accessible by calling `vignette("observed_stat_examples")`.
@@ -135,7 +136,13 @@ visualize(null_distn) +
   shade_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
-![](https://raw.githubusercontent.com/tidymodels/infer/master/README_files/figure-gfm/viz-1.png)<!-- -->
+<div class="figure">
+
+<img src="https://raw.githubusercontent.com/tidymodels/infer/master/README_files/figure-gfm/viz-1.png" alt="A histogram showing a distribution of F statistics, right-tailed and centered around one half. The x axis ranges from zero to five. The region of the histogram to the right of the observed statistic, just above two, is shaded red to represent the p-value."  />
+<p class="caption">
+</p>
+
+</div>
 
 Calculating the p-value from the null distribution and observed
 statistic,
@@ -151,13 +158,13 @@ null_distn %>%
     ## 1   0.055
 
 Note that the formula and non-formula interfaces (i.e. `age ~ partyid`
-vs. `response = age, explanatory = partyid`) work for all implemented
+vs. `response = age, explanatory =  partyid`) work for all implemented
 inference procedures in `infer`. Use whatever is more natural for you.
 If you will be doing modeling using functions like `lm()` and `glm()`,
 though, we recommend you begin to use the formula `y ~ x` notation as
 soon as possible.
 
-Other resources are available in the package vignettes\! See
+Other resources are available in the package vignettes! See
 `vignette("observed_stat_examples")` for more examples like the one
 above, and `vignette("infer")` for discussion of the underlying
 principles of the package design.
