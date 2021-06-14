@@ -226,7 +226,7 @@ test_that("get_p_value errors informatively when args are switched", {
   
   expect_error(
     get_p_value(obs_stat, null_dist, "both"),
-    "mistakenly switched those arguments"
+    "mistakenly switched the order of `obs_stat` and `x`"
   )
   
   expect_silent(

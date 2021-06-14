@@ -205,9 +205,10 @@ check_x_vs_obs_stat <- function(x, obs_stat) {
   if (is_generated(obs_stat) &&
       !is_generated(x)) {
     stop_glue(
-      "The `obs_stat` argument has been passed to `generate()` while the ",
-      "`x` argument has not; this is an untested workflow. ", 
-      "Have you mistakenly switched those arguments?"
+      "It seems like the `obs_stat` argument has been passed to `get_p_value()` ",
+      "as the first argument when `get_p_value()` expects `x`, a distribution ",
+      "of statistics or coefficient estimates, as the first argument. ",
+      "Have you mistakenly switched the order of `obs_stat` and `x`?"
     )
   }
   
