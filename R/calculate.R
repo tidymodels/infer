@@ -102,7 +102,7 @@ calculate <- function(x,
     x$replicate <- 1L
   }
   
-  x <- message_on_excessive_null(x, stat)
+  x <- message_on_excessive_null(x, stat = stat, fn = "calculate")
   x <- warn_on_insufficient_null(x, stat, ...)
   
   # Use S3 method to match correct calculation
@@ -200,7 +200,10 @@ assume_null <- function(x, stat_) {
 
 # User supplied "too much" information - hypothesized a value for a point
 # estimate that isn't relevant to the statistic calculation
-message_on_excessive_null <- function(x, stat = "mean", fn = "calculate") {
+#
+# The `stat = "mean"` default ensures that `stat %in% untheorized_stats`
+# when called in non-`calculate` functions
+message_on_excessive_null <- function(x, stat = "mean", fn) {
   if (!is_generated(x) && is_hypothesized(x) && stat %in% untheorized_stats) {
     null_type <- attr(x, "null")
     null_param <- attr(x, "params")
