@@ -138,7 +138,7 @@ visualize(null_distn) +
 
 <div class="figure">
 
-<img src="https://raw.githubusercontent.com/tidymodels/infer/master/README_files/figure-gfm/viz-1.png" alt="A histogram showing a distribution of F statistics, right-tailed and centered around one half. The x axis ranges from zero to five. The region of the histogram to the right of the observed statistic, just above two, is shaded red to represent the p-value."  />
+<img src="https://raw.githubusercontent.com/tidymodels/infer/master/README_files/figure-gfm/viz-1.png" alt="A histogram showing a distribution of F statistics, right-tailed and centered around one. The x axis ranges from zero to five. The region of the histogram to the right of the observed statistic, just above two, is shaded red to represent the p-value."  />
 <p class="caption">
 </p>
 
