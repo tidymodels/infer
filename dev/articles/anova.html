@@ -151,7 +151,7 @@
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span></code></pre></div>
 <p>The observed <span class="math inline">\(F\)</span> statistic is 2.4842. Now, we want to compare this statistic to a null distribution, generated under the assumption that age and political party affiliation are not actually related, to get a sense of how likely it would be for us to see this observed statistic if there were actually no association between the two variables.</p>
-<p>We can <code>generate</code> the null distribution using randomization. The randomization approach permutes the response and explanatory variables, so that each person’s party affiliation is matched up with a random age from the sample in order to break up any association between the two.</p>
+<p>We can <code>generate</code> an approximation of the null distribution using randomization. The randomization approach permutes the response and explanatory variables, so that each person’s party affiliation is matched up with a random age from the sample in order to break up any association between the two.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># generate the null distribution using randomization</span>
 <span class="va">null_distribution</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -186,7 +186,7 @@
   <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_f_statistic</span>,
                 direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
 <p><img src="anova_files/figure-html/visualize-indep-both-1.png" width="576"></p>
-<p>Either way, it looks like our observed test statistic would be <em>really</em> unlikely if there were actually no association between age and political party affiliation. More exactly, we can calculate the p-value:</p>
+<p>Either way, it looks like our observed test statistic would be quite unlikely if there were actually no association between age and political party affiliation. More exactly, we can approximate the p-value from the randomization-based approximation to the null distribution:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># calculate the p value from the observed statistic and null distribution</span>
 <span class="va">p_value</span> <span class="op">&lt;-</span> <span class="va">null_distribution</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -198,7 +198,12 @@
 ##   p_value
 ##     &lt;dbl&gt;
 ## 1   0.055</code></pre>
-<p>Thus, if there were really no relationship between age and political party affiliation, the probability that we would see a statistic as or more extreme than 2.4842 is approximately 0.055.</p>
+<p>Thus, if there were really no relationship between age and political party affiliation, our approximation of the probability that we would see a statistic as or more extreme than 2.4842 is approximately 0.055.</p>
+<p>To calculate the p-value using the true <span class="math inline">\(F\)</span> distribution, we can use the <code>pf</code> function from base R. This function allows us to situate the test statistic we calculated previously in the <span class="math inline">\(F\)</span> distribution with the appropriate degrees of freedom.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html" class="external-link">pf</a></span><span class="op">(</span><span class="va">observed_f_statistic</span><span class="op">$</span><span class="va">stat</span>, <span class="fl">3</span>, <span class="fl">496</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 0.06006</code></pre>
+<p>Note that, while the observed statistic stays the same, the resulting p-value differs slightly between these two approaches since the randomization-based empirical <span class="math inline">\(F\)</span> distribution is an approximation of the true <span class="math inline">\(F\)</span> distribution.</p>
 <p>The package currently does not supply a wrapper for tidy ANOVA tests.</p>
   </div>
 

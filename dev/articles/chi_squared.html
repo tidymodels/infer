@@ -158,7 +158,7 @@
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">finrela</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></code></pre></div>
 <p>The observed <span class="math inline">\(\chi^2\)</span> statistic is 30.6825. Now, we want to compare this statistic to a null distribution, generated under the assumption that these variables are not actually related, to get a sense of how likely it would be for us to see this observed statistic if there were actually no association between education and income.</p>
-<p>We can <code>generate</code> the null distribution in one of two ways—using randomization or theory-based methods. The randomization approach permutes the response and explanatory variables, so that each person’s educational attainment is matched up with a random income from the sample in order to break up any association between the two.</p>
+<p>We can <code>generate</code> the null distribution in one of two ways—using randomization or theory-based methods. The randomization approach approximates the null distribution by permuting the response and explanatory variables, so that each person’s educational attainment is matched up with a random income from the sample in order to break up any association between the two.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># generate the null distribution using randomization</span>
 <span class="va">null_distribution_simulated</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -200,7 +200,7 @@
   <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_indep_statistic</span>,
                 direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
 <p><img src="chi_squared_files/figure-html/visualize-indep-both-1.png" width="576"></p>
-<p>Either way, it looks like our observed test statistic would be <em>really</em> unlikely if there were actually no association between education and income. More exactly, we can calculate the p-value:</p>
+<p>Either way, it looks like our observed test statistic would be quite unlikely if there were actually no association between education and income. More exactly, we can approximate the p-value with <code>get_p_value</code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># calculate the p value from the observed statistic and null distribution</span>
 <span class="va">p_value_independence</span> <span class="op">&lt;-</span> <span class="va">null_distribution_simulated</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -212,9 +212,14 @@
 ##   p_value
 ##     &lt;dbl&gt;
 ## 1       0</code></pre>
-<p>Thus, if there were really no relationship between education and income, the probability that we would see a statistic as or more extreme than 30.6825 is approximately 0.</p>
-<p>Note that, equivalently to the steps shown above, the package supplies a wrapper function, <code>chisq_test</code>, to carry out Chi-Squared tests of independence on tidy data. The syntax goes like this:</p>
+<p>Thus, if there were really no relationship between education and income, our approximation of the probability that we would see a statistic as or more extreme than 30.6825 is approximately 0.</p>
+<p>To calculate the p-value using the true <span class="math inline">\(\chi^2\)</span> distribution, we can use the <code>pchisq</code> function from base R. This function allows us to situate the test statistic we calculated previously in the <span class="math inline">\(\chi^2\)</span> distribution with the appropriate degrees of freedom.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html" class="external-link">pchisq</a></span><span class="op">(</span><span class="va">observed_indep_statistic</span><span class="op">$</span><span class="va">stat</span>, <span class="fl">5</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<pre><code>## X-squared 
+## 1.082e-05</code></pre>
+<p>Note that, equivalently to the theory-based approach shown above, the package supplies a wrapper function, <code>chisq_test</code>, to carry out Chi-Squared tests of independence on tidy data. The syntax goes like this:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/chisq_test.html">chisq_test</a></span><span class="op">(</span><span class="va">gss</span>, <span class="va">college</span> <span class="op">~</span> <span class="va">finrela</span><span class="op">)</span></code></pre></div>
 <pre><code>## # A tibble: 1 x 3
 ##   statistic chisq_df   p_value
@@ -228,7 +233,7 @@
 <p><img src="chi_squared_files/figure-html/gof-plot-1.png" width="576"></p>
 <p>It seems like a uniform distribution may not be the most appropriate description of the data–many more people describe their income as average than than any of the other options. Lets now test whether this difference in distributions is statistically significant.</p>
 <p>First, to carry out this hypothesis test, we would calculate our observed statistic.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># calculating the null distribution</span>
 <span class="va">observed_gof_statistic</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">finrela</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -241,7 +246,7 @@
                     <span class="st">"DK"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></code></pre></div>
 <p>The observed statistic is 487.984. Now, generating a null distribution, by just dropping in a call to <code><a href="../reference/generate.html">generate()</a></code>:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># generating a null distribution, assuming each income class is equally likely</span>
 <span class="va">null_distribution_gof</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">finrela</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -255,15 +260,15 @@
   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"draw"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></code></pre></div>
 <p>Again, to get a sense for what these distributions look like, and where our observed statistic falls, we can use <code><a href="../reference/visualize.html">visualize()</a></code>:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># visualize the null distribution and test statistic!</span>
 <span class="va">null_distribution_gof</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_gof_statistic</span>,
                 direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
 <p><img src="chi_squared_files/figure-html/visualize-indep-gof-1.png" width="576"></p>
-<p>This statistic seems like it would be <em>really</em> unlikely if income class self-identification actually followed a uniform distribution! How unlikely, though? Calculating the p-value:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<p>This statistic seems like it would be quite unlikely if income class self-identification actually followed a uniform distribution! How unlikely, though? Calculating the p-value:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># calculate the p-value</span>
 <span class="va">p_value_gof</span> <span class="op">&lt;-</span> <span class="va">null_distribution_gof</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span><span class="op">(</span><span class="va">observed_gof_statistic</span>,
@@ -274,9 +279,13 @@
 ##   p_value
 ##     &lt;dbl&gt;
 ## 1       0</code></pre>
-<p>Thus, if each self-identified income class was equally likely to occur, the probability that we would see a distribution like the one we did is approximately 0.</p>
-<p>Again, equivalently to the steps shown above, the package supplies a wrapper function, <code>chisq_test</code>, to carry out Chi-Squared goodness of fit tests on tidy data. The syntax goes like this:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<p>Thus, if each self-identified income class was equally likely to occur, our approximation of the probability that we would see a distribution like the one we did is approximately 0.</p>
+<p>To calculate the p-value using the true <span class="math inline">\(\chi^2\)</span> distribution, we can use the <code>pchisq</code> function from base R. This function allows us to situate the test statistic we calculated previously in the <span class="math inline">\(\chi^2\)</span> distribution with the appropriate degrees of freedom.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/Chisquare.html" class="external-link">pchisq</a></span><span class="op">(</span><span class="va">observed_gof_statistic</span><span class="op">$</span><span class="va">stat</span>, <span class="fl">5</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 3.131e-103</code></pre>
+<p>Again, equivalently to the theory-based approach shown above, the package supplies a wrapper function, <code>chisq_test</code>, to carry out Chi-Squared goodness of fit tests on tidy data. The syntax goes like this:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/chisq_test.html">chisq_test</a></span><span class="op">(</span><span class="va">gss</span>, 
            response <span class="op">=</span> <span class="va">finrela</span>,
            p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"far below average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
