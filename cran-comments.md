@@ -1,7 +1,8 @@
 ## Test environments
-* local OS X install, R 3.6.3
-* ubuntu 16.04 (on github actions), release, devel
-* windows (on github actions), R 3.6.3, release
+* local OS X install, R 4.1.0
+* ubuntu 18.04 (on github actions), devel, release, oldrel, 3.6
+* windows (on github actions), release
+* OS X (on github actions), release
 * windows (on win-builder), devel
 
 ## R CMD check results
