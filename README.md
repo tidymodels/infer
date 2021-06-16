@@ -34,6 +34,13 @@ To learn more about the principles underlying the package design, see
 
 </div>
 
+If you’re interested in learning more about randomization-based
+statistical inference generally, including applied examples of this
+package, we recommend checking out [Statistical Inference Via Data
+Science: A ModernDive Into R and the Tidyverse](https://moderndive.com/)
+and [Introduction to Modern
+Statistics](https://openintro-ims.netlify.app/).
+
 ### Installation
 
 ------------------------------------------------------------------------
