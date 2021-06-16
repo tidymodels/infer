@@ -209,3 +209,27 @@ test_that("get_p_value can handle bad args with fitted objects", {
     "`x` should be the result of calling `generate\\(\\)`."
   )
 })
+
+test_that("get_p_value errors informatively when args are switched", {
+  # switch obs_stat and x
+  obs_stat <- gss %>%
+    specify(response = hours) %>%
+    calculate(stat = "mean")
+  
+  set.seed(1)
+  
+  null_dist <- gss %>%
+    specify(response = hours) %>%
+    hypothesize(null = "point", mu = 41) %>%
+    generate(reps = 20, type = "bootstrap") %>%
+    calculate(stat = "mean")
+  
+  expect_error(
+    get_p_value(obs_stat, null_dist, "both"),
+    "mistakenly switched the order of `obs_stat` and `x`"
+  )
+  
+  expect_silent(
+    get_p_value(null_dist, obs_stat, "both")
+  )
+})
