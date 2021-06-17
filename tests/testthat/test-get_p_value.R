@@ -105,7 +105,6 @@ test_that("get_p_value can handle fitted objects", {
   
   obs_fit <- gss[1:50,] %>%
     specify(hours ~ age + college) %>%
-    hypothesize(null = "independence") %>%
     fit()
   
   expect_equivalent(
@@ -121,7 +120,6 @@ test_that("get_p_value can handle fitted objects", {
   # errors out when it ought to
   obs_fit_2 <- gss[1:50,] %>%
     specify(hours ~ age) %>%
-    hypothesize(null = "independence") %>%
     fit()
   
   expect_error(
@@ -131,7 +129,6 @@ test_that("get_p_value can handle fitted objects", {
   
   obs_fit_3 <- gss[1:50,] %>%
     specify(year ~ age + college) %>%
-    hypothesize(null = "independence") %>%
     fit()
   
   expect_error(
@@ -149,7 +146,6 @@ test_that("get_p_value can handle fitted objects", {
   
   obs_fit_4 <- gss[1:50,] %>%
     specify(hours ~ age) %>%
-    hypothesize(null = "independence") %>%
     fit()
   
   obs_fit_4
@@ -191,7 +187,6 @@ test_that("get_p_value can handle bad args with fitted objects", {
   
   obs_fit <- gss[1:50,] %>%
     specify(hours ~ age + college) %>%
-    hypothesize(null = "independence") %>%
     fit()
   
   expect_error(
@@ -206,7 +201,7 @@ test_that("get_p_value can handle bad args with fitted objects", {
   
   expect_error(
     get_p_value(obs_fit, null_fits, "both"),
-    "`x` should be the result of calling `generate\\(\\)`."
+    "be passed to `generate\\(\\)`"
   )
 })
 

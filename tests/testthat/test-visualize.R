@@ -44,8 +44,63 @@ obs_F <- anova(
     aov(formula = hours ~ partyid, data = gss_tbl)
   )$`F value`[1]
 
+test_that("visualize warns with bad arguments", {
+  skip_if(getRversion() < "4.1.0")
+  
+  # warns when supplied deprecated args in what used to be
+  # a valid way
+  expect_warning(
+    gss_tbl %>%
+      specify(age ~ hours) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 100, type = "permute") %>%
+      calculate(stat = "slope") %>%
+      visualize(obs_stat = obs_slope, direction = "right"),
+    'obs_stat.*deprecated.*should now be passed to'
+  )
+  
+  # warning is the same when deprecated args are inappropriate
+  expect_warning(
+    gss_tbl %>%
+      specify(age ~ hours) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 100, type = "permute") %>%
+      calculate(stat = "slope") %>%
+      visualize(obs_stat = obs_slope),
+    'obs_stat.*deprecated.*should now be passed to'
+  )
+  
+  # same goes for CI args
+  expect_warning(
+    gss_tbl %>%
+      specify(age ~ hours) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 100, type = "permute") %>%
+      calculate(stat = "slope") %>%
+      visualize(endpoints = c(.01, .02)),
+    'endpoints.*deprecated.*should now be passed to'
+  )
+  
+  # output should not change when supplied a deprecated argument
+  age_hours_df <- gss_tbl %>%
+    specify(age ~ hours) %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 100, type = "permute") %>%
+    calculate(stat = "slope")
+  
+  expect_equal(
+    age_hours_df %>%
+      visualize(),
+    expect_warning(
+      age_hours_df %>%
+        visualize(endpoints = c(.01, .02)),
+      'endpoints.*deprecated.*should now be passed to'
+    )
+  )
+})
+
 test_that("visualize basic tests", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   expect_doppelganger("visualize", visualize(hours_resamp))
   
@@ -55,15 +110,13 @@ test_that("visualize basic tests", {
   expect_error(hours_resamp %>% visualize(bins = "yep"))
   expect_doppelganger(
     "vis-sim-right-1",
-    expect_warning(
-      gss_tbl %>%
-        specify(age ~ hours) %>%
-        hypothesize(null = "independence") %>%
-        generate(reps = 100, type = "permute") %>%
-        calculate(stat = "slope") %>%
-        visualize(obs_stat = obs_slope, direction = "right"),
-      "deprecated"
-    )
+    gss_tbl %>%
+      specify(age ~ hours) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 100, type = "permute") %>%
+      calculate(stat = "slope") %>%
+      visualize() +
+      shade_p_value(obs_stat = obs_slope, direction = "right")
   )
 
   # obs_stat not specified
@@ -73,20 +126,19 @@ test_that("visualize basic tests", {
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "diff in props", order = c("no degree", "degree")) %>%
-      visualize(direction = "both")
+      visualize() +
+      shade_p_value(direction = "both")
   )
 
   expect_doppelganger(
     "vis-sim-both-1",
-    expect_warning(
-      gss_tbl %>%
-        specify(sex ~ college, success = "female") %>%
-        hypothesize(null = "independence") %>%
-        generate(reps = 100, type = "permute") %>%
-        calculate(stat = "diff in props", order = c("no degree", "degree")) %>%
-        visualize(direction = "both", obs_stat = obs_diff),
-      "deprecated"
-    )
+    gss_tbl %>%
+      specify(sex ~ college, success = "female") %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 100, type = "permute") %>%
+      calculate(stat = "diff in props", order = c("no degree", "degree")) %>%
+      visualize() +
+      shade_p_value(direction = "both", obs_stat = obs_diff)
   )
 
   expect_doppelganger(
@@ -108,7 +160,8 @@ test_that("visualize basic tests", {
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
         calculate(stat = "diff in props", order = c("no degree", "degree")) %>%
-        visualize(method = "both", direction = "both", obs_stat = obs_diff)
+        visualize(method = "both") +
+        shade_p_value(direction = "both", obs_stat = obs_diff)
     )
   )
 
@@ -132,7 +185,8 @@ test_that("visualize basic tests", {
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
         calculate(stat = "z", order = c("no degree", "degree")) %>%
-        visualize(method = "both", direction = "both", obs_stat = obs_z)
+        visualize(method = "both") +
+        shade_p_value(direction = "both", obs_stat = obs_z)
     )
   )
 
@@ -144,7 +198,8 @@ test_that("visualize basic tests", {
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
         calculate(stat = "z", order = c("degree", "no degree")) %>%
-        visualize(method = "both", direction = "both", obs_stat = -obs_z)
+        visualize(method = "both") +
+        shade_p_value(direction = "both", obs_stat = -obs_z)
     )
   )
 
@@ -156,7 +211,8 @@ test_that("visualize basic tests", {
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
         calculate(stat = "t", order = c("female", "male")) %>%
-        visualize(method = "both", direction = "left", obs_stat = obs_t)
+        visualize(method = "both") +
+        shade_p_value(direction = "left", obs_stat = obs_t)
     )
   )
 
@@ -168,7 +224,8 @@ test_that("visualize basic tests", {
         hypothesize(null = "independence") %>%
 #         generate(reps = 100, type = "permute") %>%
         calculate(stat = "t", order = c("female", "male")) %>%
-        visualize(method = "theoretical", direction = "left", obs_stat = obs_t)
+        visualize(method = "theoretical") +
+        shade_p_value(direction = "left", obs_stat = obs_t)
     )
   )
   
@@ -212,7 +269,8 @@ test_that("visualize basic tests", {
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
         calculate(stat = "F") %>%
-        visualize(method = "both", obs_stat = obs_F, direction = "right")
+        visualize(method = "both") +
+        shade_p_value(obs_stat = obs_F, direction = "right")
     )
   )
 
@@ -224,7 +282,8 @@ test_that("visualize basic tests", {
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
         calculate(stat = "z", order = c("no degree", "degree")) %>%
-        visualize(method = "both", direction = "left", obs_stat = obs_z)
+        visualize(method = "both") +
+        shade_p_value(direction = "left", obs_stat = obs_z)
     )
   )
 
@@ -236,7 +295,8 @@ test_that("visualize basic tests", {
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
         calculate(stat = "Chisq") %>%
-        visualize(method = "both", obs_stat = obs_F, direction = "right")
+        visualize(method = "both") +
+        shade_p_value(obs_stat = obs_F, direction = "right")
     )
   )
 
@@ -247,9 +307,8 @@ test_that("visualize basic tests", {
         specify(sex ~ partyid, success = "female") %>%
         hypothesize(null = "independence") %>%
 #         calculate(stat = "Chisq") %>%
-        visualize(method = "theoretical", 
-                  obs_stat = obs_F, 
-                  direction = "right")
+        visualize(method = "theoretical") +
+        shade_p_value(obs_stat = obs_F, direction = "right")
     )
   )
 
@@ -298,15 +357,13 @@ test_that("visualize basic tests", {
 
   expect_doppelganger(
     "vis-sim-both-2",
-    expect_warning(
-      gss_tbl %>%
-        specify(hours ~ sex) %>%
-        hypothesize(null = "independence") %>%
-        generate(reps = 10, type = "permute") %>%
-        calculate(stat = "diff in means", order = c("female", "male")) %>%
-        visualize(direction = "both", obs_stat = obs_diff_mean),
-      "deprecated"
-    )
+    gss_tbl %>%
+      specify(hours ~ sex) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 10, type = "permute") %>%
+      calculate(stat = "diff in means", order = c("female", "male")) %>%
+      visualize() +
+      shade_p_value(direction = "both", obs_stat = obs_diff_mean)
   )
 
   # Produces warning first for not checking conditions but would also error
@@ -318,9 +375,8 @@ test_that("visualize basic tests", {
         generate(reps = 100, type = "permute") %>%
         calculate(stat = "diff in means", 
                   order = c("female", "male")) %>%
-        visualize(method = "both", 
-                  direction = "both", 
-                  obs_stat = obs_diff_mean)
+        visualize(method = "both") +
+        shade_p_value(direction = "both", obs_stat = obs_diff_mean)
     )
   )
 
@@ -332,11 +388,8 @@ test_that("visualize basic tests", {
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
         calculate(stat = "diff in means", order = c("female", "male")) %>%
-        visualize(
-          method = "theoretical", 
-          direction = "both",
-          obs_stat = obs_diff_mean
-        )
+        visualize(method = "theoretical") +
+        shade_p_value(direction = "both", obs_stat = obs_diff_mean)
     )
   )
 
@@ -348,51 +401,44 @@ test_that("visualize basic tests", {
         hypothesize(null = "point", p = 0.8) %>%
 #         generate(reps = 100, type = "draw") %>%
 #         calculate(stat = "z") %>%
-        visualize(
-          method = "theoretical",
-          obs_stat = 2, # Should probably update
-          direction = "both"
-        )
+        visualize(method = "theoretical") +
+        shade_p_value(obs_stat = 2, direction = "both")
     )
   )
 
   expect_doppelganger(
     "vis-sim-left-1",
-    expect_warning(
-      gss_tbl %>%
-        specify(hours ~ NULL) %>%
-        hypothesize(null = "point", mu = 1.3) %>%
-        generate(reps = 100, type = "bootstrap") %>%
-        calculate(stat = "mean") %>%
-        visualize(direction = "left", obs_stat = mean(gss_tbl$hours)),
-      "deprecated"
-    )
+    gss_tbl %>%
+      specify(hours ~ NULL) %>%
+      hypothesize(null = "point", mu = 1.3) %>%
+      generate(reps = 100, type = "bootstrap") %>%
+      calculate(stat = "mean") %>%
+      visualize() +
+      shade_p_value(direction = "left", obs_stat = mean(gss_tbl$hours))
   )
 })
 
 test_that("mirror_obs_stat works", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   expect_equal(mirror_obs_stat(1:10, 4), c(`60%` = 6.4))
 })
 
 test_that("obs_stat as a data.frame works", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   mean_petal_width <- gss_tbl %>%
     specify(hours ~ NULL) %>%
     calculate(stat = "mean")
   expect_doppelganger(
     "df-obs_stat-1",
-    expect_warning(
-      gss_tbl %>%
-        specify(hours ~ NULL) %>%
-        hypothesize(null = "point", mu = 4) %>%
-        generate(reps = 100, type = "bootstrap") %>%
-        calculate(stat = "mean") %>%
-        visualize(obs_stat = mean_petal_width),
-      "deprecated"
-    )
+    gss_tbl %>%
+      specify(hours ~ NULL) %>%
+      hypothesize(null = "point", mu = 4) %>%
+      generate(reps = 100, type = "bootstrap") %>%
+      calculate(stat = "mean") %>%
+      visualize() +
+      shade_p_value(obs_stat = mean_petal_width, direction = "both")
   )
   
   mean_df_test <- data.frame(x = c(4.1, 1), y = c(1, 2))
@@ -404,13 +450,14 @@ test_that("obs_stat as a data.frame works", {
         hypothesize(null = "point", mu = 4) %>%
         generate(reps = 100, type = "bootstrap") %>%
         calculate(stat = "mean") %>%
-        visualize(obs_stat = mean_df_test)
+        visualize() +
+        shade_p_value(obs_stat = mean_df_test, direction = "both")
     )
   )
 })
 
 test_that('method = "both" behaves nicely', {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   # stop_glue(
   #   '`generate()` and `calculate()` are both required to be done prior ',
   #   'to `visualize(method = "both")`'
@@ -438,7 +485,7 @@ test_that('method = "both" behaves nicely', {
 })
 
 test_that("Traditional right-tailed tests have warning if not right-tailed", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   expect_warning(
     gss_tbl %>%
@@ -446,36 +493,43 @@ test_that("Traditional right-tailed tests have warning if not right-tailed", {
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "Chisq") %>%
-      visualize(method = "both", obs_stat = 2, direction = "left")
+      visualize(method = "both") +
+      shade_p_value(obs_stat = 2, direction = "left")
   )
+  
   expect_warning(
     gss_tbl %>%
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "F") %>%
-      visualize(method = "both", obs_stat = 2, direction = "two_sided")
+      visualize(method = "both") +
+      shade_p_value(obs_stat = 2, direction = "two_sided")
   )
+  
   expect_warning(
     gss_tbl %>%
       specify(sex ~ partyid, success = "female") %>%
       hypothesize(null = "independence") %>%
 #       generate(reps = 100, type = "permute") %>%
       calculate(stat = "Chisq") %>%
-      visualize(method = "theoretical", obs_stat = 2, direction = "left")
+      visualize(method = "theoretical") +
+      shade_p_value(obs_stat = 2, direction = "left")
   )
+  
   expect_warning(
     gss_tbl %>%
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
 #       generate(reps = 100, type = "permute") %>%
       calculate(stat = "F") %>%
-      visualize(method = "theoretical", obs_stat = 2, direction = "two_sided")
+      visualize(method = "theoretical") +
+      shade_p_value(obs_stat = 2, direction = "two_sided")
   )
 })
 
 test_that("confidence interval plots are working", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   gss_tbl_boot <- gss_tbl %>%
     specify(sex ~ college, success = "female") %>%
@@ -487,23 +541,30 @@ test_that("confidence interval plots are working", {
 
   perc_ci <- gss_tbl_boot %>% get_ci()
 
-  expect_error(gss_tbl_boot %>% visualize(endpoints = df_error))
+  expect_error(
+    gss_tbl_boot %>% 
+      visualize() + 
+      shade_confidence_interval(endpoints = df_error)
+  )
 
-  expect_warning(gss_tbl_boot %>% visualize(endpoints = vec_error))
+  expect_warning(
+    gss_tbl_boot %>% 
+      visualize() +
+      shade_confidence_interval(endpoints = vec_error)
+  )
 
   expect_doppelganger(
     "ci-vis",
     expect_warning(
-      gss_tbl_boot %>% visualize(endpoints = perc_ci, direction = "between"),
-      "deprecated"
+      gss_tbl_boot %>% 
+        visualize() + 
+        shade_confidence_interval(endpoints = perc_ci, direction = "between")
     )
   )
-
-  expect_warning(gss_tbl_boot %>% visualize(obs_stat = 3, endpoints = perc_ci))
 })
 
 test_that("title adapts to not hypothesis testing workflow", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   set.seed(100)
   gss_tbl_boot_tbl <- gss_tbl %>% 
@@ -527,7 +588,7 @@ test_that("title adapts to not hypothesis testing workflow", {
 })
 
 test_that("warn_right_tail_test works", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   expect_warn_right_tail <- function(stat_name) {
     warn_regex <- paste0(stat_name, ".*right-tailed")
@@ -543,7 +604,7 @@ test_that("warn_right_tail_test works", {
 })
 
 test_that("visualize warns about removing `NaN`", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   dist <- gss_tbl_boot_tbl <- gss_tbl %>% 
     specify(response = hours) %>% 
@@ -561,4 +622,65 @@ test_that("visualize warns about removing `NaN`", {
   # In the case that _all_ values are NaN, error should be raised
   dist$stat <- rep(NaN, nrow(dist))
   expect_error(visualize(dist), "All calculated stat")
+})
+
+test_that("visualize can handle multiple explanatory variables", {
+  skip_if(getRversion() < "4.1.0")
+  
+  # generate example objects
+  null_fits <- gss %>%
+    specify(hours ~ age + college) %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 20, type = "permute") %>%
+    fit()
+  
+  obs_fit <- gss %>%
+    specify(hours ~ age + college) %>%
+    fit()
+  
+  conf_ints <- 
+    get_confidence_interval(
+      null_fits, 
+      point_estimate = obs_fit, 
+      level = .95
+    )
+  
+  # visualize with multiple panes
+  expect_doppelganger(
+    "viz-fit-bare", 
+    null_fits %>% 
+      visualize()
+  )
+  
+  # with p values shaded -- test each possible direction
+  expect_doppelganger(
+    "viz-fit-p-val-both", 
+    null_fits %>% 
+      visualize() +
+      shade_p_value(obs_stat = obs_fit, direction = "both")
+  )
+  
+  expect_doppelganger(
+    "viz-fit-p-val-left", 
+    null_fits %>% 
+      visualize() +
+      shade_p_value(obs_stat = obs_fit, direction = "left")
+  )
+  
+  expect_doppelganger(
+    "viz-fit-p-val-right", 
+    null_fits %>% 
+      visualize() +
+      shade_p_value(obs_stat = obs_fit, direction = "right")
+  )
+  
+  # with confidence intervals shaded
+  expect_doppelganger(
+    "viz-fit-conf-int", 
+    null_fits %>% 
+      visualize() +
+      shade_confidence_interval(endpoints = conf_ints)
+  )
+  
+  # shade_* functions should error with bad input
 })

@@ -1,28 +1,33 @@
-#' Add information about p-value region(s)
+#' Shade histogram area beyond an observed statistic
 #'
 #' @description
 #'
-#' `shade_p_value()` plots p-value region(s) (using "area under the curve"
-#' approach) on top of the [visualize()] output. It should be used as
-#' \\{ggplot2\\} layer function (see examples). `shade_pvalue()` is its alias.
+#' `shade_p_value()` plots a p-value region on top of
+#' [visualize()] output. The output is a ggplot2 layer that can be added with
+#' `+`. The function has a shorter alias, `shade_pvalue()`.
 #' 
 #' Learn more in `vignette("infer")`.
 #'
-#' @param obs_stat A numeric value or 1x1 data frame corresponding to what the
-#'   observed statistic is.
+#' @param obs_stat The observed statistic or estimate. For 
+#'   [calculate()]-based workflows, this will be a 1-element numeric vector or 
+#'   a `1 x 1` data frame containing the observed statistic. 
+#'   For [`fit()`][fit.infer()]-based workflows, a `(p + 1) x 2` data frame 
+#'   with columns `term` and `estimate` giving the observed estimate for
+#'   each term.
 #' @param direction A string specifying in which direction the shading should
 #'   occur. Options are `"less"`, `"greater"`, or `"two-sided"`. Can
 #'   also give `"left"`, `"right"`, `"both"`, `"two_sided"`, `"two sided"`,
-#'   or `"two.sided"`. 
-#'   If `NULL` then no shading is actually done.
+#'   or `"two.sided"`. If `NULL`, the function will not shade any area.
 #' @param color A character or hex string specifying the color of the observed
 #'   statistic as a vertical line on the plot.
 #' @param fill A character or hex string specifying the color to shade the
-#'   p-value region. If `NULL` then no shading is actually done.
+#'   p-value region. If `NULL`, the function will not shade any area.
 #' @param ... Other arguments passed along to \\{ggplot2\\} functions.
+#'   For expert use only.
 #'
-#' @return A list of \\{ggplot2\\} objects to be added to the `visualize()`
-#'   output.
+#' @return If added to an existing {infer} visualization, a \\{ggplot2\\} 
+#'   object displaying the supplied statistic on top of its corresponding
+#'   distribution. Otherwise, an `infer_layer` list.
 #'
 #'
 #' @examples
@@ -48,6 +53,41 @@
 #'   visualize() +
 #'   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 #' 
+#' \donttest{
+#' # to visualize distributions of coefficients for multiple
+#' # explanatory variables, use a `fit()`-based workflow
+#' 
+#' # fit 1000 linear models with the `hours` variable permuted
+#' null_fits <- gss %>%
+#'  specify(hours ~ age + college) %>%
+#'  hypothesize(null = "independence") %>%
+#'  generate(reps = 1000, type = "permute") %>%
+#'  fit()
+#'  
+#' null_fits
+#' 
+#' # fit a linear model to the observed data
+#' obs_fit <- gss %>%
+#'   specify(hours ~ age + college) %>%
+#'   fit()
+#'
+#' obs_fit
+#' 
+#' # visualize distributions of coefficients 
+#' # generated under the null
+#' visualize(null_fits)
+#' 
+#' # add a p-value shading layer to juxtapose the null 
+#' # fits with the observed fit for each term
+#' visualize(null_fits) + 
+#'   shade_p_value(obs_fit, direction = "both")
+#' 
+#' # the direction argument will be applied 
+#' # to the plot for each term
+#' visualize(null_fits) + 
+#'   shade_p_value(obs_fit, direction = "left")
+#' }
+#' 
 #' # more in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
@@ -61,10 +101,42 @@ NULL
 #' @export
 shade_p_value <- function(obs_stat, direction,
                           color = "red2", fill = "pink", ...) {
-  # argument checking
+  # since most of the logic for p-value shading is in shade_p_value_term, which 
+  # is only called by `+.gg`, we need to check for mistakenly piped inputs here
   check_for_piped_visualize(obs_stat, direction, color, fill)
-  obs_stat <- check_obs_stat(obs_stat)
+  
+  # store inputs in classed output that can passed to a `ggplot_add` method
+  structure(
+    "A p-value shading layer.", 
+    class = "infer_layer",
+    fn = "shade_p_value",
+    obs_stat = if (is.null(obs_stat)) {NA} else {obs_stat},
+    direction = if (is.null(direction)) {NA} else {direction},
+    color = color,
+    fill = fill,
+    dots = list(...)
+  )
+}
+
+#' @rdname shade_p_value
+#' @export
+shade_pvalue <- shade_p_value
+
+shade_p_value_term <- function(plot, obs_stat, direction,
+                               color = "red2", fill = "pink", dots) {
+  if (all(is.na(obs_stat))) {
+    obs_stat <- NULL
+  }
+  
+  if (all(is.na(direction))) {
+    direction <- NULL
+  }
+  
+  # argument checking
+  obs_stat <- check_obs_stat(obs_stat, plot)
   check_shade_p_value_args(obs_stat, direction, color, fill)
+  
+  term <- x_axis_label(plot)
   
   res <- list()
   if (is.null(obs_stat)) {
@@ -76,12 +148,12 @@ shade_p_value <- function(obs_stat, direction,
     if (direction %in% c("less", "left", "greater", "right")) {
       tail_area <- one_tail_area(obs_stat, direction)
       
-      res <- c(res, geom_tail_area(tail_area, fill, ...))
+      res <- c(res, do.call(geom_tail_area, c(list(tail_area, fill), dots)))
     } else if (direction %in% c("two_sided", "both", 
                                 "two-sided", "two sided", "two.sided")) {
       tail_area <- two_tail_area(obs_stat, direction)
       
-      res <- c(res, geom_tail_area(tail_area, fill, ...))
+      res <- c(res, do.call(geom_tail_area, c(list(tail_area, fill), dots)))
     } else {
       warning_glue(
         '`direction` should be one of `"less"`, `"left"`, `"greater"`, ',
@@ -103,18 +175,17 @@ shade_p_value <- function(obs_stat, direction,
       inherit.aes = FALSE
     ),
     # Extra arguments
-    list(...),
+    dots,
     # Default arguments that might be replaced in `...`
     list(size = 2)
   )
   segment_layer <- do.call(ggplot2::geom_segment, segment_args)
   
-  c(res, list(segment_layer))
+  res <- c(res, list(segment_layer))
+  
+  plot + res
 }
 
-#' @rdname shade_p_value
-#' @export
-shade_pvalue <- shade_p_value
 
 check_shade_p_value_args <- function(obs_stat, direction, color, fill) {
   if (!is.null(obs_stat)) {

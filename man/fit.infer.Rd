@@ -8,10 +8,10 @@
 }
 \arguments{
 \item{object}{Output from an infer function---likely \code{\link[=generate]{generate()}} or
-\code{\link[=hypothesize]{hypothesize()}}---which specifies the formula and data to fit a model to.}
+\code{\link[=specify]{specify()}}---which specifies the formula and data to fit a model to.}
 
-\item{...}{Any optional arguments to pass along to the chosen computational
-engine. See \code{\link[parsnip:linear_reg]{parsnip::linear_reg()}} for more information.}
+\item{...}{Any optional arguments to pass along to the model fitting
+function. See \code{\link[stats:glm]{stats::glm()}} for more information.}
 }
 \value{
 A \link[tibble:tibble]{tibble} containing the following columns:
@@ -33,14 +33,44 @@ earlier in the pipeline. If passed the output of \code{\link[=specify]{specify()
 of \code{\link[=generate]{generate()}}, it will fit a model to each data resample, denoted in
 the \code{replicate} column.
 
+infer provides a fit "method" for infer objects, which is a way of carrying
+out model fitting as applied to infer output. The "generic," imported from
+the generics package and re-exported from this package, provides the
+general form of \code{fit()} that points to infer's method when called on an
+infer object. That generic is also documented here.
+
 Learn more in \code{vignette("infer")}.
+}
+\details{
+Randomization-based statistical inference with multiple explanatory
+variables requires careful consideration of the null hypothesis in question
+and its implications for permutation procedures. Inference for partial
+regression coefficients via the permutation method implemented in
+\code{\link[=generate]{generate()}} for multiple explanatory variables, consistent with its meaning
+elsewhere in the package, is subject to additional distributional assumptions
+beyond those required for one explanatory variable. Namely, the distribution
+of the response variable must be similar to the distribution of the errors
+under the null hypothesis' specification of a fixed effect of the explanatory
+variables. (This null hypothesis is reflected in the \code{cols} argument to
+\code{\link[=generate]{generate()}}. By default, all of the explanatory variables are treated
+as fixed.) A general rule of thumb here is, if there are large outliers
+in the distributions of any of the explanatory variables, this distributional
+assumption will not be satisfied; when the response variable is permuted,
+the (presumably outlying) value of the response will no longer be paired
+with the outlier in the explanatory variable, causing an outsize effect
+on the resulting slope coefficient for that explanatory variable.
+
+More sophisticated methods that are outside of the scope of this package
+requiring fewer---or less strict---distributional assumptions
+exist. For an overview, see "Permutation tests for univariate or
+multivariate analysis of variance and regression" (Marti J. Anderson,
+2001), \doi{10.1139/cjfas-58-3-626}.
 }
 \examples{
 # fit a linear model predicting number of hours worked per
 # week using respondent age and degree status.
 observed_fit <- gss \%>\%
   specify(hours ~ age + college) \%>\%
-  hypothesize(null = "independence") \%>\%
   fit()
 
 observed_fit

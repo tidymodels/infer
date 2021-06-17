@@ -101,7 +101,6 @@ boot_distr \%>\%
 # week using respondent age and degree status.
 observed_fit <- gss \%>\%
   specify(hours ~ age + college) \%>\%
-  hypothesize(null = "independence") \%>\%
   fit()
 
 observed_fit
@@ -131,7 +130,6 @@ vignette("infer")
 }
 \seealso{
 Other auxillary functions: 
-\code{\link{get_p_value}()},
-\code{\link{visualize}()}
+\code{\link{get_p_value}()}
 }
 \concept{auxillary functions}

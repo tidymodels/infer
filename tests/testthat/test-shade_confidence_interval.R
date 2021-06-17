@@ -2,7 +2,7 @@ context("shade_confidence_interval")
 
 # shade_confidence_interval -----------------------------------------------
 test_that("shade_confidence_interval works", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   # Adding `shade_confidence_interval()` to simulation plot
   expect_doppelganger(
@@ -36,7 +36,7 @@ test_that("shade_confidence_interval works", {
 })
 
 test_that("shade_confidence_interval accepts `NULL` as `endpoints`",  {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   expect_doppelganger(
     "ci-null-endpoints",
@@ -45,7 +45,7 @@ test_that("shade_confidence_interval accepts `NULL` as `endpoints`",  {
 })
 
 test_that("shade_confidence_interval uses extra aesthetic", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   expect_doppelganger(
     "ci-extra-aes-1",
@@ -58,7 +58,7 @@ test_that("shade_confidence_interval uses extra aesthetic", {
 })
 
 test_that("shade_confidence_interval throws errors and warnings", {
-  skip_if(getRversion() > "4.0.2")
+  skip_if(getRversion() < "4.1.0")
   
   expect_warning(gss_viz_sim + shade_confidence_interval(c(1, 2, 3)), "2")
   expect_error(

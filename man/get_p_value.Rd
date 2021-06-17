@@ -89,7 +89,6 @@ gss \%>\%
 # week using respondent age and degree status.
 observed_fit <- gss \%>\%
   specify(hours ~ age + college) \%>\%
-  hypothesize(null = "independence") \%>\%
   fit()
 
 observed_fit
@@ -115,7 +114,6 @@ vignette("infer")
 }
 \seealso{
 Other auxillary functions: 
-\code{\link{get_confidence_interval}()},
-\code{\link{visualize}()}
+\code{\link{get_confidence_interval}()}
 }
 \concept{auxillary functions}

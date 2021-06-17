@@ -81,7 +81,6 @@
 #' # week using respondent age and degree status.
 #' observed_fit <- gss %>%
 #'   specify(hours ~ age + college) %>%
-#'   hypothesize(null = "independence") %>%
 #'   fit()
 #' 
 #' observed_fit
@@ -159,7 +158,8 @@ get_confidence_interval <- function(x, level = 0.95, type = "percentile",
       dplyr::mutate(
         term = purrr::map_chr(term_estimates, purrr::pluck, "term"),
         .before = dplyr::everything()
-      )
+      ) %>%
+      copy_attrs(x)
   } else {
     check_ci_args(x, level, type, point_estimate)
     

@@ -455,10 +455,21 @@ check_direction <- function(direction = c("less", "greater", "two_sided",
   }
 }
 
-check_obs_stat <- function(obs_stat) {
+check_obs_stat <- function(obs_stat, plot = NULL) {
   if (!is.null(obs_stat)) {
     
     if ("data.frame" %in% class(obs_stat)) {
+      if (is_fitted(obs_stat)) {
+        x_lab <- x_axis_label(plot)
+        
+        obs_stat <- 
+          obs_stat %>% 
+          dplyr::filter(term == x_lab) %>% 
+          dplyr::pull(estimate)
+        
+        return(obs_stat)
+      }
+      
       check_type(obs_stat, is.data.frame)
       if ((nrow(obs_stat) != 1) || (ncol(obs_stat) != 1)) {
         warning_glue(

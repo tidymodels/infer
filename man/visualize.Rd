@@ -5,38 +5,14 @@
 \alias{visualise}
 \title{Visualize statistical inference}
 \usage{
-visualize(
-  data,
-  bins = 15,
-  method = "simulation",
-  dens_color = "black",
-  obs_stat = NULL,
-  obs_stat_color = "red2",
-  pvalue_fill = "pink",
-  direction = NULL,
-  endpoints = NULL,
-  endpoints_color = "mediumaquamarine",
-  ci_fill = "turquoise",
-  ...
-)
+visualize(data, bins = 15, method = "simulation", dens_color = "black", ...)
 
-visualise(
-  data,
-  bins = 15,
-  method = "simulation",
-  dens_color = "black",
-  obs_stat = NULL,
-  obs_stat_color = "red2",
-  pvalue_fill = "pink",
-  direction = NULL,
-  endpoints = NULL,
-  endpoints_color = "mediumaquamarine",
-  ci_fill = "turquoise",
-  ...
-)
+visualise(data, bins = 15, method = "simulation", dens_color = "black", ...)
 }
 \arguments{
-\item{data}{The output from \code{\link[=calculate]{calculate()}}.}
+\item{data}{A distribution of statistics (for \code{\link[=calculate]{calculate()}}-based workflows)
+or coefficient estimates (for \code{\link[=fit.infer]{fit()}}-based workflows)
+outputted by infer.}
 
 \item{bins}{The number of bins in the histogram.}
 
@@ -47,39 +23,19 @@ visualise(
 \item{dens_color}{A character or hex string specifying the color of the
 theoretical density curve.}
 
-\item{obs_stat}{A numeric value or 1x1 data frame corresponding to what the
-observed statistic is. \strong{Deprecated (see Details)}.}
-
-\item{obs_stat_color}{A character or hex string specifying the color of the
-observed statistic as a vertical line on the plot. \strong{Deprecated (see
-Details)}.}
-
-\item{pvalue_fill}{A character or hex string specifying the color to shade
-the p-value. In previous versions of the package this was the \code{shade_color}
-argument. \strong{Deprecated (see Details)}.}
-
-\item{direction}{A string specifying in which direction the shading should
-occur. Options are \code{"less"}, \code{"greater"}, or \code{"two_sided"} for p-value. Can
-also give \code{"left"}, \code{"right"}, or \code{"both"} for p-value. For confidence
-intervals, use \code{"between"} and give the endpoint values in \code{endpoints}.
-\strong{Deprecated (see Details)}.}
-
-\item{endpoints}{A 2 element vector or a 1 x 2 data frame containing the
-lower and upper values to be plotted. Most useful for visualizing
-conference intervals. \strong{Deprecated (see Details)}.}
-
-\item{endpoints_color}{A character or hex string specifying the color of the
-observed statistic as a vertical line on the plot. \strong{Deprecated (see
-Details)}.}
-
-\item{ci_fill}{A character or hex string specifying the color to shade the
-confidence interval. \strong{Deprecated (see Details)}.}
-
 \item{...}{Other arguments passed along to \\{ggplot2\\} functions.}
 }
 \value{
-A ggplot object showing the simulation-based distribution as a
-histogram or bar graph. Also used to show the theoretical curves.
+For \code{\link[=calculate]{calculate()}}-based workflows, a ggplot object showing the
+simulation-based distribution as a histogram or bar graph. Also used to
+show the theoretical curves.
+
+For \code{\link[=fit.infer]{fit()}}-based workflows, a \code{patchwork} object
+showing the simulation-based distributions as a histogram or bar graph.
+The interface to adjust plot options and themes is a bit different
+for \code{patchwork} plots than ggplot2 plots. The examples highlight the
+biggest differences here, but see \code{\link[patchwork:plot_annotation]{patchwork::plot_annotation()}} and
+\link[patchwork:plot_arithmetic]{patchwork::&.gg} for more details.
 }
 \description{
 Visualize the distribution of the simulation-based inferential statistics or
@@ -88,14 +44,13 @@ the theoretical distribution (or both!).
 Learn more in \code{vignette("infer")}.
 }
 \details{
-In order to make visualization workflow more straightforward and
-explicit \code{visualize()} now only should be used to plot statistics directly.
-That is why arguments not related to this task are deprecated and will be
-removed in a future release of \\{infer\\}.
-
-To add to plot information related to p-value use \code{\link[=shade_p_value]{shade_p_value()}}. To add
-to plot information related to confidence interval use
-\code{\link[=shade_confidence_interval]{shade_confidence_interval()}}.
+In order to make the visualization workflow more straightforward
+and explicit, \code{visualize()} now only should be used to plot distributions
+of statistics directly. A number of arguments related to shading p-values and
+confidence intervals are now deprecated in \code{visualize()} and should
+now be passed to \code{\link[=shade_p_value]{shade_p_value()}} and \code{\link[=shade_confidence_interval]{shade_confidence_interval()}},
+respectively. \code{\link[=visualize]{visualize()}} will raise a warning if deprecated arguments
+are supplied.
 }
 \examples{
   
@@ -152,7 +107,36 @@ visualize(null_dist_theoretical, method = "theoretical")
 # `method = "both"` to `visualize()`
 visualize(null_dist, method = "both")
 
-# more in-depth explanation of how to use the infer package
+\donttest{
+# to visualize distributions of coefficients for multiple
+# explanatory variables, use a `fit()`-based workflow
+
+# fit 1000 models with the `hours` variable permuted
+null_fits <- gss \%>\%
+ specify(hours ~ age + college) \%>\%
+ hypothesize(null = "independence") \%>\%
+ generate(reps = 1000, type = "permute") \%>\%
+ fit()
+ 
+null_fits
+
+# visualize distributions of resulting coefficients
+visualize(null_fits)
+
+# the interface to add themes and other elements to patchwork
+# plots (outputted by `visualize` when the inputted data
+# is from the `fit()` function) is a bit different than adding
+# them to ggplot2 plots.
+library(ggplot2)
+
+# to add a ggplot2 theme to a `calculate()`-based visualization, use `+`
+null_dist \%>\% visualize() + theme_dark()
+  
+# to add a ggplot2 theme to a `fit()`-based visualization, use `&`
+null_fits \%>\% visualize() & theme_dark()
+}
+
+# More in-depth explanation of how to use the infer package
 \dontrun{
 vignette("infer")
 }
@@ -160,14 +144,4 @@ vignette("infer")
 }
 \seealso{
 \code{\link[=shade_p_value]{shade_p_value()}}, \code{\link[=shade_confidence_interval]{shade_confidence_interval()}}.
-
-Other visualization functions: 
-\code{\link{shade_confidence_interval}()},
-\code{\link{shade_p_value}()}
-
-Other auxillary functions: 
-\code{\link{get_confidence_interval}()},
-\code{\link{get_p_value}()}
 }
-\concept{auxillary functions}
-\concept{visualization functions}

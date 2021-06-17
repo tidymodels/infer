@@ -1,3 +1,7 @@
+#' @importFrom ggplot2 ggplot_add
+#' @export
+ggplot2::ggplot_add
+
 #' Visualize statistical inference
 #'
 #' @description
@@ -7,47 +11,37 @@
 #' 
 #' Learn more in `vignette("infer")`.
 #'
-#' @param data The output from [calculate()].
+#' @param data A distribution of statistics (for [calculate()]-based workflows)
+#'   or coefficient estimates (for [`fit()`][fit.infer()]-based workflows)
+#'   outputted by infer.
 #' @param bins The number of bins in the histogram.
 #' @param method A string giving the method to display. Options are
 #'   `"simulation"`, `"theoretical"`, or `"both"` with `"both"` corresponding to
 #'   `"simulation"` and `"theoretical"`.
 #' @param dens_color A character or hex string specifying the color of the
 #'   theoretical density curve.
-#' @param obs_stat A numeric value or 1x1 data frame corresponding to what the
-#'   observed statistic is. **Deprecated (see Details)**.
-#' @param obs_stat_color A character or hex string specifying the color of the
-#'   observed statistic as a vertical line on the plot. **Deprecated (see
-#'   Details)**.
-#' @param pvalue_fill A character or hex string specifying the color to shade
-#'   the p-value. In previous versions of the package this was the `shade_color`
-#'   argument. **Deprecated (see Details)**.
-#' @param direction A string specifying in which direction the shading should
-#'   occur. Options are `"less"`, `"greater"`, or `"two_sided"` for p-value. Can
-#'   also give `"left"`, `"right"`, or `"both"` for p-value. For confidence
-#'   intervals, use `"between"` and give the endpoint values in `endpoints`.
-#'   **Deprecated (see Details)**.
-#' @param endpoints A 2 element vector or a 1 x 2 data frame containing the
-#'   lower and upper values to be plotted. Most useful for visualizing
-#'   conference intervals. **Deprecated (see Details)**.
-#' @param endpoints_color A character or hex string specifying the color of the
-#'   observed statistic as a vertical line on the plot. **Deprecated (see
-#'   Details)**.
-#' @param ci_fill A character or hex string specifying the color to shade the
-#'   confidence interval. **Deprecated (see Details)**.
 #' @param ... Other arguments passed along to \\{ggplot2\\} functions.
 #'
-#' @details In order to make visualization workflow more straightforward and
-#' explicit `visualize()` now only should be used to plot statistics directly.
-#' That is why arguments not related to this task are deprecated and will be
-#' removed in a future release of \\{infer\\}.
+#' @details In order to make the visualization workflow more straightforward 
+#' and explicit, `visualize()` now only should be used to plot distributions
+#' of statistics directly. A number of arguments related to shading p-values and 
+#' confidence intervals are now deprecated in `visualize()` and should
+#' now be passed to [shade_p_value()] and [shade_confidence_interval()],
+#' respectively. [visualize()] will raise a warning if deprecated arguments
+#' are supplied.
 #'
-#' To add to plot information related to p-value use [shade_p_value()]. To add
-#' to plot information related to confidence interval use
-#' [shade_confidence_interval()].
-#'
-#' @return A ggplot object showing the simulation-based distribution as a
-#'   histogram or bar graph. Also used to show the theoretical curves.
+#' @return 
+#' 
+#' For [calculate()]-based workflows, a ggplot object showing the 
+#' simulation-based distribution as a histogram or bar graph. Also used to 
+#' show the theoretical curves.
+#' 
+#' For [`fit()`][fit.infer()]-based workflows, a `patchwork` object
+#' showing the simulation-based distributions as a histogram or bar graph.
+#' The interface to adjust plot options and themes is a bit different
+#' for `patchwork` plots than ggplot2 plots. The examples highlight the
+#' biggest differences here, but see [patchwork::plot_annotation()] and
+#' [patchwork::&.gg] for more details.
 #'
 #' @seealso [shade_p_value()], [shade_confidence_interval()].
 #'
@@ -105,8 +99,37 @@
 #' # use the simulation-based null distribution and supply
 #' # `method = "both"` to `visualize()`
 #' visualize(null_dist, method = "both")
+#' 
+#' \donttest{
+#' # to visualize distributions of coefficients for multiple
+#' # explanatory variables, use a `fit()`-based workflow
+#' 
+#' # fit 1000 models with the `hours` variable permuted
+#' null_fits <- gss %>%
+#'  specify(hours ~ age + college) %>%
+#'  hypothesize(null = "independence") %>%
+#'  generate(reps = 1000, type = "permute") %>%
+#'  fit()
+#'  
+#' null_fits
+#' 
+#' # visualize distributions of resulting coefficients
+#' visualize(null_fits)
+#' 
+#' # the interface to add themes and other elements to patchwork
+#' # plots (outputted by `visualize` when the inputted data
+#' # is from the `fit()` function) is a bit different than adding
+#' # them to ggplot2 plots.
+#' library(ggplot2)
+#' 
+#' # to add a ggplot2 theme to a `calculate()`-based visualization, use `+`
+#' null_dist %>% visualize() + theme_dark()
+#'   
+#' # to add a ggplot2 theme to a `fit()`-based visualization, use `&`
+#' null_fits %>% visualize() & theme_dark()
+#' }
 #'
-#' # more in-depth explanation of how to use the infer package
+#' # More in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
 #' }
@@ -114,76 +137,97 @@
 #' @importFrom ggplot2 ggplot geom_histogram aes ggtitle
 #' @importFrom ggplot2 xlab ylab geom_vline geom_rect geom_bar
 #' @importFrom stats dt qt df qf dnorm qnorm dchisq qchisq
-#' @family visualization functions
-#' @family auxillary functions
 #' @export
 visualize <- function(data, bins = 15, method = "simulation",
                       dens_color = "black",
-                      obs_stat = NULL,
-                      obs_stat_color = "red2",
-                      pvalue_fill = "pink",
-                      direction = NULL,
-                      endpoints = NULL,
-                      endpoints_color = "mediumaquamarine",
-                      ci_fill = "turquoise",
                       ...) {
-  check_if_mlr(data, "visualize")
-  data <- check_for_nan(data, "visualize")
-  check_visualize_args(
-    data, bins, method, dens_color, obs_stat, obs_stat_color,
-    pvalue_fill, direction, endpoints, endpoints_color, ci_fill
-  )
-  warn_deprecated_args(obs_stat, endpoints)
-  endpoints <- impute_endpoints(endpoints)
-  obs_stat <- impute_obs_stat(obs_stat, direction, endpoints)
-  
-  # Add `method` to `data` attributes to enable later possibility of
-  # complicated computation of p-value regions (in case `direction = "both"`)
-  # in `shade_p_value()`.
   attr(data, "viz_method") <- method
   attr(data, "viz_bins") <- bins
   
-  infer_plot <- ggplot(data) +
-    simulation_layer(data, ...) +
-    theoretical_layer(data, dens_color, ...) +
-    title_labels_layer(data) +
-    shade_p_value(
-      obs_stat, direction, obs_stat_color, pvalue_fill, ...
+  dots <- check_dots_for_deprecated(list(...))
+  
+  if (is_fitted(data)) {
+    term_data <- data %>%
+      dplyr::rename(stat = estimate) %>%
+      dplyr::ungroup() %>%
+      dplyr::group_by(term) %>%
+      dplyr::group_split() %>%
+      purrr::map(copy_attrs, data) %>%
+      purrr::map(copy_attrs, data, c("viz_method", "viz_bins"))
+    
+    plots <- purrr::map2(
+      term_data,
+      purrr::map(term_data, purrr::pluck, "term", 1),
+      visualize_term,
+      bins = bins, 
+      method = method, 
+      dots = dots
     )
-  
-  if (!is.null(direction) && (direction == "between")) {
-    infer_plot <- infer_plot +
-      shade_confidence_interval(endpoints, endpoints_color, ci_fill, ...)
+    
+    return(
+      patchwork::wrap_plots(plots, ncol = 1) +
+        title_layer(
+          term_data[[1]], 
+          title_fn = patchwork::plot_annotation
+        )
+    )
+  } else {
+    res <- visualize_term(
+      data,
+      "stat",
+      bins = bins, 
+      method = method, 
+      dens_color = dens_color,
+      dots = dots
+    ) + 
+      title_layer(data)
+    
+    res
   }
-  
-  infer_plot
 }
 
 #' @rdname visualize
 #' @export
 visualise <- visualize
 
-check_visualize_args <- function(data, bins, method, dens_color,
-                                 obs_stat, obs_stat_color,
-                                 pvalue_fill, direction,
-                                 endpoints, endpoints_color, ci_fill) {
+
+visualize_term <- function(data, term, bins = 15, method = "simulation",
+                           dens_color = "black", dots) {
+  data <- check_for_nan(data, "visualize")
+  check_visualize_args(data, bins, method, dens_color)
+  
+  infer_plot <- ggplot(data) +
+    simulation_layer(data, dots = dots) +
+    theoretical_layer(data, dens_color, dots = dots) +
+    labels_layer(data, term)
+  
+  infer_plot
+}
+
+check_dots_for_deprecated <- function(dots) {
+  dep_args <- c("obs_stat", "obs_stat_color", "pvalue_fill", "direction",
+                "endpoints", "endpoints_color", "ci_fill")
+  
+  if (any(dep_args %in% names(dots))) {
+    bad_args <- dep_args[dep_args %in% names(dots)]
+    
+    warning_glue(
+      "The arguments `{list(bad_args)}` are deprecated in `visualize()` ",
+      "and will be ignored. They should now be passed to one of ",
+      "`shade_p_value()` or `shade_confidence_interval()`."
+    )
+    
+    dots[!dep_args %in% names(dots)]
+  }
+  
+  list(NULL)
+}
+
+check_visualize_args <- function(data, bins, method, dens_color) {
   check_type(data, is.data.frame)
   check_type(bins, is.numeric)
   check_type(method, is.character)
   check_type(dens_color, is.character)
-  check_type(obs_stat_color, is.character)
-  check_type(pvalue_fill, is.character)
-  if (!is.null(direction)) {
-    check_type(direction, is.character)
-  }
-  if (
-    is.data.frame(endpoints) &&
-    ((nrow(endpoints) != 1) || (ncol(endpoints) != 2))
-  ) {
-    stop_glue(
-      "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector."
-    )
-  }
   
   if (!(method %in% c("simulation", "theoretical", "both"))) {
     stop_glue(
@@ -210,13 +254,6 @@ check_visualize_args <- function(data, bins, method, dens_color,
     }
   }
   
-  if (!is.null(obs_stat) && !is.null(endpoints)) {
-    warning_glue(
-      "Values for both `endpoints` and `obs_stat` were given when only one ",
-      "should be set. Ignoring `obs_stat` values."
-    )
-  }
-  
   TRUE
 }
 
@@ -241,27 +278,18 @@ check_for_piped_visualize <- function(...) {
   TRUE
 }
 
-warn_deprecated_args <- function(obs_stat, endpoints) {
-  if (!is.null(obs_stat)) {
-    warning_glue(
-      "`visualize()` should no longer be used to plot a p-value. Arguments `obs_stat`, ",
-      "`obs_stat_color`, `pvalue_fill`, and `direction` are deprecated. ",
-      "Use `shade_p_value()` instead."
-    )
+impute_endpoints <- function(endpoints, plot = NULL) {
+  if (is_fitted(endpoints)) {
+    x_lab <- x_axis_label(plot)
+    
+    endpoints <- 
+      endpoints %>% 
+      dplyr::filter(term == x_lab) %>% 
+      dplyr::select(-term)
+    
+    return(unlist(endpoints))
   }
   
-  if (!is.null(endpoints)) {
-    warning_glue(
-      "`visualize()` should no longer be used to plot a confidence interval. Arguments ",
-      "`endpoints`, `endpoints_color`, and `ci_fill` are deprecated. ",
-      "Use `shade_confidence_interval()` instead."
-    )
-  }
-  
-  TRUE
-}
-
-impute_endpoints <- function(endpoints) {
   if (is.vector(endpoints) && (length(endpoints) != 2)) {
     warning_glue(
       "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector. ",
@@ -299,7 +327,7 @@ impute_obs_stat <- function(obs_stat, direction, endpoints) {
   obs_stat
 }
 
-simulation_layer <- function(data, ...) {
+simulation_layer <- function(data, dots = list(NULL)) {
   method <- get_viz_method(data)
   bins <- get_viz_bins(data)
   
@@ -314,20 +342,34 @@ simulation_layer <- function(data, ...) {
   if (method == "simulation") {
     if (length(unique(data$stat)) >= 10) {
       res <- list(
-        ggplot2::stat_bin(
-          mapping = aes(x = stat), bins = bins, color = "white", ...,
-          breaks = bin_breaks
+        do.call(
+          ggplot2::stat_bin,
+          c(list(mapping = aes(x = stat), 
+                 bins = bins, 
+                 color = "white", 
+                 breaks = bin_breaks), 
+            dots)
         )
       )
     } else {
       # Probably should be removed
-      res <- list(geom_bar(mapping = aes(x = stat), ...))
+      res <- list(
+        do.call(
+          ggplot2::geom_bar,
+          c(list(mapping = aes(x = stat)), dots)
+        )
+      )
     }
   } else if (method == "both") {
     res <- list(
-      ggplot2::stat_bin(
-        mapping = aes(x = stat, y = ..density..), bins = bins,
-        color = "white", ..., breaks = bin_breaks
+      do.call(
+        ggplot2::stat_bin,
+        c(list(mapping = aes(x = stat, y = ..density..),
+               bins = bins,
+               color = "white", 
+               breaks = bin_breaks),
+          dots)
+        
       )
     )
   }
@@ -342,7 +384,7 @@ compute_bin_breaks <- function(data, bins) {
   c(g_tbl[["xmin"]][1], g_tbl[["xmax"]])
 }
 
-theoretical_layer <- function(data, dens_color, ..., do_warn = TRUE) {
+theoretical_layer <- function(data, dens_color, dots = list(NULL), do_warn = TRUE) {
   method <- get_viz_method(data)
   
   if (method == "simulation") {
@@ -426,7 +468,7 @@ theory_curve <- function(method, d_fun, q_fun, args_list, dens_color) {
   res
 }
 
-title_labels_layer <- function(data) {
+title_layer <- function(data, title_fn = ggplot2::ggtitle) {
   method <- get_viz_method(data)
   theory_type <- short_theory_type(data)
   
@@ -443,22 +485,40 @@ title_labels_layer <- function(data) {
     )
   }
   
+  if (is_fitted(data)) {
+    plural <- "s"
+  } else {
+    plural <- ""
+  }
+  
   title_string <- switch(
     method,
-    simulation = "Simulation-Based {distr_name}",
-    theoretical = "Theoretical {theory_type} {distr_name}",
+    simulation = "Simulation-Based {distr_name}{plural}",
+    theoretical = "Theoretical {theory_type} {distr_name}{plural}",
     both = "Simulation-Based and Theoretical {theory_type} {distr_name}s"
   )
   
-  x_lab <- switch(method, simulation = "stat", "{theory_type} stat")
+  list(title_fn(glue_null(title_string)))
+}
+
+labels_layer <- function(data, term) {
+  method <- get_viz_method(data)
+  theory_type <- short_theory_type(data)
+  
+  x_lab <- switch(method, simulation = "{term}", "{theory_type} stat")
   y_lab <- switch(method, simulation = "count", "density")
   
   list(
-    ggtitle(glue_null(title_string)),
     xlab(glue_null(x_lab)),
     ylab(glue_null(y_lab))
   )
 }
+
+facet_layer <- function() {
+  list(
+    ggplot2::facet_wrap(~term, scales = "free_x")
+  )
+} 
 
 check_shade_confidence_interval_args <- function(color, fill) {
   check_type(color, is_color_string, "color string")
@@ -469,6 +529,11 @@ check_shade_confidence_interval_args <- function(color, fill) {
 
 short_theory_type <- function(x) {
   theory_attr <- attr(x, "theory_type")
+  
+  if (!has_attr(x, "theory_type")) {
+    return("")
+  }
+  
   theory_types <- list(
     t = c("Two sample t", "Slope with t", "One sample t"),
     `F` = "ANOVA",
@@ -487,4 +552,67 @@ get_viz_method <- function(data) {
 
 get_viz_bins <- function(data) {
   attr(data, "viz_bins")
+}
+
+#' @method ggplot_add infer_layer
+#' @export
+ggplot_add.infer_layer <- function(object, plot, object_name) {
+  # a method for the `+` operator for infer objects.
+  # - "object to add" (arguments to the RHS of the `+`)
+  # - plot is the existing plot (on the LHS of the `+`)
+  # - object_name is the unevaluated call on the RHS of the `+`
+  #
+  # output is the actual output of the addition - this allows for
+  # a more %>%-esque programming style
+  #
+  # the biggest advantage this offers us is that we can
+  # overwrite existing elements, i.e. subsetting into the patchwork,
+  # modifying its elements (for p-value and confidence interval shading),
+  # and then overwriting them.
+  #
+  # both shade_p_value and shade_confidence_interval now just dispatch here
+  # and execute term-wise along a patchwork object, so "object" is only a
+  # stand-in classed object that sends to the right place
+  
+  # process object_name (shade_* call) ----------------------------------
+  shade_fn <- attr(object, "fn")
+  shade_args <- attributes(object)[!names(attributes(object)) %in% 
+                                     c("class", "fn")]
+  
+  # if a patchwork object, use a custom `infer_layer` `+.gg` method.
+  # otherwise, convert the `infer_layer` back to a list and call `+` again.
+  if (inherits(plot, "patchwork")) {
+    # use a for loop to invoke the `[[.patchwork` method
+    n_patches <- length(plot$patches$plots) + 1
+    
+    new_plot <- plot
+    
+    for (i in 1:n_patches) {
+      args <- shade_args
+      args[["plot"]] <- plot[[i]]
+      
+      new_plot[[i]] <- 
+        do.call(
+          paste0(shade_fn, "_term"),
+          args
+        )
+    }
+  } else {
+    args <- shade_args
+    args[["plot"]] <- plot
+    
+    new_plot <- 
+      do.call(
+        paste0(shade_fn, "_term"),
+        args
+      )
+  }
+  
+  new_plot
+}
+
+# extract the x axis label from a ggplot -- these are unique
+# ids for terms in visualize() workflows
+x_axis_label <- function(x) {
+  x %>% purrr::pluck("labels", "x")
 }

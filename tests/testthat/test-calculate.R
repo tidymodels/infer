@@ -639,6 +639,14 @@ test_that("calculate messages informatively with excessive null", {
       calculate(stat = "sd"),
     "point null hypothesis `sigma = 10` does not inform calculation"
   )
+  
+  expect_message(
+    gss %>%
+      specify(hours ~ college) %>%
+      hypothesize(null = "independence") %>%
+      calculate("diff in means", order = c("no degree", "degree")),
+    "independence null hypothesis does not inform calculation"
+  )
 })
 
 test_that("calculate can handle variables named x", {
