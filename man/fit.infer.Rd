@@ -90,6 +90,11 @@ null_fits <- gss \%>\%
 
 null_fits
 
+# for logistic regression, set `mode = "classification"`
+gss \%>\%
+  specify(college ~ age + hours) \%>\%
+  fit(mode = "classification")
+
 # more in-depth explanation of how to use the infer package
 \dontrun{
 vignette("infer")
