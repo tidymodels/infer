@@ -56,6 +56,11 @@ earlier in the pipeline. If passed the output of specify() or
 hypothesize(), the function will fit one model. If passed the output
 of generate(), it will fit a model to each data resample, denoted in
 the replicate column.
+infer provides a fit &quot;method&quot; for infer objects, which is a way of carrying
+out model fitting as applied to infer output. The &quot;generic,&quot; imported from
+the generics package and re-exported from this package, provides the
+general form of fit() that points to infer's method when called on an
+infer object. That generic is also documented here.
 Learn more in vignette(&quot;infer&quot;)." />
 <meta name="twitter:card" content="summary" />
 
@@ -179,6 +184,11 @@ earlier in the pipeline. If passed the output of <code><a href='specify.html'>sp
 <code><a href='hypothesize.html'>hypothesize()</a></code>, the function will fit one model. If passed the output
 of <code><a href='generate.html'>generate()</a></code>, it will fit a model to each data resample, denoted in
 the <code>replicate</code> column.</p>
+<p>infer provides a fit "method" for infer objects, which is a way of carrying
+out model fitting as applied to infer output. The "generic," imported from
+the generics package and re-exported from this package, provides the
+general form of <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> that points to infer's method when called on an
+infer object. That generic is also documented here.</p>
 <p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
     </div>
 
@@ -191,12 +201,12 @@ the <code>replicate</code> column.</p>
     <tr>
       <th>object</th>
       <td><p>Output from an infer function---likely <code><a href='generate.html'>generate()</a></code> or
-<code><a href='hypothesize.html'>hypothesize()</a></code>---which specifies the formula and data to fit a model to.</p></td>
+<code><a href='specify.html'>specify()</a></code>---which specifies the formula and data to fit a model to.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Any optional arguments to pass along to the chosen computational
-engine. See <code>parsnip::linear_reg()</code> for more information.</p></td>
+      <td><p>Any optional arguments to pass along to the model fitting
+function. See <code><a href='https://rdrr.io/r/stats/glm.html'>stats::glm()</a></code> for more information.</p></td>
     </tr>
     </table>
 
@@ -212,13 +222,37 @@ original data set the model was fitted to.</p></li>
 explanatory variable (<code>term</code>).</p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Randomization-based statistical inference with multiple explanatory
+variables requires careful consideration of the null hypothesis in question
+and its implications for permutation procedures. Inference for partial
+regression coefficients via the permutation method implemented in
+<code><a href='generate.html'>generate()</a></code> for multiple explanatory variables, consistent with its meaning
+elsewhere in the package, is subject to additional distributional assumptions
+beyond those required for one explanatory variable. Namely, the distribution
+of the response variable must be similar to the distribution of the errors
+under the null hypothesis' specification of a fixed effect of the explanatory
+variables. (This null hypothesis is reflected in the <code>cols</code> argument to
+<code><a href='generate.html'>generate()</a></code>. By default, all of the explanatory variables are treated
+as fixed.) A general rule of thumb here is, if there are large outliers
+in the distributions of any of the explanatory variables, this distributional
+assumption will not be satisfied; when the response variable is permuted,
+the (presumably outlying) value of the response will no longer be paired
+with the outlier in the explanatory variable, causing an outsize effect
+on the resulting slope coefficient for that explanatory variable.</p>
+<p>More sophisticated methods that are outside of the scope of this package
+requiring fewer---or less strict---distributional assumptions
+exist. For an overview, see "Permutation tests for univariate or
+multivariate analysis of variance and regression" (Marti J. Anderson,
+2001), doi: <a href='https://doi.org/10.1139/cjfas-58-3-626'>10.1139/cjfas-58-3-626</a>
+.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='co'># fit a linear model predicting number of hours worked per</span></span>
 <span class='r-in'><span class='co'># week using respondent age and degree status.</span></span>
 <span class='r-in'><span class='va'>observed_fit</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>hours</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>college</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"independence"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>observed_fit</span></span>
