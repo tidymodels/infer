@@ -10,7 +10,9 @@ visualize(data, bins = 15, method = "simulation", dens_color = "black", ...)
 visualise(data, bins = 15, method = "simulation", dens_color = "black", ...)
 }
 \arguments{
-\item{data}{The output from \code{\link[=calculate]{calculate()}}.}
+\item{data}{A distribution of statistics (for \code{\link[=calculate]{calculate()}}-based workflows)
+or coefficient estimates (for \code{\link[=fit.infer]{fit()}}-based workflows)
+outputted by infer.}
 
 \item{bins}{The number of bins in the histogram.}
 
@@ -24,8 +26,16 @@ theoretical density curve.}
 \item{...}{Other arguments passed along to \\{ggplot2\\} functions.}
 }
 \value{
-A ggplot object showing the simulation-based distribution as a
-histogram or bar graph. Also used to show the theoretical curves.
+For \code{\link[=calculate]{calculate()}}-based workflows, a ggplot object showing the
+simulation-based distribution as a histogram or bar graph. Also used to
+show the theoretical curves.
+
+For \code{\link[=fit.infer]{fit()}}-based workflows, a \code{patchwork} object
+showing the simulation-based distributions as a histogram or bar graph.
+The interface to adjust plot options and themes is a bit different
+for \code{patchwork} plots than ggplot2 plots. The examples highlight the
+biggest differences here, but see \link[patchwork:plot_annotation]{patchwork::plot_annotation} and
+\link[patchwork:plot_arithmetic]{patchwork::&.gg} for more details.
 }
 \description{
 Visualize the distribution of the simulation-based inferential statistics or
@@ -112,6 +122,18 @@ null_fits
 
 # visualize distributions of resulting coefficients
 visualize(null_fits)
+
+# the interface to add themes and other elements to patchwork
+# plots (outputted by `visualize` when the inputted data
+# is from the `fit()` function) is a bit different than adding
+# them to ggplot2 plots.
+library(ggplot2)
+
+# to add a ggplot2 theme to a `calculate()`-based visualization, use `+`
+null_dist \%>\% visualize() + theme_dark()
+  
+# to add a ggplot2 theme to a `fit()`-based visualization, use `&`
+null_fits \%>\% visualize() & theme_dark()
 }
 
 # More in-depth explanation of how to use the infer package
