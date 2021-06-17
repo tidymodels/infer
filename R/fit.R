@@ -129,7 +129,7 @@ fit.infer <- function(object, mode = "regression", ...) {
           do.call(
             fit_linear_model,
             c(
-              list(object, formula),
+              list(object = data, formula = formula),
               dots
             )
           )
@@ -204,7 +204,7 @@ switch_mode <- function(mode) {
 relevel_response <- function(x) {
   if (!is.null(attr(x, "success"))) {
     x[[response_name(x)]] <- 
-      relevel(
+      stats::relevel(
         response_variable(x), 
         ref = attr(x, "success")
       )
