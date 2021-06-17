@@ -40,7 +40,7 @@ ggplot2::ggplot_add
 #' showing the simulation-based distributions as a histogram or bar graph.
 #' The interface to adjust plot options and themes is a bit different
 #' for `patchwork` plots than ggplot2 plots. The examples highlight the
-#' biggest differences here, but see [patchwork::plot_annotation] and
+#' biggest differences here, but see [patchwork::plot_annotation()] and
 #' [patchwork::&.gg] for more details.
 #'
 #' @seealso [shade_p_value()], [shade_confidence_interval()].

@@ -34,7 +34,7 @@ For \code{\link[=fit.infer]{fit()}}-based workflows, a \code{patchwork} object
 showing the simulation-based distributions as a histogram or bar graph.
 The interface to adjust plot options and themes is a bit different
 for \code{patchwork} plots than ggplot2 plots. The examples highlight the
-biggest differences here, but see \link[patchwork:plot_annotation]{patchwork::plot_annotation} and
+biggest differences here, but see \code{\link[patchwork:plot_annotation]{patchwork::plot_annotation()}} and
 \link[patchwork:plot_arithmetic]{patchwork::&.gg} for more details.
 }
 \description{
