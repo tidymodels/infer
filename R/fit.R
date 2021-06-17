@@ -27,6 +27,9 @@ generics::fit
 #' 
 #' @param object Output from an infer function---likely [generate()] or 
 #' [specify()]---which specifies the formula and data to fit a model to.
+#' @param mode One of "regression" or "classification"---the model type,
+#' determined by the outcome variable. If a `family` argument is passed
+#' via `...`, this argument will be ignored.
 #' @param ... Any optional arguments to pass along to the model fitting
 #' function. See [stats::glm()] for more information.
 #'
@@ -96,8 +99,17 @@ generics::fit
 #' @method fit infer
 #' @export fit.infer
 #' @export
-fit.infer <- function(object, ...) {
+fit.infer <- function(object, mode = "regression", ...) {
   message_on_excessive_null(object, fn = "fit")
+  
+  # Confirm that the mode, either supplied via the mode
+  # argument or via `family` in ..., aligns with the outcome
+  # variable. Return a processed version of the ellipses
+  dots <- check_mode(object, mode, ...)
+
+  # Relevel the response based on the success attribute
+  # so that the reference level is reflected in the fit
+  object <- relevel_response(object)
   
   # Extract the formula if it was supplied to specify, otherwise
   # construct it out of the explanatory and response arguments
@@ -108,15 +120,26 @@ fit.infer <- function(object, ...) {
       tidyr::nest(data = -replicate) %>%
       dplyr::rowwise() %>%
       dplyr::mutate(
-        model = list(fit_linear_model(
-          object = data, 
-          formula = formula,
-          ...))
+        model = list(
+          do.call(
+            fit_linear_model,
+            c(
+              list(object, formula),
+              dots
+            )
+          )
+        )
       ) %>%
       dplyr::select(replicate, model) %>%
       tidyr::unnest(model)
   } else {
-    x <- fit_linear_model(object, formula, ...)
+    x <- do.call(
+      fit_linear_model,
+      c(
+        list(object, formula),
+        dots
+      )
+    )
   }
   
   x <- copy_attrs(x, object)
@@ -125,10 +148,66 @@ fit.infer <- function(object, ...) {
   x
 }
 
+check_mode <- function(object, mode, ...) {
+  response_type <- determine_variable_type(object, "response")
+  
+  if (response_type == "mult") {
+    stop_glue(
+      "infer does not support fitting models on categorical response variables ",
+      "with more than two levels. Please see `multinom_reg()` from the ",
+      "parsnip package."
+    )
+  }
+  
+  dots <- list(...)
+  
+  if ("family" %in% names(dots)) {
+    return(dots)
+  }
+  
+  if (!mode %in% c("regression", "classification")) {
+    stop_glue(
+      'The `mode` argument must be one of "regression" or "classification".'
+    )
+  }
+  
+  if ((response_type == "num" && mode == "classification") ||
+      (response_type == "bin" && mode == "regression")) {
+    stop_glue(
+      'Use `mode = "{switch_mode(mode)}"` in `fit()` for a ',
+      '{get_stat_type_desc(response_type)} response variable.'
+    )
+  }
+  
+  if (mode == "classification") {
+    dots[["family"]] <- stats::binomial
+  } else {
+    dots[["family"]] <- stats::gaussian
+  }
+  
+  dots
+}
 
+switch_mode <- function(mode) {
+  if (mode == "regression") {
+    return("classification")
+  } else {
+    return("regression")
+  }
+}
 
+relevel_response <- function(x) {
+  if (!is.null(attr(x, "success"))) {
+    x[[response_name(x)]] <- 
+      relevel(
+        response_variable(x), 
+        ref = attr(x, "success")
+      )
+  }
 
-
+  
+  x
+}
 
 get_formula <- function(x) {
   if (has_attr(x, "formula")) {

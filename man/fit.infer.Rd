@@ -4,11 +4,15 @@
 \alias{fit.infer}
 \title{Fit linear models to infer objects}
 \usage{
-\method{fit}{infer}(object, ...)
+\method{fit}{infer}(object, mode = "regression", ...)
 }
 \arguments{
 \item{object}{Output from an infer function---likely \code{\link[=generate]{generate()}} or
 \code{\link[=specify]{specify()}}---which specifies the formula and data to fit a model to.}
+
+\item{mode}{One of "regression" or "classification"---the model type,
+determined by the outcome variable. If a \code{family} argument is passed
+via \code{...}, this argument will be ignored.}
 
 \item{...}{Any optional arguments to pass along to the model fitting
 function. See \code{\link[stats:glm]{stats::glm()}} for more information.}
