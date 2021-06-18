@@ -88,3 +88,20 @@ test_that("assume() brings along supplied arguments", {
     "t"
   )
 })
+
+test_that("process_df works", {
+  expect_equal(
+    process_df(1),
+    list(df = 1)
+  )
+  
+  expect_equal(
+    process_df(c(1, 2)),
+    list(df1 = 1, df2 = 2)
+  )
+  
+  expect_equal(
+    process_df(NULL),
+    list()
+  )
+})
