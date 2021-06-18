@@ -4,7 +4,7 @@
 #' 
 #' Fill in once interface solidifies.
 #' 
-#' @param distribution The distribution in question, as a character. One of
+#' @param distribution The distribution in question, as a string One of
 #'   `"F"`, `"Chisq"`, `"t"`, or `"z"`.
 #' @param df The degrees of freedom parameter(s) for the `distribution`
 #'   supplied, as a numeric vector. For `distribution = "F"`, this should have
@@ -100,6 +100,7 @@ assume <- function(distribution, df = NULL, ...) {
     ),
     distribution = dist_fn(distribution), 
     df = df,
+    dots = list(...),
     class = "infer_dist"
   )
 }
@@ -114,12 +115,32 @@ check_distribution <- function(distribution, df, ...) {
     )
   }
   
+  
+  if (!is.numeric(df) && !is.null(df)) {
+    stop_glue(
+      "`assume()` expects the `df` argument to be a numeric vector, ",
+      "but you supplied a {list(class(df))} object."
+    )
+  }
+  
+  if (length(list(...)) != 0) {
+    plural <- length(list(...)) != 1
+    dots <- list(...)
+    
+    stop_glue(
+      "`assume()` ignores the dots `...` argument, though the ",
+      "argument{if (plural) 's' else ''} `{list(dots)}` ",
+      "{if (plural) 'were' else 'was'} supplied. Did you forget to ",
+      "concatenate the `df` argument with `c()`?"
+    )
+  }
+  
   if (dist_df_length(distribution) != length(df)) {
     plural <- length(df) != 1
     stop_glue(
       '{distribution_desc(distribution)} distribution requires ',
       '{dist_df_length(distribution)} degrees of freedom argument',
-      '{if (plural) "s" else ""}, but {length(df)} ',
+      '{if (!plural) "s" else ""}, but {length(df)} ',
       '{if (plural) "were" else "was"} supplied.'
     )
   }
