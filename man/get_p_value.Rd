@@ -2,12 +2,18 @@
 % Please edit documentation in R/get_p_value.R
 \name{get_p_value}
 \alias{get_p_value}
+\alias{get_p_value.default}
 \alias{get_pvalue}
+\alias{get_p_value.infer_dist}
 \title{Compute p-value}
 \usage{
 get_p_value(x, obs_stat, direction)
 
+\method{get_p_value}{default}(x, obs_stat, direction)
+
 get_pvalue(x, obs_stat, direction)
+
+\method{get_p_value}{infer_dist}(x, obs_stat, direction)
 }
 \arguments{
 \item{x}{A data frame containing a distribution of \code{\link[=calculate]{calculate()}}d statistics

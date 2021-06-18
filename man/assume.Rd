@@ -7,7 +7,7 @@
 assume(distribution, df = NULL, ...)
 }
 \arguments{
-\item{distribution}{The distribution in question, as a character. One of
+\item{distribution}{The distribution in question, as a string. One of
 \code{"F"}, \code{"Chisq"}, \code{"t"}, or \code{"z"}.}
 
 \item{df}{The degrees of freedom parameter(s) for the \code{distribution}

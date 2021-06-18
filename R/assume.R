@@ -4,7 +4,7 @@
 #' 
 #' Fill in once interface solidifies.
 #' 
-#' @param distribution The distribution in question, as a string One of
+#' @param distribution The distribution in question, as a string. One of
 #'   `"F"`, `"Chisq"`, `"t"`, or `"z"`.
 #' @param df The degrees of freedom parameter(s) for the `distribution`
 #'   supplied, as a numeric vector. For `distribution = "F"`, this should have
@@ -12,8 +12,6 @@
 #'   `distribution = "t"`, this should have length one. For 
 #'   `distribution = "z"`, this argument is required.
 #' @param ... Currently ignored.
-#    Maybe distribution parameters should just be supplied via ...? 
-#    Is this more extensible? Is that a priority?
 #'  
 #' @return An infer theoretical distribution that can be passed to helpers
 #'   like [visualize()], [get_p_value()], and [get_confidence_interval()]. 
@@ -194,3 +192,11 @@ df_desc <- function(df) {
   }
 }
 
+# process df for passing to p* functions
+process_df <- function(df) {
+  switch(as.character(length(df)),
+    "0" = list(),
+    "1" = list(df = df),
+    "2" = list(df1 = df[1], df2 = df[2])
+  )
+}

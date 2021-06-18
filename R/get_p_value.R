@@ -99,12 +99,16 @@
 #' }  
 #'   
 #' @name get_p_value
-NULL
+#' @export
+get_p_value <- function(x, obs_stat, direction) {
+  UseMethod("get_p_value", x)
+}
 
 #' @rdname get_p_value
 #' @family auxillary functions
+#' @method get_p_value default
 #' @export
-get_p_value <- function(x, obs_stat, direction) {
+get_p_value.default <- function(x, obs_stat, direction) {
   check_type(x, is.data.frame)
   if (!is_generated(x) & is_hypothesized(x)) {
     stop_glue(
@@ -154,8 +158,37 @@ get_p_value <- function(x, obs_stat, direction) {
 
 #' @rdname get_p_value
 #' @export
-get_pvalue <- function(x, obs_stat, direction) {
-  get_p_value(x = x, obs_stat = obs_stat, direction = direction)
+get_pvalue <- get_p_value
+
+#' @rdname get_p_value
+#' @method get_p_value infer_dist
+#' @export
+get_p_value.infer_dist <- function(x, obs_stat, direction) {
+  # parse the distribution function
+  dist_fn <- paste0("p", attr(x, "distribution"))
+  
+  # translate the direction argument
+  dir <- norm_direction(direction)
+  
+  lower_tail <- switch(
+    dir,
+    `left` = TRUE,
+    `right` = FALSE,
+    `both` = TRUE
+  )
+
+  # supply everything to the base R distribution function
+  res <- do.call(
+    dist_fn,
+    c(list(q = as.numeric(obs_stat), lower.tail = lower_tail),
+      process_df(attr(x, "df")))
+  )
+  
+  if (dir == "both") {
+    res <- min(res, 1 - res) * 2
+  }
+  
+  res
 }
 
 simulation_based_p_value <- function(x, obs_stat, direction) {
