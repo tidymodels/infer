@@ -124,23 +124,39 @@
 #'     
 #' @export
 assume <- function(x, distribution, df = NULL, ...) {
-  check_type(x, is.data.frame)
-  check_distribution(distribution, df, ...)
+  if (!inherits(x, "infer")) {
+    stop_glue(
+      "The `x` argument must be the output of a core infer function, ",
+      "likely `specify()` or `hypothesize()`."
+    )
+  }
+  
+  # check that `distribution` aligns with what is expected from
+  # `x` and that `distribution` and `df` are consistent with each other
+  check_distribution(x, distribution, df, ...)
   
   structure(
     glue_null(
       "{distribution_desc(distribution)} distribution{df_desc(df)}.",
     ),
-    x = x,
-    distribution = dist_fn(distribution), 
+    # store distribution as the suffix to p* in dist function
+    distribution = dist_fn(distribution),
+    # store df for easier passing to p* functions
     df = df,
+    # store df in `specify`-esque format for use in `visualize`
+    distr_param = if (length(df) > 0) {df[1]} else {NULL},
+    distr_param2 = if (length(df) == 2) {df[2]} else {NULL},
+    # bring along theory_type x attribute
+    theory_type = attr(x, "theory_type"),
+    # bring along dots
     dots = list(...),
+    # append class
     class = "infer_dist"
   )
 }
 
 # check that the distribution is well-specified
-check_distribution <- function(distribution, df, ...) {
+check_distribution <- function(x, distribution, df, ...) {
   dist <- tolower(distribution)
   
   if (!dist %in% c("f", "chisq", "t", "z")) {
@@ -149,6 +165,28 @@ check_distribution <- function(distribution, df, ...) {
     )
   }
   
+  if ((dist == "f" && attr(x, "theory_type") != "ANOVA") ||
+      (dist == "chisq" && !attr(x, "theory_type") %in% c("Chi-square test of indep", 
+                                                         "Chi-square Goodness of Fit")) ||
+      (dist == "t" && !attr(x, "theory_type") %in% c("One sample t", 
+                                                     "Two sample t")) ||
+      (dist == "z" && !attr(x, "theory_type") %in% c("One sample prop z", 
+                                                     "Two sample props z"))) {
+    if (has_explanatory(x)) {
+      msg_tail <- glue_null(
+        "a {get_stat_type_desc(determine_variable_type(x, 'explanatory'))} ",
+        "explanatory variable ({explanatory_name(x)})."
+      )
+    } else {
+      msg_tail <- "no explanatory variable."
+    }
+    
+    stop_glue(
+      'The supplied distribution "{distribution}" is not well-defined for a ',
+      "{get_stat_type_desc(determine_variable_type(x, 'response'))} response ",
+      "variable ({response_name(x)}) and ", msg_tail
+    )
+  }
   
   if (!is.numeric(df) && !is.null(df)) {
     stop_glue(

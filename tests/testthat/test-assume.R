@@ -95,6 +95,41 @@ test_that("assume errors with bad arguments", {
       assume("F", nrow(gss) - 1, 1, 2), 
     'arguments `list\\(1, 2\\)` were supplied'
   )
+  
+  # supply `distribution`s that don't align with the supplied variables
+  expect_error(
+    gss %>% 
+      specify(age ~ finrela) %>% 
+      assume("t", nrow(gss) - 1),
+    'supplied distribution "t" is not well-defined.*onse variable \\(age\\)'
+  )
+  
+  expect_error(
+    gss %>% 
+      specify(age ~ finrela) %>% 
+      assume("z", nrow(gss) - 1),
+    'supplied distribution "z" is not well-defined.*onse variable \\(age\\)'
+  )
+  
+  expect_error(
+    gss %>% 
+      specify(age ~ NULL) %>% 
+      assume("z", nrow(gss) - 1),
+    'supplied distribution "z" is not well-defined.*onse variable \\(age\\)'
+  )
+  
+  # supply bad `x` arguments
+  expect_error(
+    gss %>% 
+      assume("z", nrow(gss) - 1),
+    '`x` argument must be the output of a core infer function'
+  )
+  
+  expect_error(
+    "boop" %>%
+      assume("z", nrow(gss) - 1),
+    '`x` argument must be the output of a core infer function'
+  )
 })
 
 test_that("assume() brings along supplied arguments", {
@@ -110,6 +145,28 @@ test_that("assume() brings along supplied arguments", {
   expect_equal(
     attr(t_dist, "distribution"),
     "t"
+  )
+  
+  expect_equal(
+    attr(t_dist, "theory_type"),
+    "Two sample t"
+  )
+  
+  expect_equal(
+    attr(t_dist, "df"),
+    attr(t_dist, "distr_param")
+  )
+  
+  f_dist <- gss %>% 
+    specify(age ~ partyid) %>% 
+    assume(
+      distribution = "F", 
+      df = c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
+    )
+  
+  expect_equal(
+    attr(f_dist, "df"),
+    c(attr(f_dist, "distr_param"), attr(f_dist, "distr_param2"))
   )
 })
 

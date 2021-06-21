@@ -16,10 +16,12 @@ get_pvalue(x, obs_stat, direction)
 \method{get_p_value}{infer_dist}(x, obs_stat, direction)
 }
 \arguments{
-\item{x}{A data frame containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
+\item{x}{A null distribution. For simulation-based inference, a data frame
+containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
 or \code{\link[=fit.infer]{fit()}}ted coefficient estimates. This object should
 have been passed to \code{\link[=generate]{generate()}} before being supplied or
-\code{\link[=calculate]{calculate()}} to \code{\link[=fit.infer]{fit()}}.}
+\code{\link[=calculate]{calculate()}} to \code{\link[=fit.infer]{fit()}}. For theory-based inference,
+the output of \code{\link[=assume]{assume()}}.}
 
 \item{obs_stat}{A data frame containing the observed statistic (in a
 \code{\link[=calculate]{calculate()}}-based workflow) or observed fit (in a
