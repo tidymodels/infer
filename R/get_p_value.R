@@ -6,10 +6,12 @@
 #' 
 #' Learn more in `vignette("infer")`.
 #'
-#' @param x A data frame containing a distribution of [calculate()]d statistics 
+#' @param x A null distribution. For simulation-based inference, a data frame 
+#'   containing a distribution of [calculate()]d statistics 
 #'   or [`fit()`][fit.infer()]ted coefficient estimates. This object should 
 #'   have been passed to [generate()] before being supplied or 
-#'   [calculate()] to [`fit()`][fit.infer()].
+#'   [calculate()] to [`fit()`][fit.infer()]. For theory-based inference,
+#'   the output of [assume()].
 #' @param obs_stat A data frame containing the observed statistic (in a 
 #'   [calculate()]-based workflow) or observed fit (in a 
 #'   [`fit()`][fit.infer()]-based workflow). This object is likely the output 

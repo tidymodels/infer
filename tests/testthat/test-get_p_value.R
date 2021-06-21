@@ -233,6 +233,8 @@ test_that("get_p_value can handle theoretical distributions", {
   # f ------------------------------------------------------------
   # direction = "right" is the only valid one
   f_dist <- 
+    gss %>% 
+    specify(age ~ partyid) %>%
     assume(
       distribution = "F", 
       c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
@@ -259,6 +261,9 @@ test_that("get_p_value can handle theoretical distributions", {
   
   # t ------------------------------------------------------------
   t_dist <- 
+    gss %>%
+    specify(response = hours) %>% 
+    hypothesize(null = "point", mu = 40) %>%
     assume("t", nrow(gss) - 1)
   
   t_obs <-
@@ -316,6 +321,8 @@ test_that("get_p_value can handle theoretical distributions", {
   # chisq ------------------------------------------------------------
   # direction = "right" is the only valid one
   chisq_dist <- 
+    gss %>% 
+    specify(college ~ finrela) %>%
     assume(
       distribution = "Chisq", 
       df = (length(unique(gss$finrela)) - 1) * 
@@ -345,6 +352,9 @@ test_that("get_p_value can handle theoretical distributions", {
   
   # z ------------------------------------------------------------
   z_dist <- 
+    gss %>%
+    specify(response = sex, success = "female") %>%
+    hypothesize(null = "point", p = .5) %>%
     assume("z")
   
   z_obs <- 

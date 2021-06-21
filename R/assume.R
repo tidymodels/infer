@@ -42,28 +42,38 @@
 #' 
 #' # F distribution
 #' # with the `partyid` explanatory variable
-#' assume(
-#'   distribution = "F", 
-#'   c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
-#' )
+#' gss %>% 
+#'   specify(age ~ partyid) %>% 
+#'   assume(
+#'     distribution = "F", 
+#'     c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
+#'   )
 #' 
 #' # Chi-squared goodness of fit distribution
 #' # on the `finrela` variable
-#' assume("Chisq", length(unique(gss$finrela)) - 1)
+#' gss %>%
+#'   specify(response = finrela) %>%
+#'   assume("Chisq", length(unique(gss$finrela)) - 1)
 #' 
 #' # Chi-squared test of independence
 #' # on the `finrela` and `sex` variables
-#' assume(
-#'   distribution = "Chisq", 
-#'   df = (length(unique(gss$finrela)) - 1) * 
-#'        (length(unique(gss$sex)) - 1)
-#' )
+#' gss %>%
+#'   specify(formula = finrela ~ sex) %>%
+#'   assume(
+#'     distribution = "Chisq", 
+#'     df = (length(unique(gss$finrela)) - 1) * 
+#'          (length(unique(gss$sex)) - 1)
+#'   )
 #' 
 #' # T distribution
-#' assume("t", nrow(gss) - 1)
+#' gss %>% 
+#'   specify(age ~ college) %>%
+#'   assume("t", nrow(gss) - 1)
 #' 
 #' # Z distribution
-#' assume("z")
+#' gss %>%
+#'   specify(response = sex, success = "female") %>%
+#'   assume("z")
 #' 
 #' \dontrun{
 #' # each of these distributions can be passed to infer helper
@@ -78,7 +88,9 @@
 #'   calculate(stat = "t")
 #' 
 #' # construct a null distribution
-#' null_dist <- assume("t", nrow(gss) - 1)
+#' null_dist <- gss %>%
+#'   specify(response = hours) %>%
+#'   assume("t", nrow(gss) - 1)
 #' 
 #' # juxtapose them visually
 #' visualize(null_dist) + 
@@ -95,7 +107,8 @@
 #'   calculate(stat = "F")
 #' 
 #' # construct a null distribution
-#' null_dist <- 
+#' null_dist <- gss %>% 
+#'   specify(age ~ partyid) %>%
 #'   assume(
 #'     distribution = "F", 
 #'     c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
@@ -111,6 +124,7 @@
 #'     
 #' @export
 assume <- function(x, distribution, df = NULL, ...) {
+  check_type(x, is.data.frame)
   check_distribution(distribution, df, ...)
   
   structure(
