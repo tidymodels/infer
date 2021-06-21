@@ -230,6 +230,12 @@ test_that("get_p_value errors informatively when args are switched", {
 })
 
 test_that("get_p_value can handle theoretical distributions", {
+  get_p_value_ <- function(x, obs_stat, direction) {
+    x <- get_p_value(x, obs_stat, direction)
+    
+    x$p_value
+  }
+  
   # f ------------------------------------------------------------
   # direction = "right" is the only valid one
   f_dist <- 
@@ -246,17 +252,17 @@ test_that("get_p_value can handle theoretical distributions", {
     calculate(stat = "F")
   
   expect_equal(
-    get_p_value(f_dist, f_obs, direction = "right"),
+    get_p_value_(f_dist, f_obs, direction = "right"),
     0.06005251,
-    tolerance = 1e-5
+    tolerance = 1e-3
   )
 
   old_way_f <- broom::tidy(aov(age ~ partyid, gss))
   
   expect_equal(
-    get_p_value(f_dist, f_obs, direction = "right"),
+    get_p_value_(f_dist, f_obs, direction = "right"),
     old_way_f$p.value[[1]],
-    tolerance = 1e-5
+    tolerance = 1e-3
   )
   
   # t ------------------------------------------------------------
@@ -273,49 +279,49 @@ test_that("get_p_value can handle theoretical distributions", {
     calculate(stat = "t")
   
   expect_equal(
-    get_p_value(t_dist, t_obs, direction = "both"),
+    get_p_value_(t_dist, t_obs, direction = "both"),
     0.038,
-    tolerance = .001
+    tolerance = 1e-3
   )
   
   expect_equal(
-    get_p_value(t_dist, t_obs, direction = "left"),
+    get_p_value_(t_dist, t_obs, direction = "left"),
     0.981,
-    tolerance = .001
+    tolerance = 1e-3
   )
   
   expect_equal(
-    get_p_value(t_dist, t_obs, direction = "right"),
-    1 - get_p_value(t_dist, t_obs, direction = "left"),
-    tolerance = .001
+    get_p_value_(t_dist, t_obs, direction = "right"),
+    1 - get_p_value_(t_dist, t_obs, direction = "left"),
+    tolerance = 1e-3
   )
   
   expect_equal(
-    get_p_value(t_dist, t_obs, direction = "both"),
-    (1 - get_p_value(t_dist, t_obs, direction = "left")) * 2,
-    tolerance = .001
+    get_p_value_(t_dist, t_obs, direction = "both"),
+    (1 - get_p_value_(t_dist, t_obs, direction = "left")) * 2,
+    tolerance = 1e-3
   )
 
   old_way_both <- t_test(gss, hours ~ NULL, mu = 40, alternative = "two.sided")
   
   expect_equal(
     old_way_both$p_value, 
-    get_p_value(t_dist, t_obs, direction = "both"),
-    tolerance = 1e-5
+    get_p_value_(t_dist, t_obs, direction = "both"),
+    tolerance = 1e-3
   )
   
   old_way_left <- t_test(gss, hours ~ NULL, mu = 40, alternative = "less")
   
   expect_equal(
     old_way_left$p_value, 
-    get_p_value(t_dist, t_obs, direction = "left")
+    get_p_value_(t_dist, t_obs, direction = "left")
   )
   
   old_way_right <- t_test(gss, hours ~ NULL, mu = 40, alternative = "greater")
   
   expect_equal(
     old_way_right$p_value, 
-    get_p_value(t_dist, t_obs, direction = "right")
+    get_p_value_(t_dist, t_obs, direction = "right")
   )
   
   # chisq ------------------------------------------------------------
@@ -335,9 +341,9 @@ test_that("get_p_value can handle theoretical distributions", {
     calculate(stat = "Chisq")
   
   expect_equal(
-    get_p_value(chisq_dist, chisq_obs, direction = "right"),
+    get_p_value_(chisq_dist, chisq_obs, direction = "right"),
     1.082094e-05,
-    tolerance = 1e-7
+    tolerance = 1e-3
   )
 
   expect_warning(
@@ -346,8 +352,8 @@ test_that("get_p_value can handle theoretical distributions", {
   
   expect_equal(
     old_way$p_value, 
-    get_p_value(chisq_dist, chisq_obs, direction = "right"),
-    tolerance = 1e-7
+    get_p_value_(chisq_dist, chisq_obs, direction = "right"),
+    tolerance = 1e-3
   )
   
   # z ------------------------------------------------------------
@@ -364,27 +370,27 @@ test_that("get_p_value can handle theoretical distributions", {
     calculate(stat = "z")
   
   expect_equal(
-    get_p_value(z_dist, z_obs, direction = "both"),
+    get_p_value_(z_dist, z_obs, direction = "both"),
     0.244,
-    tolerance = .001
+    tolerance = 1e-3
   )
   
   expect_equal(
-    get_p_value(z_dist, z_obs, direction = "left"),
+    get_p_value_(z_dist, z_obs, direction = "left"),
     0.122,
-    tolerance = .001
+    tolerance = 1e-3
   )
   
   expect_equal(
-    get_p_value(z_dist, z_obs, direction = "right"),
-    1 - get_p_value(z_dist, z_obs, direction = "left"),
-    tolerance = .001
+    get_p_value_(z_dist, z_obs, direction = "right"),
+    1 - get_p_value_(z_dist, z_obs, direction = "left"),
+    tolerance = 1e-3
   )
   
   expect_equal(
-    get_p_value(z_dist, z_obs, direction = "both"),
-    (1 - get_p_value(z_dist, z_obs, direction = "right")) * 2,
-    tolerance = .001
+    get_p_value_(z_dist, z_obs, direction = "both"),
+    (1 - get_p_value_(z_dist, z_obs, direction = "right")) * 2,
+    tolerance = 1e-3
   )
   
   old_way_z_both <- prop_test(gss, sex ~ NULL, success = "female", p = .5, 
@@ -395,17 +401,20 @@ test_that("get_p_value can handle theoretical distributions", {
                                alternative = "greater", z = TRUE)
   
   expect_equal(
-    get_p_value(z_dist, z_obs, direction = "both"),
-    old_way_z_both$p_value
+    get_p_value_(z_dist, z_obs, direction = "both"),
+    old_way_z_both$p_value,
+    tolerance = 1e-3
   )
   
   expect_equal(
-    get_p_value(z_dist, z_obs, direction = "left"),
-    old_way_z_left$p_value
+    get_p_value_(z_dist, z_obs, direction = "left"),
+    old_way_z_left$p_value,
+    tolerance = 1e-3
   )
   
   expect_equal(
-    get_p_value(z_dist, z_obs, direction = "right"),
-    old_way_z_right$p_value
+    get_p_value_(z_dist, z_obs, direction = "right"),
+    old_way_z_right$p_value,
+    tolerance = 1e-3
   )
 })

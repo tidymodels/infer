@@ -54,6 +54,8 @@
 #'
 #' @examples
 #' 
+#' # using a simulation-based null distribution -----------------------------------
+#' 
 #' # find the point estimate---mean number of hours worked per week
 #' point_estimate <- gss %>%
 #'   specify(response = hours) %>%
@@ -72,6 +74,22 @@
 #    # calculate the p-value for the point estimate
 #'   get_p_value(obs_stat = point_estimate, direction = "two-sided")
 #'   
+#' # using a theoretical null distribution -----------------------------------
+#'
+#' # calculate the observed statistic 
+#' obs_stat <- gss %>%
+#'   specify(response = hours) %>%
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   calculate(stat = "t")
+#' 
+#' # define a null distribution
+#' null_dist <- gss %>%
+#'   specify(response = hours) %>%
+#'   assume("t", nrow(gss) - 1)
+#' 
+#' # calculate a p-value
+#' get_p_value(null_dist, obs_stat, direction = "both")
+#'
 #' # using a model fitting workflow -----------------------
 #' 
 #' # fit a linear model predicting number of hours worked per
@@ -190,7 +208,7 @@ get_p_value.infer_dist <- function(x, obs_stat, direction) {
     res <- min(res, 1 - res) * 2
   }
   
-  res
+  tibble::tibble(p_value = res)
 }
 
 simulation_based_p_value <- function(x, obs_stat, direction) {

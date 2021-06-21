@@ -74,6 +74,8 @@ raised to caution the user against reporting a p-value exactly equal to 0.
 
 \examples{
 
+# using a simulation-based null distribution -----------------------------------
+
 # find the point estimate---mean number of hours worked per week
 point_estimate <- gss \%>\%
   specify(response = hours) \%>\%
@@ -91,6 +93,22 @@ gss \%>\%
   calculate(stat = "mean") \%>\%
   get_p_value(obs_stat = point_estimate, direction = "two-sided")
   
+# using a theoretical null distribution -----------------------------------
+
+# calculate the observed statistic 
+obs_stat <- gss \%>\%
+  specify(response = hours) \%>\%
+  hypothesize(null = "point", mu = 40) \%>\%
+  calculate(stat = "t")
+
+# define a null distribution
+null_dist <- gss \%>\%
+  specify(response = hours) \%>\%
+  assume("t", nrow(gss) - 1)
+
+# calculate a p-value
+get_p_value(null_dist, obs_stat, direction = "both")
+
 # using a model fitting workflow -----------------------
 
 # fit a linear model predicting number of hours worked per
