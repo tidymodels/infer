@@ -86,14 +86,14 @@ ggplot2::ggplot_add
 #'   visualize() +
 #'   shade_confidence_interval(ci)
 #'   
-#' # to plot a theoretical null distribution, skip the generate()
-#' # step and supply `method = "theoretical"` to `visualize()`
+#' # plot a theoretical null distribution by creating
+#' # a theory-based null with `assume()`
 #' null_dist_theoretical <- gss %>%
 #'   specify(response = hours) %>%
 #'   hypothesize(null = "point", mu = 40) %>%
-#'   calculate(stat = "t") 
+#'   assume(distribution = "t", df = nrow(gss) - 1) 
 #'   
-#' visualize(null_dist_theoretical, method = "theoretical")
+#' visualize(null_dist_theoretical)
 #' 
 #' # to plot both a theory-based and simulation-based null distribution,
 #' # use the simulation-based null distribution and supply
