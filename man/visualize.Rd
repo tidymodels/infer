@@ -10,15 +10,19 @@ visualize(data, bins = 15, method = "simulation", dens_color = "black", ...)
 visualise(data, bins = 15, method = "simulation", dens_color = "black", ...)
 }
 \arguments{
-\item{data}{A distribution of statistics (for \code{\link[=calculate]{calculate()}}-based workflows)
-or coefficient estimates (for \code{\link[=fit.infer]{fit()}}-based workflows)
-outputted by infer.}
+\item{data}{A null distribution. For simulation-based inference, a data frame
+containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
+or \code{\link[=fit.infer]{fit()}}ted coefficient estimates. This object should
+have been passed to \code{\link[=generate]{generate()}} before being supplied or
+\code{\link[=calculate]{calculate()}} to \code{\link[=fit.infer]{fit()}}. For theory-based inference,
+the output of \code{\link[=assume]{assume()}}.}
 
 \item{bins}{The number of bins in the histogram.}
 
 \item{method}{A string giving the method to display. Options are
 \code{"simulation"}, \code{"theoretical"}, or \code{"both"} with \code{"both"} corresponding to
-\code{"simulation"} and \code{"theoretical"}.}
+\code{"simulation"} and \code{"theoretical"}. If \code{data} is the output of \code{\link[=assume]{assume()}},
+this argument will be ignored and default to \code{"theoretical"}.}
 
 \item{dens_color}{A character or hex string specifying the color of the
 theoretical density curve.}
@@ -26,9 +30,11 @@ theoretical density curve.}
 \item{...}{Other arguments passed along to \\{ggplot2\\} functions.}
 }
 \value{
-For \code{\link[=calculate]{calculate()}}-based workflows, a ggplot object showing the
-simulation-based distribution as a histogram or bar graph. Also used to
-show the theoretical curves.
+For \code{\link[=calculate]{calculate()}}-based workflows, a ggplot showing the simulation-based
+distribution as a histogram or bar graph. Can also be used to display
+theoretical distributions.
+
+For \code{\link[=assume]{assume()}}-based workflows, a ggplot showing the theoretical distribution.
 
 For \code{\link[=fit.infer]{fit()}}-based workflows, a \code{patchwork} object
 showing the simulation-based distributions as a histogram or bar graph.

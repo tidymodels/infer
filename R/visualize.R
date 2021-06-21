@@ -11,13 +11,17 @@ ggplot2::ggplot_add
 #' 
 #' Learn more in `vignette("infer")`.
 #'
-#' @param data A distribution of statistics (for [calculate()]-based workflows)
-#'   or coefficient estimates (for [`fit()`][fit.infer()]-based workflows)
-#'   outputted by infer.
+#' @param data A null distribution. For simulation-based inference, a data frame 
+#'   containing a distribution of [calculate()]d statistics 
+#'   or [`fit()`][fit.infer()]ted coefficient estimates. This object should 
+#'   have been passed to [generate()] before being supplied or 
+#'   [calculate()] to [`fit()`][fit.infer()]. For theory-based inference,
+#'   the output of [assume()].
 #' @param bins The number of bins in the histogram.
 #' @param method A string giving the method to display. Options are
 #'   `"simulation"`, `"theoretical"`, or `"both"` with `"both"` corresponding to
-#'   `"simulation"` and `"theoretical"`.
+#'   `"simulation"` and `"theoretical"`. If `data` is the output of [assume()],
+#'   this argument will be ignored and default to `"theoretical"`.
 #' @param dens_color A character or hex string specifying the color of the
 #'   theoretical density curve.
 #' @param ... Other arguments passed along to \\{ggplot2\\} functions.
@@ -32,9 +36,11 @@ ggplot2::ggplot_add
 #'
 #' @return 
 #' 
-#' For [calculate()]-based workflows, a ggplot object showing the 
-#' simulation-based distribution as a histogram or bar graph. Also used to 
-#' show the theoretical curves.
+#' For [calculate()]-based workflows, a ggplot showing the simulation-based
+#' distribution as a histogram or bar graph. Can also be used to display
+#' theoretical distributions.
+#'  
+#' For [assume()]-based workflows, a ggplot showing the theoretical distribution.
 #' 
 #' For [`fit()`][fit.infer()]-based workflows, a `patchwork` object
 #' showing the simulation-based distributions as a histogram or bar graph.
