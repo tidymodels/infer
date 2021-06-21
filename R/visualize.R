@@ -141,6 +141,30 @@ ggplot2::ggplot_add
 visualize <- function(data, bins = 15, method = "simulation",
                       dens_color = "black",
                       ...) {
+  if (inherits(data, "infer_dist")) {
+    if (!missing(method) && method != "theoretical") {
+      warning_glue(
+        "Simulation-based visualization methods are not well-defined for ",
+        "`assume()` output; the `method` argument will be ignored. Set ",
+        '`method = "theoretical"` to silence this message.'
+      )
+    }
+    
+    method <- "theoretical"
+    do_warn <- FALSE
+  } else {
+    if (method == "theoretical") {
+      message_glue(
+        'Rather than setting `method = "theoretical"` with a simulation-based ',
+        'null distribution, the preferred method for visualizing theory-based ',
+        'distributions with infer is now to pass the output of `assume()` as ',
+        'the first argument to `visualize()`.'
+      )
+    }
+    
+    do_warn <- TRUE
+  }
+  
   attr(data, "viz_method") <- method
   attr(data, "viz_bins") <- bins
   
@@ -173,12 +197,13 @@ visualize <- function(data, bins = 15, method = "simulation",
     )
   } else {
     res <- visualize_term(
-      data,
-      "stat",
+      data = data,
+      term = "stat",
       bins = bins, 
       method = method, 
       dens_color = dens_color,
-      dots = dots
+      dots = dots,
+      do_warn = do_warn
     ) + 
       title_layer(data)
     
@@ -192,13 +217,18 @@ visualise <- visualize
 
 
 visualize_term <- function(data, term, bins = 15, method = "simulation",
-                           dens_color = "black", dots) {
+                           dens_color = "black", dots, do_warn = TRUE) {
   data <- check_for_nan(data, "visualize")
   check_visualize_args(data, bins, method, dens_color)
+  if (inherits(data, "infer_dist")) {
+    data_ <- tibble::tibble(x = 0)
+  } else {
+    data_ <- data
+  }
   
-  infer_plot <- ggplot(data) +
+  infer_plot <- ggplot(data_) +
     simulation_layer(data, dots = dots) +
-    theoretical_layer(data, dens_color, dots = dots) +
+    theoretical_layer(data, dens_color, dots = dots, do_warn = do_warn) +
     labels_layer(data, term)
   
   infer_plot
@@ -224,7 +254,13 @@ check_dots_for_deprecated <- function(dots) {
 }
 
 check_visualize_args <- function(data, bins, method, dens_color) {
-  check_type(data, is.data.frame)
+  if (!any(inherits(data, "infer_dist") || is.data.frame(data))) {
+    stop_glue(
+      "The `data` argument to `visualize()` must be an infer distribution, ",
+      "outputted by `assume()` or `calculate()`."     
+    )
+  }
+  
   check_type(bins, is.numeric)
   check_type(method, is.character)
   check_type(dens_color, is.character)
@@ -232,7 +268,9 @@ check_visualize_args <- function(data, bins, method, dens_color) {
   if (!(method %in% c("simulation", "theoretical", "both"))) {
     stop_glue(
       'Provide `method` with one of three options: `"theoretical"`, `"both"`, ',
-      'or `"simulation"`. `"simulation"` is the default.'
+      'or `"simulation"`. `"simulation"` is the default for simulation-based ',
+      'null distributions, while `"theoretical"` is the only option for ',
+      'null distributions outputted by `assume()`.'
     )
   }
   
@@ -338,6 +376,10 @@ simulation_layer <- function(data, dots = list(NULL)) {
   # Manual computation of breaks is needed to fix histogram shape in future plot
   # buildings, e.g. after adding p-value areas.
   bin_breaks <- compute_bin_breaks(data, bins)
+  
+  if (method == "theoretical") {
+    return(list())
+  } 
   
   if (method == "simulation") {
     if (length(unique(data$stat)) >= 10) {
@@ -472,7 +514,7 @@ title_layer <- function(data, title_fn = ggplot2::ggtitle) {
   method <- get_viz_method(data)
   theory_type <- short_theory_type(data)
   
-  if (is_hypothesized(data)) {
+  if (is_hypothesized(data) || inherits(data, "infer_dist")) {
     distr_name <- "Null Distribution"
   } else {
     distr_name <- switch(

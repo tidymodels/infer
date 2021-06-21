@@ -54,7 +54,7 @@
 #'
 #' @examples
 #' 
-#' # using a simulation-based null distribution -----------------------------------
+#' # using a simulation-based null distribution ------------------------------
 #' 
 #' # find the point estimate---mean number of hours worked per week
 #' point_estimate <- gss %>%
@@ -90,7 +90,7 @@
 #' # calculate a p-value
 #' get_p_value(null_dist, obs_stat, direction = "both")
 #'
-#' # using a model fitting workflow -----------------------
+#' # using a model fitting workflow -----------------------------------------
 #' 
 #' # fit a linear model predicting number of hours worked per
 #' # week using respondent age and degree status.
