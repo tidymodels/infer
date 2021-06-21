@@ -1,9 +1,20 @@
-#' Create a theoretical distribution
+#' Define a theoretical distribution
 #' 
 #' @description 
 #' 
-#' Fill in once interface solidifies.
+#' This function allows the user to define a null distribution based on
+#' theoretical methods. In many infer pipelines, `assume()` can be
+#' used in place of [generate()] and [calculate()] to create a null
+#' distribution. Rather than outputting a data frame containing a 
+#' distribution of test statistics calculated from resamples of the observed 
+#' data, `assume()` outputs a more abstract type of object just containing
+#' the distributional details supplied in the `distribution` and `df` arguments.
+#' However, `assume()` output can be passed to [visualize()], [get_p_value()],
+#' and [get_confidence_interval()] in the same way that simulation-based
+#' null distributions can.
 #' 
+#' @param x The output of [specify()] or [hypothesize()], giving the
+#'   observed data, variable(s) of interest, and (optionally) null hypothesis.
 #' @param distribution The distribution in question, as a string. One of
 #'   `"F"`, `"Chisq"`, `"t"`, or `"z"`.
 #' @param df The degrees of freedom parameter(s) for the `distribution`
@@ -15,6 +26,16 @@
 #'  
 #' @return An infer theoretical distribution that can be passed to helpers
 #'   like [visualize()], [get_p_value()], and [get_confidence_interval()]. 
+#' 
+#' @details 
+#' 
+#' Note that the assumption being expressed here, for use in theory-based
+#' inference, only extends to _distributional_ assumptions: the null 
+#' distribution in question and its parameters. Statistical inference with 
+#' infer, whether carried out via simulation (i.e. based on pipelines 
+#' using [generate()] and [calculate()]) or theory (i.e. with `assume()`), 
+#' always involves the condition that observations are independent of
+#' each other.
 #' 
 #' @examples   
 #' # construct theoretical distributions ---------------------------------
@@ -89,13 +110,14 @@
 #' }
 #'     
 #' @export
-assume <- function(distribution, df = NULL, ...) {
+assume <- function(x, distribution, df = NULL, ...) {
   check_distribution(distribution, df, ...)
   
   structure(
     glue_null(
       "{distribution_desc(distribution)} distribution{df_desc(df)}.",
     ),
+    x = x,
     distribution = dist_fn(distribution), 
     df = df,
     dots = list(...),

@@ -2,11 +2,14 @@
 % Please edit documentation in R/assume.R
 \name{assume}
 \alias{assume}
-\title{Create a theoretical distribution}
+\title{Define a theoretical distribution}
 \usage{
-assume(distribution, df = NULL, ...)
+assume(x, distribution, df = NULL, ...)
 }
 \arguments{
+\item{x}{The output of \code{\link[=specify]{specify()}} or \code{\link[=hypothesize]{hypothesize()}}, giving the
+observed data, variable(s) of interest, and (optionally) null hypothesis.}
+
 \item{distribution}{The distribution in question, as a string. One of
 \code{"F"}, \code{"Chisq"}, \code{"t"}, or \code{"z"}.}
 
@@ -23,7 +26,25 @@ An infer theoretical distribution that can be passed to helpers
 like \code{\link[=visualize]{visualize()}}, \code{\link[=get_p_value]{get_p_value()}}, and \code{\link[=get_confidence_interval]{get_confidence_interval()}}.
 }
 \description{
-Fill in once interface solidifies.
+This function allows the user to define a null distribution based on
+theoretical methods. In many infer pipelines, \code{assume()} can be
+used in place of \code{\link[=generate]{generate()}} and \code{\link[=calculate]{calculate()}} to create a null
+distribution. Rather than outputting a data frame containing a
+distribution of test statistics calculated from resamples of the observed
+data, \code{assume()} outputs a more abstract type of object just containing
+the distributional details supplied in the \code{distribution} and \code{df} arguments.
+However, \code{assume()} output can be passed to \code{\link[=visualize]{visualize()}}, \code{\link[=get_p_value]{get_p_value()}},
+and \code{\link[=get_confidence_interval]{get_confidence_interval()}} in the same way that simulation-based
+null distributions can.
+}
+\details{
+Note that the assumption being expressed here, for use in theory-based
+inference, only extends to \emph{distributional} assumptions: the null
+distribution in question and its parameters. Statistical inference with
+infer, whether carried out via simulation (i.e. based on pipelines
+using \code{\link[=generate]{generate()}} and \code{\link[=calculate]{calculate()}}) or theory (i.e. with \code{assume()}),
+always involves the condition that observations are independent of
+each other.
 }
 \examples{
   
