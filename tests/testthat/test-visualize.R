@@ -684,3 +684,77 @@ test_that("visualize can handle multiple explanatory variables", {
   
   # shade_* functions should error with bad input
 })
+
+test_that("visualize can handle `assume()` output", {
+  skip_if(getRversion() < "4.1.0")
+
+  # F ----------------------------------------------------------------------
+  obs_stat <- gss %>% 
+    specify(age ~ partyid) %>%
+    calculate(stat = "F")
+  
+  null_dist <- gss %>% 
+    specify(age ~ partyid) %>%
+    assume(
+      distribution = "F", 
+      c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
+    )
+  
+  expect_doppelganger(
+    "viz-assume-f",
+    visualize(null_dist)
+  )
+  
+  expect_doppelganger(
+    "viz-assume-f-p-val",
+    visualize(null_dist) + shade_p_value(obs_stat, "right")
+  )
+  
+  # t -----------------------------------------------------------------------
+  obs_stat <- gss %>%
+    specify(response = hours) %>%
+    hypothesize(null = "point", mu = 40) %>%
+    calculate(stat = "t")
+  
+  null_dist <- gss %>%
+    specify(response = hours) %>%
+    assume("t", nrow(gss) - 1)
+  
+
+  expect_doppelganger(
+    "viz-assume-t",
+    visualize(null_dist)
+  )
+  
+  expect_doppelganger(
+    "viz-assume-t-p-val-both",
+    visualize(null_dist) + shade_p_value(obs_stat, "both")
+  )
+  
+  expect_doppelganger(
+    "viz-assume-t-p-val-left",
+    visualize(null_dist) + shade_p_value(obs_stat, "left")
+  )
+  
+  expect_doppelganger(
+    "viz-assume-t-p-val-right",
+    visualize(null_dist) + shade_p_value(obs_stat, "right")
+  )
+  
+  # warns when it ought to --------------------------------------------------
+  expect_doppelganger(
+    "viz-assume-t",
+    expect_warning(
+      visualize(null_dist, method = "simulation"),
+      "not well-defined for `assume\\(\\)` output.*will be ignored"
+    )
+  )
+  
+  expect_doppelganger(
+    "viz-assume-t",
+    expect_warning(
+      visualize(null_dist, method = "both"),
+      "not well-defined for `assume\\(\\)` output.*will be ignored"
+    )
+  )
+})

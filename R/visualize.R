@@ -220,13 +220,9 @@ visualize_term <- function(data, term, bins = 15, method = "simulation",
                            dens_color = "black", dots, do_warn = TRUE) {
   data <- check_for_nan(data, "visualize")
   check_visualize_args(data, bins, method, dens_color)
-  if (inherits(data, "infer_dist")) {
-    data_ <- tibble::tibble(x = 0)
-  } else {
-    data_ <- data
-  }
+  plot_data <- create_plot_data(data)
   
-  infer_plot <- ggplot(data_) +
+  infer_plot <- ggplot(plot_data) +
     simulation_layer(data, dots = dots) +
     theoretical_layer(data, dens_color, dots = dots, do_warn = do_warn) +
     labels_layer(data, term)
@@ -657,4 +653,16 @@ ggplot_add.infer_layer <- function(object, plot, object_name) {
 # ids for terms in visualize() workflows
 x_axis_label <- function(x) {
   x %>% purrr::pluck("labels", "x")
+}
+
+create_plot_data <- function(data) {
+  if (inherits(data, "infer_dist")) {
+    res <- tibble::tibble(x = 0) %>%
+      copy_attrs(data, 
+                 c("theory_type", "distr_param", "distr_param2", "viz_method"))
+  } else {
+    res <- data
+  }
+  
+  res
 }

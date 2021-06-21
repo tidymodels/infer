@@ -262,7 +262,9 @@ one_tail_area <- function(obs_stat, direction, do_warn = TRUE) {
 }
 
 theor_area <- function(data, obs_stat, direction, n_grid = 1001) {
-  g <- ggplot(data) + theoretical_layer(data, "black", do_warn = FALSE)
+  plot_data <- create_plot_data(data)
+  
+  g <- ggplot(plot_data) + theoretical_layer(data, "black", do_warn = FALSE)
   g_data <- ggplot2::ggplot_build(g)[["data"]][[1]]
   
   curve_fun <- stats::approxfun(
