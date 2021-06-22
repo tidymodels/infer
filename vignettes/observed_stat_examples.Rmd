@@ -113,6 +113,7 @@ Alternatively, finding the null distribution using theoretical methods using the
 ```{r}
 null_distn_theoretical <- gss %>%
   specify(response = hours)  %>%
+  hypothesize(null = "point", mu = 40) %>%
   assume("t", nrow(gss) - 1)
 ```
 
@@ -450,6 +451,7 @@ Alternatively, finding the null distribution using theoretical methods using the
 ```{r}
 null_distn_theoretical <- gss %>%
   specify(college ~ sex, success = "no degree") %>%
+  hypothesize(null = "independence") %>% 
   assume("z")
 ```
 
@@ -548,6 +550,13 @@ Alternatively, finding the null distribution using theoretical methods using the
 ```{r}
 null_distn_theoretical <- gss %>%
   specify(response = finrela) %>%
+  hypothesize(null = "point",
+              p = c("far below average" = 1/6,
+                    "below average" = 1/6,
+                    "average" = 1/6,
+                    "above average" = 1/6,
+                    "far above average" = 1/6,
+                    "DK" = 1/6)) %>%
   assume("Chisq", length(unique(gss$finrela)) - 1)
 ```
 
@@ -626,6 +635,7 @@ Alternatively, finding the null distribution using theoretical methods using the
 ```{r}
 null_distn_theoretical <- gss %>%
   specify(finrela ~ sex) %>%
+  hypothesize(null = "independence") %>% 
   assume(
     distribution = "Chisq", 
     df = (length(unique(gss$finrela)) - 1) * 
@@ -745,6 +755,7 @@ Alternatively, finding the null distribution using theoretical methods using the
 ```{r}
 null_distn_theoretical <- gss %>%
   specify(age ~ college) %>%
+  hypothesize(null = "independence") %>%
   assume("t", nrow(gss) - 1)
 ```
 
@@ -854,6 +865,7 @@ Alternatively, finding the null distribution using theoretical methods using the
 ```{r}
 null_distn_theoretical <- gss %>%
    specify(age ~ partyid) %>%
+   hypothesize(null = "independence") %>%
    assume(
     distribution = "F", 
     c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)

@@ -85,6 +85,7 @@ We could also visualize the observed statistic against the theoretical null dist
 # visualize the theoretical null distribution and test statistic!
 null_dist_theoretical <- gss %>%
   specify(age ~ partyid) %>%
+  hypothesize(null = "independence") %>%
   assume(
     distribution = "F", 
     c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)

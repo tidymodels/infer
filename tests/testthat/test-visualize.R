@@ -695,6 +695,7 @@ test_that("visualize can handle `assume()` output", {
   
   null_dist <- gss %>% 
     specify(age ~ partyid) %>%
+    hypothesize(null = "independence") %>%
     assume(
       distribution = "F", 
       c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
@@ -718,6 +719,7 @@ test_that("visualize can handle `assume()` output", {
   
   null_dist <- gss %>%
     specify(response = hours) %>%
+    hypothesize(null = "point", mu = 40) %>%
     assume("t", nrow(gss) - 1)
   
 

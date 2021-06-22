@@ -230,6 +230,7 @@ Generally, to find a null distribution using theory-based methods, use the same 
 ```{r, message = FALSE, warning = FALSE}
 null_f_distn <- gss %>%
    specify(age ~ partyid) %>%
+   hypothesize(null = "independence") %>%
    assume(
     distribution = "F", 
     c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
@@ -241,6 +242,7 @@ To find the null distribution using theory-based methods, instead, use the `assu
 ```{r, message = FALSE, warning = FALSE}
 null_f_distn_theoretical <- gss %>%
    specify(age ~ partyid) %>%
+   hypothesize(null = "independence") %>%
    assume(
     distribution = "F", 
     c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)

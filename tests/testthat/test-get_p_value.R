@@ -241,6 +241,7 @@ test_that("get_p_value can handle theoretical distributions", {
   f_dist <- 
     gss %>% 
     specify(age ~ partyid) %>%
+    hypothesize(null = "independence") %>%
     assume(
       distribution = "F", 
       c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
@@ -329,6 +330,7 @@ test_that("get_p_value can handle theoretical distributions", {
   chisq_dist <- 
     gss %>% 
     specify(college ~ finrela) %>%
+    hypothesize(null = "independence") %>%
     assume(
       distribution = "Chisq", 
       df = (length(unique(gss$finrela)) - 1) * 

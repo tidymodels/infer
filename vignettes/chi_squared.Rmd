@@ -78,7 +78,7 @@ Note that, in the line `specify(college ~ finrela)` above, we could use the equi
 null_distribution_theoretical <- gss %>%
   specify(college ~ finrela) %>%
   hypothesize(null = "independence") %>%
-    assume(
+  assume(
     distribution = "Chisq", 
     df = (length(unique(gss$finrela)) - 1) * 
          (length(unique(gss$college)) - 1)
@@ -101,6 +101,7 @@ We could also visualize the observed statistic against the theoretical null dist
 # visualize the theoretical null distribution and test statistic!
 gss %>%
   specify(college ~ finrela) %>%
+  hypothesize(null = "independence") %>%
   assume(
     distribution = "Chisq", 
     df = (length(unique(gss$finrela)) - 1) * 

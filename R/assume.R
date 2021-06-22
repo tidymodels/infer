@@ -13,6 +13,14 @@
 #' and [get_confidence_interval()] in the same way that simulation-based
 #' null distributions can.
 #' 
+#' To define a theoretical null distribution (for use in hypothesis testing),
+#' be sure to provide a null hypothesis via [hypothesize()]. To define a
+#' theoretical sampling distribution (for use in confidence intervals), 
+#' provide the output of [specify()]. Sampling distributions (only
+#' implemented for `t` and `z`) lie on the scale of the data, and will be
+#' recentered and rescaled to match the corresponding `stat` given in
+#' [calculate()] to calculate the observed statistic.
+#' 
 #' @param x The output of [specify()] or [hypothesize()], giving the
 #'   observed data, variable(s) of interest, and (optionally) null hypothesis.
 #' @param distribution The distribution in question, as a string. One of
@@ -44,6 +52,7 @@
 #' # with the `partyid` explanatory variable
 #' gss %>% 
 #'   specify(age ~ partyid) %>% 
+#'   hypothesize(null = "independence") %>%
 #'   assume(
 #'     distribution = "F", 
 #'     c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
@@ -53,12 +62,20 @@
 #' # on the `finrela` variable
 #' gss %>%
 #'   specify(response = finrela) %>%
+#'     hypothesize(null = "point",
+#'                 p = c("far below average" = 1/6,
+#'                       "below average" = 1/6,
+#'                       "average" = 1/6,
+#'                       "above average" = 1/6,
+#'                       "far above average" = 1/6,
+#'                       "DK" = 1/6)) %>%
 #'   assume("Chisq", length(unique(gss$finrela)) - 1)
 #' 
 #' # Chi-squared test of independence
 #' # on the `finrela` and `sex` variables
 #' gss %>%
 #'   specify(formula = finrela ~ sex) %>%
+#'   hypothesize(null = "independence") %>%
 #'   assume(
 #'     distribution = "Chisq", 
 #'     df = (length(unique(gss$finrela)) - 1) * 
@@ -68,11 +85,13 @@
 #' # T distribution
 #' gss %>% 
 #'   specify(age ~ college) %>%
+#'   hypothesize(null = "independence") %>%
 #'   assume("t", nrow(gss) - 1)
 #' 
 #' # Z distribution
 #' gss %>%
 #'   specify(response = sex, success = "female") %>%
+#'   hypothesize(null = "point", p = .5) %>%
 #'   assume("z")
 #' 
 #' \dontrun{
@@ -90,6 +109,7 @@
 #' # construct a null distribution
 #' null_dist <- gss %>%
 #'   specify(response = hours) %>%
+#'   hypothesize(null = "point", mu = 40) %>%
 #'   assume("t", nrow(gss) - 1)
 #' 
 #' # juxtapose them visually
@@ -104,11 +124,13 @@
 #' # calculate the observed statistic 
 #' obs_stat <- gss %>% 
 #'   specify(age ~ partyid) %>%
+#'   hypothesize(null = "independence") %>%
 #'   calculate(stat = "F")
 #' 
 #' # construct a null distribution
 #' null_dist <- gss %>% 
 #'   specify(age ~ partyid) %>%
+#'   hypothesize(null = "independence") %>%
 #'   assume(
 #'     distribution = "F", 
 #'     c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
