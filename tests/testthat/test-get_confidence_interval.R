@@ -239,3 +239,140 @@ test_that("get_confidence_interval can handle bad args with fitted objects", {
   )
 })
 
+test_that("theoretical CIs align with simulation-based (mean)", {
+  x_bar <- gss %>%
+    specify(response = hours) %>%
+    calculate(stat = "mean")
+  
+  set.seed(1)
+  
+  null_dist <- gss %>%
+    specify(response = hours) %>%
+    hypothesize(null = "point", mu = 40) %>% 
+    generate(reps = 1e3, type = "bootstrap") %>% 
+    calculate(stat = "mean")
+  
+  null_dist_theor <- gss %>%
+    specify(response = hours) %>%
+    hypothesize(null = "point", mu = 40) %>%
+    assume(distribution = "t", nrow(gss) - 1)
+  
+  expect_equal(
+    get_confidence_interval(
+      null_dist, 
+      .95, 
+      type = "se", 
+      point_estimate = x_bar
+    ),
+    get_confidence_interval(
+      null_dist_theor, 
+      .95, 
+      type = "se", 
+      point_estimate = x_bar
+    ),
+    tolerance = .2
+  )
+})
+
+test_that("theoretical CIs align with simulation-based (prop)", {
+  p_hat <- gss %>%
+    specify(response = sex, success = "female") %>%
+    calculate(stat = "prop")
+  
+  set.seed(1)
+  
+  null_dist <- gss %>%
+    specify(response = sex, success = "female") %>%
+    hypothesize(null = "point", p = .5) %>%
+    generate(reps = 1e3, type = "draw") %>%
+    calculate(stat = "prop")
+  
+  null_dist_theor <- gss %>%
+    specify(response = sex, success = "female") %>%
+    assume(distribution = "z")
+  
+  expect_equal(
+    get_confidence_interval(
+      null_dist, 
+      .95, 
+      type = "se", 
+      point_estimate = p_hat
+    ),
+    get_confidence_interval(
+      null_dist_theor, 
+      .95, 
+      type = "se", 
+      point_estimate = p_hat
+    ),
+    tolerance = .05
+  )
+})
+
+test_that("theoretical CIs align with simulation-based (diff in means)", {
+  diff_bar <- gss %>% 
+    specify(age ~ college) %>% 
+    calculate(stat = "diff in means", order = c("degree", "no degree"))
+  
+  set.seed(1)
+  
+  null_dist <- gss %>%
+    specify(age ~ college) %>% 
+    hypothesize(null = "independence") %>% 
+    generate(reps = 3e3, type = "permute") %>% 
+    calculate(stat = "diff in means", order = c("degree", "no degree"))
+  
+  null_dist_theor <- gss %>%
+    specify(age ~ college) %>% 
+    assume(distribution = "t", nrow(gss) - 1)
+  
+  expect_equal(
+    get_confidence_interval(
+      null_dist, 
+      .95, 
+      type = "se", 
+      point_estimate = diff_bar
+    ),
+    get_confidence_interval(
+      null_dist_theor, 
+      .95, 
+      type = "se", 
+      point_estimate = diff_bar
+    ),
+    tolerance = .15
+  )
+})
+
+test_that("theoretical CIs align with simulation-based (diff in props)", {
+  diff_hat <- gss %>% 
+    specify(college ~ sex, success = "no degree") %>%
+    calculate(stat = "diff in props", order = c("female", "male"))
+  
+  set.seed(1)
+  
+  null_dist <- gss %>%
+    specify(college ~ sex, success = "no degree") %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 1e3, type = "permute") %>%
+    calculate(stat = "diff in props", order = c("female", "male"))
+  
+  null_dist_theor <- gss %>%
+    specify(college ~ sex, success = "no degree") %>%
+    assume(distribution = "z")
+  
+  expect_equal(
+    get_confidence_interval(
+      null_dist, 
+      .95, 
+      type = "se", 
+      point_estimate = diff_hat
+    ),
+    get_confidence_interval(
+      null_dist_theor, 
+      .95, 
+      type = "se", 
+      point_estimate = diff_hat
+    ),
+    tolerance = .001
+  )
+})
+
