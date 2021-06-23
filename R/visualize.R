@@ -61,8 +61,8 @@ ggplot2::ggplot_add
 #'   hypothesize(null = "point", mu = 40) %>%
 #'   # generating data points for a null distribution
 #'   generate(reps = 1000, type = "bootstrap") %>%
-#'   # calculating a distribution of t test statistics
-#'   calculate(stat = "t")
+#'   # calculating a distribution of means
+#'   calculate(stat = "mean")
 #'   
 #' # we can easily plot the null distribution by piping into visualize
 #' null_dist %>%
@@ -72,8 +72,7 @@ ggplot2::ggplot_add
 #' # find the point estimate---mean number of hours worked per week
 #' point_estimate <- gss %>%
 #'   specify(response = hours) %>%
-#'   hypothesize(null = "point", mu = 40) %>%
-#'   calculate(stat = "t")
+#'   calculate(stat = "mean")
 #'   
 #' # find a confidence interval around the point estimate
 #' ci <- null_dist %>%
@@ -88,6 +87,7 @@ ggplot2::ggplot_add
 #'   visualize() +
 #'   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 #' 
+#' # ...or within the bounds of the confidence interval
 #' null_dist %>%
 #'   visualize() +
 #'   shade_confidence_interval(ci)
@@ -101,10 +101,32 @@ ggplot2::ggplot_add
 #'   
 #' visualize(null_dist_theoretical)
 #' 
+#' # you can shade confidence intervals on top of
+#' # theoretical distributions, too---the theoretical
+#' # distribution will be recentered and rescaled to
+#' # align with the confidence interval
+#' visualize(null_dist_theoretical) +
+#'   shade_confidence_interval(ci)
+#' 
+#' 
 #' # to plot both a theory-based and simulation-based null distribution,
-#' # use the simulation-based null distribution and supply
-#' # `method = "both"` to `visualize()`
-#' visualize(null_dist, method = "both")
+#' # use a theorized statistic (i.e. one of t, z, F, or Chisq)
+#' # and supply the simulation-based null distribution
+#' null_dist_t <- gss %>%
+#'   specify(response = hours) %>%
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   generate(reps = 1000, type = "bootstrap") %>%
+#'   calculate(stat = "t")
+#'   
+#' obs_stat <- gss %>%
+#'   specify(response = hours) %>%
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   calculate(stat = "t")
+#'
+#' visualize(null_dist_t, method = "both")
+#'
+#' visualize(null_dist_t, method = "both") +
+#'   shade_p_value(obs_stat, "both")
 #' 
 #' \donttest{
 #' # to visualize distributions of coefficients for multiple

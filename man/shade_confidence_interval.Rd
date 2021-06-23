@@ -21,7 +21,8 @@ For \code{\link[=calculate]{calculate()}}-based workflows, this will be a 2-elem
 or a \verb{1 x 2} data frame containing the lower and upper values to be plotted.
 For \code{\link[=fit.infer]{fit()}}-based workflows, a \verb{(p + 1) x 3} data frame
 with columns \code{term}, \code{lower_ci}, and \code{upper_ci}, giving the upper and
-lower bounds for each regression term.}
+lower bounds for each regression term. For use in visualizations of
+\code{\link[=assume]{assume()}} output, this must be the output of \code{\link[=get_confidence_interval]{get_confidence_interval()}}.}
 
 \item{color}{A character or hex string specifying the color of the
 end points as a vertical lines on the plot.}
@@ -47,8 +48,7 @@ Learn more in \code{vignette("infer")}.
 # find the point estimate---mean number of hours worked per week
 point_estimate <- gss \%>\%
   specify(response = hours) \%>\%
-  calculate(stat = "mean") \%>\%
-  dplyr::pull()
+  calculate(stat = "mean")
   
 # ...and a null distribution
 null_dist <- gss \%>\%
@@ -79,6 +79,18 @@ null_dist \%>\%
 null_dist \%>\%
   visualize() +
   shade_confidence_interval(ci, fill = NULL)
+  
+# you can shade confidence intervals on top of
+# theoretical distributions, too---the theoretical
+# distribution will be recentered and rescaled to
+# align with the confidence interval
+null_dist_theoretical <- gss \%>\%
+  specify(response = hours) \%>\%
+  hypothesize(null = "point", mu = 40) \%>\%
+  assume(distribution = "t", df = nrow(gss) - 1) 
+  
+visualize(null_dist_theoretical) +
+  shade_confidence_interval(ci)
 
 \donttest{
 # to visualize distributions of coefficients for multiple

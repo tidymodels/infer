@@ -47,8 +47,8 @@ Learn more in \code{vignette("infer")}.
 # find the point estimate---mean number of hours worked per week
 point_estimate <- gss \%>\%
   specify(response = hours) \%>\%
-  calculate(stat = "mean") \%>\%
-  dplyr::pull()
+  hypothesize(null = "point", mu = 40) \%>\%
+  calculate(stat = "t")
   
 # ...and a null distribution
 null_dist <- gss \%>\%
@@ -58,11 +58,22 @@ null_dist <- gss \%>\%
   hypothesize(null = "point", mu = 40) \%>\%
   # generating data points for a null distribution
   generate(reps = 1000, type = "bootstrap") \%>\%
-  # finding the null distribution
-  calculate(stat = "mean")
+  # estimating the null distribution
+  calculate(stat = "t")
   
 # shade the p-value of the point estimate
 null_dist \%>\%
+  visualize() +
+  shade_p_value(obs_stat = point_estimate, direction = "two-sided")
+  
+# you can shade confidence intervals on top of
+# theoretical distributions, too!
+null_dist_theoretical <- gss \%>\%
+  specify(response = hours) \%>\%
+  hypothesize(null = "point", mu = 40) \%>\%
+  assume(distribution = "t", df = nrow(gss) - 1) 
+  
+null_dist_theoretical \%>\%
   visualize() +
   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 

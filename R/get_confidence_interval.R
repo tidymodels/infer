@@ -39,7 +39,6 @@
 #'
 #' @details
 #' A null hypothesis is not required to compute a confidence interval. However,
-#' in the simulation-based setting (i.e. using [generate()] and [calculate()]),
 #' including [hypothesize()] in a pipeline leading to `get_confidence_interval()`
 #' will not break anything. This can be useful when computing a confidence
 #' interval using the same distribution used to compute a p-value.
@@ -48,8 +47,9 @@
 #' of [assume()] to the `x` argument) require that the point estimate lies on
 #' the scale of the data. The distribution defined in [assume()] will be
 #' recentered and rescaled to align with the point estimate, as can be shown
-#' in the output of [visualize()]. Confidence intervals are implemented
-#' for the following distributions and point estimates:
+#' in the output of [visualize()] when paired with [shade_confidence_interval()]. 
+#' Confidence intervals are implemented for the following distributions and 
+#' point estimates:
 #'
 #' \itemize{
 #'   \item `distribution = "t"`: `point_estimate` should be the output of
@@ -92,6 +92,21 @@
 #'     # Using the standard error method
 #'     type = "se"
 #'   )
+#'   
+#' # using a theoretical null distribution -----------------------------------
+#' 
+#' # define a null distribution
+#' null_dist <- gss %>%
+#'   specify(response = hours) %>%
+#'   assume("t", nrow(gss) - 1)
+#' 
+#' # get the confidence interval---note that the
+#' # point estimate is required here
+#' get_confidence_interval(
+#'   null_dist, 
+#'   level = .95, 
+#'   point_estimate = sample_mean
+#' )
 #'   
 #' # using a model fitting workflow -----------------------
 #' 

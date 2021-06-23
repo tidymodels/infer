@@ -52,7 +52,6 @@ Learn more in \code{vignette("infer")}.
 }
 \details{
 A null hypothesis is not required to compute a confidence interval. However,
-in the simulation-based setting (i.e. using \code{\link[=generate]{generate()}} and \code{\link[=calculate]{calculate()}}),
 including \code{\link[=hypothesize]{hypothesize()}} in a pipeline leading to \code{get_confidence_interval()}
 will not break anything. This can be useful when computing a confidence
 interval using the same distribution used to compute a p-value.
@@ -61,8 +60,9 @@ Theoretical confidence intervals (i.e. calculated by supplying the output
 of \code{\link[=assume]{assume()}} to the \code{x} argument) require that the point estimate lies on
 the scale of the data. The distribution defined in \code{\link[=assume]{assume()}} will be
 recentered and rescaled to align with the point estimate, as can be shown
-in the output of \code{\link[=visualize]{visualize()}}. Confidence intervals are implemented
-for the following distributions and point estimates:
+in the output of \code{\link[=visualize]{visualize()}} when paired with \code{\link[=shade_confidence_interval]{shade_confidence_interval()}}.
+Confidence intervals are implemented for the following distributions and
+point estimates:
 
 \itemize{
 \item \code{distribution = "t"}: \code{point_estimate} should be the output of
@@ -107,6 +107,21 @@ boot_distr \%>\%
     # Using the standard error method
     type = "se"
   )
+  
+# using a theoretical null distribution -----------------------------------
+
+# define a null distribution
+null_dist <- gss \%>\%
+  specify(response = hours) \%>\%
+  assume("t", nrow(gss) - 1)
+
+# get the confidence interval---note that the
+# point estimate is required here
+get_confidence_interval(
+  null_dist, 
+  level = .95, 
+  point_estimate = sample_mean
+)
   
 # using a model fitting workflow -----------------------
 

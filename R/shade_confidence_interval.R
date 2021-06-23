@@ -14,7 +14,8 @@
 #'   or a `1 x 2` data frame containing the lower and upper values to be plotted. 
 #'   For [`fit()`][fit.infer()]-based workflows, a `(p + 1) x 3` data frame
 #'   with columns `term`, `lower_ci`, and `upper_ci`, giving the upper and
-#'   lower bounds for each regression term.
+#'   lower bounds for each regression term. For use in visualizations of
+#'   [assume()] output, this must be the output of [get_confidence_interval()].
 #' @param color A character or hex string specifying the color of the
 #'   end points as a vertical lines on the plot.
 #' @param fill A character or hex string specifying the color to shade the
@@ -29,8 +30,7 @@
 #' # find the point estimate---mean number of hours worked per week
 #' point_estimate <- gss %>%
 #'   specify(response = hours) %>%
-#'   calculate(stat = "mean") %>%
-#'   dplyr::pull()
+#'   calculate(stat = "mean")
 #'   
 #' # ...and a null distribution
 #' null_dist <- gss %>%
@@ -61,6 +61,18 @@
 #' null_dist %>%
 #'   visualize() +
 #'   shade_confidence_interval(ci, fill = NULL)
+#'   
+#' # you can shade confidence intervals on top of
+#' # theoretical distributions, too---the theoretical
+#' # distribution will be recentered and rescaled to
+#' # align with the confidence interval
+#' null_dist_theoretical <- gss %>%
+#'   specify(response = hours) %>%
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   assume(distribution = "t", df = nrow(gss) - 1) 
+#'   
+#' visualize(null_dist_theoretical) +
+#'   shade_confidence_interval(ci)
 #'
 #' \donttest{
 #' # to visualize distributions of coefficients for multiple
