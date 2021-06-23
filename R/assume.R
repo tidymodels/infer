@@ -163,6 +163,7 @@ assume <- function(x, distribution, df = NULL, ...) {
     ),
     # store distribution as the suffix to p* in dist function
     distribution = dist_fn(distribution),
+    dist_ = distribution,
     # store df for easier passing to p* functions
     df = df,
     # store df in `specify`-esque format for use in `visualize`

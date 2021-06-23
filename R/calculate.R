@@ -118,7 +118,7 @@ calculate <- function(x,
     result <- select(result, stat)
   }
 
-  result
+  append_infer_class(result)
 }
 
 check_if_mlr <- function(x, fn) {

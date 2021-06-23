@@ -376,3 +376,108 @@ test_that("theoretical CIs align with simulation-based (diff in props)", {
   )
 })
 
+test_that("theoretical CIs check arguments properly", {
+  x_bar <- gss %>%
+    specify(response = hours) %>%
+    calculate(stat = "mean")
+  
+  null_dist_theor <- gss %>%
+    specify(age ~ college) %>% 
+    assume(distribution = "t", nrow(gss) - 1)
+  
+  # check that type is handled correctly
+  expect_equal(
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95, 
+      point_estimate = x_bar
+    ),
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95,
+      type = "se",
+      point_estimate = x_bar
+    )
+  )
+  
+  expect_error(
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95,
+      type = "percentile",
+      point_estimate = x_bar
+    ),
+    "only `type` option for theory-based confidence"
+  )
+  
+  expect_error(
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95,
+      type = "boop",
+      point_estimate = x_bar
+    ),
+    "only `type` option for theory-based confidence"
+  )
+  
+  # check that point estimate hasn't been post-processed
+  expect_error(
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95, 
+      point_estimate = dplyr::pull(x_bar)
+    ),
+    "must be an `infer` object"
+  )
+  
+  expect_error(
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95, 
+      point_estimate = x_bar$stat
+    ),
+    "must be an `infer` object"
+  )
+  
+  # check that statistics are implemented
+  obs_t <- gss %>%
+    specify(response = hours) %>%
+    hypothesize(null = "point", mu = 40) %>%
+    calculate(stat = "t")
+  
+  expect_error(
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95, 
+      point_estimate = obs_t
+    ),
+    'allowable statistics.*See the \\"Details\\" section of `\\?get_c'
+  )
+  
+  # check that stat and distribution align
+  p_hat <- gss %>%
+    specify(response = sex, success = "female") %>%
+    calculate(stat = "prop")
+  
+  null_dist_z <- gss %>%
+    specify(response = sex, success = "female") %>%
+    assume(distribution = "z")
+  
+  expect_error(
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95, 
+      point_estimate = p_hat
+    ),
+    'using a `t` distribution for `stat = prop` are not implemented'
+  )
+  
+  expect_error(
+    get_confidence_interval(
+      null_dist_z, 
+      level = .95, 
+      point_estimate = x_bar
+    ),
+    'using a `z` distribution for `stat = mean` are not implemented'
+  )
+})

@@ -5,12 +5,7 @@
 \alias{get_ci}
 \title{Compute confidence interval}
 \usage{
-get_confidence_interval(
-  x,
-  level = 0.95,
-  type = "percentile",
-  point_estimate = NULL
-)
+get_confidence_interval(x, level = 0.95, type = NULL, point_estimate = NULL)
 
 get_ci(x, level = 0.95, type = "percentile", point_estimate = NULL)
 }
@@ -56,10 +51,25 @@ simulation-based and theoretical methods are supported, though only
 Learn more in \code{vignette("infer")}.
 }
 \details{
-A null hypothesis is not required to compute a confidence interval, but
-including \code{hypothesize()} in a chain leading to \code{get_confidence_interval()}
+A null hypothesis is not required to compute a confidence interval. However,
+in the simulation-based setting (i.e. using \code{\link[=generate]{generate()}} and \code{\link[=calculate]{calculate()}}),
+including \code{\link[=hypothesize]{hypothesize()}} in a pipeline leading to \code{get_confidence_interval()}
 will not break anything. This can be useful when computing a confidence
-interval after previously computing a p-value.
+interval using the same distribution used to compute a p-value.
+
+Theoretical confidence intervals (i.e. calculated by supplying the output
+of \code{\link[=assume]{assume()}} to the \code{x} argument) require that the point estimate lies on
+the scale of the data. The distribution defined in \code{\link[=assume]{assume()}} will be
+recentered and rescaled to align with the point estimate, as can be shown
+in the output of \code{\link[=visualize]{visualize()}}. Confidence intervals are implemented
+for the following distributions and point estimates:
+
+\itemize{
+\item \code{distribution = "t"}: \code{point_estimate} should be the output of
+\code{\link[=calculate]{calculate()}} with \code{stat = "mean"} or \code{stat = "diff in means"}
+\item \code{distribution = "z"}:\code{point_estimate} should be the output of
+\code{\link[=calculate]{calculate()}} with \code{stat = "prop"} or \code{stat = "diff in props"}
+}
 }
 \section{Aliases}{
 

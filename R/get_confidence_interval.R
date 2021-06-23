@@ -38,10 +38,25 @@
 #' }
 #'
 #' @details
-#' A null hypothesis is not required to compute a confidence interval, but
-#' including `hypothesize()` in a chain leading to `get_confidence_interval()`
+#' A null hypothesis is not required to compute a confidence interval. However,
+#' in the simulation-based setting (i.e. using [generate()] and [calculate()]),
+#' including [hypothesize()] in a pipeline leading to `get_confidence_interval()`
 #' will not break anything. This can be useful when computing a confidence
-#' interval after previously computing a p-value.
+#' interval using the same distribution used to compute a p-value.
+#' 
+#' Theoretical confidence intervals (i.e. calculated by supplying the output
+#' of [assume()] to the `x` argument) require that the point estimate lies on
+#' the scale of the data. The distribution defined in [assume()] will be
+#' recentered and rescaled to align with the point estimate, as can be shown
+#' in the output of [visualize()]. Confidence intervals are implemented
+#' for the following distributions and point estimates:
+#'
+#' \itemize{
+#'   \item `distribution = "t"`: `point_estimate` should be the output of
+#'   [calculate()] with `stat = "mean"` or `stat = "diff in means"`
+#'   \item `distribution = "z"`:`point_estimate` should be the output of
+#'   [calculate()] with `stat = "prop"` or `stat = "diff in props"`
+#' } 
 #'
 #' @section Aliases:
 #' `get_ci()` is an alias of `get_confidence_interval()`.
@@ -113,11 +128,19 @@
 #' @name get_confidence_interval
 #' @family auxillary functions
 #' @export
-get_confidence_interval <- function(x, level = 0.95, type = "percentile",
+get_confidence_interval <- function(x, level = 0.95, type = NULL,
                                     point_estimate = NULL) {
   # Inform if no `level` was explicitly supplied
   if (!("level" %in% rlang::call_args_names(match.call()))) {
     message_glue("Using `level = {level}` to compute confidence interval.")
+  }
+  
+  if (is.null(type)) {
+    if (inherits(x, "infer_dist")) {
+      type <- "se"
+    } else {
+      type <- "percentile"
+    }
   }
   
   if (is_fitted(x)) {
@@ -260,14 +283,6 @@ check_ci_args <- function(x, level, type, point_estimate) {
       'is `type = "se"`.'
     )
   }
-  
-  if (is.null(type)) {
-    if (inherits(x, "infer_dist")) {
-      type <- "se"
-    } else {
-      type <- "percentile"
-    }
-  }
 
   if (!(type %in% c("percentile", "se", "bias-corrected"))) {
     stop_glue(
@@ -280,6 +295,37 @@ check_ci_args <- function(x, level, type, point_estimate) {
       "A numeric value needs to be given for `point_estimate` ",
       'for `type` "se" or "bias-corrected".'
     )
+  }
+  
+  if (inherits(x, "infer_dist")) {
+    # theoretical CIs require the full point estimate infer object as they
+    # contain the necessary standard error
+    if (!inherits(point_estimate, "infer")) {
+      stop_glue(
+        'For theoretical confidence intervals, the `point_estimate` argument ',
+        'must be an `infer` object. Have you made sure to supply the output of ',
+        '`calculate()` as the `point_estimate` argument?'
+      )
+    }
+    
+    if (!attr(point_estimate, "stat") %in% 
+        c("mean", "prop", "diff in means", "diff in props")) {
+      stop_glue(
+        'The only allowable statistics for theoretical confidence intervals ',
+        'are "mean", "prop", "diff in means", and "diff in props". See ',
+        'the "Details" section of `?get_confidence_interval` for more details.'
+      )
+    }
+    
+    if ((attr(x, "distribution") == "t" && 
+         !attr(point_estimate, "stat") %in% c("mean", "diff in means")) ||
+        (attr(x, "distribution") == "norm" &&
+         !attr(point_estimate, "stat") %in% c("prop", "diff in props"))) {
+      stop_glue(
+        'Confidence intervals using a `{attr(x, "dist_")}` distribution for ',
+        '`stat = {attr(point_estimate, "stat")}` are not implemented.'
+      )
+    }
   }
 }
 
