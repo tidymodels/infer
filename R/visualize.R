@@ -256,13 +256,7 @@ check_dots_for_deprecated <- function(dots) {
 }
 
 check_visualize_args <- function(data, bins, method, dens_color) {
-  if (!any(inherits(data, "infer_dist") || is.data.frame(data))) {
-    stop_glue(
-      "The `data` argument to `visualize()` must be an infer distribution, ",
-      "outputted by `assume()` or `calculate()`."     
-    )
-  }
-  
+  check_is_distribution(data, "visualize")
   check_type(bins, is.numeric)
   check_type(method, is.character)
   check_type(dens_color, is.character)
@@ -663,7 +657,7 @@ x_axis_label <- function(x) {
 
 create_plot_data <- function(data) {
   if (inherits(data, "infer_dist")) {
-    res <- tibble::tibble(x = 0) %>%
+    res <- tibble::tibble() %>%
       copy_attrs(data, 
                  c("theory_type", "distr_param", "distr_param2", "viz_method"))
   } else {

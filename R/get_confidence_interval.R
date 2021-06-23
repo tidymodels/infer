@@ -2,15 +2,19 @@
 #'
 #' @description
 #'
-#' Compute a confidence interval around a summary statistic. Currently, only
-#' simulation-based methods are supported.
+#' Compute a confidence interval around a summary statistic. Both
+#' simulation-based and theoretical methods are supported, though only
+#' `type = "se"` is supported for theoretical methods.
 #'
 #' Learn more in `vignette("infer")`.
 #'
-#' @param x A data frame containing a distribution of [calculate()]d statistics 
+#' @param x A distribution. For simulation-based inference, a data frame 
+#'   containing a distribution of [calculate()]d statistics 
 #'   or [`fit()`][fit.infer()]ted coefficient estimates. This object should 
-#'   have been passed to [generate()] before being supplied to [calculate()] 
-#'   or [`fit()`][fit.infer()].
+#'   have been passed to [generate()] before being supplied or 
+#'   [calculate()] to [`fit()`][fit.infer()]. For theory-based inference,
+#'   output of [assume()]. Distributions for confidence intervals do not
+#'   require a null hypothesis via [hypothesize()].
 #' @param level A numerical value between 0 and 1 giving the confidence level.
 #'   Default value is 0.95.
 #' @param type A string giving which method should be used for creating the
@@ -63,8 +67,7 @@
 #' # for type = "se" or type = "bias-corrected" we need a point estimate
 #' sample_mean <- gss %>%
 #'   specify(response = hours) %>%
-#'   calculate(stat = "mean") %>%
-#'   dplyr::pull()
+#'   calculate(stat = "mean")
 #'
 #' boot_distr %>%
 #'   get_confidence_interval(
@@ -194,10 +197,27 @@ ci_percentile <- function(x, level) {
 }
 
 ci_se <- function(x, level, point_estimate) {
-  point_estimate <- check_obs_stat(point_estimate)
+  point_estimate_ <- check_obs_stat(point_estimate)
+  
+  args <- list() 
+  
+  if (inherits(x, "infer_dist")) {
+    se <- attr(point_estimate, "se")
+    qfn <- paste0("q", attr(x, "distribution"))
+    if (attr(x, "distribution") == "t") {
+      args <- list(df = attr(x, "df"))
+    }
+  } else {
+    # x[[ncol(x)]] pulls out the stat or estimate column
+    se <- stats::sd(x[[ncol(x)]])
+    qfn <- "qnorm"
+  }
 
-  multiplier <- stats::qnorm((1 + level) / 2)
-  ci_vec <- point_estimate + c(-multiplier, multiplier) * stats::sd(x[[ncol(x)]])
+  args <- c(args, list(p = (1 + level) / 2))
+  
+  multiplier <- do.call(qfn, args)
+
+  ci_vec <- point_estimate_ + c(-multiplier, multiplier) * se
 
   make_ci_df(ci_vec)
 }
@@ -227,11 +247,26 @@ check_ci_args <- function(x, level, type, point_estimate) {
       check_type(point_estimate[[1]][[1]], is.numeric)
     }
   }
-  check_type(x, is.data.frame)
+  check_is_distribution(x, "get_confidence_interval")
   check_type(level, is.numeric)
 
   if ((level <= 0) || (level >= 1)) {
     stop_glue("The value of `level` must be between 0 and 1 non-inclusive.")
+  }
+  
+  if (inherits(x, "infer_dist") && !is.null(type) && type != "se") {
+    stop_glue(
+      'The only `type` option for theory-based confidence intervals ',
+      'is `type = "se"`.'
+    )
+  }
+  
+  if (is.null(type)) {
+    if (inherits(x, "infer_dist")) {
+      type <- "se"
+    } else {
+      type <- "percentile"
+    }
   }
 
   if (!(type %in% c("percentile", "se", "bias-corrected"))) {

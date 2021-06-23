@@ -603,3 +603,12 @@ parse_type <- function(f_name) {
 
   res
 }
+
+check_is_distribution <- function(x, fn) {
+  if (!any(inherits(x, "infer_dist") || is.data.frame(x))) {
+    stop_glue(
+      "The `x` argument to `{fn}()` must be an infer distribution, ",
+      "outputted by `assume()` or `calculate()`."     
+    )
+  }
+}

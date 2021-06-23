@@ -15,10 +15,13 @@ get_confidence_interval(
 get_ci(x, level = 0.95, type = "percentile", point_estimate = NULL)
 }
 \arguments{
-\item{x}{A data frame containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
+\item{x}{A distribution. For simulation-based inference, a data frame
+containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
 or \code{\link[=fit.infer]{fit()}}ted coefficient estimates. This object should
-have been passed to \code{\link[=generate]{generate()}} before being supplied to \code{\link[=calculate]{calculate()}}
-or \code{\link[=fit.infer]{fit()}}.}
+have been passed to \code{\link[=generate]{generate()}} before being supplied or
+\code{\link[=calculate]{calculate()}} to \code{\link[=fit.infer]{fit()}}. For theory-based inference,
+output of \code{\link[=assume]{assume()}}. Distributions for confidence intervals do not
+require a null hypothesis via \code{\link[=hypothesize]{hypothesize()}}.}
 
 \item{level}{A numerical value between 0 and 1 giving the confidence level.
 Default value is 0.95.}
@@ -46,8 +49,9 @@ interval, respectively.
 }
 }
 \description{
-Compute a confidence interval around a summary statistic. Currently, only
-simulation-based methods are supported.
+Compute a confidence interval around a summary statistic. Both
+simulation-based and theoretical methods are supported, though only
+\code{type = "se"} is supported for theoretical methods.
 
 Learn more in \code{vignette("infer")}.
 }
@@ -83,8 +87,7 @@ boot_distr \%>\%
 # for type = "se" or type = "bias-corrected" we need a point estimate
 sample_mean <- gss \%>\%
   specify(response = hours) \%>\%
-  calculate(stat = "mean") \%>\%
-  dplyr::pull()
+  calculate(stat = "mean")
 
 boot_distr \%>\%
   get_confidence_interval(
