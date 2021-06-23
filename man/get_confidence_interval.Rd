@@ -67,7 +67,7 @@ for the following distributions and point estimates:
 \itemize{
 \item \code{distribution = "t"}: \code{point_estimate} should be the output of
 \code{\link[=calculate]{calculate()}} with \code{stat = "mean"} or \code{stat = "diff in means"}
-\item \code{distribution = "z"}:\code{point_estimate} should be the output of
+\item \code{distribution = "z"}: \code{point_estimate} should be the output of
 \code{\link[=calculate]{calculate()}} with \code{stat = "prop"} or \code{stat = "diff in props"}
 }
 }

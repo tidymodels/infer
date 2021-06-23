@@ -711,7 +711,7 @@ test_that("visualize can handle `assume()` output", {
     visualize(null_dist) + shade_p_value(obs_stat, "right")
   )
   
-  # t -----------------------------------------------------------------------
+  # t (mean) -----------------------------------------------------------------
   obs_stat <- gss %>%
     specify(response = hours) %>%
     hypothesize(null = "point", mu = 40) %>%
@@ -722,6 +722,16 @@ test_that("visualize can handle `assume()` output", {
     hypothesize(null = "point", mu = 40) %>%
     assume("t", nrow(gss) - 1)
   
+  obs_mean <- gss %>%
+    specify(response = hours) %>%
+    calculate(stat = "mean")
+  
+  ci <- 
+    get_confidence_interval(
+      null_dist,
+      level = .95,
+      point_estimate = obs_mean
+    )
 
   expect_doppelganger(
     "viz-assume-t",
@@ -743,6 +753,11 @@ test_that("visualize can handle `assume()` output", {
     visualize(null_dist) + shade_p_value(obs_stat, "right")
   )
   
+  expect_doppelganger(
+    "viz-assume-t-ci",
+    visualize(null_dist) + shade_confidence_interval(ci)
+  )
+  
   # warns when it ought to --------------------------------------------------
   expect_doppelganger(
     "viz-assume-t",
@@ -759,4 +774,144 @@ test_that("visualize can handle `assume()` output", {
       "not well-defined for `assume\\(\\)` output.*will be ignored"
     )
   )
+  
+  # t (diff in means) -----------------------------------------------------------------
+  obs_stat <- gss %>%
+    specify(hours ~ college) %>%
+    calculate(stat = "t", order = c("degree", "no degree"))
+  
+  null_dist <- gss %>%
+    specify(hours ~ college) %>%
+    hypothesize(null = "independence") %>%
+    assume("t", nrow(gss) - 1)
+  
+  obs_diff <- gss %>%
+    specify(hours ~ college) %>%
+    calculate(stat = "diff in means", order = c("degree", "no degree"))
+  
+  ci <- 
+    get_confidence_interval(
+      null_dist,
+      level = .95,
+      point_estimate = obs_diff
+    )
+  
+  expect_doppelganger(
+    "viz-assume-2t",
+    visualize(null_dist)
+  )
+  
+  expect_doppelganger(
+    "viz-assume-2t-p-val-both",
+    visualize(null_dist) + shade_p_value(obs_stat, "both")
+  )
+  
+  expect_doppelganger(
+    "viz-assume-2t-p-val-left",
+    visualize(null_dist) + shade_p_value(obs_stat, "left")
+  )
+  
+  expect_doppelganger(
+    "viz-assume-2t-p-val-right",
+    visualize(null_dist) + shade_p_value(obs_stat, "right")
+  )
+  
+  expect_doppelganger(
+    "viz-assume-2t-ci",
+    visualize(null_dist) + shade_confidence_interval(ci)
+  )
+  
+  # z (prop) -----------------------------------------------------------------
+  obs_stat <- gss %>%
+    specify(response = sex, success = "female") %>%
+    hypothesize(null = "point", p = .5) %>%
+    calculate(stat = "z")
+  
+  null_dist <- gss %>%
+    specify(response = sex, success = "female") %>%
+    hypothesize(null = "point", p = .5) %>%
+    assume("z")
+  
+  obs_prop <- gss %>%
+    specify(response = sex, success = "female") %>%
+    calculate(stat = "prop")
+  
+  ci <- 
+    get_confidence_interval(
+      null_dist,
+      level = .95,
+      point_estimate = obs_prop
+    )
+  
+  expect_doppelganger(
+    "viz-assume-z",
+    visualize(null_dist)
+  )
+  
+  expect_doppelganger(
+    "viz-assume-z-p-val-both",
+    visualize(null_dist) + shade_p_value(obs_stat, "both")
+  )
+  
+  expect_doppelganger(
+    "viz-assume-z-p-val-left",
+    visualize(null_dist) + shade_p_value(obs_stat, "left")
+  )
+  
+  expect_doppelganger(
+    "viz-assume-z-p-val-right",
+    visualize(null_dist) + shade_p_value(obs_stat, "right")
+  )
+  
+  expect_doppelganger(
+    "viz-assume-z-ci",
+    visualize(null_dist) + shade_confidence_interval(ci)
+  )
+  
+  # z (diff in props) --------------------------------------------------------
+  obs_stat <- gss %>% 
+    specify(college ~ sex, success = "no degree") %>%
+    calculate(stat = "z", order = c("female", "male"))
+  
+  null_dist <- gss %>% 
+    specify(college ~ sex, success = "no degree") %>%
+    hypothesize(null = "independence") %>%
+    assume("z")
+  
+  obs_diff <- gss %>% 
+    specify(college ~ sex, success = "no degree") %>%
+    calculate(stat = "diff in props", order = c("female", "male"))
+  
+  ci <- 
+    get_confidence_interval(
+      null_dist,
+      level = .95,
+      point_estimate = obs_diff
+    )
+  
+  expect_doppelganger(
+    "viz-assume-2z",
+    visualize(null_dist)
+  )
+  
+  expect_doppelganger(
+    "viz-assume-2z-p-val-both",
+    visualize(null_dist) + shade_p_value(obs_stat, "both")
+  )
+  
+  expect_doppelganger(
+    "viz-assume-2z-p-val-left",
+    visualize(null_dist) + shade_p_value(obs_stat, "left")
+  )
+  
+  expect_doppelganger(
+    "viz-assume-2z-p-val-right",
+    visualize(null_dist) + shade_p_value(obs_stat, "right")
+  )
+  
+  expect_doppelganger(
+    "viz-assume-2z-ci",
+    visualize(null_dist) + shade_confidence_interval(ci)
+  )
+  
 })

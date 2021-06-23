@@ -313,15 +313,17 @@ check_for_piped_visualize <- function(...) {
 }
 
 impute_endpoints <- function(endpoints, plot = NULL) {
+  res <- endpoints
+  
   if (is_fitted(endpoints)) {
     x_lab <- x_axis_label(plot)
     
-    endpoints <- 
+    res <- 
       endpoints %>% 
       dplyr::filter(term == x_lab) %>% 
       dplyr::select(-term)
     
-    return(unlist(endpoints))
+    return(unlist(res))
   }
   
   if (is.vector(endpoints) && (length(endpoints) != 2)) {
@@ -329,7 +331,7 @@ impute_endpoints <- function(endpoints, plot = NULL) {
       "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector. ",
       "Using the first two entries as the `endpoints`."
     )
-    endpoints <- endpoints[1:2]
+    res <- endpoints[1:2]
   }
   
   if (is.data.frame(endpoints)) {
@@ -339,10 +341,10 @@ impute_endpoints <- function(endpoints, plot = NULL) {
       )
     }
     
-    endpoints <- unlist(endpoints)
+    res <- unlist(endpoints)
   }
   
-  endpoints
+  res %>% copy_attrs(endpoints, attrs = c("se", "point_estimate"))
 }
 
 impute_obs_stat <- function(obs_stat, direction, endpoints) {
@@ -422,7 +424,8 @@ compute_bin_breaks <- function(data, bins) {
   c(g_tbl[["xmin"]][1], g_tbl[["xmax"]])
 }
 
-theoretical_layer <- function(data, dens_color, dots = list(NULL), do_warn = TRUE) {
+theoretical_layer <- function(data, dens_color, dots = list(NULL), do_warn = TRUE,
+                              mean_shift = 0, sd_shift = 1) {
   method <- get_viz_method(data)
   
   if (method == "simulation") {
@@ -436,7 +439,8 @@ theoretical_layer <- function(data, dens_color, dots = list(NULL), do_warn = TRU
   switch(
     theory_type,
     t = theory_curve(
-      method, dt, qt, list(df = attr(data, "distr_param")), dens_color
+      method, dt, qt, list(df = attr(data, "distr_param")), dens_color,
+      mean_shift = mean_shift, sd_shift = sd_shift
     ),
     `F` = theory_curve(
       method, df, qf,
@@ -445,7 +449,8 @@ theoretical_layer <- function(data, dens_color, dots = list(NULL), do_warn = TRU
       ),
       dens_color = dens_color
     ),
-    z = theory_curve(method, dnorm, qnorm, list(), dens_color),
+    z = theory_curve(method, dnorm, qnorm, list(), dens_color, 
+                     mean_shift = mean_shift, sd_shift = sd_shift),
     `Chi-Square` = theory_curve(
       method, dchisq, qchisq, list(df = attr(data, "distr_param")), dens_color
     )
@@ -482,14 +487,20 @@ warn_theoretical_layer <- function(data, do_warn = TRUE) {
   }
 }
 
-theory_curve <- function(method, d_fun, q_fun, args_list, dens_color) {
+theory_curve <- function(method, d_fun, q_fun, args_list, dens_color,
+                         mean_shift = 0, sd_shift = 1) {
+  
   if (method == "theoretical") {
-    x_range <- do.call(q_fun, c(p = list(c(0.001, 0.999)), args_list))
+    d_fun_ <- shift_d_fun(d_fun, mean_shift, sd_shift)
+    
+    x_range <- (do.call(q_fun, c(p = list(c(0.001, 0.999)), args_list)) * 
+                  sd_shift) +
+      mean_shift
     
     res <- list(
       ggplot2::geom_path(
         data = data.frame(x = x_range), mapping = aes(x = x),
-        stat = "function", fun = d_fun, args = args_list,
+        stat = "function", fun = d_fun_, args = args_list,
         color = dens_color
       )
     )
@@ -505,6 +516,31 @@ theory_curve <- function(method, d_fun, q_fun, args_list, dens_color) {
   
   res
 }
+
+shift_d_fun <- function(d_fun_, mean_shift, sd_shift) {
+  function(x, ...) {
+    d_fun_(x = (x - mean_shift) / sd_shift, ...)
+  }
+}
+
+# when adding a confidence interval layer, rescale the theoretical
+# layer 
+redraw_theory_layer <- function(plot, mean_shift, sd_shift) {
+  plot_data <- plot[["plot_env"]][["data"]]
+
+  plot[["layers"]] <- 
+    theoretical_layer(
+      data = plot_data, 
+      dens_color = plot[["plot_env"]][["dens_color"]], 
+      dots = plot[["plot_env"]][["dots"]], 
+      do_warn = plot[["plot_env"]][["do_warn"]],
+      mean_shift = mean_shift, 
+      sd_shift = sd_shift
+    )
+  
+  plot
+}
+
 
 title_layer <- function(data, title_fn = ggplot2::ggtitle) {
   method <- get_viz_method(data)

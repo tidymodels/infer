@@ -182,6 +182,19 @@ shade_confidence_interval_term <- function(plot, endpoints,
   
   res <- c(res, list(segment_layer))
   
+  if (inherits(plot[["plot_env"]][["data"]], "infer_dist")) {
+    plot <- 
+      redraw_theory_layer(
+        plot, 
+        mean_shift = attr(endpoints, "point_estimate"),
+        sd_shift = attr(endpoints, "se")
+      ) +
+      ggplot2::labs(
+        title = "Rescaled Theoretical Distribution",
+        x = "stat"
+      )
+  }
+
   plot + res
 }
 

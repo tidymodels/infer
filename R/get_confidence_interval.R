@@ -54,7 +54,7 @@
 #' \itemize{
 #'   \item `distribution = "t"`: `point_estimate` should be the output of
 #'   [calculate()] with `stat = "mean"` or `stat = "diff in means"`
-#'   \item `distribution = "z"`:`point_estimate` should be the output of
+#'   \item `distribution = "z"`: `point_estimate` should be the output of
 #'   [calculate()] with `stat = "prop"` or `stat = "diff in props"`
 #' } 
 #'
@@ -242,7 +242,12 @@ ci_se <- function(x, level, point_estimate) {
 
   ci_vec <- point_estimate_ + c(-multiplier, multiplier) * se
 
-  make_ci_df(ci_vec)
+  res <- make_ci_df(ci_vec)
+  
+  attr(res, "se") <- attr(point_estimate, "se")
+  attr(res, "point_estimate") <- point_estimate_
+  
+  res
 }
 
 ci_bias_corrected <- function(x, level, point_estimate) {

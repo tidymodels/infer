@@ -38,15 +38,18 @@ test_that("get_confidence_interval works with `type = 'percentile'`", {
   
 test_that("get_confidence_interval works with `type = 'se'`", {  
   expect_message(
-    expect_equal(
-      test_df %>% get_confidence_interval(type = "se", point_estimate = point),
+    # use equivalent rather than equal as ci has attributes for se and point est
+    expect_equivalent(
+      test_df %>% 
+        get_confidence_interval(type = "se", point_estimate = point),
       tibble::tibble(lower_ci = -5.653, upper_ci = 6.603),
       tolerance = 1e-3
     ),
     "Using `level = 0.95`"
   )
   
-  expect_equal(
+  # use equivalent rather than equal as ci has attributes for se and point est
+  expect_equivalent(
     test_df %>%
       get_confidence_interval(level = 0.5, type = "se", point_estimate = point),
     tibble::tibble(lower_ci = -1.633, upper_ci = 2.583),
