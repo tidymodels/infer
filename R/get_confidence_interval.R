@@ -210,7 +210,7 @@ get_confidence_interval <- function(x, level = 0.95, type = NULL,
 
 #' @rdname get_confidence_interval
 #' @export
-get_ci <- function(x, level = 0.95, type = "percentile",
+get_ci <- function(x, level = 0.95, type = NULL,
                    point_estimate = NULL) {
   get_confidence_interval(
     x,
