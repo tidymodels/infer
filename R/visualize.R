@@ -11,7 +11,7 @@ ggplot2::ggplot_add
 #' 
 #' Learn more in `vignette("infer")`.
 #'
-#' @param data A null distribution. For simulation-based inference, a data frame 
+#' @param data A distribution. For simulation-based inference, a data frame 
 #'   containing a distribution of [calculate()]d statistics 
 #'   or [`fit()`][fit.infer()]ted coefficient estimates. This object should 
 #'   have been passed to [generate()] before being supplied or 
@@ -92,20 +92,20 @@ ggplot2::ggplot_add
 #'   visualize() +
 #'   shade_confidence_interval(ci)
 #'   
-#' # plot a theoretical null distribution by creating
-#' # a theory-based null with `assume()`
-#' null_dist_theoretical <- gss %>%
+#' # plot a theoretical sampling distribution by creating
+#' # a theory-based distribution with `assume()`
+#' sampling_dist <- gss %>%
 #'   specify(response = hours) %>%
 #'   hypothesize(null = "point", mu = 40) %>%
 #'   assume(distribution = "t", df = nrow(gss) - 1) 
 #'   
-#' visualize(null_dist_theoretical)
+#' visualize(sampling_dist)
 #' 
 #' # you can shade confidence intervals on top of
 #' # theoretical distributions, too---the theoretical
 #' # distribution will be recentered and rescaled to
 #' # align with the confidence interval
-#' visualize(null_dist_theoretical) +
+#' visualize(sampling_dist) +
 #'   shade_confidence_interval(ci)
 #' 
 #' 

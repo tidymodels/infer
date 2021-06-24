@@ -66,12 +66,12 @@
 #' # theoretical distributions, too---the theoretical
 #' # distribution will be recentered and rescaled to
 #' # align with the confidence interval
-#' null_dist_theoretical <- gss %>%
+#' sampling_dist <- gss %>%
 #'   specify(response = hours) %>%
 #'   hypothesize(null = "point", mu = 40) %>%
 #'   assume(distribution = "t", df = nrow(gss) - 1) 
 #'   
-#' visualize(null_dist_theoretical) +
+#' visualize(sampling_dist) +
 #'   shade_confidence_interval(ci)
 #'
 #' \donttest{

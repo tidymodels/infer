@@ -10,7 +10,7 @@ visualize(data, bins = 15, method = "simulation", dens_color = "black", ...)
 visualise(data, bins = 15, method = "simulation", dens_color = "black", ...)
 }
 \arguments{
-\item{data}{A null distribution. For simulation-based inference, a data frame
+\item{data}{A distribution. For simulation-based inference, a data frame
 containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
 or \code{\link[=fit.infer]{fit()}}ted coefficient estimates. This object should
 have been passed to \code{\link[=generate]{generate()}} before being supplied or
@@ -99,20 +99,20 @@ null_dist \%>\%
   visualize() +
   shade_confidence_interval(ci)
   
-# plot a theoretical null distribution by creating
-# a theory-based null with `assume()`
-null_dist_theoretical <- gss \%>\%
+# plot a theoretical sampling distribution by creating
+# a theory-based distribution with `assume()`
+sampling_dist <- gss \%>\%
   specify(response = hours) \%>\%
   hypothesize(null = "point", mu = 40) \%>\%
   assume(distribution = "t", df = nrow(gss) - 1) 
   
-visualize(null_dist_theoretical)
+visualize(sampling_dist)
 
 # you can shade confidence intervals on top of
 # theoretical distributions, too---the theoretical
 # distribution will be recentered and rescaled to
 # align with the confidence interval
-visualize(null_dist_theoretical) +
+visualize(sampling_dist) +
   shade_confidence_interval(ci)
 
 

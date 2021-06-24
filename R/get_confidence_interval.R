@@ -93,17 +93,17 @@
 #'     type = "se"
 #'   )
 #'   
-#' # using a theoretical null distribution -----------------------------------
+#' # using a theoretical distribution -----------------------------------
 #' 
-#' # define a null distribution
-#' null_dist <- gss %>%
+#' # define a sampling distribution
+#' sampling_dist <- gss %>%
 #'   specify(response = hours) %>%
 #'   assume("t", nrow(gss) - 1)
 #' 
 #' # get the confidence interval---note that the
 #' # point estimate is required here
 #' get_confidence_interval(
-#'   null_dist, 
+#'   sampling_dist, 
 #'   level = .95, 
 #'   point_estimate = sample_mean
 #' )
