@@ -107,7 +107,7 @@ test_that("fit.infer logistic regression works", {
   expect_error(
     gss %>%
       specify(finrela ~ age + college) %>%
-      fit(mode = "classification"),
+      fit(),
     "infer does not support.*more than two levels"
   )
   
