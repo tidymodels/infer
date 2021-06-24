@@ -27,11 +27,16 @@ explanatory variable (\code{term}).
 }
 \description{
 Given the output of an infer core function, this function will fit
-a model using \code{\link[stats:glm]{stats::glm()}} according to the formula and data supplied
+a linear model using \code{\link[stats:glm]{stats::glm()}} according to the formula and data supplied
 earlier in the pipeline. If passed the output of \code{\link[=specify]{specify()}} or
 \code{\link[=hypothesize]{hypothesize()}}, the function will fit one model. If passed the output
 of \code{\link[=generate]{generate()}}, it will fit a model to each data resample, denoted in
-the \code{replicate} column.
+the \code{replicate} column. The family of the fitted model depends on the type
+of the response variable. If the response is numeric, \code{fit()} will default
+to \code{family = "gaussian"}. If the response is a 2-level character or
+factor, \code{fit()} will default to \code{family = "gaussian"}. To fit character or
+factor response variables with more than two levels, we recommend
+\code{\link[parsnip:multinom_reg]{parsnip::multinom_reg()}}.
 
 infer provides a fit "method" for infer objects, which is a way of carrying
 out model fitting as applied to infer output. The "generic," imported from
