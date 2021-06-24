@@ -16,11 +16,11 @@ generics::fit
 #' [hypothesize()], the function will fit one model. If passed the output 
 #' of [generate()], it will fit a model to each data resample, denoted in 
 #' the `replicate` column. The family of the fitted model depends on the type
-#' of the response variable. If the response is numeric, `fit()` will default
-#' to `family = "gaussian"`. If the response is a 2-level character or
-#' factor, `fit()` will default to `family = "gaussian"`. To fit character or
-#' factor response variables with more than two levels, we recommend 
-#' [parsnip::multinom_reg()].
+#' of the response variable. If the response is numeric, `fit()` will use
+#' `family = "gaussian"` (linear regression). If the response is a 2-level 
+#' factor or character, `fit()` will use `family = "binomial"` (logistic 
+#' regression). To fit character or factor response variables with more than 
+#' two levels, we recommend [parsnip::multinom_reg()].
 #' 
 #' infer provides a fit "method" for infer objects, which is a way of carrying 
 #' out model fitting as applied to infer output. The "generic," imported from
