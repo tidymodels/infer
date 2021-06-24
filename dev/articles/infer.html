@@ -426,7 +426,6 @@
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></code></pre></div>
-<p>(Notice the warning: <code>Removed 1244 rows containing missing values.</code> This would be worth noting if you were actually carrying out this hypothesis test.)</p>
 <p>Our point estimate 41.382 seems <em>pretty</em> close to 40, but a little bit different. We might wonder if this difference is just due to random chance, or if the mean number of hours worked per week in the population really isn’t 40.</p>
 <p>We could initially just visualize the null distribution.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
@@ -499,6 +498,63 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_f_distn</span>, method <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">F_hat</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
 <p><img src="infer_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
+</div>
+<div id="multiple-regression" class="section level3">
+<h3 class="hasAnchor">
+<a href="#multiple-regression" class="anchor" aria-hidden="true"></a>Multiple regression</h3>
+<p>To accommodate randomization-based inference with multiple explanatory variables, the package implements an alternative workflow based on model fitting. Rather than <code><a href="../reference/calculate.html">calculate()</a></code>ing statistics from resampled data, this side of the package allows you to <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> linear models on data resampled according to the null hypothesis, supplying model coefficients for each explanatory variable. For the most part, you can just switch out <code><a href="../reference/calculate.html">calculate()</a></code> for <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> in your <code><a href="../reference/calculate.html">calculate()</a></code>-based workflows.</p>
+<p>As an example, suppose that we want to fit <code>hours</code> worked per week using the respondent <code>age</code> and <code>college</code> completion status. We could first begin by fitting a linear model to the observed data.</p>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">observed_fit</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>Now, to generate null distributions for each of these terms, we can fit 1000 models to resamples of the <code>gss</code> dataset, where the response <code>hours</code> is permuted in each. Note that this code is the same as the above except for the addition of the <code>hypothesize</code> and <code>generate</code> step.</p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">null_fits</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="va">null_fits</span></code></pre></div>
+<pre><code>## # A tibble: 3,000 x 3
+## # Groups:   replicate [1,000]
+##    replicate term          estimate
+##        &lt;int&gt; &lt;chr&gt;            &lt;dbl&gt;
+##  1         1 intercept      39.5   
+##  2         1 age             0.0372
+##  3         1 collegedegree   1.08  
+##  4         2 intercept      40.2   
+##  5         2 age             0.0239
+##  6         2 collegedegree   0.582 
+##  7         3 intercept      43.9   
+##  8         3 age            -0.0593
+##  9         3 collegedegree  -0.495 
+## 10         4 intercept      41.0   
+## # … with 2,990 more rows</code></pre>
+<p>To permute variables other than the response variable, the <code>cols</code> argument to <code><a href="../reference/generate.html">generate()</a></code> allows you to choose any of the <code><a href="../reference/specify.html">specify()</a></code>ed variables to permute independently of each other.</p>
+<p>Beyond this point, observed fits and distributions from null fits interface exactly like analogous outputs from <code><a href="../reference/calculate.html">calculate()</a></code>. For instance, we can use the following code to calculate a 95% confidence interval from these objects.</p>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/get_confidence_interval.html">get_confidence_interval</a></span><span class="op">(</span>
+  <span class="va">null_fits</span>, 
+  point_estimate <span class="op">=</span> <span class="va">observed_fit</span>, 
+  level <span class="op">=</span> <span class="fl">.95</span>
+<span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 3 x 3
+##   term          lower_ci upper_ci
+##   &lt;chr&gt;            &lt;dbl&gt;    &lt;dbl&gt;
+## 1 age            -0.0993   0.0947
+## 2 collegedegree  -2.61     2.55  
+## 3 intercept      37.4     45.2</code></pre>
+<p>Or, we can shade p-values for each of these observed regression coefficients from the observed data.</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_fits</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_fit</span>, direction <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span></code></pre></div>
+<p><img src="infer_files/figure-html/unnamed-chunk-10-1.png" width="576"></p>
+</div>
+<div id="conclusion" class="section level3">
+<h3 class="hasAnchor">
+<a href="#conclusion" class="anchor" aria-hidden="true"></a>Conclusion</h3>
 <p>That’s it! This vignette covers most all of the key functionality of infer. See <code><a href="https://infer.tidymodels.org/reference">help(package = "infer")</a></code> for a full list of functions and vignettes.</p>
 </div>
   </div>

@@ -904,6 +904,45 @@
 <a href="#two-numerical-vars---slr-t" class="anchor" aria-hidden="true"></a>Two numerical vars - SLR (t)</h3>
 <p>Not currently implemented since <span class="math inline">\(t\)</span> could refer to standardized slope or standardized correlation.</p>
 </div>
+<div id="multiple-explanatory-variables" class="section level3">
+<h3 class="hasAnchor">
+<a href="#multiple-explanatory-variables" class="anchor" aria-hidden="true"></a>Multiple explanatory variables</h3>
+<p>Calculating the observed fit,</p>
+<div class="sourceCode" id="cb133"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">obs_fit</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>Generating a distribution of fits with the response variable permuted,</p>
+<div class="sourceCode" id="cb134"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">null_distn</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>Generating a distribution of fits where each explanatory variable is permuted independently,</p>
+<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">null_distn2</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">college</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>Visualizing the observed fit alongside the null fits,</p>
+<div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_distn</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">obs_fit</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></code></pre></div>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-111-1.png" width="576"></p>
+<p>Calculating p-values from the null distribution and observed fit,</p>
+<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">null_distn</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">obs_fit</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 3 x 2
+##   term          p_value
+##   &lt;chr&gt;           &lt;dbl&gt;
+## 1 age             0.852
+## 2 collegedegree   0.278
+## 3 intercept       0.634</code></pre>
+<p>Note that this <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code>-based workflow can be applied to use cases with differing numbers of explanatory variables and explanatory variable types.</p>
+</div>
 </div>
 <div id="confidence-intervals" class="section level2">
 <h2 class="hasAnchor">
@@ -912,58 +951,20 @@
 <h3 class="hasAnchor">
 <a href="#one-numerical-one-mean" class="anchor" aria-hidden="true"></a>One numerical (one mean)</h3>
 <p>Finding the observed statistic,</p>
-<div class="sourceCode" id="cb133"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x_bar</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></code></pre></div>
 <p>Alternatively, using the <code><a href="../reference/observe.html">observe()</a></code> wrapper to calculate the observed statistic,</p>
-<div class="sourceCode" id="cb134"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb140"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x_bar</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span>, stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></code></pre></div>
-<p>Then, generating the null distribution,</p>
-<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">boot</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></code></pre></div>
-<p>Use the null distribution to find a confidence interval,</p>
-<div class="sourceCode" id="cb136"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">percentile_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></code></pre></div>
-<p>Visualizing the observed statistic alongside the null distribution,</p>
-<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-112-1.png" width="576"></p>
-<p>Alternatively, use the null distribution to find a confidence interval using the standard error,</p>
-<div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">standard_error_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span><span class="va">boot</span>, type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">x_bar</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-113-1.png" width="576"></p>
-</div>
-<div id="one-numerical-one-mean---standardized" class="section level3">
-<h3 class="hasAnchor">
-<a href="#one-numerical-one-mean---standardized" class="anchor" aria-hidden="true"></a>One numerical (one mean - standardized)</h3>
-<p>Finding the observed statistic,</p>
-<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">t_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span></code></pre></div>
-<p>Alternatively, using the <code><a href="../reference/observe.html">observe()</a></code> wrapper to calculate the observed statistic,</p>
-<div class="sourceCode" id="cb140"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">t_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span>,
-          null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span>,
-          stat <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span></code></pre></div>
 <p>Then, generating the null distribution,</p>
 <div class="sourceCode" id="cb141"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">boot</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
    <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
    <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span></code></pre></div>
+   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></code></pre></div>
 <p>Use the null distribution to find a confidence interval,</p>
 <div class="sourceCode" id="cb142"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">percentile_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></code></pre></div>
@@ -971,34 +972,37 @@
 <div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-118-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-117-1.png" width="576"></p>
 <p>Alternatively, use the null distribution to find a confidence interval using the standard error,</p>
 <div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">standard_error_ci</span> <span class="op">&lt;-</span> <span class="va">boot</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">t_hat</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">standard_error_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span><span class="va">boot</span>, type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">x_bar</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-119-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-118-1.png" width="576"></p>
 </div>
-<div id="one-categorical-one-proportion-1" class="section level3">
+<div id="one-numerical-one-mean---standardized" class="section level3">
 <h3 class="hasAnchor">
-<a href="#one-categorical-one-proportion-1" class="anchor" aria-hidden="true"></a>One categorical (one proportion)</h3>
+<a href="#one-numerical-one-mean---standardized" class="anchor" aria-hidden="true"></a>One numerical (one mean - standardized)</h3>
 <p>Finding the observed statistic,</p>
 <div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"female"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">t_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span></code></pre></div>
 <p>Alternatively, using the <code><a href="../reference/observe.html">observe()</a></code> wrapper to calculate the observed statistic,</p>
 <div class="sourceCode" id="cb146"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-   <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"female"</span>, stat <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">t_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span>,
+          null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span>,
+          stat <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span></code></pre></div>
 <p>Then, generating the null distribution,</p>
 <div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">boot</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
- <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"female"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
- <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
- <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></code></pre></div>
+   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span></code></pre></div>
 <p>Use the null distribution to find a confidence interval,</p>
 <div class="sourceCode" id="cb148"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">percentile_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></code></pre></div>
@@ -1006,15 +1010,50 @@
 <div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-124-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-123-1.png" width="576"></p>
 <p>Alternatively, use the null distribution to find a confidence interval using the standard error,</p>
 <div class="sourceCode" id="cb150"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">standard_error_ci</span> <span class="op">&lt;-</span> <span class="va">boot</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">t_hat</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></code></pre></div>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-124-1.png" width="576"></p>
+</div>
+<div id="one-categorical-one-proportion-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#one-categorical-one-proportion-1" class="anchor" aria-hidden="true"></a>One categorical (one proportion)</h3>
+<p>Finding the observed statistic,</p>
+<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">p_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"female"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></code></pre></div>
+<p>Alternatively, using the <code><a href="../reference/observe.html">observe()</a></code> wrapper to calculate the observed statistic,</p>
+<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">p_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+   <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"female"</span>, stat <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></code></pre></div>
+<p>Then, generating the null distribution,</p>
+<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">boot</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+ <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"female"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+ <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+ <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"prop"</span><span class="op">)</span></code></pre></div>
+<p>Use the null distribution to find a confidence interval,</p>
+<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">percentile_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></code></pre></div>
+<p>Visualizing the observed statistic alongside the null distribution,</p>
+<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></code></pre></div>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-129-1.png" width="576"></p>
+<p>Alternatively, use the null distribution to find a confidence interval using the standard error,</p>
+<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">standard_error_ci</span> <span class="op">&lt;-</span> <span class="va">boot</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">p_hat</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-125-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-130-1.png" width="576"></p>
 </div>
 <div id="one-categorical-variable-standardized-proportion-z-1" class="section level3">
 <h3 class="hasAnchor">
@@ -1025,57 +1064,21 @@
 <h3 class="hasAnchor">
 <a href="#one-numerical-variable-one-categorical-2-levels-diff-in-means-1" class="anchor" aria-hidden="true"></a>One numerical variable, one categorical (2 levels) (diff in means)</h3>
 <p>Finding the observed statistic,</p>
-<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"diff in means"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Alternatively, using the <code><a href="../reference/observe.html">observe()</a></code> wrapper to calculate the observed statistic,</p>
-<div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">d_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">college</span>,
           stat <span class="op">=</span> <span class="st">"diff in means"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>Then, generating the null distribution,</p>
-<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">boot</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"diff in means"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>Use the null distribution to find a confidence interval,</p>
-<div class="sourceCode" id="cb154"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">percentile_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></code></pre></div>
-<p>Visualizing the observed statistic alongside the null distribution,</p>
-<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-130-1.png" width="576"></p>
-<p>Alternatively, use the null distribution to find a confidence interval using the standard error,</p>
-<div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">standard_error_ci</span> <span class="op">&lt;-</span> <span class="va">boot</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">d_hat</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-131-1.png" width="576"></p>
-</div>
-<div id="one-numerical-variable-one-categorical-2-levels-t-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#one-numerical-variable-one-categorical-2-levels-t-1" class="anchor" aria-hidden="true"></a>One numerical variable, one categorical (2 levels) (t)</h3>
-<p>Finding the standardized point estimate,</p>
-<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">t_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>Alternatively, using the <code><a href="../reference/observe.html">observe()</a></code> wrapper to calculate the observed statistic,</p>
-<div class="sourceCode" id="cb158"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">t_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">college</span>,
-          stat <span class="op">=</span> <span class="st">"t"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Then, generating the null distribution,</p>
 <div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">boot</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
    <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
    <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"diff in means"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Use the null distribution to find a confidence interval,</p>
 <div class="sourceCode" id="cb160"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">percentile_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></code></pre></div>
@@ -1083,35 +1086,35 @@
 <div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-136-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-135-1.png" width="576"></p>
 <p>Alternatively, use the null distribution to find a confidence interval using the standard error,</p>
 <div class="sourceCode" id="cb162"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">standard_error_ci</span> <span class="op">&lt;-</span> <span class="va">boot</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">t_hat</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">d_hat</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-137-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-136-1.png" width="576"></p>
 </div>
-<div id="two-categorical-variables-diff-in-proportions" class="section level3">
+<div id="one-numerical-variable-one-categorical-2-levels-t-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#two-categorical-variables-diff-in-proportions" class="anchor" aria-hidden="true"></a>Two categorical variables (diff in proportions)</h3>
-<p>Finding the observed statistic,</p>
+<a href="#one-numerical-variable-one-categorical-2-levels-t-1" class="anchor" aria-hidden="true"></a>One numerical variable, one categorical (2 levels) (t)</h3>
+<p>Finding the standardized point estimate,</p>
 <div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">d_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"degree"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"diff in props"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">t_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Alternatively, using the <code><a href="../reference/observe.html">observe()</a></code> wrapper to calculate the observed statistic,</p>
 <div class="sourceCode" id="cb164"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">d_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"degree"</span>,
-          stat <span class="op">=</span> <span class="st">"diff in props"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">t_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">college</span>,
+          stat <span class="op">=</span> <span class="st">"t"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Then, generating the null distribution,</p>
 <div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">boot</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"degree"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"diff in props"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Use the null distribution to find a confidence interval,</p>
 <div class="sourceCode" id="cb166"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">percentile_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></code></pre></div>
@@ -1119,35 +1122,35 @@
 <div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-142-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-141-1.png" width="576"></p>
 <p>Alternatively, use the null distribution to find a confidence interval using the standard error,</p>
 <div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">standard_error_ci</span> <span class="op">&lt;-</span> <span class="va">boot</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">d_hat</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">t_hat</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-143-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-142-1.png" width="576"></p>
 </div>
-<div id="two-categorical-variables-z" class="section level3">
+<div id="two-categorical-variables-diff-in-proportions" class="section level3">
 <h3 class="hasAnchor">
-<a href="#two-categorical-variables-z" class="anchor" aria-hidden="true"></a>Two categorical variables (z)</h3>
-<p>Finding the standardized point estimate,</p>
+<a href="#two-categorical-variables-diff-in-proportions" class="anchor" aria-hidden="true"></a>Two categorical variables (diff in proportions)</h3>
+<p>Finding the observed statistic,</p>
 <div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">z_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+<code class="sourceCode R"><span class="va">d_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"degree"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"z"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"diff in props"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Alternatively, using the <code><a href="../reference/observe.html">observe()</a></code> wrapper to calculate the observed statistic,</p>
 <div class="sourceCode" id="cb170"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">z_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+<code class="sourceCode R"><span class="va">d_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"degree"</span>,
-          stat <span class="op">=</span> <span class="st">"z"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+          stat <span class="op">=</span> <span class="st">"diff in props"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Then, generating the null distribution,</p>
 <div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">boot</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"degree"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"z"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"diff in props"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Use the null distribution to find a confidence interval,</p>
 <div class="sourceCode" id="cb172"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">percentile_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></code></pre></div>
@@ -1155,34 +1158,35 @@
 <div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-148-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-147-1.png" width="576"></p>
 <p>Alternatively, use the null distribution to find a confidence interval using the standard error,</p>
 <div class="sourceCode" id="cb174"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">standard_error_ci</span> <span class="op">&lt;-</span> <span class="va">boot</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">z_hat</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">d_hat</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-149-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-148-1.png" width="576"></p>
 </div>
-<div id="two-numerical-vars---slr-1" class="section level3">
+<div id="two-categorical-variables-z" class="section level3">
 <h3 class="hasAnchor">
-<a href="#two-numerical-vars---slr-1" class="anchor" aria-hidden="true"></a>Two numerical vars - SLR</h3>
-<p>Finding the observed statistic,</p>
+<a href="#two-categorical-variables-z" class="anchor" aria-hidden="true"></a>Two categorical variables (z)</h3>
+<p>Finding the standardized point estimate,</p>
 <div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">slope_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"slope"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">z_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"degree"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"z"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Alternatively, using the <code><a href="../reference/observe.html">observe()</a></code> wrapper to calculate the observed statistic,</p>
 <div class="sourceCode" id="cb176"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">slope_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span>, stat <span class="op">=</span> <span class="st">"slope"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">z_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"degree"</span>,
+          stat <span class="op">=</span> <span class="st">"z"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Then, generating the null distribution,</p>
 <div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">boot</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"slope"</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"degree"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"z"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Use the null distribution to find a confidence interval,</p>
 <div class="sourceCode" id="cb178"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">percentile_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></code></pre></div>
@@ -1190,34 +1194,34 @@
 <div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-154-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-153-1.png" width="576"></p>
 <p>Alternatively, use the null distribution to find a confidence interval using the standard error,</p>
 <div class="sourceCode" id="cb180"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">standard_error_ci</span> <span class="op">&lt;-</span> <span class="va">boot</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">slope_hat</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">z_hat</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-155-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-154-1.png" width="576"></p>
 </div>
-<div id="two-numerical-vars---correlation-1" class="section level3">
+<div id="two-numerical-vars---slr-1" class="section level3">
 <h3 class="hasAnchor">
-<a href="#two-numerical-vars---correlation-1" class="anchor" aria-hidden="true"></a>Two numerical vars - correlation</h3>
+<a href="#two-numerical-vars---slr-1" class="anchor" aria-hidden="true"></a>Two numerical vars - SLR</h3>
 <p>Finding the observed statistic,</p>
 <div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">correlation_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+<code class="sourceCode R"><span class="va">slope_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"correlation"</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"slope"</span><span class="op">)</span></code></pre></div>
 <p>Alternatively, using the <code><a href="../reference/observe.html">observe()</a></code> wrapper to calculate the observed statistic,</p>
 <div class="sourceCode" id="cb182"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">correlation_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span>, stat <span class="op">=</span> <span class="st">"correlation"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">slope_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span>, stat <span class="op">=</span> <span class="st">"slope"</span><span class="op">)</span></code></pre></div>
 <p>Then, generating the null distribution,</p>
 <div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">boot</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
    <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
    <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"correlation"</span><span class="op">)</span></code></pre></div>
+   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"slope"</span><span class="op">)</span></code></pre></div>
 <p>Use the null distribution to find a confidence interval,</p>
 <div class="sourceCode" id="cb184"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">percentile_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></code></pre></div>
@@ -1225,20 +1229,92 @@
 <div class="sourceCode" id="cb185"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-160-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-159-1.png" width="576"></p>
 <p>Alternatively, use the null distribution to find a confidence interval using the standard error,</p>
 <div class="sourceCode" id="cb186"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">standard_error_ci</span> <span class="op">&lt;-</span> <span class="va">boot</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">slope_hat</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></code></pre></div>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-160-1.png" width="576"></p>
+</div>
+<div id="two-numerical-vars---correlation-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#two-numerical-vars---correlation-1" class="anchor" aria-hidden="true"></a>Two numerical vars - correlation</h3>
+<p>Finding the observed statistic,</p>
+<div class="sourceCode" id="cb187"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">correlation_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"correlation"</span><span class="op">)</span></code></pre></div>
+<p>Alternatively, using the <code><a href="../reference/observe.html">observe()</a></code> wrapper to calculate the observed statistic,</p>
+<div class="sourceCode" id="cb188"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">correlation_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span>, stat <span class="op">=</span> <span class="st">"correlation"</span><span class="op">)</span></code></pre></div>
+<p>Then, generating the null distribution,</p>
+<div class="sourceCode" id="cb189"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">boot</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
+   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"correlation"</span><span class="op">)</span></code></pre></div>
+<p>Use the null distribution to find a confidence interval,</p>
+<div class="sourceCode" id="cb190"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">percentile_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></code></pre></div>
+<p>Visualizing the observed statistic alongside the null distribution,</p>
+<div class="sourceCode" id="cb191"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></code></pre></div>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-165-1.png" width="576"></p>
+<p>Alternatively, use the null distribution to find a confidence interval using the standard error,</p>
+<div class="sourceCode" id="cb192"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">standard_error_ci</span> <span class="op">&lt;-</span> <span class="va">boot</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"se"</span>, point_estimate <span class="op">=</span> <span class="va">correlation_hat</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-161-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-166-1.png" width="576"></p>
 </div>
 <div id="two-numerical-vars---t" class="section level3">
 <h3 class="hasAnchor">
 <a href="#two-numerical-vars---t" class="anchor" aria-hidden="true"></a>Two numerical vars - t</h3>
 <p>Not currently implemented since <span class="math inline">\(t\)</span> could refer to standardized slope or standardized correlation.</p>
+</div>
+<div id="multiple-explanatory-variables-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#multiple-explanatory-variables-1" class="anchor" aria-hidden="true"></a>Multiple explanatory variables</h3>
+<p>Calculating the observed fit,</p>
+<div class="sourceCode" id="cb193"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">obs_fit</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>Generating a distribution of fits with the response variable permuted,</p>
+<div class="sourceCode" id="cb194"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">null_distn</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>Alternatively, generating a distribution of fits where each explanatory variable is permuted independently,</p>
+<div class="sourceCode" id="cb195"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">null_distn2</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">college</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>Calculating confidence intervals from the null fits,</p>
+<div class="sourceCode" id="cb196"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">conf_ints</span> <span class="op">&lt;-</span> 
+  <span class="fu"><a href="../reference/get_confidence_interval.html">get_confidence_interval</a></span><span class="op">(</span>
+    <span class="va">null_distn</span>, 
+    level <span class="op">=</span> <span class="fl">.95</span>, 
+    point_estimate <span class="op">=</span> <span class="va">obs_fit</span>
+  <span class="op">)</span></code></pre></div>
+<p>Visualizing the observed fit alongside the null fits,</p>
+<div class="sourceCode" id="cb197"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_distn</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">conf_ints</span><span class="op">)</span></code></pre></div>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-171-1.png" width="576"></p>
+<p>Note that this <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code>-based workflow can be applied to use cases with differing numbers of explanatory variables and explanatory variable types.</p>
 </div>
 </div>
   </div>
