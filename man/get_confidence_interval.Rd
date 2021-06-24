@@ -7,7 +7,7 @@
 \usage{
 get_confidence_interval(x, level = 0.95, type = NULL, point_estimate = NULL)
 
-get_ci(x, level = 0.95, type = "percentile", point_estimate = NULL)
+get_ci(x, level = 0.95, type = NULL, point_estimate = NULL)
 }
 \arguments{
 \item{x}{A distribution. For simulation-based inference, a data frame

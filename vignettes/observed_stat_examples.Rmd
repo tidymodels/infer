@@ -1039,6 +1039,27 @@ visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
 
+Instead of a simulation-based null distribution, we can also define a theory-based sampling distribution,
+
+```{r}
+sampling_dist <- gss %>%
+   specify(response = hours) %>%
+   assume(distribution = "t", df = nrow(gss) - 1)
+```
+
+Visualization and calculation of confidence intervals interfaces in the same way as with the simulation-based null distribution,
+
+```{r}
+theor_ci <- get_ci(sampling_dist, point_estimate = x_bar)
+
+theor_ci
+
+visualize(sampling_dist) +
+  shade_confidence_interval(endpoints = theor_ci)
+```
+
+Note that the `t` distribution is recentered and rescaled to lie on the scale of the observed data.
+
 ### One numerical (one mean - standardized)
 
 Finding the observed statistic,
@@ -1092,6 +1113,7 @@ visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
 
+See the above subsection (one mean) for a theory-based approach.
 
 ### One categorical (one proportion)
 
@@ -1142,9 +1164,30 @@ visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
 
+Instead of a simulation-based null distribution, we can also define a theory-based sampling distribution,
+
+```{r}
+sampling_dist <- gss %>%
+   specify(response = sex, success = "female") %>%
+   assume(distribution = "z")
+```
+
+Visualization and calculation of confidence intervals interfaces in the same way as with the simulation-based null distribution,
+
+```{r}
+theor_ci <- get_ci(sampling_dist, point_estimate = p_hat)
+
+theor_ci
+
+visualize(sampling_dist) +
+  shade_confidence_interval(endpoints = theor_ci)
+```
+
+Note that the `z` distribution is recentered and rescaled to lie on the scale of the observed data.
+
 ### One categorical variable (standardized proportion $z$)
 
-Not yet implemented.
+See the above subsection (one proportion) for a theory-based approach.
 
 ### One numerical variable, one categorical (2 levels) (diff in means)
 
@@ -1196,6 +1239,27 @@ visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
 
+Instead of a simulation-based null distribution, we can also define a theory-based sampling distribution,
+
+```{r}
+sampling_dist <- gss %>%
+   specify(hours ~ college) %>%
+   assume(distribution = "t", df = nrow(gss) - 1)
+```
+
+Visualization and calculation of confidence intervals interfaces in the same way as with the simulation-based null distribution,
+
+```{r}
+theor_ci <- get_ci(sampling_dist, point_estimate = d_hat)
+
+theor_ci
+
+visualize(sampling_dist) +
+  shade_confidence_interval(endpoints = theor_ci)
+```
+
+Note that the `t` distribution is recentered and rescaled to lie on the scale of the observed data.
+
 ### One numerical variable, one categorical (2 levels) (t)
 
 Finding the standardized point estimate,
@@ -1246,6 +1310,7 @@ visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
 
+See the above subsection (diff in means) for a theory-based approach.
 
 ### Two categorical variables (diff in proportions)
 
@@ -1297,6 +1362,27 @@ visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
 
+Instead of a simulation-based null distribution, we can also define a theory-based sampling distribution,
+
+```{r}
+sampling_dist <- gss %>% 
+  specify(college ~ sex, success = "degree") %>%
+   assume(distribution = "z")
+```
+
+Visualization and calculation of confidence intervals interfaces in the same way as with the simulation-based null distribution,
+
+```{r}
+theor_ci <- get_ci(sampling_dist, point_estimate = d_hat)
+
+theor_ci
+
+visualize(sampling_dist) +
+  shade_confidence_interval(endpoints = theor_ci)
+```
+
+Note that the `z` distribution is recentered and rescaled to lie on the scale of the observed data.
+
 ### Two categorical variables (z)
 
 Finding the standardized point estimate,
@@ -1347,6 +1433,7 @@ visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
 
+See the above subsection (diff in props) for a theory-based approach.
 
 ### Two numerical vars - SLR
 
