@@ -82,57 +82,25 @@ test_that("fit.infer messages informatively on excessive null", {
   )
 })
 
-test_that("fit.infer `mode` and logistic regression work", {
-  # defaults to regression (correct usage)
+test_that("fit.infer logistic regression works", {
+  # linear regression default works
   expect_equal(
     gss %>%
       specify(hours ~ age + college) %>%
       fit(),
     gss %>%
       specify(hours ~ age + college) %>%
-      fit(mode = "regression")
+      fit(family = stats::gaussian)
   )
   
-  # correct usage for classification
-  expect_silent(
-    gss %>%
-      specify(college ~ age + hours) %>%
-      fit(mode = "classification")
-  )
-  
-  # needs mode for classification
-  expect_error(
-    gss %>%
-      specify(college ~ age + hours) %>%
-      fit(),
-    '`mode = "classification"`.*dichotomous categorical response'
-  )
-  
-  # bad mode
-  expect_error(
-    gss %>%
-      specify(college ~ age + hours) %>%
-      fit(mode = "boop"),
-    '`mode` argument must be one of "regression" or "classification".'
-  )
-  
-  # override mode via family
+  # logistic regression default works
   expect_equal(
     gss %>%
       specify(college ~ age + hours) %>%
       fit(family = stats::binomial),
     gss %>%
       specify(college ~ age + hours) %>%
-      fit(mode = "classification")
-  )
-  
-  expect_equal(
-    gss %>%
-      specify(hours ~ age + college) %>%
-      fit(family = stats::gaussian),
-    gss %>%
-      specify(hours ~ age + college) %>%
-      fit(mode = "regression")
+      fit()
   )
   
   # errors informatively with multinomial response variable
@@ -148,11 +116,11 @@ test_that("fit.infer `mode` and logistic regression work", {
     specify(college ~ age + hours) %>%
     hypothesize(null = "independence") %>%
     generate(type = "permute", reps = 2) %>%
-    fit(mode = "classification")
+    fit()
   
   fit_obs <- gss %>%
     specify(college ~ age + hours) %>%
-    fit(mode = "classification")
+    fit()
 
   expect_equal(nrow(fit_gen), nrow(fit_obs) * 2)
   expect_equal(ncol(fit_gen), ncol(fit_obs) + 1)
@@ -160,11 +128,11 @@ test_that("fit.infer `mode` and logistic regression work", {
   # responds to success argument
   fit_deg <- gss %>%
     specify(college ~ age + hours, success = "degree") %>%
-    fit(mode = "classification")
+    fit()
   
   fit_no_deg <- gss %>%
     specify(college ~ age + hours, success = "no degree") %>%
-    fit(mode = "classification")
+    fit()
 
   expect_equal(fit_deg$term, fit_no_deg$term)
   expect_equal(fit_deg$estimate, -fit_no_deg$estimate)

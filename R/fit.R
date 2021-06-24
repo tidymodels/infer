@@ -27,9 +27,6 @@ generics::fit
 #' 
 #' @param object Output from an infer function---likely [generate()] or 
 #' [specify()]---which specifies the formula and data to fit a model to.
-#' @param mode One of "regression" or "classification"---the model type,
-#' determined by the outcome variable. If a `family` argument is passed
-#' via `...`, this argument will be ignored.
 #' @param ... Any optional arguments to pass along to the model fitting
 #' function. See [stats::glm()] for more information.
 #'
@@ -90,10 +87,11 @@ generics::fit
 #' 
 #' null_fits
 #' 
-#' # for logistic regression, set `mode = "classification"`
+#' # for logistic regression, just supply a binary response variable!
+#' # (this can also be made explicit via the `family` argument in ...)
 #' gss %>%
 #'   specify(college ~ age + hours) %>%
-#'   fit(mode = "classification")
+#'   fit()
 #' 
 #' # more in-depth explanation of how to use the infer package
 #' \dontrun{
@@ -104,13 +102,13 @@ generics::fit
 #' @method fit infer
 #' @export fit.infer
 #' @export
-fit.infer <- function(object, mode = "regression", ...) {
+fit.infer <- function(object, ...) {
   message_on_excessive_null(object, fn = "fit")
   
-  # Confirm that the mode, either supplied via the mode
-  # argument or via `family` in ..., aligns with the outcome
-  # variable. Return a processed version of the ellipses
-  dots <- check_mode(object, mode, ...)
+  # Confirm that the family, possibly supplied via
+  # `family` in ..., takes precedence over the default. 
+  # Return a processed version of the ellipses
+  dots <- check_family(object, ...)
 
   # Relevel the response based on the success attribute
   # so that the reference level is reflected in the fit
@@ -153,7 +151,7 @@ fit.infer <- function(object, mode = "regression", ...) {
   x
 }
 
-check_mode <- function(object, mode, ...) {
+check_family <- function(object, ...) {
   response_type <- determine_variable_type(object, "response")
   
   if (response_type == "mult") {
@@ -170,35 +168,13 @@ check_mode <- function(object, mode, ...) {
     return(dots)
   }
   
-  if (!mode %in% c("regression", "classification")) {
-    stop_glue(
-      'The `mode` argument must be one of "regression" or "classification".'
-    )
-  }
-  
-  if ((response_type == "num" && mode == "classification") ||
-      (response_type == "bin" && mode == "regression")) {
-    stop_glue(
-      'Use `mode = "{switch_mode(mode)}"` in `fit()` for a ',
-      '{get_stat_type_desc(response_type)} response variable.'
-    )
-  }
-  
-  if (mode == "classification") {
+  if (response_type == "bin") {
     dots[["family"]] <- stats::binomial
   } else {
     dots[["family"]] <- stats::gaussian
   }
   
   dots
-}
-
-switch_mode <- function(mode) {
-  if (mode == "regression") {
-    return("classification")
-  } else {
-    return("regression")
-  }
 }
 
 relevel_response <- function(x) {

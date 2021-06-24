@@ -4,15 +4,11 @@
 \alias{fit.infer}
 \title{Fit linear models to infer objects}
 \usage{
-\method{fit}{infer}(object, mode = "regression", ...)
+\method{fit}{infer}(object, ...)
 }
 \arguments{
 \item{object}{Output from an infer function---likely \code{\link[=generate]{generate()}} or
 \code{\link[=specify]{specify()}}---which specifies the formula and data to fit a model to.}
-
-\item{mode}{One of "regression" or "classification"---the model type,
-determined by the outcome variable. If a \code{family} argument is passed
-via \code{...}, this argument will be ignored.}
 
 \item{...}{Any optional arguments to pass along to the model fitting
 function. See \code{\link[stats:glm]{stats::glm()}} for more information.}
@@ -90,10 +86,11 @@ null_fits <- gss \%>\%
 
 null_fits
 
-# for logistic regression, set `mode = "classification"`
+# for logistic regression, just supply a binary response variable!
+# (this can also be made explicit via the `family` argument in ...)
 gss \%>\%
   specify(college ~ age + hours) \%>\%
-  fit(mode = "classification")
+  fit()
 
 # more in-depth explanation of how to use the infer package
 \dontrun{
