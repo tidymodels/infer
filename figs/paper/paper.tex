@@ -226,11 +226,11 @@ inference. \textit{Journal of Open Source Software}, (), . \href{https://doi.org
 
 \title{infer: An R package for tidyverse-friendly statistical inference}
 
-        \author[1, 2]{Simon Couch}
-          \author[3]{Andrew Bray}
+        \author[1, 2]{Simon P. Couch}
+          \author[3]{Andrew P. Bray}
           \author[4]{Chester Ismay}
           \author[5]{Evgeni Chasnovski}
-          \author[6]{Ben Baumer}
+          \author[6]{Benjamin S. Baumer}
           \author[2, 7]{Mine Çetinkaya-Rundel}
     
       \affil[1]{Johns Hopkins, Department of Biostatistics}
@@ -276,7 +276,7 @@ Mathematics Department (on leave)}
 \section{Summary}\label{summary}}
 
 \texttt{infer} implements an expressive grammar to perform statistical
-inference that coheres with the \texttt{tidyverse} design framework
+inference that adheres to the \texttt{tidyverse} design framework
 (Wickham et al., 2019). Rather than providing methods for specific
 statistical tests, this package consolidates the principles that are
 shared among common hypothesis tests into a set of four main verbs
@@ -294,22 +294,22 @@ diversity in approaches obscures the intuition shared among common
 inferential procedures, makes details of usage difficult to remember,
 and prevents an expressive and idiomatic coding style.
 
-infer is an R package for randomization-based hypothesis testing,
-naturalizing an intuitive understanding of statistical inference via a
-unified and expressive grammar. Four functions provide functionality
-encompassing a large swath of basic frequentist statistical inference,
-abstracting away details of specific tests and shifting the focus of the
-analyst to the observed data and the processes that generated it. Such a
-grammar lends itself to applications in teaching, data pedagogy
-research, applied scientific research, and advanced predictive modeling.
-For one, the principled approach of the package has made it especially
-well-fit for use in teaching introductory statistics (Baumer, Bray,
-Çetinkaya-Rundel, \& Hardin, 2020; Ismay \& Kim, 2019) and research in
-data pedagogy (Çetinkaya-Rundel \& Ellison, 2021; Fergusson \&
-Pfannkuch, 2021; Loy, 2021). Further, the package has already seen usage
-in a number of published scientific applications (Ask et al., 2021;
-Fallon \& Hinds, 2021; McLean et al., 2021). Finally, the package
-integrates with the greater tidymodels collection of packages, a
+\texttt{infer} is an R package for randomization-based hypothesis
+testing, naturalizing an intuitive understanding of statistical
+inference via a unified and expressive grammar. Four functions provide
+functionality encompassing a large swath of basic frequentist
+statistical inference, abstracting away details of specific tests and
+shifting the focus of the analyst to the observed data and the processes
+that generated it. Such a grammar lends itself to applications in
+teaching, data pedagogy research, applied scientific research, and
+advanced predictive modeling. For one, the principled approach of the
+package has made it an especially good fit for teaching introductory
+statistics (Baumer, Bray, Çetinkaya-Rundel, \& Hardin, 2020; Ismay \&
+Kim, 2019) and research in data pedagogy (Çetinkaya-Rundel \& Ellison,
+2021; Fergusson \& Pfannkuch, 2021; Loy, 2021). Further, the package has
+already seen usage in a number of published scientific applications (Ask
+et al., 2021; Fallon \& Hinds, 2021; McLean et al., 2021). Finally, the
+package integrates with the greater tidymodels collection of packages, a
 burgeoning software ecosystem for tidyverse-aligned predictive modeling
 used across many modern research and industrial applications (Kuhn \&
 Wickham, 2020). To date, the package has been downloaded more than
@@ -342,7 +342,7 @@ with some dataset,
 \tightlist
 \item
   \texttt{specify()} allows the analyst to specify the variable, or
-  relationship between variables, that they're interested in.
+  relationship between variables, that they are interested in.
 \item
   \texttt{hypothesize()} allows the analyst to declare the null
   hypothesis.
@@ -392,7 +392,7 @@ their outputs.
   via the juxtaposition of the test statistic and null distribution.
 \end{itemize}
 
-Beyond this, the package offers
+Beyond this, the package offers:
 
 \begin{itemize}
 \tightlist
@@ -420,13 +420,14 @@ contrast, \texttt{infer} is structured around four functions, situating
 statistics and model types within a more abstracted grammar.
 \texttt{infer}'s initial release on the Comprehensive R Archive Network
 predated that of each of the packages mentioned above, with the
-exception of \texttt{broom} (R Core Team, 2021).
+exception of \texttt{broom}, a package situated in the same
+\texttt{tidymodels} ecosystem (R Core Team, 2021).
 
 \hypertarget{acknowledgements}{%
 \section{Acknowledgements}\label{acknowledgements}}
 
-We acknowledge contributions from Albert Kim, Jo Hardin, Jay Lee, Amelia
-McNamara, Nick Solomon, and Richie Cotton.
+We acknowledge contributions from Albert Y. Kim, Jo Hardin, Jay Lee,
+Amelia McNamara, Nick Solomon, and Richie Cotton.
 
 \hypertarget{references}{%
 \section*{References}\label{references}}
@@ -439,40 +440,47 @@ Ask, A. V., Jenssen, B. M., Tartu, S., Angelier, F., Chastel, O., \&
 Gabrielsen, G. W. (2021). Per-and polyfluoroalkyl substances are
 positively associated with thyroid hormones in an arctic seabird.
 \emph{Environmental Toxicology and Chemistry}, \emph{40}(3), 820--831.
+doi:\href{https://doi.org/10.1002/etc.4978}{10.1002/etc.4978}
 
 \leavevmode\hypertarget{ref-baumer2020teaching}{}%
 Baumer, B. S., Bray, A. P., Çetinkaya-Rundel, M., \& Hardin, J. S.
 (2020). Teaching introductory statistics with DataCamp. \emph{Journal of
 Statistics Education}, \emph{28}(1), 89--97.
+doi:\href{https://doi.org/10.1080/10691898.2020.1730734}{10.1080/10691898.2020.1730734}
 
 \leavevmode\hypertarget{ref-cetinkaya2021fresh}{}%
 Çetinkaya-Rundel, M., \& Ellison, V. (2021). A fresh look at
 introductory data science. \emph{Journal of Statistics and Data Science
 Education}, \emph{29}(sup1), S16--S26.
+doi:\href{https://doi.org/10.1080/10691898.2020.1804497}{10.1080/10691898.2020.1804497}
 
 \leavevmode\hypertarget{ref-fallon2021single}{}%
 Fallon, M. E., \& Hinds, M. T. (2021). Single cell morphological metrics
 and cytoskeletal alignment regulate VCAM-1 protein expression.
 \emph{Biochemical and Biophysical Research Communications}, \emph{555},
 160--167.
+doi:\href{https://doi.org/10.1016/j.bbrc.2021.03.129}{10.1016/j.bbrc.2021.03.129}
 
 \leavevmode\hypertarget{ref-fergusson2021introducing}{}%
 Fergusson, A., \& Pfannkuch, M. (2021). Introducing teachers who use
 GUI-driven tools for the randomization test to code-driven tools.
 \emph{Mathematical Thinking and Learning}, 1--21.
+doi:\href{https://doi.org/10.1080/10986065.2021.1922856}{10.1080/10986065.2021.1922856}
 
 \leavevmode\hypertarget{ref-ismay2019statistical}{}%
 Ismay, C., \& Kim, A. Y. (2019). \emph{Statistical inference via data
 science: A ModernDive into {R} and the tidyverse}. CRC Press.
+doi:\href{https://doi.org/10.1080/00224065.2020.1848366}{10.1080/00224065.2020.1848366}
 
 \leavevmode\hypertarget{ref-kuhn2020tidymodels}{}%
 Kuhn, M., \& Wickham, H. (2020). Tidymodels: A collection of packages
 for modeling and machine learning using tidyverse principles.
-\emph{Boston, MA, USA.}
+\emph{Boston, MA, USA.} Retrieved from \url{https://tidymodels.org}
 
 \leavevmode\hypertarget{ref-loy2021bringing}{}%
 Loy, A. (2021). Bringing visual inference to the classroom.
 \emph{Journal of Statistics and Data Science Education}, 1--12.
+doi:\href{https://doi.org/10.1080/26939169.2021.1920866}{10.1080/26939169.2021.1920866}
 
 \leavevmode\hypertarget{ref-mclean2021controlled}{}%
 McLean, Z. L., Appleby, S. J., Fermin, L. M., Henderson, H. V., Wei, J.,
@@ -480,15 +488,18 @@ Wells, D. N., \& Oback, B. (2021). Controlled cytoplast arrest and
 morula aggregation enhance development, cryoresilience, and in vivo
 survival of cloned sheep embryos. \emph{Cellular Reprogramming},
 \emph{23}(1), 14--25.
+doi:\href{https://doi.org/10.1089/cell.2020.0078}{10.1089/cell.2020.0078}
 
 \leavevmode\hypertarget{ref-CRAN}{}%
 R Core Team. (2021). \emph{R: A language and environment for statistical
 computing}. Vienna, Austria: R Foundation for Statistical Computing.
+Retrieved from \url{https://www.R-project.org/}
 
 \leavevmode\hypertarget{ref-wickham2019welcome}{}%
 Wickham, H., Averick, M., Bryan, J., Chang, W., McGowan, L. D.,
 François, R., Grolemund, G., et al. (2019). Welcome to the tidyverse.
 \emph{Journal of Open Source Software}, \emph{4}(43), 1686.
+doi:\href{https://doi.org/10.21105/joss.01686}{10.21105/joss.01686}
 
 \end{CSLReferences}
 
