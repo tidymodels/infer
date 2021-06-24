@@ -78,11 +78,11 @@ The workflow of this package is designed around this idea. Starting out with som
 
 As such, the ultimate output of an infer pipeline using these four functions is generally an _observed statistic_ or _null distribution_ of test statistics. These four functions are thus supplemented with many utilities to visualize and extract value from their outputs.
 
-+ `visualize()` plots the null distribution of test statistics
-     * `shade_p_value()` situates the observed statistic in the null distribution, shading the region as or more extreme 
-     * `shade_confidence_interval()` situates the confidence interval region in the null distribution, shading the region with the bounds
-+ `get_p_value()` calculates a p-value via the juxtaposition of the test statistic and null distribution
-+ `get_confidence_interval()` calculates a confidence interval via the juxtaposition of the test statistic and null distribution
++ `visualize()` plots the null distribution of test statistics.
+     * `shade_p_value()` situates the observed statistic in the null distribution, shading the region as or more extreme.
+     * `shade_confidence_interval()` situates the confidence interval region in the null distribution, shading the region within the bounds.
++ `get_p_value()` calculates a p-value via the juxtaposition of the test statistic and null distribution.
++ `get_confidence_interval()` calculates a confidence interval via the juxtaposition of the test statistic and null distribution.
 
 Beyond this, the package offers
 
@@ -92,7 +92,7 @@ Beyond this, the package offers
 
 # Comparison to Other Packages
 
-`broom` and `parameters` convert model objects to unified output formats, though do not provide methods for fitting models, describing null distributions, or calculating summary statistics from tabular data. `statsexpressions`, and adjacent packages in the `easystats` ecosystem, implement wrappers with consistent interfaces for theory-based hypothesis tests. The structure of each of these packages is defined by model types, where each model type has its own associated function and/or model object. In contrast, `infer` is structured around four functions, situating statistics and model types within a more abstracted grammar. `infer`'s initial release on the Comprehensive R Archive Network predated that of each of the packages mentioned above, with the exception of `broom` [@CRAN].
+`broom` and `parameters` convert model objects to unified output formats, though do not provide methods for fitting models, describing null distributions, or calculating summary statistics from tabular data. `statsexpressions`, and adjacent packages in the `easystats` ecosystem, implement wrappers with consistent interfaces for theory-based hypothesis tests. At a higher level, the structure of each of these packages is defined by model types, where each model type has its own associated function and/or model object. In contrast, `infer` is structured around four functions, situating statistics and model types within a more abstracted grammar. `infer`'s initial release on the Comprehensive R Archive Network predated that of each of the packages mentioned above, with the exception of `broom` [@CRAN].
 
 # Acknowledgements
 
