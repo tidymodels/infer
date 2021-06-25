@@ -55,13 +55,13 @@ journal: JOSS
 
 # Summary
 
-`infer` implements an expressive grammar to perform statistical inference that adheres to the `tidyverse` design framework [@wickham2019welcome]. Rather than providing methods for specific statistical tests, this package consolidates the principles that are shared among common hypothesis tests into a set of four main verbs (functions), supplemented with many utilities to visualize and extract value from their outputs.
+`infer` implements an expressive grammar to perform statistical inference that adheres to the `tidyverse` design framework [@wickham2019welcome]. Rather than providing methods for specific statistical tests, this package consolidates the principles that are shared among common hypothesis tests and confidence intervals into a set of four main verbs (functions), supplemented with many utilities to visualize and extract value from their outputs.
 
 # Statement of Need
 
 Packages implementing methods for basic statistical inference in R are highly variable in their interfaces. The structure of inputted data, argument names, expected argument types, argument orders, output types, and spelling cases varies widely both within and among packages. This diversity in approaches obscures the intuition shared among common inferential procedures, makes details of usage difficult to remember, and prevents an expressive and idiomatic coding style.
 
-`infer` is an R package for randomization-based hypothesis testing, naturalizing an intuitive understanding of statistical inference via a unified and expressive grammar. Four functions provide functionality encompassing a large swath of basic frequentist statistical inference, abstracting away details of specific tests and shifting the focus of the analyst to the observed data and the processes that generated it. Such a grammar lends itself to applications in teaching, data pedagogy research, applied scientific research, and advanced predictive modeling. For one, the principled approach of the package has made it an especially good fit for teaching introductory statistics [@ismay2019statistical; @baumer2020teaching] and research in data pedagogy [@cetinkaya2021fresh; @fergusson2021introducing; @loy2021bringing]. Further, the package has already seen usage in a number of published scientific applications [@mclean2021controlled; @ask2021per; @fallon2021single]. Finally, the package integrates with the greater tidymodels collection of packages, a burgeoning software ecosystem for tidyverse-aligned predictive modeling used across many modern research and industrial applications [@kuhn2020tidymodels]. To date, the package has been downloaded more than 400,000 times.
+`infer` is an R package for randomization-based hypothesis testing, naturalizing an intuitive understanding of statistical inference via a unified and expressive grammar. Four functions provide functionality encompassing a large swath of basic frequentist statistical inference, abstracting away details of specific tests and shifting the focus of the analyst to the observed data and the processes that generated it. Such a grammar lends itself to applications in teaching, data pedagogy research, applied scientific research, and advanced predictive modeling. For one, the principled approach of the package has made it an especially good fit for teaching introductory statistics and data science [@ismay2019statistical; @baumer2020teaching; @cetinkaya2021fresh] and research in data pedagogy [@fergusson2021introducing; @loy2021bringing]. Further, the package has already seen usage in a number of published scientific applications [@mclean2021controlled; @ask2021per; @fallon2021single]. Finally, the package integrates with the greater tidymodels collection of packages, a burgeoning software ecosystem for tidyverse-aligned predictive modeling used across many modern research and industrial applications [@kuhn2020tidymodels]. To date, the package has been downloaded more than 400,000 times.
 
 # Underlying Principles
 
@@ -71,18 +71,18 @@ The workflow of this package is designed around this idea. Starting out with som
 
 + `specify()` allows the analyst to specify the variable, or relationship between variables, that they are interested in.
 + `hypothesize()` allows the analyst to declare the null hypothesis.
-+ `generate()` allows the analyst to generate data reflecting the null hypothesis.
++ `generate()` allows the analyst to generate data reflecting the null hypothesis or using the bootstrap.
 + `calculate()` allows the analyst to calculate summary statistics, either from
      * the observed data, to form the observed test statistic.
-     * data `generate()`d to reflect the null hypothesis, to form the randomization-based null distribution of test statistics.
+     * data `generate()`d to reflect the null hypothesis, to form a randomization-based null distribution of test statistics.
 
-As such, the ultimate output of an infer pipeline using these four functions is generally an _observed statistic_ or _null distribution_ of test statistics. These four functions are thus supplemented with many utilities to visualize and extract value from their outputs.
+As such, the ultimate output of an infer pipeline using these four functions is generally an _observed statistic_ or _null distribution_ of test statistics. These four functions are thus supplemented with several utilities to visualize and extract value from their outputs.
 
 + `visualize()` plots the null distribution of test statistics.
      * `shade_p_value()` situates the observed statistic in the null distribution, shading the region as or more extreme.
-     * `shade_confidence_interval()` situates the confidence interval region in the null distribution, shading the region within the bounds.
 + `get_p_value()` calculates a p-value via the juxtaposition of the test statistic and null distribution.
-+ `get_confidence_interval()` calculates a confidence interval via the juxtaposition of the test statistic and null distribution.
+
+The workflow outlined above can also be used for constructing confidence intervals via bootstrapping with the omission of the `hypothesize()` step in the pipeline. The resulting bootstrap distribution can then be visualized with `visualize()`, the confidence interval region can be situated in the bootstrap distribution with `shade_confidence_interval()`, and the bounds of the confidence interval can be calculated with `get_confidence_interval()`.
 
 Beyond this, the package offers:
 
@@ -92,7 +92,7 @@ Beyond this, the package offers:
 
 # Comparison to Other Packages
 
-`broom` and `parameters` convert model objects to unified output formats, though do not provide methods for fitting models, describing null distributions, or calculating summary statistics from tabular data. `statsexpressions`, and adjacent packages in the `easystats` ecosystem, implement wrappers with consistent interfaces for theory-based hypothesis tests. At a higher level, the structure of each of these packages is defined by model types, where each model type has its own associated function and/or model object. In contrast, `infer` is structured around four functions, situating statistics and model types within a more abstracted grammar. `infer`'s initial release on the Comprehensive R Archive Network predated that of each of the packages mentioned above, with the exception of `broom`, a package situated in the same `tidymodels` ecosystem [@CRAN].
+`broom` and `parameters` convert model objects to unified output formats, though do not provide methods for fitting models, describing null distributions, performing bootstrapping, or calculating summary statistics from tabular data. `statsexpressions`, and adjacent packages in the `easystats` ecosystem, implement wrappers with consistent interfaces for theory-based hypothesis tests. At a higher level, the structure of each of these packages is defined by model types, where each model type has its own associated function and/or model object. In contrast, `infer` is structured around four functions, situating statistics and model types within a more abstracted grammar. `infer`'s initial release on the Comprehensive R Archive Network predated that of each of the packages mentioned above, with the exception of `broom`, a package situated in the same `tidymodels` ecosystem [@CRAN].
 
 # Acknowledgements
 

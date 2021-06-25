@@ -279,9 +279,9 @@ Mathematics Department (on leave)}
 inference that adheres to the \texttt{tidyverse} design framework
 (Wickham et al., 2019). Rather than providing methods for specific
 statistical tests, this package consolidates the principles that are
-shared among common hypothesis tests into a set of four main verbs
-(functions), supplemented with many utilities to visualize and extract
-value from their outputs.
+shared among common hypothesis tests and confidence intervals into a set
+of four main verbs (functions), supplemented with many utilities to
+visualize and extract value from their outputs.
 
 \hypertarget{statement-of-need}{%
 \section{Statement of Need}\label{statement-of-need}}
@@ -304,16 +304,16 @@ that generated it. Such a grammar lends itself to applications in
 teaching, data pedagogy research, applied scientific research, and
 advanced predictive modeling. For one, the principled approach of the
 package has made it an especially good fit for teaching introductory
-statistics (Baumer, Bray, Çetinkaya-Rundel, \& Hardin, 2020; Ismay \&
-Kim, 2019) and research in data pedagogy (Çetinkaya-Rundel \& Ellison,
-2021; Fergusson \& Pfannkuch, 2021; Loy, 2021). Further, the package has
-already seen usage in a number of published scientific applications (Ask
-et al., 2021; Fallon \& Hinds, 2021; McLean et al., 2021). Finally, the
-package integrates with the greater tidymodels collection of packages, a
-burgeoning software ecosystem for tidyverse-aligned predictive modeling
-used across many modern research and industrial applications (Kuhn \&
-Wickham, 2020). To date, the package has been downloaded more than
-400,000 times.
+statistics and data science (Baumer, Bray, Çetinkaya-Rundel, \& Hardin,
+2020; Çetinkaya-Rundel \& Ellison, 2021; Ismay \& Kim, 2019) and
+research in data pedagogy (Fergusson \& Pfannkuch, 2021; Loy, 2021).
+Further, the package has already seen usage in a number of published
+scientific applications (Ask et al., 2021; Fallon \& Hinds, 2021; McLean
+et al., 2021). Finally, the package integrates with the greater
+tidymodels collection of packages, a burgeoning software ecosystem for
+tidyverse-aligned predictive modeling used across many modern research
+and industrial applications (Kuhn \& Wickham, 2020). To date, the
+package has been downloaded more than 400,000 times.
 
 \hypertarget{underlying-principles}{%
 \section{Underlying Principles}\label{underlying-principles}}
@@ -348,7 +348,7 @@ with some dataset,
   hypothesis.
 \item
   \texttt{generate()} allows the analyst to generate data reflecting the
-  null hypothesis.
+  null hypothesis or using the bootstrap.
 \item
   \texttt{calculate()} allows the analyst to calculate summary
   statistics, either from
@@ -358,15 +358,15 @@ with some dataset,
   \item
     the observed data, to form the observed test statistic.
   \item
-    data \texttt{generate()}d to reflect the null hypothesis, to form
-    the randomization-based null distribution of test statistics.
+    data \texttt{generate()}d to reflect the null hypothesis, to form a
+    randomization-based null distribution of test statistics.
   \end{itemize}
 \end{itemize}
 
 As such, the ultimate output of an infer pipeline using these four
 functions is generally an \emph{observed statistic} or \emph{null
 distribution} of test statistics. These four functions are thus
-supplemented with many utilities to visualize and extract value from
+supplemented with several utilities to visualize and extract value from
 their outputs.
 
 \begin{itemize}
@@ -379,18 +379,20 @@ their outputs.
   \item
     \texttt{shade\_p\_value()} situates the observed statistic in the
     null distribution, shading the region as or more extreme.
-  \item
-    \texttt{shade\_confidence\_interval()} situates the confidence
-    interval region in the null distribution, shading the region within
-    the bounds.
   \end{itemize}
 \item
   \texttt{get\_p\_value()} calculates a p-value via the juxtaposition of
   the test statistic and null distribution.
-\item
-  \texttt{get\_confidence\_interval()} calculates a confidence interval
-  via the juxtaposition of the test statistic and null distribution.
 \end{itemize}
+
+The workflow outlined above can also be used for constructing confidence
+intervals via bootstrapping with the omission of the
+\texttt{hypothesize()} step in the pipeline. The resulting bootstrap
+distribution can then be visualized with \texttt{visualize()}, the
+confidence interval region can be situated in the bootstrap distribution
+with \texttt{shade\_confidence\_interval()}, and the bounds of the
+confidence interval can be calculated with
+\texttt{get\_confidence\_interval()}.
 
 Beyond this, the package offers:
 
@@ -410,18 +412,18 @@ Packages}\label{comparison-to-other-packages}}
 
 \texttt{broom} and \texttt{parameters} convert model objects to unified
 output formats, though do not provide methods for fitting models,
-describing null distributions, or calculating summary statistics from
-tabular data. \texttt{statsexpressions}, and adjacent packages in the
-\texttt{easystats} ecosystem, implement wrappers with consistent
-interfaces for theory-based hypothesis tests. At a higher level, the
-structure of each of these packages is defined by model types, where
-each model type has its own associated function and/or model object. In
-contrast, \texttt{infer} is structured around four functions, situating
-statistics and model types within a more abstracted grammar.
-\texttt{infer}'s initial release on the Comprehensive R Archive Network
-predated that of each of the packages mentioned above, with the
-exception of \texttt{broom}, a package situated in the same
-\texttt{tidymodels} ecosystem (R Core Team, 2021).
+describing null distributions, performing bootstrapping, or calculating
+summary statistics from tabular data. \texttt{statsexpressions}, and
+adjacent packages in the \texttt{easystats} ecosystem, implement
+wrappers with consistent interfaces for theory-based hypothesis tests.
+At a higher level, the structure of each of these packages is defined by
+model types, where each model type has its own associated function
+and/or model object. In contrast, \texttt{infer} is structured around
+four functions, situating statistics and model types within a more
+abstracted grammar. \texttt{infer}'s initial release on the
+Comprehensive R Archive Network predated that of each of the packages
+mentioned above, with the exception of \texttt{broom}, a package
+situated in the same \texttt{tidymodels} ecosystem (R Core Team, 2021).
 
 \hypertarget{acknowledgements}{%
 \section{Acknowledgements}\label{acknowledgements}}

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  24 JUN 2021 16:47
+This is XeTeX, Version 3.14159265-2.6-0.99999 (TeX Live 2018) (preloaded format=xelatex 2018.4.16)  25 JUN 2021 08:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1483,6 +1483,17 @@ LaTeX Font Info:    Font shape `TU/lmss/m/it' in size <8> not available
 [1
 
 ]
+Underfull \hbox (badness 1097) in paragraph at lines 388--396
+\TU/lmr/m/n/10 via bootstrapping with the omission of the \TU/lmtt/m/n/10 hypot
+hesize() \TU/lmr/m/n/10 step in the pipeline.
+ []
+
+
+Underfull \hbox (badness 2393) in paragraph at lines 388--396
+\TU/lmr/m/n/10 The resulting bootstrap distribution can then be visualized with
+ \TU/lmtt/m/n/10 visualize()\TU/lmr/m/n/10 ,
+ []
+
 File: /Library/Frameworks/R.framework/Versions/4.1/Resources/library/rticles/rm
 arkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
 </Library/Frameworks/R.framework/Versions/4.1/Resources/library/rticles/rmarkdo
@@ -1505,11 +1516,22 @@ Package Fancyhdr Warning: \headheight is too small (62.59596pt):
  This may cause the page layout to be inconsistent, however.
 
 [3]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 506.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 506.
+File: /Library/Frameworks/R.framework/Versions/4.1/Resources/library/rticles/rm
+arkdown/templates/joss/resources/JOSS-logo.png Graphic file (type bmp)
+</Library/Frameworks/R.framework/Versions/4.1/Resources/library/rticles/rmarkdo
+wn/templates/joss/resources/JOSS-logo.png>
+
+Package Fancyhdr Warning: \headheight is too small (62.59596pt): 
+ Make it at least 63.55022pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[4]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 508.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 508.
 (./paper.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 506.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 506.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 508.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 508.
 Package rerunfilecheck Info: File `paper.out' has not changed.
 (rerunfilecheck)             Checksum: 119F0C1EB97B96F62103D82D4B4F1B79.
 Package logreq Info: Writing requests to 'paper.run.xml'.
@@ -1525,4 +1547,4 @@ Here is how much of TeX's memory you used:
  1348 hyphenation exceptions out of 8191
  55i,12n,73p,10446b,790s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on paper.pdf (3 pages).
+Output written on paper.pdf (4 pages).
