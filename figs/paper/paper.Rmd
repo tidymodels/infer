@@ -80,7 +80,7 @@ As such, the ultimate output of an infer pipeline using these four functions is 
 
 + `visualize()` plots the null distribution of test statistics.
      * `shade_p_value()` situates the observed statistic in the null distribution, shading the region as or more extreme.
-+ `get_p_value()` calculates a p-value via the juxtaposition of the test statistic and null distribution.
++ `get_p_value()` calculates a p-value via the juxtaposition of the test statistic and the null distribution.
 
 The workflow outlined above can also be used for constructing confidence intervals via bootstrapping with the omission of the `hypothesize()` step in the pipeline. The resulting bootstrap distribution can then be visualized with `visualize()`, the confidence interval region can be situated in the bootstrap distribution with `shade_confidence_interval()`, and the bounds of the confidence interval can be calculated with `get_confidence_interval()`.
 
