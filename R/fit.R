@@ -11,11 +11,16 @@ generics::fit
 #' 
 #' @description
 #' Given the output of an infer core function, this function will fit
-#' a model using [stats::glm()] according to the formula and data supplied 
+#' a linear model using [stats::glm()] according to the formula and data supplied 
 #' earlier in the pipeline. If passed the output of [specify()] or 
 #' [hypothesize()], the function will fit one model. If passed the output 
 #' of [generate()], it will fit a model to each data resample, denoted in 
-#' the `replicate` column.
+#' the `replicate` column. The family of the fitted model depends on the type
+#' of the response variable. If the response is numeric, `fit()` will use
+#' `family = "gaussian"` (linear regression). If the response is a 2-level 
+#' factor or character, `fit()` will use `family = "binomial"` (logistic 
+#' regression). To fit character or factor response variables with more than 
+#' two levels, we recommend [parsnip::multinom_reg()].
 #' 
 #' infer provides a fit "method" for infer objects, which is a way of carrying 
 #' out model fitting as applied to infer output. The "generic," imported from
@@ -87,6 +92,12 @@ generics::fit
 #' 
 #' null_fits
 #' 
+#' # for logistic regression, just supply a binary response variable!
+#' # (this can also be made explicit via the `family` argument in ...)
+#' gss %>%
+#'   specify(college ~ age + hours) %>%
+#'   fit()
+#' 
 #' # more in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
@@ -99,6 +110,15 @@ generics::fit
 fit.infer <- function(object, ...) {
   message_on_excessive_null(object, fn = "fit")
   
+  # Confirm that the family, possibly supplied via
+  # `family` in ..., takes precedence over the default. 
+  # Return a processed version of the ellipses
+  dots <- check_family(object, ...)
+
+  # Relevel the response based on the success attribute
+  # so that the reference level is reflected in the fit
+  object <- relevel_response(object)
+  
   # Extract the formula if it was supplied to specify, otherwise
   # construct it out of the explanatory and response arguments
   formula <- get_formula(object)
@@ -108,15 +128,26 @@ fit.infer <- function(object, ...) {
       tidyr::nest(data = -replicate) %>%
       dplyr::rowwise() %>%
       dplyr::mutate(
-        model = list(fit_linear_model(
-          object = data, 
-          formula = formula,
-          ...))
+        model = list(
+          do.call(
+            fit_linear_model,
+            c(
+              list(object = data, formula = formula),
+              dots
+            )
+          )
+        )
       ) %>%
       dplyr::select(replicate, model) %>%
       tidyr::unnest(model)
   } else {
-    x <- fit_linear_model(object, formula, ...)
+    x <- do.call(
+      fit_linear_model,
+      c(
+        list(object, formula),
+        dots
+      )
+    )
   }
   
   x <- copy_attrs(x, object)
@@ -125,10 +156,44 @@ fit.infer <- function(object, ...) {
   x
 }
 
+check_family <- function(object, ...) {
+  response_type <- determine_variable_type(object, "response")
+  
+  if (response_type == "mult") {
+    stop_glue(
+      "infer does not support fitting models for categorical response variables ",
+      "with more than two levels. Please see `multinom_reg()` from the ",
+      "parsnip package."
+    )
+  }
+  
+  dots <- list(...)
+  
+  if ("family" %in% names(dots)) {
+    return(dots)
+  }
+  
+  if (response_type == "bin") {
+    dots[["family"]] <- stats::binomial
+  } else {
+    dots[["family"]] <- stats::gaussian
+  }
+  
+  dots
+}
 
+relevel_response <- function(x) {
+  if (!is.null(attr(x, "success"))) {
+    x[[response_name(x)]] <- 
+      stats::relevel(
+        response_variable(x), 
+        ref = attr(x, "success")
+      )
+  }
 
-
-
+  
+  x
+}
 
 get_formula <- function(x) {
   if (has_attr(x, "formula")) {
