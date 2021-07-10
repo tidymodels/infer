@@ -51,11 +51,16 @@
 
 <meta property="og:title" content="Fit linear models to infer objects — fit.infer" />
 <meta property="og:description" content="Given the output of an infer core function, this function will fit
-a model using stats::glm() according to the formula and data supplied
+a linear model using stats::glm() according to the formula and data supplied
 earlier in the pipeline. If passed the output of specify() or
 hypothesize(), the function will fit one model. If passed the output
 of generate(), it will fit a model to each data resample, denoted in
-the replicate column.
+the replicate column. The family of the fitted model depends on the type
+of the response variable. If the response is numeric, fit() will use
+family = &quot;gaussian&quot; (linear regression). If the response is a 2-level
+factor or character, fit() will use family = &quot;binomial&quot; (logistic
+regression). To fit character or factor response variables with more than
+two levels, we recommend parsnip::multinom_reg().
 infer provides a fit &quot;method&quot; for infer objects, which is a way of carrying
 out model fitting as applied to infer output. The &quot;generic,&quot; imported from
 the generics package and re-exported from this package, provides the
@@ -179,11 +184,16 @@ Learn more in vignette(&quot;infer&quot;)." />
 
     <div class="ref-description">
     <p>Given the output of an infer core function, this function will fit
-a model using <code><a href='https://rdrr.io/r/stats/glm.html'>stats::glm()</a></code> according to the formula and data supplied
+a linear model using <code><a href='https://rdrr.io/r/stats/glm.html'>stats::glm()</a></code> according to the formula and data supplied
 earlier in the pipeline. If passed the output of <code><a href='specify.html'>specify()</a></code> or
 <code><a href='hypothesize.html'>hypothesize()</a></code>, the function will fit one model. If passed the output
 of <code><a href='generate.html'>generate()</a></code>, it will fit a model to each data resample, denoted in
-the <code>replicate</code> column.</p>
+the <code>replicate</code> column. The family of the fitted model depends on the type
+of the response variable. If the response is numeric, <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> will use
+<code>family = "gaussian"</code> (linear regression). If the response is a 2-level
+factor or character, <code><a href='https://generics.r-lib.org/reference/fit.html'>fit()</a></code> will use <code>family = "binomial"</code> (logistic
+regression). To fit character or factor response variables with more than
+two levels, we recommend <code>parsnip::multinom_reg()</code>.</p>
 <p>infer provides a fit "method" for infer objects, which is a way of carrying
 out model fitting as applied to infer output. The "generic," imported from
 the generics package and re-exported from this package, provides the
@@ -288,6 +298,18 @@ multivariate analysis of variance and regression" (Marti J. Anderson,
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span>         3 collegedegree -<span style='color: #BB0000;'>0.510</span>  </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span>         4 intercept     40.5    </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 290 more rows</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># for logistic regression, just supply a binary response variable!</span></span>
+<span class='r-in'><span class='co'># (this can also be made explicit via the `family` argument in ...)</span></span>
+<span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>college</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3 x 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   term      estimate</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> intercept -<span style='color: #BB0000;'>1.13</span>   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> age        0.005<span style='text-decoration: underline;'>27</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> hours      0.006<span style='text-decoration: underline;'>98</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># more in-depth explanation of how to use the infer package</span></span>
 <span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
