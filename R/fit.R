@@ -161,7 +161,7 @@ check_family <- function(object, ...) {
   
   if (response_type == "mult") {
     stop_glue(
-      "infer does not support fitting models on categorical response variables ",
+      "infer does not support fitting models for categorical response variables ",
       "with more than two levels. Please see `multinom_reg()` from the ",
       "parsnip package."
     )
