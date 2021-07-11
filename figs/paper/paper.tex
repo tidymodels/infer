@@ -303,17 +303,18 @@ shifting the focus of the analyst to the observed data and the processes
 that generated it. Such a grammar lends itself to applications in
 teaching, data pedagogy research, applied scientific research, and
 advanced predictive modeling. For one, the principled approach of the
-package has made it an especially good fit for teaching introductory
-statistics and data science (Baumer, Bray, Çetinkaya-Rundel, \& Hardin,
-2020; Çetinkaya-Rundel \& Ellison, 2021; Ismay \& Kim, 2019) and
-research in data pedagogy (Fergusson \& Pfannkuch, 2021; Loy, 2021).
-Further, the package has already seen usage in a number of published
-scientific applications (Ask et al., 2021; Fallon \& Hinds, 2021; McLean
-et al., 2021). Finally, the package integrates with the greater
-tidymodels collection of packages, a burgeoning software ecosystem for
-tidyverse-aligned predictive modeling used across many modern research
-and industrial applications (Kuhn \& Wickham, 2020). To date, the
-package has been downloaded more than 400,000 times.
+\texttt{infer} package has made it an especially good fit for teaching
+introductory statistics and data science (Baumer, Bray,
+Çetinkaya-Rundel, \& Hardin, 2020; Çetinkaya-Rundel \& Ellison, 2021;
+Ismay \& Kim, 2019) and research in data pedagogy (Fergusson \&
+Pfannkuch, 2021; Loy, 2021). Further, the package has already seen usage
+in a number of published scientific applications (Ask et al., 2021;
+Fallon \& Hinds, 2021; McLean et al., 2021). Finally, the package
+integrates with the greater tidymodels collection of packages, a
+burgeoning software ecosystem for tidyverse-aligned predictive modeling
+used across many modern research and industrial applications (Kuhn \&
+Wickham, 2020). To date, the package has been downloaded more than
+400,000 times.
 
 \hypertarget{underlying-principles}{%
 \section{Underlying Principles}\label{underlying-principles}}
@@ -382,7 +383,7 @@ their outputs.
   \end{itemize}
 \item
   \texttt{get\_p\_value()} calculates a p-value via the juxtaposition of
-  the test statistic and null distribution.
+  the test statistic and the null distribution.
 \end{itemize}
 
 The workflow outlined above can also be used for constructing confidence
@@ -394,7 +395,7 @@ with \texttt{shade\_confidence\_interval()}, and the bounds of the
 confidence interval can be calculated with
 \texttt{get\_confidence\_interval()}.
 
-Beyond this, the package offers:
+Beyond this, the \texttt{infer} package offers:
 
 \begin{itemize}
 \tightlist
@@ -411,7 +412,7 @@ Beyond this, the package offers:
 Packages}\label{comparison-to-other-packages}}
 
 \texttt{broom} and \texttt{parameters} convert model objects to unified
-output formats, though do not provide methods for fitting models,
+output formats, though they do not provide methods for fitting models,
 describing null distributions, performing bootstrapping, or calculating
 summary statistics from tabular data. \texttt{statsexpressions}, and
 adjacent packages in the \texttt{easystats} ecosystem, implement
@@ -420,10 +421,12 @@ At a higher level, the structure of each of these packages is defined by
 model types, where each model type has its own associated function
 and/or model object. In contrast, \texttt{infer} is structured around
 four functions, situating statistics and model types within a more
-abstracted grammar. \texttt{infer}'s initial release on the
-Comprehensive R Archive Network predated that of each of the packages
-mentioned above, with the exception of \texttt{broom}, a package
-situated in the same \texttt{tidymodels} ecosystem (R Core Team, 2021).
+abstracted grammar.\footnote{This grammar follows from Allen Downey's
+  ``there is only one test'' framework (Downey, 2011).} \texttt{infer}'s
+initial release on the Comprehensive R Archive Network predated that of
+each of the packages mentioned above, with the exception of
+\texttt{broom}, a package situated in the same \texttt{tidymodels}
+ecosystem (R Core Team, 2021).
 
 \hypertarget{acknowledgements}{%
 \section{Acknowledgements}\label{acknowledgements}}
@@ -455,6 +458,9 @@ doi:\href{https://doi.org/10.1080/10691898.2020.1730734}{10.1080/10691898.2020.1
 introductory data science. \emph{Journal of Statistics and Data Science
 Education}, \emph{29}(sup1), S16--S26.
 doi:\href{https://doi.org/10.1080/10691898.2020.1804497}{10.1080/10691898.2020.1804497}
+
+\leavevmode\hypertarget{ref-downey2011think}{}%
+Downey, A. B. (2011). \emph{Think stats}. " O'Reilly Media, Inc.".
 
 \leavevmode\hypertarget{ref-fallon2021single}{}%
 Fallon, M. E., \& Hinds, M. T. (2021). Single cell morphological metrics
