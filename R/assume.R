@@ -169,8 +169,10 @@ assume <- function(x, distribution, df = NULL, ...) {
     # store df in `specify`-esque format for use in `visualize`
     distr_param = if (length(df) > 0) {df[1]} else {NULL},
     distr_param2 = if (length(df) == 2) {df[2]} else {NULL},
-    # bring along theory_type x attribute
+    # bring along x attributes
     theory_type = attr(x, "theory_type"),
+    params = attr(x, "params"),
+    hypothesized = attr(x, "hypothesized"),
     # bring along dots
     dots = list(...),
     # append class

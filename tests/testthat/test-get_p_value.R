@@ -420,3 +420,42 @@ test_that("get_p_value can handle theoretical distributions", {
     tolerance = 1e-3
   )
 })
+
+
+test_that("get_p_value warns with bad theoretical distributions", {
+  t_dist_40 <- 
+    gss %>%
+    specify(response = hours) %>% 
+    hypothesize(null = "point", mu = 40) %>%
+    assume("t", nrow(gss) - 1)
+  
+  t_dist_30 <- 
+    gss %>%
+    specify(response = hours) %>% 
+    hypothesize(null = "point", mu = 30) %>%
+    assume("t", nrow(gss) - 1)
+  
+  t_obs <-
+    gss %>%
+    specify(response = hours) %>% 
+    hypothesize(null = "point", mu = 40) %>%
+    calculate(stat = "t")
+  
+  expect_silent(
+    get_p_value(
+      t_dist_40,
+      t_obs,
+      direction = "both"
+    )
+  )
+  
+  expect_warning(
+    get_p_value(
+      t_dist_30,
+      t_obs,
+      direction = "both"
+    ),
+    "generated using different null hypotheses"
+  )
+})
+

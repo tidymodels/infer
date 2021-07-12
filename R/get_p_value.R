@@ -184,6 +184,9 @@ get_pvalue <- get_p_value
 #' @method get_p_value infer_dist
 #' @export
 get_p_value.infer_dist <- function(x, obs_stat, direction) {
+  # check the null hypotheses attached to x and obs_stat
+  check_hypotheses_align(x, obs_stat)
+  
   # parse the distribution function
   dist_fn <- paste0("p", attr(x, "distribution"))
   
@@ -249,6 +252,18 @@ two_sided_p_value <- function(vec, obs_stat) {
   raw_res <- 2 * min(left_pval, right_pval)
   
   min(raw_res, 1)
+}
+
+check_hypotheses_align <- function(x, obs_stat) {
+  if (is_hypothesized(x) &&
+      is_hypothesized(obs_stat) &&
+      attr(x, "params") != attr(obs_stat, "params")) {
+    warning_glue(
+      "`x` and `obs_stat` were generated using different null hypotheses. ",
+      "This workflow is untested and results may not mean what you think ",
+      "they mean."
+    )
+  }
 }
 
 check_x_vs_obs_stat <- function(x, obs_stat) {
