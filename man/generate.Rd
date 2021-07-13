@@ -26,8 +26,11 @@ A tibble containing \code{reps} generated datasets, indicated by the
 \code{replicate} column.
 }
 \description{
-Generation creates a null distribution from \code{\link[=specify]{specify()}} and (if needed)
-\code{\link[=hypothesize]{hypothesize()}} inputs.
+Generation creates a simulated distribution from \code{specify()}.
+In the context of confidence intervals, this is a bootstrap distribution
+based on the result of \code{specify()}. In the context of hypothesis testing,
+this is a null distribution based on the result of \code{specify()} and
+\verb{hypothesize().}
 
 Learn more in \code{vignette("infer")}.
 }
