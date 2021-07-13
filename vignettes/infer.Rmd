@@ -255,7 +255,7 @@ Then, to define a theoretical $t$ distribution, we could write:
 t_dist <- gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40) %>%
-  assume(distribution = "t", df = nrow(gss) - 1)
+  assume(distribution = "t")
 ```
 
 From here, the theoretical distribution interfaces in the same way that simulation-based null distributions do. For example, to interface with p-values:

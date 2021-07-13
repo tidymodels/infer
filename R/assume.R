@@ -25,11 +25,13 @@
 #'   observed data, variable(s) of interest, and (optionally) null hypothesis.
 #' @param distribution The distribution in question, as a string. One of
 #'   `"F"`, `"Chisq"`, `"t"`, or `"z"`.
-#' @param df The degrees of freedom parameter(s) for the `distribution`
+#' @param df Optional. The degrees of freedom parameter(s) for the `distribution`
 #'   supplied, as a numeric vector. For `distribution = "F"`, this should have
 #'   length two (e.g. `c(10, 3)`). For `distribution = "Chisq"` or 
 #'   `distribution = "t"`, this should have length one. For 
-#'   `distribution = "z"`, this argument is required.
+#'   `distribution = "z"`, this argument is required. The package will supply
+#'   a message if the supplied `df` argument is different from its expected
+#'   value.
 #' @param ... Currently ignored.
 #'  
 #' @return An infer theoretical distribution that can be passed to helpers
@@ -53,10 +55,7 @@
 #' gss %>% 
 #'   specify(age ~ partyid) %>% 
 #'   hypothesize(null = "independence") %>%
-#'   assume(
-#'     distribution = "F", 
-#'     c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
-#'   )
+#'   assume(distribution = "F")
 #' 
 #' # Chi-squared goodness of fit distribution
 #' # on the `finrela` variable
@@ -69,24 +68,20 @@
 #'                       "above average" = 1/6,
 #'                       "far above average" = 1/6,
 #'                       "DK" = 1/6)) %>%
-#'   assume("Chisq", length(unique(gss$finrela)) - 1)
+#'   assume("Chisq")
 #' 
 #' # Chi-squared test of independence
 #' # on the `finrela` and `sex` variables
 #' gss %>%
 #'   specify(formula = finrela ~ sex) %>%
 #'   hypothesize(null = "independence") %>%
-#'   assume(
-#'     distribution = "Chisq", 
-#'     df = (length(unique(gss$finrela)) - 1) * 
-#'          (length(unique(gss$sex)) - 1)
-#'   )
+#'   assume(distribution = "Chisq")
 #' 
 #' # T distribution
 #' gss %>% 
 #'   specify(age ~ college) %>%
 #'   hypothesize(null = "independence") %>%
-#'   assume("t", nrow(gss) - 1)
+#'   assume("t")
 #' 
 #' # Z distribution
 #' gss %>%
@@ -110,7 +105,7 @@
 #' null_dist <- gss %>%
 #'   specify(response = hours) %>%
 #'   hypothesize(null = "point", mu = 40) %>%
-#'   assume("t", nrow(gss) - 1)
+#'   assume("t")
 #' 
 #' # juxtapose them visually
 #' visualize(null_dist) + 
@@ -131,10 +126,7 @@
 #' null_dist <- gss %>% 
 #'   specify(age ~ partyid) %>%
 #'   hypothesize(null = "independence") %>%
-#'   assume(
-#'     distribution = "F", 
-#'     c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
-#'   )
+#'   assume(distribution = "F")
 #' 
 #' # juxtapose them visually
 #' visualize(null_dist) + 
@@ -155,7 +147,7 @@ assume <- function(x, distribution, df = NULL, ...) {
   
   # check that `distribution` aligns with what is expected from
   # `x` and that `distribution` and `df` are consistent with each other
-  check_distribution(x, distribution, df, ...)
+  df <- check_distribution(x, distribution, df, ...)
   
   structure(
     glue_null(
@@ -232,7 +224,7 @@ check_distribution <- function(x, distribution, df, ...) {
     )
   }
   
-  if (dist_df_length(distribution) != length(df)) {
+  if (dist_df_length(distribution) != length(df) && !is.null(df)) {
     plural <- length(df) != 1
     stop_glue(
       '{distribution_desc(distribution)} distribution requires ',
@@ -241,6 +233,10 @@ check_distribution <- function(x, distribution, df, ...) {
       '{if (plural) "were" else "was"} supplied.'
     )
   }
+  
+  df <- determine_df(x, dist, df)
+  
+  return(df)
 }
 
 # convert the distribution argument to its r distribution function suffix
@@ -284,7 +280,7 @@ df_desc <- function(df) {
     
     paste0(
       ' with ', 
-      if (plural) {paste0(df, collapse = " and ")} else {df}, 
+      if (plural) {paste0(round(df), collapse = " and ")} else {round(df)}, 
       ' degree', 
       if (!plural && df == 1) {''} else {'s'}, 
       ' of freedom')
@@ -298,4 +294,26 @@ process_df <- function(df) {
     "1" = list(df = df),
     "2" = list(df1 = df[1], df2 = df[2])
   )
+}
+
+# generate an automatic "df" value using logic from
+# hypothesize and, if it doesn't match the
+# supplied one, raise a message
+determine_df <- function(x, dist, df) {
+  auto_df <- c(
+    unname(unlist(attr(x, "distr_param"))), 
+    unname(unlist(attr(x, "distr_param2")))
+  )
+  
+  if (!is.null(df) && !all(round(df) %in% round(auto_df))) {
+    message_glue(
+      "Message: The supplied `df` argument does not match its ",
+      "expected value. If this is unexpected, ensure that your calculation ",
+      "for `df` is correct or supply `df = NULL` to `assume()`."
+    )
+    
+    return(df)
+  }
+    
+  auto_df
 }

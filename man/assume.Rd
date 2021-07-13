@@ -13,11 +13,13 @@ observed data, variable(s) of interest, and (optionally) null hypothesis.}
 \item{distribution}{The distribution in question, as a string. One of
 \code{"F"}, \code{"Chisq"}, \code{"t"}, or \code{"z"}.}
 
-\item{df}{The degrees of freedom parameter(s) for the \code{distribution}
+\item{df}{Optional. The degrees of freedom parameter(s) for the \code{distribution}
 supplied, as a numeric vector. For \code{distribution = "F"}, this should have
 length two (e.g. \code{c(10, 3)}). For \code{distribution = "Chisq"} or
 \code{distribution = "t"}, this should have length one. For
-\code{distribution = "z"}, this argument is required.}
+\code{distribution = "z"}, this argument is required. The package will supply
+a message if the supplied \code{df} argument is different from its expected
+value.}
 
 \item{...}{Currently ignored.}
 }
@@ -63,10 +65,7 @@ each other.
 gss \%>\% 
   specify(age ~ partyid) \%>\% 
   hypothesize(null = "independence") \%>\%
-  assume(
-    distribution = "F", 
-    c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
-  )
+  assume(distribution = "F")
 
 # Chi-squared goodness of fit distribution
 # on the `finrela` variable
@@ -79,24 +78,20 @@ gss \%>\%
                       "above average" = 1/6,
                       "far above average" = 1/6,
                       "DK" = 1/6)) \%>\%
-  assume("Chisq", length(unique(gss$finrela)) - 1)
+  assume("Chisq")
 
 # Chi-squared test of independence
 # on the `finrela` and `sex` variables
 gss \%>\%
   specify(formula = finrela ~ sex) \%>\%
   hypothesize(null = "independence") \%>\%
-  assume(
-    distribution = "Chisq", 
-    df = (length(unique(gss$finrela)) - 1) * 
-         (length(unique(gss$sex)) - 1)
-  )
+  assume(distribution = "Chisq")
 
 # T distribution
 gss \%>\% 
   specify(age ~ college) \%>\%
   hypothesize(null = "independence") \%>\%
-  assume("t", nrow(gss) - 1)
+  assume("t")
 
 # Z distribution
 gss \%>\%
@@ -120,7 +115,7 @@ obs_stat <- gss \%>\%
 null_dist <- gss \%>\%
   specify(response = hours) \%>\%
   hypothesize(null = "point", mu = 40) \%>\%
-  assume("t", nrow(gss) - 1)
+  assume("t")
 
 # juxtapose them visually
 visualize(null_dist) + 
@@ -141,10 +136,7 @@ obs_stat <- gss \%>\%
 null_dist <- gss \%>\% 
   specify(age ~ partyid) \%>\%
   hypothesize(null = "independence") \%>\%
-  assume(
-    distribution = "F", 
-    c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
-  )
+  assume(distribution = "F")
 
 # juxtapose them visually
 visualize(null_dist) + 

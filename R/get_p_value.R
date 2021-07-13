@@ -85,7 +85,7 @@
 #' # define a null distribution
 #' null_dist <- gss %>%
 #'   specify(response = hours) %>%
-#'   assume("t", nrow(gss) - 1)
+#'   assume("t")
 #' 
 #' # calculate a p-value
 #' get_p_value(null_dist, obs_stat, direction = "both")

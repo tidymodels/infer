@@ -242,10 +242,7 @@ test_that("get_p_value can handle theoretical distributions", {
     gss %>% 
     specify(age ~ partyid) %>%
     hypothesize(null = "independence") %>%
-    assume(
-      distribution = "F", 
-      c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
-    )
+    assume(distribution = "F")
   
   f_obs <- 
     gss %>% 
@@ -271,7 +268,7 @@ test_that("get_p_value can handle theoretical distributions", {
     gss %>%
     specify(response = hours) %>% 
     hypothesize(null = "point", mu = 40) %>%
-    assume("t", nrow(gss) - 1)
+    assume("t")
   
   t_obs <-
     gss %>%
@@ -331,11 +328,7 @@ test_that("get_p_value can handle theoretical distributions", {
     gss %>% 
     specify(college ~ finrela) %>%
     hypothesize(null = "independence") %>%
-    assume(
-      distribution = "Chisq", 
-      df = (length(unique(gss$finrela)) - 1) * 
-           (length(unique(gss$college)) - 1)
-    )
+    assume(distribution = "Chisq")
   
   chisq_obs <- 
     gss %>% 
@@ -427,13 +420,13 @@ test_that("get_p_value warns with bad theoretical distributions", {
     gss %>%
     specify(response = hours) %>% 
     hypothesize(null = "point", mu = 40) %>%
-    assume("t", nrow(gss) - 1)
+    assume("t")
   
   t_dist_30 <- 
     gss %>%
     specify(response = hours) %>% 
     hypothesize(null = "point", mu = 30) %>%
-    assume("t", nrow(gss) - 1)
+    assume("t")
   
   t_obs <-
     gss %>%

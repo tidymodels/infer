@@ -12,9 +12,23 @@ test_that("distribution description works as expected", {
       hypothesize(null = "independence") %>%
       assume_(
        distribution = "F", 
-       df = c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
+       df = c(length(unique(gss$partyid)) - 1, nrow(gss) - 4)
       ), 
-    "An F distribution with 3 and 499 degrees of freedom."
+    "An F distribution with 3 and 496 degrees of freedom."
+  )
+  
+  expect_equal(
+    gss %>% 
+      specify(age ~ partyid) %>%
+      hypothesize(null = "independence") %>%
+      assume_(
+        distribution = "F", 
+        df = c(length(unique(gss$partyid)) - 1, nrow(gss) - 4)
+      ), 
+    gss %>% 
+      specify(age ~ partyid) %>%
+      hypothesize(null = "independence") %>%
+      assume_(distribution = "F")
   )
   
   expect_equal(
@@ -33,6 +47,20 @@ test_that("distribution description works as expected", {
   
   expect_equal(
     gss %>%
+      specify(response = finrela) %>%
+      hypothesize(null = "point",
+                  p = c("far below average" = 1/6,
+                        "below average" = 1/6,
+                        "average" = 1/6,
+                        "above average" = 1/6,
+                        "far above average" = 1/6,
+                        "DK" = 1/6)) %>%
+      assume_("Chisq"), 
+    "A Chi-squared distribution with 5 degrees of freedom."
+  )
+  
+  expect_equal(
+    gss %>%
       specify(formula = finrela ~ sex) %>%
       hypothesize(null = "independence") %>%
       assume_(
@@ -44,11 +72,19 @@ test_that("distribution description works as expected", {
   )
   
   expect_equal(
+    gss %>%
+      specify(formula = finrela ~ sex) %>%
+      hypothesize(null = "independence") %>%
+      assume_(distribution = "Chisq"), 
+    "A Chi-squared distribution with 5 degrees of freedom."
+  )
+  
+  expect_equal(
     gss %>% 
       specify(age ~ college) %>%
       hypothesize(null = "independence") %>%
-      assume_("t", nrow(gss) - 1), 
-    "A T distribution with 499 degrees of freedom."
+      assume_("t"), 
+    "A T distribution with 423 degrees of freedom."
   )
   
   expect_equal(
@@ -152,15 +188,40 @@ test_that("assume errors with bad arguments", {
   )
 })
 
+test_that("assume() handles automatic df gracefully", {
+  expect_equal(
+    expect_silent(
+      gss %>%
+        specify(response = hours) %>%
+        hypothesize(null = "point", mu = 40) %>%
+        assume("t")
+    ),
+    expect_silent(
+      gss %>%
+        specify(response = hours) %>%
+        hypothesize(null = "point", mu = 40) %>%
+        assume("t")
+    )
+  )
+  
+  expect_message(
+    gss %>%
+      specify(response = hours) %>%
+      hypothesize(null = "point", mu = 40) %>%
+      assume("t", nrow(gss) - 2),
+    "does not match its expected value..*calculation for `df`"
+  )
+})
+
 test_that("assume() brings along supplied arguments", {
   t_dist <-  gss %>% 
     specify(age ~ college) %>%
     hypothesize(null = "independence") %>%
-    assume("t", nrow(gss) - 1)
+    assume("t")
   
   expect_equal(
-    attr(t_dist, "df"),
-    499
+    round(attr(t_dist, "df")),
+    423
   )
   
   expect_equal(
@@ -181,10 +242,7 @@ test_that("assume() brings along supplied arguments", {
   f_dist <- gss %>% 
     specify(age ~ partyid) %>% 
     hypothesize(null = "independence") %>%
-    assume(
-      distribution = "F", 
-      df = c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
-    )
+    assume(distribution = "F")
   
   expect_equal(
     attr(f_dist, "df"),

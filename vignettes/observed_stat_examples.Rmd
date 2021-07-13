@@ -114,7 +114,7 @@ Alternatively, finding the null distribution using theoretical methods using the
 null_distn_theoretical <- gss %>%
   specify(response = hours)  %>%
   hypothesize(null = "point", mu = 40) %>%
-  assume("t", nrow(gss) - 1)
+  assume("t")
 ```
 
 Visualizing the observed statistic alongside the null distribution,
@@ -557,7 +557,7 @@ null_distn_theoretical <- gss %>%
                     "above average" = 1/6,
                     "far above average" = 1/6,
                     "DK" = 1/6)) %>%
-  assume("Chisq", length(unique(gss$finrela)) - 1)
+  assume("Chisq")
 ```
 
 Visualizing the observed statistic alongside the null distribution,
@@ -636,11 +636,7 @@ Alternatively, finding the null distribution using theoretical methods using the
 null_distn_theoretical <- gss %>%
   specify(finrela ~ sex) %>%
   hypothesize(null = "independence") %>% 
-  assume(
-    distribution = "Chisq", 
-    df = (length(unique(gss$finrela)) - 1) * 
-         (length(unique(gss$sex)) - 1)
-  )
+  assume(distribution = "Chisq")
 ```
 
 Visualizing the observed statistic alongside the null distribution,
@@ -756,7 +752,7 @@ Alternatively, finding the null distribution using theoretical methods using the
 null_distn_theoretical <- gss %>%
   specify(age ~ college) %>%
   hypothesize(null = "independence") %>%
-  assume("t", nrow(gss) - 1)
+  assume("t")
 ```
 
 Visualizing the observed statistic alongside the null distribution,
@@ -866,10 +862,7 @@ Alternatively, finding the null distribution using theoretical methods using the
 null_distn_theoretical <- gss %>%
    specify(age ~ partyid) %>%
    hypothesize(null = "independence") %>%
-   assume(
-    distribution = "F", 
-    c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
-  )
+   assume(distribution = "F")
 ```
 
 Visualizing the observed statistic alongside the null distribution,
@@ -1090,7 +1083,7 @@ Instead of a simulation-based null distribution, we can also define a theory-bas
 ```{r}
 sampling_dist <- gss %>%
    specify(response = hours) %>%
-   assume(distribution = "t", df = nrow(gss) - 1)
+   assume(distribution = "t")
 ```
 
 Visualization and calculation of confidence intervals interfaces in the same way as with the simulation-based null distribution,
@@ -1289,7 +1282,7 @@ Instead of a simulation-based null distribution, we can also define a theory-bas
 ```{r}
 sampling_dist <- gss %>%
    specify(hours ~ college) %>%
-   assume(distribution = "t", df = nrow(gss) - 1)
+   assume(distribution = "t")
 ```
 
 Visualization and calculation of confidence intervals interfaces in the same way as with the simulation-based null distribution,

@@ -78,11 +78,7 @@ Note that, in the line `specify(college ~ finrela)` above, we could use the equi
 null_distribution_theoretical <- gss %>%
   specify(college ~ finrela) %>%
   hypothesize(null = "independence") %>%
-  assume(
-    distribution = "Chisq", 
-    df = (length(unique(gss$finrela)) - 1) * 
-         (length(unique(gss$college)) - 1)
-  )
+  assume(distribution = "Chisq")
 ```
 
 To get a sense for what these distributions look like, and where our observed statistic falls, we can use `visualize()`:
@@ -102,11 +98,7 @@ We could also visualize the observed statistic against the theoretical null dist
 gss %>%
   specify(college ~ finrela) %>%
   hypothesize(null = "independence") %>%
-  assume(
-    distribution = "Chisq", 
-    df = (length(unique(gss$finrela)) - 1) * 
-         (length(unique(gss$college)) - 1)
-  ) %>%
+  assume(distribution = "Chisq") %>%
   visualize() + 
   shade_p_value(observed_indep_statistic,
                 direction = "greater")

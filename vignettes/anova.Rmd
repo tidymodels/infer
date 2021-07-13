@@ -86,10 +86,7 @@ We could also visualize the observed statistic against the theoretical null dist
 null_dist_theoretical <- gss %>%
   specify(age ~ partyid) %>%
   hypothesize(null = "independence") %>%
-  assume(
-    distribution = "F", 
-    c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
-  )
+  assume(distribution = "F")
 
 visualize(null_dist_theoretical) +
   shade_p_value(observed_f_statistic,

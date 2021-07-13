@@ -696,10 +696,7 @@ test_that("visualize can handle `assume()` output", {
   null_dist <- gss %>% 
     specify(age ~ partyid) %>%
     hypothesize(null = "independence") %>%
-    assume(
-      distribution = "F", 
-      c(length(unique(gss$partyid)) - 1, nrow(gss) - 1)
-    )
+    assume(distribution = "F")
   
   expect_doppelganger(
     "viz-assume-f",
@@ -720,7 +717,7 @@ test_that("visualize can handle `assume()` output", {
   null_dist <- gss %>%
     specify(response = hours) %>%
     hypothesize(null = "point", mu = 40) %>%
-    assume("t", nrow(gss) - 1)
+    assume("t")
   
   obs_mean <- gss %>%
     specify(response = hours) %>%
@@ -783,7 +780,7 @@ test_that("visualize can handle `assume()` output", {
   null_dist <- gss %>%
     specify(hours ~ college) %>%
     hypothesize(null = "independence") %>%
-    assume("t", nrow(gss) - 1)
+    assume("t")
   
   obs_diff <- gss %>%
     specify(hours ~ college) %>%

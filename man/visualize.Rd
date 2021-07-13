@@ -111,7 +111,7 @@ null_dist \%>\%
 sampling_dist <- gss \%>\%
   specify(response = hours) \%>\%
   hypothesize(null = "point", mu = 40) \%>\%
-  assume(distribution = "t", df = nrow(gss) - 1) 
+  assume(distribution = "t") 
   
 visualize(sampling_dist)
 

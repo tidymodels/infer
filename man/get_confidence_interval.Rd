@@ -113,7 +113,7 @@ boot_distr \%>\%
 # define a sampling distribution
 sampling_dist <- gss \%>\%
   specify(response = hours) \%>\%
-  assume("t", nrow(gss) - 1)
+  assume("t")
 
 # get the confidence interval---note that the
 # point estimate is required here

@@ -258,7 +258,7 @@ test_that("theoretical CIs align with simulation-based (mean)", {
   null_dist_theor <- gss %>%
     specify(response = hours) %>%
     hypothesize(null = "point", mu = 40) %>%
-    assume(distribution = "t", nrow(gss) - 1)
+    assume(distribution = "t")
   
   expect_equal(
     get_confidence_interval(
@@ -326,7 +326,7 @@ test_that("theoretical CIs align with simulation-based (diff in means)", {
   
   null_dist_theor <- gss %>%
     specify(age ~ college) %>% 
-    assume(distribution = "t", nrow(gss) - 1)
+    assume(distribution = "t")
   
   expect_equal(
     get_confidence_interval(
@@ -386,7 +386,7 @@ test_that("theoretical CIs check arguments properly", {
   
   null_dist_theor <- gss %>%
     specify(age ~ college) %>% 
-    assume(distribution = "t", nrow(gss) - 1)
+    assume(distribution = "t")
   
   # check that type is handled correctly
   expect_equal(
