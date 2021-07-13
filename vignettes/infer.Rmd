@@ -157,7 +157,7 @@ gss %>%
 
 ### Other Utilities
 
-`infer` also offers several utilities to extract the meaning out of summary statistics and null distributions---the package provides functions to visualize where a statistic is relative to a distribution (with `visualize()`), calculate p-values (with `get_p_value()`), and calculate confidence intervals (with `get_confidence_interval()`).
+`infer` also offers several utilities to extract the meaning out of summary statistics and distributions---the package provides functions to visualize where a statistic is relative to a distribution (with `visualize()`), calculate p-values (with `get_p_value()`), and calculate confidence intervals (with `get_confidence_interval()`).
 
 To illustrate, we'll go back to the example of determining whether the mean number of hours worked per week is 40 hours.
 
@@ -207,8 +207,15 @@ It looks like the p-value is `r p_value`, which is pretty small---if the true me
 To get a confidence interval around our estimate, we can write:
 
 ```{r get_conf, message = FALSE, warning = FALSE}
-# start with the null distribution
-ci <- null_dist %>%
+# generate a distribution like the null distribution, 
+# though exclude the null hypothesis from the pipeline
+boot_dist <- gss %>%
+  specify(response = hours) %>%
+  generate(reps = 1000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+
+# start with the bootstrap distribution
+ci <- boot_dist %>%
   # calculate the confidence interval around the point estimate
   get_confidence_interval(point_estimate = obs_mean,
                           # at the 95% confidence level
@@ -222,7 +229,7 @@ ci
 As you can see, 40 hours per week is not contained in this interval, which aligns with our previous conclusion that this finding is significant at the confidence level $\alpha = .05$. To see this interval represented visually, we can use the `shade_confidence_interval()` utility:
 
 ```{r visualize-ci, warning = FALSE, message = FALSE}
-null_dist %>%
+boot_dist %>%
   visualize() +
   shade_confidence_interval(endpoints = ci)
 ```

@@ -11,7 +11,7 @@
 #' the distributional details supplied in the `distribution` and `df` arguments.
 #' However, `assume()` output can be passed to [visualize()], [get_p_value()],
 #' and [get_confidence_interval()] in the same way that simulation-based
-#' null distributions can.
+#' distributions can.
 #' 
 #' To define a theoretical null distribution (for use in hypothesis testing),
 #' be sure to provide a null hypothesis via [hypothesize()]. To define a

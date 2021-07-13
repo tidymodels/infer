@@ -35,7 +35,7 @@ data, \code{assume()} outputs a more abstract type of object just containing
 the distributional details supplied in the \code{distribution} and \code{df} arguments.
 However, \code{assume()} output can be passed to \code{\link[=visualize]{visualize()}}, \code{\link[=get_p_value]{get_p_value()}},
 and \code{\link[=get_confidence_interval]{get_confidence_interval()}} in the same way that simulation-based
-null distributions can.
+distributions can.
 
 To define a theoretical null distribution (for use in hypothesis testing),
 be sure to provide a null hypothesis via \code{\link[=hypothesize]{hypothesize()}}. To define a

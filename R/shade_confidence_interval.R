@@ -32,19 +32,17 @@
 #'   specify(response = hours) %>%
 #'   calculate(stat = "mean")
 #'   
-#' # ...and a null distribution
-#' null_dist <- gss %>%
+#' # ...and a bootstrap distribution
+#' boot_dist <- gss %>%
 #'   # ...we're interested in the number of hours worked per week
 #'   specify(response = hours) %>%
-#'   # hypothesizing that the mean is 40
-#'   hypothesize(null = "point", mu = 40) %>%
-#'   # generating data points for a null distribution
+#'   # generating data points
 #'   generate(reps = 1000, type = "bootstrap") %>%
-#'   # finding the null distribution
+#'   # finding the distribution from the generated data
 #'   calculate(stat = "mean")
 #'   
 #' # find a confidence interval around the point estimate
-#' ci <- null_dist %>%
+#' ci <- boot_dist %>%
 #'   get_confidence_interval(point_estimate = point_estimate,
 #'                           # at the 95% confidence level
 #'                           level = .95,
@@ -53,12 +51,12 @@
 #'   
 #'   
 #' # and plot it!
-#' null_dist %>%
+#' boot_dist %>%
 #'   visualize() +
 #'   shade_confidence_interval(ci)
 #'   
 #' # or just plot the bounds
-#' null_dist %>%
+#' boot_dist %>%
 #'   visualize() +
 #'   shade_confidence_interval(ci, fill = NULL)
 #'   

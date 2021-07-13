@@ -53,7 +53,7 @@ ggplot2::ggplot_add
 #'
 #' @examples
 #'   
-#' # find a null distribution
+#' # generate a null distribution
 #' null_dist <- gss %>%
 #'   # we're interested in the number of hours worked per week
 #'   specify(response = hours) %>%
@@ -62,6 +62,13 @@ ggplot2::ggplot_add
 #'   # generating data points for a null distribution
 #'   generate(reps = 1000, type = "bootstrap") %>%
 #'   # calculating a distribution of means
+#'   calculate(stat = "mean")
+#'   
+#' # or a bootstrap distribution, omitting the hypothesize() step,
+#' # for use in confidence intervals
+#' boot_dist <- gss %>%
+#'   specify(response = hours) %>%
+#'   generate(reps = 1000, type = "bootstrap") %>%
 #'   calculate(stat = "mean")
 #'   
 #' # we can easily plot the null distribution by piping into visualize
@@ -75,7 +82,7 @@ ggplot2::ggplot_add
 #'   calculate(stat = "mean")
 #'   
 #' # find a confidence interval around the point estimate
-#' ci <- null_dist %>%
+#' ci <- boot_dist %>%
 #'   get_confidence_interval(point_estimate = point_estimate,
 #'                           # at the 95% confidence level
 #'                           level = .95,
