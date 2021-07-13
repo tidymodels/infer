@@ -172,13 +172,13 @@ gss %>%
 #> # … with 290 more rows
 ```
 
-If `type = "permute"`, a set of unquoted column names in the data to permute (independently of each other) can be passed via the `cols` argument to `generate`. It defaults to only the response variable.
+If `type = "permute"`, a set of unquoted column names in the data to permute (independently of each other) can be passed via the `variables` argument to `generate`. It defaults to only the response variable.
 
 ``` r
 gss %>%
   specify(hours ~ age + college) %>%
   hypothesize(null = "independence") %>%
-  generate(reps = 100, type = "permute", cols = c(age, college)) %>%
+  generate(reps = 100, type = "permute", variables = c(age, college)) %>%
   fit()
 #> # A tibble: 300 x 3
 #> # Groups:   replicate [100]

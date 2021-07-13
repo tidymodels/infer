@@ -4,7 +4,7 @@
 \alias{generate}
 \title{Generate resamples, permutations, or simulations}
 \usage{
-generate(x, reps = 1, type = NULL, cols = !!response_expr(x), ...)
+generate(x, reps = 1, type = NULL, variables = !!response_expr(x), ...)
 }
 \arguments{
 \item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
@@ -15,7 +15,7 @@ generate(x, reps = 1, type = NULL, cols = !!response_expr(x), ...)
 data reflecting the null hypothesis. Currently one of
 \code{"bootstrap"}, \code{"permute"}, or \code{"draw"} (see below).}
 
-\item{cols}{If \code{type = "permute"}, a set of unquoted column names in the
+\item{variables}{If \code{type = "permute"}, a set of unquoted column names in the
 data to permute (independently of each other). Defaults to only the
 response variable.}
 
