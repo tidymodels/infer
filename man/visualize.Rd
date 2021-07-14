@@ -110,7 +110,6 @@ null_dist \%>\%
 # a theory-based distribution with `assume()`
 sampling_dist <- gss \%>\%
   specify(response = hours) \%>\%
-  hypothesize(null = "point", mu = 40) \%>\%
   assume(distribution = "t") 
   
 visualize(sampling_dist)

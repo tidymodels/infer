@@ -67,39 +67,35 @@ each other.
 # with the `partyid` explanatory variable
 gss \%>\% 
   specify(age ~ partyid) \%>\% 
-  hypothesize(null = "independence") \%>\%
   assume(distribution = "F")
 
 # Chi-squared goodness of fit distribution
 # on the `finrela` variable
 gss \%>\%
   specify(response = finrela) \%>\%
-    hypothesize(null = "point",
-                p = c("far below average" = 1/6,
-                      "below average" = 1/6,
-                      "average" = 1/6,
-                      "above average" = 1/6,
-                      "far above average" = 1/6,
-                      "DK" = 1/6)) \%>\%
+  hypothesize(null = "point",
+              p = c("far below average" = 1/6,
+                    "below average" = 1/6,
+                    "average" = 1/6,
+                    "above average" = 1/6,
+                    "far above average" = 1/6,
+                    "DK" = 1/6)) \%>\%
   assume("Chisq")
 
 # Chi-squared test of independence
 # on the `finrela` and `sex` variables
 gss \%>\%
   specify(formula = finrela ~ sex) \%>\%
-  hypothesize(null = "independence") \%>\%
   assume(distribution = "Chisq")
 
 # T distribution
 gss \%>\% 
   specify(age ~ college) \%>\%
-  hypothesize(null = "independence") \%>\%
   assume("t")
 
 # Z distribution
 gss \%>\%
   specify(response = sex, success = "female") \%>\%
-  hypothesize(null = "point", p = .5) \%>\%
   assume("z")
 
 \dontrun{
@@ -117,7 +113,6 @@ obs_stat <- gss \%>\%
 # construct a null distribution
 null_dist <- gss \%>\%
   specify(response = hours) \%>\%
-  hypothesize(null = "point", mu = 40) \%>\%
   assume("t")
 
 # juxtapose them visually
@@ -138,7 +133,6 @@ obs_stat <- gss \%>\%
 # construct a null distribution
 null_dist <- gss \%>\% 
   specify(age ~ partyid) \%>\%
-  hypothesize(null = "independence") \%>\%
   assume(distribution = "F")
 
 # juxtapose them visually

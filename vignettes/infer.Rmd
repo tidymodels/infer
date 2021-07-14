@@ -254,7 +254,6 @@ Then, to define a theoretical $t$ distribution, we could write:
 # switch out calculate with assume to define a distribution
 t_dist <- gss %>%
   specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
   assume(distribution = "t")
 ```
 

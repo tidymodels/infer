@@ -103,7 +103,6 @@ ggplot2::ggplot_add
 #' # a theory-based distribution with `assume()`
 #' sampling_dist <- gss %>%
 #'   specify(response = hours) %>%
-#'   hypothesize(null = "point", mu = 40) %>%
 #'   assume(distribution = "t") 
 #'   
 #' visualize(sampling_dist)

@@ -51,6 +51,7 @@ First, to calculate the observed statistic, we can use `specify()` and `calculat
 # calculate the observed statistic
 observed_f_statistic <- gss %>%
   specify(age ~ partyid) %>%
+  hypothesize(null = "independence") %>%
   calculate(stat = "F")
 ```
 
@@ -85,7 +86,6 @@ We could also visualize the observed statistic against the theoretical null dist
 # visualize the theoretical null distribution and test statistic!
 null_dist_theoretical <- gss %>%
   specify(age ~ partyid) %>%
-  hypothesize(null = "independence") %>%
   assume(distribution = "F")
 
 visualize(null_dist_theoretical) +

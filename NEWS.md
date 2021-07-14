@@ -155,8 +155,7 @@ The code to define the null distribution is very similar to that required to cal
 ``` r
 null_dist <- gss %>%
   specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
-  assume(distribution = "t", df = nrow(gss) - 1)
+  assume(distribution = "t")
 
 null_dist 
 #> A T distribution with 499 degrees of freedom.

@@ -55,6 +55,7 @@ First, to calculate the observed statistic, we can use `specify()` and `calculat
 # calculate the observed statistic
 observed_indep_statistic <- gss %>%
   specify(college ~ finrela) %>%
+  hypothesize(null = "independence") %>%
   calculate(stat = "Chisq")
 ```
 
@@ -77,7 +78,6 @@ Note that, in the line `specify(college ~ finrela)` above, we could use the equi
 # generate the null distribution by theoretical approximation
 null_distribution_theoretical <- gss %>%
   specify(college ~ finrela) %>%
-  hypothesize(null = "independence") %>%
   assume(distribution = "Chisq")
 ```
 
@@ -97,7 +97,6 @@ We could also visualize the observed statistic against the theoretical null dist
 # visualize the theoretical null distribution and test statistic!
 gss %>%
   specify(college ~ finrela) %>%
-  hypothesize(null = "independence") %>%
   assume(distribution = "Chisq") %>%
   visualize() + 
   shade_p_value(observed_indep_statistic,

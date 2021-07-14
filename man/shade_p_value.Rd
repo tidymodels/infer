@@ -70,7 +70,6 @@ null_dist \%>\%
 # theoretical distributions, too!
 null_dist_theoretical <- gss \%>\%
   specify(response = hours) \%>\%
-  hypothesize(null = "point", mu = 40) \%>\%
   assume(distribution = "t") 
   
 null_dist_theoretical \%>\%

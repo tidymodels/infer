@@ -84,7 +84,6 @@ boot_dist \%>\%
 # align with the confidence interval
 sampling_dist <- gss \%>\%
   specify(response = hours) \%>\%
-  hypothesize(null = "point", mu = 40) \%>\%
   assume(distribution = "t") 
   
 visualize(sampling_dist) +
