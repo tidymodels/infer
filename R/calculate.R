@@ -16,7 +16,9 @@
 #'   options include `"mean"`, `"median"`, `"sum"`, `"sd"`, `"prop"`, `"count"`,
 #'   `"diff in means"`, `"diff in medians"`, `"diff in props"`, `"Chisq"` (or
 #'   `"chisq"`), `"F"` (or `"f"`), `"t"`, `"z"`, `"ratio of props"`, `"slope"`,
-#'   `"odds ratio"`, and `"correlation"`.
+#'   `"odds ratio"`, and `"correlation"`. `infer` only supports theoretical 
+#'   tests on one or two means via the `"t"` distribution and one or two 
+#'   proportions via the `"z"`.
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction (or division
 #'   for ratio-based statistics), where `order = c("first", "second")` means 
@@ -35,6 +37,7 @@
 #' cases will be NaN. The package will omit non-finite values from
 #' visualizations (with a warning) and raise an error in p-value calculations.
 #'
+#' 
 #' @examples
 #'
 #' # calculate a null distribution of hours worked per week under

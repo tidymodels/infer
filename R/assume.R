@@ -47,6 +47,9 @@
 #' always involves the condition that observations are independent of
 #' each other.
 #' 
+#' `infer` only supports theoretical tests on one or two means via the 
+#' `t` distribution and one or two proportions via the `z`.
+#' 
 #' @examples   
 #' # construct theoretical distributions ---------------------------------
 #' 

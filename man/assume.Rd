@@ -55,6 +55,9 @@ infer, whether carried out via simulation (i.e. based on pipelines
 using \code{\link[=generate]{generate()}} and \code{\link[=calculate]{calculate()}}) or theory (i.e. with \code{assume()}),
 always involves the condition that observations are independent of
 each other.
+
+\code{infer} only supports theoretical tests on one or two means via the
+\code{t} distribution and one or two proportions via the \code{z}.
 }
 \examples{
   

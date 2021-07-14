@@ -154,6 +154,7 @@ gss %>%
   t_test(response = hours, mu = 40)
 ```
 
+`infer` does not support testing on one numerical variable via the `z` distribution.
 
 ### One numerical variable (median)
 
@@ -297,6 +298,8 @@ prop_test(gss,
           college ~ NULL,
           p = .2)
 ```
+
+`infer` does not support testing two means via the `z` distribution.
 
 ### Two categorical (2 level) variables
 
@@ -1097,7 +1100,7 @@ visualize(sampling_dist) +
   shade_confidence_interval(endpoints = theor_ci)
 ```
 
-Note that the `t` distribution is recentered and rescaled to lie on the scale of the observed data.
+Note that the `t` distribution is recentered and rescaled to lie on the scale of the observed data. `infer` does not support confidence intervals on means via the `z` distribution.
 
 ### One numerical (one mean - standardized)
 
@@ -1151,7 +1154,7 @@ visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
 
-See the above subsection (one mean) for a theory-based approach.
+See the above subsection (one mean) for a theory-based approach. Note that `infer` does not support confidence intervals on means via the `z` distribution.
 
 ### One categorical (one proportion)
 
@@ -1221,7 +1224,7 @@ visualize(sampling_dist) +
   shade_confidence_interval(endpoints = theor_ci)
 ```
 
-Note that the `z` distribution is recentered and rescaled to lie on the scale of the observed data.
+Note that the `z` distribution is recentered and rescaled to lie on the scale of the observed data. `infer` does not support confidence intervals on means via the `z` distribution.
 
 ### One categorical variable (standardized proportion $z$)
 
@@ -1348,7 +1351,7 @@ visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
 
-See the above subsection (diff in means) for a theory-based approach.
+See the above subsection (diff in means) for a theory-based approach. `infer` does not support confidence intervals on means via the `z` distribution.
 
 ### Two categorical variables (diff in proportions)
 
