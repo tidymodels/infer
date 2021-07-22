@@ -1008,7 +1008,7 @@ Generating a distribution of fits where each explanatory variable is permuted in
 null_distn2 <- gss %>%
   specify(hours ~ age + college) %>%
   hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute", cols = c(age, college)) %>%
+  generate(reps = 1000, type = "permute", variables = c(age, college)) %>%
   fit()
 ```
 
@@ -1516,7 +1516,7 @@ Alternatively, generating a distribution of fits where each explanatory variable
 null_distn2 <- gss %>%
   specify(hours ~ age + college) %>%
   hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute", cols = c(age, college)) %>%
+  generate(reps = 1000, type = "permute", variables = c(age, college)) %>%
   fit()
 ```
 

@@ -56,7 +56,7 @@ elsewhere in the package, is subject to additional distributional assumptions
 beyond those required for one explanatory variable. Namely, the distribution
 of the response variable must be similar to the distribution of the errors
 under the null hypothesis' specification of a fixed effect of the explanatory
-variables. (This null hypothesis is reflected in the \code{cols} argument to
+variables. (This null hypothesis is reflected in the \code{variables} argument to
 \code{\link[=generate]{generate()}}. By default, all of the explanatory variables are treated
 as fixed.) A general rule of thumb here is, if there are large outliers
 in the distributions of any of the explanatory variables, this distributional

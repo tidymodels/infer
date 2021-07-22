@@ -323,7 +323,7 @@ test_that("generate() can permute with multiple explanatory variables", {
   expect_equal(ncol(x), 4)
 })
 
-test_that("generate is sensitive to the cols argument", {
+test_that("generate is sensitive to the variables argument", {
   # default argument works appropriately
   expect_equal({ 
       set.seed(1)
@@ -338,7 +338,7 @@ test_that("generate is sensitive to the cols argument", {
       gss[1:10,] %>%
         specify(hours ~ age + college) %>%
         hypothesize(null = "independence") %>%
-        generate(reps = 2, type = "permute", cols = hours)
+        generate(reps = 2, type = "permute", variables = hours)
   })
   
   # permuting changes output
@@ -346,7 +346,7 @@ test_that("generate is sensitive to the cols argument", {
     perm_age <- gss[1:10,] %>%
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
-      generate(reps = 2, type = "permute", cols = age)
+      generate(reps = 2, type = "permute", variables = age)
   )
   
   expect_false(all(perm_age$age[1:10] == perm_age$age[11:20]))
@@ -357,7 +357,7 @@ test_that("generate is sensitive to the cols argument", {
     perm_college <- gss[1:10,] %>%
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
-      generate(reps = 2, type = "permute", cols = college)
+      generate(reps = 2, type = "permute", variables = college)
   )
   
   expect_true(all(perm_college$age[1:10] == perm_college$age[11:20]))
@@ -368,7 +368,7 @@ test_that("generate is sensitive to the cols argument", {
     perm_college_age <- gss[1:10,] %>%
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
-      generate(reps = 2, type = "permute", cols = c(college, age))
+      generate(reps = 2, type = "permute", variables = c(college, age))
   )
   
   expect_false(all(perm_college_age$age[1:10] == perm_college_age$age[11:20]))
@@ -376,12 +376,12 @@ test_that("generate is sensitive to the cols argument", {
   expect_false(all(perm_college_age$college[1:10] == perm_college_age$college[11:20]))
 })
 
-test_that("cols argument prompts when it ought to", {
+test_that("variables argument prompts when it ought to", {
   expect_error(
     gss[1:10,] %>%
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
-      generate(reps = 2, type = "permute", cols = c(howdy)),
+      generate(reps = 2, type = "permute", variables = c(howdy)),
     "column `howdy`.*is not in the supplied data."
   )
   
@@ -389,7 +389,7 @@ test_that("cols argument prompts when it ought to", {
     gss[1:10,] %>%
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
-      generate(reps = 2, type = "permute", cols = c(howdy, doo)),
+      generate(reps = 2, type = "permute", variables = c(howdy, doo)),
     'columns `c\\("howdy", "doo"\\)`.*are not in the supplied data.'
   )
   
@@ -397,7 +397,7 @@ test_that("cols argument prompts when it ought to", {
     gss[1:10,] %>%
       specify(hours ~ NULL) %>%
       hypothesize(null = "point", mu = 40) %>%
-      generate(reps = 2, type = "bootstrap", cols = c(hours)),
+      generate(reps = 2, type = "bootstrap", variables = c(hours)),
     "is only relevant for.*will be ignored."
   )
   
@@ -405,7 +405,7 @@ test_that("cols argument prompts when it ought to", {
     gss[1:10,] %>%
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
-      generate(reps = 2, type = "permute", cols = "hours"),
+      generate(reps = 2, type = "permute", variables = "hours"),
     'unquoted variable names'
   )
 })
