@@ -17,9 +17,9 @@ observed data, variable(s) of interest, and (optionally) null hypothesis.}
 supplied, as a numeric vector. For \code{distribution = "F"}, this should have
 length two (e.g. \code{c(10, 3)}). For \code{distribution = "Chisq"} or
 \code{distribution = "t"}, this should have length one. For
-\code{distribution = "z"}, this argument is required. The package will supply
-a message if the supplied \code{df} argument is different from its expected
-value.}
+\code{distribution = "z"}, this argument is not required. The package
+will supply a message if the supplied \code{df} argument is different from
+recognized values. See the Details section below for more information.}
 
 \item{...}{Currently ignored.}
 }
@@ -58,6 +58,19 @@ each other.
 
 \code{infer} only supports theoretical tests on one or two means via the
 \code{t} distribution and one or two proportions via the \code{z}.
+
+For tests comparing two means, if \code{n1} is the group size for one level of
+the explanatory variable, and \code{n2} is that for the other level, \code{infer}
+will recognize the following degrees of freedom (\code{df}) arguments:
+\itemize{
+\item \code{min(n1 - 1, n2 - 1)}
+\item \code{n1 + n2 - 2}
+\item The \code{"parameter"} entry of the analogous \code{stats::t.test()} call
+\item The \code{"parameter"} entry of the analogous \code{stats::t.test()} call with \code{var.equal = TRUE}
+}
+
+By default, the package will use the \code{"parameter"} entry of the analogous
+\code{stats::t.test()} call with \code{var.equal = FALSE} (the default).
 }
 \examples{
   

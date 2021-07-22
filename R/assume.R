@@ -29,9 +29,9 @@
 #'   supplied, as a numeric vector. For `distribution = "F"`, this should have
 #'   length two (e.g. `c(10, 3)`). For `distribution = "Chisq"` or 
 #'   `distribution = "t"`, this should have length one. For 
-#'   `distribution = "z"`, this argument is required. The package will supply
-#'   a message if the supplied `df` argument is different from its expected
-#'   value.
+#'   `distribution = "z"`, this argument is not required. The package 
+#'   will supply a message if the supplied `df` argument is different from 
+#'   recognized values. See the Details section below for more information.
 #' @param ... Currently ignored.
 #'  
 #' @return An infer theoretical distribution that can be passed to helpers
@@ -49,6 +49,18 @@
 #' 
 #' `infer` only supports theoretical tests on one or two means via the 
 #' `t` distribution and one or two proportions via the `z`.
+#' 
+#' For tests comparing two means, if `n1` is the group size for one level of 
+#' the explanatory variable, and `n2` is that for the other level, `infer`
+#' will recognize the following degrees of freedom (`df`) arguments: 
+#' 
+#' * `min(n1 - 1, n2 - 1)`
+#' * `n1 + n2 - 2`
+#' * The `"parameter"` entry of the analogous `stats::t.test()` call
+#' * The `"parameter"` entry of the analogous `stats::t.test()` call with `var.equal = TRUE`
+#' 
+#' By default, the package will use the `"parameter"` entry of the analogous 
+#' `stats::t.test()` call with `var.equal = FALSE` (the default).
 #' 
 #' @examples   
 #' # construct theoretical distributions ---------------------------------
@@ -297,20 +309,65 @@ process_df <- function(df) {
 # hypothesize and, if it doesn't match the
 # supplied one, raise a message
 determine_df <- function(x, dist, df) {
-  auto_df <- c(
-    unname(unlist(attr(x, "distr_param"))), 
-    unname(unlist(attr(x, "distr_param2")))
-  )
-  
-  if (!is.null(df) && !all(round(df) %in% round(auto_df))) {
+
+  if (!is.null(df) && !all(round(df) %in% round(acceptable_dfs(x)))) {
     message_glue(
       "Message: The supplied `df` argument does not match its ",
       "expected value. If this is unexpected, ensure that your calculation ",
-      "for `df` is correct or supply `df = NULL` to `assume()`."
+      "for `df` is correct (see `?assume` for recognized values) or ",
+      "supply `df = NULL` to `assume()`."
     )
     
     return(df)
   }
-    
-  auto_df
+  
+  out <- acceptable_dfs(x)
+  
+  if (attr(x, "theory_type") == "Two sample t") {
+    out <- out[1]
+  }
+  
+  out
+}
+
+# return a vector of dfs recognized by `assume`
+acceptable_dfs <- function(x) {
+  if (attr(x, "theory_type") == "Two sample t") {
+    c(
+      # t.test param with var.equal = FALSE
+      unname(
+        unlist(
+          attr(x, "distr_param") <- 
+            stats::t.test(response_variable(x) ~ 
+                          explanatory_variable(x))[["parameter"]]
+        )
+      ),
+      # t.test param with var.equal = TRUE
+      unname(
+        unlist(
+          attr(x, "distr_param") <- 
+            stats::t.test(response_variable(x) ~ 
+                          explanatory_variable(x),
+                          var.equal = TRUE)[["parameter"]]
+        )
+      ),
+      # min(n1 - 1, n2 - 1)
+      x %>%
+        dplyr::count(!!explanatory_expr(x)) %>%
+        dplyr::pull(n) %>%
+        min() %>%
+        `-`(1),
+      # n1 + n2 - 2
+      x %>%
+        dplyr::count(!!explanatory_expr(x)) %>%
+        dplyr::pull(n) %>%
+        sum() %>%
+        `-`(2)
+    )
+  } else {
+    c(
+      unname(unlist(attr(x, "distr_param"))), 
+      unname(unlist(attr(x, "distr_param2")))
+    )
+  }
 }

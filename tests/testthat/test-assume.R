@@ -211,6 +211,38 @@ test_that("assume() handles automatic df gracefully", {
       assume("t", nrow(gss) - 2),
     "does not match its expected value..*calculation for `df`"
   )
+  
+  # t.test param with var.equal = FALSE
+  expect_silent(
+    gss %>%
+      specify(age ~ college) %>%
+      hypothesize(null = "independence") %>%
+      assume(distribution = "t", 423)
+  )
+  
+  # t.test param with var.equal = TRUE
+  expect_silent(
+    gss %>%
+      specify(age ~ college) %>%
+      hypothesize(null = "independence") %>%
+      assume(distribution = "t", 498)
+  )
+  
+  # min(n1 - 1, n2 - 1)
+  expect_silent(
+    gss %>%
+      specify(age ~ college) %>%
+      hypothesize(null = "independence") %>%
+      assume(distribution = "t", 173)
+  )
+  
+  # n1 + n2 - 2
+  expect_silent(
+    gss %>%
+      specify(age ~ college) %>%
+      hypothesize(null = "independence") %>%
+      assume(distribution = "t", 498)
+  )
 })
 
 test_that("assume() brings along supplied arguments", {
