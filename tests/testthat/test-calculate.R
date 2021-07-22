@@ -689,3 +689,74 @@ test_that("calculate errors out with multiple explanatory variables", {
     "Multiple explanatory variables.*in calculate"
   )
 })
+
+test_that("reported standard errors are correct", {
+  # mean ---------------------------------------------------------------------
+  x_bar <- gss %>%
+    specify(response = hours) %>%
+    calculate(stat = "mean")
+  
+  expect_equal(
+    attr(x_bar, "se"),
+    stats::sd(gss$hours)/sqrt(nrow(gss)),
+    tolerance = 1e-6
+  )
+  
+  # prop ---------------------------------------------------------------------
+  p_hat <- gss %>% 
+    specify(response = sex, success = "female") %>%
+    calculate(stat = "prop")
+  
+  expect_equal(
+    attr(p_hat, "se"),
+    sqrt(
+      (mean(gss$sex == "female") * (1 - mean(gss$sex == "female"))) / nrow(gss)
+    ),
+    tolerance = 1e-6
+  )
+  
+  # diff in means ------------------------------------------------------------
+  diff_bar <- gss %>%
+    specify(hours ~ college) %>%
+    calculate(stat = "diff in means", order = c("no degree", "degree"))
+  
+  expect_equal(
+    attr(diff_bar, "se"),
+    sqrt(
+      (stats::sd(gss$hours[gss$college == "degree"]) / 
+         sqrt(nrow(gss[gss$college == "degree",])))^2 +
+      (stats::sd(gss$hours[gss$college == "no degree"]) / 
+         sqrt(nrow(gss[gss$college == "no degree",])))^2  
+    ),
+    tolerance = 1e-6
+  )
+  
+  # diff in props ------------------------------------------------------------
+  diff_hat <- gss %>%
+    specify(sex ~ college, success = "female") %>%
+    calculate(stat = "diff in props", order = c("no degree", "degree"))
+  
+  expect_equal(
+    attr(diff_hat, "se"),
+    sqrt(
+      abs((mean(gss[gss$college == "degree",]$sex == "female") * 
+          (1 - mean(gss[gss$college == "degree",]$sex == "female"))) / 
+          nrow(gss[gss$college == "degree",])) +
+      abs((mean(gss[gss$college == "no degree",]$sex == "female") * 
+          (1 - mean(gss[gss$college == "no degree",]$sex == "female"))) / 
+          nrow(gss[gss$college == "no degree",]))
+    ),
+    tolerance = 1e-6
+  )
+})
+
+
+
+
+
+
+
+
+
+
+

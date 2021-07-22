@@ -108,13 +108,12 @@ null_distn <- gss %>%
   calculate(stat = "t")
 ```
 
-Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
+Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
 null_distn_theoretical <- gss %>%
-  specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
-  calculate(stat = "t")
+  specify(response = hours)  %>%
+  assume("t")
 ```
 
 Visualizing the observed statistic alongside the null distribution,
@@ -127,7 +126,7 @@ visualize(null_distn) +
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
 ```{r}
-visualize(null_distn_theoretical, method = "theoretical") +
+visualize(null_distn_theoretical) +
   shade_p_value(obs_stat = t_bar, direction = "two-sided")
 ```
 
@@ -154,6 +153,7 @@ gss %>%
   t_test(response = hours, mu = 40)
 ```
 
+`infer` does not support testing on one numerical variable via the `z` distribution.
 
 ### One numerical variable (median)
 
@@ -298,6 +298,8 @@ prop_test(gss,
           p = .2)
 ```
 
+`infer` does not support testing two means via the `z` distribution.
+
 ### Two categorical (2 level) variables
 
 The `infer` package provides several statistics to work with data of this type. One of them is the statistic for difference in proportions. 
@@ -425,6 +427,7 @@ Finding the standardized observed statistic,
 ```{r}
 z_hat <- gss %>% 
   specify(college ~ sex, success = "no degree") %>%
+  hypothesize(null = "independence") %>%
   calculate(stat = "z", order = c("female", "male"))
 ```
 
@@ -446,13 +449,12 @@ null_distn <- gss %>%
   calculate(stat = "z", order = c("female", "male"))
 ```
 
-Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
+Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
 null_distn_theoretical <- gss %>%
   specify(college ~ sex, success = "no degree") %>%
-  hypothesize(null = "independence") %>%  
-  calculate(stat = "z", order = c("female", "male"))
+  assume("z")
 ```
 
 Visualizing the observed statistic alongside the null distribution,
@@ -465,7 +467,7 @@ visualize(null_distn) +
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
 ```{r}
-visualize(null_distn_theoretical, method = "theoretical") +
+visualize(null_distn_theoretical) +
   shade_p_value(obs_stat = z_hat, direction = "two-sided")
 ```
 
@@ -545,19 +547,12 @@ null_distn <- gss %>%
   calculate(stat = "Chisq")
 ```
 
-Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
+Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
 null_distn_theoretical <- gss %>%
   specify(response = finrela) %>%
-  hypothesize(null = "point",
-              p = c("far below average" = 1/6,
-                    "below average" = 1/6,
-                    "average" = 1/6,
-                    "above average" = 1/6,
-                    "far above average" = 1/6,
-                    "DK" = 1/6)) %>%
-  calculate(stat = "Chisq")
+  assume("Chisq")
 ```
 
 Visualizing the observed statistic alongside the null distribution,
@@ -570,7 +565,7 @@ visualize(null_distn) +
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
 ```{r}
-visualize(null_distn_theoretical, method = "theoretical") +
+visualize(null_distn_theoretical) +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
@@ -610,6 +605,7 @@ Calculating the observed statistic,
 ```{r}
 Chisq_hat <- gss %>%
   specify(formula = finrela ~ sex) %>% 
+  hypothesize(null = "independence") %>%
   calculate(stat = "Chisq")
 ```
 
@@ -630,13 +626,12 @@ null_distn <- gss %>%
   calculate(stat = "Chisq")
 ```
 
-Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
+Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
 null_distn_theoretical <- gss %>%
   specify(finrela ~ sex) %>%
-  hypothesize(null = "independence") %>% 
-  calculate(stat = "Chisq")
+  assume(distribution = "Chisq")
 ```
 
 Visualizing the observed statistic alongside the null distribution,
@@ -649,7 +644,7 @@ visualize(null_distn) +
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
 ```{r}
-visualize(null_distn_theoretical, method = "theoretical") +
+visualize(null_distn_theoretical) +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
@@ -725,6 +720,7 @@ Finding the standardized observed statistic,
 ```{r}
 t_hat <- gss %>% 
   specify(age ~ college) %>% 
+  hypothesize(null = "independence") %>%
   calculate(stat = "t", order = c("degree", "no degree"))
 ```
 
@@ -746,13 +742,12 @@ null_distn <- gss %>%
   calculate(stat = "t", order = c("degree", "no degree"))
 ```
 
-Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
+Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
 null_distn_theoretical <- gss %>%
   specify(age ~ college) %>%
-  hypothesize(null = "independence") %>%
-  calculate(stat = "t", order = c("degree", "no degree"))
+  assume("t")
 ```
 
 Visualizing the observed statistic alongside the null distribution,
@@ -765,7 +760,7 @@ visualize(null_distn) +
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
 ```{r}
-visualize(null_distn_theoretical, method = "theoretical") +
+visualize(null_distn_theoretical) +
   shade_p_value(obs_stat = t_hat, direction = "two-sided")
 ```
 
@@ -856,13 +851,13 @@ null_distn <- gss %>%
    calculate(stat = "F")
 ```
 
-Alternatively, finding the null distribution using theoretical methods by skipping the `generate()` step,
+Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
 null_distn_theoretical <- gss %>%
    specify(age ~ partyid) %>%
    hypothesize(null = "independence") %>%
-   calculate(stat = "F")
+   assume(distribution = "F")
 ```
 
 Visualizing the observed statistic alongside the null distribution,
@@ -875,7 +870,7 @@ visualize(null_distn) +
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
 ```{r}
-visualize(null_distn_theoretical, method = "theoretical") +
+visualize(null_distn_theoretical) +
   shade_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
@@ -1047,7 +1042,7 @@ x_bar <- gss %>%
   observe(response = hours, stat = "mean")
 ```
 
-Then, generating the null distribution,
+Then, generating a bootstrap distribution,
 
 ```{r}
 boot <- gss %>%
@@ -1056,20 +1051,20 @@ boot <- gss %>%
    calculate(stat = "mean")
 ```
 
-Use the null distribution to find a confidence interval,
+Use the bootstrap distribution to find a confidence interval,
 
 ```{r}
 percentile_ci <- get_ci(boot)
 ```
 
-Visualizing the observed statistic alongside the null distribution,
+Visualizing the observed statistic alongside the distribution,
 
 ```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
-Alternatively, use the null distribution to find a confidence interval using the standard error,
+Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
 standard_error_ci <- get_ci(boot, type = "se", point_estimate = x_bar)
@@ -1077,6 +1072,27 @@ standard_error_ci <- get_ci(boot, type = "se", point_estimate = x_bar)
 visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
+
+Instead of a simulation-based bootstrap distribution, we can also define a theory-based sampling distribution,
+
+```{r}
+sampling_dist <- gss %>%
+   specify(response = hours) %>%
+   assume(distribution = "t")
+```
+
+Visualization and calculation of confidence intervals interfaces in the same way as with the simulation-based distribution,
+
+```{r}
+theor_ci <- get_ci(sampling_dist, point_estimate = x_bar)
+
+theor_ci
+
+visualize(sampling_dist) +
+  shade_confidence_interval(endpoints = theor_ci)
+```
+
+Note that the `t` distribution is recentered and rescaled to lie on the scale of the observed data. `infer` does not support confidence intervals on means via the `z` distribution.
 
 ### One numerical (one mean - standardized)
 
@@ -1098,30 +1114,29 @@ t_hat <- gss %>%
           stat = "t")
 ```
 
-Then, generating the null distribution,
+Then, generating the bootstrap distribution,
 
 ```{r}
 boot <- gss %>%
    specify(response = hours) %>%
-   hypothesize(null = "point", mu = 40) %>%
    generate(reps = 1000, type = "bootstrap") %>%
    calculate(stat = "t")
 ```
 
-Use the null distribution to find a confidence interval,
+Use the bootstrap distribution to find a confidence interval,
 
 ```{r}
 percentile_ci <- get_ci(boot)
 ```
 
-Visualizing the observed statistic alongside the null distribution,
+Visualizing the observed statistic alongside the distribution,
 
 ```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
-Alternatively, use the null distribution to find a confidence interval using the standard error,
+Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
 standard_error_ci <- boot %>%
@@ -1131,6 +1146,7 @@ visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
 
+See the above subsection (one mean) for a theory-based approach. Note that `infer` does not support confidence intervals on means via the `z` distribution.
 
 ### One categorical (one proportion)
 
@@ -1149,7 +1165,7 @@ p_hat <- gss %>%
    observe(response = sex, success = "female", stat = "prop")
 ```
 
-Then, generating the null distribution,
+Then, generating a bootstrap distribution,
 
 ```{r}
 boot <- gss %>%
@@ -1158,20 +1174,20 @@ boot <- gss %>%
  calculate(stat = "prop")
 ```
 
-Use the null distribution to find a confidence interval,
+Use the bootstrap distribution to find a confidence interval,
 
 ```{r}
 percentile_ci <- get_ci(boot)
 ```
 
-Visualizing the observed statistic alongside the null distribution,
+Visualizing the observed statistic alongside the distribution,
 
 ```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
-Alternatively, use the null distribution to find a confidence interval using the standard error,
+Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
 standard_error_ci <- boot %>%
@@ -1181,9 +1197,30 @@ visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
 
+Instead of a simulation-based bootstrap distribution, we can also define a theory-based sampling distribution,
+
+```{r}
+sampling_dist <- gss %>%
+   specify(response = sex, success = "female") %>%
+   assume(distribution = "z")
+```
+
+Visualization and calculation of confidence intervals interfaces in the same way as with the simulation-based distribution,
+
+```{r}
+theor_ci <- get_ci(sampling_dist, point_estimate = p_hat)
+
+theor_ci
+
+visualize(sampling_dist) +
+  shade_confidence_interval(endpoints = theor_ci)
+```
+
+Note that the `z` distribution is recentered and rescaled to lie on the scale of the observed data. `infer` does not support confidence intervals on means via the `z` distribution.
+
 ### One categorical variable (standardized proportion $z$)
 
-Not yet implemented.
+See the above subsection (one proportion) for a theory-based approach.
 
 ### One numerical variable, one categorical (2 levels) (diff in means)
 
@@ -1203,7 +1240,7 @@ d_hat <- gss %>%
           stat = "diff in means", order = c("degree", "no degree"))
 ```
 
-Then, generating the null distribution,
+Then, generating a bootstrap distribution,
 
 ```{r}
 boot <- gss %>%
@@ -1212,20 +1249,20 @@ boot <- gss %>%
    calculate(stat = "diff in means", order = c("degree", "no degree"))
 ```
 
-Use the null distribution to find a confidence interval,
+Use the bootstrap distribution to find a confidence interval,
 
 ```{r}
 percentile_ci <- get_ci(boot)
 ```
 
-Visualizing the observed statistic alongside the null distribution,
+Visualizing the observed statistic alongside the distribution,
 
 ```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
-Alternatively, use the null distribution to find a confidence interval using the standard error,
+Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
 standard_error_ci <- boot %>%
@@ -1234,6 +1271,27 @@ standard_error_ci <- boot %>%
 visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
+
+Instead of a simulation-based bootstrap distribution, we can also define a theory-based sampling distribution,
+
+```{r}
+sampling_dist <- gss %>%
+   specify(hours ~ college) %>%
+   assume(distribution = "t")
+```
+
+Visualization and calculation of confidence intervals interfaces in the same way as with the simulation-based distribution,
+
+```{r}
+theor_ci <- get_ci(sampling_dist, point_estimate = d_hat)
+
+theor_ci
+
+visualize(sampling_dist) +
+  shade_confidence_interval(endpoints = theor_ci)
+```
+
+Note that the `t` distribution is recentered and rescaled to lie on the scale of the observed data.
 
 ### One numerical variable, one categorical (2 levels) (t)
 
@@ -1253,7 +1311,7 @@ t_hat <- gss %>%
           stat = "t", order = c("degree", "no degree"))
 ```
 
-Then, generating the null distribution,
+Then, generating a bootstrap distribution,
 
 ```{r}
 boot <- gss %>%
@@ -1262,20 +1320,20 @@ boot <- gss %>%
    calculate(stat = "t", order = c("degree", "no degree"))
 ```
 
-Use the null distribution to find a confidence interval,
+Use the bootstrap distribution to find a confidence interval,
 
 ```{r}
 percentile_ci <- get_ci(boot)
 ```
 
-Visualizing the observed statistic alongside the null distribution,
+Visualizing the observed statistic alongside the distribution,
 
 ```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
-Alternatively, use the null distribution to find a confidence interval using the standard error,
+Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
 standard_error_ci <- boot %>%
@@ -1285,6 +1343,7 @@ visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
 
+See the above subsection (diff in means) for a theory-based approach. `infer` does not support confidence intervals on means via the `z` distribution.
 
 ### Two categorical variables (diff in proportions)
 
@@ -1304,7 +1363,7 @@ d_hat <- gss %>%
           stat = "diff in props", order = c("female", "male"))
 ```
 
-Then, generating the null distribution,
+Then, generating a bootstrap distribution,
 
 ```{r}
 boot <- gss %>%
@@ -1313,20 +1372,20 @@ boot <- gss %>%
   calculate(stat = "diff in props", order = c("female", "male"))
 ```
 
-Use the null distribution to find a confidence interval,
+Use the bootstrap distribution to find a confidence interval,
 
 ```{r}
 percentile_ci <- get_ci(boot)
 ```
 
-Visualizing the observed statistic alongside the null distribution,
+Visualizing the observed statistic alongside the distribution,
 
 ```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
-Alternatively, use the null distribution to find a confidence interval using the standard error,
+Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
 standard_error_ci <- boot %>%
@@ -1335,6 +1394,27 @@ standard_error_ci <- boot %>%
 visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
+
+Instead of a simulation-based bootstrap distribution, we can also define a theory-based sampling distribution,
+
+```{r}
+sampling_dist <- gss %>% 
+  specify(college ~ sex, success = "degree") %>%
+   assume(distribution = "z")
+```
+
+Visualization and calculation of confidence intervals interfaces in the same way as with the simulation-based distribution,
+
+```{r}
+theor_ci <- get_ci(sampling_dist, point_estimate = d_hat)
+
+theor_ci
+
+visualize(sampling_dist) +
+  shade_confidence_interval(endpoints = theor_ci)
+```
+
+Note that the `z` distribution is recentered and rescaled to lie on the scale of the observed data.
 
 ### Two categorical variables (z)
 
@@ -1354,7 +1434,7 @@ z_hat <- gss %>%
           stat = "z", order = c("female", "male"))
 ```
 
-Then, generating the null distribution,
+Then, generating a bootstrap distribution,
 
 ```{r}
 boot <- gss %>%
@@ -1363,20 +1443,20 @@ boot <- gss %>%
   calculate(stat = "z", order = c("female", "male"))
 ```
 
-Use the null distribution to find a confidence interval,
+Use the bootstrap distribution to find a confidence interval,
 
 ```{r}
 percentile_ci <- get_ci(boot)
 ```
 
-Visualizing the observed statistic alongside the null distribution,
+Visualizing the observed statistic alongside the distribution,
 
 ```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
-Alternatively, use the null distribution to find a confidence interval using the standard error,
+Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
 standard_error_ci <- boot %>%
@@ -1386,6 +1466,7 @@ visualize(boot) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
 
+See the above subsection (diff in props) for a theory-based approach.
 
 ### Two numerical vars - SLR
 
@@ -1404,7 +1485,7 @@ slope_hat <- gss %>%
   observe(hours ~ age, stat = "slope")
 ```
 
-Then, generating the null distribution,
+Then, generating a bootstrap distribution,
 
 ```{r}
 boot <- gss %>%
@@ -1413,20 +1494,20 @@ boot <- gss %>%
    calculate(stat = "slope")
 ```
 
-Use the null distribution to find a confidence interval,
+Use the bootstrap distribution to find a confidence interval,
 
 ```{r}
 percentile_ci <- get_ci(boot)
 ```
 
-Visualizing the observed statistic alongside the null distribution,
+Visualizing the observed statistic alongside the distribution,
 
 ```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
-Alternatively, use the null distribution to find a confidence interval using the standard error,
+Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
 standard_error_ci <- boot %>%
@@ -1453,7 +1534,7 @@ correlation_hat <- gss %>%
   observe(hours ~ age, stat = "correlation")
 ```
 
-Then, generating the null distribution,
+Then, generating a bootstrap distribution,
 
 ```{r}
 boot <- gss %>%
@@ -1462,20 +1543,20 @@ boot <- gss %>%
    calculate(stat = "correlation")
 ```
 
-Use the null distribution to find a confidence interval,
+Use the bootstrap distribution to find a confidence interval,
 
 ```{r}
 percentile_ci <- get_ci(boot)
 ```
 
-Visualizing the observed statistic alongside the null distribution,
+Visualizing the observed statistic alongside the distribution,
 
 ```{r}
 visualize(boot) +
   shade_confidence_interval(endpoints = percentile_ci)
 ```
 
-Alternatively, use the null distribution to find a confidence interval using the standard error,
+Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
 standard_error_ci <- boot %>%

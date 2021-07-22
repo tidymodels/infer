@@ -3,11 +3,14 @@
 \name{print.infer}
 \alias{print.infer}
 \alias{print.infer_layer}
+\alias{print.infer_dist}
 \title{Print methods}
 \usage{
 \method{print}{infer}(x, ...)
 
 \method{print}{infer_layer}(x, ...)
+
+\method{print}{infer_dist}(x, ...)
 }
 \arguments{
 \item{x}{An object of class \code{infer}, i.e. output from \code{\link[=specify]{specify()}} or

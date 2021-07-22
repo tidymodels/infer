@@ -2,18 +2,26 @@
 % Please edit documentation in R/get_p_value.R
 \name{get_p_value}
 \alias{get_p_value}
+\alias{get_p_value.default}
 \alias{get_pvalue}
+\alias{get_p_value.infer_dist}
 \title{Compute p-value}
 \usage{
 get_p_value(x, obs_stat, direction)
 
+\method{get_p_value}{default}(x, obs_stat, direction)
+
 get_pvalue(x, obs_stat, direction)
+
+\method{get_p_value}{infer_dist}(x, obs_stat, direction)
 }
 \arguments{
-\item{x}{A data frame containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
+\item{x}{A null distribution. For simulation-based inference, a data frame
+containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
 or \code{\link[=fit.infer]{fit()}}ted coefficient estimates. This object should
 have been passed to \code{\link[=generate]{generate()}} before being supplied or
-\code{\link[=calculate]{calculate()}} to \code{\link[=fit.infer]{fit()}}.}
+\code{\link[=calculate]{calculate()}} to \code{\link[=fit.infer]{fit()}}. For theory-based inference,
+the output of \code{\link[=assume]{assume()}}.}
 
 \item{obs_stat}{A data frame containing the observed statistic (in a
 \code{\link[=calculate]{calculate()}}-based workflow) or observed fit (in a
@@ -66,6 +74,8 @@ raised to caution the user against reporting a p-value exactly equal to 0.
 
 \examples{
 
+# using a simulation-based null distribution ------------------------------
+
 # find the point estimate---mean number of hours worked per week
 point_estimate <- gss \%>\%
   specify(response = hours) \%>\%
@@ -83,7 +93,23 @@ gss \%>\%
   calculate(stat = "mean") \%>\%
   get_p_value(obs_stat = point_estimate, direction = "two-sided")
   
-# using a model fitting workflow -----------------------
+# using a theoretical null distribution -----------------------------------
+
+# calculate the observed statistic 
+obs_stat <- gss \%>\%
+  specify(response = hours) \%>\%
+  hypothesize(null = "point", mu = 40) \%>\%
+  calculate(stat = "t")
+
+# define a null distribution
+null_dist <- gss \%>\%
+  specify(response = hours) \%>\%
+  assume("t")
+
+# calculate a p-value
+get_p_value(null_dist, obs_stat, direction = "both")
+
+# using a model fitting workflow -----------------------------------------
 
 # fit a linear model predicting number of hours worked per
 # week using respondent age and degree status.

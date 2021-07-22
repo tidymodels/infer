@@ -58,7 +58,9 @@ point null hypotheses.}
 options include \code{"mean"}, \code{"median"}, \code{"sum"}, \code{"sd"}, \code{"prop"}, \code{"count"},
 \code{"diff in means"}, \code{"diff in medians"}, \code{"diff in props"}, \code{"Chisq"} (or
 \code{"chisq"}), \code{"F"} (or \code{"f"}), \code{"t"}, \code{"z"}, \code{"ratio of props"}, \code{"slope"},
-\code{"odds ratio"}, and \code{"correlation"}.}
+\code{"odds ratio"}, and \code{"correlation"}. \code{infer} only supports theoretical
+tests on one or two means via the \code{"t"} distribution and one or two
+proportions via the \code{"z"}.}
 
 \item{order}{A string vector of specifying the order in which the levels of
 the explanatory variable should be ordered for subtraction (or division

@@ -34,8 +34,8 @@
 #' # find the point estimate---mean number of hours worked per week
 #' point_estimate <- gss %>%
 #'   specify(response = hours) %>%
-#'   calculate(stat = "mean") %>%
-#'   dplyr::pull()
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   calculate(stat = "t")
 #'   
 #' # ...and a null distribution
 #' null_dist <- gss %>%
@@ -45,11 +45,21 @@
 #'   hypothesize(null = "point", mu = 40) %>%
 #'   # generating data points for a null distribution
 #'   generate(reps = 1000, type = "bootstrap") %>%
-#'   # finding the null distribution
-#'   calculate(stat = "mean")
+#'   # estimating the null distribution
+#'   calculate(stat = "t")
 #'   
 #' # shade the p-value of the point estimate
 #' null_dist %>%
+#'   visualize() +
+#'   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
+#'   
+#' # you can shade confidence intervals on top of
+#' # theoretical distributions, too!
+#' null_dist_theoretical <- gss %>%
+#'   specify(response = hours) %>%
+#'   assume(distribution = "t") 
+#'   
+#' null_dist_theoretical %>%
 #'   visualize() +
 #'   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 #' 
@@ -262,7 +272,9 @@ one_tail_area <- function(obs_stat, direction, do_warn = TRUE) {
 }
 
 theor_area <- function(data, obs_stat, direction, n_grid = 1001) {
-  g <- ggplot(data) + theoretical_layer(data, "black", do_warn = FALSE)
+  plot_data <- create_plot_data(data)
+  
+  g <- ggplot(plot_data) + theoretical_layer(data, "black", do_warn = FALSE)
   g_data <- ggplot2::ggplot_build(g)[["data"]][[1]]
   
   curve_fun <- stats::approxfun(

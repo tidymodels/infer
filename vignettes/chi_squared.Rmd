@@ -55,6 +55,7 @@ First, to calculate the observed statistic, we can use `specify()` and `calculat
 # calculate the observed statistic
 observed_indep_statistic <- gss %>%
   specify(college ~ finrela) %>%
+  hypothesize(null = "independence") %>%
   calculate(stat = "Chisq")
 ```
 
@@ -77,9 +78,7 @@ Note that, in the line `specify(college ~ finrela)` above, we could use the equi
 # generate the null distribution by theoretical approximation
 null_distribution_theoretical <- gss %>%
   specify(college ~ finrela) %>%
-  hypothesize(null = "independence") %>%
-  # note that we skip the generation step here!
-  calculate(stat = "Chisq")
+  assume(distribution = "Chisq")
 ```
 
 To get a sense for what these distributions look like, and where our observed statistic falls, we can use `visualize()`:
@@ -92,14 +91,14 @@ null_distribution_simulated %>%
                 direction = "greater")
 ```
 
-We could also visualize the observed statistic against the theoretical null distribution. Note that we skip the `generate()` and `calculate()` steps when using the theoretical approach, and that we now need to provide `method = "theoretical"` to `visualize()`.
+We could also visualize the observed statistic against the theoretical null distribution. To do so, use the `assume()` verb to define a theoretical null distribution and then pass it to `visualize()` like a null distribution outputted from `generate()` and `calculate()`.
 
 ```{r visualize-indep-theor, warning = FALSE, message = FALSE}
 # visualize the theoretical null distribution and test statistic!
 gss %>%
   specify(college ~ finrela) %>%
-  hypothesize(null = "independence") %>%
-  visualize(method = "theoretical") + 
+  assume(distribution = "Chisq") %>%
+  visualize() + 
   shade_p_value(observed_indep_statistic,
                 direction = "greater")
 ```

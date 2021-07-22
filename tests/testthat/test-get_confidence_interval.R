@@ -38,15 +38,18 @@ test_that("get_confidence_interval works with `type = 'percentile'`", {
   
 test_that("get_confidence_interval works with `type = 'se'`", {  
   expect_message(
-    expect_equal(
-      test_df %>% get_confidence_interval(type = "se", point_estimate = point),
+    # use equivalent rather than equal as ci has attributes for se and point est
+    expect_equivalent(
+      test_df %>% 
+        get_confidence_interval(type = "se", point_estimate = point),
       tibble::tibble(lower_ci = -5.653, upper_ci = 6.603),
       tolerance = 1e-3
     ),
     "Using `level = 0.95`"
   )
   
-  expect_equal(
+  # use equivalent rather than equal as ci has attributes for se and point est
+  expect_equivalent(
     test_df %>%
       get_confidence_interval(level = 0.5, type = "se", point_estimate = point),
     tibble::tibble(lower_ci = -1.633, upper_ci = 2.583),
@@ -239,3 +242,245 @@ test_that("get_confidence_interval can handle bad args with fitted objects", {
   )
 })
 
+test_that("theoretical CIs align with simulation-based (mean)", {
+  x_bar <- gss %>%
+    specify(response = hours) %>%
+    calculate(stat = "mean")
+  
+  set.seed(1)
+  
+  null_dist <- gss %>%
+    specify(response = hours) %>%
+    hypothesize(null = "point", mu = 40) %>% 
+    generate(reps = 1e3, type = "bootstrap") %>% 
+    calculate(stat = "mean")
+  
+  null_dist_theor <- gss %>%
+    specify(response = hours) %>%
+    hypothesize(null = "point", mu = 40) %>%
+    assume(distribution = "t")
+  
+  expect_equal(
+    get_confidence_interval(
+      null_dist, 
+      .95, 
+      type = "se", 
+      point_estimate = x_bar
+    ),
+    get_confidence_interval(
+      null_dist_theor, 
+      .95, 
+      type = "se", 
+      point_estimate = x_bar
+    ),
+    tolerance = .2
+  )
+})
+
+test_that("theoretical CIs align with simulation-based (prop)", {
+  p_hat <- gss %>%
+    specify(response = sex, success = "female") %>%
+    calculate(stat = "prop")
+  
+  set.seed(1)
+  
+  null_dist <- gss %>%
+    specify(response = sex, success = "female") %>%
+    hypothesize(null = "point", p = .5) %>%
+    generate(reps = 1e3, type = "draw") %>%
+    calculate(stat = "prop")
+  
+  null_dist_theor <- gss %>%
+    specify(response = sex, success = "female") %>%
+    assume(distribution = "z")
+  
+  expect_equal(
+    get_confidence_interval(
+      null_dist, 
+      .95, 
+      type = "se", 
+      point_estimate = p_hat
+    ),
+    get_confidence_interval(
+      null_dist_theor, 
+      .95, 
+      type = "se", 
+      point_estimate = p_hat
+    ),
+    tolerance = .05
+  )
+})
+
+test_that("theoretical CIs align with simulation-based (diff in means)", {
+  diff_bar <- gss %>% 
+    specify(age ~ college) %>% 
+    calculate(stat = "diff in means", order = c("degree", "no degree"))
+  
+  set.seed(1)
+  
+  null_dist <- gss %>%
+    specify(age ~ college) %>% 
+    hypothesize(null = "independence") %>% 
+    generate(reps = 3e3, type = "permute") %>% 
+    calculate(stat = "diff in means", order = c("degree", "no degree"))
+  
+  null_dist_theor <- gss %>%
+    specify(age ~ college) %>% 
+    assume(distribution = "t")
+  
+  expect_equal(
+    get_confidence_interval(
+      null_dist, 
+      .95, 
+      type = "se", 
+      point_estimate = diff_bar
+    ),
+    get_confidence_interval(
+      null_dist_theor, 
+      .95, 
+      type = "se", 
+      point_estimate = diff_bar
+    ),
+    tolerance = .15
+  )
+})
+
+test_that("theoretical CIs align with simulation-based (diff in props)", {
+  diff_hat <- gss %>% 
+    specify(college ~ sex, success = "no degree") %>%
+    calculate(stat = "diff in props", order = c("female", "male"))
+  
+  set.seed(1)
+  
+  null_dist <- gss %>%
+    specify(college ~ sex, success = "no degree") %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 1e3, type = "permute") %>%
+    calculate(stat = "diff in props", order = c("female", "male"))
+  
+  null_dist_theor <- gss %>%
+    specify(college ~ sex, success = "no degree") %>%
+    assume(distribution = "z")
+  
+  expect_equal(
+    get_confidence_interval(
+      null_dist, 
+      .95, 
+      type = "se", 
+      point_estimate = diff_hat
+    ),
+    get_confidence_interval(
+      null_dist_theor, 
+      .95, 
+      type = "se", 
+      point_estimate = diff_hat
+    ),
+    tolerance = .001
+  )
+})
+
+test_that("theoretical CIs check arguments properly", {
+  x_bar <- gss %>%
+    specify(response = hours) %>%
+    calculate(stat = "mean")
+  
+  null_dist_theor <- gss %>%
+    specify(age ~ college) %>% 
+    assume(distribution = "t")
+  
+  # check that type is handled correctly
+  expect_equal(
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95, 
+      point_estimate = x_bar
+    ),
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95,
+      type = "se",
+      point_estimate = x_bar
+    )
+  )
+  
+  expect_error(
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95,
+      type = "percentile",
+      point_estimate = x_bar
+    ),
+    "only `type` option for theory-based confidence"
+  )
+  
+  expect_error(
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95,
+      type = "boop",
+      point_estimate = x_bar
+    ),
+    "only `type` option for theory-based confidence"
+  )
+  
+  # check that point estimate hasn't been post-processed
+  expect_error(
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95, 
+      point_estimate = dplyr::pull(x_bar)
+    ),
+    "must be an `infer` object"
+  )
+  
+  expect_error(
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95, 
+      point_estimate = x_bar$stat
+    ),
+    "must be an `infer` object"
+  )
+  
+  # check that statistics are implemented
+  obs_t <- gss %>%
+    specify(response = hours) %>%
+    hypothesize(null = "point", mu = 40) %>%
+    calculate(stat = "t")
+  
+  expect_error(
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95, 
+      point_estimate = obs_t
+    ),
+    'allowable statistics.*See the \\"Details\\" section of `\\?get_c'
+  )
+  
+  # check that stat and distribution align
+  p_hat <- gss %>%
+    specify(response = sex, success = "female") %>%
+    calculate(stat = "prop")
+  
+  null_dist_z <- gss %>%
+    specify(response = sex, success = "female") %>%
+    assume(distribution = "z")
+  
+  expect_error(
+    get_confidence_interval(
+      null_dist_theor, 
+      level = .95, 
+      point_estimate = p_hat
+    ),
+    'using a `t` distribution for `stat = prop` are not implemented'
+  )
+  
+  expect_error(
+    get_confidence_interval(
+      null_dist_z, 
+      level = .95, 
+      point_estimate = x_bar
+    ),
+    'using a `z` distribution for `stat = mean` are not implemented'
+  )
+})

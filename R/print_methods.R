@@ -37,3 +37,9 @@ print.infer <- function(x, ...) {
 print.infer_layer <- function(x, ...) {
   cat(x)
 }
+
+#' @rdname print.infer
+#' @export
+print.infer_dist <- function(x, ...) {
+  cat(x)
+}

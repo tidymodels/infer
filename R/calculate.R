@@ -16,7 +16,9 @@
 #'   options include `"mean"`, `"median"`, `"sum"`, `"sd"`, `"prop"`, `"count"`,
 #'   `"diff in means"`, `"diff in medians"`, `"diff in props"`, `"Chisq"` (or
 #'   `"chisq"`), `"F"` (or `"f"`), `"t"`, `"z"`, `"ratio of props"`, `"slope"`,
-#'   `"odds ratio"`, and `"correlation"`.
+#'   `"odds ratio"`, and `"correlation"`. `infer` only supports theoretical 
+#'   tests on one or two means via the `"t"` distribution and one or two 
+#'   proportions via the `"z"`.
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction (or division
 #'   for ratio-based statistics), where `order = c("first", "second")` means 
@@ -35,6 +37,7 @@
 #' cases will be NaN. The package will omit non-finite values from
 #' visualizations (with a warning) and raise an error in p-value calculations.
 #'
+#' 
 #' @examples
 #'
 #' # calculate a null distribution of hours worked per week under
@@ -118,7 +121,7 @@ calculate <- function(x,
     result <- select(result, stat)
   }
 
-  result
+  append_infer_class(result)
 }
 
 check_if_mlr <- function(x, fn) {
@@ -248,9 +251,20 @@ calc_impl_one_f <- function(f) {
   function(type, x, order, ...) {
     col <- base::setdiff(names(x), "replicate")
 
-    x %>%
+    res <- x %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = f(!!(sym(col)), ...))
+    
+    # calculate SE for confidence intervals
+    if (length(unique(x[["replicate"]])) == 1) {
+      sample_sd <- x %>%
+        dplyr::summarize(stats::sd(!!(sym(col)))) %>%
+        dplyr::pull()
+      
+      attr(res, "se") <- sample_sd / sqrt(nrow(x))
+    }
+    
+    res
   }
 }
 
@@ -267,9 +281,18 @@ calc_impl_success_f <- function(f, output_name) {
     col <- base::setdiff(names(x), "replicate")
 
     success <- attr(x, "success")
-    x %>%
+    res <- x %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = f(!!sym(col), success))
+    
+    # calculate SE for confidence intervals
+    if (length(unique(x[["replicate"]])) == 1 && output_name == "proportion") {
+      prop <- res[["stat"]]
+      
+      attr(res, "se") <- sqrt((prop * (1 - prop)) / nrow(x))
+    }
+    
+    res
   }
 }
 
@@ -314,7 +337,7 @@ calc_impl.correlation <- function(type, x, order, ...) {
 
 calc_impl_diff_f <- function(f) {
   function(type, x, order, ...) {
-    x %>%
+    res <- x %>%
       dplyr::group_by(replicate, !!explanatory_expr(x), .drop = FALSE) %>%
       dplyr::summarize(value = f(!!response_expr(x), ...)) %>%
       dplyr::group_by(replicate) %>%
@@ -322,6 +345,28 @@ calc_impl_diff_f <- function(f) {
         stat = value[!!(explanatory_expr(x)) == order[1]] -
           value[!!(explanatory_expr(x)) == order[2]]
       )
+    
+    # calculate SE for confidence intervals
+    if (length(unique(x[["replicate"]])) == 1) {
+      sample_sds <- x %>%
+        dplyr::group_by(replicate, !!explanatory_expr(x), .drop = FALSE) %>%
+        dplyr::summarize(stats::sd(!!response_expr(x))) %>%
+        dplyr::pull()
+      
+      sample_counts <- x %>%
+        dplyr::count(!!explanatory_expr(x), .drop = FALSE) %>%
+        dplyr::pull()
+      
+      attr(res, "se") <- 
+        sqrt(
+          sum(
+            (sample_sds[1] / sqrt(sample_counts[1]))^2,
+            (sample_sds[2] / sqrt(sample_counts[2]))^2
+          )
+        )
+    }
+    
+    res
   }
 }
 
@@ -385,7 +430,7 @@ calc_impl.function_of_props <- function(type, x, order, operator, ...) {
   col <- response_expr(x)
   success <- attr(x, "success")
 
-  x %>%
+  res <- x %>%
     dplyr::group_by(replicate, !!explanatory_expr(x), .drop = FALSE) %>%
     dplyr::summarize(prop = mean(!!sym(col) == success, ...)) %>%
     dplyr::summarize(
@@ -394,6 +439,28 @@ calc_impl.function_of_props <- function(type, x, order, operator, ...) {
         prop[!!explanatory_expr(x) == order[2]]
       )
     )
+  
+  # calculate SE for confidence intervals
+  if (length(unique(x[["replicate"]])) == 1) {
+    props <- x %>%
+      dplyr::group_by(!!explanatory_expr(x), .drop = FALSE) %>%
+      dplyr::summarize(prop = mean(!!sym(col) == success, ...)) %>%
+      dplyr::pull()
+    
+    counts <- x %>%
+      dplyr::count(!!explanatory_expr(x), .drop = FALSE) %>%
+      dplyr::pull()
+    
+    attr(res, "se") <- 
+      sqrt(
+        sum(
+          abs((props[1] * (1 - props[1])) / counts[1]),
+          abs((props[2] * (1 - props[2])) / counts[2])
+        )
+      )
+  }
+  
+  res
 }
 
 calc_impl.diff_in_props <- function(type, x, order, ...) {
