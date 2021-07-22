@@ -17,7 +17,8 @@
 #'   `"bootstrap"`, `"permute"`, or `"draw"` (see below).
 #' @param variables If `type = "permute"`, a set of unquoted column names in the
 #'   data to permute (independently of each other). Defaults to only the
-#'   response variable.
+#'   response variable. Interaction effects are not supported in this
+#'   argument and will be ignored.
 #' @param ... Currently ignored.
 #'
 #' @return A tibble containing `reps` generated datasets, indicated by the
