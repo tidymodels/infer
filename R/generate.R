@@ -154,7 +154,7 @@ check_cols <- function(x, variables, type, missing) {
     )
   }
 
-  col_names <- all.vars(rlang::get_expr(variables))
+  col_names <- process_variables(variables, TRUE)
 
   if (!missing && type != "permute") {
     warning_glue(
@@ -221,7 +221,7 @@ permute_once <- function(x, variables, ...) {
 
   if (is_hypothesized(x) && (attr(x, "null") == "independence")) {
     # for each column, determine whether it should be permuted
-    needs_permuting <- colnames(x) %in% all.vars(rlang::get_expr(variables))
+    needs_permuting <- colnames(x) %in% process_variables(variables, FALSE)
 
     # pass each to permute_column with its associated logical
     out <- purrr::map2_dfc(x, needs_permuting, permute_column)
@@ -233,6 +233,35 @@ permute_once <- function(x, variables, ...) {
       "See `hypothesize()`."
     )
   }
+}
+
+process_variables <- function(variables, should_prompt) {
+  # extract the expression and convert each element to string
+  out <- rlang::get_expr(variables)
+  
+  if (length(out) == 1) {
+    out <- as.character(out)
+  } else {
+    out <- purrr::map(out, as.character)
+  }
+    
+  
+  # drop c()
+  out[out == "c"] <- NULL
+  
+  # drop interactions and message
+  interactions <- purrr::map_lgl(out, `%in%`, x = "*")
+  
+  if (any(interactions) && should_prompt) {
+    message_glue(
+      "Message: Interaction effects are not supported for the `variables` ",
+      "argument and will be ignored."
+    )
+  }
+  
+  out <- out[!interactions]
+  
+  out
 }
 
 permute_column <- function(col, permute) {

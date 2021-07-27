@@ -374,6 +374,25 @@ test_that("generate is sensitive to the variables argument", {
   expect_false(all(perm_college_age$age[1:10] == perm_college_age$age[11:20]))
   expect_true(all(perm_college_age$hours[1:10] == perm_college_age$hours[11:20]))
   expect_false(all(perm_college_age$college[1:10] == perm_college_age$college[11:20]))
+  
+  # interaction effects are ignored
+  expect_equal({ 
+    set.seed(1)
+    
+    expect_message(
+      gss[1:10,] %>%
+        specify(hours ~ age + college) %>%
+        hypothesize(null = "independence") %>%
+        generate(reps = 2, type = "permute", variables = c(hours, age*college))
+    )
+  }, { 
+    set.seed(1)
+    
+    gss[1:10,] %>%
+      specify(hours ~ age + college) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 2, type = "permute", variables = hours)
+  })
 })
 
 test_that("variables argument prompts when it ought to", {
@@ -382,7 +401,7 @@ test_that("variables argument prompts when it ought to", {
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
       generate(reps = 2, type = "permute", variables = c(howdy)),
-    "column `howdy`.*is not in the supplied data."
+    "howdy.*is not in the supplied data."
   )
   
   expect_error(
@@ -390,7 +409,7 @@ test_that("variables argument prompts when it ought to", {
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
       generate(reps = 2, type = "permute", variables = c(howdy, doo)),
-    'columns `c\\("howdy", "doo"\\)`.*are not in the supplied data.'
+    'columns.*"howdy", "doo".*are not in the supplied data.'
   )
   
   expect_warning(
@@ -407,6 +426,43 @@ test_that("variables argument prompts when it ought to", {
       hypothesize(null = "independence") %>%
       generate(reps = 2, type = "permute", variables = "hours"),
     'unquoted variable names'
+  )
+  
+  expect_message(
+    gss[1:10,] %>%
+      specify(hours ~ age + college + age*college) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 2, type = "permute", variables = age*college),
+    "Interaction effects.*will be ignored"
+  )
+  
+  expect_message(
+    gss[1:10,] %>%
+      specify(hours ~ age + college + age*college) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 2, type = "permute", variables = c(hours, age*college)),
+    "Interaction effects.*will be ignored"
+  )
+  
+  expect_silent(
+    gss[1:10,] %>%
+      specify(hours ~ age + college + age*college) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 2, type = "permute", variables = c(hours))
+  )
+  
+  expect_silent(
+    gss[1:10,] %>%
+      specify(hours ~ age + college + age*college) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 2, type = "permute")
+  )
+  
+  expect_silent(
+    gss[1:10,] %>%
+      specify(hours ~ age + college) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 2, type = "permute")
   )
 })
 
