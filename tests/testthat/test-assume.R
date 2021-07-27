@@ -213,45 +213,52 @@ test_that("assume() handles automatic df gracefully", {
   )
   
   # t.test param with var.equal = FALSE
-  expect_silent(
-    gss %>%
-      specify(age ~ college) %>%
-      hypothesize(null = "independence") %>%
-      assume(distribution = "t", 423)
+  expect_equal(
+    expect_silent(
+      gss %>%
+        specify(age ~ college) %>%
+        hypothesize(null = "independence") %>%
+        assume(distribution = "t", 423) %>%
+        attr("df")
+    ),
+    423
   )
   
   # t.test param with var.equal = TRUE
-  expect_silent(
-    gss %>%
-      specify(age ~ college) %>%
-      hypothesize(null = "independence") %>%
-      assume(distribution = "t", 498)
+  expect_equal(
+    expect_silent(
+      gss %>%
+        specify(age ~ college) %>%
+        hypothesize(null = "independence") %>%
+        assume(distribution = "t", 498) %>%
+        attr("df")
+    ),
+    498
   )
   
   # min(n1 - 1, n2 - 1)
-  expect_silent(
-    gss %>%
-      specify(age ~ college) %>%
-      hypothesize(null = "independence") %>%
-      assume(distribution = "t", 173)
+  expect_equal(
+    expect_silent(
+      gss %>%
+        specify(age ~ college) %>%
+        hypothesize(null = "independence") %>%
+        assume(distribution = "t", 173) %>%
+        attr("df")
+    ),
+    173
   )
+  
   
   # n1 + n2 - 2
-  expect_silent(
-    gss %>%
-      specify(age ~ college) %>%
-      hypothesize(null = "independence") %>%
-      assume(distribution = "t", 498)
-  )
-  
-  # supplied df persists if recognized but not default
   expect_equal(
-    gss %>%
-      specify(age ~ college) %>%
-      hypothesize(null = "independence") %>%
-      assume(distribution = "t", 173) %>%
-      attr("df"),
-    173
+    expect_silent(
+      gss %>%
+        specify(age ~ college) %>%
+        hypothesize(null = "independence") %>%
+        assume(distribution = "t", 498) %>%
+        attr("df")
+    ),
+    498
   )
 })
 
