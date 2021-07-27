@@ -321,13 +321,15 @@ determine_df <- function(x, dist, df) {
     return(df)
   }
   
-  out <- acceptable_dfs(x)
-  
-  if (attr(x, "theory_type") == "Two sample t") {
-    out <- out[1]
+  if (is.null(df)) {
+    df <- acceptable_dfs(x)
   }
   
-  out
+  if (attr(x, "theory_type") == "Two sample t") {
+    df <- df[1]
+  }
+  
+  df
 }
 
 # return a vector of dfs recognized by `assume`

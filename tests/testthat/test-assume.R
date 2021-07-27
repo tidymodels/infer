@@ -243,6 +243,16 @@ test_that("assume() handles automatic df gracefully", {
       hypothesize(null = "independence") %>%
       assume(distribution = "t", 498)
   )
+  
+  # supplied df persists if recognized but not default
+  expect_equal(
+    gss %>%
+      specify(age ~ college) %>%
+      hypothesize(null = "independence") %>%
+      assume(distribution = "t", 173) %>%
+      attr("df"),
+    173
+  )
 })
 
 test_that("assume() brings along supplied arguments", {
