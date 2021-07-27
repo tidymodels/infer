@@ -2,7 +2,7 @@
 
 To be released as 1.0.0
 
-v1.0.0 is the first major release of the {infer} package! By and large, the core verbs `specify()`, `hypothesize()`, `generate()`, and `calculate()` will interface as they did before. This release makes several improvements to behavioral consistency of the package and introduces support for randomization-based inference with multiple explanatory variables.
+v1.0.0 is the first major release of the {infer} package! By and large, the core verbs `specify()`, `hypothesize()`, `generate()`, and `calculate()` will interface as they did before. This release makes several improvements to behavioral consistency of the package and introduces support for theory-based inference as well as randomization-based inference with multiple explanatory variables.
 
 ## Behavioral consistency
 
@@ -127,6 +127,103 @@ gss %>%
 
 We don't anticipate that these changes are "breaking" in the sense that code that previously worked will continue to, though it may now message or warn in a way that it did not used to or error with a different (and hopefully more informative) message.
 
+## A framework for theoretical inference
+
+This release also introduces a more complete and principled interface for theoretical inference. While the package previously supplied some methods for visualization of theory-based curves, the interface did not provide any object that was explicitly a "null distribution" that could be supplied to helper functions like `get_p_value()` and `get_confidence_interval()`. The new interface is based on a new verb, `assume()`, that returns a null distribution that can be interfaced in the same way that simulation-based null distributions can be interfaced with.
+
+As an example, we'll work through a full infer pipeline for inference on a mean using infer's `gss` dataset. Supposed that we believe the true mean number of hours worked by Americans in the past week is 40.
+
+First, calculating the observed `t`-statistic:
+
+``` r
+obs_stat <- gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
+  calculate(stat = "t")
+
+obs_stat
+#> Response: hours (numeric)
+#> Null Hypothesis: point
+#> # A tibble: 1 x 1
+#>    stat
+#>   <dbl>
+#> 1  2.09
+```
+
+The code to define the null distribution is very similar to that required to calculate a theorized observed statistic, switching out `calculate()` for `assume()` and replacing arguments as needed.
+
+``` r
+null_dist <- gss %>%
+  specify(response = hours) %>%
+  assume(distribution = "t")
+
+null_dist 
+#> A T distribution with 499 degrees of freedom.
+```
+
+This null distribution can now be interfaced with in the same way as a simulation-based null distribution elsewhere in the package. For example, calculating a p-value by juxtaposing the observed statistic and null distribution:
+
+``` r
+get_p_value(null_dist, obs_stat, direction = "both")
+#> # A tibble: 1 x 1
+#>   p_value
+#>     <dbl>
+#> 1  0.0376
+```
+
+…or visualizing the null distribution alone:
+
+``` r
+visualize(null_dist)
+```
+
+![](https://i.imgur.com/g3B5coD.png)
+
+…or juxtaposing the two visually:
+
+``` r
+visualize(null_dist) + 
+  shade_p_value(obs_stat, direction = "both")
+```
+
+![](https://i.imgur.com/3C66kgK.png)
+
+Confidence intervals lie in data space rather than the standardized scale of the theoretical distributions. Calculating a mean rather than the standardized `t`-statistic:
+
+``` r
+obs_mean <- gss %>%
+  specify(response = hours) %>%
+  calculate(stat = "mean")
+```
+
+The null distribution here just defines the spread for the standard error calculation.
+
+``` r
+ci <- 
+  get_confidence_interval(
+    null_dist,
+    level = .95,
+    point_estimate = obs_mean
+  )
+
+ci
+#> # A tibble: 1 x 2
+#>   lower_ci upper_ci
+#>      <dbl>    <dbl>
+#> 1     40.1     42.7
+```
+
+Visualizing the confidence interval results in the theoretical distribution being recentered and rescaled to align with the scale of the observed data:
+
+``` r
+visualize(null_dist) + 
+  shade_confidence_interval(ci)
+```
+
+![](https://i.imgur.com/4akSCY3.png)
+
+Previous methods for interfacing with theoretical distributions are superseded—they will continue to be supported, though documentation will forefront the `assume()` interface.
+
 ## Support for multiple regression
 
 The 2016 "Guidelines for Assessment and Instruction in Statistics Education" [1] state that, in introductory statistics courses, "[s]tudents should gain experience with how statistical models, including multivariable models, are used." In line with this recommendation, we introduce support for randomization-based inference with multiple explanatory variables via a new `fit.infer` core verb.
@@ -209,6 +306,8 @@ Each of the auxillary functions `get_p_value()`, `get_confidence_interval()`, `v
 - Various improvements to documentation, including extending example sections in help-files, re-organizing the function reference in the {pkgdown} site, and linking more extensively among help-files.
 
 ## Breaking changes
+
+We don't anticipate that any changes made in this release are "breaking" in the sense that code that previously worked will continue to, though it may now message or warn in a way that it did not used to or error with a different (and hopefully more informative) message. If you currently teach or research with infer, we recommend re-running your materials and noting any changes in messaging and warning.
 
 - Move forward with a number of planned deprecations. Namely, the `GENERATION_TYPES` object is now fully deprecated, and arguments that were relocated from `visualize()` to `shade_p_value()` and `shade_confidence_interval()` are now fully deprecated in `visualize()`. If supplied a deprecated argument, `visualize()` will warn the user and ignore the argument.
 - Added a `prop` argument to `rep_slice_sample()` as an alternative to the `n`

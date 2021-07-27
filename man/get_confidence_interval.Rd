@@ -5,20 +5,18 @@
 \alias{get_ci}
 \title{Compute confidence interval}
 \usage{
-get_confidence_interval(
-  x,
-  level = 0.95,
-  type = "percentile",
-  point_estimate = NULL
-)
+get_confidence_interval(x, level = 0.95, type = NULL, point_estimate = NULL)
 
-get_ci(x, level = 0.95, type = "percentile", point_estimate = NULL)
+get_ci(x, level = 0.95, type = NULL, point_estimate = NULL)
 }
 \arguments{
-\item{x}{A data frame containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
+\item{x}{A distribution. For simulation-based inference, a data frame
+containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
 or \code{\link[=fit.infer]{fit()}}ted coefficient estimates. This object should
-have been passed to \code{\link[=generate]{generate()}} before being supplied to \code{\link[=calculate]{calculate()}}
-or \code{\link[=fit.infer]{fit()}}.}
+have been passed to \code{\link[=generate]{generate()}} before being supplied or
+\code{\link[=calculate]{calculate()}} to \code{\link[=fit.infer]{fit()}}. For theory-based inference,
+output of \code{\link[=assume]{assume()}}. Distributions for confidence intervals do not
+require a null hypothesis via \code{\link[=hypothesize]{hypothesize()}}.}
 
 \item{level}{A numerical value between 0 and 1 giving the confidence level.
 Default value is 0.95.}
@@ -46,16 +44,32 @@ interval, respectively.
 }
 }
 \description{
-Compute a confidence interval around a summary statistic. Currently, only
-simulation-based methods are supported.
+Compute a confidence interval around a summary statistic. Both
+simulation-based and theoretical methods are supported, though only
+\code{type = "se"} is supported for theoretical methods.
 
 Learn more in \code{vignette("infer")}.
 }
 \details{
-A null hypothesis is not required to compute a confidence interval, but
-including \code{hypothesize()} in a chain leading to \code{get_confidence_interval()}
+A null hypothesis is not required to compute a confidence interval. However,
+including \code{\link[=hypothesize]{hypothesize()}} in a pipeline leading to \code{get_confidence_interval()}
 will not break anything. This can be useful when computing a confidence
-interval after previously computing a p-value.
+interval using the same distribution used to compute a p-value.
+
+Theoretical confidence intervals (i.e. calculated by supplying the output
+of \code{\link[=assume]{assume()}} to the \code{x} argument) require that the point estimate lies on
+the scale of the data. The distribution defined in \code{\link[=assume]{assume()}} will be
+recentered and rescaled to align with the point estimate, as can be shown
+in the output of \code{\link[=visualize]{visualize()}} when paired with \code{\link[=shade_confidence_interval]{shade_confidence_interval()}}.
+Confidence intervals are implemented for the following distributions and
+point estimates:
+
+\itemize{
+\item \code{distribution = "t"}: \code{point_estimate} should be the output of
+\code{\link[=calculate]{calculate()}} with \code{stat = "mean"} or \code{stat = "diff in means"}
+\item \code{distribution = "z"}: \code{point_estimate} should be the output of
+\code{\link[=calculate]{calculate()}} with \code{stat = "prop"} or \code{stat = "diff in props"}
+}
 }
 \section{Aliases}{
 
@@ -83,8 +97,7 @@ boot_distr \%>\%
 # for type = "se" or type = "bias-corrected" we need a point estimate
 sample_mean <- gss \%>\%
   specify(response = hours) \%>\%
-  calculate(stat = "mean") \%>\%
-  dplyr::pull()
+  calculate(stat = "mean")
 
 boot_distr \%>\%
   get_confidence_interval(
@@ -94,6 +107,21 @@ boot_distr \%>\%
     # Using the standard error method
     type = "se"
   )
+  
+# using a theoretical distribution -----------------------------------
+
+# define a sampling distribution
+sampling_dist <- gss \%>\%
+  specify(response = hours) \%>\%
+  assume("t")
+
+# get the confidence interval---note that the
+# point estimate is required here
+get_confidence_interval(
+  sampling_dist, 
+  level = .95, 
+  point_estimate = sample_mean
+)
   
 # using a model fitting workflow -----------------------
 

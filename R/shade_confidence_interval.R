@@ -14,7 +14,8 @@
 #'   or a `1 x 2` data frame containing the lower and upper values to be plotted. 
 #'   For [`fit()`][fit.infer()]-based workflows, a `(p + 1) x 3` data frame
 #'   with columns `term`, `lower_ci`, and `upper_ci`, giving the upper and
-#'   lower bounds for each regression term.
+#'   lower bounds for each regression term. For use in visualizations of
+#'   [assume()] output, this must be the output of [get_confidence_interval()].
 #' @param color A character or hex string specifying the color of the
 #'   end points as a vertical lines on the plot.
 #' @param fill A character or hex string specifying the color to shade the
@@ -29,22 +30,19 @@
 #' # find the point estimate---mean number of hours worked per week
 #' point_estimate <- gss %>%
 #'   specify(response = hours) %>%
-#'   calculate(stat = "mean") %>%
-#'   dplyr::pull()
+#'   calculate(stat = "mean")
 #'   
-#' # ...and a null distribution
-#' null_dist <- gss %>%
+#' # ...and a bootstrap distribution
+#' boot_dist <- gss %>%
 #'   # ...we're interested in the number of hours worked per week
 #'   specify(response = hours) %>%
-#'   # hypothesizing that the mean is 40
-#'   hypothesize(null = "point", mu = 40) %>%
-#'   # generating data points for a null distribution
+#'   # generating data points
 #'   generate(reps = 1000, type = "bootstrap") %>%
-#'   # finding the null distribution
+#'   # finding the distribution from the generated data
 #'   calculate(stat = "mean")
 #'   
 #' # find a confidence interval around the point estimate
-#' ci <- null_dist %>%
+#' ci <- boot_dist %>%
 #'   get_confidence_interval(point_estimate = point_estimate,
 #'                           # at the 95% confidence level
 #'                           level = .95,
@@ -53,14 +51,25 @@
 #'   
 #'   
 #' # and plot it!
-#' null_dist %>%
+#' boot_dist %>%
 #'   visualize() +
 #'   shade_confidence_interval(ci)
 #'   
 #' # or just plot the bounds
-#' null_dist %>%
+#' boot_dist %>%
 #'   visualize() +
 #'   shade_confidence_interval(ci, fill = NULL)
+#'   
+#' # you can shade confidence intervals on top of
+#' # theoretical distributions, too---the theoretical
+#' # distribution will be recentered and rescaled to
+#' # align with the confidence interval
+#' sampling_dist <- gss %>%
+#'   specify(response = hours) %>%
+#'   assume(distribution = "t") 
+#'   
+#' visualize(sampling_dist) +
+#'   shade_confidence_interval(ci)
 #'
 #' \donttest{
 #' # to visualize distributions of coefficients for multiple
@@ -182,6 +191,19 @@ shade_confidence_interval_term <- function(plot, endpoints,
   
   res <- c(res, list(segment_layer))
   
+  if (inherits(plot[["plot_env"]][["data"]], "infer_dist")) {
+    plot <- 
+      redraw_theory_layer(
+        plot, 
+        mean_shift = attr(endpoints, "point_estimate"),
+        sd_shift = attr(endpoints, "se")
+      ) +
+      ggplot2::labs(
+        title = "Rescaled Theoretical Distribution",
+        x = "stat"
+      )
+  }
+
   plot + res
 }
 

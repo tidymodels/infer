@@ -10,15 +10,19 @@ visualize(data, bins = 15, method = "simulation", dens_color = "black", ...)
 visualise(data, bins = 15, method = "simulation", dens_color = "black", ...)
 }
 \arguments{
-\item{data}{A distribution of statistics (for \code{\link[=calculate]{calculate()}}-based workflows)
-or coefficient estimates (for \code{\link[=fit.infer]{fit()}}-based workflows)
-outputted by infer.}
+\item{data}{A distribution. For simulation-based inference, a data frame
+containing a distribution of \code{\link[=calculate]{calculate()}}d statistics
+or \code{\link[=fit.infer]{fit()}}ted coefficient estimates. This object should
+have been passed to \code{\link[=generate]{generate()}} before being supplied or
+\code{\link[=calculate]{calculate()}} to \code{\link[=fit.infer]{fit()}}. For theory-based inference,
+the output of \code{\link[=assume]{assume()}}.}
 
 \item{bins}{The number of bins in the histogram.}
 
 \item{method}{A string giving the method to display. Options are
 \code{"simulation"}, \code{"theoretical"}, or \code{"both"} with \code{"both"} corresponding to
-\code{"simulation"} and \code{"theoretical"}.}
+\code{"simulation"} and \code{"theoretical"}. If \code{data} is the output of \code{\link[=assume]{assume()}},
+this argument will be ignored and default to \code{"theoretical"}.}
 
 \item{dens_color}{A character or hex string specifying the color of the
 theoretical density curve.}
@@ -26,9 +30,11 @@ theoretical density curve.}
 \item{...}{Other arguments passed along to \\{ggplot2\\} functions.}
 }
 \value{
-For \code{\link[=calculate]{calculate()}}-based workflows, a ggplot object showing the
-simulation-based distribution as a histogram or bar graph. Also used to
-show the theoretical curves.
+For \code{\link[=calculate]{calculate()}}-based workflows, a ggplot showing the simulation-based
+distribution as a histogram or bar graph. Can also be used to display
+theoretical distributions.
+
+For \code{\link[=assume]{assume()}}-based workflows, a ggplot showing the theoretical distribution.
 
 For \code{\link[=fit.infer]{fit()}}-based workflows, a \code{patchwork} object
 showing the simulation-based distributions as a histogram or bar graph.
@@ -54,7 +60,7 @@ are supplied.
 }
 \examples{
   
-# find a null distribution
+# generate a null distribution
 null_dist <- gss \%>\%
   # we're interested in the number of hours worked per week
   specify(response = hours) \%>\%
@@ -62,8 +68,15 @@ null_dist <- gss \%>\%
   hypothesize(null = "point", mu = 40) \%>\%
   # generating data points for a null distribution
   generate(reps = 1000, type = "bootstrap") \%>\%
-  # calculating a distribution of t test statistics
-  calculate(stat = "t")
+  # calculating a distribution of means
+  calculate(stat = "mean")
+  
+# or a bootstrap distribution, omitting the hypothesize() step,
+# for use in confidence intervals
+boot_dist <- gss \%>\%
+  specify(response = hours) \%>\%
+  generate(reps = 1000, type = "bootstrap") \%>\%
+  calculate(stat = "mean")
   
 # we can easily plot the null distribution by piping into visualize
 null_dist \%>\%
@@ -73,11 +86,10 @@ null_dist \%>\%
 # find the point estimate---mean number of hours worked per week
 point_estimate <- gss \%>\%
   specify(response = hours) \%>\%
-  hypothesize(null = "point", mu = 40) \%>\%
-  calculate(stat = "t")
+  calculate(stat = "mean")
   
 # find a confidence interval around the point estimate
-ci <- null_dist \%>\%
+ci <- boot_dist \%>\%
   get_confidence_interval(point_estimate = point_estimate,
                           # at the 95\% confidence level
                           level = .95,
@@ -89,23 +101,45 @@ null_dist \%>\%
   visualize() +
   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 
+# ...or within the bounds of the confidence interval
 null_dist \%>\%
   visualize() +
   shade_confidence_interval(ci)
   
-# to plot a theoretical null distribution, skip the generate()
-# step and supply `method = "theoretical"` to `visualize()`
-null_dist_theoretical <- gss \%>\%
+# plot a theoretical sampling distribution by creating
+# a theory-based distribution with `assume()`
+sampling_dist <- gss \%>\%
   specify(response = hours) \%>\%
-  hypothesize(null = "point", mu = 40) \%>\%
-  calculate(stat = "t") 
+  assume(distribution = "t") 
   
-visualize(null_dist_theoretical, method = "theoretical")
+visualize(sampling_dist)
+
+# you can shade confidence intervals on top of
+# theoretical distributions, too---the theoretical
+# distribution will be recentered and rescaled to
+# align with the confidence interval
+visualize(sampling_dist) +
+  shade_confidence_interval(ci)
+
 
 # to plot both a theory-based and simulation-based null distribution,
-# use the simulation-based null distribution and supply
-# `method = "both"` to `visualize()`
-visualize(null_dist, method = "both")
+# use a theorized statistic (i.e. one of t, z, F, or Chisq)
+# and supply the simulation-based null distribution
+null_dist_t <- gss \%>\%
+  specify(response = hours) \%>\%
+  hypothesize(null = "point", mu = 40) \%>\%
+  generate(reps = 1000, type = "bootstrap") \%>\%
+  calculate(stat = "t")
+  
+obs_stat <- gss \%>\%
+  specify(response = hours) \%>\%
+  hypothesize(null = "point", mu = 40) \%>\%
+  calculate(stat = "t")
+
+visualize(null_dist_t, method = "both")
+
+visualize(null_dist_t, method = "both") +
+  shade_p_value(obs_stat, "both")
 
 \donttest{
 # to visualize distributions of coefficients for multiple

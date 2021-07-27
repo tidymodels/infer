@@ -135,7 +135,7 @@ gss %>%
 
 ### calculate(): Calculating Summary Statistics
 
-Depending on whether you're carrying out computation-based inference or theory-based inference, you will either supply `calculate()` with the output of `generate()` or `hypothesize`, respectively. The function, for one, takes in a `stat` argument, which is currently one of "mean", "median", "sum", "sd", "prop", "count", "diff in means", "diff in medians", "diff in props", "Chisq", "F", "t", "z", "slope", or "correlation". For example, continuing our example above to calculate the null distribution of mean hours worked per week:
+`calculate()` calculates summary statistics from the output of infer core functions. The function takes in a `stat` argument, which is currently one of "mean", "median", "sum", "sd", "prop", "count", "diff in means", "diff in medians", "diff in props", "Chisq", "F", "t", "z", "slope", or "correlation". For example, continuing our example above to calculate the null distribution of mean hours worked per week:
 
 ```{r calculate-point, warning = FALSE, message = FALSE}
 gss %>%
@@ -157,13 +157,13 @@ gss %>%
 
 ### Other Utilities
 
-`infer` also offers several utilities to extract the meaning out of summary statistics and null distributions---the package provides functions to visualize where a statistic is relative to a distribution (with `visualize()`), calculate p-values (with `get_p_value()`), and calculate confidence intervals (with `get_confidence_interval()`).
+`infer` also offers several utilities to extract the meaning out of summary statistics and distributions---the package provides functions to visualize where a statistic is relative to a distribution (with `visualize()`), calculate p-values (with `get_p_value()`), and calculate confidence intervals (with `get_confidence_interval()`).
 
 To illustrate, we'll go back to the example of determining whether the mean number of hours worked per week is 40 hours.
 
 ```{r utilities-examples}
 # find the point estimate
-point_estimate <- gss %>%
+obs_mean <- gss %>%
   specify(response = hours) %>%
   calculate(stat = "mean")
 
@@ -175,7 +175,7 @@ null_dist <- gss %>%
   calculate(stat = "mean")
 ```
 
-Our point estimate `r point_estimate` seems *pretty* close to 40, but a little bit different. We might wonder if this difference is just due to random chance, or if the mean number of hours worked per week in the population really isn't 40.
+Our point estimate `r obs_mean` seems *pretty* close to 40, but a little bit different. We might wonder if this difference is just due to random chance, or if the mean number of hours worked per week in the population really isn't 40.
 
 We could initially just visualize the null distribution.
 
@@ -189,79 +189,105 @@ Where does our sample's observed statistic lie on this distribution? We can use 
 ```{r visualize2, warning = FALSE, message = FALSE}
 null_dist %>%
   visualize() +
-  shade_p_value(obs_stat = point_estimate, direction = "two-sided")
+  shade_p_value(obs_stat = obs_mean, direction = "two-sided")
 ```
 
-Notice that `infer` has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the `+` operator to apply the `shade_p_value` function. This is because `visualize` outputs a plot object from `ggplot2` instead of a data frame, and the `+` operator is needed to add the p-value layer to the plot object.) The red bar looks like it's slightly far out on the right tail of the null distribution, so observing a sample mean of `r point_estimate` hours would be somewhat unlikely if the mean was actually 40 hours. How unlikely, though?
+Notice that `infer` has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the `+` operator to apply the `shade_p_value` function. This is because `visualize` outputs a plot object from `ggplot2` instead of a data frame, and the `+` operator is needed to add the p-value layer to the plot object.) The red bar looks like it's slightly far out on the right tail of the null distribution, so observing a sample mean of `r obs_mean` hours would be somewhat unlikely if the mean was actually 40 hours. How unlikely, though?
 
 ```{r get_p_value, warning = FALSE, message = FALSE}
 # get a two-tailed p-value
 p_value <- null_dist %>%
-  get_p_value(obs_stat = point_estimate, direction = "two-sided")
+  get_p_value(obs_stat = obs_mean, direction = "two-sided")
 
 p_value
 ```
 
-It looks like the p-value is `r p_value`, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (`r abs(point_estimate-40)` hours) from 40 would be `r p_value`. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
+It looks like the p-value is `r p_value`, which is pretty small---if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (`r abs(obs_mean-40)` hours) from 40 would be `r p_value`. This may or may not be statistically significantly different, depending on the significance level $\alpha$ you decided on *before* you ran this analysis. If you had set $\alpha = .05$, then this difference would be statistically significant, but if you had set $\alpha = .01$, then it would not be.
 
 To get a confidence interval around our estimate, we can write:
 
 ```{r get_conf, message = FALSE, warning = FALSE}
-# start with the null distribution
-null_dist %>%
+# generate a distribution like the null distribution, 
+# though exclude the null hypothesis from the pipeline
+boot_dist <- gss %>%
+  specify(response = hours) %>%
+  generate(reps = 1000, type = "bootstrap") %>%
+  calculate(stat = "mean")
+
+# start with the bootstrap distribution
+ci <- boot_dist %>%
   # calculate the confidence interval around the point estimate
-  get_confidence_interval(point_estimate = point_estimate,
+  get_confidence_interval(point_estimate = obs_mean,
                           # at the 95% confidence level
                           level = .95,
                           # using the standard error
                           type = "se")
+
+ci
 ```
 
-As you can see, 40 hours per week is not contained in this interval, which aligns with our previous conclusion that this finding is significant at the confidence level $\alpha = .05$.
+As you can see, 40 hours per week is not contained in this interval, which aligns with our previous conclusion that this finding is significant at the confidence level $\alpha = .05$. To see this interval represented visually, we can use the `shade_confidence_interval()` utility:
+
+```{r visualize-ci, warning = FALSE, message = FALSE}
+boot_dist %>%
+  visualize() +
+  shade_confidence_interval(endpoints = ci)
+```
 
 ### Theoretical Methods
 
-{infer} also provides functionality to use theoretical methods for `"Chisq"`, `"F"` and `"t"` test statistics. 
+{infer} also provides functionality to use theoretical methods for `"Chisq"`, `"F"`, `"t"` and `"z"` distributions. 
 
-Generally, to find a null distribution using theory-based methods, use the same code that you would use to find the null distribution using randomization-based methods, but skip the `generate()` step. For example, if we wanted to find a null distribution for the relationship between age (`age`) and party identification (`partyid`) using randomization, we could write:
+Generally, to find a null distribution using theory-based methods, use the same code that you would use to find the observed statistic elsewhere, replacing calls to `calculate()` with `assume()`. For example, to calculate the observed $t$ statistic (a standardized mean):
 
 ```{r, message = FALSE, warning = FALSE}
-null_f_distn <- gss %>%
-   specify(age ~ partyid) %>%
-   hypothesize(null = "independence") %>%
-   generate(reps = 1000, type = "permute") %>%
-   calculate(stat = "F")
+# calculate an observed t statistic
+obs_t <- gss %>%
+  specify(response = hours) %>%
+  hypothesize(null = "point", mu = 40) %>%
+  calculate(stat = "t")
 ```
 
-To find the null distribution using theory-based methods, instead, skip the `generate()` step entirely:
+Then, to define a theoretical $t$ distribution, we could write:
 
 ```{r, message = FALSE, warning = FALSE}
-null_f_distn_theoretical <- gss %>%
-   specify(age ~ partyid) %>%
-   hypothesize(null = "independence") %>%
-   calculate(stat = "F")
+# switch out calculate with assume to define a distribution
+t_dist <- gss %>%
+  specify(response = hours) %>%
+  assume(distribution = "t")
 ```
 
-We'll calculate the observed statistic to make use of in the following visualizations---this procedure is the same, regardless of the methods used to find the null distribution.
+From here, the theoretical distribution interfaces in the same way that simulation-based null distributions do. For example, to interface with p-values:
 
 ```{r, message = FALSE, warning = FALSE}
-F_hat <- gss %>% 
-  specify(age ~ partyid) %>%
-  calculate(stat = "F")
+# visualize the theoretical null distribution
+visualize(t_dist) +
+  shade_p_value(obs_stat = obs_t, direction = "greater")
+
+# more exactly, calculate the p-value
+get_p_value(t_dist, obs_t, "greater")
 ```
 
-Now, instead of just piping the null distribution into `visualize()`, as we would do if we wanted to visualize the randomization-based null distribution, we also need to provide `method = "theoretical"` to `visualize()`.
+Confidence intervals lie on the scale of the data rather than on the standardized scale of the theoretical distribution, so be sure to use the unstandardized observed statistic when working with confidence intervals.
 
 ```{r, message = FALSE, warning = FALSE}
-visualize(null_f_distn_theoretical, method = "theoretical") +
-  shade_p_value(obs_stat = F_hat, direction = "greater")
+# find the theory-based confidence interval
+theor_ci <- 
+  get_confidence_interval(
+    x = t_dist,
+    level = .95,
+    point_estimate = obs_mean
+  )
+
+theor_ci
 ```
 
-To get a sense of how the theory-based and randomization-based null distributions relate, as well, we can pipe the randomization-based null distribution into `visualize()` and also specify `method = "both"`
+When visualized, the $t$ distribution will be recentered and rescaled to align with the scale of the observed data.
 
-```{r, message = FALSE, warning = FALSE}
-visualize(null_f_distn, method = "both") +
-  shade_p_value(obs_stat = F_hat, direction = "greater")
+```{r}
+# visualize the theoretical sampling distribution
+visualize(t_dist) +
+  shade_confidence_interval(theor_ci)
 ```
 
 ### Multiple regression

@@ -11,13 +11,17 @@ ggplot2::ggplot_add
 #' 
 #' Learn more in `vignette("infer")`.
 #'
-#' @param data A distribution of statistics (for [calculate()]-based workflows)
-#'   or coefficient estimates (for [`fit()`][fit.infer()]-based workflows)
-#'   outputted by infer.
+#' @param data A distribution. For simulation-based inference, a data frame 
+#'   containing a distribution of [calculate()]d statistics 
+#'   or [`fit()`][fit.infer()]ted coefficient estimates. This object should 
+#'   have been passed to [generate()] before being supplied or 
+#'   [calculate()] to [`fit()`][fit.infer()]. For theory-based inference,
+#'   the output of [assume()].
 #' @param bins The number of bins in the histogram.
 #' @param method A string giving the method to display. Options are
 #'   `"simulation"`, `"theoretical"`, or `"both"` with `"both"` corresponding to
-#'   `"simulation"` and `"theoretical"`.
+#'   `"simulation"` and `"theoretical"`. If `data` is the output of [assume()],
+#'   this argument will be ignored and default to `"theoretical"`.
 #' @param dens_color A character or hex string specifying the color of the
 #'   theoretical density curve.
 #' @param ... Other arguments passed along to \\{ggplot2\\} functions.
@@ -32,9 +36,11 @@ ggplot2::ggplot_add
 #'
 #' @return 
 #' 
-#' For [calculate()]-based workflows, a ggplot object showing the 
-#' simulation-based distribution as a histogram or bar graph. Also used to 
-#' show the theoretical curves.
+#' For [calculate()]-based workflows, a ggplot showing the simulation-based
+#' distribution as a histogram or bar graph. Can also be used to display
+#' theoretical distributions.
+#'  
+#' For [assume()]-based workflows, a ggplot showing the theoretical distribution.
 #' 
 #' For [`fit()`][fit.infer()]-based workflows, a `patchwork` object
 #' showing the simulation-based distributions as a histogram or bar graph.
@@ -47,7 +53,7 @@ ggplot2::ggplot_add
 #'
 #' @examples
 #'   
-#' # find a null distribution
+#' # generate a null distribution
 #' null_dist <- gss %>%
 #'   # we're interested in the number of hours worked per week
 #'   specify(response = hours) %>%
@@ -55,8 +61,15 @@ ggplot2::ggplot_add
 #'   hypothesize(null = "point", mu = 40) %>%
 #'   # generating data points for a null distribution
 #'   generate(reps = 1000, type = "bootstrap") %>%
-#'   # calculating a distribution of t test statistics
-#'   calculate(stat = "t")
+#'   # calculating a distribution of means
+#'   calculate(stat = "mean")
+#'   
+#' # or a bootstrap distribution, omitting the hypothesize() step,
+#' # for use in confidence intervals
+#' boot_dist <- gss %>%
+#'   specify(response = hours) %>%
+#'   generate(reps = 1000, type = "bootstrap") %>%
+#'   calculate(stat = "mean")
 #'   
 #' # we can easily plot the null distribution by piping into visualize
 #' null_dist %>%
@@ -66,11 +79,10 @@ ggplot2::ggplot_add
 #' # find the point estimate---mean number of hours worked per week
 #' point_estimate <- gss %>%
 #'   specify(response = hours) %>%
-#'   hypothesize(null = "point", mu = 40) %>%
-#'   calculate(stat = "t")
+#'   calculate(stat = "mean")
 #'   
 #' # find a confidence interval around the point estimate
-#' ci <- null_dist %>%
+#' ci <- boot_dist %>%
 #'   get_confidence_interval(point_estimate = point_estimate,
 #'                           # at the 95% confidence level
 #'                           level = .95,
@@ -82,23 +94,45 @@ ggplot2::ggplot_add
 #'   visualize() +
 #'   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 #' 
+#' # ...or within the bounds of the confidence interval
 #' null_dist %>%
 #'   visualize() +
 #'   shade_confidence_interval(ci)
 #'   
-#' # to plot a theoretical null distribution, skip the generate()
-#' # step and supply `method = "theoretical"` to `visualize()`
-#' null_dist_theoretical <- gss %>%
+#' # plot a theoretical sampling distribution by creating
+#' # a theory-based distribution with `assume()`
+#' sampling_dist <- gss %>%
 #'   specify(response = hours) %>%
-#'   hypothesize(null = "point", mu = 40) %>%
-#'   calculate(stat = "t") 
+#'   assume(distribution = "t") 
 #'   
-#' visualize(null_dist_theoretical, method = "theoretical")
+#' visualize(sampling_dist)
+#' 
+#' # you can shade confidence intervals on top of
+#' # theoretical distributions, too---the theoretical
+#' # distribution will be recentered and rescaled to
+#' # align with the confidence interval
+#' visualize(sampling_dist) +
+#'   shade_confidence_interval(ci)
+#' 
 #' 
 #' # to plot both a theory-based and simulation-based null distribution,
-#' # use the simulation-based null distribution and supply
-#' # `method = "both"` to `visualize()`
-#' visualize(null_dist, method = "both")
+#' # use a theorized statistic (i.e. one of t, z, F, or Chisq)
+#' # and supply the simulation-based null distribution
+#' null_dist_t <- gss %>%
+#'   specify(response = hours) %>%
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   generate(reps = 1000, type = "bootstrap") %>%
+#'   calculate(stat = "t")
+#'   
+#' obs_stat <- gss %>%
+#'   specify(response = hours) %>%
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   calculate(stat = "t")
+#'
+#' visualize(null_dist_t, method = "both")
+#'
+#' visualize(null_dist_t, method = "both") +
+#'   shade_p_value(obs_stat, "both")
 #' 
 #' \donttest{
 #' # to visualize distributions of coefficients for multiple
@@ -141,6 +175,30 @@ ggplot2::ggplot_add
 visualize <- function(data, bins = 15, method = "simulation",
                       dens_color = "black",
                       ...) {
+  if (inherits(data, "infer_dist")) {
+    if (!missing(method) && method != "theoretical") {
+      warning_glue(
+        "Simulation-based visualization methods are not well-defined for ",
+        "`assume()` output; the `method` argument will be ignored. Set ",
+        '`method = "theoretical"` to silence this message.'
+      )
+    }
+    
+    method <- "theoretical"
+    do_warn <- FALSE
+  } else {
+    if (method == "theoretical") {
+      message_glue(
+        'Rather than setting `method = "theoretical"` with a simulation-based ',
+        'null distribution, the preferred method for visualizing theory-based ',
+        'distributions with infer is now to pass the output of `assume()` as ',
+        'the first argument to `visualize()`.'
+      )
+    }
+    
+    do_warn <- TRUE
+  }
+  
   attr(data, "viz_method") <- method
   attr(data, "viz_bins") <- bins
   
@@ -173,12 +231,13 @@ visualize <- function(data, bins = 15, method = "simulation",
     )
   } else {
     res <- visualize_term(
-      data,
-      "stat",
+      data = data,
+      term = "stat",
       bins = bins, 
       method = method, 
       dens_color = dens_color,
-      dots = dots
+      dots = dots,
+      do_warn = do_warn
     ) + 
       title_layer(data)
     
@@ -192,13 +251,14 @@ visualise <- visualize
 
 
 visualize_term <- function(data, term, bins = 15, method = "simulation",
-                           dens_color = "black", dots) {
+                           dens_color = "black", dots, do_warn = TRUE) {
   data <- check_for_nan(data, "visualize")
   check_visualize_args(data, bins, method, dens_color)
+  plot_data <- create_plot_data(data)
   
-  infer_plot <- ggplot(data) +
+  infer_plot <- ggplot(plot_data) +
     simulation_layer(data, dots = dots) +
-    theoretical_layer(data, dens_color, dots = dots) +
+    theoretical_layer(data, dens_color, dots = dots, do_warn = do_warn) +
     labels_layer(data, term)
   
   infer_plot
@@ -224,7 +284,7 @@ check_dots_for_deprecated <- function(dots) {
 }
 
 check_visualize_args <- function(data, bins, method, dens_color) {
-  check_type(data, is.data.frame)
+  check_is_distribution(data, "visualize")
   check_type(bins, is.numeric)
   check_type(method, is.character)
   check_type(dens_color, is.character)
@@ -232,7 +292,9 @@ check_visualize_args <- function(data, bins, method, dens_color) {
   if (!(method %in% c("simulation", "theoretical", "both"))) {
     stop_glue(
       'Provide `method` with one of three options: `"theoretical"`, `"both"`, ',
-      'or `"simulation"`. `"simulation"` is the default.'
+      'or `"simulation"`. `"simulation"` is the default for simulation-based ',
+      'null distributions, while `"theoretical"` is the only option for ',
+      'null distributions outputted by `assume()`.'
     )
   }
   
@@ -279,15 +341,17 @@ check_for_piped_visualize <- function(...) {
 }
 
 impute_endpoints <- function(endpoints, plot = NULL) {
+  res <- endpoints
+  
   if (is_fitted(endpoints)) {
     x_lab <- x_axis_label(plot)
     
-    endpoints <- 
+    res <- 
       endpoints %>% 
       dplyr::filter(term == x_lab) %>% 
       dplyr::select(-term)
     
-    return(unlist(endpoints))
+    return(unlist(res))
   }
   
   if (is.vector(endpoints) && (length(endpoints) != 2)) {
@@ -295,7 +359,7 @@ impute_endpoints <- function(endpoints, plot = NULL) {
       "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector. ",
       "Using the first two entries as the `endpoints`."
     )
-    endpoints <- endpoints[1:2]
+    res <- endpoints[1:2]
   }
   
   if (is.data.frame(endpoints)) {
@@ -305,10 +369,10 @@ impute_endpoints <- function(endpoints, plot = NULL) {
       )
     }
     
-    endpoints <- unlist(endpoints)
+    res <- unlist(endpoints)
   }
   
-  endpoints
+  res %>% copy_attrs(endpoints, attrs = c("se", "point_estimate"))
 }
 
 impute_obs_stat <- function(obs_stat, direction, endpoints) {
@@ -338,6 +402,10 @@ simulation_layer <- function(data, dots = list(NULL)) {
   # Manual computation of breaks is needed to fix histogram shape in future plot
   # buildings, e.g. after adding p-value areas.
   bin_breaks <- compute_bin_breaks(data, bins)
+  
+  if (method == "theoretical") {
+    return(list())
+  } 
   
   if (method == "simulation") {
     if (length(unique(data$stat)) >= 10) {
@@ -384,7 +452,8 @@ compute_bin_breaks <- function(data, bins) {
   c(g_tbl[["xmin"]][1], g_tbl[["xmax"]])
 }
 
-theoretical_layer <- function(data, dens_color, dots = list(NULL), do_warn = TRUE) {
+theoretical_layer <- function(data, dens_color, dots = list(NULL), do_warn = TRUE,
+                              mean_shift = 0, sd_shift = 1) {
   method <- get_viz_method(data)
   
   if (method == "simulation") {
@@ -398,7 +467,8 @@ theoretical_layer <- function(data, dens_color, dots = list(NULL), do_warn = TRU
   switch(
     theory_type,
     t = theory_curve(
-      method, dt, qt, list(df = attr(data, "distr_param")), dens_color
+      method, dt, qt, list(df = attr(data, "distr_param")), dens_color,
+      mean_shift = mean_shift, sd_shift = sd_shift
     ),
     `F` = theory_curve(
       method, df, qf,
@@ -407,7 +477,8 @@ theoretical_layer <- function(data, dens_color, dots = list(NULL), do_warn = TRU
       ),
       dens_color = dens_color
     ),
-    z = theory_curve(method, dnorm, qnorm, list(), dens_color),
+    z = theory_curve(method, dnorm, qnorm, list(), dens_color, 
+                     mean_shift = mean_shift, sd_shift = sd_shift),
     `Chi-Square` = theory_curve(
       method, dchisq, qchisq, list(df = attr(data, "distr_param")), dens_color
     )
@@ -444,14 +515,20 @@ warn_theoretical_layer <- function(data, do_warn = TRUE) {
   }
 }
 
-theory_curve <- function(method, d_fun, q_fun, args_list, dens_color) {
+theory_curve <- function(method, d_fun, q_fun, args_list, dens_color,
+                         mean_shift = 0, sd_shift = 1) {
+  
   if (method == "theoretical") {
-    x_range <- do.call(q_fun, c(p = list(c(0.001, 0.999)), args_list))
+    d_fun_ <- shift_d_fun(d_fun, mean_shift, sd_shift)
+    
+    x_range <- (do.call(q_fun, c(p = list(c(0.001, 0.999)), args_list)) * 
+                  sd_shift) +
+      mean_shift
     
     res <- list(
       ggplot2::geom_path(
         data = data.frame(x = x_range), mapping = aes(x = x),
-        stat = "function", fun = d_fun, args = args_list,
+        stat = "function", fun = d_fun_, args = args_list,
         color = dens_color
       )
     )
@@ -468,11 +545,36 @@ theory_curve <- function(method, d_fun, q_fun, args_list, dens_color) {
   res
 }
 
+shift_d_fun <- function(d_fun_, mean_shift, sd_shift) {
+  function(x, ...) {
+    d_fun_(x = (x - mean_shift) / sd_shift, ...)
+  }
+}
+
+# when adding a confidence interval layer, rescale the theoretical
+# layer 
+redraw_theory_layer <- function(plot, mean_shift, sd_shift) {
+  plot_data <- plot[["plot_env"]][["data"]]
+
+  plot[["layers"]] <- 
+    theoretical_layer(
+      data = plot_data, 
+      dens_color = plot[["plot_env"]][["dens_color"]], 
+      dots = plot[["plot_env"]][["dots"]], 
+      do_warn = plot[["plot_env"]][["do_warn"]],
+      mean_shift = mean_shift, 
+      sd_shift = sd_shift
+    )
+  
+  plot
+}
+
+
 title_layer <- function(data, title_fn = ggplot2::ggtitle) {
   method <- get_viz_method(data)
   theory_type <- short_theory_type(data)
   
-  if (is_hypothesized(data)) {
+  if (is_hypothesized(data) || inherits(data, "infer_dist")) {
     distr_name <- "Null Distribution"
   } else {
     distr_name <- switch(
@@ -615,4 +717,16 @@ ggplot_add.infer_layer <- function(object, plot, object_name) {
 # ids for terms in visualize() workflows
 x_axis_label <- function(x) {
   x %>% purrr::pluck("labels", "x")
+}
+
+create_plot_data <- function(data) {
+  if (inherits(data, "infer_dist")) {
+    res <- tibble::tibble() %>%
+      copy_attrs(data, 
+                 c("theory_type", "distr_param", "distr_param2", "viz_method"))
+  } else {
+    res <- data
+  }
+  
+  res
 }
