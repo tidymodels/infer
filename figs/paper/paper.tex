@@ -411,22 +411,25 @@ Beyond this, the \texttt{infer} package offers:
 \section{Comparison to Other
 Packages}\label{comparison-to-other-packages}}
 
-\texttt{broom} and \texttt{parameters} convert model objects to unified
-output formats, though they do not provide methods for fitting models,
-describing null distributions, performing bootstrapping, or calculating
-summary statistics from tabular data. \texttt{statsexpressions}, and
-adjacent packages in the \texttt{easystats} ecosystem, implement
-wrappers with consistent interfaces for theory-based hypothesis tests.
-At a higher level, the structure of each of these packages is defined by
-model types, where each model type has its own associated function
-and/or model object. In contrast, \texttt{infer} is structured around
-four functions, situating statistics and model types within a more
-abstracted grammar.\footnote{This grammar follows from Allen Downey's
-  ``there is only one test'' framework (Downey, 2011).} \texttt{infer}'s
-initial release on the Comprehensive R Archive Network predated that of
-each of the packages mentioned above, with the exception of
-\texttt{broom}, a package situated in the same \texttt{tidymodels}
-ecosystem (R Core Team, 2021).
+Several software packages on the Comprehensive R Archive Network share
+functionality with \texttt{infer} (R Core Team, 2021). \texttt{broom}
+and \texttt{parameters} convert model objects to unified output formats,
+though they do not provide methods for fitting models, describing null
+distributions, performing bootstrapping, or calculating summary
+statistics from tabular data. \texttt{statsexpressions}, and adjacent
+packages in the \texttt{easystats} ecosystem, implement wrappers with
+consistent interfaces for theory-based hypothesis tests. Similarly,
+\texttt{mosaic} is a package used to teach statistics by unifying
+summary statistics, visualization, and modeling with a consistent API
+built around R's formula interface. The \texttt{mosaic} package also
+includes functionality to conduct randomization-based inference. At a
+higher level, though, the structure of each of these packages is defined
+by model types and statistics, where each model type or statistic has
+its own associated function and/or object class. In contrast,
+\texttt{infer} is structured around four functions, situating statistics
+and model types within a more abstracted grammar.\footnote{This grammar
+  follows from Allen Downey's ``there is only one test'' framework
+  (Downey, 2016).}
 
 \hypertarget{acknowledgements}{%
 \section{Acknowledgements}\label{acknowledgements}}
@@ -459,8 +462,8 @@ introductory data science. \emph{Journal of Statistics and Data Science
 Education}, \emph{29}(sup1), S16--S26.
 doi:\href{https://doi.org/10.1080/10691898.2020.1804497}{10.1080/10691898.2020.1804497}
 
-\leavevmode\hypertarget{ref-downey2011think}{}%
-Downey, A. B. (2011). \emph{Think stats}. " O'Reilly Media, Inc.".
+\leavevmode\hypertarget{ref-downey2016}{}%
+Downey, A. B. (2016). There is still only one test.
 
 \leavevmode\hypertarget{ref-fallon2021single}{}%
 Fallon, M. E., \& Hinds, M. T. (2021). Single cell morphological metrics
