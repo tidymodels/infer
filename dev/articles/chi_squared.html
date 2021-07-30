@@ -156,6 +156,7 @@
 <code class="sourceCode R"><span class="co"># calculate the observed statistic</span>
 <span class="va">observed_indep_statistic</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">finrela</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></code></pre></div>
 <p>The observed <span class="math inline">\(\chi^2\)</span> statistic is 30.6825. Now, we want to compare this statistic to a null distribution, generated under the assumption that these variables are not actually related, to get a sense of how likely it would be for us to see this observed statistic if there were actually no association between education and income.</p>
 <p>We can <code>generate</code> the null distribution in one of two ways—using randomization or theory-based methods. The randomization approach approximates the null distribution by permuting the response and explanatory variables, so that each person’s educational attainment is matched up with a random income from the sample in order to break up any association between the two.</p>
@@ -171,9 +172,7 @@
 <code class="sourceCode R"><span class="co"># generate the null distribution by theoretical approximation</span>
 <span class="va">null_distribution_theoretical</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">finrela</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="co"># note that we skip the generation step here!</span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="../reference/assume.html">assume</a></span><span class="op">(</span>distribution <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></code></pre></div>
 <p>To get a sense for what these distributions look like, and where our observed statistic falls, we can use <code><a href="../reference/visualize.html">visualize()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># visualize the null distribution and test statistic!</span>
@@ -182,13 +181,13 @@
   <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_indep_statistic</span>,
                 direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
 <p><img src="chi_squared_files/figure-html/visualize-indep-1.png" width="576"></p>
-<p>We could also visualize the observed statistic against the theoretical null distribution. Note that we skip the <code><a href="../reference/generate.html">generate()</a></code> and <code><a href="../reference/calculate.html">calculate()</a></code> steps when using the theoretical approach, and that we now need to provide <code>method = "theoretical"</code> to <code><a href="../reference/visualize.html">visualize()</a></code>.</p>
+<p>We could also visualize the observed statistic against the theoretical null distribution. To do so, use the <code><a href="../reference/assume.html">assume()</a></code> verb to define a theoretical null distribution and then pass it to <code><a href="../reference/visualize.html">visualize()</a></code> like a null distribution outputted from <code><a href="../reference/generate.html">generate()</a></code> and <code><a href="../reference/calculate.html">calculate()</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># visualize the theoretical null distribution and test statistic!</span>
 <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">finrela</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"theoretical"</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="../reference/assume.html">assume</a></span><span class="op">(</span>distribution <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_indep_statistic</span>,
                 direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
 <p><img src="chi_squared_files/figure-html/visualize-indep-theor-1.png" width="576"></p>
@@ -208,7 +207,7 @@
               direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span>
 
 <span class="va">p_value_independence</span></code></pre></div>
-<pre><code>## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 × 1
 ##   p_value
 ##     &lt;dbl&gt;
 ## 1       0</code></pre>
@@ -221,7 +220,7 @@
 <p>Note that, equivalently to the theory-based approach shown above, the package supplies a wrapper function, <code>chisq_test</code>, to carry out Chi-Squared tests of independence on tidy data. The syntax goes like this:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/chisq_test.html">chisq_test</a></span><span class="op">(</span><span class="va">gss</span>, <span class="va">college</span> <span class="op">~</span> <span class="va">finrela</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 1 x 3
+<pre><code>## # A tibble: 1 × 3
 ##   statistic chisq_df   p_value
 ##       &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
 ## 1      30.7        5 0.0000108</code></pre>
@@ -275,7 +274,7 @@
               direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span>
 
 <span class="va">p_value_gof</span></code></pre></div>
-<pre><code>## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 × 1
 ##   p_value
 ##     &lt;dbl&gt;
 ## 1       0</code></pre>
@@ -294,7 +293,7 @@
                     <span class="st">"above average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
                     <span class="st">"far above average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
                     <span class="st">"DK"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 1 x 3
+<pre><code>## # A tibble: 1 × 3
 ##   statistic chisq_df   p_value
 ##       &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
 ## 1      488.        5 3.13e-103</code></pre>

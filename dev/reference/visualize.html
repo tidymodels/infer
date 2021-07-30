@@ -183,9 +183,12 @@ the theoretical distribution (or both!).</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>data</th>
-      <td><p>A distribution of statistics (for <code><a href='calculate.html'>calculate()</a></code>-based workflows)
-or coefficient estimates (for <code><a href='fit.infer.html'>fit()</a></code>-based workflows)
-outputted by infer.</p></td>
+      <td><p>A distribution. For simulation-based inference, a data frame
+containing a distribution of <code><a href='calculate.html'>calculate()</a></code>d statistics
+or <code><a href='fit.infer.html'>fit()</a></code>ted coefficient estimates. This object should
+have been passed to <code><a href='generate.html'>generate()</a></code> before being supplied or
+<code><a href='calculate.html'>calculate()</a></code> to <code><a href='fit.infer.html'>fit()</a></code>. For theory-based inference,
+the output of <code><a href='assume.html'>assume()</a></code>.</p></td>
     </tr>
     <tr>
       <th>bins</th>
@@ -195,7 +198,8 @@ outputted by infer.</p></td>
       <th>method</th>
       <td><p>A string giving the method to display. Options are
 <code>"simulation"</code>, <code>"theoretical"</code>, or <code>"both"</code> with <code>"both"</code> corresponding to
-<code>"simulation"</code> and <code>"theoretical"</code>.</p></td>
+<code>"simulation"</code> and <code>"theoretical"</code>. If <code>data</code> is the output of <code><a href='assume.html'>assume()</a></code>,
+this argument will be ignored and default to <code>"theoretical"</code>.</p></td>
     </tr>
     <tr>
       <th>dens_color</th>
@@ -210,9 +214,10 @@ theoretical density curve.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>For <code><a href='calculate.html'>calculate()</a></code>-based workflows, a ggplot object showing the
-simulation-based distribution as a histogram or bar graph. Also used to
-show the theoretical curves.</p>
+    <p>For <code><a href='calculate.html'>calculate()</a></code>-based workflows, a ggplot showing the simulation-based
+distribution as a histogram or bar graph. Can also be used to display
+theoretical distributions.</p>
+<p>For <code><a href='assume.html'>assume()</a></code>-based workflows, a ggplot showing the theoretical distribution.</p>
 <p>For <code><a href='fit.infer.html'>fit()</a></code>-based workflows, a <code>patchwork</code> object
 showing the simulation-based distributions as a histogram or bar graph.
 The interface to adjust plot options and themes is a bit different
@@ -234,7 +239,7 @@ are supplied.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'>  </span>
-<span class='r-in'><span class='co'># find a null distribution</span></span>
+<span class='r-in'><span class='co'># generate a null distribution</span></span>
 <span class='r-in'><span class='va'>null_dist</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='co'># we're interested in the number of hours worked per week</span></span>
 <span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
@@ -242,8 +247,15 @@ are supplied.</p>
 <span class='r-in'>  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='co'># generating data points for a null distribution</span></span>
 <span class='r-in'>  <span class='fu'><a href='generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"bootstrap"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='co'># calculating a distribution of t test statistics</span></span>
-<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"t"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='co'># calculating a distribution of means</span></span>
+<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span>
+<span class='r-in'>  </span>
+<span class='r-in'><span class='co'># or a bootstrap distribution, omitting the hypothesize() step,</span></span>
+<span class='r-in'><span class='co'># for use in confidence intervals</span></span>
+<span class='r-in'><span class='va'>boot_dist</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"bootstrap"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span>
 <span class='r-in'>  </span>
 <span class='r-in'><span class='co'># we can easily plot the null distribution by piping into visualize</span></span>
 <span class='r-in'><span class='va'>null_dist</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
@@ -254,11 +266,10 @@ are supplied.</p>
 <span class='r-in'><span class='co'># find the point estimate---mean number of hours worked per week</span></span>
 <span class='r-in'><span class='va'>point_estimate</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"t"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span>
 <span class='r-in'>  </span>
 <span class='r-in'><span class='co'># find a confidence interval around the point estimate</span></span>
-<span class='r-in'><span class='va'>ci</span> <span class='op'>&lt;-</span> <span class='va'>null_dist</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='va'>ci</span> <span class='op'>&lt;-</span> <span class='va'>boot_dist</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='get_confidence_interval.html'>get_confidence_interval</a></span><span class='op'>(</span>point_estimate <span class='op'>=</span> <span class='va'>point_estimate</span>,</span>
 <span class='r-in'>                          <span class='co'># at the 95% confidence level</span></span>
 <span class='r-in'>                          level <span class='op'>=</span> <span class='fl'>.95</span>,</span>
@@ -271,28 +282,52 @@ are supplied.</p>
 <span class='r-in'>  <span class='fu'><a href='shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span>obs_stat <span class='op'>=</span> <span class='va'>point_estimate</span>, direction <span class='op'>=</span> <span class='st'>"two-sided"</span><span class='op'>)</span></span>
 <span class='r-plt'><img src='visualize-2.png' alt='' width='768' height='552' /></span>
 <span class='r-in'></span>
+<span class='r-in'><span class='co'># ...or within the bounds of the confidence interval</span></span>
 <span class='r-in'><span class='va'>null_dist</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>visualize</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span class='r-in'>  <span class='fu'><a href='shade_confidence_interval.html'>shade_confidence_interval</a></span><span class='op'>(</span><span class='va'>ci</span><span class='op'>)</span></span>
 <span class='r-plt'><img src='visualize-3.png' alt='' width='768' height='552' /></span>
 <span class='r-in'>  </span>
-<span class='r-in'><span class='co'># to plot a theoretical null distribution, skip the generate()</span></span>
-<span class='r-in'><span class='co'># step and supply `method = "theoretical"` to `visualize()`</span></span>
-<span class='r-in'><span class='va'>null_dist_theoretical</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'><span class='co'># plot a theoretical sampling distribution by creating</span></span>
+<span class='r-in'><span class='co'># a theory-based distribution with `assume()`</span></span>
+<span class='r-in'><span class='va'>sampling_dist</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"t"</span><span class='op'>)</span> </span>
+<span class='r-in'>  <span class='fu'><a href='assume.html'>assume</a></span><span class='op'>(</span>distribution <span class='op'>=</span> <span class='st'>"t"</span><span class='op'>)</span> </span>
 <span class='r-in'>  </span>
-<span class='r-in'><span class='fu'>visualize</span><span class='op'>(</span><span class='va'>null_dist_theoretical</span>, method <span class='op'>=</span> <span class='st'>"theoretical"</span><span class='op'>)</span></span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.</span>
+<span class='r-in'><span class='fu'>visualize</span><span class='op'>(</span><span class='va'>sampling_dist</span><span class='op'>)</span></span>
 <span class='r-plt'><img src='visualize-4.png' alt='' width='768' height='552' /></span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'># to plot both a theory-based and simulation-based null distribution,</span></span>
-<span class='r-in'><span class='co'># use the simulation-based null distribution and supply</span></span>
-<span class='r-in'><span class='co'># `method = "both"` to `visualize()`</span></span>
-<span class='r-in'><span class='fu'>visualize</span><span class='op'>(</span><span class='va'>null_dist</span>, method <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span></span>
-<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.</span>
+<span class='r-in'><span class='co'># you can shade confidence intervals on top of</span></span>
+<span class='r-in'><span class='co'># theoretical distributions, too---the theoretical</span></span>
+<span class='r-in'><span class='co'># distribution will be recentered and rescaled to</span></span>
+<span class='r-in'><span class='co'># align with the confidence interval</span></span>
+<span class='r-in'><span class='fu'>visualize</span><span class='op'>(</span><span class='va'>sampling_dist</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='shade_confidence_interval.html'>shade_confidence_interval</a></span><span class='op'>(</span><span class='va'>ci</span><span class='op'>)</span></span>
 <span class='r-plt'><img src='visualize-5.png' alt='' width='768' height='552' /></span>
+<span class='r-in'></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># to plot both a theory-based and simulation-based null distribution,</span></span>
+<span class='r-in'><span class='co'># use a theorized statistic (i.e. one of t, z, F, or Chisq)</span></span>
+<span class='r-in'><span class='co'># and supply the simulation-based null distribution</span></span>
+<span class='r-in'><span class='va'>null_dist_t</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"bootstrap"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"t"</span><span class='op'>)</span></span>
+<span class='r-in'>  </span>
+<span class='r-in'><span class='va'>obs_stat</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"t"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>visualize</span><span class='op'>(</span><span class='va'>null_dist_t</span>, method <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.</span>
+<span class='r-plt'><img src='visualize-6.png' alt='' width='768' height='552' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>visualize</span><span class='op'>(</span><span class='va'>null_dist_t</span>, method <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'><a href='shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span><span class='va'>obs_stat</span>, <span class='st'>"both"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.</span>
+<span class='r-plt'><img src='visualize-7.png' alt='' width='768' height='552' /></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># \donttest{</span></span>
 <span class='r-in'><span class='co'># to visualize distributions of coefficients for multiple</span></span>
@@ -306,25 +341,25 @@ are supplied.</p>
 <span class='r-in'> <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <span class='r-in'> </span>
 <span class='r-in'><span class='va'>null_fits</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3,000 x 3</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3,000 × 3</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Groups:   replicate [1,000]</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    replicate term          estimate</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span>         1 intercept      36.9   </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span>         1 age             0.107 </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span>         1 collegedegree   0.477 </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span>         2 intercept      40.5   </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span>         2 age             0.026<span style='text-decoration: underline;'>5</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span>         2 collegedegree  -<span style='color: #BB0000;'>0.602</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span>         3 intercept      40.1   </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span>         3 age             0.043<span style='text-decoration: underline;'>6</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span>         3 collegedegree  -<span style='color: #BB0000;'>1.29</span>  </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span>         4 intercept      39.7   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span>         1 intercept      44.1   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span>         1 age            -<span style='color: #BB0000;'>0.060</span><span style='color: #BB0000; text-decoration: underline;'>7</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span>         1 collegedegree  -<span style='color: #BB0000;'>0.899</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span>         2 intercept      40.4   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span>         2 age             0.014<span style='text-decoration: underline;'>9</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span>         2 collegedegree   1.21  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span>         3 intercept      40.6   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span>         3 age             0.032<span style='text-decoration: underline;'>7</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span>         3 collegedegree  -<span style='color: #BB0000;'>1.44</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span>         4 intercept      40.0   </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 2,990 more rows</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># visualize distributions of resulting coefficients</span></span>
 <span class='r-in'><span class='fu'>visualize</span><span class='op'>(</span><span class='va'>null_fits</span><span class='op'>)</span></span>
-<span class='r-plt'><img src='visualize-6.png' alt='' width='768' height='552' /></span>
+<span class='r-plt'><img src='visualize-8.png' alt='' width='768' height='552' /></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># the interface to add themes and other elements to patchwork</span></span>
 <span class='r-in'><span class='co'># plots (outputted by `visualize` when the inputted data</span></span>
@@ -334,11 +369,11 @@ are supplied.</p>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># to add a ggplot2 theme to a `calculate()`-based visualization, use `+`</span></span>
 <span class='r-in'><span class='va'>null_dist</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span> <span class='fu'>visualize</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_dark</a></span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-plt'><img src='visualize-7.png' alt='' width='768' height='552' /></span>
+<span class='r-plt'><img src='visualize-9.png' alt='' width='768' height='552' /></span>
 <span class='r-in'>  </span>
 <span class='r-in'><span class='co'># to add a ggplot2 theme to a `fit()`-based visualization, use `&amp;`</span></span>
 <span class='r-in'><span class='va'>null_fits</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span> <span class='fu'>visualize</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>&amp;</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggtheme.html'>theme_dark</a></span><span class='op'>(</span><span class='op'>)</span></span>
-<span class='r-plt'><img src='visualize-8.png' alt='' width='768' height='552' /></span>
+<span class='r-plt'><img src='visualize-10.png' alt='' width='768' height='552' /></span>
 <span class='r-in'><span class='co'># }</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># More in-depth explanation of how to use the infer package</span></span>

@@ -169,7 +169,7 @@
 <code class="sourceCode R"><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">age</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: age (numeric)
-## # A tibble: 500 x 1
+## # A tibble: 500 × 1
 ##      age
 ##    &lt;dbl&gt;
 ##  1    36
@@ -197,7 +197,7 @@
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: age (numeric)
 ## Explanatory: partyid (factor)
-## # A tibble: 500 x 2
+## # A tibble: 500 × 2
 ##      age partyid
 ##    &lt;dbl&gt; &lt;fct&gt;  
 ##  1    36 ind    
@@ -217,7 +217,7 @@
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">age</span>, explanatory <span class="op">=</span> <span class="va">partyid</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: age (numeric)
 ## Explanatory: partyid (factor)
-## # A tibble: 500 x 2
+## # A tibble: 500 × 2
 ##      age partyid
 ##    &lt;dbl&gt; &lt;fct&gt;  
 ##  1    36 ind    
@@ -237,7 +237,7 @@
 <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">college</span>, success <span class="op">=</span> <span class="st">"degree"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: college (factor)
-## # A tibble: 500 x 1
+## # A tibble: 500 × 1
 ##    college  
 ##    &lt;fct&gt;    
 ##  1 degree   
@@ -263,7 +263,7 @@
 <pre><code>## Response: college (factor)
 ## Explanatory: partyid (factor)
 ## Null Hypothesis: independence
-## # A tibble: 500 x 2
+## # A tibble: 500 × 2
 ##    college   partyid
 ##    &lt;fct&gt;     &lt;fct&gt;  
 ##  1 degree    ind    
@@ -284,7 +284,7 @@
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: hours (numeric)
 ## Null Hypothesis: point
-## # A tibble: 500 x 1
+## # A tibble: 500 × 1
 ##    hours
 ##    &lt;dbl&gt;
 ##  1    50
@@ -322,7 +322,7 @@
   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: hours (numeric)
 ## Null Hypothesis: point
-## # A tibble: 500,000 x 2
+## # A tibble: 500,000 × 2
 ## # Groups:   replicate [1,000]
 ##    replicate hours
 ##        &lt;int&gt; &lt;dbl&gt;
@@ -347,7 +347,7 @@
 <pre><code>## Response: partyid (factor)
 ## Explanatory: age (numeric)
 ## Null Hypothesis: independence
-## # A tibble: 500,000 x 3
+## # A tibble: 500,000 × 3
 ## # Groups:   replicate [1,000]
 ##    partyid   age replicate
 ##    &lt;fct&gt;   &lt;dbl&gt;     &lt;int&gt;
@@ -366,14 +366,16 @@
 <div id="calculate-calculating-summary-statistics" class="section level3">
 <h3 class="hasAnchor">
 <a href="#calculate-calculating-summary-statistics" class="anchor" aria-hidden="true"></a>calculate(): Calculating Summary Statistics</h3>
-<p>Depending on whether you’re carrying out computation-based inference or theory-based inference, you will either supply <code><a href="../reference/calculate.html">calculate()</a></code> with the output of <code><a href="../reference/generate.html">generate()</a></code> or <code>hypothesize</code>, respectively. The function, for one, takes in a <code>stat</code> argument, which is currently one of “mean”, “median”, “sum”, “sd”, “prop”, “count”, “diff in means”, “diff in medians”, “diff in props”, “Chisq”, “F”, “t”, “z”, “slope”, or “correlation”. For example, continuing our example above to calculate the null distribution of mean hours worked per week:</p>
+<p><code><a href="../reference/calculate.html">calculate()</a></code> calculates summary statistics from the output of infer core functions. The function takes in a <code>stat</code> argument, which is currently one of “mean”, “median”, “sum”, “sd”, “prop”, “count”, “diff in means”, “diff in medians”, “diff in props”, “Chisq”, “F”, “t”, “z”, “slope”, or “correlation”. For example, continuing our example above to calculate the null distribution of mean hours worked per week:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 1,000 x 2
+<pre><code>## Response: hours (numeric)
+## Null Hypothesis: point
+## # A tibble: 1,000 × 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
 ##  1         1  39.4
@@ -394,7 +396,10 @@
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span><span class="st">"diff in means"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 1,000 x 2
+<pre><code>## Response: age (numeric)
+## Explanatory: college (factor)
+## Null Hypothesis: independence
+## # A tibble: 1,000 × 2
 ##    replicate   stat
 ##        &lt;int&gt;  &lt;dbl&gt;
 ##  1         1 -0.620
@@ -412,11 +417,11 @@
 <div id="other-utilities" class="section level3">
 <h3 class="hasAnchor">
 <a href="#other-utilities" class="anchor" aria-hidden="true"></a>Other Utilities</h3>
-<p><code>infer</code> also offers several utilities to extract the meaning out of summary statistics and null distributions—the package provides functions to visualize where a statistic is relative to a distribution (with <code><a href="../reference/visualize.html">visualize()</a></code>), calculate p-values (with <code><a href="../reference/get_p_value.html">get_p_value()</a></code>), and calculate confidence intervals (with <code><a href="../reference/get_confidence_interval.html">get_confidence_interval()</a></code>).</p>
+<p><code>infer</code> also offers several utilities to extract the meaning out of summary statistics and distributions—the package provides functions to visualize where a statistic is relative to a distribution (with <code><a href="../reference/visualize.html">visualize()</a></code>), calculate p-values (with <code><a href="../reference/get_p_value.html">get_p_value()</a></code>), and calculate confidence intervals (with <code><a href="../reference/get_confidence_interval.html">get_confidence_interval()</a></code>).</p>
 <p>To illustrate, we’ll go back to the example of determining whether the mean number of hours worked per week is 40 hours.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># find the point estimate</span>
-<span class="va">point_estimate</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">obs_mean</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span>
 
@@ -436,67 +441,100 @@
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">null_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">point_estimate</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></code></pre></div>
+  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">obs_mean</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></code></pre></div>
 <p><img src="infer_files/figure-html/visualize2-1.png" width="576"></p>
 <p>Notice that <code>infer</code> has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the <code>+</code> operator to apply the <code>shade_p_value</code> function. This is because <code>visualize</code> outputs a plot object from <code>ggplot2</code> instead of a data frame, and the <code>+</code> operator is needed to add the p-value layer to the plot object.) The red bar looks like it’s slightly far out on the right tail of the null distribution, so observing a sample mean of 41.382 hours would be somewhat unlikely if the mean was actually 40 hours. How unlikely, though?</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get a two-tailed p-value</span>
 <span class="va">p_value</span> <span class="op">&lt;-</span> <span class="va">null_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">point_estimate</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">obs_mean</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span>
 
 <span class="va">p_value</span></code></pre></div>
-<pre><code>## # A tibble: 1 x 1
+<pre><code>## # A tibble: 1 × 1
 ##   p_value
 ##     &lt;dbl&gt;
 ## 1    0.03</code></pre>
 <p>It looks like the p-value is 0.03, which is pretty small—if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.03. This may or may not be statistically significantly different, depending on the significance level <span class="math inline">\(\alpha\)</span> you decided on <em>before</em> you ran this analysis. If you had set <span class="math inline">\(\alpha = .05\)</span>, then this difference would be statistically significant, but if you had set <span class="math inline">\(\alpha = .01\)</span>, then it would not be.</p>
 <p>To get a confidence interval around our estimate, we can write:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># start with the null distribution</span>
-<span class="va">null_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="co"># generate a distribution like the null distribution, </span>
+<span class="co"># though exclude the null hypothesis from the pipeline</span>
+<span class="va">boot_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span>
+
+<span class="co"># start with the bootstrap distribution</span>
+<span class="va">ci</span> <span class="op">&lt;-</span> <span class="va">boot_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="co"># calculate the confidence interval around the point estimate</span>
-  <span class="fu"><a href="../reference/get_confidence_interval.html">get_confidence_interval</a></span><span class="op">(</span>point_estimate <span class="op">=</span> <span class="va">point_estimate</span>,
+  <span class="fu"><a href="../reference/get_confidence_interval.html">get_confidence_interval</a></span><span class="op">(</span>point_estimate <span class="op">=</span> <span class="va">obs_mean</span>,
                           <span class="co"># at the 95% confidence level</span>
                           level <span class="op">=</span> <span class="fl">.95</span>,
                           <span class="co"># using the standard error</span>
-                          type <span class="op">=</span> <span class="st">"se"</span><span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 1 x 2
+                          type <span class="op">=</span> <span class="st">"se"</span><span class="op">)</span>
+
+<span class="va">ci</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 2
 ##   lower_ci upper_ci
 ##      &lt;dbl&gt;    &lt;dbl&gt;
 ## 1     40.1     42.7</code></pre>
-<p>As you can see, 40 hours per week is not contained in this interval, which aligns with our previous conclusion that this finding is significant at the confidence level <span class="math inline">\(\alpha = .05\)</span>.</p>
+<p>As you can see, 40 hours per week is not contained in this interval, which aligns with our previous conclusion that this finding is significant at the confidence level <span class="math inline">\(\alpha = .05\)</span>. To see this interval represented visually, we can use the <code><a href="../reference/shade_confidence_interval.html">shade_confidence_interval()</a></code> utility:</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">boot_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">ci</span><span class="op">)</span></code></pre></div>
+<p><img src="infer_files/figure-html/visualize-ci-1.png" width="576"></p>
 </div>
 <div id="theoretical-methods" class="section level3">
 <h3 class="hasAnchor">
 <a href="#theoretical-methods" class="anchor" aria-hidden="true"></a>Theoretical Methods</h3>
-<p>{infer} also provides functionality to use theoretical methods for <code>"Chisq"</code>, <code>"F"</code> and <code>"t"</code> test statistics.</p>
-<p>Generally, to find a null distribution using theory-based methods, use the same code that you would use to find the null distribution using randomization-based methods, but skip the <code><a href="../reference/generate.html">generate()</a></code> step. For example, if we wanted to find a null distribution for the relationship between age (<code>age</code>) and party identification (<code>partyid</code>) using randomization, we could write:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">null_f_distn</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span></code></pre></div>
-<p>To find the null distribution using theory-based methods, instead, skip the <code><a href="../reference/generate.html">generate()</a></code> step entirely:</p>
+<p>{infer} also provides functionality to use theoretical methods for <code>"Chisq"</code>, <code>"F"</code>, <code>"t"</code> and <code>"z"</code> distributions.</p>
+<p>Generally, to find a null distribution using theory-based methods, use the same code that you would use to find the observed statistic elsewhere, replacing calls to <code><a href="../reference/calculate.html">calculate()</a></code> with <code><a href="../reference/assume.html">assume()</a></code>. For example, to calculate the observed <span class="math inline">\(t\)</span> statistic (a standardized mean):</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">null_f_distn_theoretical</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span></code></pre></div>
-<p>We’ll calculate the observed statistic to make use of in the following visualizations—this procedure is the same, regardless of the methods used to find the null distribution.</p>
+<code class="sourceCode R"><span class="co"># calculate an observed t statistic</span>
+<span class="va">obs_t</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span></code></pre></div>
+<p>Then, to define a theoretical <span class="math inline">\(t\)</span> distribution, we could write:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">F_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span></code></pre></div>
-<p>Now, instead of just piping the null distribution into <code><a href="../reference/visualize.html">visualize()</a></code>, as we would do if we wanted to visualize the randomization-based null distribution, we also need to provide <code>method = "theoretical"</code> to <code><a href="../reference/visualize.html">visualize()</a></code>.</p>
+<code class="sourceCode R"><span class="co"># switch out calculate with assume to define a distribution</span>
+<span class="va">t_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/assume.html">assume</a></span><span class="op">(</span>distribution <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span></code></pre></div>
+<p>From here, the theoretical distribution interfaces in the same way that simulation-based null distributions do. For example, to interface with p-values:</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_f_distn_theoretical</span>, method <span class="op">=</span> <span class="st">"theoretical"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">F_hat</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
-<p><img src="infer_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
-<p>To get a sense of how the theory-based and randomization-based null distributions relate, as well, we can pipe the randomization-based null distribution into <code><a href="../reference/visualize.html">visualize()</a></code> and also specify <code>method = "both"</code></p>
+<code class="sourceCode R"><span class="co"># visualize the theoretical null distribution</span>
+<span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">t_dist</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">obs_t</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
+<p><img src="infer_files/figure-html/unnamed-chunk-4-1.png" width="576"></p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_f_distn</span>, method <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">F_hat</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># more exactly, calculate the p-value</span>
+<span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span><span class="op">(</span><span class="va">t_dist</span>, <span class="va">obs_t</span>, <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 1
+##   p_value
+##     &lt;dbl&gt;
+## 1  0.0188</code></pre>
+<p>Confidence intervals lie on the scale of the data rather than on the standardized scale of the theoretical distribution, so be sure to use the unstandardized observed statistic when working with confidence intervals.</p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># find the theory-based confidence interval</span>
+<span class="va">theor_ci</span> <span class="op">&lt;-</span> 
+  <span class="fu"><a href="../reference/get_confidence_interval.html">get_confidence_interval</a></span><span class="op">(</span>
+    x <span class="op">=</span> <span class="va">t_dist</span>,
+    level <span class="op">=</span> <span class="fl">.95</span>,
+    point_estimate <span class="op">=</span> <span class="va">obs_mean</span>
+  <span class="op">)</span>
+
+<span class="va">theor_ci</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 2
+##   lower_ci upper_ci
+##      &lt;dbl&gt;    &lt;dbl&gt;
+## 1     40.1     42.7</code></pre>
+<p>When visualized, the <span class="math inline">\(t\)</span> distribution will be recentered and rescaled to align with the scale of the observed data.</p>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># visualize the theoretical sampling distribution</span>
+<span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">t_dist</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span><span class="va">theor_ci</span><span class="op">)</span></code></pre></div>
 <p><img src="infer_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
 </div>
 <div id="multiple-regression" class="section level3">
@@ -504,12 +542,12 @@
 <a href="#multiple-regression" class="anchor" aria-hidden="true"></a>Multiple regression</h3>
 <p>To accommodate randomization-based inference with multiple explanatory variables, the package implements an alternative workflow based on model fitting. Rather than <code><a href="../reference/calculate.html">calculate()</a></code>ing statistics from resampled data, this side of the package allows you to <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> linear models on data resampled according to the null hypothesis, supplying model coefficients for each explanatory variable. For the most part, you can just switch out <code><a href="../reference/calculate.html">calculate()</a></code> for <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> in your <code><a href="../reference/calculate.html">calculate()</a></code>-based workflows.</p>
 <p>As an example, suppose that we want to fit <code>hours</code> worked per week using the respondent <code>age</code> and <code>college</code> completion status. We could first begin by fitting a linear model to the observed data.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">observed_fit</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>Now, to generate null distributions for each of these terms, we can fit 1000 models to resamples of the <code>gss</code> dataset, where the response <code>hours</code> is permuted in each. Note that this code is the same as the above except for the addition of the <code>hypothesize</code> and <code>generate</code> step.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">null_fits</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -517,37 +555,37 @@
   <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">null_fits</span></code></pre></div>
-<pre><code>## # A tibble: 3,000 x 3
+<pre><code>## # A tibble: 3,000 × 3
 ## # Groups:   replicate [1,000]
 ##    replicate term          estimate
 ##        &lt;int&gt; &lt;chr&gt;            &lt;dbl&gt;
-##  1         1 intercept      39.5   
-##  2         1 age             0.0372
-##  3         1 collegedegree   1.08  
-##  4         2 intercept      40.2   
-##  5         2 age             0.0239
-##  6         2 collegedegree   0.582 
-##  7         3 intercept      43.9   
-##  8         3 age            -0.0593
-##  9         3 collegedegree  -0.495 
-## 10         4 intercept      41.0   
+##  1         1 intercept     41.1    
+##  2         1 age            0.00693
+##  3         1 collegedegree  0.0422 
+##  4         2 intercept     44.2    
+##  5         2 age           -0.0773 
+##  6         2 collegedegree  0.924  
+##  7         3 intercept     42.8    
+##  8         3 age           -0.0370 
+##  9         3 collegedegree  0.260  
+## 10         4 intercept     44.2    
 ## # … with 2,990 more rows</code></pre>
 <p>To permute variables other than the response variable, the <code>cols</code> argument to <code><a href="../reference/generate.html">generate()</a></code> allows you to choose any of the <code><a href="../reference/specify.html">specify()</a></code>ed variables to permute independently of each other.</p>
 <p>Beyond this point, observed fits and distributions from null fits interface exactly like analogous outputs from <code><a href="../reference/calculate.html">calculate()</a></code>. For instance, we can use the following code to calculate a 95% confidence interval from these objects.</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/get_confidence_interval.html">get_confidence_interval</a></span><span class="op">(</span>
   <span class="va">null_fits</span>, 
   point_estimate <span class="op">=</span> <span class="va">observed_fit</span>, 
   level <span class="op">=</span> <span class="fl">.95</span>
 <span class="op">)</span></code></pre></div>
-<pre><code>## # A tibble: 3 x 3
+<pre><code>## # A tibble: 3 × 3
 ##   term          lower_ci upper_ci
 ##   &lt;chr&gt;            &lt;dbl&gt;    &lt;dbl&gt;
-## 1 age            -0.0993   0.0947
-## 2 collegedegree  -2.61     2.55  
-## 3 intercept      37.4     45.2</code></pre>
+## 1 age            -0.0950   0.0939
+## 2 collegedegree  -2.62     2.62  
+## 3 intercept      37.5     45.2</code></pre>
 <p>Or, we can shade p-values for each of these observed regression coefficients from the observed data.</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_fits</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_fit</span>, direction <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span></code></pre></div>
 <p><img src="infer_files/figure-html/unnamed-chunk-10-1.png" width="576"></p>

@@ -50,8 +50,9 @@
 
 
 <meta property="og:title" content="Compute confidence interval — get_confidence_interval" />
-<meta property="og:description" content="Compute a confidence interval around a summary statistic. Currently, only
-simulation-based methods are supported.
+<meta property="og:description" content="Compute a confidence interval around a summary statistic. Both
+simulation-based and theoretical methods are supported, though only
+type = &quot;se&quot; is supported for theoretical methods.
 Learn more in vignette(&quot;infer&quot;)." />
 <meta name="twitter:card" content="summary" />
 
@@ -169,29 +170,28 @@ Learn more in vignette(&quot;infer&quot;)." />
     </div>
 
     <div class="ref-description">
-    <p>Compute a confidence interval around a summary statistic. Currently, only
-simulation-based methods are supported.</p>
+    <p>Compute a confidence interval around a summary statistic. Both
+simulation-based and theoretical methods are supported, though only
+<code>type = "se"</code> is supported for theoretical methods.</p>
 <p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>get_confidence_interval</span><span class='op'>(</span>
-  <span class='va'>x</span>,
-  level <span class='op'>=</span> <span class='fl'>0.95</span>,
-  type <span class='op'>=</span> <span class='st'>"percentile"</span>,
-  point_estimate <span class='op'>=</span> <span class='cn'>NULL</span>
-<span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>get_confidence_interval</span><span class='op'>(</span><span class='va'>x</span>, level <span class='op'>=</span> <span class='fl'>0.95</span>, type <span class='op'>=</span> <span class='cn'>NULL</span>, point_estimate <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 
-<span class='fu'>get_ci</span><span class='op'>(</span><span class='va'>x</span>, level <span class='op'>=</span> <span class='fl'>0.95</span>, type <span class='op'>=</span> <span class='st'>"percentile"</span>, point_estimate <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></code></pre></div>
+<span class='fu'>get_ci</span><span class='op'>(</span><span class='va'>x</span>, level <span class='op'>=</span> <span class='fl'>0.95</span>, type <span class='op'>=</span> <span class='cn'>NULL</span>, point_estimate <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A data frame containing a distribution of <code><a href='calculate.html'>calculate()</a></code>d statistics
+      <td><p>A distribution. For simulation-based inference, a data frame
+containing a distribution of <code><a href='calculate.html'>calculate()</a></code>d statistics
 or <code><a href='fit.infer.html'>fit()</a></code>ted coefficient estimates. This object should
-have been passed to <code><a href='generate.html'>generate()</a></code> before being supplied to <code><a href='calculate.html'>calculate()</a></code>
-or <code><a href='fit.infer.html'>fit()</a></code>.</p></td>
+have been passed to <code><a href='generate.html'>generate()</a></code> before being supplied or
+<code><a href='calculate.html'>calculate()</a></code> to <code><a href='fit.infer.html'>fit()</a></code>. For theory-based inference,
+output of <code><a href='assume.html'>assume()</a></code>. Distributions for confidence intervals do not
+require a null hypothesis via <code><a href='hypothesize.html'>hypothesize()</a></code>.</p></td>
     </tr>
     <tr>
       <th>level</th>
@@ -228,10 +228,24 @@ interval, respectively.</p></li>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>A null hypothesis is not required to compute a confidence interval, but
-including <code><a href='hypothesize.html'>hypothesize()</a></code> in a chain leading to <code>get_confidence_interval()</code>
+    <p>A null hypothesis is not required to compute a confidence interval. However,
+including <code><a href='hypothesize.html'>hypothesize()</a></code> in a pipeline leading to <code>get_confidence_interval()</code>
 will not break anything. This can be useful when computing a confidence
-interval after previously computing a p-value.</p>
+interval using the same distribution used to compute a p-value.</p>
+<p>Theoretical confidence intervals (i.e. calculated by supplying the output
+of <code><a href='assume.html'>assume()</a></code> to the <code>x</code> argument) require that the point estimate lies on
+the scale of the data. The distribution defined in <code><a href='assume.html'>assume()</a></code> will be
+recentered and rescaled to align with the point estimate, as can be shown
+in the output of <code><a href='visualize.html'>visualize()</a></code> when paired with <code><a href='shade_confidence_interval.html'>shade_confidence_interval()</a></code>.
+Confidence intervals are implemented for the following distributions and
+point estimates:</p>
+<ul>
+<li><p><code>distribution = "t"</code>: <code>point_estimate</code> should be the output of
+<code><a href='calculate.html'>calculate()</a></code> with <code>stat = "mean"</code> or <code>stat = "diff in means"</code></p></li>
+<li><p><code>distribution = "z"</code>: <code>point_estimate</code> should be the output of
+<code><a href='calculate.html'>calculate()</a></code> with <code>stat = "prop"</code> or <code>stat = "diff in props"</code></p></li>
+</ul>
+
     <h2 class="hasAnchor" id="aliases"><a class="anchor" href="#aliases"></a>Aliases</h2>
 
     
@@ -259,7 +273,7 @@ interval after previously computing a p-value.</p>
 <span class='r-in'>    <span class='co'># At the 95% confidence level; percentile method</span></span>
 <span class='r-in'>    level <span class='op'>=</span> <span class='fl'>0.95</span></span>
 <span class='r-in'>  <span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 x 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 × 2</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   lower_ci upper_ci</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>     40.1     42.7</span>
@@ -267,8 +281,7 @@ interval after previously computing a p-value.</p>
 <span class='r-in'><span class='co'># for type = "se" or type = "bias-corrected" we need a point estimate</span></span>
 <span class='r-in'><span class='va'>sample_mean</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>boot_distr</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
 <span class='r-in'>  <span class='fu'>get_confidence_interval</span><span class='op'>(</span></span>
@@ -278,7 +291,26 @@ interval after previously computing a p-value.</p>
 <span class='r-in'>    <span class='co'># Using the standard error method</span></span>
 <span class='r-in'>    type <span class='op'>=</span> <span class='st'>"se"</span></span>
 <span class='r-in'>  <span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 x 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 × 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   lower_ci upper_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>     40.1     42.7</span>
+<span class='r-in'>  </span>
+<span class='r-in'><span class='co'># using a theoretical distribution -----------------------------------</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># define a sampling distribution</span></span>
+<span class='r-in'><span class='va'>sampling_dist</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='assume.html'>assume</a></span><span class='op'>(</span><span class='st'>"t"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># get the confidence interval---note that the</span></span>
+<span class='r-in'><span class='co'># point estimate is required here</span></span>
+<span class='r-in'><span class='fu'>get_confidence_interval</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>sampling_dist</span>, </span>
+<span class='r-in'>  level <span class='op'>=</span> <span class='fl'>.95</span>, </span>
+<span class='r-in'>  point_estimate <span class='op'>=</span> <span class='va'>sample_mean</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 × 2</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   lower_ci upper_ci</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>     40.1     42.7</span>
@@ -292,7 +324,7 @@ interval after previously computing a p-value.</p>
 <span class='r-in'>  <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>observed_fit</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3 x 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3 × 2</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   term          estimate</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> intercept     40.6    </span>
@@ -309,7 +341,7 @@ interval after previously computing a p-value.</p>
 <span class='r-in'>  <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='va'>null_fits</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 300 x 3</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 300 × 3</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Groups:   replicate [100]</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>    replicate term          estimate</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
@@ -330,7 +362,7 @@ interval after previously computing a p-value.</p>
 <span class='r-in'>  point_estimate <span class='op'>=</span> <span class='va'>observed_fit</span>, </span>
 <span class='r-in'>  level <span class='op'>=</span> <span class='fl'>.95</span></span>
 <span class='r-in'><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3 x 3</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3 × 3</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   term          lower_ci upper_ci</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> age             -<span style='color: #BB0000;'>0.115</span>   0.081<span style='text-decoration: underline;'>9</span></span>

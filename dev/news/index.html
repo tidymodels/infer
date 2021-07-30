@@ -167,7 +167,7 @@
 <h1 class="page-header" data-toc-text="0.5.4.9000">
 <a href="#infer-0549000" class="anchor" aria-hidden="true"></a>infer 0.5.4.9000<small> Unreleased </small></h1>
 <p>To be released as 1.0.0</p>
-<p>v1.0.0 is the first major release of the {infer} package! By and large, the core verbs <code><a href="../reference/specify.html">specify()</a></code>, <code><a href="../reference/hypothesize.html">hypothesize()</a></code>, <code><a href="../reference/generate.html">generate()</a></code>, and <code><a href="../reference/calculate.html">calculate()</a></code> will interface as they did before. This release makes several improvements to behavioral consistency of the package and introduces support for randomization-based inference with multiple explanatory variables.</p>
+<p>v1.0.0 is the first major release of the {infer} package! By and large, the core verbs <code><a href="../reference/specify.html">specify()</a></code>, <code><a href="../reference/hypothesize.html">hypothesize()</a></code>, <code><a href="../reference/generate.html">generate()</a></code>, and <code><a href="../reference/calculate.html">calculate()</a></code> will interface as they did before. This release makes several improvements to behavioral consistency of the package and introduces support for theory-based inference as well as randomization-based inference with multiple explanatory variables.</p>
 <div id="behavioral-consistency" class="section level2">
 <h2 class="hasAnchor">
 <a href="#behavioral-consistency" class="anchor" aria-hidden="true"></a>Behavioral consistency</h2>
@@ -275,12 +275,89 @@
 <span class="co">#&gt; 1  2.09</span></code></pre></div>
 <p>We don’t anticipate that these changes are “breaking” in the sense that code that previously worked will continue to, though it may now message or warn in a way that it did not used to or error with a different (and hopefully more informative) message.</p>
 </div>
+<div id="a-framework-for-theoretical-inference" class="section level2">
+<h2 class="hasAnchor">
+<a href="#a-framework-for-theoretical-inference" class="anchor" aria-hidden="true"></a>A framework for theoretical inference</h2>
+<p>This release also introduces a more complete and principled interface for theoretical inference. While the package previously supplied some methods for visualization of theory-based curves, the interface did not provide any object that was explicitly a “null distribution” that could be supplied to helper functions like <code><a href="../reference/get_p_value.html">get_p_value()</a></code> and <code><a href="../reference/get_confidence_interval.html">get_confidence_interval()</a></code>. The new interface is based on a new verb, <code><a href="../reference/assume.html">assume()</a></code>, that returns a null distribution that can be interfaced in the same way that simulation-based null distributions can be interfaced with.</p>
+<p>As an example, we’ll work through a full infer pipeline for inference on a mean using infer’s <code>gss</code> dataset. Supposed that we believe the true mean number of hours worked by Americans in the past week is 40.</p>
+<p>First, calculating the observed <code>t</code>-statistic:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="va">obs_stat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span>
+
+<span class="va">obs_stat</span>
+<span class="co">#&gt; Response: hours (numeric)</span>
+<span class="co">#&gt; Null Hypothesis: point</span>
+<span class="co">#&gt; # A tibble: 1 x 1</span>
+<span class="co">#&gt;    stat</span>
+<span class="co">#&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt; 1  2.09</span></code></pre></div>
+<p>The code to define the null distribution is very similar to that required to calculate a theorized observed statistic, switching out <code><a href="../reference/calculate.html">calculate()</a></code> for <code><a href="../reference/assume.html">assume()</a></code> and replacing arguments as needed.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="va">null_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/assume.html">assume</a></span><span class="op">(</span>distribution <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span>
+
+<span class="va">null_dist</span> 
+<span class="co">#&gt; A T distribution with 499 degrees of freedom.</span></code></pre></div>
+<p>This null distribution can now be interfaced with in the same way as a simulation-based null distribution elsewhere in the package. For example, calculating a p-value by juxtaposing the observed statistic and null distribution:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span><span class="op">(</span><span class="va">null_dist</span>, <span class="va">obs_stat</span>, direction <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 1 x 1</span>
+<span class="co">#&gt;   p_value</span>
+<span class="co">#&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt; 1  0.0376</span></code></pre></div>
+<p>…or visualizing the null distribution alone:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span></code></pre></div>
+<p><img src="https://i.imgur.com/g3B5coD.png"></p>
+<p>…or juxtaposing the two visually:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">obs_stat</span>, direction <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span></code></pre></div>
+<p><img src="https://i.imgur.com/3C66kgK.png"></p>
+<p>Confidence intervals lie in data space rather than the standardized scale of the theoretical distributions. Calculating a mean rather than the standardized <code>t</code>-statistic:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="va">obs_mean</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></code></pre></div>
+<p>The null distribution here just defines the spread for the standard error calculation.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="va">ci</span> <span class="op">&lt;-</span> 
+  <span class="fu"><a href="../reference/get_confidence_interval.html">get_confidence_interval</a></span><span class="op">(</span>
+    <span class="va">null_dist</span>,
+    level <span class="op">=</span> <span class="fl">.95</span>,
+    point_estimate <span class="op">=</span> <span class="va">obs_mean</span>
+  <span class="op">)</span>
+
+<span class="va">ci</span>
+<span class="co">#&gt; # A tibble: 1 x 2</span>
+<span class="co">#&gt;   lower_ci upper_ci</span>
+<span class="co">#&gt;      &lt;dbl&gt;    &lt;dbl&gt;</span>
+<span class="co">#&gt; 1     40.1     42.7</span></code></pre></div>
+<p>Visualizing the confidence interval results in the theoretical distribution being recentered and rescaled to align with the scale of the observed data:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span><span class="va">ci</span><span class="op">)</span></code></pre></div>
+<p><img src="https://i.imgur.com/4akSCY3.png"></p>
+<p>Previous methods for interfacing with theoretical distributions are superseded—they will continue to be supported, though documentation will forefront the <code><a href="../reference/assume.html">assume()</a></code> interface.</p>
+</div>
 <div id="support-for-multiple-regression" class="section level2">
 <h2 class="hasAnchor">
 <a href="#support-for-multiple-regression" class="anchor" aria-hidden="true"></a>Support for multiple regression</h2>
 <p>The 2016 “Guidelines for Assessment and Instruction in Statistics Education” [1] state that, in introductory statistics courses, “[s]tudents should gain experience with how statistical models, including multivariable models, are used.” In line with this recommendation, we introduce support for randomization-based inference with multiple explanatory variables via a new <code>fit.infer</code> core verb.</p>
 <p>If passed an <code>infer</code> object, the method will parse a formula out of the <code>formula</code> or <code>response</code> and <code>explanatory</code> arguments, and pass both it and <code>data</code> to a <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">stats::glm</a></code> call.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -293,7 +370,7 @@
 <span class="co">#&gt; 3 collegedegree  1.53</span></code></pre></div>
 <p>Note that the function returns the model coefficients as <code>estimate</code> rather than their associated <code>t</code>-statistics as <code>stat</code>.</p>
 <p>If passed a <code><a href="../reference/generate.html">generate()</a></code>d object, the model will be fitted to each replicate.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -316,7 +393,7 @@
 <span class="co">#&gt; 10         4 intercept     43.1    </span>
 <span class="co">#&gt; # … with 290 more rows</span></code></pre></div>
 <p>If <code>type = "permute"</code>, a set of unquoted column names in the data to permute (independently of each other) can be passed via the <code>cols</code> argument to <code>generate</code>. It defaults to only the response variable.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -352,6 +429,7 @@
 <div id="breaking-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#breaking-changes" class="anchor" aria-hidden="true"></a>Breaking changes</h2>
+<p>We don’t anticipate that any changes made in this release are “breaking” in the sense that code that previously worked will continue to, though it may now message or warn in a way that it did not used to or error with a different (and hopefully more informative) message. If you currently teach or research with infer, we recommend re-running your materials and noting any changes in messaging and warning.</p>
 <ul><li>Move forward with a number of planned deprecations. Namely, the <code>GENERATION_TYPES</code> object is now fully deprecated, and arguments that were relocated from <code><a href="../reference/visualize.html">visualize()</a></code> to <code><a href="../reference/shade_p_value.html">shade_p_value()</a></code> and <code><a href="../reference/shade_confidence_interval.html">shade_confidence_interval()</a></code> are now fully deprecated in <code><a href="../reference/visualize.html">visualize()</a></code>. If supplied a deprecated argument, <code><a href="../reference/visualize.html">visualize()</a></code> will warn the user and ignore the argument.</li>
 <li>Added a <code>prop</code> argument to <code><a href="../reference/rep_sample_n.html">rep_slice_sample()</a></code> as an alternative to the <code>n</code> argument for specifying the proportion of rows in the supplied data to sample per replicate (<a href='https://github.com/tidymodels/infer/issues/361'>#361</a>, <a href='https://github.com/tidymodels/infer/issues/362'>#362</a>, <a href='https://github.com/tidymodels/infer/issues/363'>#363</a>). This changes order of arguments of <code><a href="../reference/rep_sample_n.html">rep_slice_sample()</a></code> (in order to be more aligned with <code><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">dplyr::slice_sample()</a></code>) which might break code if it didn’t use named arguments (like <code>rep_slice_sample(df, 5, TRUE)</code>). To fix this, use named arguments (like <code>rep_slice_sample(df, 5, replicate = TRUE)</code>).</li>
 </ul></div>
