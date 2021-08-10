@@ -1065,7 +1065,7 @@ visualize(boot_dist) +
 Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
-standard_error_ci <- get_ci(boot, type = "se", point_estimate = x_bar)
+standard_error_ci <- get_ci(boot_dist, type = "se", point_estimate = x_bar)
 
 visualize(boot_dist) +
   shade_confidence_interval(endpoints = standard_error_ci)
