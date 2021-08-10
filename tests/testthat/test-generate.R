@@ -433,7 +433,7 @@ test_that("variables argument prompts when it ought to", {
       specify(hours ~ age + college + age*college) %>%
       hypothesize(null = "independence") %>%
       generate(reps = 2, type = "permute", variables = age*college),
-    "Interaction effects.*will be ignored"
+    "supply only data columns"
   )
   
   expect_message(
@@ -441,7 +441,7 @@ test_that("variables argument prompts when it ought to", {
       specify(hours ~ age + college + age*college) %>%
       hypothesize(null = "independence") %>%
       generate(reps = 2, type = "permute", variables = c(hours, age*college)),
-    "Interaction effects.*will be ignored"
+    "supply only data columns"
   )
   
   expect_silent(
@@ -463,6 +463,20 @@ test_that("variables argument prompts when it ought to", {
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
       generate(reps = 2, type = "permute")
+  )
+  
+  # warn on type != permute but don't raise message re: interaction
+  # effects unless otherwise used appropriately
+  expect_silent(
+    expect_warning(
+      gss[1:10,] %>%
+        specify(hours ~ age*college) %>%
+        generate(
+          reps = 2, 
+          type = "bootstrap", 
+          variables = c(hours, age*college)
+        )
+    )
   )
 })
 

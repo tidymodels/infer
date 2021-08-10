@@ -154,14 +154,19 @@ check_cols <- function(x, variables, type, missing) {
     )
   }
 
-  col_names <- process_variables(variables, TRUE)
-
   if (!missing && type != "permute") {
     warning_glue(
       'The `variables` argument is only relevant for the "permute" ',
       'generation type and will be ignored.'
     )
+    
+    should_prompt <- FALSE
+  } else {
+    should_prompt <- TRUE
   }
+  
+  col_names <- process_variables(variables, should_prompt)
+  
 
   if (any(!col_names %in% colnames(x))) {
     bad_cols <- col_names[!col_names %in% colnames(x)]
@@ -254,8 +259,9 @@ process_variables <- function(variables, should_prompt) {
   
   if (any(interactions) && should_prompt) {
     message_glue(
-      "Message: Interaction effects are not supported for the `variables` ",
-      "argument and will be ignored."
+      "Message: Please supply only data columns to the `variables` argument. ",
+      "Note that any derived effects that depend on these columns will also ",
+      "be affected."
     )
   }
   
