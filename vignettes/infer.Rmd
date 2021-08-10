@@ -288,7 +288,7 @@ null_fits <- gss %>%
 null_fits
 ```
 
-To permute variables other than the response variable, the `variables` argument to `generate()` allows you to choose any of the `specify()`ed variables to permute independently of each other.
+To permute variables other than the response variable, the `variables` argument to `generate()` allows you to choose columns from the data to permute. Note that any derived effects that depend on these columns (e.g., interaction effects) will also be affected.
 
 Beyond this point, observed fits and distributions from null fits interface exactly like analogous outputs from `calculate()`. For instance, we can use the following code to calculate a 95% confidence interval from these objects.
 
