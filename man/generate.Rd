@@ -17,8 +17,8 @@ data reflecting the null hypothesis. Currently one of
 
 \item{variables}{If \code{type = "permute"}, a set of unquoted column names in the
 data to permute (independently of each other). Defaults to only the
-response variable. Interaction effects are not supported in this
-argument and will be ignored.}
+response variable. Note that any derived effects that depend on these
+columns (e.g., interaction effects) will also be affected.}
 
 \item{...}{Currently ignored.}
 }
