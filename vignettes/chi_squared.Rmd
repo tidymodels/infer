@@ -65,7 +65,7 @@ We can `generate` the null distribution in one of two ways---using randomization
 
 ```{r generate-null-indep, warning = FALSE, message = FALSE}
 # generate the null distribution using randomization
-null_distribution_simulated <- gss %>%
+null_dist_sim <- gss %>%
   specify(college ~ finrela) %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
@@ -76,7 +76,7 @@ Note that, in the line `specify(college ~ finrela)` above, we could use the equi
 
 ```{r generate-null-indep-t, warning = FALSE, message = FALSE}
 # generate the null distribution by theoretical approximation
-null_distribution_theoretical <- gss %>%
+null_dist_theor <- gss %>%
   specify(college ~ finrela) %>%
   assume(distribution = "Chisq")
 ```
@@ -85,7 +85,7 @@ To get a sense for what these distributions look like, and where our observed st
 
 ```{r visualize-indep, warning = FALSE, message = FALSE}
 # visualize the null distribution and test statistic!
-null_distribution_simulated %>%
+null_dist_sim %>%
   visualize() + 
   shade_p_value(observed_indep_statistic,
                 direction = "greater")
@@ -107,7 +107,7 @@ To visualize both the randomization-based and theoretical null distributions to 
 
 ```{r visualize-indep-both, warning = FALSE, message = FALSE}
 # visualize both null distributions and the test statistic!
-null_distribution_simulated %>%
+null_dist_sim %>%
   visualize(method = "both") + 
   shade_p_value(observed_indep_statistic,
                 direction = "greater")
@@ -117,7 +117,7 @@ Either way, it looks like our observed test statistic would be quite unlikely if
 
 ```{r p-value-indep, warning = FALSE, message = FALSE}
 # calculate the p value from the observed statistic and null distribution
-p_value_independence <- null_distribution_simulated %>%
+p_value_independence <- null_dist_sim %>%
   get_p_value(obs_stat = observed_indep_statistic,
               direction = "greater")
 
@@ -176,7 +176,7 @@ The observed statistic is `r observed_gof_statistic`. Now, generating a null dis
 
 ```{r null-distribution-gof, warning = FALSE, message = FALSE}
 # generating a null distribution, assuming each income class is equally likely
-null_distribution_gof <- gss %>%
+null_dist_gof <- gss %>%
   specify(response = finrela) %>%
   hypothesize(null = "point",
               p = c("far below average" = 1/6,
@@ -193,7 +193,7 @@ Again, to get a sense for what these distributions look like, and where our obse
 
 ```{r visualize-indep-gof, warning = FALSE, message = FALSE}
 # visualize the null distribution and test statistic!
-null_distribution_gof %>%
+null_dist_gof %>%
   visualize() + 
   shade_p_value(observed_gof_statistic,
                 direction = "greater")
@@ -203,7 +203,7 @@ This statistic seems like it would be quite unlikely if income class self-identi
 
 ```{r get-p-value-gof, warning = FALSE, message = FALSE}
 # calculate the p-value
-p_value_gof <- null_distribution_gof %>%
+p_value_gof <- null_dist_gof %>%
   get_p_value(observed_gof_statistic,
               direction = "greater")
 

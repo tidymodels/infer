@@ -64,7 +64,7 @@ We can `generate` the null distribution using the bootstrap. In the bootstrap, f
 
 ```{r generate-null-1-sample, warning = FALSE, message = FALSE}
 # generate the null distribution
-null_distribution_1_sample <- gss %>%
+null_dist_1_sample <- gss %>%
   specify(response = hours) %>%
   hypothesize(null = "point", mu = 40) %>%
   generate(reps = 1000, type = "bootstrap") %>%
@@ -75,7 +75,7 @@ To get a sense for what these distributions look like, and where our observed st
 
 ```{r visualize-1-sample, warning = FALSE, message = FALSE}
 # visualize the null distribution and test statistic!
-null_distribution_1_sample %>%
+null_dist_1_sample %>%
   visualize() + 
   shade_p_value(observed_statistic,
                 direction = "two-sided")
@@ -85,7 +85,7 @@ It looks like our observed mean of `r observed_statistic` would be relatively un
 
 ```{r p-value-1-sample, warning = FALSE, message = FALSE}
 # calculate the p value from the test statistic and null distribution
-p_value_1_sample <- null_distribution_1_sample %>%
+p_value_1_sample <- null_dist_1_sample %>%
   get_p_value(obs_stat = observed_statistic,
               direction = "two-sided")
 
@@ -168,7 +168,7 @@ We can `generate` the null distribution using permutation, where, for each repli
 
 ```{r generate-null-2-sample, warning = FALSE, message = FALSE}
 # generate the null distribution with randomization
-null_distribution_2_sample <- gss %>%
+null_dist_2_sample <- gss %>%
   specify(hours ~ college) %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
@@ -181,7 +181,7 @@ To get a sense for what these distributions look like, and where our observed st
 
 ```{r visualize-2-sample, warning = FALSE, message = FALSE}
 # visualize the randomization-based null distribution and test statistic!
-null_distribution_2_sample %>%
+null_dist_2_sample %>%
   visualize() + 
   shade_p_value(observed_statistic,
                 direction = "two-sided")
@@ -192,7 +192,7 @@ It looks like our observed statistic of `r observed_statistic` would be unlikely
 ```{r p-value-2-sample, warning = FALSE, message = FALSE}
 # calculate the p value from the randomization-based null 
 # distribution and the observed statistic
-p_value_2_sample <- null_distribution_2_sample %>%
+p_value_2_sample <- null_dist_2_sample %>%
   get_p_value(obs_stat = observed_statistic,
               direction = "two-sided")
 

@@ -64,7 +64,7 @@
 #'
 #' @examples
 #'
-#' boot_distr <- gss %>%
+#' boot_dist <- gss %>%
 #'   # We're interested in the number of hours worked per week
 #'   specify(response = hours) %>%
 #'   # Generate bootstrap samples
@@ -72,7 +72,7 @@
 #'   # Calculate mean of each bootstrap sample
 #'   calculate(stat = "mean")
 #'
-#' boot_distr %>%
+#' boot_dist %>%
 #'   # Calculate the confidence interval around the point estimate
 #'   get_confidence_interval(
 #'     # At the 95% confidence level; percentile method
@@ -84,7 +84,7 @@
 #'   specify(response = hours) %>%
 #'   calculate(stat = "mean")
 #'
-#' boot_distr %>%
+#' boot_dist %>%
 #'   get_confidence_interval(
 #'     point_estimate = sample_mean,
 #'     # At the 95% confidence level

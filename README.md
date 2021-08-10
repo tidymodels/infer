@@ -129,7 +129,7 @@ F_hat <- gss %>%
 Then, generating the null distribution,
 
 ``` r
-null_distn <- gss %>%
+null_dist <- gss %>%
    specify(age ~ partyid) %>%
    hypothesize(null = "independence") %>%
    generate(reps = 1000, type = "permute") %>%
@@ -139,7 +139,7 @@ null_distn <- gss %>%
 Visualizing the observed statistic alongside the null distribution,
 
 ``` r
-visualize(null_distn) +
+visualize(null_dist) +
   shade_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
@@ -155,7 +155,7 @@ Calculating the p-value from the null distribution and observed
 statistic,
 
 ``` r
-null_distn %>%
+null_dist %>%
   get_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
