@@ -15,9 +15,10 @@
 #' @param type The method used to generate resamples of the observed
 #'   data reflecting the null hypothesis. Currently one of
 #'   `"bootstrap"`, `"permute"`, or `"draw"` (see below).
-#' @param cols If `type = "permute"`, a set of unquoted column names in the
+#' @param variables If `type = "permute"`, a set of unquoted column names in the
 #'   data to permute (independently of each other). Defaults to only the
-#'   response variable.
+#'   response variable. Note that any derived effects that depend on these
+#'   columns (e.g., interaction effects) will also be affected.
 #' @param ... Currently ignored.
 #'
 #' @return A tibble containing `reps` generated datasets, indicated by the
@@ -64,7 +65,7 @@
 #' @family core functions
 #' @export
 generate <- function(x, reps = 1, type = NULL,
-                     cols = !!response_expr(x), ...) {
+                     variables = !!response_expr(x), ...) {
   # Check type argument, warning if necessary
   type <- sanitize_generation_type(type)
   auto_type <- sanitize_generation_type(attr(x, "type"))
@@ -74,7 +75,7 @@ generate <- function(x, reps = 1, type = NULL,
     use_auto_type(auto_type)
   }
 
-  check_cols(x, rlang::enquo(cols), type, missing(cols))
+  check_cols(x, rlang::enquo(variables), type, missing(variables))
 
   attr(x, "generated") <- TRUE
 
@@ -83,7 +84,7 @@ generate <- function(x, reps = 1, type = NULL,
     bootstrap = bootstrap(x, reps, ...),
     permute = {
       check_permutation_attributes(x)
-      permute(x, reps, rlang::enquo(cols), ...)
+      permute(x, reps, rlang::enquo(variables), ...)
     },
     draw = draw(x, reps, ...),
     simulate = draw(x, reps, ...)
@@ -145,22 +146,27 @@ check_permutation_attributes <- function(x, attr) {
   }
 }
 
-check_cols <- function(x, cols, type, missing) {
-  if (!rlang::is_symbolic(rlang::get_expr(cols))) {
+check_cols <- function(x, variables, type, missing) {
+  if (!rlang::is_symbolic(rlang::get_expr(variables))) {
     stop_glue(
-      "The `cols` argument should be one or more unquoted variable names ",
+      "The `variables` argument should be one or more unquoted variable names ",
       "(not strings in quotation marks)."
     )
   }
 
-  col_names <- all.vars(rlang::get_expr(cols))
-
   if (!missing && type != "permute") {
     warning_glue(
-      'The `cols` argument is only relevant for the "permute" ',
+      'The `variables` argument is only relevant for the "permute" ',
       'generation type and will be ignored.'
     )
+    
+    should_prompt <- FALSE
+  } else {
+    should_prompt <- TRUE
   }
+  
+  col_names <- process_variables(variables, should_prompt)
+  
 
   if (any(!col_names %in% colnames(x))) {
     bad_cols <- col_names[!col_names %in% colnames(x)]
@@ -171,7 +177,7 @@ check_cols <- function(x, cols, type, missing) {
 
     stop_glue(
       'The column{plurals[1]} `{list(bad_cols)}` provided to ',
-      'the `cols` argument {plurals[2]} not in the supplied data.'
+      'the `variables` argument {plurals[2]} not in the supplied data.'
     )
   }
 }
@@ -204,8 +210,8 @@ bootstrap <- function(x, reps = 1, ...) {
 }
 
 #' @importFrom dplyr bind_rows group_by
-permute <- function(x, reps = 1, cols, ...) {
-  df_out <- replicate(reps, permute_once(x, cols), simplify = FALSE) %>%
+permute <- function(x, reps = 1, variables, ...) {
+  df_out <- replicate(reps, permute_once(x, variables), simplify = FALSE) %>%
     dplyr::bind_rows() %>%
     dplyr::mutate(replicate = rep(1:reps, each = nrow(x))) %>%
     dplyr::group_by(replicate)
@@ -215,12 +221,12 @@ permute <- function(x, reps = 1, cols, ...) {
   append_infer_class(df_out)
 }
 
-permute_once <- function(x, cols, ...) {
+permute_once <- function(x, variables, ...) {
   dots <- list(...)
 
   if (is_hypothesized(x) && (attr(x, "null") == "independence")) {
     # for each column, determine whether it should be permuted
-    needs_permuting <- colnames(x) %in% all.vars(rlang::get_expr(cols))
+    needs_permuting <- colnames(x) %in% process_variables(variables, FALSE)
 
     # pass each to permute_column with its associated logical
     out <- purrr::map2_dfc(x, needs_permuting, permute_column)
@@ -232,6 +238,36 @@ permute_once <- function(x, cols, ...) {
       "See `hypothesize()`."
     )
   }
+}
+
+process_variables <- function(variables, should_prompt) {
+  # extract the expression and convert each element to string
+  out <- rlang::get_expr(variables)
+  
+  if (length(out) == 1) {
+    out <- as.character(out)
+  } else {
+    out <- purrr::map(out, as.character)
+  }
+    
+  
+  # drop c()
+  out[out == "c"] <- NULL
+  
+  # drop interactions and message
+  interactions <- purrr::map_lgl(out, `%in%`, x = "*")
+  
+  if (any(interactions) && should_prompt) {
+    message_glue(
+      "Message: Please supply only data columns to the `variables` argument. ",
+      "Note that any derived effects that depend on these columns will also ",
+      "be affected."
+    )
+  }
+  
+  out <- out[!interactions]
+  
+  out
 }
 
 permute_column <- function(col, permute) {
