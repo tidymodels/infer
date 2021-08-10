@@ -55,11 +55,11 @@
 #'   
 #' # you can shade confidence intervals on top of
 #' # theoretical distributions, too!
-#' null_dist_theor <- gss %>%
+#' null_dist_theory <- gss %>%
 #'   specify(response = hours) %>%
 #'   assume(distribution = "t") 
 #'   
-#' null_dist_theor %>%
+#' null_dist_theory %>%
 #'   visualize() +
 #'   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 #' 

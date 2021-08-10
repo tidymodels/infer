@@ -255,7 +255,7 @@ test_that("theoretical CIs align with simulation-based (mean)", {
     generate(reps = 1e3, type = "bootstrap") %>% 
     calculate(stat = "mean")
   
-  null_dist_theor <- gss %>%
+  null_dist_theory <- gss %>%
     specify(response = hours) %>%
     hypothesize(null = "point", mu = 40) %>%
     assume(distribution = "t")
@@ -268,7 +268,7 @@ test_that("theoretical CIs align with simulation-based (mean)", {
       point_estimate = x_bar
     ),
     get_confidence_interval(
-      null_dist_theor, 
+      null_dist_theory, 
       .95, 
       type = "se", 
       point_estimate = x_bar
@@ -290,7 +290,7 @@ test_that("theoretical CIs align with simulation-based (prop)", {
     generate(reps = 1e3, type = "draw") %>%
     calculate(stat = "prop")
   
-  null_dist_theor <- gss %>%
+  null_dist_theory <- gss %>%
     specify(response = sex, success = "female") %>%
     assume(distribution = "z")
   
@@ -302,7 +302,7 @@ test_that("theoretical CIs align with simulation-based (prop)", {
       point_estimate = p_hat
     ),
     get_confidence_interval(
-      null_dist_theor, 
+      null_dist_theory, 
       .95, 
       type = "se", 
       point_estimate = p_hat
@@ -324,7 +324,7 @@ test_that("theoretical CIs align with simulation-based (diff in means)", {
     generate(reps = 3e3, type = "permute") %>% 
     calculate(stat = "diff in means", order = c("degree", "no degree"))
   
-  null_dist_theor <- gss %>%
+  null_dist_theory <- gss %>%
     specify(age ~ college) %>% 
     assume(distribution = "t")
   
@@ -336,7 +336,7 @@ test_that("theoretical CIs align with simulation-based (diff in means)", {
       point_estimate = diff_bar
     ),
     get_confidence_interval(
-      null_dist_theor, 
+      null_dist_theory, 
       .95, 
       type = "se", 
       point_estimate = diff_bar
@@ -358,7 +358,7 @@ test_that("theoretical CIs align with simulation-based (diff in props)", {
     generate(reps = 1e3, type = "permute") %>%
     calculate(stat = "diff in props", order = c("female", "male"))
   
-  null_dist_theor <- gss %>%
+  null_dist_theory <- gss %>%
     specify(college ~ sex, success = "no degree") %>%
     assume(distribution = "z")
   
@@ -370,7 +370,7 @@ test_that("theoretical CIs align with simulation-based (diff in props)", {
       point_estimate = diff_hat
     ),
     get_confidence_interval(
-      null_dist_theor, 
+      null_dist_theory, 
       .95, 
       type = "se", 
       point_estimate = diff_hat
@@ -384,19 +384,19 @@ test_that("theoretical CIs check arguments properly", {
     specify(response = hours) %>%
     calculate(stat = "mean")
   
-  null_dist_theor <- gss %>%
+  null_dist_theory <- gss %>%
     specify(age ~ college) %>% 
     assume(distribution = "t")
   
   # check that type is handled correctly
   expect_equal(
     get_confidence_interval(
-      null_dist_theor, 
+      null_dist_theory, 
       level = .95, 
       point_estimate = x_bar
     ),
     get_confidence_interval(
-      null_dist_theor, 
+      null_dist_theory, 
       level = .95,
       type = "se",
       point_estimate = x_bar
@@ -405,7 +405,7 @@ test_that("theoretical CIs check arguments properly", {
   
   expect_error(
     get_confidence_interval(
-      null_dist_theor, 
+      null_dist_theory, 
       level = .95,
       type = "percentile",
       point_estimate = x_bar
@@ -415,7 +415,7 @@ test_that("theoretical CIs check arguments properly", {
   
   expect_error(
     get_confidence_interval(
-      null_dist_theor, 
+      null_dist_theory, 
       level = .95,
       type = "boop",
       point_estimate = x_bar
@@ -426,7 +426,7 @@ test_that("theoretical CIs check arguments properly", {
   # check that point estimate hasn't been post-processed
   expect_error(
     get_confidence_interval(
-      null_dist_theor, 
+      null_dist_theory, 
       level = .95, 
       point_estimate = dplyr::pull(x_bar)
     ),
@@ -435,7 +435,7 @@ test_that("theoretical CIs check arguments properly", {
   
   expect_error(
     get_confidence_interval(
-      null_dist_theor, 
+      null_dist_theory, 
       level = .95, 
       point_estimate = x_bar$stat
     ),
@@ -450,7 +450,7 @@ test_that("theoretical CIs check arguments properly", {
   
   expect_error(
     get_confidence_interval(
-      null_dist_theor, 
+      null_dist_theory, 
       level = .95, 
       point_estimate = obs_t
     ),
@@ -468,7 +468,7 @@ test_that("theoretical CIs check arguments properly", {
   
   expect_error(
     get_confidence_interval(
-      null_dist_theor, 
+      null_dist_theory, 
       level = .95, 
       point_estimate = p_hat
     ),

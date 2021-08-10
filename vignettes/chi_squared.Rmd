@@ -76,7 +76,7 @@ Note that, in the line `specify(college ~ finrela)` above, we could use the equi
 
 ```{r generate-null-indep-t, warning = FALSE, message = FALSE}
 # generate the null distribution by theoretical approximation
-null_dist_theor <- gss %>%
+null_dist_theory <- gss %>%
   specify(college ~ finrela) %>%
   assume(distribution = "Chisq")
 ```

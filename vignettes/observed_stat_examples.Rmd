@@ -110,7 +110,7 @@ null_dist <- gss %>%
 Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
-null_dist_theor <- gss %>%
+null_dist_theory <- gss %>%
   specify(response = hours)  %>%
   assume("t")
 ```
@@ -125,7 +125,7 @@ visualize(null_dist) +
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
 ```{r}
-visualize(null_dist_theor) +
+visualize(null_dist_theory) +
   shade_p_value(obs_stat = t_bar, direction = "two-sided")
 ```
 
@@ -451,7 +451,7 @@ null_dist <- gss %>%
 Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
-null_dist_theor <- gss %>%
+null_dist_theory <- gss %>%
   specify(college ~ sex, success = "no degree") %>%
   assume("z")
 ```
@@ -466,7 +466,7 @@ visualize(null_dist) +
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
 ```{r}
-visualize(null_dist_theor) +
+visualize(null_dist_theory) +
   shade_p_value(obs_stat = z_hat, direction = "two-sided")
 ```
 
@@ -549,7 +549,7 @@ null_dist <- gss %>%
 Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
-null_dist_theor <- gss %>%
+null_dist_theory <- gss %>%
   specify(response = finrela) %>%
   assume("Chisq")
 ```
@@ -564,14 +564,14 @@ visualize(null_dist) +
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
 ```{r}
-visualize(null_dist_theor) +
+visualize(null_dist_theory) +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
 Alternatively, visualizing the observed statistic using both of the null distributions,
 
 ```{r}
-visualize(null_dist_theor, method = "both") +
+visualize(null_dist_theory, method = "both") +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
@@ -628,7 +628,7 @@ null_dist <- gss %>%
 Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
-null_dist_theor <- gss %>%
+null_dist_theory <- gss %>%
   specify(finrela ~ sex) %>%
   assume(distribution = "Chisq")
 ```
@@ -643,7 +643,7 @@ visualize(null_dist) +
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
 ```{r}
-visualize(null_dist_theor) +
+visualize(null_dist_theory) +
   shade_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
@@ -744,7 +744,7 @@ null_dist <- gss %>%
 Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
-null_dist_theor <- gss %>%
+null_dist_theory <- gss %>%
   specify(age ~ college) %>%
   assume("t")
 ```
@@ -759,7 +759,7 @@ visualize(null_dist) +
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
 ```{r}
-visualize(null_dist_theor) +
+visualize(null_dist_theory) +
   shade_p_value(obs_stat = t_hat, direction = "two-sided")
 ```
 
@@ -853,7 +853,7 @@ null_dist <- gss %>%
 Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
-null_dist_theor <- gss %>%
+null_dist_theory <- gss %>%
    specify(age ~ partyid) %>%
    hypothesize(null = "independence") %>%
    assume(distribution = "F")
@@ -869,7 +869,7 @@ visualize(null_dist) +
 Alternatively, visualizing the observed statistic using the theory-based null distribution,
 
 ```{r}
-visualize(null_dist_theor) +
+visualize(null_dist_theory) +
   shade_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
