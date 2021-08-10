@@ -61,7 +61,7 @@ We can `generate` an approximation of the null distribution using randomization.
 
 ```{r generate-null-f, warning = FALSE, message = FALSE}
 # generate the null distribution using randomization
-null_distribution <- gss %>%
+null_dist <- gss %>%
   specify(age ~ partyid) %>%
   hypothesize(null = "independence") %>%
   generate(reps = 1000, type = "permute") %>%
@@ -74,7 +74,7 @@ To get a sense for what this distribution looks like, and where our observed sta
 
 ```{r visualize-f, warning = FALSE, message = FALSE}
 # visualize the null distribution and test statistic!
-null_distribution %>%
+null_dist %>%
   visualize() + 
   shade_p_value(observed_f_statistic,
                 direction = "greater")
@@ -84,11 +84,11 @@ We could also visualize the observed statistic against the theoretical null dist
 
 ```{r visualize-f-theor, warning = FALSE, message = FALSE}
 # visualize the theoretical null distribution and test statistic!
-null_dist_theoretical <- gss %>%
+null_dist_theory <- gss %>%
   specify(age ~ partyid) %>%
   assume(distribution = "F")
 
-visualize(null_dist_theoretical) +
+visualize(null_dist_theory) +
   shade_p_value(observed_f_statistic,
                 direction = "greater")
 ```
@@ -97,7 +97,7 @@ To visualize both the randomization-based and theoretical null distributions to 
 
 ```{r visualize-indep-both, warning = FALSE, message = FALSE}
 # visualize both null distributions and the test statistic!
-null_distribution %>%
+null_dist %>%
   visualize(method = "both") + 
   shade_p_value(observed_f_statistic,
                 direction = "greater")
@@ -107,7 +107,7 @@ Either way, it looks like our observed test statistic would be quite unlikely if
 
 ```{r p-value-indep, warning = FALSE, message = FALSE}
 # calculate the p value from the observed statistic and null distribution
-p_value <- null_distribution %>%
+p_value <- null_dist %>%
   get_p_value(obs_stat = observed_f_statistic,
               direction = "greater")
 
