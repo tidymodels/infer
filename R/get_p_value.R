@@ -257,7 +257,7 @@ two_sided_p_value <- function(vec, obs_stat) {
 check_hypotheses_align <- function(x, obs_stat) {
   if (is_hypothesized(x) &&
       is_hypothesized(obs_stat) &&
-      attr(x, "params") != attr(obs_stat, "params")) {
+      any(attr(x, "params") != attr(obs_stat, "params"))) {
     warning_glue(
       "`x` and `obs_stat` were generated using different null hypotheses. ",
       "This workflow is untested and results may not mean what you think ",
