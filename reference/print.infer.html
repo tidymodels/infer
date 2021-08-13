@@ -75,9 +75,15 @@
   gtag('config', 'UA-115082821-1');
 </script>
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -94,7 +100,7 @@
         <a class="navbar-brand" href="../index.html">infer</a>
         <div class="info hidden-xs hidden-sm">
           <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
         </div>
       </div>
     </div>
@@ -138,7 +144,7 @@
 </li>
         <li>
   <a href="https://github.com/tidymodels/infer">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -164,8 +170,14 @@
     <p>Print methods</p>
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for infer</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='co'># S3 method for infer</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for infer_layer</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for infer_dist</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,7 +185,8 @@
     <tr>
       <th>x</th>
       <td><p>An object of class <code>infer</code>, i.e. output from <code><a href='specify.html'>specify()</a></code> or
-<code><a href='hypothesize.html'>hypothesize()</a></code>.</p></td>
+<code><a href='hypothesize.html'>hypothesize()</a></code>, or of class <code>infer_layer</code>, i.e. output from
+<code><a href='shade_p_value.html'>shade_p_value()</a></code> or <code><a href='shade_confidence_interval.html'>shade_confidence_interval()</a></code>.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -198,7 +211,7 @@
 
 <div class="author">
   <p>
-    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Ben Baumer, Mine Cetinkaya-Rundel.
+    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Simon Couch, Ben Baumer, Mine Cetinkaya-Rundel.
     Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
   </p>
 </div>
@@ -208,6 +221,8 @@
 
   
 
+
+  
 
   </body>
 </html>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add information about p-value region(s) — shade_p_value • infer</title>
+<title>Shade histogram area beyond an observed statistic — shade_p_value • infer</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -49,10 +49,10 @@
 
 
 
-<meta property="og:title" content="Add information about p-value region(s) — shade_p_value" />
-<meta property="og:description" content="shade_p_value() plots p-value region(s) (using &quot;area under the curve&quot;
-approach) on top of the visualize() output. It should be used as
-\ggplot2\ layer function (see examples). shade_pvalue() is its alias.
+<meta property="og:title" content="Shade histogram area beyond an observed statistic — shade_p_value" />
+<meta property="og:description" content="shade_p_value() plots a p-value region on top of
+visualize() output. The output is a ggplot2 layer that can be added with
++. The function has a shorter alias, shade_pvalue().
 Learn more in vignette(&quot;infer&quot;)." />
 <meta name="twitter:card" content="summary" />
 
@@ -78,9 +78,15 @@ Learn more in vignette(&quot;infer&quot;)." />
   gtag('config', 'UA-115082821-1');
 </script>
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -97,7 +103,7 @@ Learn more in vignette(&quot;infer&quot;)." />
         <a class="navbar-brand" href="../index.html">infer</a>
         <div class="info hidden-xs hidden-sm">
           <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
         </div>
       </div>
     </div>
@@ -141,7 +147,7 @@ Learn more in vignette(&quot;infer&quot;)." />
 </li>
         <li>
   <a href="https://github.com/tidymodels/infer">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -158,36 +164,40 @@ Learn more in vignette(&quot;infer&quot;)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add information about p-value region(s)</h1>
+    <h1>Shade histogram area beyond an observed statistic</h1>
     <small class="dont-index">Source: <a href='https://github.com/tidymodels/infer/blob/master/R/shade_p_value.R'><code>R/shade_p_value.R</code></a></small>
     <div class="hidden name"><code>shade_p_value.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>shade_p_value()</code> plots p-value region(s) (using "area under the curve"
-approach) on top of the <code><a href='visualize.html'>visualize()</a></code> output. It should be used as
-\ggplot2\ layer function (see examples). <code>shade_pvalue()</code> is its alias.</p>
+    <p><code>shade_p_value()</code> plots a p-value region on top of
+<code><a href='visualize.html'>visualize()</a></code> output. The output is a ggplot2 layer that can be added with
+<code>+</code>. The function has a shorter alias, <code>shade_pvalue()</code>.</p>
 <p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>shade_p_value</span><span class='op'>(</span><span class='va'>obs_stat</span>, <span class='va'>direction</span>, color <span class='op'>=</span> <span class='st'>"red2"</span>, fill <span class='op'>=</span> <span class='st'>"pink"</span>, <span class='va'>...</span><span class='op'>)</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>shade_p_value</span><span class='op'>(</span><span class='va'>obs_stat</span>, <span class='va'>direction</span>, color <span class='op'>=</span> <span class='st'>"red2"</span>, fill <span class='op'>=</span> <span class='st'>"pink"</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>shade_pvalue</span><span class='op'>(</span><span class='va'>obs_stat</span>, <span class='va'>direction</span>, color <span class='op'>=</span> <span class='st'>"red2"</span>, fill <span class='op'>=</span> <span class='st'>"pink"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+<span class='fu'>shade_pvalue</span><span class='op'>(</span><span class='va'>obs_stat</span>, <span class='va'>direction</span>, color <span class='op'>=</span> <span class='st'>"red2"</span>, fill <span class='op'>=</span> <span class='st'>"pink"</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>obs_stat</th>
-      <td><p>A numeric value or 1x1 data frame corresponding to what the
-observed statistic is.</p></td>
+      <td><p>The observed statistic or estimate. For
+<code><a href='calculate.html'>calculate()</a></code>-based workflows, this will be a 1-element numeric vector or
+a <code>1 x 1</code> data frame containing the observed statistic.
+For <code><a href='fit.infer.html'>fit()</a></code>-based workflows, a <code>(p + 1) x 2</code> data frame
+with columns <code>term</code> and <code>estimate</code> giving the observed estimate for
+each term.</p></td>
     </tr>
     <tr>
       <th>direction</th>
       <td><p>A string specifying in which direction the shading should
 occur. Options are <code>"less"</code>, <code>"greater"</code>, or <code>"two-sided"</code>. Can
-also give <code>"left"</code>, <code>"right"</code>, <code>"both"</code>, <code>"two_sided"</code>, or <code>"two sided"</code>.
-If <code>NULL</code> then no shading is actually done.</p></td>
+also give <code>"left"</code>, <code>"right"</code>, <code>"both"</code>, <code>"two_sided"</code>, <code>"two sided"</code>,
+or <code>"two.sided"</code>. If <code>NULL</code>, the function will not shade any area.</p></td>
     </tr>
     <tr>
       <th>color</th>
@@ -197,52 +207,125 @@ statistic as a vertical line on the plot.</p></td>
     <tr>
       <th>fill</th>
       <td><p>A character or hex string specifying the color to shade the
-p-value region. If <code>NULL</code> then no shading is actually done.</p></td>
+p-value region. If <code>NULL</code>, the function will not shade any area.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Other arguments passed along to \ggplot2\ functions.</p></td>
+      <td><p>Other arguments passed along to \ggplot2\ functions.
+For expert use only.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list of \ggplot2\ objects to be added to the <code><a href='visualize.html'>visualize()</a></code>
-output.</p>
+    <p>If added to an existing infer visualization, a \ggplot2\
+object displaying the supplied statistic on top of its corresponding
+distribution. Otherwise, an <code>infer_layer</code> list.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='shade_confidence_interval.html'>shade_confidence_interval()</a></code> to add information about confidence
-interval.</p></div>
+    <div class='dont-index'><p>Other visualization functions: 
+<code><a href='shade_confidence_interval.html'>shade_confidence_interval</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># find the point estimate---mean number of hours worked per week</span>
-<span class='va'>point_estimate</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/pull.html'>pull</a></span><span class='op'>(</span><span class='op'>)</span>
-  
-<span class='co'># ...and a null distribution</span>
-<span class='va'>null_dist</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'>%&gt;%</span>
-  <span class='co'># ...we're interested in the number of hours worked per week</span>
-  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='co'># hypothesizing that the mean is 40</span>
-  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='co'># generating data points for a null distribution</span>
-  <span class='fu'><a href='generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"bootstrap"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='co'># finding the null distribution</span>
-  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span>
-  
-<span class='co'># shade the p-value of the point estimate</span>
-<span class='va'>null_dist</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='visualize.html'>visualize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>shade_p_value</span><span class='op'>(</span>obs_stat <span class='op'>=</span> <span class='va'>point_estimate</span>, direction <span class='op'>=</span> <span class='st'>"two-sided"</span><span class='op'>)</span>
-</div><div class='img'><img src='shade_p_value-1.png' alt='' width='768' height='552' /></div><div class='input'>
-<span class='co'># More in-depth explanation of how to use the infer package</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span><span class='op'>(</span><span class='st'>"infer"</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='co'># find the point estimate---mean number of hours worked per week</span></span>
+<span class='r-in'><span class='va'>point_estimate</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"t"</span><span class='op'>)</span></span>
+<span class='r-in'>  </span>
+<span class='r-in'><span class='co'># ...and a null distribution</span></span>
+<span class='r-in'><span class='va'>null_dist</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># ...we're interested in the number of hours worked per week</span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># hypothesizing that the mean is 40</span></span>
+<span class='r-in'>  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># generating data points for a null distribution</span></span>
+<span class='r-in'>  <span class='fu'><a href='generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"bootstrap"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># estimating the null distribution</span></span>
+<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"t"</span><span class='op'>)</span></span>
+<span class='r-in'>  </span>
+<span class='r-in'><span class='co'># shade the p-value of the point estimate</span></span>
+<span class='r-in'><span class='va'>null_dist</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='visualize.html'>visualize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'>shade_p_value</span><span class='op'>(</span>obs_stat <span class='op'>=</span> <span class='va'>point_estimate</span>, direction <span class='op'>=</span> <span class='st'>"two-sided"</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='shade_p_value-1.png' alt='' width='768' height='552' /></span>
+<span class='r-in'>  </span>
+<span class='r-in'><span class='co'># you can shade confidence intervals on top of</span></span>
+<span class='r-in'><span class='co'># theoretical distributions, too!</span></span>
+<span class='r-in'><span class='va'>null_dist_theory</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='assume.html'>assume</a></span><span class='op'>(</span>distribution <span class='op'>=</span> <span class='st'>"t"</span><span class='op'>)</span> </span>
+<span class='r-in'>  </span>
+<span class='r-in'><span class='va'>null_dist_theory</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='visualize.html'>visualize</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span class='r-in'>  <span class='fu'>shade_p_value</span><span class='op'>(</span>obs_stat <span class='op'>=</span> <span class='va'>point_estimate</span>, direction <span class='op'>=</span> <span class='st'>"two-sided"</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='shade_p_value-2.png' alt='' width='768' height='552' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='co'># to visualize distributions of coefficients for multiple</span></span>
+<span class='r-in'><span class='co'># explanatory variables, use a `fit()`-based workflow</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># fit 1000 linear models with the `hours` variable permuted</span></span>
+<span class='r-in'><span class='va'>null_fits</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'> <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>hours</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>college</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'> <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"independence"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'> <span class='fu'><a href='generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"permute"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'> <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'> </span>
+<span class='r-in'><span class='va'>null_fits</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3,000 × 3</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Groups:   replicate [1,000]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    replicate term          estimate</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span>         1 intercept      43.1   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span>         1 age            -<span style='color: #BB0000;'>0.048</span><span style='color: #BB0000; text-decoration: underline;'>5</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span>         1 collegedegree   0.562 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span>         2 intercept      42.1   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span>         2 age            -<span style='color: #BB0000;'>0.018</span><span style='color: #BB0000; text-decoration: underline;'>0</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span>         2 collegedegree   0.074<span style='text-decoration: underline;'>5</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span>         3 intercept      36.4   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span>         3 age             0.121 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span>         3 collegedegree   0.402 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span>         4 intercept      42.6   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 2,990 more rows</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># fit a linear model to the observed data</span></span>
+<span class='r-in'><span class='va'>obs_fit</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>hours</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>college</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>obs_fit</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3 × 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   term          estimate</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> intercept     40.6    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> age            0.005<span style='text-decoration: underline;'>96</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> collegedegree  1.53   </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># visualize distributions of coefficients </span></span>
+<span class='r-in'><span class='co'># generated under the null</span></span>
+<span class='r-in'><span class='fu'><a href='visualize.html'>visualize</a></span><span class='op'>(</span><span class='va'>null_fits</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='shade_p_value-3.png' alt='' width='768' height='552' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># add a p-value shading layer to juxtapose the null </span></span>
+<span class='r-in'><span class='co'># fits with the observed fit for each term</span></span>
+<span class='r-in'><span class='fu'><a href='visualize.html'>visualize</a></span><span class='op'>(</span><span class='va'>null_fits</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span class='r-in'>  <span class='fu'>shade_p_value</span><span class='op'>(</span><span class='va'>obs_fit</span>, direction <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='shade_p_value-4.png' alt='' width='768' height='552' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># the direction argument will be applied </span></span>
+<span class='r-in'><span class='co'># to the plot for each term</span></span>
+<span class='r-in'><span class='fu'><a href='visualize.html'>visualize</a></span><span class='op'>(</span><span class='va'>null_fits</span><span class='op'>)</span> <span class='op'>+</span> </span>
+<span class='r-in'>  <span class='fu'>shade_p_value</span><span class='op'>(</span><span class='va'>obs_fit</span>, direction <span class='op'>=</span> <span class='st'>"left"</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='shade_p_value-5.png' alt='' width='768' height='552' /></span>
+<span class='r-in'><span class='co'># }</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># more in-depth explanation of how to use the infer package</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span><span class='op'>(</span><span class='st'>"infer"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -259,7 +342,7 @@ interval.</p></div>
 
 <div class="author">
   <p>
-    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Ben Baumer, Mine Cetinkaya-Rundel.
+    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Simon Couch, Ben Baumer, Mine Cetinkaya-Rundel.
     Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
   </p>
 </div>
@@ -269,6 +352,8 @@ interval.</p></div>
 
   
 
+
+  
 
   </body>
 </html>

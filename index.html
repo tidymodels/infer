@@ -35,6 +35,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -50,7 +52,7 @@
         <a class="navbar-brand" href="index.html">infer</a>
         <div class="info hidden-xs hidden-sm">
           <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
         </div>
       </div>
     </div>
@@ -94,7 +96,7 @@
 </li>
         <li>
   <a href="https://github.com/tidymodels/infer">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -112,10 +114,13 @@
   <div class="contents col-md-9">
 <div id="infer-r-package-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#infer-r-package-" class="anchor"></a>infer R Package <img src="https://github.com/tidymodels/infer/blob/master/figs/infer_gnome.png?raw=true" align="right" width="250">
+<a href="#infer-r-package-" class="anchor" aria-hidden="true"></a>infer R Package <img src="https://github.com/tidymodels/infer/blob/master/figs/infer_gnome.png?raw=true" align="right" width="280">
 </h1></div>
-<hr>
-<!--figs/infer.svg--><!--http://www.r-pkg.org/badges/version/infer--><!--figs/master.svg--><!--https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg-->
+<!--figs/infer.svg-->
+<!--http://www.r-pkg.org/badges/version/infer-->
+<!--figs/master.svg-->
+<!--https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg-->
+
 <p>The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the <code>tidyverse</code> design framework. The package is centered around 4 main verbs, supplemented with many utilities to visualize and extract value from their outputs.</p>
 <ul>
 <li>
@@ -128,37 +133,41 @@
 <code><a href="reference/calculate.html">calculate()</a></code> allows you to calculate a distribution of statistics from the generated data to form the null distribution.</li>
 </ul>
 <p>To learn more about the principles underlying the package design, see <code><a href="articles/infer.html">vignette("infer")</a></code>.</p>
-<p><img src="https://raw.githubusercontent.com/tidymodels/infer/master/figs/ht-diagram.png"><!-- --></p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/tidymodels/infer/master/figs/ht-diagram.png" alt="A diagram showing four steps to carry out randomization-based inference: specify hypothesis, generate data, calculate statistic, and visualize. From left to right, each step is connected by an arrow, while the diagram indicates that generating data and calculating statistics can happen iteratively."><p class="caption">
+</p>
+</div>
+<p>If you’re interested in learning more about randomization-based statistical inference generally, including applied examples of this package, we recommend checking out <a href="https://moderndive.com/" class="external-link">Statistical Inference Via Data Science: A ModernDive Into R and the Tidyverse</a> and <a href="https://openintro-ims.netlify.app/" class="external-link">Introduction to Modern Statistics</a>.</p>
 <div id="installation" class="section level3">
 <h3 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h3>
+<a href="#installation" class="anchor" aria-hidden="true"></a>Installation</h3>
 <hr>
 <p>To install the current stable version of <code>infer</code> from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"infer"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"infer"</span><span class="op">)</span></code></pre></div>
 <p>To install the developmental stable version of <code>infer</code>, make sure to install <code>remotes</code> first. The <code>pkgdown</code> website for this version is at <a href="https://infer.tidymodels.org/">infer.tidymodels.org</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"tidymodels/infer"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"tidymodels/infer"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="contributing" class="section level3">
 <h3 class="hasAnchor">
-<a href="#contributing" class="anchor"></a>Contributing</h3>
+<a href="#contributing" class="anchor" aria-hidden="true"></a>Contributing</h3>
 <hr>
-<p>We welcome others helping us make this package as user-friendly and efficient as possible. Please review our <a href="https://github.com/tidymodels/infer/blob/master/CONTRIBUTING.md">contributing</a> and <a href="https://github.com/tidymodels/infer/blob/master/CONDUCT.md">conduct</a> guidelines. By participating in this project you agree to abide by its terms.</p>
-<p>For questions and discussions about tidymodels packages, modeling, and machine learning, please <a href="https://rstd.io/tidymodels-community">post on RStudio Community</a>. If you think you have encountered a bug, please <a href="https://github.com/tidymodels/infer/issues">submit an issue</a>. Either way, learn how to create and share a <a href="https://rstd.io/reprex">reprex</a> (a minimal, reproducible example), to clearly communicate about your code. Check out further details on <a href="https://www.tidymodels.org/contribute/">contributing guidelines for tidymodels packages</a> and <a href="https://www.tidymodels.org/help/">how to get help</a>.</p>
+<p>We welcome others helping us make this package as user-friendly and efficient as possible. Please review our <a href="https://github.com/tidymodels/infer/blob/master/CONTRIBUTING.md" class="external-link">contributing</a> and <a href="https://github.com/tidymodels/infer/blob/master/CONDUCT.md" class="external-link">conduct</a> guidelines. By participating in this project you agree to abide by its terms.</p>
+<p>For questions and discussions about tidymodels packages, modeling, and machine learning, please <a href="https://rstd.io/tidymodels-community" class="external-link">post on RStudio Community</a>. If you think you have encountered a bug, please <a href="https://github.com/tidymodels/infer/issues" class="external-link">submit an issue</a>. Either way, learn how to create and share a <a href="https://rstd.io/reprex" class="external-link">reprex</a> (a minimal, reproducible example), to clearly communicate about your code. Check out further details on <a href="https://www.tidymodels.org/contribute/" class="external-link">contributing guidelines for tidymodels packages</a> and <a href="https://www.tidymodels.org/help/" class="external-link">how to get help</a>.</p>
 </div>
 <div id="examples" class="section level3">
 <h3 class="hasAnchor">
-<a href="#examples" class="anchor"></a>Examples</h3>
+<a href="#examples" class="anchor" aria-hidden="true"></a>Examples</h3>
 <hr>
-<p>These examples are pulled from the “Full infer Pipeline Examples” vignette, accessible by calling <code><a href="articles/observed_stat_examples.html">vignette("observed_stat_examples")</a></code>. They make use of the <code>gss</code> dataset supplied by the package, providing a sample of data from the <a href="https://gss.norc.org">General Social Survey</a>. The data looks like this:</p>
+<p>These examples are pulled from the “Full infer Pipeline Examples” vignette, accessible by calling <code><a href="articles/observed_stat_examples.html">vignette("observed_stat_examples")</a></code>. They make use of the <code>gss</code> dataset supplied by the package, providing a sample of data from the <a href="https://gss.norc.org" class="external-link">General Social Survey</a>. The data looks like this:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load in the dataset</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span>
 
 <span class="co"># take a glimpse at it</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co">## tibble [500 × 11] (S3: tbl_df/tbl/data.frame)</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="co">##  $ year   : num [1:500] 2014 1994 1998 1996 1994 ...</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="co">##  $ age    : num [1:500] 36 34 24 42 31 32 48 36 30 33 ...</span></span>
@@ -174,30 +183,33 @@
 <p>As an example, we’ll run an analysis of variance on <code>age</code> and <code>partyid</code>, testing whether the age of a respondent is independent of their political party affiliation.</p>
 <p>Calculating the observed statistic,</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">F_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">F_hat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> 
+  <span class="fu"><a href="reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span></code></pre></div>
 <p>Then, generating the null distribution,</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">null_distn</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span>
-   <span class="fu"><a href="reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op">%&gt;%</span>
-   <span class="fu"><a href="reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-   <span class="fu"><a href="reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">null_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
+   <span class="fu"><a href="reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
+   <span class="fu"><a href="reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
+   <span class="fu"><a href="reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
    <span class="fu"><a href="reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span></code></pre></div>
 <p>Visualizing the observed statistic alongside the null distribution,</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_distn</span><span class="op">)</span> <span class="op">+</span>
+<code class="sourceCode R"><span class="fu"><a href="reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">F_hat</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
-<p><img src="https://raw.githubusercontent.com/tidymodels/infer/master/README_files/figure-gfm/viz-1.png"><!-- --></p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/tidymodels/infer/master/README_files/figure-gfm/viz-1.png" alt="A histogram showing a distribution of F statistics, right-tailed and centered around one. The x axis ranges from zero to five. The region of the histogram to the right of the observed statistic, just above two, is shaded red to represent the p-value."><p class="caption">
+</p>
+</div>
 <p>Calculating the p-value from the null distribution and observed statistic,</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">null_distn</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">null_dist</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="reference/get_p_value.html">get_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">F_hat</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">## # A tibble: 1 x 1</span></span>
 <span id="cb9-2"><a href="#cb9-2"></a><span class="co">##   p_value</span></span>
 <span id="cb9-3"><a href="#cb9-3"></a><span class="co">##     &lt;dbl&gt;</span></span>
 <span id="cb9-4"><a href="#cb9-4"></a><span class="co">## 1   0.055</span></span></code></pre></div>
-<p>Note that the formula and non-formula interfaces (i.e. <code>age ~ partyid</code> vs. <code>response = age, explanatory = partyid</code>) work for all implemented inference procedures in <code>infer</code>. Use whatever is more natural for you. If you will be doing modeling using functions like <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> and <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>, though, we recommend you begin to use the formula <code>y ~ x</code> notation as soon as possible.</p>
+<p>Note that the formula and non-formula interfaces (i.e. <code>age ~ partyid</code> vs. <code>response = age, explanatory =  partyid</code>) work for all implemented inference procedures in <code>infer</code>. Use whatever is more natural for you. If you will be doing modeling using functions like <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> and <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code>, though, we recommend you begin to use the formula <code>y ~ x</code> notation as soon as possible.</p>
 <p>Other resources are available in the package vignettes! See <code><a href="articles/observed_stat_examples.html">vignette("observed_stat_examples")</a></code> for more examples like the one above, and <code><a href="articles/infer.html">vignette("infer")</a></code> for discussion of the underlying principles of the package design.</p>
 </div>
 </div>
@@ -205,7 +217,7 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=infer">https://​cloud.r-project.org/​package=infer</a>
 </li>
@@ -215,38 +227,43 @@
 </li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>CC0</li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CONTRIBUTING.html">Contributing guide</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Andrew Bray <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Chester Ismay <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-2820-2547" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Evgeni Chasnovski <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-1617-4019" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Simon Couch <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-5676-5107" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Ben Baumer <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-3279-0516" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Mine Cetinkaya-Rundel <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-6452-2420" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html">More on authors...</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=infer"><img src="https://www.r-pkg.org/badges/version/infer" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://codecov.io/github/tidymodels/infer/?branch=master"><img src="https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg" alt="Coverage Status"></a></li>
+<li><a href="https://cran.r-project.org/package=infer" class="external-link"><img src="https://www.r-pkg.org/badges/version/infer" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://codecov.io/github/tidymodels/infer/?branch=master" class="external-link"><img src="https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg" alt="Coverage Status"></a></li>
 </ul>
 </div>
-</div>
+
+  </div>
 </div>
 
 
@@ -256,7 +273,7 @@
 
 <div class="author">
   <p>
-    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Ben Baumer, Mine Cetinkaya-Rundel.
+    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Simon Couch, Ben Baumer, Mine Cetinkaya-Rundel.
     Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
   </p>
 </div>
@@ -266,6 +283,8 @@
 
   
 
+
+  
 
   </body>
 </html>

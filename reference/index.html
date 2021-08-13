@@ -73,9 +73,15 @@
   gtag('config', 'UA-115082821-1');
 </script>
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-index">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -92,7 +98,7 @@
         <a class="navbar-brand" href="../index.html">infer</a>
         <div class="info hidden-xs hidden-sm">
           <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
         </div>
       </div>
     </div>
@@ -136,7 +142,7 @@
 </li>
         <li>
   <a href="https://github.com/tidymodels/infer">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -167,7 +173,7 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <h2 id="section-core-verbs" class="hasAnchor"><a href="#section-core-verbs" class="anchor"></a>Core Verbs</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -179,51 +185,9 @@
       <tr>
         
         <td>
-          <p><code><a href="calculate.html">calculate()</a></code> </p>
+          <p><code><a href="specify.html">specify()</a></code> </p>
         </td>
-        <td><p>Calculate summary statistics</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="chisq_stat.html">chisq_stat()</a></code> </p>
-        </td>
-        <td><p>Tidy chi-squared test statistic</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="chisq_test.html">chisq_test()</a></code> </p>
-        </td>
-        <td><p>Tidy chi-squared test</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="deprecated.html">conf_int()</a></code> <code><a href="deprecated.html">p_value()</a></code> <code><a href="deprecated.html">GENERATION_TYPES</a></code> </p>
-        </td>
-        <td><p>Deprecated functions and objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="generate.html">generate()</a></code> </p>
-        </td>
-        <td><p>Generate resamples, permutations, or simulations</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_confidence_interval.html">get_confidence_interval()</a></code> <code><a href="get_confidence_interval.html">get_ci()</a></code> </p>
-        </td>
-        <td><p>Compute confidence interval</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_p_value.html">get_p_value()</a></code> <code><a href="get_p_value.html">get_pvalue()</a></code> </p>
-        </td>
-        <td><p>Compute p-value</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gss.html">gss</a></code> </p>
-        </td>
-        <td><p>Subset of data from the General Social Survey (GSS).</p></td>
+        <td><p>Specify response and explanatory variables</p></td>
       </tr><tr>
         
         <td>
@@ -233,21 +197,95 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="infer.html">infer</a></code> </p>
+          <p><code><a href="generate.html">generate()</a></code> </p>
         </td>
-        <td><p>infer: a grammar for statistical inference</p></td>
+        <td><p>Generate resamples, permutations, or simulations</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="pipe.html">%>%</a></code> </p>
+          <p><code><a href="calculate.html">calculate()</a></code> </p>
         </td>
-        <td><p>Pipe</p></td>
+        <td><p>Calculate summary statistics</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="print.infer.html">print(<i>&lt;infer&gt;</i>)</a></code> </p>
+          <p><code><a href="fit.infer.html">fit(<i>&lt;infer&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Print methods</p></td>
+        <td><p>Fit linear models to infer objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="assume.html">assume()</a></code> </p>
+        </td>
+        <td><p>Define a theoretical distribution</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-helpers" class="hasAnchor"><a href="#section-helpers" class="anchor"></a>Helpers</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="visualize.html">visualize()</a></code> <code><a href="visualize.html">visualise()</a></code> </p>
+        </td>
+        <td><p>Visualize statistical inference</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_p_value.html">get_p_value()</a></code> <code><a href="get_p_value.html">get_pvalue()</a></code> </p>
+        </td>
+        <td><p>Compute p-value</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_confidence_interval.html">get_confidence_interval()</a></code> <code><a href="get_confidence_interval.html">get_ci()</a></code> </p>
+        </td>
+        <td><p>Compute confidence interval</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="shade_p_value.html">shade_p_value()</a></code> <code><a href="shade_p_value.html">shade_pvalue()</a></code> </p>
+        </td>
+        <td><p>Shade histogram area beyond an observed statistic</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="shade_confidence_interval.html">shade_confidence_interval()</a></code> <code><a href="shade_confidence_interval.html">shade_ci()</a></code> </p>
+        </td>
+        <td><p>Add information about confidence interval</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-wrappers" class="hasAnchor"><a href="#section-wrappers" class="anchor"></a>Wrappers</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="observe.html">observe()</a></code> </p>
+        </td>
+        <td><p>Calculate observed statistics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="chisq_test.html">chisq_test()</a></code> </p>
+        </td>
+        <td><p>Tidy chi-squared test</p></td>
       </tr><tr>
         
         <td>
@@ -257,45 +295,70 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="rep_sample_n.html">rep_sample_n()</a></code> <code><a href="rep_sample_n.html">rep_slice_sample()</a></code> </p>
-        </td>
-        <td><p>Perform repeated sampling</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="shade_confidence_interval.html">shade_confidence_interval()</a></code> <code><a href="shade_confidence_interval.html">shade_ci()</a></code> </p>
-        </td>
-        <td><p>Add information about confidence interval</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="shade_p_value.html">shade_p_value()</a></code> <code><a href="shade_p_value.html">shade_pvalue()</a></code> </p>
-        </td>
-        <td><p>Add information about p-value region(s)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="specify.html">specify()</a></code> </p>
-        </td>
-        <td><p>Specify response and explanatory variables</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="t_stat.html">t_stat()</a></code> </p>
-        </td>
-        <td><p>Tidy t-test statistic</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="t_test.html">t_test()</a></code> </p>
         </td>
         <td><p>Tidy t-test</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="visualize.html">visualize()</a></code> <code><a href="visualize.html">visualise()</a></code> </p>
+          <p><code><a href="chisq_stat.html">chisq_stat()</a></code> </p>
         </td>
-        <td><p>Visualize statistical inference</p></td>
+        <td><p>Tidy chi-squared test statistic</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="t_stat.html">t_stat()</a></code> </p>
+        </td>
+        <td><p>Tidy t-test statistic</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-miscellaneous" class="hasAnchor"><a href="#section-miscellaneous" class="anchor"></a>Miscellaneous</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="infer.html">infer</a></code> </p>
+        </td>
+        <td><p>infer: a grammar for statistical inference</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gss.html">gss</a></code> </p>
+        </td>
+        <td><p>Subset of data from the General Social Survey (GSS).</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="deprecated.html">conf_int()</a></code> <code><a href="deprecated.html">p_value()</a></code> </p>
+        </td>
+        <td><p>Deprecated functions and objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="rep_sample_n.html">rep_sample_n()</a></code> <code><a href="rep_sample_n.html">rep_slice_sample()</a></code> </p>
+        </td>
+        <td><p>Perform repeated sampling</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pipe.html">%>%</a></code> </p>
+        </td>
+        <td><p>Pipe</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="print.infer.html">print(<i>&lt;infer&gt;</i>)</a></code> <code><a href="print.infer.html">print(<i>&lt;infer_layer&gt;</i>)</a></code> <code><a href="print.infer.html">print(<i>&lt;infer_dist&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print methods</p></td>
       </tr>
     </tbody>
     </table>
@@ -316,7 +379,7 @@
 
 <div class="author">
   <p>
-    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Ben Baumer, Mine Cetinkaya-Rundel.
+    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Simon Couch, Ben Baumer, Mine Cetinkaya-Rundel.
     Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
   </p>
 </div>
@@ -326,6 +389,8 @@
 
   
 
+
+  
 
   </body>
 </html>
