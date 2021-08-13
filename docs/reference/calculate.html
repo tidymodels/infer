@@ -18,10 +18,9 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
 <!-- Bootstrap -->
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
-
+<link href="../tidyverse.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
@@ -33,7 +32,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
@@ -42,20 +41,22 @@
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script>
+<link href="../tidyverse-2.css" rel="stylesheet">
 
+<!--optional theme-->
+<link href="../tidymodels.css" rel="stylesheet">
 
-<!-- docsearch -->
-<script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
-<link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
 
 <meta property="og:title" content="Calculate summary statistics — calculate" />
-<meta property="og:description" content="Calculates summary statistics from outputs of generate() or
-hypothesize().
+<meta property="og:description" content="Given the output of specify() and/or hypothesize(), this function will
+return the observed statistic specified with the stat argument. Some test
+statistics, such as Chisq, t, and z, require a null hypothesis. If
+provided the output of generate(), the function will calculate the
+supplied stat for each replicate.
 Learn more in vignette(&quot;infer&quot;)." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -69,11 +70,25 @@ Learn more in vignette(&quot;infer&quot;)." />
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'UA-115082821-1');
+</script>
+
+  
+
+  
 
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -85,14 +100,17 @@ Learn more in vignette(&quot;infer&quot;)." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
-      </span>
-    </div>
 
+      <div class="navbar-brand-container">
+        <a class="navbar-brand" href="../index.html">infer</a>
+        <div class="info hidden-xs hidden-sm">
+          <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        </div>
+      </div>
+    </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
@@ -129,21 +147,13 @@ Learn more in vignette(&quot;infer&quot;)." />
 <li>
   <a href="../CONDUCT.html">Code of Conduct</a>
 </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/tidymodels/infer">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
-      
-      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
-        <div class="form-group">
-          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
-        </div>
-      </form>
       
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -162,19 +172,22 @@ Learn more in vignette(&quot;infer&quot;)." />
     </div>
 
     <div class="ref-description">
-    <p>Calculates summary statistics from outputs of <code><a href='generate.html'>generate()</a></code> or
-<code><a href='hypothesize.html'>hypothesize()</a></code>.</p>
+    <p>Given the output of <code><a href='specify.html'>specify()</a></code> and/or <code><a href='hypothesize.html'>hypothesize()</a></code>, this function will
+return the observed statistic specified with the <code>stat</code> argument. Some test
+statistics, such as <code>Chisq</code>, <code>t</code>, and <code>z</code>, require a null hypothesis. If
+provided the output of <code><a href='generate.html'>generate()</a></code>, the function will calculate the
+supplied <code>stat</code> for each <code>replicate</code>.</p>
 <p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calculate</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>stat</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>, <span class='st'>"sum"</span>, <span class='st'>"sd"</span>, <span class='st'>"prop"</span>, <span class='st'>"count"</span>, <span class='st'>"diff in means"</span>,
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>calculate</span><span class='op'>(</span>
+  <span class='va'>x</span>,
+  stat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean"</span>, <span class='st'>"median"</span>, <span class='st'>"sum"</span>, <span class='st'>"sd"</span>, <span class='st'>"prop"</span>, <span class='st'>"count"</span>, <span class='st'>"diff in means"</span>,
     <span class='st'>"diff in medians"</span>, <span class='st'>"diff in props"</span>, <span class='st'>"Chisq"</span>, <span class='st'>"F"</span>, <span class='st'>"slope"</span>, <span class='st'>"correlation"</span>, <span class='st'>"t"</span>, <span class='st'>"z"</span>,
-    <span class='st'>"ratio of props"</span>, <span class='st'>"odds ratio"</span>),
-  <span class='kw'>order</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)</pre>
+    <span class='st'>"ratio of props"</span>, <span class='st'>"odds ratio"</span><span class='op'>)</span>,
+  order <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -188,19 +201,25 @@ output from <code><a href='hypothesize.html'>hypothesize()</a></code> piped in t
       <th>stat</th>
       <td><p>A string giving the type of the statistic to calculate. Current
 options include <code>"mean"</code>, <code>"median"</code>, <code>"sum"</code>, <code>"sd"</code>, <code>"prop"</code>, <code>"count"</code>,
-<code>"diff in means"</code>, <code>"diff in medians"</code>, <code>"diff in props"</code>, <code>"Chisq"</code>,
-<code>"F"</code>, <code>"t"</code>, <code>"z"</code>, <code>"ratio of props"</code>, <code>"slope"</code>, and <code>"correlation"</code>.</p></td>
+<code>"diff in means"</code>, <code>"diff in medians"</code>, <code>"diff in props"</code>, <code>"Chisq"</code> (or
+<code>"chisq"</code>), <code>"F"</code> (or <code>"f"</code>), <code>"t"</code>, <code>"z"</code>, <code>"ratio of props"</code>, <code>"slope"</code>,
+<code>"odds ratio"</code>, and <code>"correlation"</code>. <code>infer</code> only supports theoretical
+tests on one or two means via the <code>"t"</code> distribution and one or two
+proportions via the <code>"z"</code>.</p></td>
     </tr>
     <tr>
       <th>order</th>
       <td><p>A string vector of specifying the order in which the levels of
-the explanatory variable should be ordered for subtraction, where <code>order = c("first", "second")</code> means <code>("first" - "second")</code> Needed for inference on
-difference in means, medians, or proportions and t and z statistics.</p></td>
+the explanatory variable should be ordered for subtraction (or division
+for ratio-based statistics), where <code>order = c("first", "second")</code> means
+<code>("first" - "second")</code>, or the analogue for ratios. Needed for inference on
+difference in means, medians, proportions, ratios, t, and z statistics.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>To pass options like <code>na.rm = TRUE</code> into functions like
-<a href='https://rdrr.io/r/base/mean.html'>mean()</a>, <a href='https://rdrr.io/r/stats/sd.html'>sd()</a>, etc.</p></td>
+<a href='https://rdrr.io/r/base/mean.html'>mean()</a>, <a href='https://rdrr.io/r/stats/sd.html'>sd()</a>, etc. Can also be used to
+supply hypothesized null values for the <code>"t"</code> statistic.</p></td>
     </tr>
     </table>
 
@@ -216,53 +235,105 @@ bootstrap samples will have only one level of the explanatory variable
 present. For some test statistics, the calculated statistic in these
 cases will be NaN. The package will omit non-finite values from
 visualizations (with a warning) and raise an error in p-value calculations.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='visualize.html'>visualize()</a></code>, <code><a href='get_p_value.html'>get_p_value()</a></code>, and <code><a href='get_confidence_interval.html'>get_confidence_interval()</a></code>
+to extract value from this function's outputs.</p>
+<p>Other core functions: 
+<code><a href='generate.html'>generate</a>()</code>,
+<code><a href='hypothesize.html'>hypothesize</a>()</code>,
+<code><a href='specify.html'>specify</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># calculate a null distribution of hours worked per week under</span>
-<span class='co'># the null hypothesis that the mean is 40</span>
-<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>hours</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>40</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'>calculate</span>(<span class='kw'>stat</span> <span class='kw'>=</span> <span class='st'>"mean"</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 200 x 2</span><span>
-#&gt;    replicate  stat
-#&gt;        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>         1  39.2
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>         2  39.4
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>         3  40.1
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>         4  39.6
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>         5  40.8
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>         6  39.9
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>         7  39.9
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>         8  40.8
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>         9  39.6
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>        10  41.0
-#&gt; </span><span style='color: #949494;'># … with 190 more rows</span><span></div><div class='input'>
-<span class='co'># calculate a null distribution assuming independence between age</span>
-<span class='co'># of respondent and whether they have a college degree</span>
-<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>age</span> ~ <span class='no'>college</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='generate.html'>generate</a></span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'>calculate</span>(<span class='st'>"diff in means"</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"degree"</span>, <span class='st'>"no degree"</span>))</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 200 x 2</span><span>
-#&gt;    replicate     stat
-#&gt;        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>         1 -</span><span style='color: #BB0000;'>2.48</span><span>   
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>         2 -</span><span style='color: #BB0000;'>0.699</span><span>  
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>         3 -</span><span style='color: #BB0000;'>0.011</span><span style='color: #BB0000;text-decoration: underline;'>3</span><span> 
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>         4  0.579  
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>         5  0.553  
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>         6  1.84   
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>         7 -</span><span style='color: #BB0000;'>2.31</span><span>   
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>         8 -</span><span style='color: #BB0000;'>0.320</span><span>  
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>         9 -</span><span style='color: #BB0000;'>0.002</span><span style='color: #BB0000;text-decoration: underline;'>50</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>        10 -</span><span style='color: #BB0000;'>1.78</span><span>   
-#&gt; </span><span style='color: #949494;'># … with 190 more rows</span><span></div><div class='input'>
-<span class='co'># more in-depth explanation of how to use the infer package</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)
-}</div></span></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'></span>
+<span class='r-in'><span class='co'># calculate a null distribution of hours worked per week under</span></span>
+<span class='r-in'><span class='co'># the null hypothesis that the mean is 40</span></span>
+<span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>200</span>, type <span class='op'>=</span> <span class='st'>"bootstrap"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>calculate</span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Response: hours (numeric)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Null Hypothesis: point</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 200 × 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    replicate  stat</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span>         1  39.2</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span>         2  39.4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span>         3  40.1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span>         4  39.6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span>         5  40.8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span>         6  39.9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span>         7  39.9</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span>         8  40.8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span>         9  39.6</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span>        10  41.0</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 190 more rows</span></span>
+<span class='r-in'>  </span>
+<span class='r-in'><span class='co'># calculate the corresponding observed statistic</span></span>
+<span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>calculate</span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Response: hours (numeric)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 × 1</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    stat</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>  41.4</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># calculate a null distribution assuming independence between age</span></span>
+<span class='r-in'><span class='co'># of respondent and whether they have a college degree</span></span>
+<span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>age</span> <span class='op'>~</span> <span class='va'>college</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"independence"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>200</span>, type <span class='op'>=</span> <span class='st'>"permute"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>calculate</span><span class='op'>(</span><span class='st'>"diff in means"</span>, order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"degree"</span>, <span class='st'>"no degree"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Response: age (numeric)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explanatory: college (factor)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Null Hypothesis: independence</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 200 × 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    replicate     stat</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span>         1 -<span style='color: #BB0000;'>2.48</span>   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span>         2 -<span style='color: #BB0000;'>0.699</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span>         3 -<span style='color: #BB0000;'>0.011</span><span style='color: #BB0000; text-decoration: underline;'>3</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span>         4  0.579  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span>         5  0.553  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span>         6  1.84   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span>         7 -<span style='color: #BB0000;'>2.31</span>   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span>         8 -<span style='color: #BB0000;'>0.320</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span>         9 -<span style='color: #BB0000;'>0.002</span><span style='color: #BB0000; text-decoration: underline;'>50</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span>        10 -<span style='color: #BB0000;'>1.78</span>   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 190 more rows</span></span>
+<span class='r-in'>  </span>
+<span class='r-in'><span class='co'># calculate the corresponding observed statistic</span></span>
+<span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>age</span> <span class='op'>~</span> <span class='va'>college</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>calculate</span><span class='op'>(</span><span class='st'>"diff in means"</span>, order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"degree"</span>, <span class='st'>"no degree"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Response: age (numeric)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explanatory: college (factor)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 × 1</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    stat</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> 0.941</span>
+<span class='r-in'>  </span>
+<span class='r-in'><span class='co'># some statistics require a null hypothesis</span></span>
+<span class='r-in'> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>   <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span> </span>
+<span class='r-in'>   <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'>   <span class='fu'>calculate</span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"t"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Response: hours (numeric)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Null Hypothesis: point</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 × 1</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    stat</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>  2.09</span>
+<span class='r-in'>   </span>
+<span class='r-in'><span class='co'># more in-depth explanation of how to use the infer package</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span><span class='op'>(</span><span class='st'>"infer"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -273,36 +344,24 @@ visualizations (with a warning) and raise an error in p-value calculations.</p>
 
 
       <footer>
-      <div class="copyright">
-  <p>Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Ben Baumer, Mine Cetinkaya-Rundel.</p>
+      <div class="tidyverse">
+  <p>infer is a part of the <strong>tidymodels</strong> ecosystem, a collection of modeling packages designed with common APIs and a shared philosophy.</p>
 </div>
 
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+<div class="author">
+  <p>
+    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Simon Couch, Ben Baumer, Mine Cetinkaya-Rundel.
+    Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
+  </p>
 </div>
 
       </footer>
    </div>
 
   
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
-<script>
-  docsearch({
-    
-    
-    apiKey: '33338960d0dcb55ff924a40c2f749a0d',
-    indexName: 'infer',
-    inputSelector: 'input#search-input.form-control',
-    transformData: function(hits) {
-      return hits.map(function (hit) {
-        hit.url = updateHitURL(hit);
-        return hit;
-      });
-    }
-  });
-</script>
 
 
+  
 
   </body>
 </html>

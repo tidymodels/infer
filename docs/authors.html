@@ -18,10 +18,9 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
 <!-- Bootstrap -->
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
-
+<link href="tidyverse.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
@@ -33,7 +32,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
@@ -42,13 +41,11 @@
 <!-- pkgdown -->
 <link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script>
+<link href="tidyverse-2.css" rel="stylesheet">
 
+<!--optional theme-->
+<link href="tidymodels.css" rel="stylesheet">
 
-<!-- docsearch -->
-<script src="docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
-<link href="docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
 
@@ -66,11 +63,25 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'UA-115082821-1');
+</script>
+
+  
+
+  
 
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-authors">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -82,14 +93,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
-      </span>
-    </div>
 
+      <div class="navbar-brand-container">
+        <a class="navbar-brand" href="index.html">infer</a>
+        <div class="info hidden-xs hidden-sm">
+          <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        </div>
+      </div>
+    </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
@@ -126,21 +140,13 @@
 <li>
   <a href="CONDUCT.html">Code of Conduct</a>
 </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/tidymodels/infer">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
-      
-      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
-        <div class="form-group">
-          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
-        </div>
-      </form>
       
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -155,34 +161,34 @@
     <div class="page-header">
       <h1>Authors</h1>
     </div>
-
+    
     <ul class="list-unstyled">
       <li>
         <p><strong>Andrew Bray</strong>. Author, maintainer. 
         </p>
       </li>
       <li>
-        <p><strong>Chester Ismay</strong>. Author. 
+        <p><strong>Chester Ismay</strong>. Author. <a href='https://orcid.org/0000-0003-2820-2547' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
         </p>
       </li>
       <li>
-        <p><strong>Evgeni Chasnovski</strong>. Author. 
+        <p><strong>Evgeni Chasnovski</strong>. Author. <a href='https://orcid.org/0000-0002-1617-4019' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
         </p>
       </li>
       <li>
-        <p><strong>Ben Baumer</strong>. Author. 
+        <p><strong>Simon Couch</strong>. Author. <a href='https://orcid.org/0000-0001-5676-5107' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
         </p>
       </li>
       <li>
-        <p><strong>Mine Cetinkaya-Rundel</strong>. Author. 
+        <p><strong>Ben Baumer</strong>. Author. <a href='https://orcid.org/0000-0002-3279-0516' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
         </p>
       </li>
       <li>
-        <p><strong>Simon Couch</strong>. Contributor. 
+        <p><strong>Mine Cetinkaya-Rundel</strong>. Author. <a href='https://orcid.org/0000-0001-6452-2420' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
         </p>
       </li>
       <li>
-        <p><strong>Ted Laderas</strong>. Contributor. 
+        <p><strong>Ted Laderas</strong>. Contributor. <a href='https://orcid.org/0000-0002-6207-7068' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
         </p>
       </li>
       <li>
@@ -194,7 +200,7 @@
         </p>
       </li>
       <li>
-        <p><strong>Albert Y. Kim</strong>. Contributor. 
+        <p><strong>Albert Y. Kim</strong>. Contributor. <a href='https://orcid.org/0000-0001-7824-306X' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
         </p>
       </li>
       <li>
@@ -206,7 +212,7 @@
         </p>
       </li>
       <li>
-        <p><strong>Richie Cotton</strong>. Contributor. 
+        <p><strong>Richie Cotton</strong>. Contributor. <a href='https://orcid.org/0000-0003-2504-802X' target='orcid.widget' aria-label='ORCID'><span class='fab fa-orcid orcid' aria-hidden='true'></span></a>
         </p>
       </li>
       <li>
@@ -215,6 +221,7 @@
       </li>
     </ul>
 
+    
   </div>
 
 </div>
@@ -222,36 +229,24 @@
 
 
       <footer>
-      <div class="copyright">
-  <p>Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Ben Baumer, Mine Cetinkaya-Rundel.</p>
+      <div class="tidyverse">
+  <p>infer is a part of the <strong>tidymodels</strong> ecosystem, a collection of modeling packages designed with common APIs and a shared philosophy.</p>
 </div>
 
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+<div class="author">
+  <p>
+    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Simon Couch, Ben Baumer, Mine Cetinkaya-Rundel.
+    Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
+  </p>
 </div>
 
       </footer>
    </div>
 
   
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
-<script>
-  docsearch({
-    
-    
-    apiKey: '33338960d0dcb55ff924a40c2f749a0d',
-    indexName: 'infer',
-    inputSelector: 'input#search-input.form-control',
-    transformData: function(hits) {
-      return hits.map(function (hit) {
-        hit.url = updateHitURL(hit);
-        return hit;
-      });
-    }
-  });
-</script>
 
 
+  
 
   </body>
 </html>

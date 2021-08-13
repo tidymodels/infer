@@ -18,10 +18,9 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
 <!-- Bootstrap -->
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
-
+<link href="../tidyverse.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
@@ -33,7 +32,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
@@ -42,20 +41,22 @@
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script>
+<link href="../tidyverse-2.css" rel="stylesheet">
 
+<!--optional theme-->
+<link href="../tidymodels.css" rel="stylesheet">
 
-<!-- docsearch -->
-<script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
-<link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
 
 <meta property="og:title" content="Generate resamples, permutations, or simulations — generate" />
-<meta property="og:description" content="Generation creates a null distribution from specify() and (if needed)
-hypothesize() inputs.
+<meta property="og:description" content="Generation creates a simulated distribution from specify().
+In the context of confidence intervals, this is a bootstrap distribution
+based on the result of specify(). In the context of hypothesis testing,
+this is a null distribution based on the result of specify() and
+hypothesize().
 Learn more in vignette(&quot;infer&quot;)." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -69,11 +70,25 @@ Learn more in vignette(&quot;infer&quot;)." />
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'UA-115082821-1');
+</script>
+
+  
+
+  
 
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -85,14 +100,17 @@ Learn more in vignette(&quot;infer&quot;)." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
-      </span>
-    </div>
 
+      <div class="navbar-brand-container">
+        <a class="navbar-brand" href="../index.html">infer</a>
+        <div class="info hidden-xs hidden-sm">
+          <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        </div>
+      </div>
+    </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
@@ -129,21 +147,13 @@ Learn more in vignette(&quot;infer&quot;)." />
 <li>
   <a href="../CONDUCT.html">Code of Conduct</a>
 </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/tidymodels/infer">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
-      
-      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
-        <div class="form-group">
-          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
-        </div>
-      </form>
       
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -162,12 +172,15 @@ Learn more in vignette(&quot;infer&quot;)." />
     </div>
 
     <div class="ref-description">
-    <p>Generation creates a null distribution from <code><a href='specify.html'>specify()</a></code> and (if needed)
-<code><a href='hypothesize.html'>hypothesize()</a></code> inputs.</p>
+    <p>Generation creates a simulated distribution from <code><a href='specify.html'>specify()</a></code>.
+In the context of confidence intervals, this is a bootstrap distribution
+based on the result of <code><a href='specify.html'>specify()</a></code>. In the context of hypothesis testing,
+this is a null distribution based on the result of <code><a href='specify.html'>specify()</a></code> and
+<code>hypothesize().</code></p>
 <p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>generate</span>(<span class='no'>x</span>, <span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>generate</span><span class='op'>(</span><span class='va'>x</span>, reps <span class='op'>=</span> <span class='fl'>1</span>, type <span class='op'>=</span> <span class='cn'>NULL</span>, variables <span class='op'>=</span> <span class='op'>!</span><span class='op'>!</span><span class='fu'>response_expr</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,8 +195,16 @@ Learn more in vignette(&quot;infer&quot;)." />
     </tr>
     <tr>
       <th>type</th>
-      <td><p>Currently either <code>bootstrap</code>, <code>permute</code>, or <code>simulate</code>
-(see below).</p></td>
+      <td><p>The method used to generate resamples of the observed
+data reflecting the null hypothesis. Currently one of
+<code>"bootstrap"</code>, <code>"permute"</code>, or <code>"draw"</code> (see below).</p></td>
+    </tr>
+    <tr>
+      <th>variables</th>
+      <td><p>If <code>type = "permute"</code>, a set of unquoted column names in the
+data to permute (independently of each other). Defaults to only the
+response variable. Note that any derived effects that depend on these
+columns (e.g., interaction effects) will also be affected.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -208,61 +229,76 @@ where a sample of size equal to the input sample size is drawn (with
 replacement) from the input sample data.</p></li>
 <li><p><code>permute</code>: For each replicate, each input value will be randomly
 reassigned (without replacement) to a new output value in the sample.</p></li>
-<li><p><code>simulate</code>: A value will be sampled from a theoretical distribution
-with parameters specified in <code><a href='hypothesize.html'>hypothesize()</a></code> for each replicate. (This
-option is currently only applicable for testing point estimates.)</p></li>
+<li><p><code>draw</code>: A value will be sampled from a theoretical distribution
+with parameters specified in <code><a href='hypothesize.html'>hypothesize()</a></code> for each replicate. This
+option is currently only applicable for testing point estimates. This
+generation type was previously called <code>"simulate"</code>, which has been
+superseded.</p></li>
 </ul>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other core functions: 
+<code><a href='calculate.html'>calculate</a>()</code>,
+<code><a href='hypothesize.html'>hypothesize</a>()</code>,
+<code><a href='specify.html'>specify</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Generate a null distribution by taking 200 bootstrap samples</span>
-<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='specify.html'>specify</a></span>(<span class='kw'>response</span> <span class='kw'>=</span> <span class='no'>hours</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"point"</span>, <span class='kw'>mu</span> <span class='kw'>=</span> <span class='fl'>40</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"bootstrap"</span>)</div><div class='output co'>#&gt; Response: hours (numeric)
-#&gt; Null Hypothesis: point
-#&gt; <span style='color: #949494;'># A tibble: 100,000 x 2</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   replicate [200]</span><span>
-#&gt;    replicate hours
-#&gt;        </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span>         1 38.6 
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span>         1 38.6 
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span>         1 13.6 
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span>         1 87.6 
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span>         1  8.62
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span>         1 54.6 
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span>         1 30.6 
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span>         1 23.6 
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span>         1 38.6 
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span>         1 38.6 
-#&gt; </span><span style='color: #949494;'># … with 99,990 more rows</span><span></div><div class='input'>
-<span class='co'># Generate a null distribution for the independence of</span>
-<span class='co'># two variables by permuting their values 1000 times</span>
-<span class='no'>gss</span> <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='specify.html'>specify</a></span>(<span class='no'>partyid</span> ~ <span class='no'>age</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'><a href='hypothesize.html'>hypothesize</a></span>(<span class='kw'>null</span> <span class='kw'>=</span> <span class='st'>"independence"</span>) <span class='kw'>%&gt;%</span>
- <span class='fu'>generate</span>(<span class='kw'>reps</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"permute"</span>)</div><div class='output co'>#&gt; Response: partyid (factor)
-#&gt; Explanatory: age (numeric)
-#&gt; Null Hypothesis: independence
-#&gt; </span><span style='color: #949494;'># A tibble: 100,000 x 3</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   replicate [200]</span><span>
-#&gt;    partyid   age replicate
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> rep        36         1
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> dem        34         1
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> dem        24         1
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> ind        42         1
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> dem        31         1
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> dem        32         1
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> dem        48         1
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> rep        36         1
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> rep        30         1
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> dem        33         1
-#&gt; </span><span style='color: #949494;'># … with 99,990 more rows</span><span></div><div class='input'>
-<span class='co'># more in-depth explanation of how to use the infer package</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span>(<span class='st'>"infer"</span>)
-}</div></span></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='co'># generate a null distribution by taking 200 bootstrap samples</span></span>
+<span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'> <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'> <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'> <span class='fu'>generate</span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>200</span>, type <span class='op'>=</span> <span class='st'>"bootstrap"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Response: hours (numeric)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Null Hypothesis: point</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 100,000 × 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Groups:   replicate [200]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    replicate hours</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span>         1 48.6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span>         1 38.6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span>         1 38.6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span>         1  8.62</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span>         1 38.6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span>         1 38.6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span>         1 18.6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span>         1 38.6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span>         1 38.6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span>         1 58.6 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 99,990 more rows</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># generate a null distribution for the independence of</span></span>
+<span class='r-in'><span class='co'># two variables by permuting their values 1000 times</span></span>
+<span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'> <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>partyid</span> <span class='op'>~</span> <span class='va'>age</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'> <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"independence"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
+<span class='r-in'> <span class='fu'>generate</span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>200</span>, type <span class='op'>=</span> <span class='st'>"permute"</span><span class='op'>)</span></span>
+<span class='r-msg co'><span class='r-pr'>#&gt;</span> Dropping unused factor levels DK from the supplied response variable 'partyid'.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Response: partyid (factor)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Explanatory: age (numeric)</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Null Hypothesis: independence</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 100,000 × 3</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Groups:   replicate [200]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    partyid   age replicate</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span> rep        36         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span> ind        34         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span> dem        24         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span> dem        42         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span> ind        31         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span> dem        32         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span> ind        48         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span> rep        36         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span> ind        30         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span> ind        33         1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 99,990 more rows</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># more in-depth explanation of how to use the infer package</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span><span class='op'>(</span><span class='st'>"infer"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -273,36 +309,24 @@ option is currently only applicable for testing point estimates.)</p></li>
 
 
       <footer>
-      <div class="copyright">
-  <p>Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Ben Baumer, Mine Cetinkaya-Rundel.</p>
+      <div class="tidyverse">
+  <p>infer is a part of the <strong>tidymodels</strong> ecosystem, a collection of modeling packages designed with common APIs and a shared philosophy.</p>
 </div>
 
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+<div class="author">
+  <p>
+    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Simon Couch, Ben Baumer, Mine Cetinkaya-Rundel.
+    Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
+  </p>
 </div>
 
       </footer>
    </div>
 
   
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
-<script>
-  docsearch({
-    
-    
-    apiKey: '33338960d0dcb55ff924a40c2f749a0d',
-    indexName: 'infer',
-    inputSelector: 'input#search-input.form-control',
-    transformData: function(hits) {
-      return hits.map(function (hit) {
-        hit.url = updateHitURL(hit);
-        return hit;
-      });
-    }
-  });
-</script>
 
 
+  
 
   </body>
 </html>
