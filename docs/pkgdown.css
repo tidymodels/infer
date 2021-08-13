@@ -244,14 +244,14 @@ nav[data-toggle='toc'] .nav .nav > .active:focus > a {
 
 .ref-index th {font-weight: normal;}
 
-.ref-index td {vertical-align: top;}
+.ref-index td {vertical-align: top; min-width: 100px}
 .ref-index .icon {width: 40px;}
 .ref-index .alias {width: 40%;}
 .ref-index-icons .alias {width: calc(40% - 40px);}
 .ref-index .title {width: 60%;}
 
 .ref-arguments th {text-align: right; padding-right: 10px;}
-.ref-arguments th, .ref-arguments td {vertical-align: top;}
+.ref-arguments th, .ref-arguments td {vertical-align: top; min-width: 100px}
 .ref-arguments .name {width: 20%;}
 .ref-arguments .desc {width: 80%;}
 
@@ -264,21 +264,16 @@ table {
 
 /* Syntax highlighting ---------------------------------------------------- */
 
-pre {
-  word-wrap: normal;
-  word-break: normal;
-  border: 1px solid #eee;
-}
-
-pre, code {
+pre, pre code {
   background-color: #f8f8f8;
   color: #333;
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
-pre code {
-  overflow: auto;
-  word-wrap: normal;
-  white-space: pre;
+pre {
+  border: 1px solid #eee;
 }
 
 pre .img {
@@ -305,9 +300,8 @@ a.sourceLine:hover {
 .kw      {color: #264D66;} /* keyword */
 .co      {color: #888888;} /* comment */
 
-.message { color: black;   font-weight: bolder;}
-.error   { color: orange;  font-weight: bolder;}
-.warning { color: #6A0366; font-weight: bolder;}
+.error   {font-weight: bolder;}
+.warning {font-weight: bolder;}
 
 /* Clipboard --------------------------*/
 

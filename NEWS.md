@@ -1,6 +1,4 @@
-# infer 0.5.4.9000
-
-To be released as 1.0.0
+# infer 1.0.0
 
 v1.0.0 is the first major release of the {infer} package! By and large, the core verbs `specify()`, `hypothesize()`, `generate()`, and `calculate()` will interface as they did before. This release makes several improvements to behavioral consistency of the package and introduces support for theory-based inference as well as randomization-based inference with multiple explanatory variables.
 

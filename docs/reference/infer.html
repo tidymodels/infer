@@ -18,10 +18,9 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
 <!-- Bootstrap -->
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
-
+<link href="../tidyverse.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
@@ -33,7 +32,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
@@ -42,21 +41,17 @@
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script>
+<link href="../tidyverse-2.css" rel="stylesheet">
 
+<!--optional theme-->
+<link href="../tidymodels.css" rel="stylesheet">
 
-<!-- docsearch -->
-<script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
-<link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
 
 <meta property="og:title" content="infer: a grammar for statistical inference — infer" />
-<meta property="og:description" content="
-The objective of this package is to perform statistical inference using a
-grammar that illustrates the underlying concepts and a format that coheres
-with the tidyverse." />
+<meta property="og:description" content="" />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -70,11 +65,25 @@ with the tidyverse." />
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'UA-115082821-1');
+</script>
+
+  
+
+  
 
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -86,14 +95,17 @@ with the tidyverse." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
-      </span>
-    </div>
 
+      <div class="navbar-brand-container">
+        <a class="navbar-brand" href="../index.html">infer</a>
+        <div class="info hidden-xs hidden-sm">
+          <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        </div>
+      </div>
+    </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
@@ -130,21 +142,13 @@ with the tidyverse." />
 <li>
   <a href="../CONDUCT.html">Code of Conduct</a>
 </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/tidymodels/infer">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
-      
-      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
-        <div class="form-group">
-          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
-        </div>
-      </form>
       
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -164,16 +168,16 @@ with the tidyverse." />
 
     <div class="ref-description">
     <p><img src='figures/infer.png' align='right' /></p>
-<p>The objective of this package is to perform statistical inference using a
-grammar that illustrates the underlying concepts and a format that coheres
-with the tidyverse.</p>
     </div>
 
 
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For an overview of how to use the core functionality, see <code><a href='../articles/infer.html'>vignette("infer")</a></code></p>
+    <p>The objective of this package is to perform statistical inference using a
+grammar that illustrates the underlying concepts and a format that coheres
+with the tidyverse.</p>
+<p>For an overview of how to use the core functionality, see <code><a href='../articles/infer.html'>vignette("infer")</a></code></p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Useful links:</p><ul>
@@ -183,6 +187,29 @@ with the tidyverse.</p>
 </ul>
 
 </div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p><strong>Maintainer</strong>: Andrew Bray <a href='mailto:abray@reed.edu'>abray@reed.edu</a></p>
+<p>Authors:</p><ul>
+<li><p>Chester Ismay <a href='mailto:chester.ismay@gmail.com'>chester.ismay@gmail.com</a> (<a href='https://orcid.org/0000-0003-2820-2547'>ORCID</a>)</p></li>
+<li><p>Evgeni Chasnovski <a href='mailto:evgeni.chasnovski@gmail.com'>evgeni.chasnovski@gmail.com</a> (<a href='https://orcid.org/0000-0002-1617-4019'>ORCID</a>)</p></li>
+<li><p>Simon Couch <a href='mailto:scouch2@jhu.edu'>scouch2@jhu.edu</a> (<a href='https://orcid.org/0000-0001-5676-5107'>ORCID</a>)</p></li>
+<li><p>Ben Baumer <a href='mailto:ben.baumer@gmail.com'>ben.baumer@gmail.com</a> (<a href='https://orcid.org/0000-0002-3279-0516'>ORCID</a>)</p></li>
+<li><p>Mine Cetinkaya-Rundel <a href='mailto:mine@stat.duke.edu'>mine@stat.duke.edu</a> (<a href='https://orcid.org/0000-0001-6452-2420'>ORCID</a>)</p></li>
+</ul>
+
+<p>Other contributors:</p><ul>
+<li><p>Ted Laderas <a href='mailto:tedladeras@gmail.com'>tedladeras@gmail.com</a> (<a href='https://orcid.org/0000-0002-6207-7068'>ORCID</a>) [contributor]</p></li>
+<li><p>Nick Solomon <a href='mailto:nick.solomon@datacamp.com'>nick.solomon@datacamp.com</a> [contributor]</p></li>
+<li><p>Johanna Hardin <a href='mailto:Jo.Hardin@pomona.edu'>Jo.Hardin@pomona.edu</a> [contributor]</p></li>
+<li><p>Albert Y. Kim <a href='mailto:albert.ys.kim@gmail.com'>albert.ys.kim@gmail.com</a> (<a href='https://orcid.org/0000-0001-7824-306X'>ORCID</a>) [contributor]</p></li>
+<li><p>Neal Fultz <a href='mailto:nfultz@gmail.com'>nfultz@gmail.com</a> [contributor]</p></li>
+<li><p>Doug Friedman <a href='mailto:doug.nhp@gmail.com'>doug.nhp@gmail.com</a> [contributor]</p></li>
+<li><p>Richie Cotton <a href='mailto:richie@datacamp.com'>richie@datacamp.com</a> (<a href='https://orcid.org/0000-0003-2504-802X'>ORCID</a>) [contributor]</p></li>
+<li><p>Brian Fannin <a href='mailto:captain@pirategrunt.com'>captain@pirategrunt.com</a> [contributor]</p></li>
+</ul>
+
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -194,36 +221,24 @@ with the tidyverse.</p>
 
 
       <footer>
-      <div class="copyright">
-  <p>Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Ben Baumer, Mine Cetinkaya-Rundel.</p>
+      <div class="tidyverse">
+  <p>infer is a part of the <strong>tidymodels</strong> ecosystem, a collection of modeling packages designed with common APIs and a shared philosophy.</p>
 </div>
 
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+<div class="author">
+  <p>
+    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Simon Couch, Ben Baumer, Mine Cetinkaya-Rundel.
+    Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
+  </p>
 </div>
 
       </footer>
    </div>
 
   
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
-<script>
-  docsearch({
-    
-    
-    apiKey: '33338960d0dcb55ff924a40c2f749a0d',
-    indexName: 'infer',
-    inputSelector: 'input#search-input.form-control',
-    transformData: function(hits) {
-      return hits.map(function (hit) {
-        hit.url = updateHitURL(hit);
-        return hit;
-      });
-    }
-  });
-</script>
 
 
+  
 
   </body>
 </html>

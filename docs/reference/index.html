@@ -18,10 +18,9 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
 <!-- Bootstrap -->
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
-
+<link href="../tidyverse.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
@@ -33,7 +32,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
@@ -42,13 +41,11 @@
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script>
+<link href="../tidyverse-2.css" rel="stylesheet">
 
+<!--optional theme-->
+<link href="../tidymodels.css" rel="stylesheet">
 
-<!-- docsearch -->
-<script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
-<link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
 
@@ -66,11 +63,25 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'UA-115082821-1');
+</script>
+
+  
+
+  
 
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-index">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -82,14 +93,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">infer</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.2</span>
-      </span>
-    </div>
 
+      <div class="navbar-brand-container">
+        <a class="navbar-brand" href="../index.html">infer</a>
+        <div class="info hidden-xs hidden-sm">
+          <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        </div>
+      </div>
+    </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
     Articles
@@ -126,21 +140,13 @@
 <li>
   <a href="../CONDUCT.html">Code of Conduct</a>
 </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/tidymodels/infer">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
-      
-      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
-        <div class="form-group">
-          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
-        </div>
-      </form>
       
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -167,7 +173,7 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <h2 id="section-core-verbs" class="hasAnchor"><a href="#section-core-verbs" class="anchor"></a>Core Verbs</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -179,51 +185,9 @@
       <tr>
         
         <td>
-          <p><code><a href="calculate.html">calculate()</a></code> </p>
+          <p><code><a href="specify.html">specify()</a></code> </p>
         </td>
-        <td><p>Calculate summary statistics</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="chisq_stat.html">chisq_stat()</a></code> </p>
-        </td>
-        <td><p>Tidy chi-squared test statistic</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="chisq_test.html">chisq_test()</a></code> </p>
-        </td>
-        <td><p>Tidy chi-squared test</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="deprecated.html">conf_int()</a></code> <code><a href="deprecated.html">p_value()</a></code> <code><a href="deprecated.html">GENERATION_TYPES</a></code> </p>
-        </td>
-        <td><p>Deprecated functions and objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="generate.html">generate()</a></code> </p>
-        </td>
-        <td><p>Generate resamples, permutations, or simulations</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_confidence_interval.html">get_confidence_interval()</a></code> <code><a href="get_confidence_interval.html">get_ci()</a></code> </p>
-        </td>
-        <td><p>Compute confidence interval</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_p_value.html">get_p_value()</a></code> <code><a href="get_p_value.html">get_pvalue()</a></code> </p>
-        </td>
-        <td><p>Compute p-value</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gss.html">gss</a></code> </p>
-        </td>
-        <td><p>Subset of data from the General Social Survey (GSS).</p></td>
+        <td><p>Specify response and explanatory variables</p></td>
       </tr><tr>
         
         <td>
@@ -233,21 +197,95 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="infer.html">infer</a></code> </p>
+          <p><code><a href="generate.html">generate()</a></code> </p>
         </td>
-        <td><p>infer: a grammar for statistical inference</p></td>
+        <td><p>Generate resamples, permutations, or simulations</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="pipe.html">%>%</a></code> </p>
+          <p><code><a href="calculate.html">calculate()</a></code> </p>
         </td>
-        <td><p>Pipe</p></td>
+        <td><p>Calculate summary statistics</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="print.infer.html">print(<i>&lt;infer&gt;</i>)</a></code> </p>
+          <p><code><a href="fit.infer.html">fit(<i>&lt;infer&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Print methods</p></td>
+        <td><p>Fit linear models to infer objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="assume.html">assume()</a></code> </p>
+        </td>
+        <td><p>Define a theoretical distribution</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-helpers" class="hasAnchor"><a href="#section-helpers" class="anchor"></a>Helpers</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="visualize.html">visualize()</a></code> <code><a href="visualize.html">visualise()</a></code> </p>
+        </td>
+        <td><p>Visualize statistical inference</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_p_value.html">get_p_value()</a></code> <code><a href="get_p_value.html">get_pvalue()</a></code> </p>
+        </td>
+        <td><p>Compute p-value</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_confidence_interval.html">get_confidence_interval()</a></code> <code><a href="get_confidence_interval.html">get_ci()</a></code> </p>
+        </td>
+        <td><p>Compute confidence interval</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="shade_p_value.html">shade_p_value()</a></code> <code><a href="shade_p_value.html">shade_pvalue()</a></code> </p>
+        </td>
+        <td><p>Shade histogram area beyond an observed statistic</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="shade_confidence_interval.html">shade_confidence_interval()</a></code> <code><a href="shade_confidence_interval.html">shade_ci()</a></code> </p>
+        </td>
+        <td><p>Add information about confidence interval</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-wrappers" class="hasAnchor"><a href="#section-wrappers" class="anchor"></a>Wrappers</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="observe.html">observe()</a></code> </p>
+        </td>
+        <td><p>Calculate observed statistics</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="chisq_test.html">chisq_test()</a></code> </p>
+        </td>
+        <td><p>Tidy chi-squared test</p></td>
       </tr><tr>
         
         <td>
@@ -257,45 +295,70 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="rep_sample_n.html">rep_sample_n()</a></code> </p>
-        </td>
-        <td><p>Perform repeated sampling</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="shade_confidence_interval.html">shade_confidence_interval()</a></code> <code><a href="shade_confidence_interval.html">shade_ci()</a></code> </p>
-        </td>
-        <td><p>Add information about confidence interval</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="shade_p_value.html">shade_p_value()</a></code> <code><a href="shade_p_value.html">shade_pvalue()</a></code> </p>
-        </td>
-        <td><p>Add information about p-value region(s)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="specify.html">specify()</a></code> </p>
-        </td>
-        <td><p>Specify response and explanatory variables</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="t_stat.html">t_stat()</a></code> </p>
-        </td>
-        <td><p>Tidy t-test statistic</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="t_test.html">t_test()</a></code> </p>
         </td>
         <td><p>Tidy t-test</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="visualize.html">visualize()</a></code> <code><a href="visualize.html">visualise()</a></code> </p>
+          <p><code><a href="chisq_stat.html">chisq_stat()</a></code> </p>
         </td>
-        <td><p>Visualize statistical inference</p></td>
+        <td><p>Tidy chi-squared test statistic</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="t_stat.html">t_stat()</a></code> </p>
+        </td>
+        <td><p>Tidy t-test statistic</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-miscellaneous" class="hasAnchor"><a href="#section-miscellaneous" class="anchor"></a>Miscellaneous</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="infer.html">infer</a></code> </p>
+        </td>
+        <td><p>infer: a grammar for statistical inference</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="gss.html">gss</a></code> </p>
+        </td>
+        <td><p>Subset of data from the General Social Survey (GSS).</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="deprecated.html">conf_int()</a></code> <code><a href="deprecated.html">p_value()</a></code> </p>
+        </td>
+        <td><p>Deprecated functions and objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="rep_sample_n.html">rep_sample_n()</a></code> <code><a href="rep_sample_n.html">rep_slice_sample()</a></code> </p>
+        </td>
+        <td><p>Perform repeated sampling</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="pipe.html">%>%</a></code> </p>
+        </td>
+        <td><p>Pipe</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="print.infer.html">print(<i>&lt;infer&gt;</i>)</a></code> <code><a href="print.infer.html">print(<i>&lt;infer_layer&gt;</i>)</a></code> <code><a href="print.infer.html">print(<i>&lt;infer_dist&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Print methods</p></td>
       </tr>
     </tbody>
     </table>
@@ -310,36 +373,24 @@
 
 
       <footer>
-      <div class="copyright">
-  <p>Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Ben Baumer, Mine Cetinkaya-Rundel.</p>
+      <div class="tidyverse">
+  <p>infer is a part of the <strong>tidymodels</strong> ecosystem, a collection of modeling packages designed with common APIs and a shared philosophy.</p>
 </div>
 
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+<div class="author">
+  <p>
+    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Simon Couch, Ben Baumer, Mine Cetinkaya-Rundel.
+    Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
+  </p>
 </div>
 
       </footer>
    </div>
 
   
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script>
-<script>
-  docsearch({
-    
-    
-    apiKey: '33338960d0dcb55ff924a40c2f749a0d',
-    indexName: 'infer',
-    inputSelector: 'input#search-input.form-control',
-    transformData: function(hits) {
-      return hits.map(function (hit) {
-        hit.url = updateHitURL(hit);
-        return hit;
-      });
-    }
-  });
-</script>
 
 
+  
 
   </body>
 </html>
