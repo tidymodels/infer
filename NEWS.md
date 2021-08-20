@@ -1,3 +1,7 @@
+# infer v1.0.0.9000 (development version)
+
+* Contributed a paper to the Journal of Open Source Software, a draft of which is available in `/figs/paper`.
+
 # infer 1.0.0
 
 v1.0.0 is the first major release of the {infer} package! By and large, the core verbs `specify()`, `hypothesize()`, `generate()`, and `calculate()` will interface as they did before. This release makes several improvements to behavioral consistency of the package and introduces support for theory-based inference as well as randomization-based inference with multiple explanatory variables.
