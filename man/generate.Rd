@@ -4,7 +4,7 @@
 \alias{generate}
 \title{Generate resamples, permutations, or simulations}
 \usage{
-generate(x, reps = 1, type = NULL, cols = !!response_expr(x), ...)
+generate(x, reps = 1, type = NULL, variables = !!response_expr(x), ...)
 }
 \arguments{
 \item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
@@ -15,9 +15,10 @@ generate(x, reps = 1, type = NULL, cols = !!response_expr(x), ...)
 data reflecting the null hypothesis. Currently one of
 \code{"bootstrap"}, \code{"permute"}, or \code{"draw"} (see below).}
 
-\item{cols}{If \code{type = "permute"}, a set of unquoted column names in the
+\item{variables}{If \code{type = "permute"}, a set of unquoted column names in the
 data to permute (independently of each other). Defaults to only the
-response variable.}
+response variable. Note that any derived effects that depend on these
+columns (e.g., interaction effects) will also be affected.}
 
 \item{...}{Currently ignored.}
 }
@@ -26,8 +27,11 @@ A tibble containing \code{reps} generated datasets, indicated by the
 \code{replicate} column.
 }
 \description{
-Generation creates a null distribution from \code{\link[=specify]{specify()}} and (if needed)
-\code{\link[=hypothesize]{hypothesize()}} inputs.
+Generation creates a simulated distribution from \code{specify()}.
+In the context of confidence intervals, this is a bootstrap distribution
+based on the result of \code{specify()}. In the context of hypothesis testing,
+this is a null distribution based on the result of \code{specify()} and
+\verb{hypothesize().}
 
 Learn more in \code{vignette("infer")}.
 }

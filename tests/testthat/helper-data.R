@@ -42,9 +42,9 @@ gss_permute <- gss_tbl %>%
 gss_viz_sim <- gss_permute %>% visualize(method = "simulation")
 
 # Warnings are about checking conditions for the theoretical method.
-gss_viz_theor <- suppressWarnings(
+gss_viz_theor <- suppressWarnings(suppressMessages(
   gss_permute %>% visualize(method = "theoretical")
-)
+))
 gss_viz_both <- suppressWarnings(
   gss_permute %>% visualize(method = "both")
 )

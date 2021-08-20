@@ -126,7 +126,7 @@ is_generated <- function(x) {
 }
 
 is_hypothesized <- function(x){
-  attr(x, "hypothesized")
+  isTRUE(attr(x, "hypothesized"))
 }
 
 is_fitted <- function(x){
@@ -406,6 +406,10 @@ check_point_params <- function(x, stat) {
 # This function checks for NaNs in the output of `calculate` and raises
 # a message/warning/error depending on the context in which it was called.
 check_for_nan <- function(x, context) {
+  if (inherits(x, "infer_dist")) {
+    return(x)
+  }
+  
   stat_is_nan <- is.nan(x[["stat"]])
   num_nans <- sum(stat_is_nan)
   # If there are no NaNs, continue on as normal :-)
@@ -598,4 +602,13 @@ parse_type <- function(f_name) {
   }
 
   res
+}
+
+check_is_distribution <- function(x, fn) {
+  if (!any(inherits(x, "infer_dist") || is.data.frame(x))) {
+    stop_glue(
+      "The `x` argument to `{fn}()` must be an infer distribution, ",
+      "outputted by `assume()` or `calculate()`."     
+    )
+  }
 }

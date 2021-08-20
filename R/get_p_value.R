@@ -6,10 +6,12 @@
 #' 
 #' Learn more in `vignette("infer")`.
 #'
-#' @param x A data frame containing a distribution of [calculate()]d statistics 
+#' @param x A null distribution. For simulation-based inference, a data frame 
+#'   containing a distribution of [calculate()]d statistics 
 #'   or [`fit()`][fit.infer()]ted coefficient estimates. This object should 
 #'   have been passed to [generate()] before being supplied or 
-#'   [calculate()] to [`fit()`][fit.infer()].
+#'   [calculate()] to [`fit()`][fit.infer()]. For theory-based inference,
+#'   the output of [assume()].
 #' @param obs_stat A data frame containing the observed statistic (in a 
 #'   [calculate()]-based workflow) or observed fit (in a 
 #'   [`fit()`][fit.infer()]-based workflow). This object is likely the output 
@@ -52,6 +54,8 @@
 #'
 #' @examples
 #' 
+#' # using a simulation-based null distribution ------------------------------
+#' 
 #' # find the point estimate---mean number of hours worked per week
 #' point_estimate <- gss %>%
 #'   specify(response = hours) %>%
@@ -70,7 +74,23 @@
 #    # calculate the p-value for the point estimate
 #'   get_p_value(obs_stat = point_estimate, direction = "two-sided")
 #'   
-#' # using a model fitting workflow -----------------------
+#' # using a theoretical null distribution -----------------------------------
+#'
+#' # calculate the observed statistic 
+#' obs_stat <- gss %>%
+#'   specify(response = hours) %>%
+#'   hypothesize(null = "point", mu = 40) %>%
+#'   calculate(stat = "t")
+#' 
+#' # define a null distribution
+#' null_dist <- gss %>%
+#'   specify(response = hours) %>%
+#'   assume("t")
+#' 
+#' # calculate a p-value
+#' get_p_value(null_dist, obs_stat, direction = "both")
+#'
+#' # using a model fitting workflow -----------------------------------------
 #' 
 #' # fit a linear model predicting number of hours worked per
 #' # week using respondent age and degree status.
@@ -99,12 +119,16 @@
 #' }  
 #'   
 #' @name get_p_value
-NULL
+#' @export
+get_p_value <- function(x, obs_stat, direction) {
+  UseMethod("get_p_value", x)
+}
 
 #' @rdname get_p_value
 #' @family auxillary functions
+#' @method get_p_value default
 #' @export
-get_p_value <- function(x, obs_stat, direction) {
+get_p_value.default <- function(x, obs_stat, direction) {
   check_type(x, is.data.frame)
   if (!is_generated(x) & is_hypothesized(x)) {
     stop_glue(
@@ -154,8 +178,40 @@ get_p_value <- function(x, obs_stat, direction) {
 
 #' @rdname get_p_value
 #' @export
-get_pvalue <- function(x, obs_stat, direction) {
-  get_p_value(x = x, obs_stat = obs_stat, direction = direction)
+get_pvalue <- get_p_value
+
+#' @rdname get_p_value
+#' @method get_p_value infer_dist
+#' @export
+get_p_value.infer_dist <- function(x, obs_stat, direction) {
+  # check the null hypotheses attached to x and obs_stat
+  check_hypotheses_align(x, obs_stat)
+  
+  # parse the distribution function
+  dist_fn <- paste0("p", attr(x, "distribution"))
+  
+  # translate the direction argument
+  dir <- norm_direction(direction)
+  
+  lower_tail <- switch(
+    dir,
+    `left` = TRUE,
+    `right` = FALSE,
+    `both` = TRUE
+  )
+
+  # supply everything to the base R distribution function
+  res <- do.call(
+    dist_fn,
+    c(list(q = as.numeric(obs_stat), lower.tail = lower_tail),
+      process_df(attr(x, "df")))
+  )
+  
+  if (dir == "both") {
+    res <- min(res, 1 - res) * 2
+  }
+  
+  tibble::tibble(p_value = res)
 }
 
 simulation_based_p_value <- function(x, obs_stat, direction) {
@@ -196,6 +252,18 @@ two_sided_p_value <- function(vec, obs_stat) {
   raw_res <- 2 * min(left_pval, right_pval)
   
   min(raw_res, 1)
+}
+
+check_hypotheses_align <- function(x, obs_stat) {
+  if (is_hypothesized(x) &&
+      is_hypothesized(obs_stat) &&
+      attr(x, "params") != attr(obs_stat, "params")) {
+    warning_glue(
+      "`x` and `obs_stat` were generated using different null hypotheses. ",
+      "This workflow is untested and results may not mean what you think ",
+      "they mean."
+    )
+  }
 }
 
 check_x_vs_obs_stat <- function(x, obs_stat) {

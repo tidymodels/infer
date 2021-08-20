@@ -1,38 +1,42 @@
 #' Generate resamples, permutations, or simulations
 #'
 #' @description
-#' 
-#' Generation creates a null distribution from [specify()] and (if needed) 
-#' [hypothesize()] inputs.
-#' 
+#'
+#' Generation creates a simulated distribution from `specify()`.
+#' In the context of confidence intervals, this is a bootstrap distribution
+#' based on the result of `specify()`. In the context of hypothesis testing,
+#' this is a null distribution based on the result of `specify()` and
+#' `hypothesize().`
+#'
 #' Learn more in `vignette("infer")`.
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param reps The number of resamples to generate.
 #' @param type The method used to generate resamples of the observed
-#'   data reflecting the null hypothesis. Currently one of 
+#'   data reflecting the null hypothesis. Currently one of
 #'   `"bootstrap"`, `"permute"`, or `"draw"` (see below).
-#' @param cols If `type = "permute"`, a set of unquoted column names in the 
-#'   data to permute (independently of each other). Defaults to only the 
-#'   response variable.
+#' @param variables If `type = "permute"`, a set of unquoted column names in the
+#'   data to permute (independently of each other). Defaults to only the
+#'   response variable. Note that any derived effects that depend on these
+#'   columns (e.g., interaction effects) will also be affected.
 #' @param ... Currently ignored.
 #'
 #' @return A tibble containing `reps` generated datasets, indicated by the
 #'   `replicate` column.
-#'   
+#'
 #' @section Generation Types:
-#' 
-#' The `type` argument determines the method used to create the null 
+#'
+#' The `type` argument determines the method used to create the null
 #' distribution.
-#' 
+#'
 #' \itemize{
 #'   \item `bootstrap`: A bootstrap sample will be drawn for each replicate,
-#'   where a sample of size equal to the input sample size is drawn (with 
+#'   where a sample of size equal to the input sample size is drawn (with
 #'   replacement) from the input sample data.
-#'   \item `permute`: For each replicate, each input value will be randomly 
+#'   \item `permute`: For each replicate, each input value will be randomly
 #'   reassigned (without replacement) to a new output value in the sample.
-#'   \item `draw`: A value will be sampled from a theoretical distribution 
-#'   with parameters specified in [hypothesize()] for each replicate. This 
+#'   \item `draw`: A value will be sampled from a theoretical distribution
+#'   with parameters specified in [hypothesize()] for each replicate. This
 #'   option is currently only applicable for testing point estimates. This
 #'   generation type was previously called `"simulate"`, which has been
 #'   superseded.
@@ -44,14 +48,14 @@
 #'  specify(response = hours) %>%
 #'  hypothesize(null = "point", mu = 40) %>%
 #'  generate(reps = 200, type = "bootstrap")
-#' 
+#'
 #' # generate a null distribution for the independence of
 #' # two variables by permuting their values 1000 times
 #' gss %>%
 #'  specify(partyid ~ age) %>%
 #'  hypothesize(null = "independence") %>%
 #'  generate(reps = 200, type = "permute")
-#' 
+#'
 #' # more in-depth explanation of how to use the infer package
 #' \dontrun{
 #' vignette("infer")
@@ -60,8 +64,8 @@
 #' @importFrom dplyr group_by
 #' @family core functions
 #' @export
-generate <- function(x, reps = 1, type = NULL, 
-                     cols = !!response_expr(x), ...) {
+generate <- function(x, reps = 1, type = NULL,
+                     variables = !!response_expr(x), ...) {
   # Check type argument, warning if necessary
   type <- sanitize_generation_type(type)
   auto_type <- sanitize_generation_type(attr(x, "type"))
@@ -70,8 +74,8 @@ generate <- function(x, reps = 1, type = NULL,
   } else {
     use_auto_type(auto_type)
   }
-  
-  check_cols(x, rlang::enquo(cols), type, missing(cols))
+
+  check_cols(x, rlang::enquo(variables), type, missing(variables))
 
   attr(x, "generated") <- TRUE
 
@@ -80,7 +84,7 @@ generate <- function(x, reps = 1, type = NULL,
     bootstrap = bootstrap(x, reps, ...),
     permute = {
       check_permutation_attributes(x)
-      permute(x, reps, rlang::enquo(cols), ...)
+      permute(x, reps, rlang::enquo(variables), ...)
     },
     draw = draw(x, reps, ...),
     simulate = draw(x, reps, ...)
@@ -90,7 +94,7 @@ generate <- function(x, reps = 1, type = NULL,
 # Check that type argument is an implemented type
 sanitize_generation_type <- function(x) {
   if (is.null(x)) return(x)
-  
+
   check_type(x, is.character)
 
   if (!x %in% c("bootstrap", "permute", "simulate", "draw")) {
@@ -99,14 +103,14 @@ sanitize_generation_type <- function(x) {
       'or "draw". See `?generate` for more details.'
     )
   }
-  
+
   if (x == "simulate") {
     message_glue(
       'The `"simulate"` generation type has been renamed to `"draw"`. ',
       'Use `type = "draw"` instead to quiet this message.'
     )
   }
-  
+
   x
 }
 
@@ -142,33 +146,38 @@ check_permutation_attributes <- function(x, attr) {
   }
 }
 
-check_cols <- function(x, cols, type, missing) {
-  if (!rlang::is_symbolic(rlang::get_expr(cols))) {
+check_cols <- function(x, variables, type, missing) {
+  if (!rlang::is_symbolic(rlang::get_expr(variables))) {
     stop_glue(
-      "The `cols` argument should be one or more unquoted variable names ",
+      "The `variables` argument should be one or more unquoted variable names ",
       "(not strings in quotation marks)."
     )
   }
-  
-  col_names <- all.vars(rlang::get_expr(cols))
-  
+
   if (!missing && type != "permute") {
     warning_glue(
-      'The `cols` argument is only relevant for the "permute" ',
+      'The `variables` argument is only relevant for the "permute" ',
       'generation type and will be ignored.'
     )
+    
+    should_prompt <- FALSE
+  } else {
+    should_prompt <- TRUE
   }
   
+  col_names <- process_variables(variables, should_prompt)
+  
+
   if (any(!col_names %in% colnames(x))) {
     bad_cols <- col_names[!col_names %in% colnames(x)]
-    
+
     plurals <- if (length(bad_cols) > 1) {
         c("s", "are")} else {
         c("", "is")}
-    
+
     stop_glue(
       'The column{plurals[1]} `{list(bad_cols)}` provided to ',
-      'the `cols` argument {plurals[2]} not in the supplied data.'
+      'the `variables` argument {plurals[2]} not in the supplied data.'
     )
   }
 }
@@ -201,8 +210,8 @@ bootstrap <- function(x, reps = 1, ...) {
 }
 
 #' @importFrom dplyr bind_rows group_by
-permute <- function(x, reps = 1, cols, ...) {
-  df_out <- replicate(reps, permute_once(x, cols), simplify = FALSE) %>%
+permute <- function(x, reps = 1, variables, ...) {
+  df_out <- replicate(reps, permute_once(x, variables), simplify = FALSE) %>%
     dplyr::bind_rows() %>%
     dplyr::mutate(replicate = rep(1:reps, each = nrow(x))) %>%
     dplyr::group_by(replicate)
@@ -212,16 +221,16 @@ permute <- function(x, reps = 1, cols, ...) {
   append_infer_class(df_out)
 }
 
-permute_once <- function(x, cols, ...) {
+permute_once <- function(x, variables, ...) {
   dots <- list(...)
 
   if (is_hypothesized(x) && (attr(x, "null") == "independence")) {
     # for each column, determine whether it should be permuted
-    needs_permuting <- colnames(x) %in% all.vars(rlang::get_expr(cols))
-    
+    needs_permuting <- colnames(x) %in% process_variables(variables, FALSE)
+
     # pass each to permute_column with its associated logical
     out <- purrr::map2_dfc(x, needs_permuting, permute_column)
-    
+
     copy_attrs(out, x)
   } else {
     stop_glue(
@@ -229,6 +238,36 @@ permute_once <- function(x, cols, ...) {
       "See `hypothesize()`."
     )
   }
+}
+
+process_variables <- function(variables, should_prompt) {
+  # extract the expression and convert each element to string
+  out <- rlang::get_expr(variables)
+  
+  if (length(out) == 1) {
+    out <- as.character(out)
+  } else {
+    out <- purrr::map(out, as.character)
+  }
+    
+  
+  # drop c()
+  out[out == "c"] <- NULL
+  
+  # drop interactions and message
+  interactions <- purrr::map_lgl(out, `%in%`, x = "*")
+  
+  if (any(interactions) && should_prompt) {
+    message_glue(
+      "Message: Please supply only data columns to the `variables` argument. ",
+      "Note that any derived effects that depend on these columns will also ",
+      "be affected."
+    )
+  }
+  
+  out <- out[!interactions]
+  
+  out
 }
 
 permute_column <- function(col, permute) {
@@ -250,7 +289,7 @@ draw <- function(x, reps = 1, ...) {
     sample(fct_levels, size = nrow(x), replace = TRUE, prob = format_params(x)),
     simplify = FALSE
   ))
-  
+
   x_nrow <- nrow(x)
   rep_tbl <- tibble::tibble(
     !!response_expr(x) := as.factor(col_simmed),
@@ -260,6 +299,6 @@ draw <- function(x, reps = 1, ...) {
   rep_tbl <- copy_attrs(to = rep_tbl, from = x)
 
   rep_tbl <- dplyr::group_by(rep_tbl, replicate)
-  
+
   append_infer_class(rep_tbl)
 }

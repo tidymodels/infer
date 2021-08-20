@@ -228,3 +228,227 @@ test_that("get_p_value errors informatively when args are switched", {
     get_p_value(null_dist, obs_stat, "both")
   )
 })
+
+test_that("get_p_value can handle theoretical distributions", {
+  get_p_value_ <- function(x, obs_stat, direction) {
+    x <- get_p_value(x, obs_stat, direction)
+    
+    x$p_value
+  }
+  
+  # f ------------------------------------------------------------
+  # direction = "right" is the only valid one
+  f_dist <- 
+    gss %>% 
+    specify(age ~ partyid) %>%
+    hypothesize(null = "independence") %>%
+    assume(distribution = "F")
+  
+  f_obs <- 
+    gss %>% 
+    specify(age ~ partyid) %>%
+    calculate(stat = "F")
+  
+  expect_equal(
+    get_p_value_(f_dist, f_obs, direction = "right"),
+    0.06005251,
+    tolerance = 1e-3
+  )
+
+  old_way_f <- broom::tidy(aov(age ~ partyid, gss))
+  
+  expect_equal(
+    get_p_value_(f_dist, f_obs, direction = "right"),
+    old_way_f$p.value[[1]],
+    tolerance = 1e-3
+  )
+  
+  # t ------------------------------------------------------------
+  t_dist <- 
+    gss %>%
+    specify(response = hours) %>% 
+    hypothesize(null = "point", mu = 40) %>%
+    assume("t")
+  
+  t_obs <-
+    gss %>%
+    specify(response = hours) %>% 
+    hypothesize(null = "point", mu = 40) %>%
+    calculate(stat = "t")
+  
+  expect_equal(
+    get_p_value_(t_dist, t_obs, direction = "both"),
+    0.038,
+    tolerance = 1e-3
+  )
+  
+  expect_equal(
+    get_p_value_(t_dist, t_obs, direction = "left"),
+    0.981,
+    tolerance = 1e-3
+  )
+  
+  expect_equal(
+    get_p_value_(t_dist, t_obs, direction = "right"),
+    1 - get_p_value_(t_dist, t_obs, direction = "left"),
+    tolerance = 1e-3
+  )
+  
+  expect_equal(
+    get_p_value_(t_dist, t_obs, direction = "both"),
+    (1 - get_p_value_(t_dist, t_obs, direction = "left")) * 2,
+    tolerance = 1e-3
+  )
+
+  old_way_both <- t_test(gss, hours ~ NULL, mu = 40, alternative = "two.sided")
+  
+  expect_equal(
+    old_way_both$p_value, 
+    get_p_value_(t_dist, t_obs, direction = "both"),
+    tolerance = 1e-3
+  )
+  
+  old_way_left <- t_test(gss, hours ~ NULL, mu = 40, alternative = "less")
+  
+  expect_equal(
+    old_way_left$p_value, 
+    get_p_value_(t_dist, t_obs, direction = "left")
+  )
+  
+  old_way_right <- t_test(gss, hours ~ NULL, mu = 40, alternative = "greater")
+  
+  expect_equal(
+    old_way_right$p_value, 
+    get_p_value_(t_dist, t_obs, direction = "right")
+  )
+  
+  # chisq ------------------------------------------------------------
+  # direction = "right" is the only valid one
+  chisq_dist <- 
+    gss %>% 
+    specify(college ~ finrela) %>%
+    hypothesize(null = "independence") %>%
+    assume(distribution = "Chisq")
+  
+  chisq_obs <- 
+    gss %>% 
+    specify(college ~ finrela) %>%
+    calculate(stat = "Chisq")
+  
+  expect_equal(
+    get_p_value_(chisq_dist, chisq_obs, direction = "right"),
+    1.082094e-05,
+    tolerance = 1e-3
+  )
+
+  expect_warning(
+    old_way <- chisq_test(gss, college ~ finrela)
+  )
+  
+  expect_equal(
+    old_way$p_value, 
+    get_p_value_(chisq_dist, chisq_obs, direction = "right"),
+    tolerance = 1e-3
+  )
+  
+  # z ------------------------------------------------------------
+  z_dist <- 
+    gss %>%
+    specify(response = sex, success = "female") %>%
+    hypothesize(null = "point", p = .5) %>%
+    assume("z")
+  
+  z_obs <- 
+    gss %>%
+    specify(response = sex, success = "female") %>%
+    hypothesize(null = "point", p = .5) %>%
+    calculate(stat = "z")
+  
+  expect_equal(
+    get_p_value_(z_dist, z_obs, direction = "both"),
+    0.244,
+    tolerance = 1e-3
+  )
+  
+  expect_equal(
+    get_p_value_(z_dist, z_obs, direction = "left"),
+    0.122,
+    tolerance = 1e-3
+  )
+  
+  expect_equal(
+    get_p_value_(z_dist, z_obs, direction = "right"),
+    1 - get_p_value_(z_dist, z_obs, direction = "left"),
+    tolerance = 1e-3
+  )
+  
+  expect_equal(
+    get_p_value_(z_dist, z_obs, direction = "both"),
+    (1 - get_p_value_(z_dist, z_obs, direction = "right")) * 2,
+    tolerance = 1e-3
+  )
+  
+  old_way_z_both <- prop_test(gss, sex ~ NULL, success = "female", p = .5, 
+                              alternative = "two.sided", z = TRUE)
+  old_way_z_left <- prop_test(gss, sex ~ NULL, success = "female", p = .5,
+                              alternative = "less", z = TRUE)
+  old_way_z_right <- prop_test(gss, sex ~ NULL, success = "female", p = .5, 
+                               alternative = "greater", z = TRUE)
+  
+  expect_equal(
+    get_p_value_(z_dist, z_obs, direction = "both"),
+    old_way_z_both$p_value,
+    tolerance = 1e-3
+  )
+  
+  expect_equal(
+    get_p_value_(z_dist, z_obs, direction = "left"),
+    old_way_z_left$p_value,
+    tolerance = 1e-3
+  )
+  
+  expect_equal(
+    get_p_value_(z_dist, z_obs, direction = "right"),
+    old_way_z_right$p_value,
+    tolerance = 1e-3
+  )
+})
+
+
+test_that("get_p_value warns with bad theoretical distributions", {
+  t_dist_40 <- 
+    gss %>%
+    specify(response = hours) %>% 
+    hypothesize(null = "point", mu = 40) %>%
+    assume("t")
+  
+  t_dist_30 <- 
+    gss %>%
+    specify(response = hours) %>% 
+    hypothesize(null = "point", mu = 30) %>%
+    assume("t")
+  
+  t_obs <-
+    gss %>%
+    specify(response = hours) %>% 
+    hypothesize(null = "point", mu = 40) %>%
+    calculate(stat = "t")
+  
+  expect_silent(
+    get_p_value(
+      t_dist_40,
+      t_obs,
+      direction = "both"
+    )
+  )
+  
+  expect_warning(
+    get_p_value(
+      t_dist_30,
+      t_obs,
+      direction = "both"
+    ),
+    "generated using different null hypotheses"
+  )
+})
+

@@ -27,11 +27,16 @@ explanatory variable (\code{term}).
 }
 \description{
 Given the output of an infer core function, this function will fit
-a model using \code{\link[stats:glm]{stats::glm()}} according to the formula and data supplied
+a linear model using \code{\link[stats:glm]{stats::glm()}} according to the formula and data supplied
 earlier in the pipeline. If passed the output of \code{\link[=specify]{specify()}} or
 \code{\link[=hypothesize]{hypothesize()}}, the function will fit one model. If passed the output
 of \code{\link[=generate]{generate()}}, it will fit a model to each data resample, denoted in
-the \code{replicate} column.
+the \code{replicate} column. The family of the fitted model depends on the type
+of the response variable. If the response is numeric, \code{fit()} will use
+\code{family = "gaussian"} (linear regression). If the response is a 2-level
+factor or character, \code{fit()} will use \code{family = "binomial"} (logistic
+regression). To fit character or factor response variables with more than
+two levels, we recommend \code{\link[parsnip:multinom_reg]{parsnip::multinom_reg()}}.
 
 infer provides a fit "method" for infer objects, which is a way of carrying
 out model fitting as applied to infer output. The "generic," imported from
@@ -51,7 +56,7 @@ elsewhere in the package, is subject to additional distributional assumptions
 beyond those required for one explanatory variable. Namely, the distribution
 of the response variable must be similar to the distribution of the errors
 under the null hypothesis' specification of a fixed effect of the explanatory
-variables. (This null hypothesis is reflected in the \code{cols} argument to
+variables. (This null hypothesis is reflected in the \code{variables} argument to
 \code{\link[=generate]{generate()}}. By default, all of the explanatory variables are treated
 as fixed.) A general rule of thumb here is, if there are large outliers
 in the distributions of any of the explanatory variables, this distributional
@@ -85,6 +90,12 @@ null_fits <- gss \%>\%
   fit()
 
 null_fits
+
+# for logistic regression, just supply a binary response variable!
+# (this can also be made explicit via the `family` argument in ...)
+gss \%>\%
+  specify(college ~ age + hours) \%>\%
+  fit()
 
 # more in-depth explanation of how to use the infer package
 \dontrun{

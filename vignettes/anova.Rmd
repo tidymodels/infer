@@ -51,6 +51,7 @@ First, to calculate the observed statistic, we can use `specify()` and `calculat
 # calculate the observed statistic
 observed_f_statistic <- gss %>%
   specify(age ~ partyid) %>%
+  hypothesize(null = "independence") %>%
   calculate(stat = "F")
 ```
 
@@ -79,14 +80,15 @@ null_distribution %>%
                 direction = "greater")
 ```
 
-We could also visualize the observed statistic against the theoretical null distribution. Note that we skip the `generate()` and `calculate()` steps when using the theoretical approach, and that we now need to provide `method = "theoretical"` to `visualize()`.
+We could also visualize the observed statistic against the theoretical null distribution. To do so, use the `assume()` verb to define a theoretical null distribution and then pass it to `visualize()` like a null distribution outputted from `generate()` and `calculate()`.
 
 ```{r visualize-f-theor, warning = FALSE, message = FALSE}
 # visualize the theoretical null distribution and test statistic!
-gss %>%
+null_dist_theoretical <- gss %>%
   specify(age ~ partyid) %>%
-  hypothesize(null = "independence") %>%
-  visualize(method = "theoretical") + 
+  assume(distribution = "F")
+
+visualize(null_dist_theoretical) +
   shade_p_value(observed_f_statistic,
                 direction = "greater")
 ```

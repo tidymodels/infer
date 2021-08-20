@@ -57,6 +57,7 @@ reference:
     - generate
     - calculate
     - fit.infer
+    - assume
   - title: Helpers
     contents:
     - visualize

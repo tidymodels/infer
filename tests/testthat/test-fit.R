@@ -81,3 +81,59 @@ test_that("fit.infer messages informatively on excessive null", {
       fit()
   )
 })
+
+test_that("fit.infer logistic regression works", {
+  # linear regression default works
+  expect_equal(
+    gss %>%
+      specify(hours ~ age + college) %>%
+      fit(),
+    gss %>%
+      specify(hours ~ age + college) %>%
+      fit(family = stats::gaussian)
+  )
+  
+  # logistic regression default works
+  expect_equal(
+    gss %>%
+      specify(college ~ age + hours) %>%
+      fit(family = stats::binomial),
+    gss %>%
+      specify(college ~ age + hours) %>%
+      fit()
+  )
+  
+  # errors informatively with multinomial response variable
+  expect_error(
+    gss %>%
+      specify(finrela ~ age + college) %>%
+      fit(),
+    "infer does not support.*more than two levels"
+  )
+  
+  # works as expected for `generate()`d objects
+  fit_gen <- gss %>%
+    specify(college ~ age + hours) %>%
+    hypothesize(null = "independence") %>%
+    generate(type = "permute", reps = 2) %>%
+    fit()
+  
+  fit_obs <- gss %>%
+    specify(college ~ age + hours) %>%
+    fit()
+
+  expect_equal(nrow(fit_gen), nrow(fit_obs) * 2)
+  expect_equal(ncol(fit_gen), ncol(fit_obs) + 1)
+  
+  # responds to success argument
+  fit_deg <- gss %>%
+    specify(college ~ age + hours, success = "degree") %>%
+    fit()
+  
+  fit_no_deg <- gss %>%
+    specify(college ~ age + hours, success = "no degree") %>%
+    fit()
+
+  expect_equal(fit_deg$term, fit_no_deg$term)
+  expect_equal(fit_deg$estimate, -fit_no_deg$estimate)
+})
