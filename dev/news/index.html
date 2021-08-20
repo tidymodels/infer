@@ -98,7 +98,7 @@
         <a class="navbar-brand" href="../index.html">infer</a>
         <div class="info hidden-xs hidden-sm">
           <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
-          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.5.4.9000</span>
+          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.0.0.9000</span>
         </div>
       </div>
     </div>
@@ -163,10 +163,14 @@
       <small>Source: <a href='https://github.com/tidymodels/infer/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="infer-0549000" class="section level1">
-<h1 class="page-header" data-toc-text="0.5.4.9000">
-<a href="#infer-0549000" class="anchor" aria-hidden="true"></a>infer 0.5.4.9000<small> Unreleased </small></h1>
-<p>To be released as 1.0.0</p>
+    <div id="infer-v1009000-development-version" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.0.9000">
+<a href="#infer-v1009000-development-version" class="anchor" aria-hidden="true"></a>infer v1.0.0.9000 (development version)<small> Unreleased </small></h1>
+<ul><li>Contributed a paper to the Journal of Open Source Software, a draft of which is available in <code>/figs/paper</code>.</li>
+</ul></div>
+    <div id="infer-100" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.0">
+<a href="#infer-100" class="anchor" aria-hidden="true"></a>infer 1.0.0<small> 2021-08-13 </small></h1>
 <p>v1.0.0 is the first major release of the {infer} package! By and large, the core verbs <code><a href="../reference/specify.html">specify()</a></code>, <code><a href="../reference/hypothesize.html">hypothesize()</a></code>, <code><a href="../reference/generate.html">generate()</a></code>, and <code><a href="../reference/calculate.html">calculate()</a></code> will interface as they did before. This release makes several improvements to behavioral consistency of the package and introduces support for theory-based inference as well as randomization-based inference with multiple explanatory variables.</p>
 <div id="behavioral-consistency" class="section level2">
 <h2 class="hasAnchor">
@@ -392,13 +396,13 @@
 <span class="co">#&gt;  9         3 collegedegree  0.136  </span>
 <span class="co">#&gt; 10         4 intercept     43.1    </span>
 <span class="co">#&gt; # … with 290 more rows</span></code></pre></div>
-<p>If <code>type = "permute"</code>, a set of unquoted column names in the data to permute (independently of each other) can be passed via the <code>cols</code> argument to <code>generate</code>. It defaults to only the response variable.</p>
+<p>If <code>type = "permute"</code>, a set of unquoted column names in the data to permute (independently of each other) can be passed via the <code>variables</code> argument to <code>generate</code>. It defaults to only the response variable.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">100</span>, type <span class="op">=</span> <span class="st">"permute"</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">college</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">100</span>, type <span class="op">=</span> <span class="st">"permute"</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">college</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 300 x 3</span>
 <span class="co">#&gt; # Groups:   replicate [100]</span>

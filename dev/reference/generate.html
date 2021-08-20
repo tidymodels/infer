@@ -105,7 +105,7 @@ Learn more in vignette(&quot;infer&quot;)." />
         <a class="navbar-brand" href="../index.html">infer</a>
         <div class="info hidden-xs hidden-sm">
           <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
-          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.5.4.9000</span>
+          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.0.0.9000</span>
         </div>
       </div>
     </div>
@@ -180,7 +180,7 @@ this is a null distribution based on the result of <code><a href='specify.html'>
 <p>Learn more in <code><a href='../articles/infer.html'>vignette("infer")</a></code>.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>generate</span><span class='op'>(</span><span class='va'>x</span>, reps <span class='op'>=</span> <span class='fl'>1</span>, type <span class='op'>=</span> <span class='cn'>NULL</span>, cols <span class='op'>=</span> <span class='op'>!</span><span class='op'>!</span><span class='fu'>response_expr</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>generate</span><span class='op'>(</span><span class='va'>x</span>, reps <span class='op'>=</span> <span class='fl'>1</span>, type <span class='op'>=</span> <span class='cn'>NULL</span>, variables <span class='op'>=</span> <span class='op'>!</span><span class='op'>!</span><span class='fu'>response_expr</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -200,10 +200,11 @@ data reflecting the null hypothesis. Currently one of
 <code>"bootstrap"</code>, <code>"permute"</code>, or <code>"draw"</code> (see below).</p></td>
     </tr>
     <tr>
-      <th>cols</th>
+      <th>variables</th>
       <td><p>If <code>type = "permute"</code>, a set of unquoted column names in the
 data to permute (independently of each other). Defaults to only the
-response variable.</p></td>
+response variable. Note that any derived effects that depend on these
+columns (e.g., interaction effects) will also be affected.</p></td>
     </tr>
     <tr>
       <th>...</th>

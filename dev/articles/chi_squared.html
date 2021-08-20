@@ -52,7 +52,7 @@
         <a class="navbar-brand" href="../index.html">infer</a>
         <div class="info hidden-xs hidden-sm">
           <span class="partof">part of <a href="https://github.com/tidymodels" class="external-link">tidymodels</a></span>
-          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.5.4.9000</span>
+          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.0.0.9000</span>
         </div>
       </div>
     </div>
@@ -162,7 +162,7 @@
 <p>We can <code>generate</code> the null distribution in one of two ways—using randomization or theory-based methods. The randomization approach approximates the null distribution by permuting the response and explanatory variables, so that each person’s educational attainment is matched up with a random income from the sample in order to break up any association between the two.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># generate the null distribution using randomization</span>
-<span class="va">null_distribution_simulated</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">null_dist_sim</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">finrela</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -170,13 +170,13 @@
 <p>Note that, in the line <code>specify(college ~ finrela)</code> above, we could use the equivalent syntax <code>specify(response = college, explanatory = finrela)</code>. The same goes in the code below, which generates the null distribution using theory-based methods instead of randomization.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># generate the null distribution by theoretical approximation</span>
-<span class="va">null_distribution_theoretical</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">null_dist_theory</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">finrela</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/assume.html">assume</a></span><span class="op">(</span>distribution <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></code></pre></div>
 <p>To get a sense for what these distributions look like, and where our observed statistic falls, we can use <code><a href="../reference/visualize.html">visualize()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># visualize the null distribution and test statistic!</span>
-<span class="va">null_distribution_simulated</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">null_dist_sim</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_indep_statistic</span>,
                 direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
@@ -194,7 +194,7 @@
 <p>To visualize both the randomization-based and theoretical null distributions to get a sense of how the two relate, we can pipe the randomization-based null distribution into <code><a href="../reference/visualize.html">visualize()</a></code>, and further provide <code>method = "both"</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># visualize both null distributions and the test statistic!</span>
-<span class="va">null_distribution_simulated</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">null_dist_sim</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_indep_statistic</span>,
                 direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
@@ -202,7 +202,7 @@
 <p>Either way, it looks like our observed test statistic would be quite unlikely if there were actually no association between education and income. More exactly, we can approximate the p-value with <code>get_p_value</code>:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># calculate the p value from the observed statistic and null distribution</span>
-<span class="va">p_value_independence</span> <span class="op">&lt;-</span> <span class="va">null_distribution_simulated</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">p_value_independence</span> <span class="op">&lt;-</span> <span class="va">null_dist_sim</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">observed_indep_statistic</span>,
               direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span>
 
@@ -247,7 +247,7 @@
 <p>The observed statistic is 487.984. Now, generating a null distribution, by just dropping in a call to <code><a href="../reference/generate.html">generate()</a></code>:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># generating a null distribution, assuming each income class is equally likely</span>
-<span class="va">null_distribution_gof</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">null_dist_gof</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">finrela</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>,
               p <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"far below average"</span> <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">6</span>,
@@ -261,7 +261,7 @@
 <p>Again, to get a sense for what these distributions look like, and where our observed statistic falls, we can use <code><a href="../reference/visualize.html">visualize()</a></code>:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># visualize the null distribution and test statistic!</span>
-<span class="va">null_distribution_gof</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">null_dist_gof</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_gof_statistic</span>,
                 direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
@@ -269,7 +269,7 @@
 <p>This statistic seems like it would be quite unlikely if income class self-identification actually followed a uniform distribution! How unlikely, though? Calculating the p-value:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># calculate the p-value</span>
-<span class="va">p_value_gof</span> <span class="op">&lt;-</span> <span class="va">null_distribution_gof</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">p_value_gof</span> <span class="op">&lt;-</span> <span class="va">null_dist_gof</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span><span class="op">(</span><span class="va">observed_gof_statistic</span>,
               direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span>
 
