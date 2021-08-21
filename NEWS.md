@@ -1,5 +1,6 @@
 # infer v1.0.0.9000 (development version)
 
+* Re-licensed the package from CC0 to MIT. See the `LICENSE` and `LICENSE.md` files.
 * Contributed a paper to the Journal of Open Source Software, a draft of which is available in `/figs/paper`.
 
 # infer 1.0.0
