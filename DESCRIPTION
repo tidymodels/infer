@@ -70,7 +70,7 @@ Authors@R:
 Description: The objective of this package is to perform
     inference using an expressive statistical grammar that coheres with
     the tidy design framework.
-License: CC0
+License: MIT + file LICENSE
 URL: https://github.com/tidymodels/infer,
     https://infer.tidymodels.org/
 BugReports: https://github.com/tidymodels/infer/issues
