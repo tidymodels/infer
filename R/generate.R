@@ -36,8 +36,8 @@
 #'   \item `permute`: For each replicate, each input value will be randomly
 #'   reassigned (without replacement) to a new output value in the sample.
 #'   \item `draw`: A value will be sampled from a theoretical distribution
-#'   with parameters specified in [hypothesize()] for each replicate. This
-#'   option is currently only applicable for testing point estimates. This
+#'   with parameter `p` specified in [hypothesize()] for each replicate. This
+#'   option is currently only applicable for testing on one proportion. This
 #'   generation type was previously called `"simulate"`, which has been
 #'   superseded.
 #' }
@@ -50,11 +50,19 @@
 #'  generate(reps = 200, type = "bootstrap")
 #'
 #' # generate a null distribution for the independence of
-#' # two variables by permuting their values 1000 times
+#' # two variables by permuting their values 200 times
 #' gss %>%
 #'  specify(partyid ~ age) %>%
 #'  hypothesize(null = "independence") %>%
 #'  generate(reps = 200, type = "permute")
+#' 
+#' # generate a null distribution via sampling from a
+#' # binomial distribution 200 times
+#' gss %>%
+#' specify(response = sex, success = "female") %>%
+#'   hypothesize(null = "point", p = .5) %>%
+#'   generate(reps = 200, type = "draw") %>%
+#'   calculate(stat = "z")
 #'
 #' # more in-depth explanation of how to use the infer package
 #' \dontrun{
