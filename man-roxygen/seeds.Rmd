@@ -1,6 +1,6 @@
 # Reproducibility
 
-When using the infer package for research, or in other cases when exact reproducibility is a priority, be sure the set the seed for R's random number generator. infer will respect the random seed specified in the `set.seed()` function, returning the same results when `generate()`ing new data given an identical seed. For instance, we can calculate the difference in mean `age` by `college` degree status using the `gss` dataset from 10 versions of the `gss` resampled with permutation using the following code.
+When using the infer package for research, or in other cases when exact reproducibility is a priority, be sure the set the seed for R's random number generator. infer will respect the random seed specified in the `set.seed()` function, returning the same result when `generate()`ing data given an identical seed. For instance, we can calculate the difference in mean `age` by `college` degree status using the `gss` dataset from 10 versions of the `gss` resampled with permutation using the following code.
 
 ```{r, include = FALSE}
 library(infer)

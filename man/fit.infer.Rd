@@ -75,8 +75,8 @@ multivariate analysis of variance and regression" (Marti J. Anderson,
 When using the infer package for research, or in other cases when exact
 reproducibility is a priority, be sure the set the seed for R’s random
 number generator. infer will respect the random seed specified in the
-\code{set.seed()} function, returning the same results when \code{generate()}ing
-new data given an identical seed. For instance, we can calculate the
+\code{set.seed()} function, returning the same result when \code{generate()}ing
+data given an identical seed. For instance, we can calculate the
 difference in mean \code{age} by \code{college} degree status using the \code{gss}
 dataset from 10 versions of the \code{gss} resampled with permutation using
 the following code.\if{html}{\out{<div class="r">}}\preformatted{set.seed(1)

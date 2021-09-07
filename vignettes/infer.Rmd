@@ -126,7 +126,7 @@ gss %>%
 
 In the above example, we take 1000 bootstrap samples to form our null distribution.
 
-Note that, before `generate()`ing, we've set the seed for random number generation with the `set.seed()` function. When using the infer package for research, or in other cases when exact reproducibility is a priority, this is good practice. infer will respect the random seed specified in the `set.seed()` function, returning the same results when `generate()`ing new data given an identical seed.
+Note that, before `generate()`ing, we've set the seed for random number generation with the `set.seed()` function. When using the infer package for research, or in other cases when exact reproducibility is a priority, this is good practice. infer will respect the random seed specified in the `set.seed()` function, returning the same result when `generate()`ing data given an identical seed.
 
 To generate a null distribution for the independence of two variables, we could also randomly reshuffle the pairings of explanatory and response variables to break any existing association. For instance, to generate 1000 replicates that can be used to create a null distribution under the assumption that political party affiliation is not affected by age:
 
