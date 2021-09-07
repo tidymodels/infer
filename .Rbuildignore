@@ -26,3 +26,4 @@ README_files/
 ^pkgdown$
 ^\.github$
 ^LICENSE\.md$
+^man-roxygen$

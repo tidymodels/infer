@@ -1,0 +1,32 @@
+# Reproducibility
+
+When using the infer package for research, or in other cases when exact reproducibility is a priority, be sure the set the seed for R's random number generator. infer will respect the random seed specified in the `set.seed()` function, returning the same result when `generate()`ing data given an identical seed. For instance, we can calculate the difference in mean `age` by `college` degree status using the `gss` dataset from 10 versions of the `gss` resampled with permutation using the following code.
+
+```{r, include = FALSE}
+library(infer)
+```
+
+```{r}
+set.seed(1)
+
+gss %>%
+  specify(age ~ college) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 5, type = "permute") %>%
+  calculate("diff in means", order = c("degree", "no degree"))
+```
+
+Setting the seed to the same value again and rerunning the same code will produce the same result.
+
+```{r}
+# set the seed
+set.seed(1)
+
+gss %>%
+  specify(age ~ college) %>%
+  hypothesize(null = "independence") %>%
+  generate(reps = 5, type = "permute") %>%
+  calculate("diff in means", order = c("degree", "no degree"))
+```
+
+Please keep this in mind when writing infer code that utilizes resampling with `generate()`.
