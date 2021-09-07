@@ -37,6 +37,7 @@
 #' cases will be NaN. The package will omit non-finite values from
 #' visualizations (with a warning) and raise an error in p-value calculations.
 #'
+#' @includeRmd man-roxygen/seeds.Rmd
 #' 
 #' @examples
 #'

@@ -41,6 +41,8 @@
 #'   generation type was previously called `"simulate"`, which has been
 #'   superseded.
 #' }
+#' 
+#' @includeRmd man-roxygen/seeds.Rmd
 #'
 #' @examples
 #' # generate a null distribution by taking 200 bootstrap samples

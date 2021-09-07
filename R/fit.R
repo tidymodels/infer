@@ -72,6 +72,8 @@ generics::fit
 #' multivariate analysis of variance and regression" (Marti J. Anderson,
 #' 2001), \doi{10.1139/cjfas-58-3-626}.
 #' 
+#' @includeRmd man-roxygen/seeds.Rmd
+#' 
 #' @examples
 #' # fit a linear model predicting number of hours worked per
 #' # week using respondent age and degree status.

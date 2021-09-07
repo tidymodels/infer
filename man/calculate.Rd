@@ -56,6 +56,60 @@ cases will be NaN. The package will omit non-finite values from
 visualizations (with a warning) and raise an error in p-value calculations.
 }
 
+\section{Reproducibility}{
+When using the infer package for research, or in other cases when exact
+reproducibility is a priority, be sure the set the seed for R’s random
+number generator. infer will respect the random seed specified in the
+\code{set.seed()} function, returning the same results when \code{generate()}ing
+new data given an identical seed. For instance, we can calculate the
+difference in mean \code{age} by \code{college} degree status using the \code{gss}
+dataset from 10 versions of the \code{gss} resampled with permutation using
+the following code.\if{html}{\out{<div class="r">}}\preformatted{set.seed(1)
+
+gss \%>\%
+  specify(age ~ college) \%>\%
+  hypothesize(null = "independence") \%>\%
+  generate(reps = 5, type = "permute") \%>\%
+  calculate("diff in means", order = c("degree", "no degree"))
+}\if{html}{\out{</div>}}\preformatted{## Response: age (numeric)
+## Explanatory: college (factor)
+## Null Hypothesis: independence
+## # A tibble: 5 × 2
+##   replicate   stat
+##       <int>  <dbl>
+## 1         1 -0.531
+## 2         2 -2.35 
+## 3         3  0.764
+## 4         4  0.280
+## 5         5  0.350
+}
+
+Setting the seed again and rerunning the same code will result in the
+same answer.\if{html}{\out{<div class="r">}}\preformatted{# set the seed
+set.seed(1)
+
+gss \%>\%
+  specify(age ~ college) \%>\%
+  hypothesize(null = "independence") \%>\%
+  generate(reps = 5, type = "permute") \%>\%
+  calculate("diff in means", order = c("degree", "no degree"))
+}\if{html}{\out{</div>}}\preformatted{## Response: age (numeric)
+## Explanatory: college (factor)
+## Null Hypothesis: independence
+## # A tibble: 5 × 2
+##   replicate   stat
+##       <int>  <dbl>
+## 1         1 -0.531
+## 2         2 -2.35 
+## 3         3  0.764
+## 4         4  0.280
+## 5         5  0.350
+}
+
+Please keep this in mind when writing infer code that utilizes
+resampling with \code{generate()}.
+}
+
 \examples{
 
 # calculate a null distribution of hours worked per week under

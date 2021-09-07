@@ -71,6 +71,60 @@ exist. For an overview, see "Permutation tests for univariate or
 multivariate analysis of variance and regression" (Marti J. Anderson,
 2001), \doi{10.1139/cjfas-58-3-626}.
 }
+\section{Reproducibility}{
+When using the infer package for research, or in other cases when exact
+reproducibility is a priority, be sure the set the seed for R’s random
+number generator. infer will respect the random seed specified in the
+\code{set.seed()} function, returning the same results when \code{generate()}ing
+new data given an identical seed. For instance, we can calculate the
+difference in mean \code{age} by \code{college} degree status using the \code{gss}
+dataset from 10 versions of the \code{gss} resampled with permutation using
+the following code.\if{html}{\out{<div class="r">}}\preformatted{set.seed(1)
+
+gss \%>\%
+  specify(age ~ college) \%>\%
+  hypothesize(null = "independence") \%>\%
+  generate(reps = 5, type = "permute") \%>\%
+  calculate("diff in means", order = c("degree", "no degree"))
+}\if{html}{\out{</div>}}\preformatted{## Response: age (numeric)
+## Explanatory: college (factor)
+## Null Hypothesis: independence
+## # A tibble: 5 × 2
+##   replicate   stat
+##       <int>  <dbl>
+## 1         1 -0.531
+## 2         2 -2.35 
+## 3         3  0.764
+## 4         4  0.280
+## 5         5  0.350
+}
+
+Setting the seed again and rerunning the same code will result in the
+same answer.\if{html}{\out{<div class="r">}}\preformatted{# set the seed
+set.seed(1)
+
+gss \%>\%
+  specify(age ~ college) \%>\%
+  hypothesize(null = "independence") \%>\%
+  generate(reps = 5, type = "permute") \%>\%
+  calculate("diff in means", order = c("degree", "no degree"))
+}\if{html}{\out{</div>}}\preformatted{## Response: age (numeric)
+## Explanatory: college (factor)
+## Null Hypothesis: independence
+## # A tibble: 5 × 2
+##   replicate   stat
+##       <int>  <dbl>
+## 1         1 -0.531
+## 2         2 -2.35 
+## 3         3  0.764
+## 4         4  0.280
+## 5         5  0.350
+}
+
+Please keep this in mind when writing infer code that utilizes
+resampling with \code{generate()}.
+}
+
 \examples{
 # fit a linear model predicting number of hours worked per
 # week using respondent age and degree status.
