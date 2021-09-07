@@ -84,8 +84,8 @@ gss \%>\%
 ## 5         5  0.350
 }
 
-Setting the seed again and rerunning the same code will result in the
-same answer.\if{html}{\out{<div class="r">}}\preformatted{# set the seed
+Setting the seed to the same value again and rerunning the same code
+will produce the same result.\if{html}{\out{<div class="r">}}\preformatted{# set the seed
 set.seed(1)
 
 gss \%>\%
