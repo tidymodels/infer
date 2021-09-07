@@ -316,7 +316,9 @@
 </ul>
 <p>Continuing on with our example above, about the average number of hours worked a week, we might write:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+
+<span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span></code></pre></div>
@@ -326,18 +328,19 @@
 ## # Groups:   replicate [1,000]
 ##    replicate hours
 ##        &lt;int&gt; &lt;dbl&gt;
-##  1         1  28.6
-##  2         1  41.6
-##  3         1  54.6
-##  4         1  43.6
-##  5         1  44.6
-##  6         1  43.6
-##  7         1  28.6
-##  8         1  25.6
-##  9         1  78.6
-## 10         1  21.6
+##  1         1 46.6 
+##  2         1 43.6 
+##  3         1 38.6 
+##  4         1 28.6 
+##  5         1 38.6 
+##  6         1 38.6 
+##  7         1  6.62
+##  8         1 78.6 
+##  9         1 38.6 
+## 10         1 38.6 
 ## # … with 499,990 more rows</code></pre>
 <p>In the above example, we take 1000 bootstrap samples to form our null distribution.</p>
+<p>Note that, before <code><a href="../reference/generate.html">generate()</a></code>ing, we’ve set the seed for random number generation with the <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> function. When using the infer package for research, or in other cases when exact reproducibility is a priority, this is good practice. infer will respect the random seed specified in the <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> function, returning the same result when <code><a href="../reference/generate.html">generate()</a></code>ing data given an identical seed.</p>
 <p>To generate a null distribution for the independence of two variables, we could also randomly reshuffle the pairings of explanatory and response variables to break any existing association. For instance, to generate 1000 replicates that can be used to create a null distribution under the assumption that political party affiliation is not affected by age:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -351,16 +354,16 @@
 ## # Groups:   replicate [1,000]
 ##    partyid   age replicate
 ##    &lt;fct&gt;   &lt;dbl&gt;     &lt;int&gt;
-##  1 ind        36         1
+##  1 rep        36         1
 ##  2 rep        34         1
 ##  3 dem        24         1
-##  4 rep        42         1
+##  4 dem        42         1
 ##  5 dem        31         1
-##  6 dem        32         1
+##  6 ind        32         1
 ##  7 ind        48         1
 ##  8 rep        36         1
-##  9 ind        30         1
-## 10 ind        33         1
+##  9 dem        30         1
+## 10 rep        33         1
 ## # … with 499,990 more rows</code></pre>
 </div>
 <div id="calculate-calculating-summary-statistics" class="section level3">
@@ -378,16 +381,16 @@
 ## # A tibble: 1,000 × 2
 ##    replicate  stat
 ##        &lt;int&gt; &lt;dbl&gt;
-##  1         1  39.4
-##  2         2  39.6
-##  3         3  39.2
-##  4         4  40.8
-##  5         5  39.0
+##  1         1  39.2
+##  2         2  39.1
+##  3         3  39.0
+##  4         4  39.8
+##  5         5  41.4
 ##  6         6  39.4
-##  7         7  39.3
-##  8         8  41.2
-##  9         9  40.5
-## 10        10  40.0
+##  7         7  39.8
+##  8         8  40.4
+##  9         9  41.5
+## 10        10  40.9
 ## # … with 990 more rows</code></pre>
 <p>The output of <code><a href="../reference/calculate.html">calculate()</a></code> here shows us the sample statistic (in this case, the mean) for each of our 1000 replicates. If you’re carrying out inference on differences in means, medians, or proportions, or t and z statistics, you will need to supply an <code>order</code> argument, giving the order in which the explanatory variables should be subtracted. For instance, to find the difference in mean age of those that have a college degree and those that don’t, we might write:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
@@ -402,16 +405,16 @@
 ## # A tibble: 1,000 × 2
 ##    replicate   stat
 ##        &lt;int&gt;  &lt;dbl&gt;
-##  1         1 -0.620
-##  2         2 -0.320
-##  3         3  1.88 
-##  4         4 -1.02 
-##  5         5 -0.531
-##  6         6 -0.972
-##  7         7 -0.478
-##  8         8  1.37 
-##  9         9  1.00 
-## 10        10 -1.55 
+##  1         1 -2.35 
+##  2         2 -0.902
+##  3         3  0.403
+##  4         4 -0.426
+##  5         5  0.482
+##  6         6 -0.196
+##  7         7  1.33 
+##  8         8 -1.07 
+##  9         9  1.68 
+## 10        10  0.888
 ## # … with 990 more rows</code></pre>
 </div>
 <div id="other-utilities" class="section level3">
@@ -453,8 +456,8 @@
 <pre><code>## # A tibble: 1 × 1
 ##   p_value
 ##     &lt;dbl&gt;
-## 1    0.03</code></pre>
-<p>It looks like the p-value is 0.03, which is pretty small—if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.03. This may or may not be statistically significantly different, depending on the significance level <span class="math inline">\(\alpha\)</span> you decided on <em>before</em> you ran this analysis. If you had set <span class="math inline">\(\alpha = .05\)</span>, then this difference would be statistically significant, but if you had set <span class="math inline">\(\alpha = .01\)</span>, then it would not be.</p>
+## 1   0.032</code></pre>
+<p>It looks like the p-value is 0.032, which is pretty small—if the true mean number of hours worked per week was actually 40, the probability of our sample mean being this far (1.382 hours) from 40 would be 0.032. This may or may not be statistically significantly different, depending on the significance level <span class="math inline">\(\alpha\)</span> you decided on <em>before</em> you ran this analysis. If you had set <span class="math inline">\(\alpha = .05\)</span>, then this difference would be statistically significant, but if you had set <span class="math inline">\(\alpha = .01\)</span>, then it would not be.</p>
 <p>To get a confidence interval around our estimate, we can write:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># generate a distribution like the null distribution, </span>
@@ -559,16 +562,16 @@
 ## # Groups:   replicate [1,000]
 ##    replicate term          estimate
 ##        &lt;int&gt; &lt;chr&gt;            &lt;dbl&gt;
-##  1         1 intercept     41.1    
-##  2         1 age            0.00693
-##  3         1 collegedegree  0.0422 
-##  4         2 intercept     44.2    
-##  5         2 age           -0.0773 
-##  6         2 collegedegree  0.924  
-##  7         3 intercept     42.8    
-##  8         3 age           -0.0370 
-##  9         3 collegedegree  0.260  
-## 10         4 intercept     44.2    
+##  1         1 intercept     40.3    
+##  2         1 age            0.0166 
+##  3         1 collegedegree  1.20   
+##  4         2 intercept     41.3    
+##  5         2 age            0.00664
+##  6         2 collegedegree -0.407  
+##  7         3 intercept     42.9    
+##  8         3 age           -0.0371 
+##  9         3 collegedegree  0.00431
+## 10         4 intercept     42.7    
 ## # … with 2,990 more rows</code></pre>
 <p>To permute variables other than the response variable, the <code>variables</code> argument to <code><a href="../reference/generate.html">generate()</a></code> allows you to choose columns from the data to permute. Note that any derived effects that depend on these columns (e.g., interaction effects) will also be affected.</p>
 <p>Beyond this point, observed fits and distributions from null fits interface exactly like analogous outputs from <code><a href="../reference/calculate.html">calculate()</a></code>. For instance, we can use the following code to calculate a 95% confidence interval from these objects.</p>
@@ -581,9 +584,9 @@
 <pre><code>## # A tibble: 3 × 3
 ##   term          lower_ci upper_ci
 ##   &lt;chr&gt;            &lt;dbl&gt;    &lt;dbl&gt;
-## 1 age            -0.0950   0.0939
-## 2 collegedegree  -2.62     2.62  
-## 3 intercept      37.5     45.2</code></pre>
+## 1 age            -0.0948   0.0987
+## 2 collegedegree  -2.57     2.72  
+## 3 intercept      37.4     45.5</code></pre>
 <p>Or, we can shade p-values for each of these observed regression coefficients from the observed data.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_fits</span><span class="op">)</span> <span class="op">+</span> 
