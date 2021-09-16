@@ -1,0 +1,12 @@
+bibentry(
+  "Article",
+  title     = "{infer}: An {R} package for tidyverse-friendly statistical inference",
+  author    = "Simon P. Couch, Andrew P. Bray, Chester Ismay, Evgeni Chasnovski, Benjamin S. Baumer, Mine Çetinkaya-Rundel",
+  journal   = "Journal of Open Source Software",
+  year      = 2021,
+  volume    = 6,
+  number    = 65,
+  pages     = 3661,
+  doi       = "10.21105/joss.03661",
+  textVersion = "Couch et al., (2021). infer: An R package for tidyverse-friendly statistical inference. Journal of Open Source Software, 6(65), 3661, https://doi.org/10.21105/joss.03661"
+)
