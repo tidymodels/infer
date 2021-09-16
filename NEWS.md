@@ -1,3 +1,7 @@
+# infer v1.0.1.9000 (Development Version)
+
+To be released as v1.0.2.
+
 # infer v1.0.1 (GitHub Only)
 
 This release reflects the infer version accepted to the Journal of Open Source Software.
