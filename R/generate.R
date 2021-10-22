@@ -130,7 +130,8 @@ compare_type_vs_auto_type <- function(type, auto_type) {
     return(type)
   }
   if (auto_type != type &&
-      (any(!c(auto_type, type) %in% c("draw", "simulate")))) {
+      (any(!c(auto_type, type) %in% c("draw", "simulate"))) &&
+      type != "bootstrap") {
     warning_glue(
       "You have given `type = \"{type}\"`, but `type` is expected",
       "to be `\"{auto_type}\"`. This workflow is untested and",
