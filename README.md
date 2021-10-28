@@ -1,13 +1,13 @@
 
-# infer R Package <img src="https://github.com/tidymodels/infer/blob/master/figs/infer_gnome.png?raw=true" align="right" width=280 />
+# infer R Package <img src="figs/infer_gnome.png" align="right" width=280 />
 
 <!--figs/infer.svg-->
 <!--http://www.r-pkg.org/badges/version/infer-->
-<!--figs/master.svg-->
-<!--https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg-->
+<!--figs/main.svg-->
+<!--https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg-->
 
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)[![Coverage
-Status](https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg)](https://codecov.io/github/tidymodels/infer/?branch=master)
+Status](https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg)](https://codecov.io/github/tidymodels/infer/?branch=main)
 
 The objective of this package is to perform statistical inference using
 an expressive statistical grammar that coheres with the `tidyverse`
@@ -28,7 +28,7 @@ To learn more about the principles underlying the package design, see
 
 <div class="figure">
 
-<img src="https://raw.githubusercontent.com/tidymodels/infer/master/figs/ht-diagram.png" alt="A diagram showing four steps to carry out randomization-based inference: specify hypothesis, generate data, calculate statistic, and visualize. From left to right, each step is connected by an arrow, while the diagram indicates that generating data and calculating statistics can happen iteratively."  />
+<img src="https://raw.githubusercontent.com/tidymodels/infer/main/figs/ht-diagram.png" alt="A diagram showing four steps to carry out randomization-based inference: specify hypothesis, generate data, calculate statistic, and visualize. From left to right, each step is connected by an arrow, while the diagram indicates that generating data and calculating statistics can happen iteratively."  />
 <p class="caption">
 </p>
 
@@ -66,9 +66,8 @@ remotes::install_github("tidymodels/infer")
 
 We welcome others helping us make this package as user-friendly and
 efficient as possible. Please review our
-[contributing](https://github.com/tidymodels/infer/blob/master/CONTRIBUTING.md)
-and
-[conduct](https://github.com/tidymodels/infer/blob/master/CONDUCT.md)
+[contributing](https://github.com/tidymodels/infer/blob/main/CONTRIBUTING.md)
+and [conduct](https://github.com/tidymodels/infer/blob/main/CONDUCT.md)
 guidelines. By participating in this project you agree to abide by its
 terms.
 
@@ -145,7 +144,7 @@ visualize(null_dist) +
 
 <div class="figure">
 
-<img src="https://raw.githubusercontent.com/tidymodels/infer/master/README_files/figure-gfm/viz-1.png" alt="A histogram showing a distribution of F statistics, right-tailed and centered around one. The x axis ranges from zero to five. The region of the histogram to the right of the observed statistic, just above two, is shaded red to represent the p-value."  />
+<img src="https://raw.githubusercontent.com/tidymodels/infer/main/README_files/figure-gfm/viz-1.png" alt="A histogram showing a distribution of F statistics, right-tailed and centered around one. The x axis ranges from zero to five. The region of the histogram to the right of the observed statistic, just above two, is shaded red to represent the p-value."  />
 <p class="caption">
 </p>
 
@@ -159,7 +158,7 @@ null_dist %>%
   get_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
-    ## # A tibble: 1 x 1
+    ## # A tibble: 1 × 1
     ##   p_value
     ##     <dbl>
     ## 1   0.055

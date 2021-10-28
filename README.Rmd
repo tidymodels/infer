@@ -2,17 +2,17 @@
 output: github_document
 ---
 
-# infer R Package <img src="https://github.com/tidymodels/infer/blob/master/figs/infer_gnome.png?raw=true" align="right" width=280 />
+# infer R Package <img src="figs/infer_gnome.png" align="right" width=280 />
 
 
 
 
 <!--figs/infer.svg-->
 <!--http://www.r-pkg.org/badges/version/infer-->
-<!--figs/master.svg-->
-<!--https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg-->
+<!--figs/main.svg-->
+<!--https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg-->
 
-[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)[![Coverage Status](https://img.shields.io/codecov/c/github/tidymodels/infer/master.svg)](https://codecov.io/github/tidymodels/infer/?branch=master)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)[![Coverage Status](https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg)](https://codecov.io/github/tidymodels/infer/?branch=main)
 
 The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the `tidyverse` design framework. The package is centered around 4 main verbs, supplemented with many utilities to visualize and extract value from their outputs.
 
@@ -29,7 +29,7 @@ devtools::load_all()
 ```
 
 ```{r diagram, echo = FALSE, fig.cap = " ", fig.alt = "A diagram showing four steps to carry out randomization-based inference: specify hypothesis, generate data, calculate statistic, and visualize. From left to right, each step is connected by an arrow, while the diagram indicates that generating data and calculating statistics can happen iteratively."}
-knitr::include_graphics("https://raw.githubusercontent.com/tidymodels/infer/master/figs/ht-diagram.png")
+knitr::include_graphics("https://raw.githubusercontent.com/tidymodels/infer/main/figs/ht-diagram.png")
 ```
 
 If you're interested in learning more about randomization-based statistical inference generally, including applied examples of this package, we recommend checking out [Statistical Inference Via Data Science: A ModernDive Into R and the Tidyverse](https://moderndive.com/) and [Introduction to Modern Statistics](https://openintro-ims.netlify.app/).
@@ -55,7 +55,7 @@ remotes::install_github("tidymodels/infer")
 
 ------------------------------------------------------------------------
 
-We welcome others helping us make this package as user-friendly and efficient as possible. Please review our [contributing](https://github.com/tidymodels/infer/blob/master/CONTRIBUTING.md) and [conduct](https://github.com/tidymodels/infer/blob/master/CONDUCT.md) guidelines. By participating in this project you agree to abide by its terms.
+We welcome others helping us make this package as user-friendly and efficient as possible. Please review our [contributing](https://github.com/tidymodels/infer/blob/main/CONTRIBUTING.md) and [conduct](https://github.com/tidymodels/infer/blob/main/CONDUCT.md) guidelines. By participating in this project you agree to abide by its terms.
 
 For questions and discussions about tidymodels packages, modeling, and machine learning, please [post on RStudio Community](https://rstd.io/tidymodels-community). If you think you have encountered a bug, please [submit an issue](https://github.com/tidymodels/infer/issues). Either way, learn how to create and share a [reprex](https://rstd.io/reprex) (a minimal, reproducible example), to clearly communicate about your code. Check out further details on [contributing guidelines for tidymodels packages](https://www.tidymodels.org/contribute/) and [how to get help](https://www.tidymodels.org/help/).
 
@@ -101,7 +101,7 @@ visualize(null_dist) +
 ```
 
 ```{r viz-graphic, message = FALSE, warning = FALSE, echo = FALSE, fig.cap = " ", fig.alt = "A histogram showing a distribution of F statistics, right-tailed and centered around one. The x axis ranges from zero to five. The region of the histogram to the right of the observed statistic, just above two, is shaded red to represent the p-value."}
-knitr::include_graphics("https://raw.githubusercontent.com/tidymodels/infer/master/README_files/figure-gfm/viz-1.png")
+knitr::include_graphics("https://raw.githubusercontent.com/tidymodels/infer/main/README_files/figure-gfm/viz-1.png")
 ```
 
 Calculating the p-value from the null distribution and observed statistic,
