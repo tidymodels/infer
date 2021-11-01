@@ -91,15 +91,9 @@ calculate() to calculate the observed statistic." />
   gtag('config', 'UA-115082821-1');
 </script>
 
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -202,7 +196,7 @@ recentered and rescaled to match the corresponding <code>stat</code> given in
 <code><a href='calculate.html'>calculate()</a></code> to calculate the observed statistic.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>assume</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>distribution</span>, df <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></code></pre></div>
+    <pre class="usage"><span class='fu'>assume</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>distribution</span>, df <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -221,7 +215,7 @@ observed data, variable(s) of interest, and (optionally) null hypothesis.</p></t
       <th>df</th>
       <td><p>Optional. The degrees of freedom parameter(s) for the <code>distribution</code>
 supplied, as a numeric vector. For <code>distribution = "F"</code>, this should have
-length two (e.g. <code>c(10, 3)</code>). For <code>distribution = "Chisq"</code> or
+length two (e.g. <code><a href='https://rdrr.io/r/base/c.html'>c(10, 3)</a></code>). For <code>distribution = "Chisq"</code> or
 <code>distribution = "t"</code>, this should have length one. For
 <code>distribution = "z"</code>, this argument is not required. The package
 will supply a message if the supplied <code>df</code> argument is different from
@@ -251,7 +245,7 @@ each other.</p>
 <p>For tests comparing two means, if <code>n1</code> is the group size for one level of
 the explanatory variable, and <code>n2</code> is that for the other level, <code>infer</code>
 will recognize the following degrees of freedom (<code>df</code>) arguments:</p><ul>
-<li><p><code>min(n1 - 1, n2 - 1)</code></p></li>
+<li><p><code><a href='https://rdrr.io/r/base/Extremes.html'>min(n1 - 1, n2 - 1)</a></code></p></li>
 <li><p><code>n1 + n2 - 2</code></p></li>
 <li><p>The <code>"parameter"</code> entry of the analogous <code><a href='https://rdrr.io/r/stats/t.test.html'>stats::t.test()</a></code> call</p></li>
 <li><p>The <code>"parameter"</code> entry of the analogous <code><a href='https://rdrr.io/r/stats/t.test.html'>stats::t.test()</a></code> call with <code>var.equal = TRUE</code></p></li>
@@ -261,96 +255,90 @@ will recognize the following degrees of freedom (<code>df</code>) arguments:</p>
 <code><a href='https://rdrr.io/r/stats/t.test.html'>stats::t.test()</a></code> call with <code>var.equal = FALSE</code> (the default).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'>  </span>
-<span class='r-in'><span class='co'># construct theoretical distributions ---------------------------------</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># F distribution</span></span>
-<span class='r-in'><span class='co'># with the `partyid` explanatory variable</span></span>
-<span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span> </span>
-<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>age</span> <span class='op'>~</span> <span class='va'>partyid</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span> </span>
-<span class='r-in'>  <span class='fu'>assume</span><span class='op'>(</span>distribution <span class='op'>=</span> <span class='st'>"F"</span><span class='op'>)</span></span>
-<span class='r-msg co'><span class='r-pr'>#&gt;</span> Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> An F distribution with 3 and 496 degrees of freedom.</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># Chi-squared goodness of fit distribution</span></span>
-<span class='r-in'><span class='co'># on the `finrela` variable</span></span>
-<span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>finrela</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>,</span>
-<span class='r-in'>              p <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"far below average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
-<span class='r-in'>                    <span class='st'>"below average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
-<span class='r-in'>                    <span class='st'>"average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
-<span class='r-in'>                    <span class='st'>"above average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
-<span class='r-in'>                    <span class='st'>"far above average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,</span>
-<span class='r-in'>                    <span class='st'>"DK"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'>assume</span><span class='op'>(</span><span class='st'>"Chisq"</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> A Chi-squared distribution with 5 degrees of freedom.</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># Chi-squared test of independence</span></span>
-<span class='r-in'><span class='co'># on the `finrela` and `sex` variables</span></span>
-<span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>formula <span class='op'>=</span> <span class='va'>finrela</span> <span class='op'>~</span> <span class='va'>sex</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'>assume</span><span class='op'>(</span>distribution <span class='op'>=</span> <span class='st'>"Chisq"</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> A Chi-squared distribution with 5 degrees of freedom.</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># T distribution</span></span>
-<span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span> </span>
-<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>age</span> <span class='op'>~</span> <span class='va'>college</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'>assume</span><span class='op'>(</span><span class='st'>"t"</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> A T distribution with 423 degrees of freedom.</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># Z distribution</span></span>
-<span class='r-in'><span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>sex</span>, success <span class='op'>=</span> <span class='st'>"female"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'>assume</span><span class='op'>(</span><span class='st'>"z"</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> A Z distribution.</span>
-<span class='r-in'></span>
-<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
-<span class='r-in'><span class='co'># each of these distributions can be passed to infer helper</span></span>
-<span class='r-in'><span class='co'># functions alongside observed statistics!</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># for example, a 1-sample t-test -------------------------------------</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># calculate the observed statistic </span></span>
-<span class='r-in'><span class='va'>obs_stat</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"t"</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># construct a null distribution</span></span>
-<span class='r-in'><span class='va'>null_dist</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'>assume</span><span class='op'>(</span><span class='st'>"t"</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># juxtapose them visually</span></span>
-<span class='r-in'><span class='fu'><a href='visualize.html'>visualize</a></span><span class='op'>(</span><span class='va'>null_dist</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span class='r-in'>  <span class='fu'><a href='shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span><span class='va'>obs_stat</span>, direction <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span></span>
-<span class='r-in'>  </span>
-<span class='r-in'><span class='co'># calculate a p-value</span></span>
-<span class='r-in'><span class='fu'><a href='get_p_value.html'>get_p_value</a></span><span class='op'>(</span><span class='va'>null_dist</span>, <span class='va'>obs_stat</span>, direction <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># or, an F test ------------------------------------------------------</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># calculate the observed statistic </span></span>
-<span class='r-in'><span class='va'>obs_stat</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span> </span>
-<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>age</span> <span class='op'>~</span> <span class='va'>partyid</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"independence"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"F"</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># construct a null distribution</span></span>
-<span class='r-in'><span class='va'>null_dist</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span> </span>
-<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>age</span> <span class='op'>~</span> <span class='va'>partyid</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span></span>
-<span class='r-in'>  <span class='fu'>assume</span><span class='op'>(</span>distribution <span class='op'>=</span> <span class='st'>"F"</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># juxtapose them visually</span></span>
-<span class='r-in'><span class='fu'><a href='visualize.html'>visualize</a></span><span class='op'>(</span><span class='va'>null_dist</span><span class='op'>)</span> <span class='op'>+</span> </span>
-<span class='r-in'>  <span class='fu'><a href='shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span><span class='va'>obs_stat</span>, direction <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span></span>
-<span class='r-in'>  </span>
-<span class='r-in'><span class='co'># calculate a p-value</span></span>
-<span class='r-in'><span class='fu'><a href='get_p_value.html'>get_p_value</a></span><span class='op'>(</span><span class='va'>null_dist</span>, <span class='va'>obs_stat</span>, direction <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span></span>
-<span class='r-in'><span class='op'>}</span></span>
-<span class='r-in'>    </span>
-</code></pre></div>
+    <pre class="examples"><div class='input'>  
+<span class='co'># construct theoretical distributions ---------------------------------</span>
+
+<span class='co'># F distribution</span>
+<span class='co'># with the `partyid` explanatory variable</span>
+<span class='va'>gss</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>age</span> <span class='op'>~</span> <span class='va'>partyid</span><span class='op'>)</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'>assume</span><span class='op'>(</span>distribution <span class='op'>=</span> <span class='st'>"F"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.</span></div><div class='output co'>#&gt; An F distribution with 3 and 496 degrees of freedom.</div><div class='input'>
+<span class='co'># Chi-squared goodness of fit distribution</span>
+<span class='co'># on the `finrela` variable</span>
+<span class='va'>gss</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>finrela</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>,
+              p <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"far below average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,
+                    <span class='st'>"below average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,
+                    <span class='st'>"average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,
+                    <span class='st'>"above average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,
+                    <span class='st'>"far above average"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span>,
+                    <span class='st'>"DK"</span> <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>assume</span><span class='op'>(</span><span class='st'>"Chisq"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; A Chi-squared distribution with 5 degrees of freedom.</div><div class='input'>
+<span class='co'># Chi-squared test of independence</span>
+<span class='co'># on the `finrela` and `sex` variables</span>
+<span class='va'>gss</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>formula <span class='op'>=</span> <span class='va'>finrela</span> <span class='op'>~</span> <span class='va'>sex</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>assume</span><span class='op'>(</span>distribution <span class='op'>=</span> <span class='st'>"Chisq"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; A Chi-squared distribution with 5 degrees of freedom.</div><div class='input'>
+<span class='co'># T distribution</span>
+<span class='va'>gss</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>age</span> <span class='op'>~</span> <span class='va'>college</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>assume</span><span class='op'>(</span><span class='st'>"t"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; A T distribution with 423 degrees of freedom.</div><div class='input'>
+<span class='co'># Z distribution</span>
+<span class='va'>gss</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>sex</span>, success <span class='op'>=</span> <span class='st'>"female"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>assume</span><span class='op'>(</span><span class='st'>"z"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; A Z distribution.</div><div class='input'>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'># each of these distributions can be passed to infer helper</span>
+<span class='co'># functions alongside observed statistics!</span>
+
+<span class='co'># for example, a 1-sample t-test -------------------------------------</span>
+
+<span class='co'># calculate the observed statistic </span>
+<span class='va'>obs_stat</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"point"</span>, mu <span class='op'>=</span> <span class='fl'>40</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"t"</span><span class='op'>)</span>
+
+<span class='co'># construct a null distribution</span>
+<span class='va'>null_dist</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>assume</span><span class='op'>(</span><span class='st'>"t"</span><span class='op'>)</span>
+
+<span class='co'># juxtapose them visually</span>
+<span class='fu'><a href='visualize.html'>visualize</a></span><span class='op'>(</span><span class='va'>null_dist</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span><span class='va'>obs_stat</span>, direction <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span>
+  
+<span class='co'># calculate a p-value</span>
+<span class='fu'><a href='get_p_value.html'>get_p_value</a></span><span class='op'>(</span><span class='va'>null_dist</span>, <span class='va'>obs_stat</span>, direction <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span>
+
+<span class='co'># or, an F test ------------------------------------------------------</span>
+
+<span class='co'># calculate the observed statistic </span>
+<span class='va'>obs_stat</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>age</span> <span class='op'>~</span> <span class='va'>partyid</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"independence"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"F"</span><span class='op'>)</span>
+
+<span class='co'># construct a null distribution</span>
+<span class='va'>null_dist</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'>%&gt;%</span> 
+  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>age</span> <span class='op'>~</span> <span class='va'>partyid</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>assume</span><span class='op'>(</span>distribution <span class='op'>=</span> <span class='st'>"F"</span><span class='op'>)</span>
+
+<span class='co'># juxtapose them visually</span>
+<span class='fu'><a href='visualize.html'>visualize</a></span><span class='op'>(</span><span class='va'>null_dist</span><span class='op'>)</span> <span class='op'>+</span> 
+  <span class='fu'><a href='shade_p_value.html'>shade_p_value</a></span><span class='op'>(</span><span class='va'>obs_stat</span>, direction <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span>
+  
+<span class='co'># calculate a p-value</span>
+<span class='fu'><a href='get_p_value.html'>get_p_value</a></span><span class='op'>(</span><span class='va'>null_dist</span>, <span class='va'>obs_stat</span>, direction <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span>
+<span class='op'>}</span>
+    
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -377,8 +365,6 @@ will recognize the following degrees of freedom (<code>df</code>) arguments:</p>
 
   
 
-
-  
 
   </body>
 </html>

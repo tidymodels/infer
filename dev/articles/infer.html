@@ -35,8 +35,6 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -51,7 +49,7 @@
       <div class="navbar-brand-container">
         <a class="navbar-brand" href="../index.html">infer</a>
         <div class="info hidden-xs hidden-sm">
-          <span class="partof">part of <a href="https://github.com/tidymodels" class="external-link">tidymodels</a></span>
+          <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
           <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.0.1.9000</span>
         </div>
       </div>
@@ -95,7 +93,7 @@
   <a href="../CONDUCT.html">Code of Conduct</a>
 </li>
         <li>
-  <a href="https://github.com/tidymodels/infer" class="external-link">
+  <a href="https://github.com/tidymodels/infer">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -116,7 +114,7 @@
       <h1 data-toc-skip>Getting to Know infer</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/master/vignettes/infer.Rmd" class="external-link"><code>vignettes/infer.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/master/vignettes/infer.Rmd"><code>vignettes/infer.Rmd</code></a></small>
       <div class="hidden name"><code>infer.Rmd</code></div>
 
     </div>
@@ -125,7 +123,7 @@
     
 <div id="introduction" class="section level3">
 <h3 class="hasAnchor">
-<a href="#introduction" class="anchor" aria-hidden="true"></a>Introduction</h3>
+<a href="#introduction" class="anchor"></a>Introduction</h3>
 <p><code>infer</code> implements an expressive grammar to perform statistical inference that coheres with the <code>tidyverse</code> design framework. Rather than providing methods for specific statistical tests, this package consolidates the principles that are shared among common hypothesis tests into a set of 4 main verbs (functions), supplemented with many utilities to visualize and extract value from their outputs.</p>
 <p>Regardless of which hypothesis test we’re using, we’re still asking the same kind of question: is the effect/difference in our observed data real, or due to chance? To answer this question, we start by assuming that the observed data came from some world where “nothing is going on” (i.e. the observed effect was simply due to random chance), and call this assumption our <em>null hypothesis</em>. (In reality, we might not believe in the null hypothesis at all—the null hypothesis is in opposition to the <em>alternate hypothesis</em>, which supposes that the effect present in the observed data is actually due to the fact that “something is going on.”) We then calculate a <em>test statistic</em> from our data that describes the observed effect. We can use this test statistic to calculate a <em>p-value</em>, giving the probability that our observed data could come about if the null hypothesis was true. If this probability is below some pre-defined <em>significance level</em> <span class="math inline">\(\alpha\)</span>, then we can reject our null hypothesis.</p>
 <p>The workflow of this package is designed around this idea. Starting out with some dataset,</p>
@@ -142,10 +140,10 @@
 <p>Throughout this vignette, we make use of <code>gss</code>, a dataset supplied by <code>infer</code> containing a sample of 500 observations of 11 variables from the <em>General Social Survey</em>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># load in the dataset</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span>
 
 <span class="co"># take a look at its structure</span>
-<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
+<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
 <pre><code>## Rows: 500
 ## Columns: 11
 ## $ year    &lt;dbl&gt; 2014, 1994, 1998, 1996, 1994, 1996, 1990, 2016, 2000, 1998, 20…
@@ -163,10 +161,10 @@
 </div>
 <div id="specify-specifying-response-and-explanatory-variables" class="section level3">
 <h3 class="hasAnchor">
-<a href="#specify-specifying-response-and-explanatory-variables" class="anchor" aria-hidden="true"></a>specify(): Specifying Response (and Explanatory) Variables</h3>
+<a href="#specify-specifying-response-and-explanatory-variables" class="anchor"></a>specify(): Specifying Response (and Explanatory) Variables</h3>
 <p>The <code>specify</code> function can be used to specify which of the variables in the dataset you’re interested in. If you’re only interested in, say, the <code>age</code> of the respondents, you might write:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">gss</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">age</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: age (numeric)
 ## # A tibble: 500 × 1
@@ -185,15 +183,15 @@
 ## # … with 490 more rows</code></pre>
 <p>On the front-end, the output of <code>specify</code> just looks like it selects off the columns in the dataframe that you’ve specified. Checking the class of this object, though:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">age</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">age</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "infer"      "tbl_df"     "tbl"        "data.frame"</code></pre>
 <p>We can see that the <code>infer</code> class has been appended on top of the dataframe classes–this new class stores some extra metadata.</p>
 <p>If you’re interested in two variables–<code>age</code> and <code>partyid</code>, for example–you can <code>specify</code> their relationship in one of two (equivalent) ways:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># as a formula</span>
-<span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">gss</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: age (numeric)
 ## Explanatory: partyid (factor)
@@ -213,7 +211,7 @@
 ## # … with 490 more rows</code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># with the named arguments</span>
-<span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">gss</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">age</span>, explanatory <span class="op">=</span> <span class="va">partyid</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: age (numeric)
 ## Explanatory: partyid (factor)
@@ -234,7 +232,7 @@
 <p>If you’re doing inference on one proportion or a difference in proportions, you will need to use the <code>success</code> argument to specify which level of your <code>response</code> variable is a success. For instance, if you’re interested in the proportion of the population with a college degree, you might use the following code:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># specifying for inference on proportions</span>
-<span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">gss</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">college</span>, success <span class="op">=</span> <span class="st">"degree"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: college (factor)
 ## # A tibble: 500 × 1
@@ -254,11 +252,11 @@
 </div>
 <div id="hypothesize-declaring-the-null-hypothesis" class="section level3">
 <h3 class="hasAnchor">
-<a href="#hypothesize-declaring-the-null-hypothesis" class="anchor" aria-hidden="true"></a>hypothesize(): Declaring the Null Hypothesis</h3>
+<a href="#hypothesize-declaring-the-null-hypothesis" class="anchor"></a>hypothesize(): Declaring the Null Hypothesis</h3>
 <p>The next step in the <code>infer</code> pipeline is often to declare a null hypothesis using <code><a href="../reference/hypothesize.html">hypothesize()</a></code>. The first step is to supply one of “independence” or “point” to the <code>null</code> argument. If your null hypothesis assumes independence between two variables, then this is all you need to supply to <code><a href="../reference/hypothesize.html">hypothesize()</a></code>:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">partyid</span>, success <span class="op">=</span> <span class="st">"degree"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">partyid</span>, success <span class="op">=</span> <span class="st">"degree"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: college (factor)
 ## Explanatory: partyid (factor)
@@ -279,8 +277,8 @@
 ## # … with 490 more rows</code></pre>
 <p>If you’re doing inference on a point estimate, you will also need to provide one of <code>p</code> (the true proportion of successes, between 0 and 1), <code>mu</code> (the true mean), <code>med</code> (the true median), or <code>sigma</code> (the true standard deviation). For instance, if the null hypothesis is that the mean number of hours worked per week in our population is 40, we would write:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: hours (numeric)
 ## Null Hypothesis: point
@@ -302,7 +300,7 @@
 </div>
 <div id="generate-generating-the-null-distribution" class="section level3">
 <h3 class="hasAnchor">
-<a href="#generate-generating-the-null-distribution" class="anchor" aria-hidden="true"></a>generate(): Generating the Null Distribution</h3>
+<a href="#generate-generating-the-null-distribution" class="anchor"></a>generate(): Generating the Null Distribution</h3>
 <p>Once we’ve asserted our null hypothesis using <code><a href="../reference/hypothesize.html">hypothesize()</a></code>, we can construct a null distribution based on this hypothesis. We can do this using one of several methods, supplied in the <code>type</code> argument:</p>
 <ul>
 <li>
@@ -316,11 +314,11 @@
 </ul>
 <p>Continuing on with our example above, about the average number of hours worked a week, we might write:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 
-<span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: hours (numeric)
 ## Null Hypothesis: point
@@ -340,12 +338,12 @@
 ## 10         1 38.6 
 ## # … with 499,990 more rows</code></pre>
 <p>In the above example, we take 1000 bootstrap samples to form our null distribution.</p>
-<p>Note that, before <code><a href="../reference/generate.html">generate()</a></code>ing, we’ve set the seed for random number generation with the <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> function. When using the infer package for research, or in other cases when exact reproducibility is a priority, this is good practice. infer will respect the random seed specified in the <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> function, returning the same result when <code><a href="../reference/generate.html">generate()</a></code>ing data given an identical seed.</p>
+<p>Note that, before <code><a href="../reference/generate.html">generate()</a></code>ing, we’ve set the seed for random number generation with the <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> function. When using the infer package for research, or in other cases when exact reproducibility is a priority, this is good practice. infer will respect the random seed specified in the <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> function, returning the same result when <code><a href="../reference/generate.html">generate()</a></code>ing data given an identical seed.</p>
 <p>To generate a null distribution for the independence of two variables, we could also randomly reshuffle the pairings of explanatory and response variables to break any existing association. For instance, to generate 1000 replicates that can be used to create a null distribution under the assumption that political party affiliation is not affected by age:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">partyid</span> <span class="op">~</span> <span class="va">age</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">partyid</span> <span class="op">~</span> <span class="va">age</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: partyid (factor)
 ## Explanatory: age (numeric)
@@ -368,13 +366,13 @@
 </div>
 <div id="calculate-calculating-summary-statistics" class="section level3">
 <h3 class="hasAnchor">
-<a href="#calculate-calculating-summary-statistics" class="anchor" aria-hidden="true"></a>calculate(): Calculating Summary Statistics</h3>
+<a href="#calculate-calculating-summary-statistics" class="anchor"></a>calculate(): Calculating Summary Statistics</h3>
 <p><code><a href="../reference/calculate.html">calculate()</a></code> calculates summary statistics from the output of infer core functions. The function takes in a <code>stat</code> argument, which is currently one of “mean”, “median”, “sum”, “sd”, “prop”, “count”, “diff in means”, “diff in medians”, “diff in props”, “Chisq”, “F”, “t”, “z”, “slope”, or “correlation”. For example, continuing our example above to calculate the null distribution of mean hours worked per week:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: hours (numeric)
 ## Null Hypothesis: point
@@ -394,11 +392,11 @@
 ## # … with 990 more rows</code></pre>
 <p>The output of <code><a href="../reference/calculate.html">calculate()</a></code> here shows us the sample statistic (in this case, the mean) for each of our 1000 replicates. If you’re carrying out inference on differences in means, medians, or proportions, or t and z statistics, you will need to supply an <code>order</code> argument, giving the order in which the explanatory variables should be subtracted. For instance, to find the difference in mean age of those that have a college degree and those that don’t, we might write:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span><span class="st">"diff in means"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">college</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span><span class="st">"diff in means"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## Response: age (numeric)
 ## Explanatory: college (factor)
 ## Null Hypothesis: independence
@@ -419,37 +417,37 @@
 </div>
 <div id="other-utilities" class="section level3">
 <h3 class="hasAnchor">
-<a href="#other-utilities" class="anchor" aria-hidden="true"></a>Other Utilities</h3>
+<a href="#other-utilities" class="anchor"></a>Other Utilities</h3>
 <p><code>infer</code> also offers several utilities to extract the meaning out of summary statistics and distributions—the package provides functions to visualize where a statistic is relative to a distribution (with <code><a href="../reference/visualize.html">visualize()</a></code>), calculate p-values (with <code><a href="../reference/get_p_value.html">get_p_value()</a></code>), and calculate confidence intervals (with <code><a href="../reference/get_confidence_interval.html">get_confidence_interval()</a></code>).</p>
 <p>To illustrate, we’ll go back to the example of determining whether the mean number of hours worked per week is 40 hours.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># find the point estimate</span>
-<span class="va">obs_mean</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">obs_mean</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span>
 
 <span class="co"># generate a null distribution</span>
-<span class="va">null_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">null_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></code></pre></div>
 <p>Our point estimate 41.382 seems <em>pretty</em> close to 40, but a little bit different. We might wonder if this difference is just due to random chance, or if the mean number of hours worked per week in the population really isn’t 40.</p>
 <p>We could initially just visualize the null distribution.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">null_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">null_dist</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="infer_files/figure-html/visualize-1.png" width="576"></p>
 <p>Where does our sample’s observed statistic lie on this distribution? We can use the <code>obs_stat</code> argument to specify this.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">null_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">null_dist</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">obs_mean</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></code></pre></div>
 <p><img src="infer_files/figure-html/visualize2-1.png" width="576"></p>
-<p>Notice that <code>infer</code> has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the <code>+</code> operator to apply the <code>shade_p_value</code> function. This is because <code>visualize</code> outputs a plot object from <code>ggplot2</code> instead of a data frame, and the <code>+</code> operator is needed to add the p-value layer to the plot object.) The red bar looks like it’s slightly far out on the right tail of the null distribution, so observing a sample mean of 41.382 hours would be somewhat unlikely if the mean was actually 40 hours. How unlikely, though?</p>
+<p>Notice that <code>infer</code> has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code> operator to apply the <code>shade_p_value</code> function. This is because <code>visualize</code> outputs a plot object from <code>ggplot2</code> instead of a data frame, and the <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code> operator is needed to add the p-value layer to the plot object.) The red bar looks like it’s slightly far out on the right tail of the null distribution, so observing a sample mean of 41.382 hours would be somewhat unlikely if the mean was actually 40 hours. How unlikely, though?</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get a two-tailed p-value</span>
-<span class="va">p_value</span> <span class="op">&lt;-</span> <span class="va">null_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">p_value</span> <span class="op">&lt;-</span> <span class="va">null_dist</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">obs_mean</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span>
 
 <span class="va">p_value</span></code></pre></div>
@@ -462,13 +460,13 @@
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># generate a distribution like the null distribution, </span>
 <span class="co"># though exclude the null hypothesis from the pipeline</span>
-<span class="va">boot_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">boot_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span>
 
 <span class="co"># start with the bootstrap distribution</span>
-<span class="va">ci</span> <span class="op">&lt;-</span> <span class="va">boot_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">ci</span> <span class="op">&lt;-</span> <span class="va">boot_dist</span> <span class="op">%&gt;%</span>
   <span class="co"># calculate the confidence interval around the point estimate</span>
   <span class="fu"><a href="../reference/get_confidence_interval.html">get_confidence_interval</a></span><span class="op">(</span>point_estimate <span class="op">=</span> <span class="va">obs_mean</span>,
                           <span class="co"># at the 95% confidence level</span>
@@ -483,27 +481,27 @@
 ## 1     40.1     42.7</code></pre>
 <p>As you can see, 40 hours per week is not contained in this interval, which aligns with our previous conclusion that this finding is significant at the confidence level <span class="math inline">\(\alpha = .05\)</span>. To see this interval represented visually, we can use the <code><a href="../reference/shade_confidence_interval.html">shade_confidence_interval()</a></code> utility:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">boot_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<code class="sourceCode R"><span class="va">boot_dist</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">ci</span><span class="op">)</span></code></pre></div>
 <p><img src="infer_files/figure-html/visualize-ci-1.png" width="576"></p>
 </div>
 <div id="theoretical-methods" class="section level3">
 <h3 class="hasAnchor">
-<a href="#theoretical-methods" class="anchor" aria-hidden="true"></a>Theoretical Methods</h3>
+<a href="#theoretical-methods" class="anchor"></a>Theoretical Methods</h3>
 <p>{infer} also provides functionality to use theoretical methods for <code>"Chisq"</code>, <code>"F"</code>, <code>"t"</code> and <code>"z"</code> distributions.</p>
 <p>Generally, to find a null distribution using theory-based methods, use the same code that you would use to find the observed statistic elsewhere, replacing calls to <code><a href="../reference/calculate.html">calculate()</a></code> with <code><a href="../reference/assume.html">assume()</a></code>. For example, to calculate the observed <span class="math inline">\(t\)</span> statistic (a standardized mean):</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># calculate an observed t statistic</span>
-<span class="va">obs_t</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">obs_t</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span></code></pre></div>
 <p>Then, to define a theoretical <span class="math inline">\(t\)</span> distribution, we could write:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># switch out calculate with assume to define a distribution</span>
-<span class="va">t_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+<span class="va">t_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/assume.html">assume</a></span><span class="op">(</span>distribution <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span></code></pre></div>
 <p>From here, the theoretical distribution interfaces in the same way that simulation-based null distributions do. For example, to interface with p-values:</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
@@ -542,20 +540,20 @@
 </div>
 <div id="multiple-regression" class="section level3">
 <h3 class="hasAnchor">
-<a href="#multiple-regression" class="anchor" aria-hidden="true"></a>Multiple regression</h3>
-<p>To accommodate randomization-based inference with multiple explanatory variables, the package implements an alternative workflow based on model fitting. Rather than <code><a href="../reference/calculate.html">calculate()</a></code>ing statistics from resampled data, this side of the package allows you to <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> linear models on data resampled according to the null hypothesis, supplying model coefficients for each explanatory variable. For the most part, you can just switch out <code><a href="../reference/calculate.html">calculate()</a></code> for <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> in your <code><a href="../reference/calculate.html">calculate()</a></code>-based workflows.</p>
+<a href="#multiple-regression" class="anchor"></a>Multiple regression</h3>
+<p>To accommodate randomization-based inference with multiple explanatory variables, the package implements an alternative workflow based on model fitting. Rather than <code><a href="../reference/calculate.html">calculate()</a></code>ing statistics from resampled data, this side of the package allows you to <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> linear models on data resampled according to the null hypothesis, supplying model coefficients for each explanatory variable. For the most part, you can just switch out <code><a href="../reference/calculate.html">calculate()</a></code> for <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> in your <code><a href="../reference/calculate.html">calculate()</a></code>-based workflows.</p>
 <p>As an example, suppose that we want to fit <code>hours</code> worked per week using the respondent <code>age</code> and <code>college</code> completion status. We could first begin by fitting a linear model to the observed data.</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">observed_fit</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">observed_fit</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>Now, to generate null distributions for each of these terms, we can fit 1000 models to resamples of the <code>gss</code> dataset, where the response <code>hours</code> is permuted in each. Note that this code is the same as the above except for the addition of the <code>hypothesize</code> and <code>generate</code> step.</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">null_fits</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
-  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">null_fits</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="va">null_fits</span></code></pre></div>
 <pre><code>## # A tibble: 3,000 × 3
@@ -595,7 +593,7 @@
 </div>
 <div id="conclusion" class="section level3">
 <h3 class="hasAnchor">
-<a href="#conclusion" class="anchor" aria-hidden="true"></a>Conclusion</h3>
+<a href="#conclusion" class="anchor"></a>Conclusion</h3>
 <p>That’s it! This vignette covers most all of the key functionality of infer. See <code><a href="https://infer.tidymodels.org/reference">help(package = "infer")</a></code> for a full list of functions and vignettes.</p>
 </div>
   </div>
@@ -615,7 +613,7 @@
 <div class="author">
   <p>
     Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Simon Couch, Ben Baumer, Mine Cetinkaya-Rundel.
-    Site built by <a href="https://pkgdown.r-lib.org" class="external-link">pkgdown</a>.
+    Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
   </p>
 </div>
 
@@ -624,8 +622,6 @@
 
   
 
-
-  
 
   </body>
 </html>
