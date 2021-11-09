@@ -277,36 +277,39 @@ to see this connection.</p></td>
 <code><a href='t_test.html'>t_test</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># two-sample proportion test for difference in proportions of</span>
-<span class='co'># college completion by respondent sex</span>
-<span class='fu'>prop_test</span><span class='op'>(</span><span class='va'>gss</span>,
-          <span class='va'>college</span> <span class='op'>~</span> <span class='va'>sex</span>,
-          order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"female"</span>, <span class='st'>"male"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 6</span>
-#&gt;   statistic chisq_df p_value alternative lower_ci upper_ci
-#&gt;       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> 0.000<span style='text-decoration: underline;'>020</span>4        1   0.996 two.sided     -<span style='color: #BB0000;'>0.101</span>   0.091<span style='text-decoration: underline;'>7</span></div><div class='input'>
-<span class='co'># one-sample proportion test for hypothesized null</span>
-<span class='co'># proportion of college completion of .2</span>
-<span class='fu'>prop_test</span><span class='op'>(</span><span class='va'>gss</span>,
-          <span class='va'>college</span> <span class='op'>~</span> <span class='cn'>NULL</span>,
-          p <span class='op'>=</span> <span class='fl'>.2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 4</span>
-#&gt;   statistic chisq_df   p_value alternative
-#&gt;       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      
-#&gt; <span style='color: #BCBCBC;'>1</span>      636.        1 2.98<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-140</span> two.sided  </div><div class='input'>
-<span class='co'># report as a z-statistic rather than chi-square</span>
-<span class='co'># and specify the success level of the response</span>
-<span class='fu'>prop_test</span><span class='op'>(</span><span class='va'>gss</span>,
-          <span class='va'>college</span> <span class='op'>~</span> <span class='cn'>NULL</span>,
-          success <span class='op'>=</span> <span class='st'>"degree"</span>,
-          p <span class='op'>=</span> <span class='fl'>.2</span>,
-          z <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 3</span>
-#&gt;   statistic  p_value alternative
-#&gt;       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      
-#&gt; <span style='color: #BCBCBC;'>1</span>      8.27 1.30<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-16</span> two.sided  </div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># two-sample proportion test for difference in proportions of</span></span>
+<span class='r-in'><span class='co'># college completion by respondent sex</span></span>
+<span class='r-in'><span class='fu'>prop_test</span><span class='op'>(</span><span class='va'>gss</span>,</span>
+<span class='r-in'>          <span class='va'>college</span> <span class='op'>~</span> <span class='va'>sex</span>,</span>
+<span class='r-in'>          order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"female"</span>, <span class='st'>"male"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 × 6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   statistic chisq_df p_value alternative lower_ci upper_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> 0.000<span style='text-decoration: underline;'>020</span>4        1   0.996 two.sided     -<span style='color: #BB0000;'>0.101</span>   0.091<span style='text-decoration: underline;'>7</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># one-sample proportion test for hypothesized null</span></span>
+<span class='r-in'><span class='co'># proportion of college completion of .2</span></span>
+<span class='r-in'><span class='fu'>prop_test</span><span class='op'>(</span><span class='va'>gss</span>,</span>
+<span class='r-in'>          <span class='va'>college</span> <span class='op'>~</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>          p <span class='op'>=</span> <span class='fl'>.2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 × 4</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   statistic chisq_df   p_value alternative</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>      636.        1 2.98<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-140</span> two.sided  </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># report as a z-statistic rather than chi-square</span></span>
+<span class='r-in'><span class='co'># and specify the success level of the response</span></span>
+<span class='r-in'><span class='fu'>prop_test</span><span class='op'>(</span><span class='va'>gss</span>,</span>
+<span class='r-in'>          <span class='va'>college</span> <span class='op'>~</span> <span class='cn'>NULL</span>,</span>
+<span class='r-in'>          success <span class='op'>=</span> <span class='st'>"degree"</span>,</span>
+<span class='r-in'>          p <span class='op'>=</span> <span class='fl'>.2</span>,</span>
+<span class='r-in'>          z <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 × 3</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   statistic  p_value alternative</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>      </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>      8.27 1.30<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-16</span> two.sided  </span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

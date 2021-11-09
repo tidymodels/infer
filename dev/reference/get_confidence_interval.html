@@ -252,117 +252,123 @@ point estimates:</p>
 <code><a href='get_p_value.html'>get_p_value</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='va'>boot_dist</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'>%&gt;%</span>
-  <span class='co'># We're interested in the number of hours worked per week</span>
-  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='co'># Generate bootstrap samples</span>
-  <span class='fu'><a href='generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"bootstrap"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='co'># Calculate mean of each bootstrap sample</span>
-  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span>
-
-<span class='va'>boot_dist</span> <span class='op'>%&gt;%</span>
-  <span class='co'># Calculate the confidence interval around the point estimate</span>
-  <span class='fu'>get_confidence_interval</span><span class='op'>(</span>
-    <span class='co'># At the 95% confidence level; percentile method</span>
-    level <span class='op'>=</span> <span class='fl'>0.95</span>
-  <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 2</span>
-#&gt;   lower_ci upper_ci
-#&gt;      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span>     40.2     42.7</div><div class='input'>
-<span class='co'># for type = "se" or type = "bias-corrected" we need a point estimate</span>
-<span class='va'>sample_mean</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span>
-
-<span class='va'>boot_dist</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>get_confidence_interval</span><span class='op'>(</span>
-    point_estimate <span class='op'>=</span> <span class='va'>sample_mean</span>,
-    <span class='co'># At the 95% confidence level</span>
-    level <span class='op'>=</span> <span class='fl'>0.95</span>,
-    <span class='co'># Using the standard error method</span>
-    type <span class='op'>=</span> <span class='st'>"se"</span>
-  <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 2</span>
-#&gt;   lower_ci upper_ci
-#&gt;      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span>     40.1     42.7</div><div class='input'>  
-<span class='co'># using a theoretical distribution -----------------------------------</span>
-
-<span class='co'># define a sampling distribution</span>
-<span class='va'>sampling_dist</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='assume.html'>assume</a></span><span class='op'>(</span><span class='st'>"t"</span><span class='op'>)</span>
-
-<span class='co'># get the confidence interval---note that the</span>
-<span class='co'># point estimate is required here</span>
-<span class='fu'>get_confidence_interval</span><span class='op'>(</span>
-  <span class='va'>sampling_dist</span>, 
-  level <span class='op'>=</span> <span class='fl'>.95</span>, 
-  point_estimate <span class='op'>=</span> <span class='va'>sample_mean</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 1 × 2</span>
-#&gt;   lower_ci upper_ci
-#&gt;      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span>     40.1     42.7</div><div class='input'>  
-<span class='co'># using a model fitting workflow -----------------------</span>
-
-<span class='co'># fit a linear model predicting number of hours worked per</span>
-<span class='co'># week using respondent age and degree status.</span>
-<span class='va'>observed_fit</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>hours</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>college</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='va'>observed_fit</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 × 2</span>
-#&gt;   term          estimate
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> intercept     40.6    
-#&gt; <span style='color: #BCBCBC;'>2</span> age            0.005<span style='text-decoration: underline;'>96</span>
-#&gt; <span style='color: #BCBCBC;'>3</span> collegedegree  1.53   </div><div class='input'>
-<span class='co'># fit 100 models to resamples of the gss dataset, where the response </span>
-<span class='co'># `hours` is permuted in each. note that this code is the same as </span>
-<span class='co'># the above except for the addition of the `generate` step.</span>
-<span class='va'>null_fits</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>hours</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>college</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"independence"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>100</span>, type <span class='op'>=</span> <span class='st'>"permute"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='va'>null_fits</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 300 × 3</span>
-#&gt; <span style='color: #949494;'># Groups:   replicate [100]</span>
-#&gt;    replicate term           estimate
-#&gt;        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span>         1 intercept     44.2     
-#&gt; <span style='color: #BCBCBC;'> 2</span>         1 age           -<span style='color: #BB0000;'>0.076</span><span style='color: #BB0000; text-decoration: underline;'>5</span>  
-#&gt; <span style='color: #BCBCBC;'> 3</span>         1 collegedegree  0.676   
-#&gt; <span style='color: #BCBCBC;'> 4</span>         2 intercept     41.5     
-#&gt; <span style='color: #BCBCBC;'> 5</span>         2 age           -<span style='color: #BB0000;'>0.000</span><span style='color: #BB0000; text-decoration: underline;'>968</span>
-#&gt; <span style='color: #BCBCBC;'> 6</span>         2 collegedegree -<span style='color: #BB0000;'>0.329</span>   
-#&gt; <span style='color: #BCBCBC;'> 7</span>         3 intercept     41.4     
-#&gt; <span style='color: #BCBCBC;'> 8</span>         3 age            0.013<span style='text-decoration: underline;'>1</span>  
-#&gt; <span style='color: #BCBCBC;'> 9</span>         3 collegedegree -<span style='color: #BB0000;'>1.50</span>    
-#&gt; <span style='color: #BCBCBC;'>10</span>         4 intercept     42.0     
-#&gt; <span style='color: #949494;'># … with 290 more rows</span></div><div class='input'>
-<span class='fu'>get_confidence_interval</span><span class='op'>(</span>
-  <span class='va'>null_fits</span>, 
-  point_estimate <span class='op'>=</span> <span class='va'>observed_fit</span>, 
-  level <span class='op'>=</span> <span class='fl'>.95</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 3 × 3</span>
-#&gt;   term          lower_ci upper_ci
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> age            -<span style='color: #BB0000;'>0.084</span><span style='color: #BB0000; text-decoration: underline;'>6</span>   0.085<span style='text-decoration: underline;'>6</span>
-#&gt; <span style='color: #BCBCBC;'>2</span> collegedegree  -<span style='color: #BB0000;'>2.10</span>     2.81  
-#&gt; <span style='color: #BCBCBC;'>3</span> intercept      38.1     44.7   </div><div class='input'>
-<span class='co'># more in-depth explanation of how to use the infer package</span>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span><span class='op'>(</span><span class='st'>"infer"</span><span class='op'>)</span>
-<span class='op'>}</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='va'>boot_dist</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># We're interested in the number of hours worked per week</span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># Generate bootstrap samples</span></span>
+<span class='r-in'>  <span class='fu'><a href='generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>1000</span>, type <span class='op'>=</span> <span class='st'>"bootstrap"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># Calculate mean of each bootstrap sample</span></span>
+<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>boot_dist</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='co'># Calculate the confidence interval around the point estimate</span></span>
+<span class='r-in'>  <span class='fu'>get_confidence_interval</span><span class='op'>(</span></span>
+<span class='r-in'>    <span class='co'># At the 95% confidence level; percentile method</span></span>
+<span class='r-in'>    level <span class='op'>=</span> <span class='fl'>0.95</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 × 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   lower_ci upper_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>     40.2     42.7</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># for type = "se" or type = "bias-corrected" we need a point estimate</span></span>
+<span class='r-in'><span class='va'>sample_mean</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='calculate.html'>calculate</a></span><span class='op'>(</span>stat <span class='op'>=</span> <span class='st'>"mean"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>boot_dist</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'>get_confidence_interval</span><span class='op'>(</span></span>
+<span class='r-in'>    point_estimate <span class='op'>=</span> <span class='va'>sample_mean</span>,</span>
+<span class='r-in'>    <span class='co'># At the 95% confidence level</span></span>
+<span class='r-in'>    level <span class='op'>=</span> <span class='fl'>0.95</span>,</span>
+<span class='r-in'>    <span class='co'># Using the standard error method</span></span>
+<span class='r-in'>    type <span class='op'>=</span> <span class='st'>"se"</span></span>
+<span class='r-in'>  <span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 × 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   lower_ci upper_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>     40.1     42.7</span>
+<span class='r-in'>  </span>
+<span class='r-in'><span class='co'># using a theoretical distribution -----------------------------------</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># define a sampling distribution</span></span>
+<span class='r-in'><span class='va'>sampling_dist</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span>response <span class='op'>=</span> <span class='va'>hours</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='assume.html'>assume</a></span><span class='op'>(</span><span class='st'>"t"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># get the confidence interval---note that the</span></span>
+<span class='r-in'><span class='co'># point estimate is required here</span></span>
+<span class='r-in'><span class='fu'>get_confidence_interval</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>sampling_dist</span>, </span>
+<span class='r-in'>  level <span class='op'>=</span> <span class='fl'>.95</span>, </span>
+<span class='r-in'>  point_estimate <span class='op'>=</span> <span class='va'>sample_mean</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 1 × 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   lower_ci upper_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span>     40.1     42.7</span>
+<span class='r-in'>  </span>
+<span class='r-in'><span class='co'># using a model fitting workflow -----------------------</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># fit a linear model predicting number of hours worked per</span></span>
+<span class='r-in'><span class='co'># week using respondent age and degree status.</span></span>
+<span class='r-in'><span class='va'>observed_fit</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>hours</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>college</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>observed_fit</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3 × 2</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   term          estimate</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> intercept     40.6    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> age            0.005<span style='text-decoration: underline;'>96</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> collegedegree  1.53   </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># fit 100 models to resamples of the gss dataset, where the response </span></span>
+<span class='r-in'><span class='co'># `hours` is permuted in each. note that this code is the same as </span></span>
+<span class='r-in'><span class='co'># the above except for the addition of the `generate` step.</span></span>
+<span class='r-in'><span class='va'>null_fits</span> <span class='op'>&lt;-</span> <span class='va'>gss</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='specify.html'>specify</a></span><span class='op'>(</span><span class='va'>hours</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>college</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='hypothesize.html'>hypothesize</a></span><span class='op'>(</span>null <span class='op'>=</span> <span class='st'>"independence"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='generate.html'>generate</a></span><span class='op'>(</span>reps <span class='op'>=</span> <span class='fl'>100</span>, type <span class='op'>=</span> <span class='st'>"permute"</span><span class='op'>)</span> <span class='op'><a href='%>%.html'>%&gt;%</a></span></span>
+<span class='r-in'>  <span class='fu'><a href='https://generics.r-lib.org/reference/fit.html'>fit</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='va'>null_fits</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 300 × 3</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># Groups:   replicate [100]</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>    replicate term           estimate</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 1</span>         1 intercept     44.2     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 2</span>         1 age           -<span style='color: #BB0000;'>0.076</span><span style='color: #BB0000; text-decoration: underline;'>5</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 3</span>         1 collegedegree  0.676   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 4</span>         2 intercept     41.5     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 5</span>         2 age           -<span style='color: #BB0000;'>0.000</span><span style='color: #BB0000; text-decoration: underline;'>968</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 6</span>         2 collegedegree -<span style='color: #BB0000;'>0.329</span>   </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 7</span>         3 intercept     41.4     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 8</span>         3 age            0.013<span style='text-decoration: underline;'>1</span>  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'> 9</span>         3 collegedegree -<span style='color: #BB0000;'>1.50</span>    </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>10</span>         4 intercept     42.0     </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># … with 290 more rows</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>get_confidence_interval</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='va'>null_fits</span>, </span>
+<span class='r-in'>  point_estimate <span class='op'>=</span> <span class='va'>observed_fit</span>, </span>
+<span class='r-in'>  level <span class='op'>=</span> <span class='fl'>.95</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #949494;'># A tibble: 3 × 3</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   term          lower_ci upper_ci</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>            <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>1</span> age            -<span style='color: #BB0000;'>0.084</span><span style='color: #BB0000; text-decoration: underline;'>6</span>   0.085<span style='text-decoration: underline;'>6</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>2</span> collegedegree  -<span style='color: #BB0000;'>2.10</span>     2.81  </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> <span style='color: #BCBCBC;'>3</span> intercept      38.1     44.7   </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># more in-depth explanation of how to use the infer package</span></span>
+<span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/vignette.html'>vignette</a></span><span class='op'>(</span><span class='st'>"infer"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

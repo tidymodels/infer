@@ -188,16 +188,16 @@
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="va">gss</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"diff in means"</span><span class="op">)</span>
 <span class="co">#&gt; Error: A difference in means is not well-defined for a </span>
 <span class="co">#&gt; numeric response variable (hours) and no explanatory variable.</span></code></pre></div>
 <p>or</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="va">gss</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">partyid</span>, success <span class="op">=</span> <span class="st">"degree"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">college</span> <span class="op">~</span> <span class="va">partyid</span>, success <span class="op">=</span> <span class="st">"degree"</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"diff in props"</span><span class="op">)</span>
 <span class="co">#&gt; Error: A difference in proportions is not well-defined for a dichotomous categorical </span>
 <span class="co">#&gt; response variable (college) and a multinomial categorical explanatory variable (partyid).</span></code></pre></div>
@@ -207,9 +207,9 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># supply mu = 40 when it's not needed</span>
-<span class="va">gss</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span>
 <span class="co">#&gt; Message: The point null hypothesis `mu = 40` does not inform calculation of </span>
 <span class="co">#&gt; the observed statistic (a mean) and will be ignored.</span>
@@ -224,8 +224,8 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># don't hypothesize `p` when it's needed</span>
-<span class="va">gss</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"female"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+    <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">sex</span>, success <span class="op">=</span> <span class="st">"female"</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
     <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"z"</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 1</span>
 <span class="co">#&gt;    stat</span>
@@ -238,8 +238,8 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># don't hypothesize `p` when it's needed</span>
-<span class="va">gss</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">partyid</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 1</span>
 <span class="co">#&gt;    stat</span>
@@ -259,7 +259,7 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># calculating the observed mean number of hours worked per week</span>
-<span class="va">gss</span> <span class="op">%&gt;%</span>
+<span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="cn">NULL</span>, stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 1</span>
 <span class="co">#&gt;    stat</span>
@@ -267,8 +267,8 @@
 <span class="co">#&gt; 1  41.4</span>
 
 <span class="co"># equivalently, calculating the same statistic with the core verbs</span>
-<span class="va">gss</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 1</span>
 <span class="co">#&gt;    stat</span>
@@ -276,7 +276,7 @@
 <span class="co">#&gt; 1  41.4</span>
 
 <span class="co"># calculating a t statistic for hypothesized mu = 40 hours worked/week</span>
-<span class="va">gss</span> <span class="op">%&gt;%</span>
+<span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/observe.html">observe</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="cn">NULL</span>, stat <span class="op">=</span> <span class="st">"t"</span>, null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 1</span>
 <span class="co">#&gt;    stat</span>
@@ -284,9 +284,9 @@
 <span class="co">#&gt; 1  2.09</span>
 
 <span class="co"># equivalently, calculating the same statistic with the core verbs</span>
-<span class="va">gss</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 1 x 1</span>
 <span class="co">#&gt;    stat</span>
@@ -302,9 +302,9 @@
 <p>First, calculating the observed <code>t</code>-statistic:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="va">obs_stat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">obs_stat</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span>
 
 <span class="va">obs_stat</span>
@@ -317,8 +317,8 @@
 <p>The code to define the null distribution is very similar to that required to calculate a theorized observed statistic, switching out <code><a href="../reference/calculate.html">calculate()</a></code> for <code><a href="../reference/assume.html">assume()</a></code> and replacing arguments as needed.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="va">null_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">null_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/assume.html">assume</a></span><span class="op">(</span>distribution <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span>
 
 <span class="va">null_dist</span> 
@@ -345,8 +345,8 @@
 <p>Confidence intervals lie in data space rather than the standardized scale of the theoretical distributions. Calculating a mean rather than the standardized <code>t</code>-statistic:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="va">obs_mean</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">obs_mean</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></code></pre></div>
 <p>The null distribution here just defines the spread for the standard error calculation.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -378,8 +378,8 @@
 <p>If passed an <code>infer</code> object, the method will parse a formula out of the <code>formula</code> or <code>response</code> and <code>explanatory</code> arguments, and pass both it and <code>data</code> to a <code><a href="https://rdrr.io/r/stats/glm.html">stats::glm</a></code> call.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="va">gss</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 3 x 2</span>
 <span class="co">#&gt;   term          estimate</span>
@@ -391,10 +391,10 @@
 <p>If passed a <code><a href="../reference/generate.html">generate()</a></code>d object, the model will be fitted to each replicate.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="va">gss</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">100</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">100</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 300 x 3</span>
 <span class="co">#&gt; # Groups:   replicate [100]</span>
@@ -414,10 +414,10 @@
 <p>If <code>type = "permute"</code>, a set of unquoted column names in the data to permute (independently of each other) can be passed via the <code>variables</code> argument to <code>generate</code>. It defaults to only the response variable.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
-<span class="va">gss</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">100</span>, type <span class="op">=</span> <span class="st">"permute"</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">college</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">100</span>, type <span class="op">=</span> <span class="st">"permute"</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">college</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
   <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 300 x 3</span>
 <span class="co">#&gt; # Groups:   replicate [100]</span>
@@ -435,7 +435,7 @@
 <span class="co">#&gt; 10         4 intercept      40.9   </span>
 <span class="co">#&gt; # … with 290 more rows</span></code></pre></div>
 <p>This feature allows for more detailed exploration of the effect of disrupting the correlation structure among explanatory variables on outputted model coefficients.</p>
-<p>Each of the auxillary functions <code><a href="../reference/get_p_value.html">get_p_value()</a></code>, <code><a href="../reference/get_confidence_interval.html">get_confidence_interval()</a></code>, <code><a href="../reference/visualize.html">visualize()</a></code>, <code><a href="../reference/shade_p_value.html">shade_p_value()</a></code>, and <code><a href="../reference/shade_confidence_interval.html">shade_confidence_interval()</a></code> have methods to handle <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> output! See their help-files for example usage. Note that <code>shade_*</code> functions now delay evaluation until they are added to an existing ggplot (e.g. that outputted by <code><a href="../reference/visualize.html">visualize()</a></code>) with <code><a href="https://rdrr.io/r/base/Arithmetic.html">+</a></code>.</p>
+<p>Each of the auxillary functions <code><a href="../reference/get_p_value.html">get_p_value()</a></code>, <code><a href="../reference/get_confidence_interval.html">get_confidence_interval()</a></code>, <code><a href="../reference/visualize.html">visualize()</a></code>, <code><a href="../reference/shade_p_value.html">shade_p_value()</a></code>, and <code><a href="../reference/shade_confidence_interval.html">shade_confidence_interval()</a></code> have methods to handle <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> output! See their help-files for example usage. Note that <code>shade_*</code> functions now delay evaluation until they are added to an existing ggplot (e.g. that outputted by <code><a href="../reference/visualize.html">visualize()</a></code>) with <code>+</code>.</p>
 </div>
 <div id="improvements" class="section level2">
 <h2 class="hasAnchor">
@@ -453,7 +453,7 @@
 <p>We don’t anticipate that any changes made in this release are “breaking” in the sense that code that previously worked will continue to, though it may now message or warn in a way that it did not used to or error with a different (and hopefully more informative) message. If you currently teach or research with infer, we recommend re-running your materials and noting any changes in messaging and warning.</p>
 <ul>
 <li>Move forward with a number of planned deprecations. Namely, the <code>GENERATION_TYPES</code> object is now fully deprecated, and arguments that were relocated from <code><a href="../reference/visualize.html">visualize()</a></code> to <code><a href="../reference/shade_p_value.html">shade_p_value()</a></code> and <code><a href="../reference/shade_confidence_interval.html">shade_confidence_interval()</a></code> are now fully deprecated in <code><a href="../reference/visualize.html">visualize()</a></code>. If supplied a deprecated argument, <code><a href="../reference/visualize.html">visualize()</a></code> will warn the user and ignore the argument.</li>
-<li>Added a <code>prop</code> argument to <code><a href="../reference/rep_sample_n.html">rep_slice_sample()</a></code> as an alternative to the <code>n</code> argument for specifying the proportion of rows in the supplied data to sample per replicate (<a href='https://github.com/tidymodels/infer/issues/361'>#361</a>, <a href='https://github.com/tidymodels/infer/issues/362'>#362</a>, <a href='https://github.com/tidymodels/infer/issues/363'>#363</a>). This changes order of arguments of <code><a href="../reference/rep_sample_n.html">rep_slice_sample()</a></code> (in order to be more aligned with <code><a href="https://dplyr.tidyverse.org/reference/slice.html">dplyr::slice_sample()</a></code>) which might break code if it didn’t use named arguments (like <code><a href="../reference/rep_sample_n.html">rep_slice_sample(df, 5, TRUE)</a></code>). To fix this, use named arguments (like <code><a href="../reference/rep_sample_n.html">rep_slice_sample(df, 5, replicate = TRUE)</a></code>).</li>
+<li>Added a <code>prop</code> argument to <code><a href="../reference/rep_sample_n.html">rep_slice_sample()</a></code> as an alternative to the <code>n</code> argument for specifying the proportion of rows in the supplied data to sample per replicate (<a href='https://github.com/tidymodels/infer/issues/361'>#361</a>, <a href='https://github.com/tidymodels/infer/issues/362'>#362</a>, <a href='https://github.com/tidymodels/infer/issues/363'>#363</a>). This changes order of arguments of <code><a href="../reference/rep_sample_n.html">rep_slice_sample()</a></code> (in order to be more aligned with <code><a href="https://dplyr.tidyverse.org/reference/slice.html">dplyr::slice_sample()</a></code>) which might break code if it didn’t use named arguments (like <code>rep_slice_sample(df, 5, TRUE)</code>). To fix this, use named arguments (like <code>rep_slice_sample(df, 5, replicate = TRUE)</code>).</li>
 </ul>
 </div>
 <div id="other" class="section level2">
