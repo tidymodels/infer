@@ -2,6 +2,8 @@
 
 To be released as v1.0.2.
 
+* Fixes `generate()` errors when columns are named `x` (#431).
+
 # infer v1.0.1 (GitHub Only)
 
 This release reflects the infer version accepted to the Journal of Open Source Software.

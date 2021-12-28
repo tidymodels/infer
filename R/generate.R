@@ -223,7 +223,7 @@ bootstrap <- function(x, reps = 1, ...) {
 permute <- function(x, reps = 1, variables, ...) {
   df_out <- replicate(reps, permute_once(x, variables), simplify = FALSE) %>%
     dplyr::bind_rows() %>%
-    dplyr::mutate(replicate = rep(1:reps, each = nrow(x))) %>%
+    dplyr::mutate(replicate = rep(1:reps, each = nrow(!!x))) %>%
     dplyr::group_by(replicate)
 
   df_out <- copy_attrs(to = df_out, from = x)

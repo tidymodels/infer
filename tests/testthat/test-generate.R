@@ -278,13 +278,21 @@ test_that("generate() handles `NULL` value of `type`", {
   )
 })
 
-test_that("generate() handles `x` response in case of 'simulate' (#299)", {
+test_that("generate() handles `x` response", {
   expect_named(
     data.frame(x = factor(rbinom(100, size = 1, prob = .5))) %>%
       specify(response = x, success = "1") %>%
       hypothesize(null = "point", p = .5) %>%
       generate(reps = 100, type = "draw"),
     c("x", "replicate")
+  )
+  
+  expect_named(
+    data.frame(category = c(rep(c("A", "B"), each = 5)), x = 1:10) %>%
+      specify(explanatory = category, response = x) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 5, type = "permute"),
+    c("x", "category", "replicate")
   )
 })
 
