@@ -2,6 +2,9 @@
 
 To be released as v1.0.2.
 
+* Fixed error from `visualize` when passed `generate()`d `infer_dist` objects 
+that had not been passed to `hypothesize()` (#432). 
+
 # infer v1.0.1 (GitHub Only)
 
 This release reflects the infer version accepted to the Journal of Open Source Software.
