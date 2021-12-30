@@ -255,7 +255,7 @@ two_tail_area <- function(obs_stat, direction) {
     # so that their heights aren't summed
     common_x <- which.max(ret$x[ret$dir == "left"])
     
-    ret$x[common_x] <- ret$x[common_x] - 1e-5
+    ret$x[common_x] <- ret$x[common_x] - 1e-5*ret$x[common_x]
 
     ret
   }
