@@ -2,6 +2,8 @@
 
 To be released as v1.0.2.
 
+* Fixed p-value shading when the calculated statistic falls exactly on the boundaries of a histogram bin (#424).
+
 # infer v1.0.1 (GitHub Only)
 
 This release reflects the infer version accepted to the Journal of Open Source Software.
