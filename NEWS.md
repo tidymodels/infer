@@ -2,8 +2,8 @@
 
 To be released as v1.0.2.
 
-* Fixes `generate()` errors when columns are named `x` (#431).
 * Update visual checks for `visualize` output to align with the R 4.1.0+ graphics engine (#438).
+* Fixes `generate()` errors when columns are named `x` (#431).
 
 # infer v1.0.1 (GitHub Only)
 
