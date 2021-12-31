@@ -767,7 +767,7 @@ test_that("visualize can handle `assume()` output", {
   
   # warns when it ought to --------------------------------------------------
   expect_doppelganger(
-    "viz-assume-t",
+    "viz-assume-t-sim",
     expect_warning(
       visualize(null_dist, method = "simulation"),
       "not well-defined for `assume\\(\\)` output.*will be ignored"
@@ -775,7 +775,7 @@ test_that("visualize can handle `assume()` output", {
   )
   
   expect_doppelganger(
-    "viz-assume-t",
+    "viz-assume-t-both",
     expect_warning(
       visualize(null_dist, method = "both"),
       "not well-defined for `assume\\(\\)` output.*will be ignored"

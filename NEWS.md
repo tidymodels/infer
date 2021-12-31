@@ -2,8 +2,8 @@
 
 To be released as v1.0.2.
 
-* Fixed error from `visualize` when passed `generate()`d `infer_dist` objects 
-that had not been passed to `hypothesize()` (#432). 
+* Update visual checks for `visualize` output to align with the R 4.1.0+ graphics engine.
+* Fixed error from `visualize` when passed `generate()`d `infer_dist` objects that had not been passed to `hypothesize()` (#432). 
 
 # infer v1.0.1 (GitHub Only)
 
