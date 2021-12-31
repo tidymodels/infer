@@ -2,6 +2,8 @@
 
 To be released as v1.0.2.
 
+* Update visual checks for `visualize` output to align with the R 4.1.0+ graphics engine.
+
 # infer v1.0.1 (GitHub Only)
 
 This release reflects the infer version accepted to the Journal of Open Source Software.
