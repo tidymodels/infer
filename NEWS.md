@@ -2,8 +2,10 @@
 
 To be released as v1.0.2.
 
-* Fixes `generate()` errors when columns are named `x` (#431).
-* Fixed error from `visualize` when passed `generate()`d `infer_dist` objects that had not been passed to `hypothesize()` (#432). 
+
+* Fix p-value shading when the calculated statistic falls exactly on the boundaries of a histogram bin (#424).
+* Fix `generate()` errors when columns are named `x` (#431).
+* Fix error from `visualize` when passed `generate()`d `infer_dist` objects that had not been passed to `hypothesize()` (#432). 
 * Update visual checks for `visualize` output to align with the R 4.1.0+ graphics engine (#438).
 
 # infer v1.0.1 (GitHub Only)

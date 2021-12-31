@@ -249,7 +249,15 @@ two_tail_area <- function(obs_stat, direction) {
       max(obs_stat, second_border), "right", do_warn = FALSE
     )(data)
     
-    dplyr::bind_rows(left_area, right_area)
+    ret <- dplyr::bind_rows(left_area, right_area)
+    
+    # jitter one of the x coords that the right and left area have in common 
+    # so that their heights aren't summed
+    common_x <- which.max(ret$x[ret$dir == "left"])
+    
+    ret$x[common_x] <- ret$x[common_x] - 1e-5*ret$x[common_x]
+
+    ret
   }
 }
 
