@@ -2,8 +2,9 @@
 
 To be released as v1.0.2.
 
-* Update visual checks for `visualize` output to align with the R 4.1.0+ graphics engine.
 * Fixed p-value shading when the calculated statistic falls exactly on the boundaries of a histogram bin (#424).
+* Fixes `generate()` errors when columns are named `x` (#431).
+* Update visual checks for `visualize` output to align with the R 4.1.0+ graphics engine (#438).
 
 # infer v1.0.1 (GitHub Only)
 
