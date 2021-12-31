@@ -1,7 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://infer.tidymodels.org/CONDUCT.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/CONTRIBUTING.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/articles/anova.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/articles/chi_squared.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/articles/infer.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/articles/observed_stat_examples.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/articles/t_test.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/authors.html</loc>
+  </url>
+  <url>
     <loc>https://infer.tidymodels.org/index.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/news/index.html</loc>
   </url>
   <url>
     <loc>https://infer.tidymodels.org/reference/assume.html</loc>
@@ -35,6 +71,9 @@
   </url>
   <url>
     <loc>https://infer.tidymodels.org/reference/hypothesize.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/reference/index.html</loc>
   </url>
   <url>
     <loc>https://infer.tidymodels.org/reference/infer.html</loc>
@@ -74,20 +113,5 @@
   </url>
   <url>
     <loc>https://infer.tidymodels.org/reference/visualize.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/articles/anova.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/articles/chi_squared.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/articles/infer.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/articles/observed_stat_examples.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/articles/t_test.html</loc>
   </url>
 </urlset>

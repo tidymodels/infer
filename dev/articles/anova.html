@@ -35,6 +35,8 @@
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -49,7 +51,7 @@
       <div class="navbar-brand-container">
         <a class="navbar-brand" href="../index.html">infer</a>
         <div class="info hidden-xs hidden-sm">
-          <span class="partof">part of <a href="https://github.com/tidymodels">tidymodels</a></span>
+          <span class="partof">part of <a href="https://github.com/tidymodels" class="external-link">tidymodels</a></span>
           <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.0.1.9000</span>
         </div>
       </div>
@@ -93,7 +95,7 @@
   <a href="../CONDUCT.html">Code of Conduct</a>
 </li>
         <li>
-  <a href="https://github.com/tidymodels/infer">
+  <a href="https://github.com/tidymodels/infer" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -114,7 +116,7 @@
       <h1 data-toc-skip>Tidy ANOVA (Analysis of Variance) with infer</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/master/vignettes/anova.Rmd"><code>vignettes/anova.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/HEAD/vignettes/anova.Rmd" class="external-link"><code>vignettes/anova.Rmd</code></a></small>
       <div class="hidden name"><code>anova.Rmd</code></div>
 
     </div>
@@ -124,20 +126,20 @@
 <p>In this vignette, we’ll walk through conducting an analysis of variance (ANOVA) test using <code>infer</code>. ANOVAs are used to analyze differences in group means.</p>
 <p>Throughout this vignette, we’ll make use of the <code>gss</code> dataset supplied by <code>infer</code>, which contains a sample of data from the General Social Survey. See <code><a href="../reference/gss.html">?gss</a></code> for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let’s suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
-<pre><code>## Rows: 500
-## Columns: 11
-## $ year    &lt;dbl&gt; 2014, 1994, 1998, 1996, 1994, 1996, 1990, 2016, 2000, 1998, 20…
-## $ age     &lt;dbl&gt; 36, 34, 24, 42, 31, 32, 48, 36, 30, 33, 21, 30, 38, 49, 25, 56…
-## $ sex     &lt;fct&gt; male, female, male, male, male, female, female, female, female…
-## $ college &lt;fct&gt; degree, no degree, degree, no degree, degree, no degree, no de…
-## $ partyid &lt;fct&gt; ind, rep, ind, ind, rep, rep, dem, ind, rep, dem, dem, ind, de…
-## $ hompop  &lt;dbl&gt; 3, 4, 1, 4, 2, 4, 2, 1, 5, 2, 4, 3, 4, 4, 2, 2, 3, 2, 1, 2, 5,…
-## $ hours   &lt;dbl&gt; 50, 31, 40, 40, 40, 53, 32, 20, 40, 40, 23, 52, 38, 72, 48, 40…
-## $ income  &lt;ord&gt; $25000 or more, $20000 - 24999, $25000 or more, $25000 or more…
-## $ class   &lt;fct&gt; middle class, working class, working class, working class, mid…
-## $ finrela &lt;fct&gt; below average, below average, below average, above average, ab…
-## $ weight  &lt;dbl&gt; 0.8960, 1.0825, 0.5501, 1.0864, 1.0825, 1.0864, 1.0627, 0.4785…</code></pre>
+<code class="sourceCode R"><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Rows: 500</span>
+<span class="co">## Columns: 11</span>
+<span class="co">## $ year    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2014, 1994, 1998, 1996, 1994, 1996, 1990, 2016, 2000, 1998, 20…</span>
+<span class="co">## $ age     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 36, 34, 24, 42, 31, 32, 48, 36, 30, 33, 21, 30, 38, 49, 25, 56…</span>
+<span class="co">## $ sex     <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> male, female, male, male, male, female, female, female, female…</span>
+<span class="co">## $ college <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> degree, no degree, degree, no degree, degree, no degree, no de…</span>
+<span class="co">## $ partyid <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> ind, rep, ind, ind, rep, rep, dem, ind, rep, dem, dem, ind, de…</span>
+<span class="co">## $ hompop  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 3, 4, 1, 4, 2, 4, 2, 1, 5, 2, 4, 3, 4, 4, 2, 2, 3, 2, 1, 2, 5,…</span>
+<span class="co">## $ hours   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 50, 31, 40, 40, 40, 53, 32, 20, 40, 40, 23, 52, 38, 72, 48, 40…</span>
+<span class="co">## $ income  <span style="color: #949494; font-style: italic;">&lt;ord&gt;</span> $25000 or more, $20000 - 24999, $25000 or more, $25000 or more…</span>
+<span class="co">## $ class   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> middle class, working class, working class, working class, mid…</span>
+<span class="co">## $ finrela <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> below average, below average, below average, above average, ab…</span>
+<span class="co">## $ weight  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.8960, 1.0825, 0.5501, 1.0864, 1.0825, 1.0864, 1.0627, 0.4785…</span></code></pre>
 <p>To carry out an ANOVA, we’ll examine the association between age and political party affiliation in the United States. The <code>age</code> variable is a numerical variable measuring the respondents’ age at the time that the survey was taken, and <code>partyid</code> is a factor variable with unique values ind, rep, dem, other.</p>
 <p>This is what the relationship looks like in the observed data:</p>
 <p><img src="anova_files/figure-html/plot-f-1.png" width="576"></p>
@@ -145,24 +147,24 @@
 <p>First, to calculate the observed statistic, we can use <code><a href="../reference/specify.html">specify()</a></code> and <code><a href="../reference/calculate.html">calculate()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># calculate the observed statistic</span>
-<span class="va">observed_f_statistic</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+<span class="va">observed_f_statistic</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span></code></pre></div>
 <p>The observed <span class="math inline">\(F\)</span> statistic is 2.4842. Now, we want to compare this statistic to a null distribution, generated under the assumption that age and political party affiliation are not actually related, to get a sense of how likely it would be for us to see this observed statistic if there were actually no association between the two variables.</p>
 <p>We can <code>generate</code> an approximation of the null distribution using randomization. The randomization approach permutes the response and explanatory variables, so that each person’s party affiliation is matched up with a random age from the sample in order to break up any association between the two.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># generate the null distribution using randomization</span>
-<span class="va">null_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+<span class="va">null_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span></code></pre></div>
 <p>Note that, in the line <code>specify(age ~ partyid)</code> above, we could use the equivalent syntax <code>specify(response = age, explanatory = partyid)</code>.</p>
 <p>To get a sense for what this distribution looks like, and where our observed statistic falls, we can use <code><a href="../reference/visualize.html">visualize()</a></code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># visualize the null distribution and test statistic!</span>
-<span class="va">null_dist</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+<span class="va">null_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_f_statistic</span>,
                 direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
@@ -170,8 +172,8 @@
 <p>We could also visualize the observed statistic against the theoretical null distribution. To do so, use the <code><a href="../reference/assume.html">assume()</a></code> verb to define a theoretical null distribution and then pass it to <code><a href="../reference/visualize.html">visualize()</a></code> like a null distribution outputted from <code><a href="../reference/generate.html">generate()</a></code> and <code><a href="../reference/calculate.html">calculate()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># visualize the theoretical null distribution and test statistic!</span>
-<span class="va">null_dist_theory</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
-  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+<span class="va">null_dist_theory</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
+  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/assume.html">assume</a></span><span class="op">(</span>distribution <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist_theory</span><span class="op">)</span> <span class="op">+</span>
@@ -181,7 +183,7 @@
 <p>To visualize both the randomization-based and theoretical null distributions to get a sense of how the two relate, we can pipe the randomization-based null distribution into <code><a href="../reference/visualize.html">visualize()</a></code>, and then further provide <code>method = "both"</code> to <code><a href="../reference/visualize.html">visualize()</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># visualize both null distributions and the test statistic!</span>
-<span class="va">null_dist</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+<span class="va">null_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_f_statistic</span>,
                 direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></code></pre></div>
@@ -189,20 +191,20 @@
 <p>Either way, it looks like our observed test statistic would be quite unlikely if there were actually no association between age and political party affiliation. More exactly, we can approximate the p-value from the randomization-based approximation to the null distribution:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># calculate the p value from the observed statistic and null distribution</span>
-<span class="va">p_value</span> <span class="op">&lt;-</span> <span class="va">null_dist</span> <span class="op"><a href="../reference/%&gt;%.html">%&gt;%</a></span>
+<span class="va">p_value</span> <span class="op">&lt;-</span> <span class="va">null_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">observed_f_statistic</span>,
               direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span>
 
 <span class="va">p_value</span></code></pre></div>
-<pre><code>## # A tibble: 1 × 1
-##   p_value
-##     &lt;dbl&gt;
-## 1   0.055</code></pre>
+<pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span>
+<span class="co">##   p_value</span>
+<span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="co">## <span style="color: #BCBCBC;">1</span>   0.055</span></code></pre>
 <p>Thus, if there were really no relationship between age and political party affiliation, our approximation of the probability that we would see a statistic as or more extreme than 2.4842 is approximately 0.055.</p>
 <p>To calculate the p-value using the true <span class="math inline">\(F\)</span> distribution, we can use the <code>pf</code> function from base R. This function allows us to situate the test statistic we calculated previously in the <span class="math inline">\(F\)</span> distribution with the appropriate degrees of freedom.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html">pf</a></span><span class="op">(</span><span class="va">observed_f_statistic</span><span class="op">$</span><span class="va">stat</span>, <span class="fl">3</span>, <span class="fl">496</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 0.06006</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/stats/Fdist.html" class="external-link">pf</a></span><span class="op">(</span><span class="va">observed_f_statistic</span><span class="op">$</span><span class="va">stat</span>, <span class="fl">3</span>, <span class="fl">496</span>, lower.tail <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] 0.06006</span></code></pre>
 <p>Note that, while the observed statistic stays the same, the resulting p-value differs slightly between these two approaches since the randomization-based empirical <span class="math inline">\(F\)</span> distribution is an approximation of the true <span class="math inline">\(F\)</span> distribution.</p>
 <p>The package currently does not supply a wrapper for tidy ANOVA tests.</p>
   </div>
@@ -221,8 +223,8 @@
 
 <div class="author">
   <p>
-    Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Simon Couch, Ben Baumer, Mine Cetinkaya-Rundel.
-    Site built by <a href="https://pkgdown.r-lib.org">pkgdown</a>.
+    Developed by .
+    Site built by <a href="https://pkgdown.r-lib.org" class="external-link">pkgdown</a>.
   </p>
 </div>
 
@@ -231,6 +233,8 @@
 
   
 
+
+  
 
   </body>
 </html>
