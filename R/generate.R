@@ -84,6 +84,7 @@ generate <- function(x, reps = 1, type = NULL,
   } else {
     use_auto_type(auto_type)
   }
+  attr(x, "type") <- type
 
   check_cols(x, rlang::enquo(variables), type, missing(variables))
 

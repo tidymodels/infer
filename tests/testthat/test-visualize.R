@@ -682,6 +682,16 @@ test_that("visualize can handle multiple explanatory variables", {
       shade_confidence_interval(endpoints = conf_ints)
   )
   
+  # with no hypothesize()
+  expect_doppelganger(
+    "viz-fit-no-h0", 
+    gss %>%
+      specify(hours ~ age + college) %>%
+      generate(reps = 20, type = "bootstrap") %>%
+      fit() %>% 
+      visualize()
+  )
+  
   # shade_* functions should error with bad input
 })
 
