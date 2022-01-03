@@ -61,9 +61,7 @@ t_test <- function(x, formula,
   check_conf_level(conf_level)
 
   # convert all character and logical variables to be factor variables
-  x <- tibble::as_tibble(x) %>%
-    mutate_if(is.character, as.factor) %>%
-    mutate_if(is.logical, as.factor)
+  x <- standardize_variable_types(x)
 
   # parse response and explanatory variables
   response    <- enquo(response)
@@ -176,9 +174,7 @@ t_stat <- function(x, formula,
   check_conf_level(conf_level)
 
   # convert all character and logical variables to be factor variables
-  x <- tibble::as_tibble(x) %>%
-    mutate_if(is.character, as.factor) %>%
-    mutate_if(is.logical, as.factor)
+  x <- standardize_variable_types(x)
 
   # parse response and explanatory variables
   response    <- enquo(response)
@@ -260,6 +256,9 @@ chisq_test <- function(x, formula, response = NULL,
   # Parse response and explanatory variables
   response    <- enquo(response)
   explanatory <- enquo(explanatory)
+  
+  x <- standardize_variable_types(x)
+  
   x <- parse_variables(x = x, formula = formula,
                        response = response, explanatory = explanatory)
 
@@ -278,9 +277,7 @@ chisq_test <- function(x, formula, response = NULL,
   }
 
   x <- x %>%
-    select(any_of(c(response_name(x), explanatory_name(x)))) %>%
-    mutate_if(is.character, as.factor) %>%
-    mutate_if(is.logical, as.factor)
+    select(any_of(c(response_name(x), explanatory_name(x))))
 
   stats::chisq.test(table(x), ...) %>%
     broom::glance() %>%
@@ -337,6 +334,8 @@ chisq_stat <- function(x, formula, response = NULL,
   # Parse response and explanatory variables
   response    <- enquo(response)
   explanatory <- enquo(explanatory)
+  x <- standardize_variable_types(x)
+  
   x <- parse_variables(x = x, formula = formula,
                        response = response, explanatory = explanatory)
 
@@ -355,9 +354,7 @@ chisq_stat <- function(x, formula, response = NULL,
   }
 
   x <- x %>%
-    select(any_of(c(response_name(x), explanatory_name(x)))) %>%
-    mutate_if(is.character, as.factor) %>%
-    mutate_if(is.logical, as.factor)
+    select(any_of(c(response_name(x), explanatory_name(x))))
 
   suppressWarnings(stats::chisq.test(table(x), ...)) %>%
     broom::glance() %>%
@@ -460,8 +457,11 @@ prop_test <- function(x, formula,
   # Parse response and explanatory variables
   response    <- enquo(response)
   explanatory <- enquo(explanatory)
+  x <- standardize_variable_types(x)
+  
   x <- parse_variables(x = x, formula = formula,
                        response = response, explanatory = explanatory)
+  
   correct <- if (z) {FALSE} else if (is.null(correct)) {TRUE} else {correct}
 
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
@@ -505,8 +505,6 @@ prop_test <- function(x, formula,
     # make a summary table to supply to prop.test
     sum_table <- x %>%
       select(response_name(x), explanatory_name(x)) %>%
-      mutate_if(is.character, as.factor) %>%
-      mutate_if(is.logical, as.factor) %>%
       table()
 
     # reorder according to the order and success arguments
