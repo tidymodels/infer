@@ -51,6 +51,27 @@ test_that("shade_p_value works", {
     "pval-both-corrupt",
     expect_warning(gss_viz_both + shade_p_value(1, "aaa"), "direction")
   )
+  
+  # -roper p-value shading when the calculated statistic falls exactly on the 
+  # boundaries of a histogram bin (#424)
+  r_hat <- gss %>% 
+    observe(college ~ sex, success = "no degree",
+            stat = "ratio of props", order = c("female", "male"))
+  
+  set.seed(33)
+  
+  null_dist <- gss %>%
+    specify(college ~ sex, success = "no degree") %>%
+    hypothesize(null = "independence") %>% 
+    generate(reps = 1000) %>% 
+    calculate(stat = "ratio of props", order = c("female", "male"))
+  
+  
+  expect_doppelganger(
+    "pval-stat-match", 
+    visualize(null_dist) +
+      shade_p_value(obs_stat = r_hat, direction = "two-sided")
+  )
 })
 
 test_that("shade_p_value accepts synonyms for 'direction'", {

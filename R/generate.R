@@ -84,6 +84,7 @@ generate <- function(x, reps = 1, type = NULL,
   } else {
     use_auto_type(auto_type)
   }
+  attr(x, "type") <- type
 
   check_cols(x, rlang::enquo(variables), type, missing(variables))
 
@@ -224,7 +225,7 @@ bootstrap <- function(x, reps = 1, ...) {
 permute <- function(x, reps = 1, variables, ...) {
   df_out <- replicate(reps, permute_once(x, variables), simplify = FALSE) %>%
     dplyr::bind_rows() %>%
-    dplyr::mutate(replicate = rep(1:reps, each = nrow(x))) %>%
+    dplyr::mutate(replicate = rep(1:reps, each = nrow(!!x))) %>%
     dplyr::group_by(replicate)
 
   df_out <- copy_attrs(to = df_out, from = x)

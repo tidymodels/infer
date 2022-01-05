@@ -111,7 +111,7 @@ Once we've asserted our null hypothesis using `hypothesize()`, we can construct 
 
 * `bootstrap`: A bootstrap sample will be drawn for each replicate, where a sample of size equal to the input sample size is drawn (with replacement) from the input sample data.  
 * `permute`: For each replicate, each input value will be randomly reassigned (without replacement) to a new output value in the sample.  
-* `simulate`: A value will be sampled from a theoretical distribution with parameters specified in `hypothesize()` for each replicate. (This option is currently only applicable for testing point estimates.)  
+* `draw`: A value will be sampled from a theoretical distribution with parameters specified in `hypothesize()` for each replicate. This option is currently only applicable for testing point estimates. This generation type was previously called `"simulate"`, which has been superseded.
 
 Continuing on with our example above, about the average number of hours worked a week, we might write:
 
