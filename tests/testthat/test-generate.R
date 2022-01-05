@@ -171,7 +171,7 @@ test_that("auto `type` works (generate)", {
     )
   )
 
-  expect_warning(mtcars_df %>%
+  expect_silent(mtcars_df %>%
       specify(response = mpg) %>%
       generate(reps = 100, type = "draw")
   )
@@ -212,6 +212,12 @@ test_that("auto `type` works (generate)", {
       specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "bootstrap"))
+  
+  expect_silent(
+    mtcars_df %>%
+      specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
+      generate(reps = 100, type = "bootstrap")
+  )
 
   expect_warning(mtcars_df %>%
       specify(mpg ~ cyl) %>% # alt: response = mpg, explanatory = cyl
@@ -225,7 +231,7 @@ test_that("auto `type` works (generate)", {
       generate(reps = 100, type = "bootstrap")
   )
 
-  expect_warning(mtcars_df %>%
+  expect_silent(mtcars_df %>%
       specify(response = am, success = "1") %>%
       generate(reps = 100, type = "draw")
   )
@@ -239,12 +245,12 @@ test_that("auto `type` works (generate)", {
     "independence hypothesis test"
   )
 
-  expect_warning(mtcars_df %>%
+  expect_silent(mtcars_df %>%
       specify(am ~ vs, success = "1") %>%
       generate(reps = 100, type = "draw")
   )
 
-  expect_warning(mtcars_df %>%
+  expect_silent(mtcars_df %>%
       specify(mpg ~ hp) %>%
       generate(reps = 100, type = "draw")
   )

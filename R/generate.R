@@ -80,7 +80,7 @@ generate <- function(x, reps = 1, type = NULL,
   type <- sanitize_generation_type(type)
   auto_type <- sanitize_generation_type(attr(x, "type"))
   type <- if (!is.null(type)) {
-    compare_type_vs_auto_type(type, auto_type)
+    compare_type_vs_auto_type(type, auto_type, x)
   } else {
     use_auto_type(auto_type)
   }
@@ -126,13 +126,14 @@ sanitize_generation_type <- function(x) {
 }
 
 # Ensure that the supplied type matches what would be assumed from input
-compare_type_vs_auto_type <- function(type, auto_type) {
+compare_type_vs_auto_type <- function(type, auto_type, x) {
   if(is.null(auto_type)) {
     return(type)
   }
   if (auto_type != type &&
       (any(!c(auto_type, type) %in% c("draw", "simulate"))) &&
-      type != "bootstrap") {
+      is_hypothesized(x) ||
+      (type == "bootstrap" && auto_type == "draw" && is_hypothesized(x))) {
     warning_glue(
       "You have given `type = \"{type}\"`, but `type` is expected",
       "to be `\"{auto_type}\"`. This workflow is untested and",
