@@ -132,8 +132,7 @@ compare_type_vs_auto_type <- function(type, auto_type, x) {
   }
   if (auto_type != type &&
       (any(!c(auto_type, type) %in% c("draw", "simulate"))) &&
-      is_hypothesized(x) ||
-      (type == "bootstrap" && auto_type == "draw" && is_hypothesized(x))) {
+      is_hypothesized(x)) {
     warning_glue(
       "You have given `type = \"{type}\"`, but `type` is expected",
       "to be `\"{auto_type}\"`. This workflow is untested and",
