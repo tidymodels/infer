@@ -86,7 +86,9 @@ generate <- function(x, reps = 1, type = NULL,
   }
   attr(x, "type") <- type
 
-  check_cols(x, rlang::enquo(variables), type, missing(variables))
+  if(type != "bootstrap") {
+    check_cols(x, rlang::enquo(variables), type, missing(variables))
+  }
 
   attr(x, "generated") <- TRUE
 
