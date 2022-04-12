@@ -158,8 +158,8 @@ check_calculate_stat <- function(stat) {
 # Raise an error if the user supplies a test statistic that doesn't
 # make sense given the variable and hypothesis specified
 check_input_vs_stat <- function(x, stat) {
-  response_type <- attr(x, "response_type_desc")
-  explanatory_type <- attr(x, "explanatory_type_desc")
+  response_type <- attr(x, "type_desc_response")
+  explanatory_type <- attr(x, "type_desc_explanatory")
 
   possible_stats <- stat_types %>%
     dplyr::filter(resp == response_type & exp == explanatory_type) %>%
@@ -438,7 +438,7 @@ calc_impl.Chisq <- function(type, x, order, ...) {
     attrs = c(
       "response", "success", "explanatory", "response_type",
       "explanatory_type", "distr_param", "distr_param2", "theory_type",
-      "response_type_desc", "explanatory_type_desc"
+      "type_desc_response", "type_desc_explanatory"
     )
   )
 }

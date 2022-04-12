@@ -200,7 +200,7 @@ check_distribution <- function(x, distribution, df, ...) {
                                                      "Two sample props z"))) {
     if (has_explanatory(x)) {
       msg_tail <- glue_null(
-        "a {get_stat_type_desc(attr(x, 'explanatory_type_desc'))} ",
+        "a {get_stat_type_desc(attr(x, 'type_desc_explanatory'))} ",
         "explanatory variable ({explanatory_name(x)})."
       )
     } else {
@@ -209,7 +209,7 @@ check_distribution <- function(x, distribution, df, ...) {
     
     stop_glue(
       'The supplied distribution "{distribution}" is not well-defined for a ',
-      "{get_stat_type_desc(attr(x, 'response_type_desc'))} response ",
+      "{get_stat_type_desc(attr(x, 'type_desc_response'))} response ",
       "variable ({response_name(x)}) and ", msg_tail
     )
   }
