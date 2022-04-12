@@ -47,6 +47,32 @@ test_that("calculate checks `stat` argument", {
   )
 })
 
+test_that("errors informatively with incompatible stat vs hypothesis", {
+  expect_error(
+    gss %>%
+      specify(college ~ sex, success = "degree") %>%
+      hypothesise(null = "point", p = .40) %>%
+      calculate(stat = "diff in props", order = c("female", "male")),
+    'statistic \\`stat = "diff in props"\\` is incompatible'
+  )
+  
+  expect_error(
+    gss %>%
+      specify(college ~ sex, success = "degree") %>%
+      hypothesise(null = "point", p = .40) %>%
+      generate(reps = 10, type = "draw") %>% 
+      calculate(stat = "diff in props", order = c("female", "male")),
+    'statistic \\`stat = "diff in props"\\` is incompatible'
+  )
+  
+  expect_silent(
+    gss %>%
+      specify(hours ~ college) %>%
+      hypothesize(null = "point", mu = 40) %>%
+      calculate(stat = "t", order = c("degree", "no degree"))
+  )
+})
+
 test_that("response attribute has been set", {
   expect_error(
     tibble::as_tibble(gss) %>% calculate(stat = "median")

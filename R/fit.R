@@ -159,7 +159,7 @@ fit.infer <- function(object, ...) {
 }
 
 check_family <- function(object, ...) {
-  response_type <- determine_variable_type(object, "response")
+  response_type <- attr(object, "response_type_desc")
   
   if (response_type == "mult") {
     stop_glue(
