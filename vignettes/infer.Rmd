@@ -5,7 +5,7 @@ output:
   rmarkdown::html_vignette:
     toc: true
 vignette: |
-  %\VignetteIndexEntry{infer}
+  %\VignetteIndexEntry{Getting to Know infer}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -32,7 +32,7 @@ Throughout this vignette, we make use of `gss`, a dataset supplied by `infer` co
 
 ```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(dplyr)
-devtools::load_all()
+library(infer)
 ```
 
 

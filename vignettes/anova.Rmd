@@ -3,7 +3,7 @@ title: "Tidy ANOVA (Analysis of Variance) with infer"
 description: "Conducting ANOVA (Analysis of Variance) on tidy data with infer."
 output: rmarkdown::html_vignette
 vignette: |
-  %\VignetteIndexEntry{ANOVA}
+  %\VignetteIndexEntry{Tidy ANOVA (Analysis of Variance) with infer}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -16,7 +16,7 @@ options(digits = 4)
 ```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(ggplot2)
 library(dplyr)
-devtools::load_all()
+library(infer)
 ```
 
 In this vignette, we'll walk through conducting an analysis of variance (ANOVA) test using `infer`. ANOVAs are used to analyze differences in group means.
