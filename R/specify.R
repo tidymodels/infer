@@ -133,6 +133,9 @@ parse_variables <- function(x, formula, response, explanatory) {
       purrr::map_chr(as.data.frame(explanatory_variable(x)), class)
   }
   
+  attr(x, "response_type_desc") <- determine_variable_type(x, "response")
+  attr(x, "explanatory_type_desc") <- determine_variable_type(x, "explanatory")
+  
   # Determine params for theoretical fit
   x <- set_params(x)
   
