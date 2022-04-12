@@ -3,7 +3,7 @@ title: "Tidy ANOVA (Analysis of Variance) with infer"
 description: "Conducting ANOVA (Analysis of Variance) on tidy data with infer."
 output: rmarkdown::html_vignette
 vignette: |
-  %\VignetteIndexEntry{ANOVA}
+  %\VignetteIndexEntry{Tidy ANOVA (Analysis of Variance) with infer}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
