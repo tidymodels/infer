@@ -116,6 +116,26 @@ test_that(
 })
 
 test_that(
+  "hypothesize() errors on independence null with no explanatory variable", {
+    expect_error(
+      gss %>%
+        specify(response = college, success = "degree") %>%
+        hypothesize(null = "independence"),
+      'Please \\`specify\\(\\)\\` an explanatory and a response variable'
+    )
+  })
+
+test_that(
+  "hypothesize() errors on point null with an explanatory variable", {
+    expect_error(
+      gss %>%
+        specify(college ~ sex, success = "degree") %>%
+        hypothesize(null = "point", p = .40),
+      'Please \\`specify\\(\\)\\` only a response variable'
+    )
+  })
+
+test_that(
   "hypothesize() throws an error when p is greater than 1", {
   expect_error(
     mtcars_df %>%

@@ -97,6 +97,13 @@ hypothesize_checks <- function(x, null) {
       'testing a null hypothesis of `"independence"`.'
     )
   }
+  
+  if ((null == "point") && has_explanatory(x)) {
+    stop_glue(
+      'Please `specify()` only a response variable when ',
+      'testing a `"point"` null hypothesis.'
+    )
+  }
 }
 
 match_null_hypothesis <- function(null) {
