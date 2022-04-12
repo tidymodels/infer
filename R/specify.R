@@ -42,7 +42,7 @@
 #' }
 #'
 #' @importFrom rlang f_lhs f_rhs get_expr
-#' @importFrom dplyr mutate_if select any_of
+#' @importFrom dplyr select any_of across
 #' @importFrom methods hasArg
 #' @family core functions
 #' @export
@@ -51,10 +51,7 @@ specify <- function(x, formula, response = NULL,
   check_type(x, is.data.frame)
 
   # Standardize variable types
-  x <- tibble::as_tibble(x) %>%
-    mutate_if(is.character, as.factor) %>%
-    mutate_if(is.logical, as.factor) %>%
-    mutate_if(is.integer, as.numeric)
+  x <- standardize_variable_types(x)
   
   # Parse response and explanatory variables
   response <- enquo(response)

@@ -413,3 +413,41 @@ test_that("prop_test z argument works as expected", {
     
   expect_equal(unname(chi_res$statistic), z_res$statistic^2, tolerance = eps)
 })
+
+test_that("wrappers can handled ordered factors", {
+  expect_equal(
+    gss_tbl %>%
+      dplyr::mutate(sex = factor(sex, ordered = FALSE)) %>%
+      t_test(hours ~ sex, order = c("male", "female")),
+    gss_tbl %>%
+      dplyr::mutate(sex = factor(sex, ordered = TRUE)) %>%
+      t_test(hours ~ sex, order = c("male", "female"))
+  )
+  
+  expect_equal(
+    gss_tbl %>%
+      dplyr::mutate(income = factor(income, ordered = TRUE)) %>%
+      chisq_test(income ~ partyid),
+    gss_tbl %>%
+      dplyr::mutate(income = factor(income, ordered = FALSE)) %>%
+      chisq_test(income ~ partyid)
+  )
+  
+  expect_equal(
+    gss_tbl %>%
+      dplyr::mutate(income = factor(income, ordered = TRUE)) %>%
+      chisq_test(partyid ~ income),
+    gss_tbl %>%
+      dplyr::mutate(income = factor(income, ordered = FALSE)) %>%
+      chisq_test(partyid ~ income)
+  )
+  
+  expect_equal(
+    df %>%
+      dplyr::mutate(resp = factor(resp, ordered = TRUE)) %>%
+      prop_test(resp ~ NULL, p = .5),
+    df %>%
+      dplyr::mutate(resp = factor(resp, ordered = FALSE)) %>%
+      prop_test(resp ~ NULL, p = .5)
+  )
+})

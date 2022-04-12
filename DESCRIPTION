@@ -89,7 +89,8 @@ Imports:
     broom,
     tidyr,
     generics,
-    patchwork
+    patchwork,
+    tidyselect
 Suggests:
     covr,
     devtools (>= 1.12.0),
