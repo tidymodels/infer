@@ -2,52 +2,17 @@ url: https://infer.tidymodels.org
 
 template:
   package: tidytemplate
-  params:
-    theme: tidymodels
-    part_of: <a href="https://github.com/tidymodels">tidymodels</a>
-    footer: infer is a part of the <strong>tidymodels</strong> ecosystem, a collection of modeling packages designed with common APIs and a shared philosophy.
-
-# https://github.com/tidyverse/tidytemplate for css
-
-development:
-  mode: auto
+  bootstrap: 5
+  bslib:
+    danger: "#CA225E"
+    primary: "#CA225E"
+  includes:
+      in_header: |
+        <script defer data-domain="infer.tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script>
 
 figures:
   fig.width: 8
   fig.height: 5.75
-
-home:
-  title: infer - Tidy Statistical Inference
-  description: >
-    An R package to perform statistical inference using an expressive 
-    statistical grammar that coheres with the tidyverse design framework.
-
-navbar:
-  type: default
-  left:
-  - text: Articles
-    menu:
-    - text: Getting to Know infer
-      href: articles/infer.html
-    - text: t-Tests
-      href: articles/t_test.html
-    - text: ANOVA
-      href: articles/anova.html
-    - text: Chi-Squared
-      href: articles/chi_squared.html
-    - text: Full infer Pipeline Examples
-      href: articles/observed_stat_examples.html      
-  - text: Reference
-    href: reference/index.html      
-  - text: News
-    href: news/index.html
-  - text: How To Contribute
-    href: CONTRIBUTING.html
-  - text: Code of Conduct
-    href: CONDUCT.html
-  right:
-  - icon: fa-github fa-lg
-    href: https://github.com/tidymodels/infer
 
 reference:
   - title: Core Verbs
@@ -78,3 +43,16 @@ reference:
     - rep_sample_n
     - "`%>%`"
     - print.infer
+
+articles:
+- title: Articles
+  navbar: ~
+  contents: 
+  - infer
+  - t_test
+  - anova
+  - chi_squared
+  - observed_stat_examples
+
+development:
+  mode: auto
