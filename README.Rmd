@@ -26,8 +26,7 @@ The objective of this package is to perform statistical inference using an expre
 To learn more about the principles underlying the package design, see `vignette("infer")`.
 
 ```{r load-package, echo = FALSE, message = FALSE, warning = FALSE}
-library(devtools)
-devtools::load_all()
+library(infer)
 ```
 
 ```{r diagram, echo = FALSE, fig.cap = " ", fig.alt = "A diagram showing four steps to carry out randomization-based inference: specify hypothesis, generate data, calculate statistic, and visualize. From left to right, each step is connected by an arrow, while the diagram indicates that generating data and calculating statistics can happen iteratively."}

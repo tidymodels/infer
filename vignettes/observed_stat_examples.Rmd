@@ -25,7 +25,7 @@ Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer
 
 ```{r load-packages, echo = FALSE}
 library(dplyr)
-devtools::load_all()
+library(infer)
 ```
 
 ```{r load-gss}
