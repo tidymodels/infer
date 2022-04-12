@@ -287,13 +287,14 @@ stat_hypotheses <- tibble::tribble(
   "diff in means",     "independence", 
   "diff in medians",   "independence", 
   "diff in props",     "independence", 
-  "Chisq",             "independence", 
+  "Chisq",             "independence",
+  "Chisq",             "point",
   "F",                 "independence", 
   "slope",             "independence", 
   "correlation",       "independence", 
   "t",                 "independence",
   "t",                 "point",
-  "z",                 "independence", 
+  "z",                 "z", 
   "ratio of props",    "independence",  
   "odds ratio",        "independence" 
 )

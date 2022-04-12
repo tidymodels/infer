@@ -71,6 +71,19 @@ test_that("errors informatively with incompatible stat vs hypothesis", {
       hypothesize(null = "point", mu = 40) %>%
       calculate(stat = "t", order = c("degree", "no degree"))
   )
+  
+  expect_silent(
+    gss %>%
+      specify(response = finrela) %>%
+      hypothesize(null = "point",
+                  p = c("far below average" = 1/6,
+                        "below average" = 1/6,
+                        "average" = 1/6,
+                        "above average" = 1/6,
+                        "far above average" = 1/6,
+                        "DK" = 1/6)) %>%
+      calculate(stat = "Chisq")
+  )
 })
 
 test_that("response attribute has been set", {
