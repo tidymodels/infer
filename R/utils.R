@@ -294,7 +294,8 @@ stat_hypotheses <- tibble::tribble(
   "correlation",       "independence", 
   "t",                 "independence",
   "t",                 "point",
-  "z",                 "z", 
+  "z",                 "independence",
+  "z",                 "point",
   "ratio of props",    "independence",  
   "odds ratio",        "independence" 
 )
