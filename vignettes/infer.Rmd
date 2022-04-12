@@ -5,7 +5,7 @@ output:
   rmarkdown::html_vignette:
     toc: true
 vignette: |
-  %\VignetteIndexEntry{infer}
+  %\VignetteIndexEntry{Getting to Know infer}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---

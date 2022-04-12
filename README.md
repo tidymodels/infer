@@ -1,5 +1,5 @@
 
-# infer R Package <img src="figs/infer_gnome.png" align="right" width=280 />
+# infer R Package <img src="man/figures/infer.png" align="right" width=280 />
 
 <!--figs/infer.svg-->
 <!--http://www.r-pkg.org/badges/version/infer-->

@@ -6,7 +6,7 @@ output:
     df_print: kable
     toc: true
 vignette: |
-  %\VignetteIndexEntry{Full infer pipeline examples}
+  %\VignetteIndexEntry{Full infer Pipeline Examples}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
