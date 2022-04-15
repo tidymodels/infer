@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="A near-exhaustive demonstration of the functionality in infer.">
 <title>Full infer Pipeline Examples • infer</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -12,113 +13,84 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="../tidyverse.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Source%20Sans%20Pro-0.4.1/font.css" rel="stylesheet">
+<link href="../deps/_Source%20Code%20Pro-0.4.1/font.css" rel="stylesheet">
+<!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><link href="../tidyverse-2.css" rel="stylesheet">
-<!--optional theme--><link href="../tidymodels.css" rel="stylesheet">
-<meta property="og:title" content="Full infer Pipeline Examples">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Full infer Pipeline Examples">
 <meta property="og:description" content="A near-exhaustive demonstration of the functionality in infer.">
-<meta name="twitter:card" content="summary">
 <meta name="robots" content="noindex">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]--><!-- Global site tag (gtag.js) - Google Analytics --><script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script><script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'UA-115082821-1');
-</script>
+<![endif]--><script defer data-domain="infer.tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script>
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#container" class="visually-hidden-focusable">Skip to content</a>
     
 
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-none"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">infer</a>
 
-      <div class="navbar-brand-container">
-        <a class="navbar-brand" href="../index.html">infer</a>
-        <div class="info hidden-xs hidden-sm">
-          <span class="partof">part of <a href="https://github.com/tidymodels" class="external-link">tidymodels</a></span>
-          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">1.0.1.9000</span>
-        </div>
-      </div>
-    </div>
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav navbar-right">
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/infer.html">Getting to Know infer</a>
-    </li>
-    <li>
-      <a href="../articles/t_test.html">t-Tests</a>
-    </li>
-    <li>
-      <a href="../articles/anova.html">ANOVA</a>
-    </li>
-    <li>
-      <a href="../articles/chi_squared.html">Chi-Squared</a>
-    </li>
-    <li>
-      <a href="../articles/observed_stat_examples.html">Full infer Pipeline Examples</a>
-    </li>
-  </ul>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.1.9000</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="nav-item">
+  <a class="nav-link" href="../articles/infer.html">Get started</a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../news/index.html">News</a>
+<li class="active nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/t_test.html">Tidy t-Tests with infer</a>
+    <a class="dropdown-item" href="../articles/anova.html">Tidy ANOVA (Analysis of Variance) with infer</a>
+    <a class="dropdown-item" href="../articles/chi_squared.html">Tidy Chi-Squared Tests with infer</a>
+    <a class="dropdown-item" href="../articles/observed_stat_examples.html">Full infer Pipeline Examples</a>
+  </div>
 </li>
-<li>
-  <a href="../CONTRIBUTING.html">How To Contribute</a>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
-<li>
-  <a href="../CONDUCT.html">Code of Conduct</a>
-</li>
-        <li>
-  <a href="https://github.com/tidymodels/infer" class="external-link">
-    <span class="fa fa-github fa-lg"></span>
+      </ul>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/tidymodels/infer/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
 </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
+</nav><div class="container template-article" id="container">
 
-      
 
-      </header><script src="observed_stat_examples_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Full infer Pipeline Examples</h1>
+
+
+<div class="row">
+  <main id="main"><div class="page-header">
+      <img src="" class="logo" alt=""><h1>Full infer Pipeline Examples</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/tidymodels/infer/blob/HEAD/vignettes/observed_stat_examples.Rmd" class="external-link"><code>vignettes/observed_stat_examples.Rmd</code></a></small>
-      <div class="hidden name"><code>observed_stat_examples.Rmd</code></div>
-
+      <div class="d-none name"><code>observed_stat_examples.Rmd</code></div>
     </div>
 
     
@@ -133,20 +105,20 @@
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span>
 
 <span class="co"># take a look at its structure</span>
-<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
+<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">gss</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## Rows: 500</span>
 <span class="co">## Columns: 11</span>
-<span class="co">## $ year    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2014, 1994, 1998, 1996, 1994, 1996, 1990, 2016, 2000, 1998, 20…</span>
-<span class="co">## $ age     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 36, 34, 24, 42, 31, 32, 48, 36, 30, 33, 21, 30, 38, 49, 25, 56…</span>
-<span class="co">## $ sex     <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> male, female, male, male, male, female, female, female, female…</span>
-<span class="co">## $ college <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> degree, no degree, degree, no degree, degree, no degree, no de…</span>
-<span class="co">## $ partyid <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> ind, rep, ind, ind, rep, rep, dem, ind, rep, dem, dem, ind, de…</span>
-<span class="co">## $ hompop  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 3, 4, 1, 4, 2, 4, 2, 1, 5, 2, 4, 3, 4, 4, 2, 2, 3, 2, 1, 2, 5,…</span>
-<span class="co">## $ hours   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 50, 31, 40, 40, 40, 53, 32, 20, 40, 40, 23, 52, 38, 72, 48, 40…</span>
-<span class="co">## $ income  <span style="color: #949494; font-style: italic;">&lt;ord&gt;</span> $25000 or more, $20000 - 24999, $25000 or more, $25000 or more…</span>
-<span class="co">## $ class   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> middle class, working class, working class, working class, mid…</span>
-<span class="co">## $ finrela <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> below average, below average, below average, above average, ab…</span>
-<span class="co">## $ weight  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.8960, 1.0825, 0.5501, 1.0864, 1.0825, 1.0864, 1.0627, 0.4785…</span></code></pre>
+<span class="co">## $ year    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 2014, 1994, 1998, 1996, 1994, 1996, 1990, 2016, 2000, 19…</span>
+<span class="co">## $ age     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 36, 34, 24, 42, 31, 32, 48, 36, 30, 33, 21, 30, 38, 49, …</span>
+<span class="co">## $ sex     <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> male, female, male, male, male, female, female, female, …</span>
+<span class="co">## $ college <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> degree, no degree, degree, no degree, degree, no degree,…</span>
+<span class="co">## $ partyid <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> ind, rep, ind, ind, rep, rep, dem, ind, rep, dem, dem, i…</span>
+<span class="co">## $ hompop  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 3, 4, 1, 4, 2, 4, 2, 1, 5, 2, 4, 3, 4, 4, 2, 2, 3, 2, 1,…</span>
+<span class="co">## $ hours   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 50, 31, 40, 40, 40, 53, 32, 20, 40, 40, 23, 52, 38, 72, …</span>
+<span class="co">## $ income  <span style="color: #949494; font-style: italic;">&lt;ord&gt;</span> $25000 or more, $20000 - 24999, $25000 or more, $25000 o…</span>
+<span class="co">## $ class   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> middle class, working class, working class, working clas…</span>
+<span class="co">## $ finrela <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> below average, below average, below average, above avera…</span>
+<span class="co">## $ weight  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> 0.8960, 1.0825, 0.5501, 1.0864, 1.0825, 1.0864, 1.0627, …</span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="hypothesis-tests">Hypothesis tests<a class="anchor" aria-label="anchor" href="#hypothesis-tests"></a>
@@ -182,7 +154,7 @@
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="co">##   p_value</span>
 <span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>   0.026</span></code></pre>
+<span class="co">## <span style="color: #BCBCBC;">1</span>   0.048</span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="one-numerical-variable-standardized-mean-t">One numerical variable (standardized mean <span class="math inline">\(t\)</span>)<a class="anchor" aria-label="anchor" href="#one-numerical-variable-standardized-mean-t"></a>
@@ -232,7 +204,7 @@
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="co">##   p_value</span>
 <span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>   0.044</span></code></pre>
+<span class="co">## <span style="color: #BCBCBC;">1</span>    0.02</span></code></pre>
 <p>Alternatively, using the <code>t_test</code> wrapper:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -307,7 +279,7 @@
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="co">##   p_value</span>
 <span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>   0.248</span></code></pre>
+<span class="co">## <span style="color: #BCBCBC;">1</span>   0.244</span></code></pre>
 <p>Note that logical variables will be coerced to factors:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">null_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -349,7 +321,7 @@
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="co">##   p_value</span>
 <span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>   0.244</span></code></pre>
+<span class="co">## <span style="color: #BCBCBC;">1</span>   0.268</span></code></pre>
 <p>The package also supplies a wrapper around <code>prop.test</code> for tests of a single proportion on tidy data.</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/prop_test.html">prop_test</a></span><span class="op">(</span><span class="va">gss</span>,
@@ -394,7 +366,7 @@
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="co">##   p_value</span>
 <span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>       1</span></code></pre>
+<span class="co">## <span style="color: #BCBCBC;">1</span>   0.974</span></code></pre>
 <p><code>infer</code> also provides functionality to calculate ratios of proportions. The workflow looks similar to that for <code>diff in props</code>.</p>
 <p>Calculating the observed statistic,</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
@@ -451,7 +423,7 @@
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="co">##   p_value</span>
 <span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>       1</span></code></pre>
+<span class="co">## <span style="color: #BCBCBC;">1</span>   0.962</span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="two-categorical-2-level-variables-z">Two categorical (2 level) variables (z)<a class="anchor" aria-label="anchor" href="#two-categorical-2-level-variables-z"></a>
@@ -647,7 +619,7 @@
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="co">##   p_value</span>
 <span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>   0.108</span></code></pre>
+<span class="co">## <span style="color: #BCBCBC;">1</span>   0.097</span></code></pre>
 <p>Alternatively, using the wrapper to carry out the test,</p>
 <div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -689,7 +661,7 @@
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="co">##   p_value</span>
 <span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>   0.438</span></code></pre>
+<span class="co">## <span style="color: #BCBCBC;">1</span>   0.464</span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="one-numerical-variable-one-categorical-2-levels-t">One numerical variable, one categorical (2 levels) (t)<a class="anchor" aria-label="anchor" href="#one-numerical-variable-one-categorical-2-levels-t"></a>
@@ -740,7 +712,7 @@
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="co">##   p_value</span>
 <span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>   0.428</span></code></pre>
+<span class="co">## <span style="color: #BCBCBC;">1</span>    0.45</span></code></pre>
 <p>Note the similarities in this plot and the previous one.</p>
 </div>
 <div class="section level3">
@@ -825,7 +797,7 @@
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="co">##   p_value</span>
 <span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>   0.052</span></code></pre>
+<span class="co">## <span style="color: #BCBCBC;">1</span>   0.059</span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="two-numerical-vars---slr">Two numerical vars - SLR<a class="anchor" aria-label="anchor" href="#two-numerical-vars---slr"></a>
@@ -858,7 +830,7 @@
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="co">##   p_value</span>
 <span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>    0.88</span></code></pre>
+<span class="co">## <span style="color: #BCBCBC;">1</span>   0.872</span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="two-numerical-vars---correlation">Two numerical vars - correlation<a class="anchor" aria-label="anchor" href="#two-numerical-vars---correlation"></a>
@@ -891,7 +863,7 @@
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="co">##   p_value</span>
 <span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span>   0.876</span></code></pre>
+<span class="co">## <span style="color: #BCBCBC;">1</span>   0.818</span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="two-numerical-vars---slr-t">Two numerical vars - SLR (t)<a class="anchor" aria-label="anchor" href="#two-numerical-vars---slr-t"></a>
@@ -932,9 +904,9 @@
 <pre><code><span class="co">## <span style="color: #949494;"># A tibble: 3 × 2</span></span>
 <span class="co">##   term          p_value</span>
 <span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="co">## <span style="color: #BCBCBC;">1</span> age             0.852</span>
-<span class="co">## <span style="color: #BCBCBC;">2</span> collegedegree   0.278</span>
-<span class="co">## <span style="color: #BCBCBC;">3</span> intercept       0.634</span></code></pre>
+<span class="co">## <span style="color: #BCBCBC;">1</span> age             0.856</span>
+<span class="co">## <span style="color: #BCBCBC;">2</span> collegedegree   0.258</span>
+<span class="co">## <span style="color: #BCBCBC;">3</span> intercept       0.648</span></code></pre>
 <p>Note that this <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code>-based workflow can be applied to use cases with differing numbers of explanatory variables and explanatory variable types.</p>
 </div>
 </div>
@@ -1389,36 +1361,24 @@
 <p>Note that this <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code>-based workflow can be applied to use cases with differing numbers of explanatory variables and explanatory variable types.</p>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="tidyverse">
-  <p>infer is a part of the <strong>tidymodels</strong> ecosystem, a collection of modeling packages designed with common APIs and a shared philosophy.</p>
+   </div>
+  <footer><div class="container">
+  <div class="pkgdown-footer-left">
+  <p></p>
+<p>Developed by Andrew Bray, Chester Ismay, Evgeni Chasnovski, Simon Couch, Ben Baumer, Mine Cetinkaya-Rundel.</p>
 </div>
 
-<div class="author">
-  <p>
-    Developed by .
-    Site built by <a href="https://pkgdown.r-lib.org" class="external-link">pkgdown</a>.
-  </p>
+<div class="pkgdown-footer-right">
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
-      </footer>
-</div>
-
-  
-
-
-  
-
-  </body>
+  </div></footer>
+</body>
 </html>

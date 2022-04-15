@@ -1,5 +1,5 @@
-pandoc: 2.7.3
-pkgdown: 2.0.1
+pandoc: 2.14.2
+pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   anova: anova.html
@@ -7,7 +7,7 @@ articles:
   infer: infer.html
   observed_stat_examples: observed_stat_examples.html
   t_test: t_test.html
-last_built: 2021-12-31T19:45Z
+last_built: 2022-04-15T17:28Z
 urls:
   reference: https://infer.tidymodels.org/reference
   article: https://infer.tidymodels.org/articles
