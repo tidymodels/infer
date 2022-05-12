@@ -347,8 +347,8 @@ test_that("two sample prop_test works", {
   infer2_l <- prop_test(df_l, resp ~ exp, order = c("b", "a"), success = "TRUE")
   infer3_l <- prop_test(df_l, resp ~ exp, order = c("b", "a"), success = "FALSE")
 
-  expect_true(infer1_l$p_value == infer2_l$p_value)
-  expect_true(infer1_l$p_value != infer3_l$p_value)
+  expect_equal(infer1_l$lower_ci, infer2_l$lower_ci)
+  expect_equal(infer1_l$lower_ci, -infer3_l$upper_ci)
 })
 
 # ...and some data for the one sample wrapper
