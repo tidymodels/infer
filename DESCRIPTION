@@ -90,8 +90,7 @@ Imports:
     broom,
     tidyr,
     generics,
-    patchwork,
-    tidyselect
+    patchwork
 Suggests:
     covr,
     devtools (>= 1.12.0),
@@ -101,7 +100,8 @@ Suggests:
     rmarkdown,
     stringr,
     testthat,
-    vdiffr (>= 1.0.0)
+    vdiffr (>= 1.0.0),
+    parsnip
 VignetteBuilder:
     knitr
 Config/Needs/website: tidyverse/tidytemplate
