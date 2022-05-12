@@ -97,7 +97,7 @@ calculate <- function(x,
   check_type(x, tibble::is_tibble)
   check_if_mlr(x, "calculate")
   stat <- check_calculate_stat(stat)
-  check_variables_vs_stat(x, stat)
+  check_input_vs_stat(x, stat)
   check_point_params(x, stat)
   
   order <- check_order(x, order, in_calculate = TRUE, stat)
@@ -156,10 +156,10 @@ check_calculate_stat <- function(stat) {
 }
 
 # Raise an error if the user supplies a test statistic that doesn't
-# make sense given the variable specified
-check_variables_vs_stat <- function(x, stat) {
-  response_type <- determine_variable_type(x, "response")
-  explanatory_type <- determine_variable_type(x, "explanatory")
+# make sense given the variable and hypothesis specified
+check_input_vs_stat <- function(x, stat) {
+  response_type <- attr(x, "type_desc_response")
+  explanatory_type <- attr(x, "type_desc_explanatory")
 
   possible_stats <- stat_types %>%
     dplyr::filter(resp == response_type & exp == explanatory_type) %>%
@@ -189,6 +189,21 @@ check_variables_vs_stat <- function(x, stat) {
       "({response_name(x)}) and ", msg_tail
     )
   }
+  
+  if (is_hypothesized(x)) {
+    stat_nulls <- stat_hypotheses %>%
+      dplyr::filter(stat == !!stat & 
+                    hypothesis == attr(x, "null"))
+    
+    if (nrow(stat_nulls) == 0) {
+      stop_glue(
+        'The supplied statistic `stat = "{stat}"` is incompatible with the ',
+        'supplied hypothesis `null = "{attr(x, "null")}"`.'
+      )
+    }
+  }
+  
+  x
 }
 
 # When given no hypothesis for a theorized statistic, supply a reasonable value
@@ -422,7 +437,8 @@ calc_impl.Chisq <- function(type, x, order, ...) {
     to = result, from = x,
     attrs = c(
       "response", "success", "explanatory", "response_type",
-      "explanatory_type", "distr_param", "distr_param2", "theory_type"
+      "explanatory_type", "distr_param", "distr_param2", "theory_type",
+      "type_desc_response", "type_desc_explanatory"
     )
   )
 }

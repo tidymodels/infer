@@ -39,7 +39,8 @@ copy_attrs <- function(to, from,
                          "response", "success", "explanatory", "response_type",
                          "explanatory_type", "distr_param", "distr_param2",
                          "null", "params", "theory_type", "generated", "type",
-                         "hypothesized", "formula", "fitted"
+                         "hypothesized", "formula", "fitted",
+                         "type_desc_response", "type_desc_explanatory"
                        )) {
   for (at in attrs) {
     attr(to, at) <- attr(from, at)
@@ -273,6 +274,30 @@ stat_desc <- tibble::tribble(
   "z",                 "A z statistic", 
   "ratio of props",    "A ratio of proportions",  
   "odds ratio",        "An odds ratio" 
+)
+
+stat_hypotheses <- tibble::tribble(
+  ~stat,               ~hypothesis,
+  "mean",              "point",
+  "median",            "point", 
+  "sum",               "point",
+  "sd",                "point",
+  "prop",              "point", 
+  "count",             "point", 
+  "diff in means",     "independence", 
+  "diff in medians",   "independence", 
+  "diff in props",     "independence", 
+  "Chisq",             "independence",
+  "Chisq",             "point",
+  "F",                 "independence", 
+  "slope",             "independence", 
+  "correlation",       "independence", 
+  "t",                 "independence",
+  "t",                 "point",
+  "z",                 "independence",
+  "z",                 "point",
+  "ratio of props",    "independence",  
+  "odds ratio",        "independence" 
 )
 
 get_stat_desc <- function(stat) {
