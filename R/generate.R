@@ -41,7 +41,7 @@
 #'   generation type was previously called `"simulate"`, which has been
 #'   superseded.
 #' }
-#' 
+#'
 #' @includeRmd man-roxygen/seeds.Rmd
 #'
 #' @examples
@@ -57,7 +57,7 @@
 #'  specify(partyid ~ age) %>%
 #'  hypothesize(null = "independence") %>%
 #'  generate(reps = 200, type = "permute")
-#' 
+#'
 #' # generate a null distribution via sampling from a
 #' # binomial distribution 200 times
 #' gss %>%
@@ -80,7 +80,7 @@ generate <- function(x, reps = 1, type = NULL,
   type <- sanitize_generation_type(type)
   auto_type <- sanitize_generation_type(attr(x, "type"))
   type <- if (!is.null(type)) {
-    compare_type_vs_auto_type(type, auto_type)
+    compare_type_vs_auto_type(type, auto_type, x)
   } else {
     use_auto_type(auto_type)
   }
@@ -126,20 +126,37 @@ sanitize_generation_type <- function(x) {
 }
 
 # Ensure that the supplied type matches what would be assumed from input
-compare_type_vs_auto_type <- function(type, auto_type) {
+compare_type_vs_auto_type <- function(type, auto_type, x) {
   if(is.null(auto_type)) {
     return(type)
   }
-  if (auto_type != type &&
-      (any(!c(auto_type, type) %in% c("draw", "simulate")))) {
-    warning_glue(
-      "You have given `type = \"{type}\"`, but `type` is expected",
-      "to be `\"{auto_type}\"`. This workflow is untested and",
-      "the results may not mean what you think they mean.",
-      .sep = " "
-    )
+
+  if ((type == "bootstrap" && has_p_param(x)) ||
+      (type != "bootstrap" && auto_type != type &&
+        # make sure auto_type vs type difference isn't just an alias
+        (any(!c(auto_type, type) %in% c("draw", "simulate"))))
+     ) {
+     warning_glue(
+        "You have given `type = \"{type}\"`, but `type` is expected",
+        "to be `\"{auto_type}\"`. This workflow is untested and",
+        "the results may not mean what you think they mean.",
+        .sep = " "
+     )
   }
+
   type
+}
+
+has_p_param <- function(x) {
+   if (!has_attr(x, "params")) {
+      return(FALSE)
+   }
+
+   if (all(grepl("^p\\.", names(attr(x, "params"))))) {
+      return(TRUE)
+   }
+
+   FALSE
 }
 
 use_auto_type <- function(auto_type) {
@@ -170,14 +187,14 @@ check_cols <- function(x, variables, type, missing) {
       'The `variables` argument is only relevant for the "permute" ',
       'generation type and will be ignored.'
     )
-    
+
     should_prompt <- FALSE
   } else {
     should_prompt <- TRUE
   }
-  
+
   col_names <- process_variables(variables, should_prompt)
-  
+
 
   if (any(!col_names %in% colnames(x))) {
     bad_cols <- col_names[!col_names %in% colnames(x)]
@@ -254,20 +271,20 @@ permute_once <- function(x, variables, ...) {
 process_variables <- function(variables, should_prompt) {
   # extract the expression and convert each element to string
   out <- rlang::get_expr(variables)
-  
+
   if (length(out) == 1) {
     out <- as.character(out)
   } else {
     out <- purrr::map(out, as.character)
   }
-    
-  
+
+
   # drop c()
   out[out == "c"] <- NULL
-  
+
   # drop interactions and message
   interactions <- purrr::map_lgl(out, `%in%`, x = "*")
-  
+
   if (any(interactions) && should_prompt) {
     message_glue(
       "Message: Please supply only data columns to the `variables` argument. ",
@@ -275,9 +292,9 @@ process_variables <- function(variables, should_prompt) {
       "be affected."
     )
   }
-  
+
   out <- out[!interactions]
-  
+
   out
 }
 
