@@ -79,8 +79,7 @@
 <div class="section level3">
 <h3 id="behavioral-consistency-1-0-0">Behavioral consistency<a class="anchor" aria-label="anchor" href="#behavioral-consistency-1-0-0"></a></h3>
 <p>A major change to the package in this release is a set of standards for behavorial consistency of <code><a href="../reference/calculate.html">calculate()</a></code> (<a href="https://github.com/tidymodels/infer/issues/356" class="external-link">#356</a>). Namely, the package will now</p>
-<ul><li>supply a consistent error when the supplied <code>stat</code> argument isn’t well-defined for the variables <code><a href="../reference/specify.html">specify()</a></code>d</li>
-</ul><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<ul><li>supply a consistent error when the supplied <code>stat</code> argument isn’t well-defined for the variables <code><a href="../reference/specify.html">specify()</a></code>d</li></ul><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
   <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -95,8 +94,7 @@
   <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"diff in props"</span><span class="op">)</span>
 <span class="co">#&gt; Error: A difference in proportions is not well-defined for a dichotomous categorical </span>
 <span class="co">#&gt; response variable (college) and a multinomial categorical explanatory variable (partyid).</span></code></pre></div>
-<ul><li>supply a consistent message when the user supplies unneeded information via <code><a href="../reference/hypothesize.html">hypothesize()</a></code> to <code><a href="../reference/calculate.html">calculate()</a></code> an observed statistic</li>
-</ul><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<ul><li>supply a consistent message when the user supplies unneeded information via <code><a href="../reference/hypothesize.html">hypothesize()</a></code> to <code><a href="../reference/calculate.html">calculate()</a></code> an observed statistic</li></ul><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># supply mu = 40 when it's not needed</span>
 <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -110,8 +108,7 @@
 <span class="co">#&gt;   &lt;dbl&gt;</span>
 <span class="co">#&gt; 1  41.4</span></code></pre></div>
 <p>and</p>
-<ul><li>supply a consistent warning and assume a reasonable null value when the user does not supply sufficient information to calculate an observed statistic</li>
-</ul><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<ul><li>supply a consistent warning and assume a reasonable null value when the user does not supply sufficient information to calculate an observed statistic</li></ul><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co"># don't hypothesize `p` when it's needed</span>
 <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span>
@@ -338,8 +335,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="other-1-0-0">Other<a class="anchor" aria-label="anchor" href="#other-1-0-0"></a></h3>
-<ul><li>Added Simon P. Couch as an author. Long deserved for his reliable maintenance and improvements of the package.</li>
-</ul><p>[1]: GAISE College Report ASA Revision Committee, “Guidelines for Assessment and Instruction in Statistics Education College Report 2016,” <a href="http://www.amstat.org/education/gaise" class="external-link uri">http://www.amstat.org/education/gaise</a>.</p>
+<ul><li>Added Simon P. Couch as an author. Long deserved for his reliable maintenance and improvements of the package.</li></ul><p>[1]: GAISE College Report ASA Revision Committee, “Guidelines for Assessment and Instruction in Statistics Education College Report 2016,” <a href="http://www.amstat.org/education/gaise" class="external-link uri">http://www.amstat.org/education/gaise</a>.</p>
 </div>
 </div>
     <div class="section level2">
@@ -356,17 +352,14 @@
 <div class="section level3">
 <h3 id="breaking-changes-0-5-3">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-5-3"></a></h3>
 <ul><li>
-<code><a href="../reference/get_confidence_interval.html">get_confidence_interval()</a></code> now uses column names (‘lower_ci’ and ‘upper_ci’) in output that are consistent with other infer functionality (<a href="https://github.com/tidymodels/infer/issues/317" class="external-link">#317</a>).</li>
-</ul></div>
+<code><a href="../reference/get_confidence_interval.html">get_confidence_interval()</a></code> now uses column names (‘lower_ci’ and ‘upper_ci’) in output that are consistent with other infer functionality (<a href="https://github.com/tidymodels/infer/issues/317" class="external-link">#317</a>).</li></ul></div>
 <div class="section level3">
 <h3 id="new-functionality-0-5-3">New functionality<a class="anchor" aria-label="anchor" href="#new-functionality-0-5-3"></a></h3>
 <ul><li>
-<code><a href="../reference/get_confidence_interval.html">get_confidence_interval()</a></code> can now produce bias-corrected confidence intervals by setting <code>type = "bias-corrected"</code>. Thanks to <a href="https://github.com/davidbaniadam" class="external-link">@davidbaniadam</a> for the initial implementation (<a href="https://github.com/tidymodels/infer/issues/237" class="external-link">#237</a>, <a href="https://github.com/tidymodels/infer/issues/318" class="external-link">#318</a>)!</li>
-</ul></div>
+<code><a href="../reference/get_confidence_interval.html">get_confidence_interval()</a></code> can now produce bias-corrected confidence intervals by setting <code>type = "bias-corrected"</code>. Thanks to <a href="https://github.com/davidbaniadam" class="external-link">@davidbaniadam</a> for the initial implementation (<a href="https://github.com/tidymodels/infer/issues/237" class="external-link">#237</a>, <a href="https://github.com/tidymodels/infer/issues/318" class="external-link">#318</a>)!</li></ul></div>
 <div class="section level3">
 <h3 id="other-0-5-3">Other<a class="anchor" aria-label="anchor" href="#other-0-5-3"></a></h3>
-<ul><li>Fix CRAN check failures related to long double errors.</li>
-</ul></div>
+<ul><li>Fix CRAN check failures related to long double errors.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.2" id="infer-052">infer 0.5.2<a class="anchor" aria-label="anchor" href="#infer-052"></a></h2><p class="text-muted">CRAN release: 2020-06-14</p>
@@ -389,8 +382,7 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.1" id="infer-051">infer 0.5.1<a class="anchor" aria-label="anchor" href="#infer-051"></a></h2><p class="text-muted">CRAN release: 2019-11-19</p>
-<ul><li>Updates to documentation and other tweaks</li>
-</ul></div>
+<ul><li>Updates to documentation and other tweaks</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.5.0" id="infer-050">infer 0.5.0<a class="anchor" aria-label="anchor" href="#infer-050"></a></h2><p class="text-muted">CRAN release: 2019-09-27</p>
 <div class="section level3">
@@ -411,14 +403,12 @@
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.1" id="infer-041">infer 0.4.1<a class="anchor" aria-label="anchor" href="#infer-041"></a></h2>
-<ul><li>Added Evgeni Chasnovski as author for his incredible work on refactoring the package and providing excellent support.</li>
-</ul></div>
+<ul><li>Added Evgeni Chasnovski as author for his incredible work on refactoring the package and providing excellent support.</li></ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.0" id="infer-040">infer 0.4.0<a class="anchor" aria-label="anchor" href="#infer-040"></a></h2><p class="text-muted">CRAN release: 2018-11-15</p>
 <div class="section level3">
 <h3 id="breaking-changes-0-4-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-4-0"></a></h3>
-<ul><li>Changed method of computing two-sided p-value to a more conventional one. It also makes <code><a href="../reference/get_p_value.html">get_pvalue()</a></code> and <code><a href="../reference/visualize.html">visualize()</a></code> more aligned (<a href="https://github.com/tidymodels/infer/issues/205" class="external-link">#205</a>).</li>
-</ul></div>
+<ul><li>Changed method of computing two-sided p-value to a more conventional one. It also makes <code><a href="../reference/get_p_value.html">get_pvalue()</a></code> and <code><a href="../reference/visualize.html">visualize()</a></code> more aligned (<a href="https://github.com/tidymodels/infer/issues/205" class="external-link">#205</a>).</li></ul></div>
 <div class="section level3">
 <h3 id="deprecation-changes-0-4-0">Deprecation changes<a class="anchor" aria-label="anchor" href="#deprecation-changes-0-4-0"></a></h3>
 <ul><li>Deprecated <code><a href="../reference/deprecated.html">p_value()</a></code> (use <code><a href="../reference/get_p_value.html">get_p_value()</a></code> instead) (<a href="https://github.com/tidymodels/infer/issues/180" class="external-link">#180</a>).</li>
@@ -458,20 +448,17 @@
 <ul><li>Added <code>conf_int</code> logical argument and <code>conf_level</code> argument to <code><a href="../reference/t_test.html">t_test()</a></code>
 </li>
 <li>Switched <code>shade_color</code> argument in <code><a href="../reference/visualize.html">visualize()</a></code> to be <code>pvalue_fill</code> instead since fill color for confidence intervals is also added now</li>
-<li>Shading for Confidence Intervals in <code><a href="../reference/visualize.html">visualize()</a></code>
-<ul><li>Green is default color for CI and red for p-values</li>
+<li>Shading for Confidence Intervals in <code><a href="../reference/visualize.html">visualize()</a></code><ul><li>Green is default color for CI and red for p-values</li>
 <li>
 <code>direction = "between"</code> to get the green shading</li>
 <li>Currently working only for simulation-based methods</li>
 </ul></li>
-<li>Implemented <code><a href="../reference/deprecated.html">conf_int()</a></code> function for computing confidence interval provided a simulation-based method with a <code>stat</code> variable
-<ul><li>
+<li>Implemented <code><a href="../reference/deprecated.html">conf_int()</a></code> function for computing confidence interval provided a simulation-based method with a <code>stat</code> variable<ul><li>
 <code><a href="../reference/get_confidence_interval.html">get_ci()</a></code> and <code><a href="../reference/get_confidence_interval.html">get_confidence_interval()</a></code> are aliases for <code><a href="../reference/deprecated.html">conf_int()</a></code>
 </li>
 <li>Converted longer confidence interval calculation code in vignettes to use <code><a href="../reference/get_confidence_interval.html">get_ci()</a></code> instead<br></li>
 </ul></li>
-<li>Implemented <code><a href="../reference/deprecated.html">p_value()</a></code> function for computing p-value provided a simulation-based method with a <code>stat</code> variable
-<ul><li>
+<li>Implemented <code><a href="../reference/deprecated.html">p_value()</a></code> function for computing p-value provided a simulation-based method with a <code>stat</code> variable<ul><li>
 <code><a href="../reference/get_p_value.html">get_pvalue()</a></code> is an alias for <code><a href="../reference/deprecated.html">p_value()</a></code>
 </li>
 <li>Converted longer p-value calculation code in vignettes to use <code><a href="../reference/get_p_value.html">get_pvalue()</a></code> instead</li>
@@ -479,18 +466,14 @@
 <li>Implemented Chi-square Goodness of Fit observed stat depending on <code>params</code> being set in <code>hypothesize</code> with <code>specify() %&gt;% calculate()</code> shortcut</li>
 <li>Removed “standardized” slope <span class="math inline"><em>t</em></span> since its formula is different than “standardized” correlation and there is no way currently to give one over the other</li>
 <li>Implemented correlation with bootstrap CI and permutation hypothesis test</li>
-<li>Filled the <code>type</code> argument automatically in <code><a href="../reference/generate.html">generate()</a></code> based on <code><a href="../reference/specify.html">specify()</a></code> and <code><a href="../reference/hypothesize.html">hypothesize()</a></code>
-<ul><li>Added message if <code>type</code> is given differently than expected</li>
-</ul></li>
-<li>Implemented <code>specify() %&gt;% calculate()</code> for getting observed statistics.
-<ul><li>
+<li>Filled the <code>type</code> argument automatically in <code><a href="../reference/generate.html">generate()</a></code> based on <code><a href="../reference/specify.html">specify()</a></code> and <code><a href="../reference/hypothesize.html">hypothesize()</a></code><ul><li>Added message if <code>type</code> is given differently than expected</li></ul></li>
+<li>Implemented <code>specify() %&gt;% calculate()</code> for getting observed statistics.<ul><li>
 <code><a href="../reference/visualize.html">visualize()</a></code> works with either a 1x1 data frame or a vector for its <code>obs_stat</code> argument</li>
 <li>Got <code>stat = "t"</code> working</li>
 </ul></li>
 <li>Refactored <code><a href="../reference/calculate.html">calculate()</a></code> into smaller functions to reduce complexity</li>
 <li>Produced error if <code>mu</code> is given in <code><a href="../reference/hypothesize.html">hypothesize()</a></code> but <code>stat = "median"</code> is provided in <code><a href="../reference/calculate.html">calculate()</a></code> and other similar mis-specifications</li>
-<li>Tweaked <code><a href="../reference/chisq_stat.html">chisq_stat()</a></code> and <code><a href="../reference/t_stat.html">t_stat()</a></code> to match with <code>specify() %&gt;% calculate()</code> framework
-<ul><li>Both work in the one sample and two sample cases by providing <code>formula</code>
+<li>Tweaked <code><a href="../reference/chisq_stat.html">chisq_stat()</a></code> and <code><a href="../reference/t_stat.html">t_stat()</a></code> to match with <code>specify() %&gt;% calculate()</code> framework<ul><li>Both work in the one sample and two sample cases by providing <code>formula</code>
 </li>
 <li>Added <code>order</code> argument to <code><a href="../reference/t_stat.html">t_stat()</a></code>
 </li>
@@ -512,14 +495,11 @@
 <li>Added check so that a bar graph created with <code><a href="../reference/visualize.html">visualize()</a></code> if number of unique values for generated statistics is small</li>
 <li>Added shading for <code>method = "theoretical"</code>
 </li>
-<li>Implemented shading for simulation methods w/o a traditional distribution
-<ul><li>Use percentiles to determine two-tailed shading</li>
-</ul></li>
+<li>Implemented shading for simulation methods w/o a traditional distribution<ul><li>Use percentiles to determine two-tailed shading</li></ul></li>
 <li>Changed <code>method = "randomization"</code> to <code>method = "simulation"</code>
 </li>
 <li>Added warning when theoretical distribution is used that assumptions should be checked<br></li>
-<li>Added theoretical distributions to <code><a href="../reference/visualize.html">visualize()</a></code> alone and as overlay with current implementations being
-<ul><li>Two sample t</li>
+<li>Added theoretical distributions to <code><a href="../reference/visualize.html">visualize()</a></code> alone and as overlay with current implementations being<ul><li>Two sample t</li>
 <li>ANOVA F</li>
 <li>One proportion z</li>
 <li>Two proportion z</li>
@@ -540,15 +520,12 @@
 <h2 class="pkg-version" data-toc-text="0.1.0" id="infer-010">infer 0.1.0<a class="anchor" aria-label="anchor" href="#infer-010"></a></h2><p class="text-muted">CRAN release: 2018-01-08</p>
 <ul><li>Altered the way that successes are indicated in an infer pipeline. They now live in <code><a href="../reference/specify.html">specify()</a></code>.</li>
 <li>Updated documentation with examples</li>
-<li>Created <code>pkgdown</code> site materials
-<ul><li>Deployed to <a href="https://infer.tidymodels.org/" class="uri">https://infer.tidymodels.org/</a>
-</li>
-</ul></li>
+<li>Created <code>pkgdown</code> site materials<ul><li>Deployed to <a href="https://infer.tidymodels.org/" class="uri">https://infer.tidymodels.org/</a>
+</li></ul></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.1" id="infer-001">infer 0.0.1<a class="anchor" aria-label="anchor" href="#infer-001"></a></h2>
-<ul><li>Implemented the “intro stats” examples for randomization methods</li>
-</ul></div>
+<ul><li>Implemented the “intro stats” examples for randomization methods</li></ul></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
@@ -560,7 +537,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
   </div></footer></body></html>

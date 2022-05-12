@@ -100,7 +100,7 @@ of the response variable. If the response is numeric, <code><a href="https://gen
 <code>family = "gaussian"</code> (linear regression). If the response is a 2-level
 factor or character, <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code> will use <code>family = "binomial"</code> (logistic
 regression). To fit character or factor response variables with more than
-two levels, we recommend <code>parsnip::multinom_reg()</code>.</p>
+two levels, we recommend <code><a href="https://parsnip.tidymodels.org/reference/multinom_reg.html" class="external-link">parsnip::multinom_reg()</a></code>.</p>
 <p>infer provides a fit "method" for infer objects, which is a way of carrying
 out model fitting as applied to infer output. The "generic," imported from
 the generics package and re-exported from this package, provides the
@@ -156,7 +156,7 @@ on the resulting slope coefficient for that explanatory variable.</p>
 requiring fewer---or less strict---distributional assumptions
 exist. For an overview, see "Permutation tests for univariate or
 multivariate analysis of variance and regression" (Marti J. Anderson,
-2001), doi: <a href="https://doi.org/10.1139/cjfas-58-3-626" class="external-link">10.1139/cjfas-58-3-626</a>
+2001), <a href="https://doi.org/10.1139/cjfas-58-3-626" class="external-link">doi:10.1139/cjfas-58-3-626</a>
 .</p>
     </div>
     <div class="section level2">
@@ -240,16 +240,16 @@ resampling with <code><a href="generate.html">generate()</a></code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   replicate [100]</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    replicate term          estimate</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>         1 intercept     40.3    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>         1 age            0.023<span style="text-decoration: underline;">3</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>         1 collegedegree  0.432  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>         2 intercept     41.4    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>         2 age            0.009<span style="text-decoration: underline;">64</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>         2 collegedegree -<span style="color: #BB0000;">1.08</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>         3 intercept     44.6    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>         3 age           -<span style="color: #BB0000;">0.083</span><span style="color: #BB0000; text-decoration: underline;">7</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>         3 collegedegree  0.533  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>         4 intercept     42.3    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>         1 intercept     42.2    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>         1 age           -<span style="color: #BB0000;">0.013</span><span style="color: #BB0000; text-decoration: underline;">8</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>         1 collegedegree -<span style="color: #BB0000;">0.758</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>         2 intercept     43.4    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>         2 age           -<span style="color: #BB0000;">0.046</span><span style="color: #BB0000; text-decoration: underline;">2</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>         2 collegedegree -<span style="color: #BB0000;">0.340</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>         3 intercept     41.9    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>         3 age           -<span style="color: #BB0000;">0.007</span><span style="color: #BB0000; text-decoration: underline;">08</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>         3 collegedegree -<span style="color: #BB0000;">0.526</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>         4 intercept     38.5    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># … with 290 more rows</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># for logistic regression, just supply a binary response variable!</span></span>
@@ -282,7 +282,7 @@ resampling with <code><a href="generate.html">generate()</a></code>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
   </div></footer></body></html>
