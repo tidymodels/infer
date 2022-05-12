@@ -69,6 +69,22 @@ reorder_explanatory <- function(x, order) {
   x
 }
 
+standardize_variable_types <- function(x) {
+  tibble::as_tibble(x) %>%
+    dplyr::mutate(
+      dplyr::across(
+        where(~ is.character(.x) || is.logical(.x) || is.ordered(.x)),
+        ~ factor(.x, ordered = FALSE)
+      )
+    ) %>%
+    dplyr::mutate(
+      dplyr::across(
+        where(is.integer), 
+        as.numeric
+      )
+    )
+}
+
 # Getters, setters, and indicators ------------------------------------------
 explanatory_expr <- function(x) {
   attr(x, "explanatory")

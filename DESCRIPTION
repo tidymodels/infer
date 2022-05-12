@@ -72,7 +72,8 @@ Description: The objective of this package is to perform
     the tidy design framework.
 License: MIT + file LICENSE
 URL: https://github.com/tidymodels/infer,
-    https://infer.tidymodels.org/
+    https://infer.tidymodels.org/,
+    https://infer.tidymodels.org
 BugReports: https://github.com/tidymodels/infer/issues
 Depends:
     R (>= 3.5.0)
@@ -89,7 +90,8 @@ Imports:
     broom,
     tidyr,
     generics,
-    patchwork
+    patchwork,
+    tidyselect
 Suggests:
     covr,
     devtools (>= 1.12.0),
@@ -102,8 +104,7 @@ Suggests:
     vdiffr (>= 1.0.0)
 VignetteBuilder:
     knitr
-Config/Needs/website: 
-    tidyverse/tidytemplate    
+Config/Needs/website: tidyverse/tidytemplate
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

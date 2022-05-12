@@ -3,7 +3,7 @@ title: "Tidy Chi-Squared Tests with infer"
 description: "Conducting Chi-Squared tests on tidy data with infer."
 output: rmarkdown::html_vignette
 vignette: |
-  %\VignetteIndexEntry{Chi-Squared Tests}
+  %\VignetteIndexEntry{Tidy Chi-Squared Tests with infer}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -16,7 +16,7 @@ options(digits = 4)
 ```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(ggplot2)
 library(dplyr)
-devtools::load_all()
+library(infer)
 ```
 
 ### Introduction

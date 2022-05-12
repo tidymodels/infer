@@ -1,12 +1,14 @@
 
-# infer R Package <img src="figs/infer_gnome.png" align="right" width=280 />
+# infer R Package <img src="man/figures/infer.png" align="right" width=280 />
 
 <!--figs/infer.svg-->
 <!--http://www.r-pkg.org/badges/version/infer-->
 <!--figs/main.svg-->
 <!--https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg-->
 
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)[![Coverage
+[![R-CMD-check](https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)
+[![Coverage
 Status](https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg)](https://codecov.io/github/tidymodels/infer/?branch=main)
 
 The objective of this package is to perform statistical inference using

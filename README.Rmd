@@ -2,7 +2,7 @@
 output: github_document
 ---
 
-# infer R Package <img src="figs/infer_gnome.png" align="right" width=280 />
+# infer R Package <img src="man/figures/infer.png" align="right" width=280 />
 
 
 
@@ -12,7 +12,9 @@ output: github_document
 <!--figs/main.svg-->
 <!--https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg-->
 
-[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)[![Coverage Status](https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg)](https://codecov.io/github/tidymodels/infer/?branch=main)
+[![R-CMD-check](https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)
+[![Coverage Status](https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg)](https://codecov.io/github/tidymodels/infer/?branch=main)
 
 The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the `tidyverse` design framework. The package is centered around 4 main verbs, supplemented with many utilities to visualize and extract value from their outputs.
 
@@ -24,8 +26,7 @@ The objective of this package is to perform statistical inference using an expre
 To learn more about the principles underlying the package design, see `vignette("infer")`.
 
 ```{r load-package, echo = FALSE, message = FALSE, warning = FALSE}
-library(devtools)
-devtools::load_all()
+library(infer)
 ```
 
 ```{r diagram, echo = FALSE, fig.cap = " ", fig.alt = "A diagram showing four steps to carry out randomization-based inference: specify hypothesis, generate data, calculate statistic, and visualize. From left to right, each step is connected by an arrow, while the diagram indicates that generating data and calculating statistics can happen iteratively."}

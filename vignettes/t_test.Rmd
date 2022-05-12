@@ -3,7 +3,7 @@ title: "Tidy t-Tests with infer"
 description: "Conducting t-Tests on tidy data with infer."
 output: rmarkdown::html_vignette
 vignette: |
-  %\VignetteIndexEntry{t-Tests}
+  %\VignetteIndexEntry{Tidy t-Tests with infer}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -16,7 +16,7 @@ options(digits = 4)
 ```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
 library(ggplot2)
 library(dplyr)
-devtools::load_all()
+library(infer)
 ```
 
 ### Introduction
