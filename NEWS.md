@@ -9,6 +9,8 @@ To be released as v1.0.2.
 * Update visual checks for `visualize` output to align with the R 4.1.0+ graphics engine (#438).
 * `specify()` and wrapper functions now appropriately handle ordered factors (#439).
 * Clarify error when incompatible statistics and hypotheses are supplied (#441).
+* Updated `generate()` unexpected `type` warnings to be more permissive—the 
+warning will be raised less often when `type = "bootstrap"` (#425).
 
 # infer v1.0.1 (GitHub Only)
 
