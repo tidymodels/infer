@@ -650,6 +650,22 @@ test_that("calc_impl.ratio_of_props works", {
   )
 })
 
+test_that("calc_impl.ratio_of_means works", {
+   base_ratio_of_means <- {
+      mean(gss$age[gss$college == "degree"]) /
+      mean(gss$age[gss$college == "no degree"])
+   }
+
+   expect_equal(
+      gss %>%
+         specify(age ~ college) %>%
+         calculate("ratio of means", order = c("degree", "no degree")) %>%
+         dplyr::pull(),
+      expected = base_ratio_of_means,
+      tolerance = eps
+   )
+})
+
 test_that("calc_impl.z works for one sample proportions", {
   infer_obs_stat <- gss %>%
     specify(response = sex, success = "female") %>%
@@ -813,6 +829,15 @@ test_that("reported standard errors are correct", {
     ),
     tolerance = 1e-6
   )
+
+  # ratio of means ------------------------------------------------------------
+  # this stat shares machinery with others that report se, so make
+  # sure that we don't
+  rat_hat <- gss %>%
+     specify(hours ~ college) %>%
+     calculate(stat = "ratio of means", order = c("no degree", "degree"))
+
+  expect_equal(attr(rat_hat, "se"))
 })
 
 
