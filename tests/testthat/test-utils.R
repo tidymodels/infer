@@ -135,7 +135,7 @@ test_that("c_dedupl returns input when unnamed", {
 })
 
 test_that("hypothesize errors out when x isn't a dataframe",
-          expect_error(hypothesize(c(1, 2, 3), null = "point"), 
+          expect_error(hypothesize(c(1, 2, 3), null = "point"),
                        "x must be a data.frame or tibble"))
 
 test_that("p_null supplies appropriate params", {
@@ -143,4 +143,32 @@ test_that("p_null supplies appropriate params", {
     gss %>% specify(partyid ~ NULL) %>% p_null(),
     c(p.dem = 0.2, p.ind = 0.2, p.rep = 0.2, p.other = 0.2, p.DK = 0.2)
   )
+})
+
+test_that("variables are standardized as expected", {
+   gss_types <-
+      gss %>%
+      dplyr::mutate(
+         age = as.integer(age),
+         is_dem = dplyr::if_else(partyid == "dem", TRUE, FALSE),
+         finrela = as.character(finrela)
+      )
+
+   gss_std <- standardize_variable_types(gss_types)
+
+   expect_true(inherits(gss_types$age,     "integer"))
+   expect_true(inherits(gss_types$finrela, "character"))
+   expect_true(inherits(gss_types$income,  "ordered"))
+   expect_true(inherits(gss_types$college, "factor"))
+   expect_true(inherits(gss_types$is_dem,  "logical"))
+
+   expect_null(levels(gss_types$is_dem))
+
+   expect_true(inherits(gss_std$age,     "numeric"))
+   expect_true(inherits(gss_std$finrela, "factor"))
+   expect_true(inherits(gss_std$income,  "factor"))
+   expect_true(inherits(gss_std$college, "factor"))
+   expect_true(inherits(gss_std$is_dem,  "factor"))
+
+   expect_equal(levels(gss_std$is_dem), c("TRUE", "FALSE"))
 })

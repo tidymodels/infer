@@ -11,6 +11,11 @@ To be released as v1.0.2.
 * Clarify error when incompatible statistics and hypotheses are supplied (#441).
 * Updated `generate()` unexpected `type` warnings to be more permissive—the 
 warning will be raised less often when `type = "bootstrap"` (#425).
+* The package will now set the levels of logical variables on conversion to factor
+so that the first level (regarded as `success` by default) is `TRUE`. Core verbs
+have warned without an explicit `success` value already, and this change makes
+behavior consistent with the functions being wrapped by shorthand test 
+wrappers (#440).
 
 # infer v1.0.1 (GitHub Only)
 

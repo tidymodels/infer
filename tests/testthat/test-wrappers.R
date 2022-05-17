@@ -7,7 +7,7 @@ test_that("t_test works", {
   expect_error(
     gss_tbl %>% t_test(response = "hours", explanatory = "sex")
   )
-    
+
   new_way <- t_test(gss_tbl,
                     hours ~ sex,
                     order = c("male", "female"))
@@ -18,7 +18,7 @@ test_that("t_test works", {
   old_way <- t.test(hours ~ sex, data = gss_tbl) %>%
     broom::glance() %>%
     dplyr::select(statistic, t_df = parameter, p_value = p.value,
-                  alternative, estimate, 
+                  alternative, estimate,
                   lower_ci = conf.low, upper_ci = conf.high)
 
   expect_equal(new_way, new_way_alt, tolerance = 1e-5)
@@ -39,7 +39,7 @@ test_that("t_test works", {
   old_way <- t.test(x = gss_tbl$hours, mu = 0) %>%
     broom::glance() %>%
     dplyr::select(statistic, t_df = parameter, p_value = p.value,
-                  alternative, estimate, 
+                  alternative, estimate,
                   lower_ci = conf.low, upper_ci = conf.high)
 
   expect_equal(new_way, new_way_alt, tolerance = 1e-5)
@@ -89,11 +89,11 @@ test_that("_stat functions work", {
     gss_tbl %>% chisq_stat(college ~ partyid),
     "deprecated in favor of the more general"
   )
-  
+
   another_way <- gss_tbl %>%
     chisq_test(college ~ partyid) %>%
     dplyr::select(statistic)
-  
+
   expect_warning(
     obs_stat_way <- gss_tbl %>% chisq_stat(college ~ partyid),
     "deprecated in favor of the more general"
@@ -109,7 +109,7 @@ test_that("_stat functions work", {
   new_way <- gss_tbl %>%
     chisq_test(partyid ~ NULL) %>%
     dplyr::select(statistic)
-    
+
   expect_warning(
     obs_stat_way <- gss_tbl %>%
       chisq_stat(partyid ~ NULL),
@@ -120,7 +120,7 @@ test_that("_stat functions work", {
      chisq_stat(response = partyid),
    "deprecated in favor of the more general"
   )
-  
+
  expect_equivalent(dplyr::pull(new_way), obs_stat_way)
  expect_equivalent(dplyr::pull(new_way), obs_stat_way_alt)
 
@@ -143,13 +143,13 @@ test_that("_stat functions work", {
     t_test(hours ~ sex, order = c("male", "female")) %>%
     dplyr::select(statistic) %>%
     pull()
-  
+
   expect_warning(
     obs_stat_way <- gss_tbl %>%
       t_stat(hours ~ sex, order = c("male", "female")),
     "deprecated in favor of the more general"
   )
-  
+
   expect_warning(
     obs_stat_way_alt <- gss_tbl %>%
       t_stat(response = hours,
@@ -166,12 +166,12 @@ test_that("_stat functions work", {
     gss_tbl %>% t_stat(hours ~ NULL),
     "deprecated in favor of the more general"
   )
-  
+
   another_way <- gss_tbl %>%
     t_test(hours ~ NULL) %>%
     dplyr::select(statistic) %>%
     pull()
-  
+
   expect_warning(
     obs_stat_way <- gss_tbl %>%
       t_stat(hours ~ NULL),
@@ -182,7 +182,7 @@ test_that("_stat functions work", {
       t_stat(response = hours),
     "deprecated in favor of the more general"
   )
-  
+
   expect_equivalent(another_way, obs_stat_way)
   expect_equivalent(another_way, obs_stat_way_alt)
 
@@ -191,7 +191,7 @@ test_that("_stat functions work", {
       chisq_stat(x = gss_tbl, response = age, explanatory = sex)
     )
   )
-  
+
   expect_error(
     expect_warning(
       chisq_stat(x = gss_tbl, response = sex, explanatory = age),
@@ -218,7 +218,7 @@ test_that("conf_int argument works", {
           conf_int = TRUE
         )
     ),
-    c("statistic", "t_df", "p_value", "alternative", 
+    c("statistic", "t_df", "p_value", "alternative",
       "estimate", "lower_ci", "upper_ci"),
     tolerance = 1e-5
   )
@@ -251,7 +251,7 @@ test_that("conf_int argument works", {
       t_stat(hours ~ sex, order = c("female", "male")),
     "deprecated in favor of the more general"
   )
-  
+
   expect_warning(
     var_equal <- gss_tbl_small %>%
       t_stat(
@@ -260,7 +260,7 @@ test_that("conf_int argument works", {
       ),
     "deprecated in favor of the more general"
   )
-  
+
   expect_false(no_var_equal == var_equal)
 
   shortcut_no_var_equal <- gss_tbl_small %>%
@@ -291,6 +291,9 @@ bad_df <- data.frame(resp = 1:5,
 
 bad_df2 <- data.frame(resp = letters[1:5],
                      exp = 1:5)
+
+df_l <- df %>%
+   mutate(resp = dplyr::if_else(resp == "c", TRUE, FALSE))
 
 test_that("two sample prop_test works", {
 
@@ -338,6 +341,14 @@ test_that("two sample prop_test works", {
   # check that the success argument changes output
   infer5 <- prop_test(df, resp ~ exp, order = c("a", "b"), success = "d", conf_int = TRUE)
   expect_equal(infer3[["upper_ci"]], -infer5[["lower_ci"]], tolerance = .001)
+
+  # check that logical variables are leveled intuitively
+  infer1_l <- prop_test(df_l, resp ~ exp, order = c("b", "a"))
+  infer2_l <- prop_test(df_l, resp ~ exp, order = c("b", "a"), success = "TRUE")
+  infer3_l <- prop_test(df_l, resp ~ exp, order = c("b", "a"), success = "FALSE")
+
+  expect_equal(infer1_l$lower_ci, infer2_l$lower_ci)
+  expect_equal(infer1_l$lower_ci, -infer3_l$upper_ci)
 })
 
 # ...and some data for the one sample wrapper
@@ -389,15 +400,15 @@ test_that("prop_test output dimensionality is correct", {
   infer_1_sample <- prop_test(df, resp ~ NULL, p = .5)
   infer_1_sample_z <- prop_test(df, resp ~ NULL, p = .5, z = TRUE)
   infer_2_sample <- prop_test(df, resp ~ exp, order = c("a", "b"))
-  infer_2_sample_no_int <- prop_test(df, resp ~ exp, order = c("a", "b"), 
+  infer_2_sample_no_int <- prop_test(df, resp ~ exp, order = c("a", "b"),
                                      conf_int = FALSE)
   infer_2_sample_z <- prop_test(df, resp ~ exp, order = c("a", "b"), z = TRUE)
-  
+
   # introduce a third response level
   df$resp[c(1:10, 490:510, 990:1000)] <- "e"
-  
+
   infer_3_sample <- prop_test(df, resp ~ exp, order = c("a", "b"))
-  
+
   expect_length(infer_1_sample, 4)
   expect_length(infer_1_sample, length(infer_1_sample_z) + 1)
   expect_length(infer_2_sample, 6)
@@ -408,9 +419,9 @@ test_that("prop_test output dimensionality is correct", {
 
 test_that("prop_test z argument works as expected", {
   chi_res <- prop_test(df, resp ~ NULL, p = .5, correct = FALSE)
-    
+
   z_res <- prop_test(df, resp ~ NULL, p = .5, z = TRUE)
-    
+
   expect_equal(unname(chi_res$statistic), z_res$statistic^2, tolerance = eps)
 })
 
@@ -423,7 +434,7 @@ test_that("wrappers can handled ordered factors", {
       dplyr::mutate(sex = factor(sex, ordered = TRUE)) %>%
       t_test(hours ~ sex, order = c("male", "female"))
   )
-  
+
   expect_equal(
     gss_tbl %>%
       dplyr::mutate(income = factor(income, ordered = TRUE)) %>%
@@ -432,7 +443,7 @@ test_that("wrappers can handled ordered factors", {
       dplyr::mutate(income = factor(income, ordered = FALSE)) %>%
       chisq_test(income ~ partyid)
   )
-  
+
   expect_equal(
     gss_tbl %>%
       dplyr::mutate(income = factor(income, ordered = TRUE)) %>%
@@ -441,7 +452,7 @@ test_that("wrappers can handled ordered factors", {
       dplyr::mutate(income = factor(income, ordered = FALSE)) %>%
       chisq_test(partyid ~ income)
   )
-  
+
   expect_equal(
     df %>%
       dplyr::mutate(resp = factor(resp, ordered = TRUE)) %>%
