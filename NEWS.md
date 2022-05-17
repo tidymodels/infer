@@ -14,6 +14,11 @@ warning will be raised less often when `type = "bootstrap"` (#425).
 * Allow passing additional arguments to `stats::chisq.test` via `...` in 
 `calculate()`. Ellipses are now always passed to the applicable base R
 hypothesis testing function, when applicable (#414)!
+* The package will now set the levels of logical variables on conversion to factor
+so that the first level (regarded as `success` by default) is `TRUE`. Core verbs
+have warned without an explicit `success` value already, and this change makes
+behavior consistent with the functions being wrapped by shorthand test 
+wrappers (#440).
 
 # infer v1.0.1 (GitHub Only)
 
