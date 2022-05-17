@@ -33,7 +33,8 @@ difference in means, medians, proportions, ratios, t, and z statistics.}
 
 \item{...}{To pass options like \code{na.rm = TRUE} into functions like
 \link[base:mean]{mean()}, \link[stats:sd]{sd()}, etc. Can also be used to
-supply hypothesized null values for the \code{"t"} statistic.}
+supply hypothesized null values for the \code{"t"} statistic or additional
+arguments to \code{\link[stats:chisq.test]{stats::chisq.test()}}.}
 }
 \value{
 A tibble containing a \code{stat} column of calculated statistics.
@@ -64,14 +65,18 @@ number generator. infer will respect the random seed specified in the
 data given an identical seed. For instance, we can calculate the
 difference in mean \code{age} by \code{college} degree status using the \code{gss}
 dataset from 10 versions of the \code{gss} resampled with permutation using
-the following code.\if{html}{\out{<div class="r">}}\preformatted{set.seed(1)
+the following code.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{set.seed(1)
 
 gss \%>\%
   specify(age ~ college) \%>\%
   hypothesize(null = "independence") \%>\%
   generate(reps = 5, type = "permute") \%>\%
   calculate("diff in means", order = c("degree", "no degree"))
-}\if{html}{\out{</div>}}\preformatted{## Response: age (numeric)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{## Response: age (numeric)
 ## Explanatory: college (factor)
 ## Null Hypothesis: independence
 ## # A tibble: 5 × 2
@@ -82,10 +87,12 @@ gss \%>\%
 ## 3         3  0.764
 ## 4         4  0.280
 ## 5         5  0.350
-}
+}\if{html}{\out{</div>}}
 
 Setting the seed to the same value again and rerunning the same code
-will produce the same result.\if{html}{\out{<div class="r">}}\preformatted{# set the seed
+will produce the same result.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# set the seed
 set.seed(1)
 
 gss \%>\%
@@ -93,7 +100,9 @@ gss \%>\%
   hypothesize(null = "independence") \%>\%
   generate(reps = 5, type = "permute") \%>\%
   calculate("diff in means", order = c("degree", "no degree"))
-}\if{html}{\out{</div>}}\preformatted{## Response: age (numeric)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{## Response: age (numeric)
 ## Explanatory: college (factor)
 ## Null Hypothesis: independence
 ## # A tibble: 5 × 2
@@ -104,7 +113,7 @@ gss \%>\%
 ## 3         3  0.764
 ## 4         4  0.280
 ## 5         5  0.350
-}
+}\if{html}{\out{</div>}}
 
 Please keep this in mind when writing infer code that utilizes
 resampling with \code{generate()}.
@@ -119,7 +128,7 @@ gss \%>\%
   hypothesize(null = "point", mu = 40) \%>\%
   generate(reps = 200, type = "bootstrap") \%>\%
   calculate(stat = "mean")
-  
+
 # calculate the corresponding observed statistic
 gss \%>\%
   specify(response = hours) \%>\%
@@ -132,18 +141,18 @@ gss \%>\%
   hypothesize(null = "independence") \%>\%
   generate(reps = 200, type = "permute") \%>\%
   calculate("diff in means", order = c("degree", "no degree"))
-  
+
 # calculate the corresponding observed statistic
 gss \%>\%
   specify(age ~ college) \%>\%
   calculate("diff in means", order = c("degree", "no degree"))
-  
+
 # some statistics require a null hypothesis
  gss \%>\%
-   specify(response = hours) \%>\% 
+   specify(response = hours) \%>\%
    hypothesize(null = "point", mu = 40) \%>\%
    calculate(stat = "t")
-   
+
 # more in-depth explanation of how to use the infer package
 \dontrun{
 vignette("infer")

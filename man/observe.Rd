@@ -70,7 +70,8 @@ difference in means, medians, proportions, ratios, t, and z statistics.}
 
 \item{...}{To pass options like \code{na.rm = TRUE} into functions like
 \link[base:mean]{mean()}, \link[stats:sd]{sd()}, etc. Can also be used to
-supply hypothesized null values for the \code{"t"} statistic.}
+supply hypothesized null values for the \code{"t"} statistic or additional
+arguments to \code{\link[stats:chisq.test]{stats::chisq.test()}}.}
 }
 \value{
 A 1-column tibble containing the calculated statistic \code{stat}.

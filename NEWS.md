@@ -11,6 +11,9 @@ To be released as v1.0.2.
 * Clarify error when incompatible statistics and hypotheses are supplied (#441).
 * Updated `generate()` unexpected `type` warnings to be more permissive—the 
 warning will be raised less often when `type = "bootstrap"` (#425).
+* Allow passing additional arguments to `stats::chisq.test` via `...` in 
+`calculate()`. Ellipses are now always passed to the applicable base R
+hypothesis testing function, when applicable (#414)!
 * The package will now set the levels of logical variables on conversion to factor
 so that the first level (regarded as `success` by default) is `TRUE`. Core verbs
 have warned without an explicit `success` value already, and this change makes
