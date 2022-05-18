@@ -837,7 +837,7 @@ test_that("reported standard errors are correct", {
      specify(hours ~ college) %>%
      calculate(stat = "ratio of means", order = c("no degree", "degree"))
 
-  expect_equal(attr(rat_hat, "se"))
+  expect_null(attr(rat_hat, "se"))
 })
 
 
