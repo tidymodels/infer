@@ -243,7 +243,7 @@ stat_types <- tibble::tribble(
   ~resp,   ~exp,   ~stats,
   "num",   "",     c("mean", "median", "sum", "sd", "t"),
   "num",   "num",  c("slope", "correlation"),
-  "num",   "bin",  c("diff in means", "diff in medians", "t"),
+  "num",   "bin",  c("diff in means", "diff in medians", "t", "ratio of means"),
   "num",   "mult", c("F"),
   "bin",   "",     c("prop", "count", "z"),
   "bin",   "bin",  c("diff in props", "z", "ratio of props", "odds ratio", "Chisq"),
@@ -282,6 +282,7 @@ stat_desc <- tibble::tribble(
   "t",                 "A t statistic",
   "z",                 "A z statistic",
   "ratio of props",    "A ratio of proportions",
+  "ratio of means",    "A ratio of means",
   "odds ratio",        "An odds ratio"
 )
 
@@ -306,6 +307,7 @@ stat_hypotheses <- tibble::tribble(
   "z",                 "independence",
   "z",                 "point",
   "ratio of props",    "independence",
+  "ratio of means",    "independence",
   "odds ratio",        "independence"
 )
 
@@ -318,7 +320,7 @@ implemented_stats <-  c(
   "mean", "median", "sum", "sd", "prop", "count",
   "diff in means", "diff in medians", "diff in props",
   "Chisq", "F", "slope", "correlation", "t", "z",
-  "ratio of props", "odds ratio"
+  "ratio of props", "ratio of means", "odds ratio"
 )
 
 implemented_stats_aliases <- tibble::tribble(

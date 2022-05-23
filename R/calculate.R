@@ -16,9 +16,9 @@
 #'   options include `"mean"`, `"median"`, `"sum"`, `"sd"`, `"prop"`, `"count"`,
 #'   `"diff in means"`, `"diff in medians"`, `"diff in props"`, `"Chisq"` (or
 #'   `"chisq"`), `"F"` (or `"f"`), `"t"`, `"z"`, `"ratio of props"`, `"slope"`,
-#'   `"odds ratio"`, and `"correlation"`. `infer` only supports theoretical
-#'   tests on one or two means via the `"t"` distribution and one or two
-#'   proportions via the `"z"`.
+#'   `"odds ratio"`, `"ratio of means"`, and `"correlation"`. `infer` only
+#'   supports theoretical tests on one or two means via the `"t"` distribution
+#'   and one or two proportions via the `"z"`.
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction (or division
 #'   for ratio-based statistics), where `order = c("first", "second")` means
@@ -91,7 +91,7 @@ calculate <- function(x,
                         "mean", "median", "sum", "sd", "prop", "count",
                         "diff in means", "diff in medians", "diff in props",
                         "Chisq", "F", "slope", "correlation", "t", "z",
-                        "ratio of props", "odds ratio"
+                        "ratio of props", "odds ratio", "ratio of means"
                       ),
                       order = NULL,
                       ...) {
@@ -352,19 +352,21 @@ calc_impl.correlation <- function(type, x, order, ...) {
     )
 }
 
-calc_impl_diff_f <- function(f) {
+calc_impl_diff_f <- function(f, operator) {
   function(type, x, order, ...) {
     res <- x %>%
       dplyr::group_by(replicate, !!explanatory_expr(x), .drop = FALSE) %>%
       dplyr::summarize(value = f(!!response_expr(x), ...)) %>%
       dplyr::group_by(replicate) %>%
       dplyr::summarize(
-        stat = value[!!(explanatory_expr(x)) == order[1]] -
-          value[!!(explanatory_expr(x)) == order[2]]
+        stat = operator(
+           value[!!(explanatory_expr(x)) == order[1]],
+           value[!!(explanatory_expr(x)) == order[2]]
+        )
       )
 
     # calculate SE for confidence intervals
-    if (length(unique(x[["replicate"]])) == 1) {
+    if (length(unique(x[["replicate"]])) == 1 && identical(operator, `-`)) {
       sample_sds <- x %>%
         dplyr::group_by(replicate, !!explanatory_expr(x), .drop = FALSE) %>%
         dplyr::summarize(stats::sd(!!response_expr(x))) %>%
@@ -387,9 +389,11 @@ calc_impl_diff_f <- function(f) {
   }
 }
 
-calc_impl.diff_in_means <- calc_impl_diff_f(mean)
+calc_impl.diff_in_means <- calc_impl_diff_f(mean, operator = `-`)
 
-calc_impl.diff_in_medians <- calc_impl_diff_f(stats::median)
+calc_impl.diff_in_medians <- calc_impl_diff_f(stats::median, operator = `-`)
+
+calc_impl.ratio_of_means <- calc_impl_diff_f(mean, operator = `/`)
 
 calc_impl.Chisq <- function(type, x, order, ...) {
   resp_var <- response_name(x)
