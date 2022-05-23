@@ -19,6 +19,7 @@ so that the first level (regarded as `success` by default) is `TRUE`. Core verbs
 have warned without an explicit `success` value already, and this change makes
 behavior consistent with the functions being wrapped by shorthand test 
 wrappers (#440).
+* Added new statistic `stat = "ratio of means"` (#452).
 
 # infer v1.0.1 (GitHub Only)
 
