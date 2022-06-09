@@ -2,7 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-*.Rproj
 .DS_Store
 .httr-oauth
 doc
