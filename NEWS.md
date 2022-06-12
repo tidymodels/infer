@@ -1,7 +1,4 @@
-# infer v1.0.1.9000 (Development Version)
-
-To be released as v1.0.2.
-
+# infer v1.0.2
 
 * Fix p-value shading when the calculated statistic falls exactly on the boundaries of a histogram bin (#424).
 * Fix `generate()` errors when columns are named `x` (#431).
