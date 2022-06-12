@@ -1,3 +1,7 @@
+# infer v1.0.2.9000
+
+To be released as infer 1.0.3.
+
 # infer v1.0.2
 
 * Fix p-value shading when the calculated statistic falls exactly on the boundaries of a histogram bin (#424).
