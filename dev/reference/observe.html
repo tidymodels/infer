@@ -3,7 +3,7 @@
 calculate() consecutively that can be used to calculate observed
 statistics from data. hypothesize() will only be called if a point
 null hypothesis parameter is supplied.
-Learn more in vignette("infer").'><title>Calculate observed statistics — observe • infer</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><link href="../deps/_Source%20Sans%20Pro-0.4.1/font.css" rel="stylesheet"><link href="../deps/_Source%20Code%20Pro-0.4.1/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Calculate observed statistics — observe"><meta property="og:description" content='This function is a wrapper that calls specify(), hypothesize(), and
+Learn more in vignette("infer").'><title>Calculate observed statistics — observe • infer</title><!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png"><link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png"><link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png"><link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png"><link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png"><link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png"><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.2/font.css" rel="stylesheet"><link href="../deps/Source_Code_Pro-0.4.2/font.css" rel="stylesheet"><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Calculate observed statistics — observe"><meta property="og:description" content='This function is a wrapper that calls specify(), hypothesize(), and
 calculate() consecutively that can be used to calculate observed
 statistics from data. hypothesize() will only be called if a point
 null hypothesis parameter is supplied.
@@ -75,58 +75,78 @@ null hypothesis parameter is supplied.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">observe</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">formula</span>,
-  response <span class="op">=</span> <span class="cn">NULL</span>,
-  explanatory <span class="op">=</span> <span class="cn">NULL</span>,
-  success <span class="op">=</span> <span class="cn">NULL</span>,
-  null <span class="op">=</span> <span class="cn">NULL</span>,
-  p <span class="op">=</span> <span class="cn">NULL</span>,
-  mu <span class="op">=</span> <span class="cn">NULL</span>,
-  med <span class="op">=</span> <span class="cn">NULL</span>,
-  sigma <span class="op">=</span> <span class="cn">NULL</span>,
-  stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"median"</span>, <span class="st">"sum"</span>, <span class="st">"sd"</span>, <span class="st">"prop"</span>, <span class="st">"count"</span>, <span class="st">"diff in means"</span>,
-    <span class="st">"diff in medians"</span>, <span class="st">"diff in props"</span>, <span class="st">"Chisq"</span>, <span class="st">"F"</span>, <span class="st">"slope"</span>, <span class="st">"correlation"</span>, <span class="st">"t"</span>, <span class="st">"z"</span>,
-    <span class="st">"ratio of props"</span>, <span class="st">"odds ratio"</span><span class="op">)</span>,
-  order <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">observe</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">formula</span>,</span>
+<span>  response <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  explanatory <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  success <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  null <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  p <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mu <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  med <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  sigma <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  stat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"median"</span>, <span class="st">"sum"</span>, <span class="st">"sd"</span>, <span class="st">"prop"</span>, <span class="st">"count"</span>, <span class="st">"diff in means"</span>,</span>
+<span>    <span class="st">"diff in medians"</span>, <span class="st">"diff in props"</span>, <span class="st">"Chisq"</span>, <span class="st">"F"</span>, <span class="st">"slope"</span>, <span class="st">"correlation"</span>, <span class="st">"t"</span>, <span class="st">"z"</span>,</span>
+<span>    <span class="st">"ratio of props"</span>, <span class="st">"odds ratio"</span><span class="op">)</span>,</span>
+<span>  order <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>x</dt>
 <dd><p>A data frame that can be coerced into a <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a>.</p></dd>
+
+
 <dt>formula</dt>
 <dd><p>A formula with the response variable on the left and the
 explanatory on the right. Alternatively, a <code>response</code> and <code>explanatory</code>
 argument can be supplied.</p></dd>
+
+
 <dt>response</dt>
 <dd><p>The variable name in <code>x</code> that will serve as the response.
 This is an alternative to using the <code>formula</code> argument.</p></dd>
+
+
 <dt>explanatory</dt>
 <dd><p>The variable name in <code>x</code> that will serve as the
 explanatory variable. This is an alternative to using the formula argument.</p></dd>
+
+
 <dt>success</dt>
 <dd><p>The level of <code>response</code> that will be considered a success, as
 a string. Needed for inference on one proportion, a difference in
 proportions, and corresponding z stats.</p></dd>
+
+
 <dt>null</dt>
 <dd><p>The null hypothesis. Options include <code>"independence"</code> and
 <code>"point"</code>.</p></dd>
+
+
 <dt>p</dt>
 <dd><p>The true proportion of successes (a number between 0 and 1). To be used with point null hypotheses when the specified response
 variable is categorical.</p></dd>
+
+
 <dt>mu</dt>
 <dd><p>The true mean (any numerical value). To be used with point null
 hypotheses when the specified response variable is continuous.</p></dd>
+
+
 <dt>med</dt>
 <dd><p>The true median (any numerical value). To be used with point null
 hypotheses when the specified response variable is continuous.</p></dd>
+
+
 <dt>sigma</dt>
 <dd><p>The true standard deviation (any numerical value). To be used with
 point null hypotheses.</p></dd>
+
+
 <dt>stat</dt>
 <dd><p>A string giving the type of the statistic to calculate. Current
 options include <code>"mean"</code>, <code>"median"</code>, <code>"sum"</code>, <code>"sd"</code>, <code>"prop"</code>, <code>"count"</code>,
@@ -135,21 +155,28 @@ options include <code>"mean"</code>, <code>"median"</code>, <code>"sum"</code>, 
 <code>"odds ratio"</code>, and <code>"correlation"</code>. <code>infer</code> only supports theoretical
 tests on one or two means via the <code>"t"</code> distribution and one or two
 proportions via the <code>"z"</code>.</p></dd>
+
+
 <dt>order</dt>
 <dd><p>A string vector of specifying the order in which the levels of
 the explanatory variable should be ordered for subtraction (or division
 for ratio-based statistics), where <code>order = c("first", "second")</code> means
 <code>("first" - "second")</code>, or the analogue for ratios. Needed for inference on
 difference in means, medians, proportions, ratios, t, and z statistics.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>To pass options like <code>na.rm = TRUE</code> into functions like
 <a href="https://rdrr.io/r/base/mean.html" class="external-link">mean()</a>, <a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd()</a>, etc. Can also be used to
 supply hypothesized null values for the <code>"t"</code> statistic or additional
 arguments to <code><a href="https://rdrr.io/r/stats/chisq.test.html" class="external-link">stats::chisq.test()</a></code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A 1-column tibble containing the calculated statistic <code>stat</code>.</p>
+    
+
+<p>A 1-column tibble containing the calculated statistic <code>stat</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -166,78 +193,78 @@ arguments to <code><a href="https://rdrr.io/r/stats/chisq.test.html" class="exte
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># calculating the observed mean number of hours worked per week</span></span>
-<span class="r-in"><span class="va">gss</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">observe</span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="cn">NULL</span>, stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># calculating the observed mean number of hours worked per week</span></span></span>
+<span class="r-in"><span><span class="va">gss</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">observe</span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="cn">NULL</span>, stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response: hours (numeric)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    stat</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>  41.4</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># equivalently, calculating the same statistic with the core verbs</span></span>
-<span class="r-in"><span class="va">gss</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># equivalently, calculating the same statistic with the core verbs</span></span></span>
+<span class="r-in"><span><span class="va">gss</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response: hours (numeric)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    stat</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>  41.4</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># calculating a t statistic for hypothesized mu = 40 hours worked/week</span></span>
-<span class="r-in"><span class="va">gss</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">observe</span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="cn">NULL</span>, stat <span class="op">=</span> <span class="st">"t"</span>, null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># calculating a t statistic for hypothesized mu = 40 hours worked/week</span></span></span>
+<span class="r-in"><span><span class="va">gss</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">observe</span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="cn">NULL</span>, stat <span class="op">=</span> <span class="st">"t"</span>, null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response: hours (numeric)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Null Hypothesis: point</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    stat</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>  2.09</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># equivalently, calculating the same statistic with the core verbs</span></span>
-<span class="r-in"><span class="va">gss</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># equivalently, calculating the same statistic with the core verbs</span></span></span>
+<span class="r-in"><span><span class="va">gss</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="specify.html">specify</a></span><span class="op">(</span>response <span class="op">=</span> <span class="va">hours</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"point"</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"t"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response: hours (numeric)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Null Hypothesis: point</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    stat</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>  2.09</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># similarly for a difference in means in age based on whether</span></span>
-<span class="r-in"><span class="co"># the respondent has a college degree</span></span>
-<span class="r-in"><span class="fu">observe</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">gss</span>,</span>
-<span class="r-in">  <span class="va">age</span> <span class="op">~</span> <span class="va">college</span>,</span>
-<span class="r-in">  stat <span class="op">=</span> <span class="st">"diff in means"</span>,</span>
-<span class="r-in">  order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># similarly for a difference in means in age based on whether</span></span></span>
+<span class="r-in"><span><span class="co"># the respondent has a college degree</span></span></span>
+<span class="r-in"><span><span class="fu">observe</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">gss</span>,</span></span>
+<span class="r-in"><span>  <span class="va">age</span> <span class="op">~</span> <span class="va">college</span>,</span></span>
+<span class="r-in"><span>  stat <span class="op">=</span> <span class="st">"diff in means"</span>,</span></span>
+<span class="r-in"><span>  order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response: age (numeric)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Explanatory: college (factor)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    stat</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 0.941</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># equivalently, calculating the same statistic with the core verbs</span></span>
-<span class="r-in"><span class="va">gss</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="calculate.html">calculate</a></span><span class="op">(</span><span class="st">"diff in means"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># equivalently, calculating the same statistic with the core verbs</span></span></span>
+<span class="r-in"><span><span class="va">gss</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="calculate.html">calculate</a></span><span class="op">(</span><span class="st">"diff in means"</span>, order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"degree"</span>, <span class="st">"no degree"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Response: age (numeric)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Explanatory: college (factor)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    stat</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 0.941</span>
-<span class="r-in">  </span>
-<span class="r-in"><span class="co"># for a more in-depth explanation of how to use the infer package</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"infer"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span><span class="co"># for a more in-depth explanation of how to use the infer package</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"infer"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -251,7 +278,7 @@ arguments to <code><a href="https://rdrr.io/r/stats/chisq.test.html" class="exte
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
   </div></footer></body></html>
