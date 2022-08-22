@@ -1,3 +1,7 @@
+# infer (developmental version)
+
+To be released as infer v1.0.4.
+
 # infer v1.0.3
 
 * Fix R-devel HTML5 NOTEs.
