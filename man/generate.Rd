@@ -63,14 +63,18 @@ number generator. infer will respect the random seed specified in the
 data given an identical seed. For instance, we can calculate the
 difference in mean \code{age} by \code{college} degree status using the \code{gss}
 dataset from 10 versions of the \code{gss} resampled with permutation using
-the following code.\if{html}{\out{<div class="r">}}\preformatted{set.seed(1)
+the following code.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{set.seed(1)
 
 gss \%>\%
   specify(age ~ college) \%>\%
   hypothesize(null = "independence") \%>\%
   generate(reps = 5, type = "permute") \%>\%
   calculate("diff in means", order = c("degree", "no degree"))
-}\if{html}{\out{</div>}}\preformatted{## Response: age (numeric)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{## Response: age (numeric)
 ## Explanatory: college (factor)
 ## Null Hypothesis: independence
 ## # A tibble: 5 × 2
@@ -81,10 +85,12 @@ gss \%>\%
 ## 3         3  0.764
 ## 4         4  0.280
 ## 5         5  0.350
-}
+}\if{html}{\out{</div>}}
 
 Setting the seed to the same value again and rerunning the same code
-will produce the same result.\if{html}{\out{<div class="r">}}\preformatted{# set the seed
+will produce the same result.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# set the seed
 set.seed(1)
 
 gss \%>\%
@@ -92,7 +98,9 @@ gss \%>\%
   hypothesize(null = "independence") \%>\%
   generate(reps = 5, type = "permute") \%>\%
   calculate("diff in means", order = c("degree", "no degree"))
-}\if{html}{\out{</div>}}\preformatted{## Response: age (numeric)
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{## Response: age (numeric)
 ## Explanatory: college (factor)
 ## Null Hypothesis: independence
 ## # A tibble: 5 × 2
@@ -103,7 +111,7 @@ gss \%>\%
 ## 3         3  0.764
 ## 4         4  0.280
 ## 5         5  0.350
-}
+}\if{html}{\out{</div>}}
 
 Please keep this in mind when writing infer code that utilizes
 resampling with \code{generate()}.
