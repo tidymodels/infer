@@ -1,6 +1,6 @@
-# infer v1.0.2.9000
+# infer v1.0.3
 
-To be released as infer 1.0.3.
+* Fix R-devel HTML5 NOTEs.
 
 # infer v1.0.2
 
