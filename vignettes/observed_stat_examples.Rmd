@@ -1291,6 +1291,56 @@ visualize(sampling_dist) +
 
 Note that the `t` distribution is recentered and rescaled to lie on the scale of the observed data.
 
+`infer` also provides functionality to calculate ratios of means. The workflow looks similar to that for `diff in means`.
+
+Finding the observed statistic,
+
+```{r}
+d_hat <- gss %>%
+  specify(hours ~ college) %>%
+  calculate(stat = "ratio of means", order = c("degree", "no degree"))
+```
+
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+d_hat <- gss %>%
+  observe(hours ~ college,
+          stat = "ratio of means", order = c("degree", "no degree"))
+```
+
+Then, generating a bootstrap distribution,
+
+```{r}
+boot_dist <- gss %>%
+   specify(hours ~ college) %>%
+   generate(reps = 1000, type = "bootstrap") %>%
+   calculate(stat = "ratio of means", order = c("degree", "no degree"))
+```
+
+Use the bootstrap distribution to find a confidence interval,
+
+```{r}
+percentile_ci <- get_ci(boot_dist)
+```
+
+Visualizing the observed statistic alongside the distribution,
+
+```{r}
+visualize(boot_dist) +
+  shade_confidence_interval(endpoints = percentile_ci)
+```
+
+Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
+
+```{r}
+standard_error_ci <- boot_dist %>%
+  get_ci(type = "se", point_estimate = d_hat)
+
+visualize(boot_dist) +
+  shade_confidence_interval(endpoints = standard_error_ci)
+```
+
 ### One numerical variable, one categorical (2 levels) (t)
 
 Finding the standardized point estimate,
