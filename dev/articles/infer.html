@@ -154,8 +154,7 @@
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>    36</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>    30</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>    33</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span></code></pre>
 <p>On the front-end, the output of <code>specify</code> just looks like it selects off the columns in the dataframe that you’ve specified. Checking the class of this object, though:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -183,8 +182,7 @@
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>    36 ind    </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>    30 rep    </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>    33 dem    </span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># with the named arguments</span></span>
 <span><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -204,8 +202,7 @@
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>    36 ind    </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>    30 rep    </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>    33 dem    </span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span></code></pre>
 <p>If you’re doing inference on one proportion or a difference in proportions, you will need to use the <code>success</code> argument to specify which level of your <code>response</code> variable is a success. For instance, if you’re interested in the proportion of the population with a college degree, you might use the following code:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># specifying for inference on proportions</span></span>
@@ -225,8 +222,7 @@
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span> degree   </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> degree   </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> no degree</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="hypothesize-declaring-the-null-hypothesis">hypothesize(): Declaring the Null Hypothesis<a class="anchor" aria-label="anchor" href="#hypothesize-declaring-the-null-hypothesis"></a>
@@ -252,8 +248,7 @@
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span> degree    ind    </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> degree    rep    </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> no degree dem    </span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span></code></pre>
 <p>If you’re doing inference on a point estimate, you will also need to provide one of <code>p</code> (the true proportion of successes, between 0 and 1), <code>mu</code> (the true mean), <code>med</code> (the true median), or <code>sigma</code> (the true standard deviation). For instance, if the null hypothesis is that the mean number of hours worked per week in our population is 40, we would write:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -274,8 +269,7 @@
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>    20</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>    40</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>    40</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span></code></pre>
 <p>Again, from the front-end, the dataframe outputted from <code><a href="../reference/hypothesize.html">hypothesize()</a></code> looks almost exactly the same as it did when it came out of <code><a href="../reference/specify.html">specify()</a></code>, but <code>infer</code> now “knows” your null hypothesis.</p>
 </div>
 <div class="section level3">
@@ -316,8 +310,7 @@
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>         1 78.6 </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>         1 38.6 </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>         1 38.6 </span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 499,990 more rows</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># … with 499,990 more rows</span></span></span></code></pre>
 <p>In the above example, we take 1000 bootstrap samples to form our null distribution.</p>
 <p>Note that, before <code><a href="../reference/generate.html">generate()</a></code>ing, we’ve set the seed for random number generation with the <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> function. When using the infer package for research, or in other cases when exact reproducibility is a priority, this is good practice. infer will respect the random seed specified in the <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> function, returning the same result when <code><a href="../reference/generate.html">generate()</a></code>ing data given an identical seed.</p>
 <p>To generate a null distribution for the independence of two variables, we could also randomly reshuffle the pairings of explanatory and response variables to break any existing association. For instance, to generate 1000 replicates that can be used to create a null distribution under the assumption that political party affiliation is not affected by age:</p>
@@ -343,8 +336,7 @@
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span> rep        36         1</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dem        30         1</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> rep        33         1</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 499,990 more rows</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># … with 499,990 more rows</span></span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="calculate-calculating-summary-statistics">calculate(): Calculating Summary Statistics<a class="anchor" aria-label="anchor" href="#calculate-calculating-summary-statistics"></a>
@@ -371,8 +363,7 @@
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>         8  40.4</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>         9  41.5</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>        10  40.9</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 990 more rows</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># … with 990 more rows</span></span></span></code></pre>
 <p>The output of <code><a href="../reference/calculate.html">calculate()</a></code> here shows us the sample statistic (in this case, the mean) for each of our 1000 replicates. If you’re carrying out inference on differences in means, medians, or proportions, or t and z statistics, you will need to supply an <code>order</code> argument, giving the order in which the explanatory variables should be subtracted. For instance, to find the difference in mean age of those that have a college degree and those that don’t, we might write:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -396,8 +387,7 @@
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>         8 -<span style="color: #BB0000;">1.07</span> </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>         9  1.68 </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>        10  0.888</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 990 more rows</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># … with 990 more rows</span></span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="other-utilities">Other Utilities<a class="anchor" aria-label="anchor" href="#other-utilities"></a>
@@ -554,8 +544,7 @@
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>         3 age           -<span style="color: #BB0000;">0.037</span><span style="color: #BB0000; text-decoration: underline;">1</span> </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>         3 collegedegree  0.004<span style="text-decoration: underline;">31</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>         4 intercept     42.7    </span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 2,990 more rows</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># … with 2,990 more rows</span></span></span></code></pre>
 <p>To permute variables other than the response variable, the <code>variables</code> argument to <code><a href="../reference/generate.html">generate()</a></code> allows you to choose columns from the data to permute. Note that any derived effects that depend on these columns (e.g., interaction effects) will also be affected.</p>
 <p>Beyond this point, observed fits and distributions from null fits interface exactly like analogous outputs from <code><a href="../reference/calculate.html">calculate()</a></code>. For instance, we can use the following code to calculate a 95% confidence interval from these objects.</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">

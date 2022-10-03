@@ -158,8 +158,8 @@
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.036</span></span></code></pre>
-<p>Thus, if the true mean number of hours worked per week was really 40, our approximation of the probability that we would see a test statistic as or more extreme than 41.382 is approximately 0.036.</p>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.034</span></span></code></pre>
+<p>Thus, if the true mean number of hours worked per week was really 40, our approximation of the probability that we would see a test statistic as or more extreme than 41.382 is approximately 0.034.</p>
 <p>Analogously to the steps shown above, the package supplies a wrapper function, <code>t_test</code>, to carry out 1-sample <span class="math inline">\(t\)</span>-tests on tidy data. Rather than using randomization, the wrappers carry out the theory-based <span class="math inline">\(t\)</span>-test. The syntax looks like this:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/t_test.html">t_test</a></span><span class="op">(</span><span class="va">gss</span>, response <span class="op">=</span> <span class="va">hours</span>, mu <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></span></code></pre></div>
@@ -243,8 +243,8 @@
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.29</span></span></code></pre>
-<p>Thus, if there were really no relationship between the number of hours worked a week and whether one has a college degree, the probability that we would see a statistic as or more extreme than 1.5384 is approximately 0.29.</p>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.256</span></span></code></pre>
+<p>Thus, if there were really no relationship between the number of hours worked a week and whether one has a college degree, the probability that we would see a statistic as or more extreme than 1.5384 is approximately 0.256.</p>
 <p>Note that, similarly to the steps shown above, the package supplies a wrapper function, <code>t_test</code>, to carry out 2-sample <span class="math inline">\(t\)</span>-tests on tidy data. The syntax looks like this:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/t_test.html">t_test</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">gss</span>, </span>
