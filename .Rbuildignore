@@ -8,7 +8,6 @@
 ^codecov\.yml$
 ^docs*
 ^CONDUCT\.md$
-^README\.md$
 ^cran-comments\.md$
 ^_build\.sh$
 ^appveyor\.yml$
