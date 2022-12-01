@@ -83,7 +83,7 @@ standardize_variable_types <- function(x) {
       dplyr::mutate(
          dplyr::across(
             where(~ is.logical(.x)),
-            ~ factor(.x, levels = c("TRUE", "FALSE")),
+            ~ factor(.x, levels = c("TRUE", "FALSE"))
          )
       )  %>%
       # integer to numeric
