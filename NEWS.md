@@ -2,6 +2,9 @@
 
 To be released as infer v1.0.4.
 
+* Fixed bug in p-value shading where shaded regions no longer correctly overlaid
+  histogram bars.
+
 # infer v1.0.3
 
 * Fix R-devel HTML5 NOTEs.

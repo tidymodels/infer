@@ -336,7 +336,8 @@ hist_area <- function(data, obs_stat, direction, yval) {
   # "almost vertical" lines with `geom_area()` usage. If don't do this, then
   # area might be shaded under line segments connecting edges of consequtive
   # histogram bars.
-  x_extra <- sort(c(x, g_data[["xmin"]], g_data[["xmax"]]))
+  x_extra <- switch(direction, left = g_data[["xmax"]], right = g_data[["xmin"]])
+  x_extra <- sort(c(x, x_extra))
   x_grid <- switch(
     # `direction` can be one of "left" or "right" at this point of execution
     direction,
