@@ -1,3 +1,5 @@
+# infer v1.0.4.9000 (developmental version)
+
 # infer v1.0.4
 
 * Fixed bug in p-value shading where shaded regions no longer correctly overlaid
