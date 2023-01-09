@@ -72,8 +72,7 @@ Description: The objective of this package is to perform
     the tidy design framework.
 License: MIT + file LICENSE
 URL: https://github.com/tidymodels/infer,
-    https://infer.tidymodels.org/,
-    https://infer.tidymodels.org
+    https://infer.tidymodels.org/
 BugReports: https://github.com/tidymodels/infer/issues
 Depends:
     R (>= 3.5.0)
