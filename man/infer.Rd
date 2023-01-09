@@ -18,7 +18,6 @@ Useful links:
 \itemize{
   \item \url{https://github.com/tidymodels/infer}
   \item \url{https://infer.tidymodels.org/}
-  \item \url{https://infer.tidymodels.org}
   \item Report bugs at \url{https://github.com/tidymodels/infer/issues}
 }
 
