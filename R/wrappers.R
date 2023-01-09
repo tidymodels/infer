@@ -78,9 +78,7 @@ t_test <- function(x, formula,
   if (has_explanatory(x)) {
     order <- check_order(x, order, in_calculate = FALSE, stat = NULL)
     x <- reorder_explanatory(x, order)
-    prelim <- stats::t.test(formula = as.formula(paste0(response_name(x),
-                                                        " ~ ",
-                                                        explanatory_name(x))),
+    prelim <- stats::t.test(formula = get_formula(x),
                             data = x,
                             alternative = alternative,
                             mu = mu,
