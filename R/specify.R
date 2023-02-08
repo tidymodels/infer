@@ -1,11 +1,11 @@
 #' Specify response and explanatory variables
 #'
 #' @description
-#'  
+#'
 #' `specify()` is used to specify which columns in the supplied data frame are
-#' the relevant response (and, if applicable, explanatory) variables. Note that 
+#' the relevant response (and, if applicable, explanatory) variables. Note that
 #' character variables are converted to `factor`s.
-#' 
+#'
 #' Learn more in `vignette("infer")`.
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
@@ -27,11 +27,11 @@
 #' # specifying for a point estimate on one variable
 #' gss %>%
 #'    specify(response = age)
-#' 
+#'
 #' # specify a relationship between variables as a formula...
 #' gss %>%
 #'   specify(age ~ partyid)
-#'   
+#'
 #' # ...or with named arguments!
 #' gss %>%
 #'   specify(response = age, explanatory = partyid)
@@ -47,30 +47,30 @@
 #' @family core functions
 #' @export
 specify <- function(x, formula, response = NULL,
-                    explanatory = NULL, success = NULL) {
+                    explanatory = NULL, success = NULL, keep = NULL) {
   check_type(x, is.data.frame)
 
   # Standardize variable types
   x <- standardize_variable_types(x)
-  
+
   # Parse response and explanatory variables
   response <- enquo(response)
   explanatory <- enquo(explanatory)
-  
+
   x <- parse_variables(x, formula, response, explanatory)
-  
+
   # Add attributes
   attr(x, "success") <- success
   attr(x, "generated") <- FALSE
   attr(x, "hypothesized") <- FALSE
   attr(x, "fitted") <- FALSE
-  
+
   # Check the success argument
   check_success_arg(x, success)
-  
+
   # Select variables
   x <- x %>%
-    select(any_of(c(response_name(x), explanatory_name(x))))
+    select(any_of(c(response_name(x), explanatory_name(x))), !!enexpr(keep))
 
   is_complete <- stats::complete.cases(x)
   if (!all(is_complete)) {
@@ -85,7 +85,7 @@ specify <- function(x, formula, response = NULL,
 parse_variables <- function(x, formula, response, explanatory) {
   if (methods::hasArg(formula)) {
     tryCatch(
-      rlang::is_formula(formula), 
+      rlang::is_formula(formula),
       error = function(e) {
         stop_glue("The argument you passed in for the formula does not exist.
                   * Were you trying to pass in an unquoted column name?
@@ -98,53 +98,53 @@ parse_variables <- function(x, formula, response, explanatory) {
                 * Did you forget to name one or more arguments?")
     }
   }
-  
+
   attr(x, "response")    <- get_expr(response)
   attr(x, "explanatory") <- get_expr(explanatory)
   attr(x, "formula") <- NULL
-  
+
   if (methods::hasArg(formula)) {
     attr(x, "response")    <- f_lhs(formula)
     attr(x, "explanatory") <- f_rhs(formula)
     attr(x, "formula") <- formula
   }
-  
+
   # Check response and explanatory variables to be appropriate for later use
   if (!has_response(x)) {
     stop_glue("Please supply a response variable that is not `NULL`.")
   }
-  
+
   check_var_correct(x, "response")
   check_var_correct(x, "explanatory")
-  
+
   # If there's an explanatory var
   check_vars_different(x)
-  
+
   if (!has_attr(x, "response")) {
     attr(x, "response_type") <- NULL
   } else {
     attr(x, "response_type") <- class(response_variable(x))
   }
-  
+
   if (!has_attr(x, "explanatory")) {
     attr(x, "explanatory_type") <- NULL
   } else {
-    attr(x, "explanatory_type") <- 
+    attr(x, "explanatory_type") <-
       purrr::map_chr(as.data.frame(explanatory_variable(x)), class)
   }
-  
+
   attr(x, "type_desc_response") <- determine_variable_type(x, "response")
   attr(x, "type_desc_explanatory") <- determine_variable_type(x, "explanatory")
-  
+
   # Determine params for theoretical fit
   x <- set_params(x)
-  
+
   x
 }
 
 check_success_arg <- function(x, success) {
   response_col <- response_variable(x)
-  
+
   if (!is.null(success)) {
     if (!is.character(success)) {
       stop_glue("`success` must be a string.")
@@ -165,8 +165,8 @@ check_success_arg <- function(x, success) {
       )
     }
   }
-  
-  if ((attr(x, "response_type") == "factor" && 
+
+  if ((attr(x, "response_type") == "factor" &&
       is.null(success) &&
       length(levels(response_variable(x))) == 2) &&
      ((!has_attr(x, "explanatory_type") ||
@@ -176,12 +176,12 @@ check_success_arg <- function(x, success) {
         'specified for the `success` argument in `specify()`.'
       )
     }
-  
+
 }
 
 check_var_correct <- function(x, var_name) {
   var <- attr(x, var_name)
-  
+
   # Variable (if present) should be a symbolic column name
   if (!is.null(var)) {
     if (!rlang::is_symbolic(var)) {
@@ -190,14 +190,14 @@ check_var_correct <- function(x, var_name) {
         "quotation marks)."
       )
     }
-    
+
     if (any(!(all.vars(var) %in% names(x)))) {
       stop_glue(
         'The {var_name} variable `{var}` cannot be found in this dataframe.'
       )
     }
   }
-  
+
   TRUE
 }
 
@@ -210,6 +210,6 @@ check_vars_different <- function(x) {
       )
     }
   }
-  
+
   TRUE
 }
