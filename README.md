@@ -58,8 +58,8 @@ install `remotes` first. The `pkgdown` website for this version is at
 [infer.tidymodels.org](https://infer.tidymodels.org/).
 
 ``` r
-install.packages("remotes")
-remotes::install_github("tidymodels/infer")
+# install.packages("pak")
+pak::pak("tidymodels/infer")
 ```
 
 ### Contributing
