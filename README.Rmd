@@ -58,7 +58,7 @@ remotes::install_github("tidymodels/infer")
 
 We welcome others helping us make this package as user-friendly and efficient as possible. Please review our [contributing](https://github.com/tidymodels/infer/blob/main/CONTRIBUTING.md) and [conduct](https://github.com/tidymodels/infer/blob/main/CONDUCT.md) guidelines. By participating in this project you agree to abide by its terms.
 
-For questions and discussions about tidymodels packages, modeling, and machine learning, please [post on RStudio Community](https://community.rstudio.com/new-topic?category_id=15&tags=tidymodels,question). If you think you have encountered a bug, please [submit an issue](https://github.com/tidymodels/infer/issues). Either way, learn how to create and share a [reprex](https://reprex.tidyverse.org/articles/learn-reprex.html) (a minimal, reproducible example), to clearly communicate about your code. Check out further details on [contributing guidelines for tidymodels packages](https://www.tidymodels.org/contribute/) and [how to get help](https://www.tidymodels.org/help/).
+For questions and discussions about tidymodels packages, modeling, and machine learning, please [post on Posit Community](https://community.rstudio.com/new-topic?category_id=15&tags=tidymodels,question). If you think you have encountered a bug, please [submit an issue](https://github.com/tidymodels/infer/issues). Either way, learn how to create and share a [reprex](https://reprex.tidyverse.org/articles/learn-reprex.html) (a minimal, reproducible example), to clearly communicate about your code. Check out further details on [contributing guidelines for tidymodels packages](https://www.tidymodels.org/contribute/) and [how to get help](https://www.tidymodels.org/help/).
 
 ### Examples
 
