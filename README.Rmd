@@ -2,7 +2,7 @@
 output: github_document
 ---
 
-# infer R Package <img src="man/figures/infer.png" align="right" width=280 />
+# infer R Package <img src="man/figures/logo.png" align="right" width=280 />
 
 
 
