@@ -98,7 +98,7 @@ Suggests:
     nycflights13,
     rmarkdown,
     stringr,
-    testthat,
+    testthat (>= 3.0.0),
     vdiffr (>= 1.0.0),
     parsnip
 VignetteBuilder:
@@ -108,3 +108,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
+Config/testthat/edition: 3
