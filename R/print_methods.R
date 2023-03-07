@@ -17,7 +17,7 @@ print.infer <- function(x, ...) {
     )
     if ("explanatory" %in% attrs) {
       header[2] <- glue_null(
-        'Explanatory: {paste0(paste0(explanatory_name(x), " (", 
+        'Explanatory: {paste0(paste0(explanatory_name(x), " (",
         attr(x, "explanatory_type"), ")"), collapse = ", ")}'
       )
     }

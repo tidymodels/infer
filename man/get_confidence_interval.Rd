@@ -107,7 +107,7 @@ boot_dist \%>\%
     # Using the standard error method
     type = "se"
   )
-  
+
 # using a theoretical distribution -----------------------------------
 
 # define a sampling distribution
@@ -118,11 +118,11 @@ sampling_dist <- gss \%>\%
 # get the confidence interval---note that the
 # point estimate is required here
 get_confidence_interval(
-  sampling_dist, 
-  level = .95, 
+  sampling_dist,
+  level = .95,
   point_estimate = sample_mean
 )
-  
+
 # using a model fitting workflow -----------------------
 
 # fit a linear model predicting number of hours worked per
@@ -133,8 +133,8 @@ observed_fit <- gss \%>\%
 
 observed_fit
 
-# fit 100 models to resamples of the gss dataset, where the response 
-# `hours` is permuted in each. note that this code is the same as 
+# fit 100 models to resamples of the gss dataset, where the response
+# `hours` is permuted in each. note that this code is the same as
 # the above except for the addition of the `generate` step.
 null_fits <- gss \%>\%
   specify(hours ~ age + college) \%>\%
@@ -145,8 +145,8 @@ null_fits <- gss \%>\%
 null_fits
 
 get_confidence_interval(
-  null_fits, 
-  point_estimate = observed_fit, 
+  null_fits,
+  point_estimate = observed_fit,
   level = .95
 )
 

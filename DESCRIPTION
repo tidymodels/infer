@@ -2,7 +2,7 @@ Type: Package
 Package: infer
 Title: Tidy Statistical Inference
 Version: 1.0.4.9000
-Authors@R:c(
+Authors@R: c(
     person("Andrew", "Bray", , "abray@reed.edu", role = "aut"),
     person("Chester", "Ismay", , "chester.ismay@gmail.com", role = "aut",
            comment = c(ORCID = "0000-0003-2820-2547")),
@@ -65,5 +65,5 @@ Config/Needs/website: tidyverse/tidytemplate
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Config/testthat/edition: 3

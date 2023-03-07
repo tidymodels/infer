@@ -93,7 +93,7 @@ gss \%>\%
 \if{html}{\out{<div class="sourceCode">}}\preformatted{## Response: age (numeric)
 ## Explanatory: college (factor)
 ## Null Hypothesis: independence
-## # A tibble: 5 × 2
+## # A tibble: 5 x 2
 ##   replicate   stat
 ##       <int>  <dbl>
 ## 1         1 -0.531
@@ -119,7 +119,7 @@ gss \%>\%
 \if{html}{\out{<div class="sourceCode">}}\preformatted{## Response: age (numeric)
 ## Explanatory: college (factor)
 ## Null Hypothesis: independence
-## # A tibble: 5 × 2
+## # A tibble: 5 x 2
 ##   replicate   stat
 ##       <int>  <dbl>
 ## 1         1 -0.531
@@ -142,8 +142,8 @@ observed_fit <- gss \%>\%
 
 observed_fit
 
-# fit 100 models to resamples of the gss dataset, where the response 
-# `hours` is permuted in each. note that this code is the same as 
+# fit 100 models to resamples of the gss dataset, where the response
+# `hours` is permuted in each. note that this code is the same as
 # the above except for the addition of the `generate` step.
 null_fits <- gss \%>\%
   specify(hours ~ age + college) \%>\%
@@ -162,6 +162,6 @@ gss \%>\%
 # more in-depth explanation of how to use the infer package
 \dontrun{
 vignette("infer")
-}  
+}
 
 }

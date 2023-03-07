@@ -73,13 +73,12 @@ By default, the package will use the \code{"parameter"} entry of the analogous
 \code{stats::t.test()} call with \code{var.equal = FALSE} (the default).
 }
 \examples{
-  
 # construct theoretical distributions ---------------------------------
 
 # F distribution
 # with the `partyid` explanatory variable
-gss \%>\% 
-  specify(age ~ partyid) \%>\% 
+gss \%>\%
+  specify(age ~ partyid) \%>\%
   assume(distribution = "F")
 
 # Chi-squared goodness of fit distribution
@@ -102,7 +101,7 @@ gss \%>\%
   assume(distribution = "Chisq")
 
 # T distribution
-gss \%>\% 
+gss \%>\%
   specify(age ~ college) \%>\%
   assume("t")
 
@@ -117,7 +116,7 @@ gss \%>\%
 
 # for example, a 1-sample t-test -------------------------------------
 
-# calculate the observed statistic 
+# calculate the observed statistic
 obs_stat <- gss \%>\%
   specify(response = hours) \%>\%
   hypothesize(null = "point", mu = 40) \%>\%
@@ -129,31 +128,31 @@ null_dist <- gss \%>\%
   assume("t")
 
 # juxtapose them visually
-visualize(null_dist) + 
+visualize(null_dist) +
   shade_p_value(obs_stat, direction = "both")
-  
+
 # calculate a p-value
 get_p_value(null_dist, obs_stat, direction = "both")
 
 # or, an F test ------------------------------------------------------
 
-# calculate the observed statistic 
-obs_stat <- gss \%>\% 
+# calculate the observed statistic
+obs_stat <- gss \%>\%
   specify(age ~ partyid) \%>\%
   hypothesize(null = "independence") \%>\%
   calculate(stat = "F")
 
 # construct a null distribution
-null_dist <- gss \%>\% 
+null_dist <- gss \%>\%
   specify(age ~ partyid) \%>\%
   assume(distribution = "F")
 
 # juxtapose them visually
-visualize(null_dist) + 
+visualize(null_dist) +
   shade_p_value(obs_stat, direction = "both")
-  
+
 # calculate a p-value
 get_p_value(null_dist, obs_stat, direction = "both")
 }
-    
+
 }

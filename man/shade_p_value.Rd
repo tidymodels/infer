@@ -49,7 +49,7 @@ point_estimate <- gss \%>\%
   specify(response = hours) \%>\%
   hypothesize(null = "point", mu = 40) \%>\%
   calculate(stat = "t")
-  
+
 # ...and a null distribution
 null_dist <- gss \%>\%
   # ...we're interested in the number of hours worked per week
@@ -60,18 +60,18 @@ null_dist <- gss \%>\%
   generate(reps = 1000, type = "bootstrap") \%>\%
   # estimating the null distribution
   calculate(stat = "t")
-  
+
 # shade the p-value of the point estimate
 null_dist \%>\%
   visualize() +
   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
-  
+
 # you can shade confidence intervals on top of
 # theoretical distributions, too!
 null_dist_theory <- gss \%>\%
   specify(response = hours) \%>\%
-  assume(distribution = "t") 
-  
+  assume(distribution = "t")
+
 null_dist_theory \%>\%
   visualize() +
   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
@@ -86,7 +86,7 @@ null_fits <- gss \%>\%
  hypothesize(null = "independence") \%>\%
  generate(reps = 1000, type = "permute") \%>\%
  fit()
- 
+
 null_fits
 
 # fit a linear model to the observed data
@@ -96,18 +96,18 @@ obs_fit <- gss \%>\%
 
 obs_fit
 
-# visualize distributions of coefficients 
+# visualize distributions of coefficients
 # generated under the null
 visualize(null_fits)
 
-# add a p-value shading layer to juxtapose the null 
+# add a p-value shading layer to juxtapose the null
 # fits with the observed fit for each term
-visualize(null_fits) + 
+visualize(null_fits) +
   shade_p_value(obs_fit, direction = "both")
 
-# the direction argument will be applied 
+# the direction argument will be applied
 # to the plot for each term
-visualize(null_fits) + 
+visualize(null_fits) +
   shade_p_value(obs_fit, direction = "left")
 }
 

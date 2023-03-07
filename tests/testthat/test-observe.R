@@ -43,7 +43,7 @@ test_that("observe messages/warns/errors informatively", {
         calculate(stat = "mean")
     ) %>% conditionMessage()
   )
-   
+
   expect_equal(
      expect_warning(
         gss %>%
@@ -140,7 +140,7 @@ test_that("observe() output is the same as the old wrappers", {
       res_wrap <- gss_tbl %>%
          chisq_stat(college ~ partyid)
    )
-   
+
    expect_equal(
     gss_tbl %>%
       observe(college ~ partyid, stat = "Chisq") %>%
@@ -152,7 +152,7 @@ test_that("observe() output is the same as the old wrappers", {
     res_wrap_2 <- gss_tbl %>%
        t_stat(hours ~ sex, order = c("male", "female"))
   )
-   
+
   expect_equal(
     gss_tbl %>%
       observe(stat = "t", hours ~ sex, order = c("male", "female")) %>%

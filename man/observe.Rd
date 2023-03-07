@@ -117,7 +117,7 @@ observe(
 gss \%>\%
   specify(age ~ college) \%>\%
   calculate("diff in means", order = c("degree", "no degree"))
-  
+
 # for a more in-depth explanation of how to use the infer package
 \dontrun{
 vignette("infer")

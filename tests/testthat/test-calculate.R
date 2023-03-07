@@ -579,7 +579,7 @@ test_that("calc_impl.sum works", {
 
   expect_equal(
     gen_gss_tbl16 %>% calculate(stat = "sum"),
-    gen_gss_tbl16 %>% dplyr::summarise(stat = sum(hours)), 
+    gen_gss_tbl16 %>% dplyr::summarise(stat = sum(hours)),
     ignore_attr = TRUE
   )
 })

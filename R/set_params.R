@@ -5,37 +5,37 @@
 #' @noRd
 set_params <- function(x) {
   attr(x, "theory_type") <- NULL
-  
+
   if (has_response(x)) {
     num_response_levels <- length(unique(response_variable(x)))
-    
+
     check_factor_levels(
-      response_variable(x), 
-      "response", 
+      response_variable(x),
+      "response",
       response_name(x)
     )
   }
-  
+
   if (is_mlr(x)) {
     return(x)
   }
-  
+
   if (has_explanatory(x)) {
     num_explanatory_levels <- length(unique(explanatory_variable(x)))
-    
+
     check_factor_levels(
-      explanatory_variable(x), 
-      "explanatory", 
+      explanatory_variable(x),
+      "explanatory",
       explanatory_name(x)
     )
   }
-  
+
   # One variable
   if (
     has_response(x) && !has_explanatory(x) &&
     has_attr(x, "response_type") && !has_attr(x, "explanatory_type")
   ) {
-    
+
     # One mean
     if (attr(x, "response_type") %in% c("integer", "numeric")) {
       attr(x, "theory_type") <- "One sample t"
@@ -44,7 +44,7 @@ set_params <- function(x) {
       )[["parameter"]]
       attr(x, "type") <- "bootstrap"
     } else if (
-      
+
       # One prop
       (attr(x, "response_type") == "factor") && (num_response_levels == 2)
     ) {
@@ -58,20 +58,20 @@ set_params <- function(x) {
       attr(x, "type") <- "draw"
     }
   }
-  
+
   # Two variables
   if (
     has_response(x) && has_explanatory(x) &
     has_attr(x, "response_type") && has_attr(x, "explanatory_type")
   ) {
     attr(x, "type") <- "bootstrap"
-    
+
     # Response is numeric, explanatory is categorical
     if (
       (attr(x, "response_type") %in% c("integer", "numeric")) &
       (attr(x, "explanatory_type") == "factor")
     ) {
-      
+
       # Two sample means (t distribution)
       if (num_explanatory_levels == 2) {
         attr(x, "theory_type") <- "Two sample t"
@@ -81,7 +81,7 @@ set_params <- function(x) {
           response_variable(x) ~ explanatory_variable(x)
         )[["parameter"]]
       } else {
-        
+
         # >2 sample means (F distribution)
         attr(x, "theory_type") <- "ANOVA"
         # Get numerator and denominator degrees of freedom
@@ -92,14 +92,14 @@ set_params <- function(x) {
         attr(x, "distr_param2") <- degrees[2]
       }
     }
-    
+
     # Response is categorical, explanatory is categorical
     if (
       (attr(x, "response_type") == "factor") &
       (attr(x, "explanatory_type") == "factor")
     ) {
       attr(x, "type") <- "bootstrap"
-      
+
       # Two sample proportions (z distribution)
       # Parameter(s) not needed since standard normal
       if (
@@ -108,7 +108,7 @@ set_params <- function(x) {
       ) {
         attr(x, "theory_type") <- "Two sample props z"
       } else {
-        
+
         # >2 sample proportions (chi-square test of indep)
         attr(x, "theory_type") <- "Chi-square test of indep"
         attr(x, "distr_param") <- suppressWarnings(
@@ -118,7 +118,7 @@ set_params <- function(x) {
         )
       }
     }
-    
+
     # Response is numeric, explanatory is numeric
     if (
       (attr(x, "response_type") %in% c("integer", "numeric")) &
@@ -137,7 +137,7 @@ set_params <- function(x) {
 check_factor_levels <- function(x, type, name) {
   if (is.factor(x)) {
     unused <- setdiff(levels(x), unique(x))
-    
+
     if (length(unused) > 0) {
       message_glue(
         "Dropping unused factor levels {list(unused)} from the ",

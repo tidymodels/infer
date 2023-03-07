@@ -49,7 +49,7 @@ Learn more in \code{vignette("infer")}.
 point_estimate <- gss \%>\%
   specify(response = hours) \%>\%
   calculate(stat = "mean")
-  
+
 # ...and a bootstrap distribution
 boot_dist <- gss \%>\%
   # ...we're interested in the number of hours worked per week
@@ -58,34 +58,34 @@ boot_dist <- gss \%>\%
   generate(reps = 1000, type = "bootstrap") \%>\%
   # finding the distribution from the generated data
   calculate(stat = "mean")
-  
+
 # find a confidence interval around the point estimate
 ci <- boot_dist \%>\%
   get_confidence_interval(point_estimate = point_estimate,
                           # at the 95\% confidence level
                           level = .95,
                           # using the standard error method
-                          type = "se")   
-  
-  
+                          type = "se")
+
+
 # and plot it!
 boot_dist \%>\%
   visualize() +
   shade_confidence_interval(ci)
-  
+
 # or just plot the bounds
 boot_dist \%>\%
   visualize() +
   shade_confidence_interval(ci, fill = NULL)
-  
+
 # you can shade confidence intervals on top of
 # theoretical distributions, too---the theoretical
 # distribution will be recentered and rescaled to
 # align with the confidence interval
 sampling_dist <- gss \%>\%
   specify(response = hours) \%>\%
-  assume(distribution = "t") 
-  
+  assume(distribution = "t")
+
 visualize(sampling_dist) +
   shade_confidence_interval(ci)
 
@@ -99,7 +99,7 @@ null_fits <- gss \%>\%
  hypothesize(null = "independence") \%>\%
  generate(reps = 1000, type = "permute") \%>\%
  fit()
- 
+
 null_fits
 
 # fit a linear model to the observed data
@@ -110,20 +110,20 @@ obs_fit <- gss \%>\%
 obs_fit
 
 # get confidence intervals for each term
-conf_ints <- 
+conf_ints <-
   get_confidence_interval(
-    null_fits, 
-    point_estimate = obs_fit, 
+    null_fits,
+    point_estimate = obs_fit,
     level = .95
   )
 
-# visualize distributions of coefficients 
+# visualize distributions of coefficients
 # generated under the null
 visualize(null_fits)
 
-# add a confidence interval shading layer to juxtapose 
+# add a confidence interval shading layer to juxtapose
 # the null fits with the observed fit for each term
-visualize(null_fits) + 
+visualize(null_fits) +
   shade_confidence_interval(conf_ints)
 }
 
