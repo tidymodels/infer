@@ -275,6 +275,7 @@ process_variables <- function(variables, should_prompt) {
   if (length(out) == 1) {
     out <- as.character(out)
   } else {
+    out <- as.list(out)
     out <- purrr::map(out, as.character)
   }
 
