@@ -1,5 +1,3 @@
-context("print")
-
 test_that("print works", {
   expect_output(print(
     gss_tbl %>%

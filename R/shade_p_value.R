@@ -175,7 +175,7 @@ shade_p_value_term <- function(plot, obs_stat, direction,
   
   # Add vertical line at `obs_stat`
   # Making extra step of precomputing arguments in order to have default value
-  # of `size = 2` overwritable in `...`
+  # of `linewidth = 2` overwritable in `...`
   segment_args <- c_dedupl(
     # Not overwritable arguments
     list(
@@ -187,7 +187,7 @@ shade_p_value_term <- function(plot, obs_stat, direction,
     # Extra arguments
     dots,
     # Default arguments that might be replaced in `...`
-    list(size = 2)
+    list(linewidth = 2)
   )
   segment_layer <- do.call(ggplot2::geom_segment, segment_args)
   

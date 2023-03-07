@@ -1,5 +1,3 @@
-context("calculate")
-
 # calculate arguments
 test_that("x is a tibble", {
   vec <- 1:10
@@ -221,7 +219,7 @@ test_that("two sample mean-type problems are working", {
 })
 
 test_that("properties of tibble passed-in are correct", {
-  expect_is(gen_gss5, "grouped_df")
+  expect_s3_class(gen_gss5, "grouped_df")
   expect_equal(ncol(gen_gss5), 3)
 
   gen_gss6 <- gss_tbl %>%
@@ -269,7 +267,7 @@ test_that("chi-square matches chisq.test value", {
       dplyr::select(replicate, stat = statistic)
   )
   # Equal not including attributes
-  expect_equivalent(infer_way, trad_way)
+  expect_equal(infer_way, trad_way, ignore_attr = TRUE)
 
   gen_gss9 <- gss_tbl %>%
     specify(partyid ~ NULL) %>%
@@ -286,7 +284,7 @@ test_that("chi-square matches chisq.test value", {
       stats::chisq.test(table(.$partyid))
     )) %>%
     dplyr::select(replicate, stat = statistic)
-  expect_equivalent(infer_way, trad_way)
+  expect_equal(infer_way, trad_way, ignore_attr = TRUE)
 
   gen_gss9a <- gss_tbl %>%
     specify(partyid ~ NULL) %>%
@@ -303,7 +301,7 @@ test_that("chi-square matches chisq.test value", {
       stats::chisq.test(table(.$partyid), p = c(0.8, 0.1, 0.1))
     )) %>%
     dplyr::select(replicate, stat = statistic)
-  expect_equivalent(infer_way, trad_way)
+  expect_equal(infer_way, trad_way, ignore_attr = TRUE)
 
   # check that dots are passed correctly
   dat <- data.frame(
@@ -579,9 +577,10 @@ test_that("calc_impl.sum works", {
     specify(hours ~ NULL) %>%
     generate(10)
 
-  expect_equivalent(
+  expect_equal(
     gen_gss_tbl16 %>% calculate(stat = "sum"),
-    gen_gss_tbl16 %>% dplyr::summarise(stat = sum(hours))
+    gen_gss_tbl16 %>% dplyr::summarise(stat = sum(hours)), 
+    ignore_attr = TRUE
   )
 })
 
@@ -606,9 +605,10 @@ test_that("calc_impl.count works", {
     tolerance = eps
   )
 
-  expect_equivalent(
+  expect_equal(
     gen_gss_tbl12 %>% calculate(stat = "count"),
-    gen_gss_tbl12 %>% dplyr::summarise(stat = sum(college == "no degree"))
+    gen_gss_tbl12 %>% dplyr::summarise(stat = sum(college == "no degree")),
+    ignore_attr = TRUE
   )
 })
 

@@ -1,5 +1,3 @@
-context("generate")
-
 hyp_prop <- mtcars_df %>%
   specify(response = am, success = "1") %>%
   hypothesize(null = "point", p = .5)
@@ -394,11 +392,13 @@ test_that("generate is sensitive to the variables argument", {
     set.seed(1)
 
     expect_message(
-      gss[1:10,] %>%
+      res_1 <- gss[1:10,] %>%
         specify(hours ~ age + college) %>%
         hypothesize(null = "independence") %>%
         generate(reps = 2, type = "permute", variables = c(hours, age*college))
     )
+    
+    res_1
   }, {
     set.seed(1)
 
@@ -542,24 +542,29 @@ test_that("type = 'draw'/'simulate' superseding handled gracefully", {
     )
   )
 
-  expect_equivalent(
+  expect_equal(
     {
       set.seed(1)
 
       expect_message(
-        mtcars_df %>%
+        res_1 <- mtcars_df %>%
           specify(response = am, success = "1") %>%
           hypothesize(null = "point", p = .5) %>%
           generate(type = "simulate")
       )
+      
+      res_1
     }, {
       set.seed(1)
 
-      mtcars_df %>%
+      res_2 <- mtcars_df %>%
         specify(response = am, success = "1") %>%
         hypothesize(null = "point", p = .5) %>%
         generate(type = "draw")
-    }
+      
+      res_2
+    }, 
+    ignore_attr = TRUE
   )
 })
 

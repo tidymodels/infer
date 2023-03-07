@@ -1,5 +1,3 @@
-context("utils")
-
 test_that("append_infer_class works", {
   expect_equal(
     class(append_infer_class(structure("a", class = "b"))),
@@ -134,9 +132,10 @@ test_that("c_dedupl returns input when unnamed", {
   expect_equal(c_dedupl(c(1, 2, 3)), c(1, 2, 3))
 })
 
-test_that("hypothesize errors out when x isn't a dataframe",
-          expect_error(hypothesize(c(1, 2, 3), null = "point"),
-                       "x must be a data.frame or tibble"))
+test_that("hypothesize errors out when x isn't a dataframe", {
+   expect_error(hypothesize(c(1, 2, 3), null = "point"),
+                "x must be a data.frame or tibble")
+})
 
 test_that("p_null supplies appropriate params", {
   expect_equal(
