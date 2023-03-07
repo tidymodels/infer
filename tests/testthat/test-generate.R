@@ -392,11 +392,13 @@ test_that("generate is sensitive to the variables argument", {
     set.seed(1)
 
     expect_message(
-      gss[1:10,] %>%
+      res_1 <- gss[1:10,] %>%
         specify(hours ~ age + college) %>%
         hypothesize(null = "independence") %>%
         generate(reps = 2, type = "permute", variables = c(hours, age*college))
     )
+    
+    res_1
   }, {
     set.seed(1)
 
