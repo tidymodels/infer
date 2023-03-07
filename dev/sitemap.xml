@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://infer.tidymodels.org/dev/CONDUCT.html</loc>
+    <loc>https://infer.tidymodels.org/dev/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
     <loc>https://infer.tidymodels.org/dev/CONTRIBUTING.html</loc>
