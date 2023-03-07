@@ -86,14 +86,16 @@ test_that("visualize warns with bad arguments", {
     generate(reps = 100, type = "permute") %>%
     calculate(stat = "slope")
 
+  expect_warning(
+     res <- age_hours_df %>%
+        visualize(endpoints = c(.01, .02)),
+     'endpoints.*deprecated.*should now be passed to'
+  )
+  
   expect_equal(
     age_hours_df %>%
       visualize(),
-    expect_warning(
-      age_hours_df %>%
-        visualize(endpoints = c(.01, .02)),
-      'endpoints.*deprecated.*should now be passed to'
-    )
+    res
   )
 })
 
