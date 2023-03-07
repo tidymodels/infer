@@ -1,5 +1,3 @@
-context("rep_sample_n")
-
 n_population <- 5
 population <- tibble::tibble(
   ball_id = 1:n_population,

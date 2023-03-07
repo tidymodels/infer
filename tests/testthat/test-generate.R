@@ -1,5 +1,3 @@
-context("generate")
-
 hyp_prop <- mtcars_df %>%
   specify(response = am, success = "1") %>%
   hypothesize(null = "point", p = .5)
