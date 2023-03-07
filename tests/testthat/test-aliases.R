@@ -12,11 +12,12 @@ test_that("aliases work", {
 
 test_that("old aliases produce warning", {
   expect_warning(
-    gss_calc %>%
+    res <- gss_calc %>%
       p_value(obs_stat = -0.2, direction = "right") %>%
-      dplyr::pull(),
-    expected = 1
+      dplyr::pull()
   )
+   
+  expect_equal(res, 1)
 
   expect_warning(gss_permute %>% conf_int())
 })
