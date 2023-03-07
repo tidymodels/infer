@@ -8,10 +8,10 @@
 #'
 #' Learn more in `vignette("infer")`.
 #'
-#' @param x A distribution. For simulation-based inference, a data frame
-#'   containing a distribution of [calculate()]d statistics
-#'   or [`fit()`][fit.infer()]ted coefficient estimates. This object should
-#'   have been passed to [generate()] before being supplied or
+#' @param x A distribution. For simulation-based inference, a data frame 
+#'   containing a distribution of [calculate()]d statistics 
+#'   or [`fit()`][fit.infer()]ted coefficient estimates. This object should 
+#'   have been passed to [generate()] before being supplied or 
 #'   [calculate()] to [`fit()`][fit.infer()]. For theory-based inference,
 #'   output of [assume()]. Distributions for confidence intervals do not
 #'   require a null hypothesis via [hypothesize()].
@@ -21,19 +21,19 @@
 #'   confidence interval. The default is `"percentile"` with `"se"`
 #'   corresponding to (multiplier * standard error) and `"bias-corrected"` for
 #'   bias-corrected interval as other options.
-#' @param point_estimate A data frame containing the observed statistic (in a
-#'   [calculate()]-based workflow) or observed fit (in a
-#'   [`fit()`][fit.infer()]-based workflow). This object is likely the output
+#' @param point_estimate A data frame containing the observed statistic (in a 
+#'   [calculate()]-based workflow) or observed fit (in a 
+#'   [`fit()`][fit.infer()]-based workflow). This object is likely the output 
 #'   of [calculate()] or [`fit()`][fit.infer()] and need not
 #'   to have been passed to [generate()]. Set to `NULL` by
 #'   default. Must be provided if `type` is `"se"` or `"bias-corrected"`.
 #'
 #' @return A [tibble][tibble::tibble] containing the following columns:
-#'
+#' 
 #' \itemize{
-#'   \item `term`: The explanatory variable (or intercept) in question. Only
+#'   \item `term`: The explanatory variable (or intercept) in question. Only 
 #'     supplied if the input had been previously passed to [`fit()`][fit.infer()].
-#'   \item `lower_ci`, `upper_ci`: The lower and upper bounds of the confidence
+#'   \item `lower_ci`, `upper_ci`: The lower and upper bounds of the confidence 
 #'     interval, respectively.
 #' }
 #'
@@ -42,13 +42,13 @@
 #' including [hypothesize()] in a pipeline leading to `get_confidence_interval()`
 #' will not break anything. This can be useful when computing a confidence
 #' interval using the same distribution used to compute a p-value.
-#'
+#' 
 #' Theoretical confidence intervals (i.e. calculated by supplying the output
 #' of [assume()] to the `x` argument) require that the point estimate lies on
 #' the scale of the data. The distribution defined in [assume()] will be
 #' recentered and rescaled to align with the point estimate, as can be shown
-#' in the output of [visualize()] when paired with [shade_confidence_interval()].
-#' Confidence intervals are implemented for the following distributions and
+#' in the output of [visualize()] when paired with [shade_confidence_interval()]. 
+#' Confidence intervals are implemented for the following distributions and 
 #' point estimates:
 #'
 #' \itemize{
@@ -56,7 +56,7 @@
 #'   [calculate()] with `stat = "mean"` or `stat = "diff in means"`
 #'   \item `distribution = "z"`: `point_estimate` should be the output of
 #'   [calculate()] with `stat = "prop"` or `stat = "diff in props"`
-#' }
+#' } 
 #'
 #' @section Aliases:
 #' `get_ci()` is an alias of `get_confidence_interval()`.
@@ -92,46 +92,46 @@
 #'     # Using the standard error method
 #'     type = "se"
 #'   )
-#'
+#'   
 #' # using a theoretical distribution -----------------------------------
-#'
+#' 
 #' # define a sampling distribution
 #' sampling_dist <- gss %>%
 #'   specify(response = hours) %>%
 #'   assume("t")
-#'
+#' 
 #' # get the confidence interval---note that the
 #' # point estimate is required here
 #' get_confidence_interval(
-#'   sampling_dist,
-#'   level = .95,
+#'   sampling_dist, 
+#'   level = .95, 
 #'   point_estimate = sample_mean
 #' )
-#'
+#'   
 #' # using a model fitting workflow -----------------------
-#'
+#' 
 #' # fit a linear model predicting number of hours worked per
 #' # week using respondent age and degree status.
 #' observed_fit <- gss %>%
 #'   specify(hours ~ age + college) %>%
 #'   fit()
-#'
+#' 
 #' observed_fit
-#'
-#' # fit 100 models to resamples of the gss dataset, where the response
-#' # `hours` is permuted in each. note that this code is the same as
+#' 
+#' # fit 100 models to resamples of the gss dataset, where the response 
+#' # `hours` is permuted in each. note that this code is the same as 
 #' # the above except for the addition of the `generate` step.
 #' null_fits <- gss %>%
 #'   specify(hours ~ age + college) %>%
 #'   hypothesize(null = "independence") %>%
 #'   generate(reps = 100, type = "permute") %>%
 #'   fit()
-#'
+#' 
 #' null_fits
-#'
+#' 
 #' get_confidence_interval(
-#'   null_fits,
-#'   point_estimate = observed_fit,
+#'   null_fits, 
+#'   point_estimate = observed_fit, 
 #'   level = .95
 #' )
 #'
@@ -149,7 +149,7 @@ get_confidence_interval <- function(x, level = 0.95, type = NULL,
   if (!("level" %in% rlang::call_args_names(match.call()))) {
     message_glue("Using `level = {level}` to compute confidence interval.")
   }
-
+  
   if (is.null(type)) {
     if (inherits(x, "infer_dist")) {
       type <- "se"
@@ -157,28 +157,28 @@ get_confidence_interval <- function(x, level = 0.95, type = NULL,
       type <- "percentile"
     }
   }
-
+  
   if (is_fitted(x)) {
     # check that x and point estimate reference the same variables
     check_mlr_x_and_obs_stat(
-      x,
-      point_estimate,
-      "get_confidence_interval",
+      x, 
+      point_estimate, 
+      "get_confidence_interval", 
       "point_estimate"
     )
-
+    
     # split up x and point estimate by term
     term_data <- x %>%
       dplyr::ungroup() %>%
       dplyr::group_by(term) %>%
       dplyr::group_split() %>%
       purrr::map(copy_attrs, x)
-
+    
     term_estimates <- point_estimate %>%
       dplyr::ungroup() %>%
       dplyr::group_by(term) %>%
       dplyr::group_split()
-
+    
     # check arguments for each term
     purrr::map2_dfr(
       term_data,
@@ -187,7 +187,7 @@ get_confidence_interval <- function(x, level = 0.95, type = NULL,
       level = level,
       type = type
     )
-
+    
     # map over switch_ci and then add the term column back in
     purrr::map2_dfr(
       term_data,
@@ -203,7 +203,7 @@ get_confidence_interval <- function(x, level = 0.95, type = NULL,
       copy_attrs(x)
   } else {
     check_ci_args(x, level, type, point_estimate)
-
+    
     switch_ci(type, x, level, point_estimate)
   }
 }
@@ -236,9 +236,9 @@ ci_percentile <- function(x, level) {
 
 ci_se <- function(x, level, point_estimate) {
   point_estimate_ <- check_obs_stat(point_estimate)
-
-  args <- list()
-
+  
+  args <- list() 
+  
   if (inherits(x, "infer_dist")) {
     se <- attr(point_estimate, "se")
     qfn <- paste0("q", attr(x, "distribution"))
@@ -252,16 +252,16 @@ ci_se <- function(x, level, point_estimate) {
   }
 
   args <- c(args, list(p = (1 + level) / 2))
-
+  
   multiplier <- do.call(qfn, args)
 
   ci_vec <- point_estimate_ + c(-multiplier, multiplier) * se
 
   res <- make_ci_df(ci_vec)
-
+  
   attr(res, "se") <- attr(point_estimate, "se")
   attr(res, "point_estimate") <- point_estimate_
-
+  
   res
 }
 
@@ -296,7 +296,7 @@ check_ci_args <- function(x, level, type, point_estimate) {
   if ((level <= 0) || (level >= 1)) {
     stop_glue("The value of `level` must be between 0 and 1 non-inclusive.")
   }
-
+  
   if (inherits(x, "infer_dist") && !is.null(type) && type != "se") {
     stop_glue(
       'The only `type` option for theory-based confidence intervals ',
@@ -316,7 +316,7 @@ check_ci_args <- function(x, level, type, point_estimate) {
       'for `type` "se" or "bias-corrected".'
     )
   }
-
+  
   if (inherits(x, "infer_dist")) {
     # theoretical CIs require the full point estimate infer object as they
     # contain the necessary standard error
@@ -327,8 +327,8 @@ check_ci_args <- function(x, level, type, point_estimate) {
         '`calculate()` as the `point_estimate` argument?'
       )
     }
-
-    if (!attr(point_estimate, "stat") %in%
+    
+    if (!attr(point_estimate, "stat") %in% 
         c("mean", "prop", "diff in means", "diff in props")) {
       stop_glue(
         'The only allowable statistics for theoretical confidence intervals ',
@@ -336,8 +336,8 @@ check_ci_args <- function(x, level, type, point_estimate) {
         'the "Details" section of `?get_confidence_interval` for more details.'
       )
     }
-
-    if ((attr(x, "distribution") == "t" &&
+    
+    if ((attr(x, "distribution") == "t" && 
          !attr(point_estimate, "stat") %in% c("mean", "diff in means")) ||
         (attr(x, "distribution") == "norm" &&
          !attr(point_estimate, "stat") %in% c("prop", "diff in props"))) {

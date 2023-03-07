@@ -8,7 +8,7 @@ test_that("aliases work", {
     expected = 1,
     tolerance = eps
   )
-
+  
   expect_silent(gss_permute %>% get_ci())
 })
 
@@ -19,6 +19,6 @@ test_that("old aliases produce warning", {
       dplyr::pull(),
     expected = 1
   )
-
+  
   expect_warning(gss_permute %>% conf_int())
 })

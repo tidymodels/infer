@@ -10,38 +10,38 @@ test_that("get_formula helper works", {
   expect_true(has_attr( x2, "formula"))
   expect_false(has_attr(x3, "formula"))
   expect_true(has_attr( x4, "formula"))
-
+  
   expect_equivalent(get_formula(x1), get_formula(x2))
   expect_equivalent(get_formula(x3), get_formula(x4))
 })
 
 test_that("fit_linear_model helper works", {
-  x3_m <-
+  x3_m <- 
     fit_linear_model(
       x3,
       get_formula(x3)
     )
-
-  x4_m <-
+  
+  x4_m <- 
     fit_linear_model(
       x3,
       get_formula(x3)
     )
-
+  
   expect_equal(x3_m, x4_m)
   expect_equal(nrow(x3_m), 3)
   expect_equal(ncol(x3_m), 2)
-
+  
   expect_equal(
-    c("term", "estimate"),
+    c("term", "estimate"), 
     colnames(x3_m)
   )
-
+  
   expect_equal(
     c("character", "numeric"),
     purrr::map_chr(x3_m, class) %>% unname()
   )
-
+  
   expect_equal(
     c("intercept", "age", "collegedegree"),
     x3_m$term
@@ -50,12 +50,12 @@ test_that("fit_linear_model helper works", {
 
 test_that("fit.infer can handle generated objects", {
   x3_fit <- x3 %>% fit()
-
+  
   x3_gen_fit <- x3 %>%
     hypothesize(null = 'independence') %>%
-    generate(reps = 2, type = "permute")%>%
+    generate(reps = 2, type = "permute")%>% 
     fit()
-
+  
   expect_equal(unique(x3_fit$term), unique(x3_gen_fit$term))
   expect_equal(nrow(x3_fit) * 2, nrow(x3_gen_fit))
   expect_equal(ncol(x3_fit) + 1, ncol(x3_gen_fit))
@@ -74,7 +74,7 @@ test_that("fit.infer messages informatively on excessive null", {
       fit(),
     "independence null hypothesis does not inform.*the observed fit"
   )
-
+  
   expect_silent(
     gss %>%
       specify(hours ~ age + college) %>%
@@ -92,7 +92,7 @@ test_that("fit.infer logistic regression works", {
       specify(hours ~ age + college) %>%
       fit(family = stats::gaussian)
   )
-
+  
   # logistic regression default works
   expect_equal(
     gss %>%
@@ -102,7 +102,7 @@ test_that("fit.infer logistic regression works", {
       specify(college ~ age + hours) %>%
       fit()
   )
-
+  
   # errors informatively with multinomial response variable
   expect_error(
     gss %>%
@@ -110,26 +110,26 @@ test_that("fit.infer logistic regression works", {
       fit(),
     "infer does not support.*more than two levels"
   )
-
+  
   # works as expected for `generate()`d objects
   fit_gen <- gss %>%
     specify(college ~ age + hours) %>%
     hypothesize(null = "independence") %>%
     generate(type = "permute", reps = 2) %>%
     fit()
-
+  
   fit_obs <- gss %>%
     specify(college ~ age + hours) %>%
     fit()
 
   expect_equal(nrow(fit_gen), nrow(fit_obs) * 2)
   expect_equal(ncol(fit_gen), ncol(fit_obs) + 1)
-
+  
   # responds to success argument
   fit_deg <- gss %>%
     specify(college ~ age + hours, success = "degree") %>%
     fit()
-
+  
   fit_no_deg <- gss %>%
     specify(college ~ age + hours, success = "no degree") %>%
     fit()

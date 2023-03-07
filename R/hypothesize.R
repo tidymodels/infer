@@ -1,9 +1,9 @@
 #' Declare a null hypothesis
 #'
 #' @description
-#'
+#' 
 #' Declare a null hypothesis about variables selected in [specify()].
-#'
+#' 
 #' Learn more in `vignette("infer")`.
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
@@ -26,7 +26,7 @@
 #' gss %>%
 #'  specify(college ~ partyid, success = "degree") %>%
 #'  hypothesize(null = "independence")
-#'
+#'  
 #' # hypothesize a mean number of hours worked per week of 40
 #' gss %>%
 #'   specify(response = hours) %>%
@@ -48,7 +48,7 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
 
   attr(x, "null") <- null
   attr(x, "hypothesized") <- TRUE
-
+  
   dots <- compact(list(p = p, mu = mu, med = med, sigma = sigma))
 
   # Set parameters and determine appropriate generation type
@@ -76,9 +76,9 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
       }
     }
   )
-
+  
   res <- append_infer_class(tibble::as_tibble(x))
-
+  
   copy_attrs(to = res, from = x)
 }
 
@@ -90,7 +90,7 @@ hypothesize_checks <- function(x, null) {
   if (!inherits(x, "data.frame")) {
     stop_glue("x must be a data.frame or tibble")
   }
-
+  
   if ((null == "independence") && !has_explanatory(x)) {
     stop_glue(
       'Please `specify()` an explanatory and a response variable when ',
@@ -101,17 +101,17 @@ hypothesize_checks <- function(x, null) {
 
 match_null_hypothesis <- function(null) {
   null_hypothesis_types <- c("point", "independence")
-
+  
   if(length(null) != 1) {
     stop_glue('You should specify exactly one type of null hypothesis.')
   }
-
+  
   i <- pmatch(null, null_hypothesis_types)
-
+  
   if(is.na(i)) {
     stop_glue('`null` should be either "point" or "independence".')
   }
-
+  
   null_hypothesis_types[i]
 }
 
@@ -122,7 +122,7 @@ sanitize_hypothesis_params_independence <- function(dots) {
       "independent."
     )
   }
-
+  
   NULL
 }
 
@@ -130,25 +130,25 @@ sanitize_hypothesis_params_point <- function(dots, x) {
   if(length(dots) != 1) {
     stop_glue("You must specify exactly one of `p`, `mu`, `med`, or `sigma`.")
   }
-
+  
   if (!is.null(dots$p)) {
     dots$p <- sanitize_hypothesis_params_proportion(dots$p, x)
   }
-
+  
   dots
 }
 
 sanitize_hypothesis_params_proportion <- function(p, x) {
   eps <- if (capabilities("long.double")) {sqrt(.Machine$double.eps)} else {0.01}
-
+  
   if(anyNA(p)) {
     stop_glue('`p` should not contain missing values.')
   }
-
+  
   if(any(p < 0 | p > 1)) {
     stop_glue('`p` should only contain values between zero and one.')
   }
-
+  
   if(length(p) == 1) {
     if(!has_attr(x, "success")) {
       stop_glue(
@@ -156,7 +156,7 @@ sanitize_hypothesis_params_proportion <- function(p, x) {
         "be indicated in `specify()`."
       )
     }
-
+    
     p <- c(p, 1 - p)
     names(p) <- get_success_then_response_levels(x)
   } else {
@@ -167,7 +167,7 @@ sanitize_hypothesis_params_proportion <- function(p, x) {
       )
     }
   }
-
+  
   p
 }
 

@@ -34,7 +34,7 @@ test_that("response and explanatory arguments", {
     specify(mtcars_df, formula = mpg ~ blah), "explanatory.*cannot be found"
   )
   expect_error(specify(mtcars_df, blah2 ~ cyl), "response.*cannot be found")
-  expect_error(specify(mtcars_df),
+  expect_error(specify(mtcars_df), 
                "Please supply a response variable that is not `NULL`.")
   expect_error(specify(mtcars_df, formula = mpg ~ mpg), "different")
   expect_error(
@@ -45,7 +45,7 @@ test_that("response and explanatory arguments", {
   )
   expect_silent(specify(mtcars_df, formula = mpg ~ cyl))
 
-  expect_error(specify(mtcars_df, formula = NULL ~ cyl),
+  expect_error(specify(mtcars_df, formula = NULL ~ cyl), 
                "Please supply a response variable that is not `NULL`.")
 })
 
@@ -89,28 +89,28 @@ test_that("specify doesn't have NSE issues (#256)", {
 
 test_that("specify messages when dropping unused levels", {
   expect_message(
-    gss %>%
+    gss %>%  
       dplyr::filter(partyid %in% c("rep", "dem")) %>%
       specify(age ~ partyid),
     "Dropping unused factor levels c\\(\"ind\", \"other\""
   )
-
+  
   expect_message(
-    gss %>%
+    gss %>%  
       dplyr::filter(partyid %in% c("rep", "dem")) %>%
       specify(partyid ~ age),
     "Dropping unused factor levels c\\(\"ind\", \"other\""
   )
-
+  
   expect_message(
-    gss %>%
+    gss %>%  
       dplyr::filter(partyid %in% c("rep", "dem")) %>%
       specify(partyid ~ NULL),
     "Dropping unused factor levels c\\(\"ind\", \"other\""
   )
-
+  
   expect_silent(
-    gss %>%
+    gss %>%  
       dplyr::filter(partyid %in% c("rep", "dem")) %>%
       specify(age ~ NULL)
   )
@@ -118,12 +118,12 @@ test_that("specify messages when dropping unused levels", {
 
 test_that("user can specify multiple explanatory variables", {
   x <- gss %>% specify(hours ~ sex + college)
-
+  
   expect_true(inherits(x, "infer"))
   expect_true(inherits(explanatory_variable(x), "tbl_df"))
   expect_true(inherits(explanatory_name(x), "character"))
   expect_true(inherits(explanatory_expr(x), "call"))
-
+  
   expect_equal(explanatory_name(x), c("sex", "college"))
   expect_equal(response_name(x), "hours")
 })

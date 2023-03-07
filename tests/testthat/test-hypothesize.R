@@ -196,21 +196,21 @@ test_that("sensible output", {
 })
 
 test_that("user can specify multiple explanatory variables", {
-  x <-
-    gss %>%
+  x <- 
+    gss %>% 
     specify(hours ~ sex + college) %>%
     hypothesize(null = "independence")
-
+  
   expect_true(inherits(x, "infer"))
   expect_true(inherits(explanatory_variable(x), "tbl_df"))
   expect_true(inherits(explanatory_name(x), "character"))
   expect_true(inherits(explanatory_expr(x), "call"))
-
+  
   expect_equal(explanatory_name(x), c("sex", "college"))
   expect_equal(response_name(x), "hours")
-
+  
   expect_warning(
-    gss %>%
+    gss %>% 
       specify(hours ~ sex + college) %>%
       hypothesize(null = "independence", mu = 40),
     "Parameter values are not specified when testing"
