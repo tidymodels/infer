@@ -432,7 +432,7 @@ simulation_layer <- function(data, dots = list(NULL)) {
     res <- list(
       do.call(
         ggplot2::stat_bin,
-        c(list(mapping = aes(x = stat, y = ..density..),
+        c(list(mapping = aes(x = stat, y = ggplot2::after_stat(density)),
                bins = bins,
                color = "white", 
                breaks = bin_breaks),
