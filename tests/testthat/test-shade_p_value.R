@@ -111,7 +111,7 @@ test_that("shade_p_value uses extra aesthetic", {
   )
   expect_doppelganger(
     "pval-extra-aes-3",
-    gss_viz_sim + shade_p_value(1, "two_sided", size = 4)
+    gss_viz_sim + shade_p_value(1, "two_sided", linewidth = 4)
   )
 })
 
