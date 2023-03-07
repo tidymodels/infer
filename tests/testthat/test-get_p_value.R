@@ -105,14 +105,15 @@ test_that("get_p_value can handle fitted objects", {
     specify(hours ~ age + college) %>%
     fit()
 
-  expect_equivalent(
+  expect_equal(
     get_p_value(null_fits, obs_fit, "both"),
     structure(
       list(term = c("age", "collegedegree", "intercept"),
            p_value = c(0.6, 0.4, 0.6)),
       row.names = c(NA, -3L),
       class = c("tbl_df", "tbl", "data.frame")
-    )
+    ),
+    ignore_attr = TRUE
   )
 
   # errors out when it ought to
@@ -148,7 +149,7 @@ test_that("get_p_value can handle fitted objects", {
 
   obs_fit_4
 
-  expect_equivalent(
+  expect_equal(
     get_p_value(null_fits_4, obs_fit_4, "both"),
     structure(
       list(
@@ -156,7 +157,8 @@ test_that("get_p_value can handle fitted objects", {
         p_value = c(0.6, 0.6)),
       row.names = c(NA, -2L),
       class = c("tbl_df", "tbl", "data.frame")
-    )
+    ),
+    ignore_attr = TRUE
   )
 
   expect_equal(ncol(null_fits_4), ncol(obs_fit_4) + 1)
@@ -276,7 +278,7 @@ test_that("get_p_value can handle theoretical distributions", {
 
   expect_equal(
     get_p_value_(t_dist, t_obs, direction = "both"),
-    0.038,
+    0.03755,
     tolerance = 1e-3
   )
 
@@ -364,13 +366,13 @@ test_that("get_p_value can handle theoretical distributions", {
 
   expect_equal(
     get_p_value_(z_dist, z_obs, direction = "both"),
-    0.244,
+    0.24492,
     tolerance = 1e-3
   )
 
   expect_equal(
     get_p_value_(z_dist, z_obs, direction = "left"),
-    0.122,
+    0.12246,
     tolerance = 1e-3
   )
 

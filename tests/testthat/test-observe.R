@@ -90,11 +90,12 @@ test_that("observe messages/warns/errors informatively", {
 
 test_that("observe() works with either specify() interface", {
   # unnamed formula argument
-  expect_equivalent(
+  expect_equal(
     gss %>%
       observe(hours ~ NULL, stat = "mean"),
     gss %>%
-      observe(response = hours, stat = "mean")
+      observe(response = hours, stat = "mean"),
+    ignore_attr = TRUE
   )
 
   expect_equal(
@@ -110,18 +111,20 @@ test_that("observe() works with either specify() interface", {
   )
 
   # named formula argument
-  expect_equivalent(
+  expect_equal(
     gss %>%
       observe(formula = hours ~ NULL, stat = "mean"),
     gss %>%
-      observe(response = hours, stat = "mean")
+      observe(response = hours, stat = "mean"),
+    ignore_attr = TRUE
   )
 
-  expect_equivalent(
+  expect_equal(
     gss %>%
       observe(formula = hours ~ NULL, stat = "mean"),
     gss %>%
-      observe(response = hours, stat = "mean")
+      observe(response = hours, stat = "mean"),
+    ignore_attr = TRUE
   )
 
   expect_equal(

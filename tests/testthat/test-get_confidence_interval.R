@@ -37,21 +37,23 @@ test_that("get_confidence_interval works with `type = 'percentile'`", {
 test_that("get_confidence_interval works with `type = 'se'`", {
   expect_message(
     # use equivalent rather than equal as ci has attributes for se and point est
-    expect_equivalent(
+    expect_equal(
       test_df %>%
         get_confidence_interval(type = "se", point_estimate = point),
       tibble::tibble(lower_ci = -5.653, upper_ci = 6.603),
-      tolerance = 1e-3
+      tolerance = 1e-3,
+      ignore_attr = TRUE
     ),
     "Using `level = 0.95`"
   )
 
   # use equivalent rather than equal as ci has attributes for se and point est
-  expect_equivalent(
+  expect_equal(
     test_df %>%
       get_confidence_interval(level = 0.5, type = "se", point_estimate = point),
     tibble::tibble(lower_ci = -1.633, upper_ci = 2.583),
-    tolerance = 1e-3
+    tolerance = 1e-3,
+    ignore_attr = TRUE
   )
 })
 
@@ -148,7 +150,7 @@ test_that("get_confidence_interval can handle fitted objects", {
     fit()
 
   # check each ci type
-  expect_equivalent(
+  expect_equal(
     get_confidence_interval(null_fits, point_estimate = obs_fit, level = .95),
     structure(
       list(
@@ -158,10 +160,11 @@ test_that("get_confidence_interval can handle fitted objects", {
       row.names = c(NA, -3L),
       class = c("tbl_df", "tbl", "data.frame")
     ),
-    tolerance = 1e-3
+    tolerance = 1e-3,
+    ignore_attr = TRUE
   )
 
-  expect_equivalent(
+  expect_equal(
     get_confidence_interval(null_fits, point_estimate = obs_fit,
                             level = .95, type = "se"),
     structure(
@@ -172,10 +175,11 @@ test_that("get_confidence_interval can handle fitted objects", {
       row.names = c(NA, -3L),
       class = c("tbl_df", "tbl", "data.frame")
     ),
-    tolerance = 1e-3
+    tolerance = 1e-3,
+    ignore_attr = TRUE
   )
 
-  expect_equivalent(
+  expect_equal(
     get_confidence_interval(null_fits, point_estimate = obs_fit,
                             level = .95, type = "bias-corrected"),
     structure(

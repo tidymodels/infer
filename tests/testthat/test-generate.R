@@ -540,7 +540,7 @@ test_that("type = 'draw'/'simulate' superseding handled gracefully", {
     )
   )
 
-  expect_equivalent(
+  expect_equal(
     {
       set.seed(1)
 
@@ -557,7 +557,8 @@ test_that("type = 'draw'/'simulate' superseding handled gracefully", {
         specify(response = am, success = "1") %>%
         hypothesize(null = "point", p = .5) %>%
         generate(type = "draw")
-    }
+    }, 
+    ignore_attr = TRUE
   )
 })
 

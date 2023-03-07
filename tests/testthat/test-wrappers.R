@@ -100,8 +100,8 @@ test_that("_stat functions work", {
     table(gss_tbl$partyid, gss_tbl$college)
   )$statistic
 
-  expect_equivalent(dplyr::pull(another_way), obs_stat_way)
-  expect_equivalent(one_more, obs_stat_way)
+  expect_equal(dplyr::pull(another_way), obs_stat_way, ignore_attr = TRUE)
+  expect_equal(one_more, obs_stat_way, ignore_attr = TRUE)
 
   # Goodness of Fit
   new_way <- gss_tbl %>%
@@ -119,8 +119,8 @@ test_that("_stat functions work", {
    "deprecated in favor of the more general"
   )
 
- expect_equivalent(dplyr::pull(new_way), obs_stat_way)
- expect_equivalent(dplyr::pull(new_way), obs_stat_way_alt)
+ expect_equal(dplyr::pull(new_way), obs_stat_way, ignore_attr = TRUE)
+ expect_equal(dplyr::pull(new_way), obs_stat_way_alt, ignore_attr = TRUE)
 
  # robust to the named vector
  unordered_p <- gss_tbl %>%
@@ -128,7 +128,7 @@ test_that("_stat functions work", {
  ordered_p <- gss_tbl %>%
    chisq_test(response = partyid, p = c(ind = .2, rep = .3, dem = .5))
 
- expect_equivalent(unordered_p, ordered_p)
+ expect_equal(unordered_p, ordered_p, ignore_attr = TRUE)
 
   # Two sample t
   expect_warning(
@@ -156,8 +156,8 @@ test_that("_stat functions work", {
     "deprecated in favor of the more general"
   )
 
-  expect_equivalent(another_way, obs_stat_way)
-  expect_equivalent(another_way, obs_stat_way_alt)
+  expect_equal(another_way, obs_stat_way, ignore_attr = TRUE)
+  expect_equal(another_way, obs_stat_way_alt, ignore_attr = TRUE)
 
   # One sample t
   expect_warning(
@@ -181,8 +181,8 @@ test_that("_stat functions work", {
     "deprecated in favor of the more general"
   )
 
-  expect_equivalent(another_way, obs_stat_way)
-  expect_equivalent(another_way, obs_stat_way_alt)
+  expect_equal(another_way, obs_stat_way, ignore_attr = TRUE)
+  expect_equal(another_way, obs_stat_way_alt, ignore_attr = TRUE)
 
   expect_error(
     expect_warning(

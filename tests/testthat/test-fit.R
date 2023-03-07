@@ -9,8 +9,8 @@ test_that("get_formula helper works", {
   expect_false(has_attr(x3, "formula"))
   expect_true(has_attr( x4, "formula"))
 
-  expect_equivalent(get_formula(x1), get_formula(x2))
-  expect_equivalent(get_formula(x3), get_formula(x4))
+  expect_equal(get_formula(x1), get_formula(x2), ignore_attr = TRUE)
+  expect_equal(get_formula(x3), get_formula(x4), ignore_attr = TRUE)
 })
 
 test_that("fit_linear_model helper works", {
