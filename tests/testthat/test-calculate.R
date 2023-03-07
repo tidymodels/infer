@@ -219,7 +219,7 @@ test_that("two sample mean-type problems are working", {
 })
 
 test_that("properties of tibble passed-in are correct", {
-  expect_is(gen_gss5, "grouped_df")
+  expect_s3_class(gen_gss5, "grouped_df")
   expect_equal(ncol(gen_gss5), 3)
 
   gen_gss6 <- gss_tbl %>%

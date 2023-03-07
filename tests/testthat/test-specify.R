@@ -19,7 +19,7 @@ test_that("auto `type` works (specify)", {
 test_that("data argument", {
   expect_error(specify(blah ~ cyl))
   expect_error(specify(1:3))
-  expect_is(mtcars_df, "data.frame")
+  expect_s3_class(mtcars_df, "data.frame")
   expect_error(specify(mtcars_df, mtcars_df$mpg))
 })
 
