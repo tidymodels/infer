@@ -185,7 +185,7 @@ shade_confidence_interval_term <- function(plot, endpoints,
       inherit.aes = FALSE
     ),
     dots,
-    list(size = 2)
+    list(linewidth = 2)
   )
   segment_layer <- do.call(ggplot2::geom_segment, segment_args)
   

@@ -1,36 +1,34 @@
-context("assume")
-
 test_that("distribution description works as expected", {
   # extract the "first element" to convert to character
   assume_ <- function(...) {
     assume(...)[1]
   }
-  
+
   expect_equal(
-    gss %>% 
+    gss %>%
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
       assume_(
-       distribution = "F", 
+       distribution = "F",
        df = c(length(unique(gss$partyid)) - 1, nrow(gss) - 4)
-      ), 
+      ),
     "An F distribution with 3 and 496 degrees of freedom."
   )
-  
+
   expect_equal(
-    gss %>% 
+    gss %>%
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
       assume_(
-        distribution = "F", 
+        distribution = "F",
         df = c(length(unique(gss$partyid)) - 1, nrow(gss) - 4)
-      ), 
-    gss %>% 
+      ),
+    gss %>%
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
       assume_(distribution = "F")
   )
-  
+
   expect_equal(
     gss %>%
       specify(response = finrela) %>%
@@ -41,10 +39,10 @@ test_that("distribution description works as expected", {
                         "above average" = 1/6,
                         "far above average" = 1/6,
                         "DK" = 1/6)) %>%
-      assume_("Chisq", length(unique(gss$finrela)) - 1), 
+      assume_("Chisq", length(unique(gss$finrela)) - 1),
     "A Chi-squared distribution with 5 degrees of freedom."
   )
-  
+
   expect_equal(
     gss %>%
       specify(response = finrela) %>%
@@ -55,43 +53,43 @@ test_that("distribution description works as expected", {
                         "above average" = 1/6,
                         "far above average" = 1/6,
                         "DK" = 1/6)) %>%
-      assume_("Chisq"), 
+      assume_("Chisq"),
     "A Chi-squared distribution with 5 degrees of freedom."
   )
-  
+
   expect_equal(
     gss %>%
       specify(formula = finrela ~ sex) %>%
       hypothesize(null = "independence") %>%
       assume_(
-        distribution = "Chisq", 
-        df = (length(unique(gss$finrela)) - 1) * 
+        distribution = "Chisq",
+        df = (length(unique(gss$finrela)) - 1) *
           (length(unique(gss$sex)) - 1)
-      ), 
+      ),
     "A Chi-squared distribution with 5 degrees of freedom."
   )
-  
+
   expect_equal(
     gss %>%
       specify(formula = finrela ~ sex) %>%
       hypothesize(null = "independence") %>%
-      assume_(distribution = "Chisq"), 
+      assume_(distribution = "Chisq"),
     "A Chi-squared distribution with 5 degrees of freedom."
   )
-  
+
   expect_equal(
-    gss %>% 
+    gss %>%
       specify(age ~ college) %>%
       hypothesize(null = "independence") %>%
-      assume_("t"), 
+      assume_("t"),
     "A T distribution with 423 degrees of freedom."
   )
-  
+
   expect_equal(
     gss %>%
       specify(response = sex, success = "female") %>%
       hypothesize(null = "point", p = .5) %>%
-      assume_("z"), 
+      assume_("z"),
     "A Z distribution."
   )
 })
@@ -99,88 +97,88 @@ test_that("distribution description works as expected", {
 test_that("assume errors with bad arguments", {
   # supply a bad distribution
   expect_error(
-    gss %>% 
+    gss %>%
       specify(age ~ college) %>%
       hypothesize(null = "independence") %>%
-      assume("boop", nrow(gss) - 1), 
+      assume("boop", nrow(gss) - 1),
     'The distribution argument must be one of "Chisq", "F", "t", or "z".'
   )
-  
+
   # bad number of df arguments
   expect_error(
-    gss %>% 
+    gss %>%
       specify(age ~ college) %>%
       hypothesize(null = "independence") %>%
-      assume("t", c(nrow(gss) - 1, 2)), 
+      assume("t", c(nrow(gss) - 1, 2)),
     'A T distribution requires 1 degrees of freedom argument, but 2 were supplied.'
   )
-  
+
   expect_error(
-    gss %>% 
-      specify(age ~ partyid) %>% 
+    gss %>%
+      specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
-      assume("F", nrow(gss) - 1), 
+      assume("F", nrow(gss) - 1),
     'An F distribution requires 2 degrees of freedom arguments, but 1 was supplied.'
   )
-  
+
   # bad df argument type
   expect_error(
-    gss %>% 
-      specify(age ~ partyid) %>% 
+    gss %>%
+      specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
-      assume("F", "boop"), 
+      assume("F", "boop"),
     'to be a numeric vector, but you supplied a character object.'
   )
-  
+
   # df argument possibly passed to dots
   expect_error(
-    gss %>% 
-      specify(age ~ partyid) %>% 
+    gss %>%
+      specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
-      assume("F", nrow(gss) - 1, 1), 
+      assume("F", nrow(gss) - 1, 1),
     'though the argument `list\\(1\\)` was supplied'
   )
-  
+
   expect_error(
-    gss %>% 
-      specify(age ~ partyid) %>% 
+    gss %>%
+      specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
-      assume("F", nrow(gss) - 1, 1, 2), 
+      assume("F", nrow(gss) - 1, 1, 2),
     'arguments `list\\(1, 2\\)` were supplied'
   )
-  
+
   # supply `distribution`s that don't align with the supplied variables
   expect_error(
-    gss %>% 
-      specify(age ~ finrela) %>% 
+    gss %>%
+      specify(age ~ finrela) %>%
       hypothesize(null = "independence") %>%
       assume("t", nrow(gss) - 1),
     'supplied distribution "t" is not well-defined.*onse variable \\(age\\)'
   )
-  
+
   expect_error(
-    gss %>% 
-      specify(age ~ finrela) %>% 
+    gss %>%
+      specify(age ~ finrela) %>%
       hypothesize(null = "independence") %>%
       assume("z", nrow(gss) - 1),
     'supplied distribution "z" is not well-defined.*onse variable \\(age\\)'
   )
-  
+
   expect_error(
-    gss %>% 
-      specify(age ~ NULL) %>% 
+    gss %>%
+      specify(age ~ NULL) %>%
       hypothesize(null = "point", mu = 40) %>%
       assume("z", nrow(gss) - 1),
     'supplied distribution "z" is not well-defined.*onse variable \\(age\\)'
   )
-  
+
   # supply bad `x` arguments
   expect_error(
-    gss %>% 
+    gss %>%
       assume("z", nrow(gss) - 1),
     '`x` argument must be the output of a core infer function'
   )
-  
+
   expect_error(
     "boop" %>%
       assume("z", nrow(gss) - 1),
@@ -203,7 +201,7 @@ test_that("assume() handles automatic df gracefully", {
         assume("t")
     )
   )
-  
+
   expect_message(
     gss %>%
       specify(response = hours) %>%
@@ -211,7 +209,7 @@ test_that("assume() handles automatic df gracefully", {
       assume("t", nrow(gss) - 2),
     "does not match its expected value..*calculation for `df`"
   )
-  
+
   # t.test param with var.equal = FALSE
   expect_equal(
     expect_silent(
@@ -223,7 +221,7 @@ test_that("assume() handles automatic df gracefully", {
     ),
     423
   )
-  
+
   # t.test param with var.equal = TRUE
   expect_equal(
     expect_silent(
@@ -235,7 +233,7 @@ test_that("assume() handles automatic df gracefully", {
     ),
     498
   )
-  
+
   # min(n1 - 1, n2 - 1)
   expect_equal(
     expect_silent(
@@ -247,8 +245,8 @@ test_that("assume() handles automatic df gracefully", {
     ),
     173
   )
-  
-  
+
+
   # n1 + n2 - 2
   expect_equal(
     expect_silent(
@@ -263,36 +261,36 @@ test_that("assume() handles automatic df gracefully", {
 })
 
 test_that("assume() brings along supplied arguments", {
-  t_dist <-  gss %>% 
+  t_dist <-  gss %>%
     specify(age ~ college) %>%
     hypothesize(null = "independence") %>%
     assume("t")
-  
+
   expect_equal(
     round(attr(t_dist, "df")),
     423
   )
-  
+
   expect_equal(
     attr(t_dist, "distribution"),
     "t"
   )
-  
+
   expect_equal(
     attr(t_dist, "theory_type"),
     "Two sample t"
   )
-  
+
   expect_equal(
     attr(t_dist, "df"),
     attr(t_dist, "distr_param")
   )
-  
-  f_dist <- gss %>% 
-    specify(age ~ partyid) %>% 
+
+  f_dist <- gss %>%
+    specify(age ~ partyid) %>%
     hypothesize(null = "independence") %>%
     assume(distribution = "F")
-  
+
   expect_equal(
     attr(f_dist, "df"),
     c(attr(f_dist, "distr_param"), attr(f_dist, "distr_param2"))
@@ -304,12 +302,12 @@ test_that("process_df works", {
     process_df(1),
     list(df = 1)
   )
-  
+
   expect_equal(
     process_df(c(1, 2)),
     list(df1 = 1, df2 = 2)
   )
-  
+
   expect_equal(
     process_df(NULL),
     list()
