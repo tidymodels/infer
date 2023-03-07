@@ -121,7 +121,7 @@ rep_slice_sample <- function(.data, n = NULL, prop = NULL, replace = FALSE,
   check_type(replace, is_truefalse, "TRUE or FALSE")
   check_type(
     weight_by,
-    ~ is.numeric(.) && (length(.) == nrow(.data)),
+    ~ (length(.) == nrow(.data)),
     glue::glue("numeric vector with length `nrow(.data)` = {nrow(.data)}"),
     allow_null = TRUE
   )
