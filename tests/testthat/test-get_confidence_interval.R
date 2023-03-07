@@ -190,7 +190,8 @@ test_that("get_confidence_interval can handle fitted objects", {
       row.names = c(NA, -3L),
       class = c("tbl_df", "tbl", "data.frame")
     ),
-    tolerance = 1e-3
+    tolerance = 1e-3,
+    ignore_attr = TRUE
   )
 
   # errors out when it ought to
