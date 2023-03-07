@@ -1,8 +1,8 @@
 set.seed(4242)
 
-expect_doppelganger <- function(title, fig, path = NULL, ...) {
+expect_doppelganger <- function(title, fig, ...) {
   testthat::skip_if_not_installed("vdiffr")
-  vdiffr::expect_doppelganger(title, fig, path = path, ...)
+  vdiffr::expect_doppelganger(title, fig, ...)
 }
 
 eps <- if (capabilities("long.double")) {sqrt(.Machine$double.eps)} else {0.01}
