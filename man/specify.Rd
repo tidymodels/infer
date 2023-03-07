@@ -42,7 +42,7 @@ gss \%>\%
 # specify a relationship between variables as a formula...
 gss \%>\%
   specify(age ~ partyid)
-  
+
 # ...or with named arguments!
 gss \%>\%
   specify(response = age, explanatory = partyid)

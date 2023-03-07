@@ -41,7 +41,7 @@ Learn more in \code{vignette("infer")}.
 gss \%>\%
  specify(college ~ partyid, success = "degree") \%>\%
  hypothesize(null = "independence")
- 
+
 # hypothesize a mean number of hours worked per week of 40
 gss \%>\%
   specify(response = hours) \%>\%

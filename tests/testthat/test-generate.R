@@ -397,7 +397,7 @@ test_that("generate is sensitive to the variables argument", {
         hypothesize(null = "independence") %>%
         generate(reps = 2, type = "permute", variables = c(hours, age*college))
     )
-    
+
     res_1
   }, {
     set.seed(1)
@@ -552,7 +552,7 @@ test_that("type = 'draw'/'simulate' superseding handled gracefully", {
           hypothesize(null = "point", p = .5) %>%
           generate(type = "simulate")
       )
-      
+
       res_1
     }, {
       set.seed(1)
@@ -561,9 +561,9 @@ test_that("type = 'draw'/'simulate' superseding handled gracefully", {
         specify(response = am, success = "1") %>%
         hypothesize(null = "point", p = .5) %>%
         generate(type = "draw")
-      
+
       res_2
-    }, 
+    },
     ignore_attr = TRUE
   )
 })

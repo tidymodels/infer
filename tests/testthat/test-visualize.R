@@ -91,7 +91,7 @@ test_that("visualize warns with bad arguments", {
         visualize(endpoints = c(.01, .02)),
      'endpoints.*deprecated.*should now be passed to'
   )
-  
+
   expect_equal(
     age_hours_df %>%
       visualize(),

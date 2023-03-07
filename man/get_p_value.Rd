@@ -92,10 +92,10 @@ gss \%>\%
   # finding the null distribution
   calculate(stat = "mean") \%>\%
   get_p_value(obs_stat = point_estimate, direction = "two-sided")
-  
+
 # using a theoretical null distribution -----------------------------------
 
-# calculate the observed statistic 
+# calculate the observed statistic
 obs_stat <- gss \%>\%
   specify(response = hours) \%>\%
   hypothesize(null = "point", mu = 40) \%>\%
@@ -119,8 +119,8 @@ observed_fit <- gss \%>\%
 
 observed_fit
 
-# fit 100 models to resamples of the gss dataset, where the response 
-# `hours` is permuted in each. note that this code is the same as 
+# fit 100 models to resamples of the gss dataset, where the response
+# `hours` is permuted in each. note that this code is the same as
 # the above except for the addition of the `generate` step.
 null_fits <- gss \%>\%
   specify(hours ~ age + college) \%>\%
@@ -131,12 +131,12 @@ null_fits <- gss \%>\%
 null_fits
 
 get_p_value(null_fits, obs_stat = observed_fit, direction = "two-sided")
-  
+
 # more in-depth explanation of how to use the infer package
 \dontrun{
 vignette("infer")
-}  
-  
+}
+
 }
 \seealso{
 Other auxillary functions: 

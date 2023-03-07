@@ -1,6 +1,6 @@
 #' Deprecated functions and objects
 #'
-#' These functions and objects should no longer be used. They will be removed 
+#' These functions and objects should no longer be used. They will be removed
 #' in a future release of \code{infer}.
 #' @param x See the non-deprecated function.
 #' @param level See the non-deprecated function.

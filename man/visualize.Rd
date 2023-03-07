@@ -59,7 +59,7 @@ respectively. \code{\link[=visualize]{visualize()}} will raise a warning if depr
 are supplied.
 }
 \examples{
-  
+
 # generate a null distribution
 null_dist <- gss \%>\%
   # we're interested in the number of hours worked per week
@@ -70,32 +70,32 @@ null_dist <- gss \%>\%
   generate(reps = 1000, type = "bootstrap") \%>\%
   # calculating a distribution of means
   calculate(stat = "mean")
-  
+
 # or a bootstrap distribution, omitting the hypothesize() step,
 # for use in confidence intervals
 boot_dist <- gss \%>\%
   specify(response = hours) \%>\%
   generate(reps = 1000, type = "bootstrap") \%>\%
   calculate(stat = "mean")
-  
+
 # we can easily plot the null distribution by piping into visualize
 null_dist \%>\%
   visualize()
 
-# we can add layers to the plot as in ggplot, as well... 
+# we can add layers to the plot as in ggplot, as well...
 # find the point estimate---mean number of hours worked per week
 point_estimate <- gss \%>\%
   specify(response = hours) \%>\%
   calculate(stat = "mean")
-  
+
 # find a confidence interval around the point estimate
 ci <- boot_dist \%>\%
   get_confidence_interval(point_estimate = point_estimate,
                           # at the 95\% confidence level
                           level = .95,
                           # using the standard error method
-                          type = "se")  
-  
+                          type = "se")
+
 # display a shading of the area beyond the p-value on the plot
 null_dist \%>\%
   visualize() +
@@ -105,13 +105,13 @@ null_dist \%>\%
 null_dist \%>\%
   visualize() +
   shade_confidence_interval(ci)
-  
+
 # plot a theoretical sampling distribution by creating
 # a theory-based distribution with `assume()`
 sampling_dist <- gss \%>\%
   specify(response = hours) \%>\%
-  assume(distribution = "t") 
-  
+  assume(distribution = "t")
+
 visualize(sampling_dist)
 
 # you can shade confidence intervals on top of
@@ -130,7 +130,7 @@ null_dist_t <- gss \%>\%
   hypothesize(null = "point", mu = 40) \%>\%
   generate(reps = 1000, type = "bootstrap") \%>\%
   calculate(stat = "t")
-  
+
 obs_stat <- gss \%>\%
   specify(response = hours) \%>\%
   hypothesize(null = "point", mu = 40) \%>\%
@@ -151,7 +151,7 @@ null_fits <- gss \%>\%
  hypothesize(null = "independence") \%>\%
  generate(reps = 1000, type = "permute") \%>\%
  fit()
- 
+
 null_fits
 
 # visualize distributions of resulting coefficients
@@ -165,7 +165,7 @@ library(ggplot2)
 
 # to add a ggplot2 theme to a `calculate()`-based visualization, use `+`
 null_dist \%>\% visualize() + theme_dark()
-  
+
 # to add a ggplot2 theme to a `fit()`-based visualization, use `&`
 null_fits \%>\% visualize() & theme_dark()
 }

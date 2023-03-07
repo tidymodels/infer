@@ -16,7 +16,7 @@ test_that("old aliases produce warning", {
       p_value(obs_stat = -0.2, direction = "right") %>%
       dplyr::pull()
   )
-   
+
   expect_equal(res, 1)
 
   expect_warning(gss_permute %>% conf_int())

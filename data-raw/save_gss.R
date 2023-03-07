@@ -16,7 +16,7 @@ unlink(temp)
 # select relevant columns
 gss_small <- gss_orig %>%
   filter(!stringr::str_detect(sample, "blk oversamp")) %>% # this is for weighting
-  select(year, age, sex, college = degree, partyid, hompop, 
+  select(year, age, sex, college = degree, partyid, hompop,
          hours = hrs1, income, class, finrela, weight = wtssall) %>%
   mutate_if(is.factor, ~fct_collapse(., NULL = c("IAP", "NA", "iap", "na"))) %>%
   mutate(age = age %>%
@@ -36,7 +36,7 @@ gss_small <- gss_orig %>%
          weight = weight %>%
            as.character() %>%
            as.numeric(),
-         partyid = fct_collapse(partyid, 
+         partyid = fct_collapse(partyid,
            dem = c("strong democrat", "not str democrat"),
            rep = c("strong republican", "not str republican"),
            ind = c("ind,near dem", "independent", "ind,near rep"),
