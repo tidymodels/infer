@@ -1,5 +1,7 @@
 # infer v1.0.4.9000 (developmental version)
 
+* The `weight_by` argument to `rep_slice_sample()` can now be passed either as a vector of numeric weights or an unquoted column name in `.data` (#480).
+
 # infer v1.0.4
 
 * Fixed bug in p-value shading where shaded regions no longer correctly overlaid

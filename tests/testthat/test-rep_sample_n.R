@@ -182,6 +182,10 @@ test_that("`rep_slice_sample` checks input", {
     rep_slice_sample(population, n = 1, weight_by = c(0.1, 0.9)),
     glue::glue("`weight_by`.*length.*{nrow(population)}")
   )
+  expect_error(
+     rep_slice_sample(population, n = 1, weight_by = wts),
+     glue::glue("`wts`.*`weight_by`.*not in the supplied data")
+  )
 
   # `reps`
   expect_error(
@@ -283,7 +287,18 @@ test_that("`rep_slice_sample` uses `weight_by`", {
     weight_by = rep(1, n_population) / n_population
   )
 
+  population_wt <-
+     population %>%
+     dplyr::mutate(wts = rep(1, n_population) / n_population)
+  set.seed(1)
+  res3 <- rep_slice_sample(
+     population_wt,
+     n = n_population,
+     weight_by = wts
+  )
+
   expect_equal(res1[["ball_id"]], res2[["ball_id"]])
+  expect_equal(res1[["ball_id"]], res3[["ball_id"]])
 })
 
 test_that("`rep_slice_sample` uses `reps`", {

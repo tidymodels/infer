@@ -174,17 +174,17 @@ check_permutation_attributes <- function(x, attr) {
   }
 }
 
-check_cols <- function(x, variables, type, missing) {
+check_cols <- function(x, variables, type, missing, arg_name = "variables") {
   if (!rlang::is_symbolic(rlang::get_expr(variables))) {
     stop_glue(
-      "The `variables` argument should be one or more unquoted variable names ",
+      "The `{arg_name}` argument should be one or more unquoted variable names ",
       "(not strings in quotation marks)."
     )
   }
 
   if (!missing && type != "permute") {
     warning_glue(
-      'The `variables` argument is only relevant for the "permute" ',
+      'The `{arg_name}` argument is only relevant for the "permute" ',
       'generation type and will be ignored.'
     )
 
@@ -205,7 +205,7 @@ check_cols <- function(x, variables, type, missing) {
 
     stop_glue(
       'The column{plurals[1]} `{list(bad_cols)}` provided to ',
-      'the `variables` argument {plurals[2]} not in the supplied data.'
+      'the `{arg_name}` argument {plurals[2]} not in the supplied data.'
     )
   }
 }
