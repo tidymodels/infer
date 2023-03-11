@@ -18,7 +18,8 @@
 #' @param replace Should samples be taken with replacement?
 #' @param reps Number of samples to take.
 #' @param prob,weight_by A vector of sampling weights for each of the rows in
-#' `.data`—must have length equal to `nrow(.data)`.
+#' `.data`—must have length equal to `nrow(.data)`. For `weight_by`, this
+#' may also be an unquoted column name in `.data`.
 #'
 #' @details
 #'
@@ -69,6 +70,11 @@
 #' )
 #'
 #' rep_slice_sample(df, n = 2, reps = 5, weight_by = c(.5, .4, .3, .2, .1))
+#'
+#' # alternatively, pass an unquoted column name in `.data` as `weight_by`
+#' df <- df %>% mutate(wts = c(.5, .4, .3, .2, .1))
+#'
+#' rep_slice_sample(df, n = 2, reps = 5, weight_by = wts)
 #' @export
 rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
   check_type(tbl, is.data.frame)
@@ -119,11 +125,18 @@ rep_slice_sample <- function(.data, n = NULL, prop = NULL, replace = FALSE,
     min_val = 0
   )
   check_type(replace, is_truefalse, "TRUE or FALSE")
+  eval_weight_by <- try(rlang::eval_tidy(weight_by), silent = TRUE)
+  if (inherits(eval_weight_by, "try-error")) {
+     weight_by <- rlang::enquo(weight_by)
+     check_cols(.data, weight_by, "permute", FALSE, "weight_by")
+     weight_by <- .data[[rlang::as_name(weight_by)]]
+  }
   check_type(
-    weight_by,
-    ~ is.numeric(.) && (length(.) == nrow(.data)),
-    glue::glue("numeric vector with length `nrow(.data)` = {nrow(.data)}"),
-    allow_null = TRUE
+     weight_by,
+     ~ is.numeric(.) && (length(.) == nrow(.data)),
+     glue::glue("a numeric vector with length `nrow(.data)` = {nrow(.data)} \\
+                 or an unquoted column name"),
+     allow_null = TRUE
   )
   check_type(
     reps,

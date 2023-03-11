@@ -32,7 +32,8 @@ not an integer. When using \code{rep_slice_sample()}, please only supply one of
 \item{reps}{Number of samples to take.}
 
 \item{prob, weight_by}{A vector of sampling weights for each of the rows in
-\code{.data}—must have length equal to \code{nrow(.data)}.}
+\code{.data}—must have length equal to \code{nrow(.data)}. For \code{weight_by}, this
+may also be an unquoted column name in \code{.data}.}
 }
 \value{
 A tibble of size \code{reps * n} rows corresponding to \code{reps}
@@ -91,4 +92,9 @@ df <- tibble(
 )
 
 rep_slice_sample(df, n = 2, reps = 5, weight_by = c(.5, .4, .3, .2, .1))
+
+# alternatively, pass an unquoted column name in `.data` as `weight_by`
+df <- df \%>\% mutate(wts = c(.5, .4, .3, .2, .1))
+
+rep_slice_sample(df, n = 2, reps = 5, weight_by = wts)
 }
