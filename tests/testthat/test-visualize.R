@@ -47,36 +47,33 @@ test_that("visualize warns with bad arguments", {
 
   # warns when supplied deprecated args in what used to be
   # a valid way
-  expect_warning(
-    gss_tbl %>%
+  expect_snapshot(
+     res_ <- gss_tbl %>%
       specify(age ~ hours) %>%
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "slope") %>%
-      visualize(obs_stat = obs_slope, direction = "right"),
-    'obs_stat.*deprecated.*should now be passed to'
+      visualize(obs_stat = obs_slope, direction = "right")
   )
 
   # warning is the same when deprecated args are inappropriate
-  expect_warning(
-    gss_tbl %>%
+  expect_snapshot(
+     res_ <- gss_tbl %>%
       specify(age ~ hours) %>%
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "slope") %>%
-      visualize(obs_stat = obs_slope),
-    'obs_stat.*deprecated.*should now be passed to'
+      visualize(obs_stat = obs_slope)
   )
 
   # same goes for CI args
-  expect_warning(
-    gss_tbl %>%
+  expect_snapshot(
+     res_ <- gss_tbl %>%
       specify(age ~ hours) %>%
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
       calculate(stat = "slope") %>%
-      visualize(endpoints = c(.01, .02)),
-    'endpoints.*deprecated.*should now be passed to'
+      visualize(endpoints = c(.01, .02))
   )
 
   # output should not change when supplied a deprecated argument
@@ -86,10 +83,9 @@ test_that("visualize warns with bad arguments", {
     generate(reps = 100, type = "permute") %>%
     calculate(stat = "slope")
 
-  expect_warning(
+  expect_snapshot(
      res <- age_hours_df %>%
-        visualize(endpoints = c(.01, .02)),
-     'endpoints.*deprecated.*should now be passed to'
+        visualize(endpoints = c(.01, .02))
   )
 
   expect_equal(
@@ -107,7 +103,7 @@ test_that("visualize basic tests", {
   # visualise also works
   expect_doppelganger("visualise", visualise(hours_resamp))
 
-  expect_error(hours_resamp %>% visualize(bins = "yep"))
+  expect_snapshot(error = TRUE, hours_resamp %>% visualize(bins = "yep"))
   expect_doppelganger(
     "vis-sim-right-1",
     gss_tbl %>%
@@ -120,7 +116,7 @@ test_that("visualize basic tests", {
   )
 
   # obs_stat not specified
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss_tbl %>%
       specify(sex ~ college, success = "female") %>%
       hypothesize(null = "independence") %>%
@@ -141,28 +137,25 @@ test_that("visualize basic tests", {
       shade_p_value(direction = "both", obs_stat = obs_diff)
   )
 
-  expect_doppelganger(
-    "vis-theor-none-1",
-    expect_warning(
-      gss_tbl %>%
+  expect_snapshot(
+     res_vis_theor_none_1 <- gss_tbl %>%
         specify(sex ~ college, success = "female") %>%
         hypothesize(null = "independence") %>%
         calculate(stat = "z", order = c("no degree", "degree")) %>%
         visualize(method = "theoretical")
-    )
   )
 
+  expect_doppelganger("vis-theor-none-1", res_vis_theor_none_1)
+
   # diff in props and z on different scales
-  expect_error(
-    expect_warning(
-      gss_tbl %>%
-        specify(sex ~ college, success = "female") %>%
-        hypothesize(null = "independence") %>%
-        generate(reps = 100, type = "permute") %>%
-        calculate(stat = "diff in props", order = c("no degree", "degree")) %>%
-        visualize(method = "both") +
-        shade_p_value(direction = "both", obs_stat = obs_diff)
-    )
+  expect_snapshot(error = TRUE,
+    gss_tbl %>%
+      specify(sex ~ college, success = "female") %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 100, type = "permute") %>%
+      calculate(stat = "diff in props", order = c("no degree", "degree")) %>%
+      visualize(method = "both") +
+      shade_p_value(direction = "both", obs_stat = obs_diff)
   )
 
   expect_doppelganger(
@@ -328,7 +321,7 @@ test_that("visualize basic tests", {
   )
 
   # traditional instead of theoretical
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss_tbl %>%
       specify(partyid ~ NULL) %>%
       hypothesize(
@@ -367,31 +360,28 @@ test_that("visualize basic tests", {
   )
 
   # Produces warning first for not checking conditions but would also error
-  expect_error(
-    expect_warning(
-      gss_tbl %>%
-        specify(hours ~ sex) %>%
-        hypothesize(null = "independence") %>%
-        generate(reps = 100, type = "permute") %>%
-        calculate(stat = "diff in means",
-                  order = c("female", "male")) %>%
-        visualize(method = "both") +
-        shade_p_value(direction = "both", obs_stat = obs_diff_mean)
-    )
+  expect_snapshot(error = TRUE,
+    gss_tbl %>%
+      specify(hours ~ sex) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = 100, type = "permute") %>%
+      calculate(stat = "diff in means",
+                order = c("female", "male")) %>%
+      visualize(method = "both") +
+      shade_p_value(direction = "both", obs_stat = obs_diff_mean)
   )
 
-  expect_doppelganger(
-    "vis-theor-both-1",
-    expect_warning(
-      gss_tbl %>%
+  expect_snapshot(
+     res_vis_theor_both_1 <- gss_tbl %>%
         specify(hours ~ sex) %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
         calculate(stat = "diff in means", order = c("female", "male")) %>%
         visualize(method = "theoretical") +
         shade_p_value(direction = "both", obs_stat = obs_diff_mean)
-    )
   )
+
+  expect_doppelganger("vis-theor-both-1", res_vis_theor_both_1)
 
   expect_doppelganger(
     "vis-theor-both-2",
@@ -458,11 +448,8 @@ test_that("obs_stat as a data.frame works", {
 
 test_that('method = "both" behaves nicely', {
   skip_if(getRversion() < "4.1.0")
-  # stop_glue(
-  #   '`generate()` and `calculate()` are both required to be done prior ',
-  #   'to `visualize(method = "both")`'
-  # )
-  expect_error(
+
+  expect_snapshot(error = TRUE,
     gss_tbl %>%
       specify(hours ~ NULL) %>%
       hypothesize(null = "point", mu = 4) %>%
@@ -471,24 +458,23 @@ test_that('method = "both" behaves nicely', {
       visualize(method = "both")
   )
 
-  expect_doppelganger(
-    "method-both",
-    expect_warning(
-      gss_tbl %>%
+  expect_snapshot(
+     res_method_both <- gss_tbl %>%
         specify(hours ~ college) %>%
         hypothesize(null = "point", mu = 4) %>%
         generate(reps = 10, type = "bootstrap") %>%
         calculate(stat = "t", order = c("no degree", "degree")) %>%
         visualize(method = "both")
-    )
   )
+
+  expect_doppelganger("method-both", res_method_both)
 })
 
 test_that("Traditional right-tailed tests have warning if not right-tailed", {
   skip_if(getRversion() < "4.1.0")
 
-  expect_warning(
-    gss_tbl %>%
+  expect_snapshot(
+    res_ <- gss_tbl %>%
       specify(sex ~ partyid, success = "female") %>%
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
@@ -497,8 +483,8 @@ test_that("Traditional right-tailed tests have warning if not right-tailed", {
       shade_p_value(obs_stat = 2, direction = "left")
   )
 
-  expect_warning(
-    gss_tbl %>%
+  expect_snapshot(
+    res_ <- gss_tbl %>%
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "permute") %>%
@@ -507,8 +493,8 @@ test_that("Traditional right-tailed tests have warning if not right-tailed", {
       shade_p_value(obs_stat = 2, direction = "two_sided")
   )
 
-  expect_warning(
-    gss_tbl %>%
+  expect_snapshot(
+    res_ <- gss_tbl %>%
       specify(sex ~ partyid, success = "female") %>%
       hypothesize(null = "independence") %>%
 #       generate(reps = 100, type = "permute") %>%
@@ -517,8 +503,8 @@ test_that("Traditional right-tailed tests have warning if not right-tailed", {
       shade_p_value(obs_stat = 2, direction = "left")
   )
 
-  expect_warning(
-    gss_tbl %>%
+  expect_snapshot(
+    res_ <- gss_tbl %>%
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
 #       generate(reps = 100, type = "permute") %>%
@@ -541,26 +527,25 @@ test_that("confidence interval plots are working", {
 
   perc_ci <- gss_tbl_boot %>% get_ci()
 
-  expect_error(
-    gss_tbl_boot %>%
+  expect_snapshot(error = TRUE,
+    res_ <- gss_tbl_boot %>%
       visualize() +
       shade_confidence_interval(endpoints = df_error)
   )
 
-  expect_warning(
-    gss_tbl_boot %>%
+  expect_snapshot(
+    res_ <- gss_tbl_boot %>%
       visualize() +
       shade_confidence_interval(endpoints = vec_error)
   )
 
-  expect_doppelganger(
-    "ci-vis",
-    expect_warning(
-      gss_tbl_boot %>%
+  expect_snapshot(
+     res_ci_vis <- gss_tbl_boot %>%
         visualize() +
         shade_confidence_interval(endpoints = perc_ci, direction = "between")
-    )
   )
+
+  expect_doppelganger("ci-vis", res_ci_vis)
 })
 
 test_that("title adapts to not hypothesis testing workflow", {
@@ -577,26 +562,23 @@ test_that("title adapts to not hypothesis testing workflow", {
       calculate(stat = "mean") %>%
       visualize()
   )
-  expect_doppelganger(
-    "vis-no-hypothesize-both",
-    expect_warning(
-      gss_tbl_boot_tbl %>%
+  expect_snapshot(
+     res_vis_no_hypothesize_both <- gss_tbl_boot_tbl %>%
         calculate(stat = "t") %>%
         visualize(method = "both")
-    )
   )
+
+  expect_doppelganger("vis-no-hypothesize-both", res_vis_no_hypothesize_both)
 })
 
 test_that("warn_right_tail_test works", {
   skip_if(getRversion() < "4.1.0")
 
   expect_warn_right_tail <- function(stat_name) {
-    warn_regex <- paste0(stat_name, ".*right-tailed")
-
     expect_silent(warn_right_tail_test(NULL, stat_name))
     expect_silent(warn_right_tail_test("right", stat_name))
-    expect_warning(warn_right_tail_test("left", stat_name), warn_regex)
-    expect_warning(warn_right_tail_test("two_sided", stat_name), warn_regex)
+    expect_snapshot(warn_right_tail_test("left", stat_name))
+    expect_snapshot(warn_right_tail_test("two_sided", stat_name))
   }
 
   expect_warn_right_tail("F")
@@ -613,15 +595,15 @@ test_that("visualize warns about removing `NaN`", {
 
   # A warning should be raised if there is NaN in a visualized dist
   dist$stat[1] <- NaN
-  expect_warning(visualize(dist), "1 calculated statistic was")
+  expect_snapshot(res_ <- visualize(dist))
 
   # And a different warning for plural NaNs
   dist$stat[2] <- NaN
-  expect_warning(visualize(dist), "2 calculated statistics were")
+  expect_snapshot(res_ <- visualize(dist))
 
   # In the case that _all_ values are NaN, error should be raised
   dist$stat <- rep(NaN, nrow(dist))
-  expect_error(visualize(dist), "All calculated stat")
+  expect_snapshot(error = TRUE, res_ <- visualize(dist))
 })
 
 test_that("visualize can handle multiple explanatory variables", {
@@ -667,11 +649,16 @@ test_that("visualize can handle multiple explanatory variables", {
       shade_p_value(obs_stat = obs_fit, direction = "left")
   )
 
+  expect_snapshot(
+     res_viz_fit_p_val_right <-
+        null_fits %>%
+        visualize() +
+        shade_p_value(obs_stat = obs_fit, direction = "right")
+  )
+
   expect_doppelganger(
     "viz-fit-p-val-right",
-    null_fits %>%
-      visualize() +
-      shade_p_value(obs_stat = obs_fit, direction = "right")
+    res_viz_fit_p_val_right
   )
 
   # with confidence intervals shaded
@@ -766,20 +753,21 @@ test_that("visualize can handle `assume()` output", {
   )
 
   # warns when it ought to --------------------------------------------------
+  expect_snapshot(
+    res_viz_assume_t_sim <- visualize(null_dist, method = "simulation")
+  )
   expect_doppelganger(
     "viz-assume-t-sim",
-    expect_warning(
-      visualize(null_dist, method = "simulation"),
-      "not well-defined for `assume\\(\\)` output.*will be ignored"
-    )
+    res_viz_assume_t_sim
+  )
+
+  expect_snapshot(
+    res_viz_assume_t_both <- visualize(null_dist, method = "both")
   )
 
   expect_doppelganger(
     "viz-assume-t-both",
-    expect_warning(
-      visualize(null_dist, method = "both"),
-      "not well-defined for `assume\\(\\)` output.*will be ignored"
-    )
+    res_viz_assume_t_both
   )
 
   # t (diff in means) -----------------------------------------------------------------

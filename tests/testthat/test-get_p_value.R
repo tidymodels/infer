@@ -5,7 +5,7 @@ test_df$stat <- sample(c(
 ))
 
 test_that("direction is appropriate", {
-  expect_error(test_df %>% get_p_value(obs_stat = 0.5, direction = "righ"))
+  expect_snapshot(error = TRUE, test_df %>% get_p_value(obs_stat = 0.5, direction = "righ"))
 })
 
 test_that("get_p_value works", {
@@ -58,7 +58,7 @@ test_that("theoretical p-value not supported error", {
   obs_F <- gss_tbl %>%
     specify(hours ~ partyid) %>%
     calculate(stat = "F")
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss_tbl %>%
       specify(hours ~ partyid) %>%
       hypothesize(null = "independence") %>%
@@ -68,28 +68,25 @@ test_that("theoretical p-value not supported error", {
 })
 
 test_that("get_p_value warns in case of zero p-value", {
-  expect_warning(
-    get_p_value(gss_calc, obs_stat = -10, direction = "left"),
-    "be cautious"
+  expect_snapshot(
+    res_ <- get_p_value(gss_calc, obs_stat = -10, direction = "left")
   )
 })
 
 test_that("get_p_value throws error in case of `NaN` stat", {
   gss_calc$stat[1] <- NaN
-  expect_error(
-    get_p_value(gss_calc, 0, "both"),
-    "1 calculated statistic was `NaN`.*not well-defined"
+  expect_snapshot(error = TRUE,
+    res_ <- get_p_value(gss_calc, 0, "both")
   )
 
   gss_calc$stat[2] <- NaN
-  expect_error(
-    get_p_value(gss_calc, 0, "both"),
-    "2 calculated statistics were `NaN`.*not well-defined"
+  expect_snapshot(error = TRUE,
+    res_ <- get_p_value(gss_calc, 0, "both")
   )
 
   # In the case that _all_ values are NaN, error should have different text
   gss_calc$stat <- NaN
-  expect_error(get_p_value(gss_calc, 0, "both"), "All calculated stat")
+  expect_snapshot(error = TRUE, res_ <- get_p_value(gss_calc, 0, "both"))
 })
 
 test_that("get_p_value can handle fitted objects", {
@@ -121,18 +118,16 @@ test_that("get_p_value can handle fitted objects", {
     specify(hours ~ age) %>%
     fit()
 
-  expect_error(
-    get_p_value(null_fits, obs_fit_2, "both"),
-    "explanatory variables.*are not the same used"
+  expect_snapshot(error = TRUE,
+    get_p_value(null_fits, obs_fit_2, "both")
   )
 
   obs_fit_3 <- gss[1:50,] %>%
     specify(year ~ age + college) %>%
     fit()
 
-  expect_error(
-    get_p_value(null_fits, obs_fit_3, "both"),
-    "response variable.*\\(hours\\) is not the same.*observed fit \\(year\\)."
+  expect_snapshot(error = TRUE,
+    get_p_value(null_fits, obs_fit_3, "both")
   )
 
   set.seed(1)
@@ -189,19 +184,16 @@ test_that("get_p_value can handle bad args with fitted objects", {
     specify(hours ~ age + college) %>%
     fit()
 
-  expect_error(
-    get_p_value(null_fits, "boop", "both"),
-    "should be the output of `fit\\(\\)`."
+  expect_snapshot(error = TRUE,
+    get_p_value(null_fits, "boop", "both")
   )
 
-  expect_error(
-    get_p_value(null_fits, obs_fit$estimate, "both"),
-    "should be the output of `fit\\(\\)`."
+  expect_snapshot(error = TRUE,
+    get_p_value(null_fits, obs_fit$estimate, "both")
   )
 
-  expect_error(
-    get_p_value(obs_fit, null_fits, "both"),
-    "be passed to `generate\\(\\)`"
+  expect_snapshot(error = TRUE,
+    get_p_value(obs_fit, null_fits, "both")
   )
 })
 
@@ -219,9 +211,8 @@ test_that("get_p_value errors informatively when args are switched", {
     generate(reps = 20, type = "bootstrap") %>%
     calculate(stat = "mean")
 
-  expect_error(
-    get_p_value(obs_stat, null_dist, "both"),
-    "mistakenly switched the order of `obs_stat` and `x`"
+  expect_snapshot(error = TRUE,
+    get_p_value(obs_stat, null_dist, "both")
   )
 
   expect_silent(
@@ -341,7 +332,7 @@ test_that("get_p_value can handle theoretical distributions", {
     tolerance = 1e-3
   )
 
-  expect_warning(
+  expect_snapshot(
     old_way <- chisq_test(gss, college ~ finrela)
   )
 
@@ -442,13 +433,12 @@ test_that("get_p_value warns with bad theoretical distributions", {
     )
   )
 
-  expect_warning(
-    get_p_value(
+  expect_snapshot(
+    res_ <- get_p_value(
       t_dist_30,
       t_obs,
       direction = "both"
-    ),
-    "generated using different null hypotheses"
+    )
   )
 })
 

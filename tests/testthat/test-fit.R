@@ -65,12 +65,11 @@ test_that("fit.infer can handle generated objects", {
 })
 
 test_that("fit.infer messages informatively on excessive null", {
-  expect_message(
-    gss %>%
+  expect_snapshot(
+    res_ <- gss %>%
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
-      fit(),
-    "independence null hypothesis does not inform.*the observed fit"
+      fit()
   )
 
   expect_silent(
@@ -102,11 +101,10 @@ test_that("fit.infer logistic regression works", {
   )
 
   # errors informatively with multinomial response variable
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
       specify(finrela ~ age + college) %>%
-      fit(),
-    "infer does not support.*more than two levels"
+      fit()
   )
 
   # works as expected for `generate()`d objects

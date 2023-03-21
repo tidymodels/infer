@@ -96,93 +96,82 @@ test_that("distribution description works as expected", {
 
 test_that("assume errors with bad arguments", {
   # supply a bad distribution
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
       specify(age ~ college) %>%
       hypothesize(null = "independence") %>%
-      assume("boop", nrow(gss) - 1),
-    'The distribution argument must be one of "Chisq", "F", "t", or "z".'
+      assume("boop", nrow(gss) - 1)
   )
 
   # bad number of df arguments
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
       specify(age ~ college) %>%
       hypothesize(null = "independence") %>%
-      assume("t", c(nrow(gss) - 1, 2)),
-    'A T distribution requires 1 degrees of freedom argument, but 2 were supplied.'
-  )
+      assume("t", c(nrow(gss) - 1, 2))
+   )
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
-      assume("F", nrow(gss) - 1),
-    'An F distribution requires 2 degrees of freedom arguments, but 1 was supplied.'
+      assume("F", nrow(gss) - 1)
   )
 
   # bad df argument type
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
-      assume("F", "boop"),
-    'to be a numeric vector, but you supplied a character object.'
+      assume("F", "boop")
   )
 
   # df argument possibly passed to dots
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
-      assume("F", nrow(gss) - 1, 1),
-    'though the argument `list\\(1\\)` was supplied'
+      assume("F", nrow(gss) - 1, 1)
   )
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
-      assume("F", nrow(gss) - 1, 1, 2),
-    'arguments `list\\(1, 2\\)` were supplied'
+      assume("F", nrow(gss) - 1, 1, 2)
   )
 
   # supply `distribution`s that don't align with the supplied variables
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
       specify(age ~ finrela) %>%
       hypothesize(null = "independence") %>%
-      assume("t", nrow(gss) - 1),
-    'supplied distribution "t" is not well-defined.*onse variable \\(age\\)'
+      assume("t", nrow(gss) - 1)
   )
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
       specify(age ~ finrela) %>%
       hypothesize(null = "independence") %>%
-      assume("z", nrow(gss) - 1),
-    'supplied distribution "z" is not well-defined.*onse variable \\(age\\)'
+      assume("z", nrow(gss) - 1)
   )
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
       specify(age ~ NULL) %>%
       hypothesize(null = "point", mu = 40) %>%
-      assume("z", nrow(gss) - 1),
-    'supplied distribution "z" is not well-defined.*onse variable \\(age\\)'
+      assume("z", nrow(gss) - 1)
   )
 
   # supply bad `x` arguments
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
-      assume("z", nrow(gss) - 1),
-    '`x` argument must be the output of a core infer function'
+      assume("z", nrow(gss) - 1)
   )
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     "boop" %>%
-      assume("z", nrow(gss) - 1),
-    '`x` argument must be the output of a core infer function'
+      assume("z", nrow(gss) - 1)
   )
 })
 
@@ -202,12 +191,11 @@ test_that("assume() handles automatic df gracefully", {
     )
   )
 
-  expect_message(
-    gss %>%
+  expect_snapshot(
+    res_ <- gss %>%
       specify(response = hours) %>%
       hypothesize(null = "point", mu = 40) %>%
-      assume("t", nrow(gss) - 2),
-    "does not match its expected value..*calculation for `df`"
+      assume("t", nrow(gss) - 2)
   )
 
   # t.test param with var.equal = FALSE

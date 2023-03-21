@@ -126,24 +126,18 @@ test_that("shade_p_value accepts `NULL` as `obs_stat`",  {
 test_that("shade_p_value throws errors", {
   skip_if(getRversion() < "4.1.0")
 
-  expect_error(gss_viz_sim + shade_p_value("a", "right"), "numeric")
-  expect_error(gss_viz_sim + shade_p_value(1, 1), "character")
-  expect_error(gss_viz_sim + shade_p_value(1, "right", color = "x"), "color")
-  expect_error(gss_viz_sim + shade_p_value(1, "right", fill = "x"), "color")
-  expect_error(gss_viz_sim %>% shade_p_value(1, "right"),
-               "\\`shade_p_value\\(\\)\\` as a layer")
-  expect_error(gss_viz_sim %>% shade_p_value(obs_stat = 1),
-               "\\`shade_p_value\\(\\)\\` as a layer")
-  expect_error(gss_viz_sim %>% shade_p_value(obs_stat = 1,
-                                              direction = "right"),
-               "\\`shade_p_value\\(\\)\\` as a layer")
-  expect_error(gss_viz_sim %>% shade_pvalue(1, "right"),
-               "\\`shade_pvalue\\(\\)\\` as a layer")
-  expect_error(gss_viz_sim %>% shade_pvalue(obs_stat = 1),
-               "\\`shade_pvalue\\(\\)\\` as a layer")
-  expect_error(gss_viz_sim %>% shade_pvalue(obs_stat = 1,
-                                              direction = "right"),
-               "\\`shade_pvalue\\(\\)\\` as a layer")
+  expect_snapshot(error = TRUE, gss_viz_sim + shade_p_value("a", "right"))
+  expect_snapshot(error = TRUE, gss_viz_sim + shade_p_value(1, 1))
+  expect_snapshot(error = TRUE, gss_viz_sim + shade_p_value(1, "right", color = "x"))
+  expect_snapshot(error = TRUE, gss_viz_sim + shade_p_value(1, "right", fill = "x"))
+  expect_snapshot(error = TRUE, gss_viz_sim %>% shade_p_value(1, "right"))
+  expect_snapshot(error = TRUE, gss_viz_sim %>% shade_p_value(obs_stat = 1))
+  expect_snapshot(error = TRUE, gss_viz_sim %>% shade_p_value(obs_stat = 1,
+                                              direction = "right"))
+  expect_snapshot(error = TRUE, gss_viz_sim %>% shade_pvalue(1, "right"))
+  expect_snapshot(error = TRUE, gss_viz_sim %>% shade_pvalue(obs_stat = 1))
+  expect_snapshot(error = TRUE, gss_viz_sim %>% shade_pvalue(obs_stat = 1,
+                                              direction = "right"))
 
 })
 

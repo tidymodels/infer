@@ -52,15 +52,15 @@ test_that("is_truefalse works", {
 })
 
 test_that("stop_glue handles `NULL`", {
-  expect_error(stop_glue("Hello {null_val}", "!"), "NULL")
+  expect_snapshot(error = TRUE, stop_glue("Hello {null_val}", "!"))
 })
 
 test_that("warning_glue handles `NULL`", {
-  expect_warning(warning_glue("Hello {null_val}", "!"), "NULL")
+  expect_snapshot(warning_glue("Hello {null_val}", "!"))
 })
 
 test_that("message_glue handles `NULL`", {
-  expect_message(message_glue("Hello {null_val}", "!"), "NULL")
+  expect_snapshot(message_glue("Hello {null_val}", "!"))
 })
 
 test_that("glue_null works", {
@@ -84,15 +84,15 @@ test_that("check_type works", {
 
   expect_silent(check_type(x_var, is.integer))
 
-  expect_error(check_type(x_var, is.character), "x_var.*character.*integer")
-  expect_error(
-    check_type(x_var, is.character, "symbolic"), "x_var.*symbolic.*integer"
+  expect_snapshot(error = TRUE, check_type(x_var, is.character))
+  expect_snapshot(error = TRUE,
+    check_type(x_var, is.character, "symbolic")
   )
 
   x_df <- data.frame(x = TRUE)
   expect_silent(check_type(x_df, is.data.frame))
-  expect_error(
-    check_type(x_df, is.logical), "x_df.*logical.*data\\.frame"
+  expect_snapshot(error = TRUE,
+    check_type(x_df, is.logical)
   )
 })
 
@@ -103,7 +103,7 @@ test_that("check_type allows `NULL`", {
 
 test_that("check_type allows custom name for `x`", {
   input <- "a"
-  expect_error(check_type(input, is.numeric, x_name = "aaa"), "^`aaa`")
+  expect_snapshot(error = TRUE, check_type(input, is.numeric, x_name = "aaa"))
 })
 
 test_that("check_type allows extra arguments for `predicate`", {
@@ -111,14 +111,14 @@ test_that("check_type allows extra arguments for `predicate`", {
     x >= min_val
   }
   expect_silent(check_type(1, is_geq, min_val = 0))
-  expect_error(check_type(1, is_geq, min_val = 2))
+  expect_snapshot(error = TRUE, check_type(1, is_geq, min_val = 2))
 })
 
 test_that("check_type allows formula `predicate`", {
   expect_silent(check_type(1, ~ is.numeric(.) && (. > 0)))
 
   # By default type should be inferred as the whole formula
-  expect_error(check_type("a", ~ is.numeric(.)), "'~is\\.numeric\\(\\.\\)'")
+  expect_snapshot(error = TRUE, check_type("a", ~ is.numeric(.)))
 })
 
 
@@ -133,8 +133,7 @@ test_that("c_dedupl returns input when unnamed", {
 })
 
 test_that("hypothesize errors out when x isn't a dataframe", {
-   expect_error(hypothesize(c(1, 2, 3), null = "point"),
-                "x must be a data.frame or tibble")
+   expect_snapshot(error = TRUE, hypothesize(c(1, 2, 3), null = "point"))
 })
 
 test_that("p_null supplies appropriate params", {

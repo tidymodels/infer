@@ -35,9 +35,9 @@ hyp_anova <- mtcars_df %>%
   hypothesize(null = "independence")
 
 test_that("cohesion with type argument", {
-  expect_warning(generate(hyp_prop, type = "bootstrap"))
+  expect_snapshot(res_ <- generate(hyp_prop, type = "bootstrap"))
   expect_silent(generate(hyp_diff_in_props, type = "bootstrap"))
-  expect_warning(generate(hyp_chisq_gof, type = "bootstrap"))
+  expect_snapshot(res_ <- generate(hyp_chisq_gof, type = "bootstrap"))
   expect_silent(generate(hyp_chisq_ind, type = "bootstrap"))
   expect_silent(generate(hyp_mean, type = "bootstrap"))
   expect_silent(generate(hyp_median, type = "bootstrap"))
@@ -46,25 +46,25 @@ test_that("cohesion with type argument", {
   expect_silent(generate(hyp_anova, type = "bootstrap"))
 
   expect_silent(generate(hyp_prop, type = "draw"))
-  expect_warning(generate(hyp_diff_in_props, type = "draw"))
+  expect_snapshot(res_ <- generate(hyp_diff_in_props, type = "draw"))
   expect_silent(generate(hyp_chisq_gof, type = "draw"))
-  expect_warning(generate(hyp_chisq_ind, type = "draw"))
-  expect_error(
-    expect_warning(generate(hyp_mean, type = "draw"))
+  expect_snapshot(res_ <- generate(hyp_chisq_ind, type = "draw"))
+  expect_snapshot(error = TRUE,
+    res_ <- generate(hyp_mean, type = "draw")
   )
-  expect_warning(generate(hyp_diff_in_means, type = "draw"))
-  expect_warning(generate(hyp_anova, type = "draw"))
+  expect_snapshot(res_ <- generate(hyp_diff_in_means, type = "draw"))
+  expect_snapshot(res_ <- generate(hyp_anova, type = "draw"))
 
-  expect_error(
-    expect_warning(generate(hyp_prop, type = "permute"))
+  expect_snapshot(error = TRUE,
+    res_ <- generate(hyp_prop, type = "permute")
   )
   expect_silent(generate(hyp_diff_in_props, type = "permute"))
-  expect_error(
-    expect_warning(generate(hyp_chisq_gof, type = "permute"))
+  expect_snapshot(error = TRUE,
+    res_ <- generate(hyp_chisq_gof, type = "permute")
   )
   expect_silent(generate(hyp_chisq_ind, type = "permute"))
-  expect_error(
-    expect_warning(generate(hyp_mean, type = "permute"))
+  expect_snapshot(error = TRUE,
+    res_ <- generate(hyp_mean, type = "permute")
   )
   expect_silent(generate(hyp_diff_in_means, type = "permute"))
   expect_silent(generate(hyp_anova, type = "permute"))
@@ -76,7 +76,7 @@ test_that("sensible output", {
     nrow(generate(hyp_prop, reps = 500, type = "draw"))
   )
   expect_silent(generate(hyp_mean, reps = 1, type = "bootstrap"))
-  expect_error(generate(hyp_mean, reps = 1, type = "other"))
+  expect_snapshot(error = TRUE, generate(hyp_mean, reps = 1, type = "other"))
   expect_equal(class(generate(hyp_mean, type = "bootstrap"))[1], "infer")
 })
 
@@ -161,28 +161,28 @@ test_that("auto `type` works (generate)", {
   expect_equal(attr(two_props_boot, "type"), "bootstrap")
   expect_equal(attr(slope_boot, "type"), "bootstrap")
 
-  expect_error(
-    expect_warning(mtcars_df %>%
+  expect_snapshot(error = TRUE,
+    mtcars_df %>%
       specify(response = mpg) %>% # formula alt: mpg ~ NULL
       hypothesize(null = "point", mu = 25) %>%
       generate(reps = 100, type = "permute")
-    )
   )
 
-  expect_warning(mtcars_df %>%
+  expect_snapshot(
+     res_ <- mtcars_df %>%
       specify(response = mpg) %>%
       generate(reps = 100, type = "draw")
   )
 
-  expect_warning(
-    expect_error(mtcars_df %>%
-        specify(response = mpg) %>% # formula alt: mpg ~ NULL
-        hypothesize(null = "point", med = 26) %>%
-        generate(reps = 100, type = "permute")
-    )
+  expect_snapshot(error = TRUE,
+    res_ <- mtcars_df %>%
+      specify(response = mpg) %>% # formula alt: mpg ~ NULL
+      hypothesize(null = "point", med = 26) %>%
+      generate(reps = 100, type = "permute")
   )
 
-  expect_warning(mtcars_df %>%
+  expect_snapshot(
+    res_ <- mtcars_df %>%
       specify(response = am, success = "1") %>% # formula alt: am ~ NULL
       hypothesize(null = "point", p = .25) %>%
       generate(reps = 100, type = "bootstrap")
@@ -194,13 +194,15 @@ test_that("auto `type` works (generate)", {
       generate(reps = 100, type = "bootstrap")
   )
 
-  expect_warning(mtcars_df %>%
+  expect_snapshot(
+     res_ <- mtcars_df %>%
       specify(cyl ~ NULL) %>% # alt: response = cyl
       hypothesize(null = "point", p = c("4" = .5, "6" = .25, "8" = .25)) %>%
       generate(reps = 100, type = "bootstrap")
   )
 
-  expect_warning(mtcars_df %>%
+  expect_snapshot(
+     res_ <- mtcars_df %>%
       specify(cyl ~ am) %>% # alt: response = cyl, explanatory = am
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "draw")
@@ -217,7 +219,8 @@ test_that("auto `type` works (generate)", {
       generate(reps = 100, type = "bootstrap")
   )
 
-  expect_warning(mtcars_df %>%
+  expect_snapshot(
+     res_ <- mtcars_df %>%
       specify(mpg ~ cyl) %>% # alt: response = mpg, explanatory = cyl
       hypothesize(null = "independence") %>%
       generate(reps = 100, type = "draw")
@@ -229,56 +232,56 @@ test_that("auto `type` works (generate)", {
       generate(reps = 100, type = "bootstrap")
   )
 
-  expect_warning(mtcars_df %>%
+  expect_snapshot(
+     res_ <- mtcars_df %>%
       specify(response = am, success = "1") %>%
       generate(reps = 100, type = "draw")
   )
 
-  expect_error(
-    expect_warning(
-      mtcars_df %>%
-        specify(mpg ~ am) %>%
-        generate(reps = 100, type = "permute")
-    ),
-    "independence hypothesis test"
+  expect_snapshot(error = TRUE,
+    res_ <- mtcars_df %>%
+      specify(mpg ~ am) %>%
+      generate(reps = 100, type = "permute")
   )
 
-  expect_warning(mtcars_df %>%
+  expect_snapshot(
+     res_ <- mtcars_df %>%
       specify(am ~ vs, success = "1") %>%
       generate(reps = 100, type = "draw")
   )
 
-  expect_warning(mtcars_df %>%
+  expect_snapshot(
+     res_ <- mtcars_df %>%
       specify(mpg ~ hp) %>%
       generate(reps = 100, type = "draw")
   )
 })
 
 test_that("mismatches lead to error", {
-  expect_error(mtcars_df %>% generate(reps = 10, type = "permute"))
-  expect_error(
-    mtcars_df %>%
+  expect_snapshot(error = TRUE,
+    res_ <- mtcars_df %>% generate(reps = 10, type = "permute")
+  )
+  expect_snapshot(error = TRUE,
+    res_ <- mtcars_df %>%
       specify(am ~ NULL, success = "1") %>%
       hypothesize(null = "independence", p = c("1" = 0.5)) %>%
       generate(reps = 100, type = "draw")
   )
-  expect_warning(
-    mtcars_df %>%
+  expect_snapshot(
+     res_ <- mtcars_df %>%
       specify(cyl ~ NULL) %>% # alt: response = cyl
       hypothesize(
         null = "point", p = c("4" = .5, "6" = .25, "8" = .25)
       ) %>%
       generate(reps = 100, type = "bootstrap"))
-  expect_error(
-    mtcars_df %>% specify(mpg ~ hp) %>% generate(reps = 100, type = "other")
+  expect_snapshot(error = TRUE,
+    res_ <- mtcars_df %>% specify(mpg ~ hp) %>% generate(reps = 100, type = "other")
   )
 })
 
 test_that("generate() handles `NULL` value of `type`", {
-  expect_message(
-    generate(hyp_prop, type = NULL),
-    'Setting `type = "draw"` in `generate()`.',
-    fixed = TRUE
+  expect_snapshot(
+    res_ <- generate(hyp_prop, type = NULL)
   )
 })
 
@@ -410,52 +413,46 @@ test_that("generate is sensitive to the variables argument", {
 })
 
 test_that("variables argument prompts when it ought to", {
-  expect_error(
-    gss[1:10,] %>%
+  expect_snapshot(error = TRUE,
+    res_ <- gss[1:10,] %>%
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
-      generate(reps = 2, type = "permute", variables = c(howdy)),
-    "howdy.*is not in the supplied data."
+      generate(reps = 2, type = "permute", variables = c(howdy))
   )
 
-  expect_error(
-    gss[1:10,] %>%
+  expect_snapshot(error = TRUE,
+    res <- gss[1:10,] %>%
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
-      generate(reps = 2, type = "permute", variables = c(howdy, doo)),
-    'columns.*"howdy", "doo".*are not in the supplied data.'
+      generate(reps = 2, type = "permute", variables = c(howdy, doo))
   )
 
-  expect_warning(
-    gss[1:10,] %>%
+  expect_snapshot(
+    res_ <- gss[1:10,] %>%
       specify(hours ~ NULL) %>%
       hypothesize(null = "point", mu = 40) %>%
-      generate(reps = 2, type = "bootstrap", variables = c(hours)),
-    "is only relevant for.*will be ignored."
+      generate(reps = 2, type = "bootstrap", variables = c(hours))
   )
 
-  expect_error(
-    gss[1:10,] %>%
+  expect_snapshot(error = TRUE,
+    res_ <- gss[1:10,] %>%
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
-      generate(reps = 2, type = "permute", variables = "hours"),
-    'unquoted variable names'
+      generate(reps = 2, type = "permute", variables = "hours")
   )
 
-  expect_message(
-    gss[1:10,] %>%
+  expect_snapshot(
+    res_ <- gss[1:10,] %>%
       specify(hours ~ age + college + age*college) %>%
       hypothesize(null = "independence") %>%
-      generate(reps = 2, type = "permute", variables = age*college),
-    "supply only data columns"
+      generate(reps = 2, type = "permute", variables = age*college)
   )
 
-  expect_message(
-    gss[1:10,] %>%
+  expect_snapshot(
+    res_ <- gss[1:10,] %>%
       specify(hours ~ age + college + age*college) %>%
       hypothesize(null = "independence") %>%
-      generate(reps = 2, type = "permute", variables = c(hours, age*college)),
-    "supply only data columns"
+      generate(reps = 2, type = "permute", variables = c(hours, age*college))
   )
 
   expect_silent(
@@ -481,27 +478,25 @@ test_that("variables argument prompts when it ought to", {
 
   # warn on type != permute but don't raise message re: interaction
   # effects unless otherwise used appropriately
-  expect_silent(
-    expect_warning(
-      gss[1:10,] %>%
-        specify(hours ~ age*college) %>%
-        generate(
-          reps = 2,
-          type = "bootstrap",
-          variables = c(hours, age*college)
-        )
-    )
+  expect_snapshot(
+    res_ <- gss[1:10,] %>%
+      specify(hours ~ age*college) %>%
+      generate(
+        reps = 2,
+        type = "bootstrap",
+        variables = c(hours, age*college)
+      )
+
   )
 })
 
 test_that("type = 'draw'/'simulate' superseding handled gracefully", {
   # message on type = 'simulate'
-  expect_message(
-    mtcars_df %>%
+  expect_snapshot(
+    res_ <- mtcars_df %>%
       specify(response = am, success = "1") %>%
       hypothesize(null = "point", p = .5) %>%
-      generate(type = "simulate"),
-    '`"simulate"` generation type.*renamed to `"draw"`.*quiet'
+      generate(type = "simulate")
   )
 
   # don't message on type = 'draw'
@@ -513,33 +508,26 @@ test_that("type = 'draw'/'simulate' superseding handled gracefully", {
   )
 
   # mention new generation types when supplied a bad one
-  expect_error(
-    mtcars_df %>%
+  expect_snapshot(error = TRUE,
+    res_ <- mtcars_df %>%
       specify(response = am, success = "1") %>%
       hypothesize(null = "point", p = .5) %>%
-      generate(type = "boop"),
-    'should be one of "bootstrap", "permute", or "draw"'
+      generate(type = "boop")
   )
 
   # warns with either alias when given unexpected generate type
-  expect_error(
-    expect_warning(
-      mtcars_df %>%
-        specify(response = mpg) %>%
-        hypothesize(null = "point", mu = 20) %>%
-        generate(type = "draw"),
-      'have given `type = "draw"`.*expected to be `"bootstrap"`.*untested'
-    )
+  expect_snapshot(error = TRUE,
+    mtcars_df %>%
+      specify(response = mpg) %>%
+      hypothesize(null = "point", mu = 20) %>%
+      generate(type = "draw")
   )
 
-  expect_error(
-    expect_warning(
-      mtcars_df %>%
-        specify(response = mpg) %>%
-        hypothesize(null = "point", mu = 20) %>%
-        generate(type = "draw"),
-      'have given `type = "draw"`.*expected to be `"bootstrap"`.*untested'
-    )
+  expect_snapshot(error = TRUE,
+    mtcars_df %>%
+      specify(response = mpg) %>%
+      hypothesize(null = "point", mu = 20) %>%
+      generate(type = "draw")
   )
 
   expect_equal(

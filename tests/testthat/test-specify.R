@@ -17,43 +17,41 @@ test_that("auto `type` works (specify)", {
 })
 
 test_that("data argument", {
-  expect_error(specify(blah ~ cyl))
-  expect_error(specify(1:3))
+  expect_snapshot(error = TRUE, specify(blah ~ cyl))
+  expect_snapshot(error = TRUE, specify(1:3))
   expect_s3_class(mtcars_df, "data.frame")
-  expect_error(specify(mtcars_df, mtcars_df$mpg))
+  expect_snapshot(error = TRUE, specify(mtcars_df, mtcars_df$mpg))
 })
 
 test_that("response and explanatory arguments", {
-  expect_error(specify(mtcars_df, response = blah), "response.*cannot be found")
-  expect_error(
-    specify(mtcars_df, response = "blah"), "response.*bare.*not a string"
+  expect_snapshot(error = TRUE, specify(mtcars_df, response = blah))
+  expect_snapshot(error = TRUE,
+    specify(mtcars_df, response = "blah")
   )
-  expect_error(
-    specify(mtcars_df, formula = mpg ~ blah), "explanatory.*cannot be found"
+  expect_snapshot(error = TRUE,
+    specify(mtcars_df, formula = mpg ~ blah)
   )
-  expect_error(specify(mtcars_df, blah2 ~ cyl), "response.*cannot be found")
-  expect_error(specify(mtcars_df),
-               "Please supply a response variable that is not `NULL`.")
-  expect_error(specify(mtcars_df, formula = mpg ~ mpg), "different")
-  expect_error(
-    specify(mtcars_df, formula = "mpg" ~ cyl), "response.*bare.*not a string"
+  expect_snapshot(error = TRUE, specify(mtcars_df, blah2 ~ cyl))
+  expect_snapshot(error = TRUE, specify(mtcars_df))
+  expect_snapshot(error = TRUE, specify(mtcars_df, formula = mpg ~ mpg))
+  expect_snapshot(error = TRUE,
+    specify(mtcars_df, formula = "mpg" ~ cyl)
   )
-  expect_error(
-    specify(mtcars_df, formula = mpg ~ "cyl"), "explanatory.*bare.*not a string"
+  expect_snapshot(error = TRUE,
+    specify(mtcars_df, formula = mpg ~ "cyl")
   )
   expect_silent(specify(mtcars_df, formula = mpg ~ cyl))
 
-  expect_error(specify(mtcars_df, formula = NULL ~ cyl),
-               "Please supply a response variable that is not `NULL`.")
+  expect_snapshot(error = TRUE, specify(mtcars_df, formula = NULL ~ cyl))
 })
 
 test_that("success argument", {
-  expect_error(specify(mtcars_df, response = vs, success = 1))
-  expect_error(specify(mtcars_df, response = vs, success = "bogus"))
-  expect_error(specify(mtcars_df, response = mpg, success = "1"))
-  expect_error(specify(mtcars_df, response = cyl, success = "4"))
+  expect_snapshot(error = TRUE, specify(mtcars_df, response = vs, success = 1))
+  expect_snapshot(error = TRUE, specify(mtcars_df, response = vs, success = "bogus"))
+  expect_snapshot(error = TRUE, specify(mtcars_df, response = mpg, success = "1"))
+  expect_snapshot(error = TRUE, specify(mtcars_df, response = cyl, success = "4"))
   # success not given
-  expect_error(specify(mtcars_df, response = am))
+  expect_snapshot(error = TRUE, specify(mtcars_df, response = am))
 
 })
 
@@ -64,11 +62,11 @@ test_that("sensible output", {
 })
 
 test_that("formula argument is a formula", {
-  expect_error(specify(mtcars_df, formula = "vs", success = 1))
+  expect_snapshot(error = TRUE, specify(mtcars_df, formula = "vs", success = 1))
 
   # Issue #110: https://github.com/tidymodels/infer/issues/110
-  expect_error(specify(mtcars, am, success = "1"))
-  expect_error(specify(mtcars, response = am, "1"))
+  expect_snapshot(error = TRUE, specify(mtcars, am, success = "1"))
+  expect_snapshot(error = TRUE, specify(mtcars, response = am, "1"))
   expect_silent({
     mtcars %>%
       dplyr::mutate(am = factor(am)) %>%
@@ -78,7 +76,7 @@ test_that("formula argument is a formula", {
 
 test_that("is_complete works", {
   some_missing <- data.frame(vec = c(NA, 2, 3))
-  expect_warning(specify(some_missing, response = vec))
+  expect_snapshot(res_ <- specify(some_missing, response = vec))
 })
 
 test_that("specify doesn't have NSE issues (#256)", {
@@ -86,25 +84,22 @@ test_that("specify doesn't have NSE issues (#256)", {
 })
 
 test_that("specify messages when dropping unused levels", {
-  expect_message(
-    gss %>%
+   expect_snapshot(
+    res_ <- gss %>%
       dplyr::filter(partyid %in% c("rep", "dem")) %>%
-      specify(age ~ partyid),
-    "Dropping unused factor levels c\\(\"ind\", \"other\""
+      specify(age ~ partyid)
   )
 
-  expect_message(
-    gss %>%
+  expect_snapshot(
+    res_ <- gss %>%
       dplyr::filter(partyid %in% c("rep", "dem")) %>%
-      specify(partyid ~ age),
-    "Dropping unused factor levels c\\(\"ind\", \"other\""
+      specify(partyid ~ age)
   )
 
-  expect_message(
-    gss %>%
+  expect_snapshot(
+    res_ <- gss %>%
       dplyr::filter(partyid %in% c("rep", "dem")) %>%
-      specify(partyid ~ NULL),
-    "Dropping unused factor levels c\\(\"ind\", \"other\""
+      specify(partyid ~ NULL)
   )
 
   expect_silent(
