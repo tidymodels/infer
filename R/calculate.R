@@ -176,9 +176,10 @@ check_input_vs_stat <- function(x, stat) {
 
   if (!stat %in% possible_stats) {
     if (has_explanatory(x)) {
-      msg_tail <- glue_null(
+      msg_tail <- glue(
         "a {get_stat_type_desc(explanatory_type)} explanatory variable ",
-        "({explanatory_name(x)})."
+        "({explanatory_name(x)}).",
+        .null = "NULL"
       )
     } else {
       msg_tail <- "no explanatory variable."

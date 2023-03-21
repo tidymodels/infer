@@ -204,9 +204,10 @@ get_formula <- function(x) {
     exp <- paste0(explanatory_name(x), collapse = " + ")
 
     as.formula(
-      glue_null(
+      glue(
         '{response_name(x)} ~
-         {if (exp == "") NULL else exp}'
+         {if (exp == "") NULL else exp}',
+        .null = "NULL"
       )
     )
   }

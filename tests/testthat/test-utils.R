@@ -63,22 +63,6 @@ test_that("message_glue handles `NULL`", {
   expect_snapshot(message_glue("Hello {null_val}", "!"))
 })
 
-test_that("glue_null works", {
-  adj <- "quick"
-
-  expect_equal(
-    glue_null(
-      "The {adj} brown {null_val} jumps ", "over the lazy {NULL}."
-    ),
-    "The quick brown NULL jumps over the lazy NULL."
-  )
-
-  expect_equal(
-    glue_null("The {adj}", "brown", .sep = "-"),
-    "The quick-brown"
-  )
-})
-
 test_that("check_type works", {
   x_var <- 1L
 

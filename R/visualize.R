@@ -600,7 +600,7 @@ title_layer <- function(data, title_fn = ggplot2::ggtitle) {
     both = "Simulation-Based and Theoretical {theory_type} {distr_name}s"
   )
 
-  list(title_fn(glue_null(title_string)))
+  list(title_fn(glue(title_string, .null = "NULL")))
 }
 
 labels_layer <- function(data, term) {
@@ -611,8 +611,8 @@ labels_layer <- function(data, term) {
   y_lab <- switch(method, simulation = "count", "density")
 
   list(
-    xlab(glue_null(x_lab)),
-    ylab(glue_null(y_lab))
+    xlab(glue(x_lab, .null = "NULL")),
+    ylab(glue(y_lab, .null = "NULL"))
   )
 }
 

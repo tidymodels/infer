@@ -159,8 +159,9 @@ assume <- function(x, distribution, df = NULL, ...) {
   df <- check_distribution(x, distribution, df, ...)
 
   structure(
-    glue_null(
+    glue(
       "{distribution_desc(distribution)} distribution{df_desc(df)}.",
+      .null = "NULL"
     ),
     # store distribution as the suffix to p* in dist function
     distribution = dist_fn(distribution),
@@ -199,9 +200,10 @@ check_distribution <- function(x, distribution, df, ...) {
       (dist == "z" && !attr(x, "theory_type") %in% c("One sample prop z",
                                                      "Two sample props z"))) {
     if (has_explanatory(x)) {
-      msg_tail <- glue_null(
+      msg_tail <- glue(
         "a {get_stat_type_desc(attr(x, 'type_desc_explanatory'))} ",
-        "explanatory variable ({explanatory_name(x)})."
+        "explanatory variable ({explanatory_name(x)}).",
+        .null = "NULL"
       )
     } else {
       msg_tail <- "no explanatory variable."
