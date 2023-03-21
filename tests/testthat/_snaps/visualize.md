@@ -57,6 +57,18 @@
 ---
 
     Code
+      res_vis_theor_none_1 <- gss_tbl %>% specify(sex ~ college, success = "female") %>%
+        hypothesize(null = "independence") %>% calculate(stat = "z", order = c(
+        "no degree", "degree")) %>% visualize(method = "theoretical")
+    Message
+      Rather than setting `method = "theoretical"` with a simulation-based null distribution, the preferred method for visualizing theory-based distributions with infer is now to pass the output of `assume()` as the first argument to `visualize()`.
+    Condition
+      Warning:
+      Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
+
+---
+
+    Code
       gss_tbl %>% specify(sex ~ college, success = "female") %>% hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>% calculate(stat = "diff in props",
         order = c("no degree", "degree")) %>% visualize(method = "both") +
@@ -89,6 +101,21 @@
       Error:
       ! Your `calculate`d statistic and the theoretical distribution are on different scales. Use a standardized `stat` instead.
 
+---
+
+    Code
+      res_vis_theor_both_1 <- gss_tbl %>% specify(hours ~ sex) %>% hypothesize(null = "independence") %>%
+        generate(reps = 100, type = "permute") %>% calculate(stat = "diff in means",
+        order = c("female", "male")) %>% visualize(method = "theoretical") +
+        shade_p_value(direction = "both", obs_stat = obs_diff_mean)
+    Message
+      Rather than setting `method = "theoretical"` with a simulation-based null distribution, the preferred method for visualizing theory-based distributions with infer is now to pass the output of `assume()` as the first argument to `visualize()`.
+    Condition
+      Warning:
+      Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
+      Warning:
+      Your `calculate`d statistic and the theoretical distribution are on different scales. Displaying only the theoretical distribution.
+
 # method = "both" behaves nicely
 
     Code
@@ -97,6 +124,18 @@
     Condition
       Error:
       ! `generate()` and `calculate()` are both required to be done prior to `visualize(method = "both")`
+
+---
+
+    Code
+      res_method_both <- gss_tbl %>% specify(hours ~ college) %>% hypothesize(null = "point",
+        mu = 4) %>% generate(reps = 10, type = "bootstrap") %>% calculate(stat = "t",
+        order = c("no degree", "degree")) %>% visualize(method = "both")
+    Condition
+      Warning:
+      With only 10 replicates, it may be difficult to see the relationship between simulation and theory.
+      Warning:
+      Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
 
 # Traditional right-tailed tests have warning if not right-tailed
 
@@ -158,6 +197,29 @@
     Condition
       Warning:
       Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector. Using the first two entries as the `endpoints`.
+
+---
+
+    Code
+      res_ci_vis <- gss_tbl_boot %>% visualize() + shade_confidence_interval(
+        endpoints = perc_ci, direction = "between")
+    Condition
+      Warning:
+      Ignoring unknown parameters: `direction`
+      Warning:
+      Ignoring unknown parameters: `direction`
+
+# title adapts to not hypothesis testing workflow
+
+    Code
+      res_vis_no_hypothesize_both <- gss_tbl_boot_tbl %>% calculate(stat = "t") %>%
+        visualize(method = "both")
+    Condition
+      Warning:
+      A t statistic requires a null hypothesis to calculate the observed statistic. 
+      Output assumes the following null value: `mu = 0`.
+      Warning:
+      Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
 
 # warn_right_tail_test works
 
@@ -222,6 +284,12 @@
     Condition
       Error:
       ! All calculated statistics were `NaN`. See ?calculate for more details.
+
+# visualize can handle multiple explanatory variables
+
+    Code
+      res_viz_fit_p_val_right <- null_fits %>% visualize() + shade_p_value(obs_stat = obs_fit,
+        direction = "right")
 
 # visualize can handle `assume()` output
 

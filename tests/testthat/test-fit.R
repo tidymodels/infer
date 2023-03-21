@@ -66,7 +66,7 @@ test_that("fit.infer can handle generated objects", {
 
 test_that("fit.infer messages informatively on excessive null", {
   expect_snapshot(
-    gss %>%
+    res_ <- gss %>%
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
       fit()

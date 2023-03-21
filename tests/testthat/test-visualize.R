@@ -137,14 +137,15 @@ test_that("visualize basic tests", {
       shade_p_value(direction = "both", obs_stat = obs_diff)
   )
 
-  expect_doppelganger(
-    "vis-theor-none-1",
-     gss_tbl %>%
-       specify(sex ~ college, success = "female") %>%
-       hypothesize(null = "independence") %>%
-       calculate(stat = "z", order = c("no degree", "degree")) %>%
-       visualize(method = "theoretical")
+  expect_snapshot(
+     res_vis_theor_none_1 <- gss_tbl %>%
+        specify(sex ~ college, success = "female") %>%
+        hypothesize(null = "independence") %>%
+        calculate(stat = "z", order = c("no degree", "degree")) %>%
+        visualize(method = "theoretical")
   )
+
+  expect_doppelganger("vis-theor-none-1", res_vis_theor_none_1)
 
   # diff in props and z on different scales
   expect_snapshot(error = TRUE,
@@ -370,18 +371,17 @@ test_that("visualize basic tests", {
       shade_p_value(direction = "both", obs_stat = obs_diff_mean)
   )
 
-  expect_doppelganger(
-    "vis-theor-both-1",
-    expect_warning(
-      gss_tbl %>%
+  expect_snapshot(
+     res_vis_theor_both_1 <- gss_tbl %>%
         specify(hours ~ sex) %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
         calculate(stat = "diff in means", order = c("female", "male")) %>%
         visualize(method = "theoretical") +
         shade_p_value(direction = "both", obs_stat = obs_diff_mean)
-    )
   )
+
+  expect_doppelganger("vis-theor-both-1", res_vis_theor_both_1)
 
   expect_doppelganger(
     "vis-theor-both-2",
@@ -458,17 +458,16 @@ test_that('method = "both" behaves nicely', {
       visualize(method = "both")
   )
 
-  expect_doppelganger(
-    "method-both",
-    expect_warning(
-      gss_tbl %>%
+  expect_snapshot(
+     res_method_both <- gss_tbl %>%
         specify(hours ~ college) %>%
         hypothesize(null = "point", mu = 4) %>%
         generate(reps = 10, type = "bootstrap") %>%
         calculate(stat = "t", order = c("no degree", "degree")) %>%
         visualize(method = "both")
-    )
   )
+
+  expect_doppelganger("method-both", res_method_both)
 })
 
 test_that("Traditional right-tailed tests have warning if not right-tailed", {
@@ -540,14 +539,13 @@ test_that("confidence interval plots are working", {
       shade_confidence_interval(endpoints = vec_error)
   )
 
-  expect_doppelganger(
-    "ci-vis",
-    expect_warning(
-      gss_tbl_boot %>%
+  expect_snapshot(
+     res_ci_vis <- gss_tbl_boot %>%
         visualize() +
         shade_confidence_interval(endpoints = perc_ci, direction = "between")
-    )
   )
+
+  expect_doppelganger("ci-vis", res_ci_vis)
 })
 
 test_that("title adapts to not hypothesis testing workflow", {
@@ -564,14 +562,13 @@ test_that("title adapts to not hypothesis testing workflow", {
       calculate(stat = "mean") %>%
       visualize()
   )
-  expect_doppelganger(
-    "vis-no-hypothesize-both",
-    expect_warning(
-      gss_tbl_boot_tbl %>%
+  expect_snapshot(
+     res_vis_no_hypothesize_both <- gss_tbl_boot_tbl %>%
         calculate(stat = "t") %>%
         visualize(method = "both")
-    )
   )
+
+  expect_doppelganger("vis-no-hypothesize-both", res_vis_no_hypothesize_both)
 })
 
 test_that("warn_right_tail_test works", {
@@ -652,11 +649,16 @@ test_that("visualize can handle multiple explanatory variables", {
       shade_p_value(obs_stat = obs_fit, direction = "left")
   )
 
+  expect_snapshot(
+     res_viz_fit_p_val_right <-
+        null_fits %>%
+        visualize() +
+        shade_p_value(obs_stat = obs_fit, direction = "right")
+  )
+
   expect_doppelganger(
     "viz-fit-p-val-right",
-    null_fits %>%
-      visualize() +
-      shade_p_value(obs_stat = obs_fit, direction = "right")
+    res_viz_fit_p_val_right
   )
 
   # with confidence intervals shaded

@@ -200,3 +200,39 @@
       Error:
       ! b is not a valid level of resp.
 
+# wrappers can handled ordered factors
+
+    Code
+      ordered_t_1 <- gss_tbl %>% dplyr::mutate(income = factor(income, ordered = TRUE)) %>%
+        chisq_test(income ~ partyid)
+    Condition
+      Warning in `stats::chisq.test()`:
+      Chi-squared approximation may be incorrect
+
+---
+
+    Code
+      ordered_f_1 <- gss_tbl %>% dplyr::mutate(income = factor(income, ordered = FALSE)) %>%
+        chisq_test(income ~ partyid)
+    Condition
+      Warning in `stats::chisq.test()`:
+      Chi-squared approximation may be incorrect
+
+---
+
+    Code
+      ordered_t_2 <- gss_tbl %>% dplyr::mutate(income = factor(income, ordered = TRUE)) %>%
+        chisq_test(partyid ~ income)
+    Condition
+      Warning in `stats::chisq.test()`:
+      Chi-squared approximation may be incorrect
+
+---
+
+    Code
+      ordered_f_2 <- gss_tbl %>% dplyr::mutate(income = factor(income, ordered = FALSE)) %>%
+        chisq_test(partyid ~ income)
+    Condition
+      Warning in `stats::chisq.test()`:
+      Chi-squared approximation may be incorrect
+

@@ -415,23 +415,33 @@ test_that("wrappers can handled ordered factors", {
       t_test(hours ~ sex, order = c("male", "female"))
   )
 
-  expect_equal(
-    gss_tbl %>%
-      dplyr::mutate(income = factor(income, ordered = TRUE)) %>%
-      chisq_test(income ~ partyid),
-    gss_tbl %>%
-      dplyr::mutate(income = factor(income, ordered = FALSE)) %>%
-      chisq_test(income ~ partyid)
+  expect_snapshot(
+     ordered_t_1 <- gss_tbl %>%
+        dplyr::mutate(income = factor(income, ordered = TRUE)) %>%
+        chisq_test(income ~ partyid)
   )
 
-  expect_equal(
-    gss_tbl %>%
-      dplyr::mutate(income = factor(income, ordered = TRUE)) %>%
-      chisq_test(partyid ~ income),
-    gss_tbl %>%
-      dplyr::mutate(income = factor(income, ordered = FALSE)) %>%
-      chisq_test(partyid ~ income)
+  expect_snapshot(
+     ordered_f_1 <- gss_tbl %>%
+        dplyr::mutate(income = factor(income, ordered = FALSE)) %>%
+        chisq_test(income ~ partyid)
   )
+
+  expect_equal(ordered_t_1, ordered_f_1)
+
+  expect_snapshot(
+     ordered_t_2 <- gss_tbl %>%
+        dplyr::mutate(income = factor(income, ordered = TRUE)) %>%
+        chisq_test(partyid ~ income)
+  )
+
+  expect_snapshot(
+     ordered_f_2 <- gss_tbl %>%
+        dplyr::mutate(income = factor(income, ordered = FALSE)) %>%
+        chisq_test(partyid ~ income)
+  )
+
+  expect_equal(ordered_t_2, ordered_f_2)
 
   expect_equal(
     df %>%
