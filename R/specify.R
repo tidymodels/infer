@@ -41,7 +41,7 @@
 #' vignette("infer")
 #' }
 #'
-#' @importFrom rlang f_lhs f_rhs get_expr
+#' @importFrom rlang f_lhs f_rhs get_expr caller_env abort
 #' @importFrom dplyr select any_of across
 #' @importFrom methods hasArg
 #' @family core functions
@@ -82,20 +82,22 @@ specify <- function(x, formula, response = NULL,
   append_infer_class(x)
 }
 
-parse_variables <- function(x, formula, response, explanatory) {
+parse_variables <- function(x, formula, response, explanatory, call = caller_env()) {
   if (methods::hasArg(formula)) {
     tryCatch(
       rlang::is_formula(formula),
       error = function(e) {
-        stop_glue("The argument you passed in for the formula does not exist.
-                  * Were you trying to pass in an unquoted column name?
-                  * Did you forget to name one or more arguments?")
+         abort(c("The argument you passed in for the formula does not exist.",
+                  "Were you trying to pass in an unquoted column name?",
+                  "Did you forget to name one or more arguments?"),
+               call = call)
       }
     )
     if (!rlang::is_formula(formula)) {
-      stop_glue("The first unnamed argument must be a formula.
-                * You passed in '{get_type(formula)}'.
-                * Did you forget to name one or more arguments?")
+      abort(glue("The first unnamed argument must be a formula. ",
+                 "You passed in '{get_type(formula)}'. ",
+                 "Did you forget to name one or more arguments?"),
+            call = call)
     }
   }
 
@@ -111,14 +113,15 @@ parse_variables <- function(x, formula, response, explanatory) {
 
   # Check response and explanatory variables to be appropriate for later use
   if (!has_response(x)) {
-    stop_glue("Please supply a response variable that is not `NULL`.")
+     abort(paste0("Please supply a response variable that is not `NULL`."),
+           call = call)
   }
 
-  check_var_correct(x, "response")
-  check_var_correct(x, "explanatory")
+  check_var_correct(x, "response", call = call)
+  check_var_correct(x, "explanatory", call = call)
 
   # If there's an explanatory var
-  check_vars_different(x)
+  check_vars_different(x, call = call)
 
   if (!has_attr(x, "response")) {
     attr(x, "response_type") <- NULL
@@ -142,27 +145,28 @@ parse_variables <- function(x, formula, response, explanatory) {
   x
 }
 
-check_success_arg <- function(x, success) {
+check_success_arg <- function(x, success, call = caller_env()) {
   response_col <- response_variable(x)
 
   if (!is.null(success)) {
     if (!is.character(success)) {
-      stop_glue("`success` must be a string.")
+       abort(paste0("`success` must be a string."), call = call)
     }
     if (!is.factor(response_col)) {
-      stop_glue(
+       abort(paste0(
         "`success` should only be specified if the response is a categorical ",
         "variable."
-      )
+      ), call = call)
     }
     if (!(success %in% levels(response_col))) {
-      stop_glue('{success} is not a valid level of {response_name(x)}.')
+       abort(glue('{success} is not a valid level of {response_name(x)}.'),
+             call = call)
     }
     if (sum(table(response_col) > 0) > 2) {
-      stop_glue(
+       abort(paste0(
         "`success` can only be used if the response has two levels. ",
         "`filter()` can reduce a variable to two levels."
-      )
+      ), call = call)
     }
   }
 
@@ -171,43 +175,43 @@ check_success_arg <- function(x, success) {
       length(levels(response_variable(x))) == 2) &&
      ((!has_attr(x, "explanatory_type") ||
        length(levels(explanatory_variable(x))) == 2))) {
-      stop_glue(
+     abort(glue(
         'A level of the response variable `{response_name(x)}` needs to be ',
         'specified for the `success` argument in `specify()`.'
-      )
+      ), call = call)
     }
 
 }
 
-check_var_correct <- function(x, var_name) {
+check_var_correct <- function(x, var_name, call = caller_env()) {
   var <- attr(x, var_name)
 
   # Variable (if present) should be a symbolic column name
   if (!is.null(var)) {
     if (!rlang::is_symbolic(var)) {
-      stop_glue(
+       abort(glue(
         "The {var_name} should be a bare variable name (not a string in ",
         "quotation marks)."
-      )
+      ), call = call)
     }
 
     if (any(!(all.vars(var) %in% names(x)))) {
-      stop_glue(
+       abort(glue(
         'The {var_name} variable `{var}` cannot be found in this dataframe.'
-      )
+      ), call = call)
     }
   }
 
   TRUE
 }
 
-check_vars_different <- function(x) {
+check_vars_different <- function(x, call = caller_env()) {
   if (has_response(x) && has_explanatory(x)) {
     if (identical(response_name(x), explanatory_name(x))) {
-      stop_glue(
+       abort(paste0(
         "The response and explanatory variables must be different from one ",
         "another."
-      )
+      ), call = call)
     }
   }
 

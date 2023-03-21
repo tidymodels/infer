@@ -103,16 +103,16 @@ generate <- function(x, reps = 1, type = NULL,
 }
 
 # Check that type argument is an implemented type
-sanitize_generation_type <- function(x) {
+sanitize_generation_type <- function(x, call = caller_env()) {
   if (is.null(x)) return(x)
 
-  check_type(x, is.character)
+  check_type(x, is.character, call = call)
 
   if (!x %in% c("bootstrap", "permute", "simulate", "draw")) {
-    stop_glue(
+    abort(paste0(
       'The `type` argument should be one of "bootstrap", "permute", ',
       'or "draw". See `?generate` for more details.'
-    )
+    ), call = call)
   }
 
   if (x == "simulate") {
@@ -164,22 +164,21 @@ use_auto_type <- function(auto_type) {
   auto_type
 }
 
-check_permutation_attributes <- function(x, attr) {
+check_permutation_attributes <- function(x, attr, call = caller_env()) {
   if (any(!has_attr(x, "response"), !has_attr(x, "explanatory"))) {
-    stop_glue(
-      "Please `specify()` an explanatory and a response variable",
-      "when permuting.",
-      .sep = " "
-    )
+     abort(paste0(
+       "Please `specify()` an explanatory and a response variable ",
+       "when permuting."
+     ), call = call)
   }
 }
 
-check_cols <- function(x, variables, type, missing, arg_name = "variables") {
+check_cols <- function(x, variables, type, missing, arg_name = "variables", call = caller_env()) {
   if (!rlang::is_symbolic(rlang::get_expr(variables))) {
-    stop_glue(
+     abort(glue(
       "The `{arg_name}` argument should be one or more unquoted variable names ",
       "(not strings in quotation marks)."
-    )
+    ), call = call)
   }
 
   if (!missing && type != "permute") {
@@ -203,10 +202,10 @@ check_cols <- function(x, variables, type, missing, arg_name = "variables") {
         c("s", "are")} else {
         c("", "is")}
 
-    stop_glue(
+    abort(glue(
       'The column{plurals[1]} `{list(bad_cols)}` provided to ',
       'the `{arg_name}` argument {plurals[2]} not in the supplied data.'
-    )
+    ), call = call)
   }
 }
 
@@ -238,8 +237,8 @@ bootstrap <- function(x, reps = 1, ...) {
 }
 
 #' @importFrom dplyr bind_rows group_by
-permute <- function(x, reps = 1, variables, ...) {
-  df_out <- replicate(reps, permute_once(x, variables), simplify = FALSE) %>%
+permute <- function(x, reps = 1, variables, ..., call = caller_env()) {
+  df_out <- replicate(reps, permute_once(x, variables, call = call), simplify = FALSE) %>%
     dplyr::bind_rows() %>%
     dplyr::mutate(replicate = rep(1:reps, each = nrow(!!x))) %>%
     dplyr::group_by(replicate)
@@ -249,7 +248,7 @@ permute <- function(x, reps = 1, variables, ...) {
   append_infer_class(df_out)
 }
 
-permute_once <- function(x, variables, ...) {
+permute_once <- function(x, variables, ..., call = caller_env()) {
   dots <- list(...)
 
   if (is_hypothesized(x) && (attr(x, "null") == "independence")) {
@@ -261,10 +260,10 @@ permute_once <- function(x, variables, ...) {
 
     copy_attrs(out, x)
   } else {
-    stop_glue(
+     abort(paste0(
       "Permuting should be done only when doing independence hypothesis test. ",
       "See `hypothesize()`."
-    )
+    ), call = call)
   }
 }
 

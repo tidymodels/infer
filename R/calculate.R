@@ -126,7 +126,7 @@ calculate <- function(x,
   append_infer_class(result)
 }
 
-check_if_mlr <- function(x, fn) {
+check_if_mlr <- function(x, fn, call = caller_env()) {
   if (fn == "calculate") {
     suggestion <- paste0("When working with multiple explanatory",
                          " variables, use fit() instead.")
@@ -135,15 +135,15 @@ check_if_mlr <- function(x, fn) {
   }
 
   if (is_mlr(x)) {
-    stop_glue(
+    abort(glue(
       "Multiple explanatory variables are not supported in {fn}(). {suggestion}"
-    )
+    ), call = call)
   }
 }
 
-check_calculate_stat <- function(stat) {
+check_calculate_stat <- function(stat, call = caller_env()) {
 
-  check_type(stat, rlang::is_string)
+  check_type(stat, rlang::is_string, call = call)
 
   # Check for possible `stat` aliases
   alias_match_id <- match(stat, implemented_stats_aliases[["alias"]])
@@ -158,7 +158,7 @@ check_calculate_stat <- function(stat) {
 
 # Raise an error if the user supplies a test statistic that doesn't
 # make sense given the variable and hypothesis specified
-check_input_vs_stat <- function(x, stat) {
+check_input_vs_stat <- function(x, stat, call = caller_env()) {
   response_type <- attr(x, "type_desc_response")
   explanatory_type <- attr(x, "type_desc_explanatory")
 
@@ -168,10 +168,10 @@ check_input_vs_stat <- function(x, stat) {
     unlist()
 
   if (is.null(possible_stats)) {
-    stop_glue(
+    abort(paste0(
       "The infer team has not implemented test statistics for the ",
       "supplied variable types."
-    )
+    ), call = call)
   }
 
   if (!stat %in% possible_stats) {
@@ -185,11 +185,11 @@ check_input_vs_stat <- function(x, stat) {
       msg_tail <- "no explanatory variable."
     }
 
-    stop_glue(
+    abort(glue(
       "{get_stat_desc(stat)} is not well-defined for a ",
       "{get_stat_type_desc(response_type)} response variable ",
       "({response_name(x)}) and ", msg_tail
-    )
+    ), call = call)
   }
 
   if (is_hypothesized(x)) {
@@ -198,10 +198,10 @@ check_input_vs_stat <- function(x, stat) {
                     hypothesis == attr(x, "null"))
 
     if (nrow(stat_nulls) == 0) {
-      stop_glue(
+      abort(glue(
         'The supplied statistic `stat = "{stat}"` is incompatible with the ',
         'supplied hypothesis `null = "{attr(x, "null")}"`.'
-      )
+      ), call = call)
     }
   }
 

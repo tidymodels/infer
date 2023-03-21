@@ -4,7 +4,7 @@
       gss %>% specify(age ~ college) %>% hypothesize(null = "independence") %>%
         assume("boop", nrow(gss) - 1)
     Condition
-      Error:
+      Error in `assume()`:
       ! The distribution argument must be one of "Chisq", "F", "t", or "z".
 
 ---
@@ -13,7 +13,7 @@
       gss %>% specify(age ~ college) %>% hypothesize(null = "independence") %>%
         assume("t", c(nrow(gss) - 1, 2))
     Condition
-      Error:
+      Error in `assume()`:
       ! A T distribution requires 1 degrees of freedom argument, but 2 were supplied.
 
 ---
@@ -24,7 +24,7 @@
     Message
       Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.
     Condition
-      Error:
+      Error in `assume()`:
       ! An F distribution requires 2 degrees of freedom arguments, but 1 was supplied.
 
 ---
@@ -35,7 +35,7 @@
     Message
       Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.
     Condition
-      Error:
+      Error in `assume()`:
       ! `assume()` expects the `df` argument to be a numeric vector, but you supplied a character object.
 
 ---
@@ -46,7 +46,7 @@
     Message
       Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.
     Condition
-      Error:
+      Error in `assume()`:
       ! `assume()` ignores the dots `...` argument, though the argument `list(1)` was supplied. Did you forget to concatenate the `df` argument with `c()`?
 
 ---
@@ -57,7 +57,7 @@
     Message
       Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.
     Condition
-      Error:
+      Error in `assume()`:
       ! `assume()` ignores the dots `...` argument, though the arguments `list(1, 2)` were supplied. Did you forget to concatenate the `df` argument with `c()`?
 
 ---
@@ -66,7 +66,7 @@
       gss %>% specify(age ~ finrela) %>% hypothesize(null = "independence") %>%
         assume("t", nrow(gss) - 1)
     Condition
-      Error:
+      Error in `assume()`:
       ! The supplied distribution "t" is not well-defined for a numeric response variable (age) and a multinomial categorical explanatory variable (finrela).
 
 ---
@@ -75,7 +75,7 @@
       gss %>% specify(age ~ finrela) %>% hypothesize(null = "independence") %>%
         assume("z", nrow(gss) - 1)
     Condition
-      Error:
+      Error in `assume()`:
       ! The supplied distribution "z" is not well-defined for a numeric response variable (age) and a multinomial categorical explanatory variable (finrela).
 
 ---
@@ -84,7 +84,7 @@
       gss %>% specify(age ~ NULL) %>% hypothesize(null = "point", mu = 40) %>% assume(
         "z", nrow(gss) - 1)
     Condition
-      Error:
+      Error in `assume()`:
       ! The supplied distribution "z" is not well-defined for a numeric response variable (age) and no explanatory variable.
 
 ---
@@ -92,7 +92,7 @@
     Code
       gss %>% assume("z", nrow(gss) - 1)
     Condition
-      Error:
+      Error in `assume()`:
       ! The `x` argument must be the output of a core infer function, likely `specify()` or `hypothesize()`.
 
 ---
@@ -100,7 +100,7 @@
     Code
       "boop" %>% assume("z", nrow(gss) - 1)
     Condition
-      Error:
+      Error in `assume()`:
       ! The `x` argument must be the output of a core infer function, likely `specify()` or `hypothesize()`.
 
 # assume() handles automatic df gracefully

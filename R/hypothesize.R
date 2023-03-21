@@ -67,10 +67,10 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
       } else {
         # Check one proportion test set up correctly
         if (is.factor(response_variable(x))) {
-          stop_glue(
+          abort(paste0(
             'Testing one categorical variable requires `p` to be used as a ',
             'parameter.'
-          )
+          ))
         }
         attr(x, "type") <- "bootstrap"
       }
@@ -86,30 +86,32 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
 #' @export
 hypothesise <- hypothesize
 
-hypothesize_checks <- function(x, null) {
+hypothesize_checks <- function(x, null, call = caller_env()) {
   if (!inherits(x, "data.frame")) {
-    stop_glue("x must be a data.frame or tibble")
+     abort(paste0("x must be a data.frame or tibble"), call = call)
   }
 
   if ((null == "independence") && !has_explanatory(x)) {
-    stop_glue(
+     abort(paste0(
       'Please `specify()` an explanatory and a response variable when ',
       'testing a null hypothesis of `"independence"`.'
-    )
+    ), call = call)
   }
 }
 
-match_null_hypothesis <- function(null) {
+match_null_hypothesis <- function(null, call = caller_env()) {
   null_hypothesis_types <- c("point", "independence")
 
   if(length(null) != 1) {
-    stop_glue('You should specify exactly one type of null hypothesis.')
+     abort(paste0('You should specify exactly one type of null hypothesis.'),
+           call = call)
   }
 
   i <- pmatch(null, null_hypothesis_types)
 
   if(is.na(i)) {
-    stop_glue('`null` should be either "point" or "independence".')
+     abort(paste0('`null` should be either "point" or "independence".'),
+           call = call)
   }
 
   null_hypothesis_types[i]
@@ -126,45 +128,48 @@ sanitize_hypothesis_params_independence <- function(dots) {
   NULL
 }
 
-sanitize_hypothesis_params_point <- function(dots, x) {
+sanitize_hypothesis_params_point <- function(dots, x, call = caller_env()) {
   if(length(dots) != 1) {
-    stop_glue("You must specify exactly one of `p`, `mu`, `med`, or `sigma`.")
+     abort(paste0("You must specify exactly one of `p`, `mu`, `med`, or `sigma`."),
+           call = call)
   }
 
   if (!is.null(dots$p)) {
-    dots$p <- sanitize_hypothesis_params_proportion(dots$p, x)
+    dots$p <- sanitize_hypothesis_params_proportion(dots$p, x, call = call)
   }
 
   dots
 }
 
-sanitize_hypothesis_params_proportion <- function(p, x) {
+sanitize_hypothesis_params_proportion <- function(p, x, call = caller_env()) {
   eps <- if (capabilities("long.double")) {sqrt(.Machine$double.eps)} else {0.01}
 
   if(anyNA(p)) {
-    stop_glue('`p` should not contain missing values.')
+     abort(paste0('`p` should not contain missing values.'),
+           call = call)
   }
 
   if(any(p < 0 | p > 1)) {
-    stop_glue('`p` should only contain values between zero and one.')
+     abort(paste0('`p` should only contain values between zero and one.'),
+           call = call)
   }
 
   if(length(p) == 1) {
     if(!has_attr(x, "success")) {
-      stop_glue(
+       abort(paste0(
         "A point null regarding a proportion requires that `success` ",
         "be indicated in `specify()`."
-      )
+      ), call = call)
     }
 
     p <- c(p, 1 - p)
     names(p) <- get_success_then_response_levels(x)
   } else {
     if (sum(p) < 1 - eps | sum(p) > 1 + eps) {
-      stop_glue(
+       abort(paste0(
         "Make sure the hypothesized values for the `p` parameters sum to 1. ",
         "Please try again."
-      )
+      ), call = call)
     }
   }
 

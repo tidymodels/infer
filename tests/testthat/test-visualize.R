@@ -116,7 +116,7 @@ test_that("visualize basic tests", {
   )
 
   # obs_stat not specified
-  expect_snapshot(error = TRUE,
+  expect_snapshot_error(
     gss_tbl %>%
       specify(sex ~ college, success = "female") %>%
       hypothesize(null = "independence") %>%

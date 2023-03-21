@@ -263,17 +263,17 @@ chisq_test <- function(x, formula, response = NULL,
                        response = response, explanatory = explanatory)
 
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
-    stop_glue(
+     abort(glue(
       'The response variable of `{response_name(x)}` is not appropriate ',
       "since the response variable is expected to be categorical."
-    )
+    ))
   }
   if (has_explanatory(x) &&
       !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
-    stop_glue(
+     abort(glue(
       'The explanatory variable of `{explanatory_name(x)}` is not appropriate ',
       "since the explanatory variable is expected to be categorical."
-    )
+    ))
   }
 
   x <- x %>%
@@ -340,17 +340,17 @@ chisq_stat <- function(x, formula, response = NULL,
                        response = response, explanatory = explanatory)
 
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
-    stop_glue(
+     abort(glue(
       'The response variable of `{response_name(x)}` is not appropriate ',
       "since the response variable is expected to be categorical."
-    )
+    ))
   }
   if (has_explanatory(x) &&
       !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
-    stop_glue(
+     abort(glue(
       'The explanatory variable of `{explanatory_name(x)}` is not appropriate ',
       "since the response variable is expected to be categorical."
-    )
+    ))
   }
 
   x <- x %>%
@@ -362,11 +362,12 @@ chisq_stat <- function(x, formula, response = NULL,
     pull()
 }
 
-check_conf_level <- function(conf_level) {
+check_conf_level <- function(conf_level, call = caller_env()) {
   if (
     (!inherits(conf_level, "numeric")) | (conf_level < 0) | (conf_level > 1)
   ) {
-    stop_glue("The `conf_level` argument must be a number between 0 and 1.")
+     abort(paste0("The `conf_level` argument must be a number between 0 and 1."),
+           call = call)
   }
 }
 
@@ -465,17 +466,17 @@ prop_test <- function(x, formula,
   correct <- if (z) {FALSE} else if (is.null(correct)) {TRUE} else {correct}
 
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
-    stop_glue(
-      'The response variable of `{response_name(x)}` is not appropriate\n',
+     abort(glue(
+      'The response variable of `{response_name(x)}` is not appropriate ',
       "since the response variable is expected to be categorical."
-    )
+    ))
   }
   if (has_explanatory(x) &&
       !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
-    stop_glue(
+     abort(glue(
       'The explanatory variable of `{explanatory_name(x)}` is not appropriate ',
       "since the explanatory variable is expected to be categorical."
-    )
+    ))
   }
   # match with old "dot" syntax in t.test
   if (alternative %in% c("two-sided", "two_sided", "two sided", "two.sided")) {
@@ -489,7 +490,7 @@ prop_test <- function(x, formula,
     check_type(success, rlang::is_string)
 
     if (!(success %in% lvls)) {
-      stop_glue('{success} is not a valid level of {response_name(x)}.')
+       abort(glue('{success} is not a valid level of {response_name(x)}.'))
     }
 
     lvls <- c(success, lvls[lvls != success])

@@ -251,9 +251,10 @@ visualise <- visualize
 
 
 visualize_term <- function(data, term, bins = 15, method = "simulation",
-                           dens_color = "black", dots, do_warn = TRUE) {
+                           dens_color = "black", dots, do_warn = TRUE,
+                           call = rlang::call2("visualize")) {
   data <- check_for_nan(data, "visualize")
-  check_visualize_args(data, bins, method, dens_color)
+  check_visualize_args(data, bins, method, dens_color, call = call)
   plot_data <- create_plot_data(data)
 
   infer_plot <- ggplot(plot_data) +
@@ -283,27 +284,27 @@ check_dots_for_deprecated <- function(dots) {
   list(NULL)
 }
 
-check_visualize_args <- function(data, bins, method, dens_color) {
+check_visualize_args <- function(data, bins, method, dens_color, call = caller_env()) {
   check_is_distribution(data, "visualize")
-  check_type(bins, is.numeric)
-  check_type(method, is.character)
-  check_type(dens_color, is.character)
+  check_type(bins, is.numeric, call = call)
+  check_type(method, is.character, call = call)
+  check_type(dens_color, is.character, call = call)
 
   if (!(method %in% c("simulation", "theoretical", "both"))) {
-    stop_glue(
+     abort(paste0(
       'Provide `method` with one of three options: `"theoretical"`, `"both"`, ',
       'or `"simulation"`. `"simulation"` is the default for simulation-based ',
       'null distributions, while `"theoretical"` is the only option for ',
       'null distributions outputted by `assume()`.'
-    )
+    ), call = call)
   }
 
   if (method == "both") {
     if (!("stat" %in% names(data))) {
-      stop_glue(
+       abort(paste0(
         '`generate()` and `calculate()` are both required to be done prior ',
         'to `visualize(method = "both")`'
-      )
+      ), call = call)
     }
 
     if (
@@ -321,7 +322,7 @@ check_visualize_args <- function(data, bins, method, dens_color) {
 
 # a function for checking arguments to functions that are added as layers
 # to visualize()d objects to make sure they weren't mistakenly piped
-check_for_piped_visualize <- function(...) {
+check_for_piped_visualize <- function(..., call = caller_env()) {
 
   is_ggplot_output <- vapply(list(...), ggplot2::is.ggplot, logical(1))
 
@@ -329,18 +330,18 @@ check_for_piped_visualize <- function(...) {
 
     called_function <- sys.call(-1)[[1]]
 
-    stop_glue(
+    abort(glue(
       "It looks like you piped the result of `visualize()` into ",
       "`{called_function}()` (using `%>%`) rather than adding the result of ",
       "`{called_function}()` as a layer with `+`. Consider changing",
       "`%>%` to `+`."
-    )
+    ), call = call)
   }
 
   TRUE
 }
 
-impute_endpoints <- function(endpoints, plot = NULL) {
+impute_endpoints <- function(endpoints, plot = NULL, call = caller_env()) {
   res <- endpoints
 
   if (is_fitted(endpoints)) {
@@ -364,9 +365,9 @@ impute_endpoints <- function(endpoints, plot = NULL) {
 
   if (is.data.frame(endpoints)) {
     if ((nrow(endpoints) != 1) || (ncol(endpoints) != 2)) {
-      stop_glue(
+       abort(paste0(
         "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector."
-      )
+      ), call = call)
     }
 
     res <- unlist(endpoints)
@@ -375,17 +376,17 @@ impute_endpoints <- function(endpoints, plot = NULL) {
   res %>% copy_attrs(endpoints, attrs = c("se", "point_estimate"))
 }
 
-impute_obs_stat <- function(obs_stat, direction, endpoints) {
+impute_obs_stat <- function(obs_stat, direction, endpoints, call = caller_env()) {
   obs_stat <- check_obs_stat(obs_stat)
 
   if (
     !is.null(direction) &&
     (is.null(obs_stat) + is.null(endpoints) != 1)
   ) {
-    stop_glue(
+     abort(paste0(
       "Shading requires either `endpoints` values for a confidence interval ",
       "or the observed statistic `obs_stat` to be provided."
-    )
+    ), call = call)
   }
 
   obs_stat
@@ -485,7 +486,7 @@ theoretical_layer <- function(data, dens_color, dots = list(NULL), do_warn = TRU
   )
 }
 
-warn_theoretical_layer <- function(data, do_warn = TRUE) {
+warn_theoretical_layer <- function(data, do_warn = TRUE, call = caller_env()) {
   if (!do_warn) {
     return(TRUE)
   }
@@ -507,10 +508,10 @@ warn_theoretical_layer <- function(data, do_warn = TRUE) {
         "different scales. Displaying only the theoretical distribution."
       )
     } else if (method == "both") {
-      stop_glue(
+       abort(paste0(
         "Your `calculate`d statistic and the theoretical distribution are on ",
         "different scales. Use a standardized `stat` instead."
-      )
+      ), call = call)
     }
   }
 }
@@ -622,10 +623,10 @@ facet_layer <- function() {
   )
 }
 
-check_shade_confidence_interval_args <- function(color, fill) {
-  check_type(color, is_color_string, "color string")
+check_shade_confidence_interval_args <- function(color, fill, call = caller_env()) {
+  check_type(color, is_color_string, "color string", call = call)
   if (!is.null(fill)) {
-    check_type(fill, is_color_string, "color string")
+    check_type(fill, is_color_string, "color string", call = call)
   }
 }
 

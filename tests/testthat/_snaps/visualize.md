@@ -41,18 +41,12 @@
     Code
       hours_resamp %>% visualize(bins = "yep")
     Condition
-      Error:
+      Error in `visualize()`:
       ! `bins` must be 'numeric', not 'character'.
 
 ---
 
-    Code
-      gss_tbl %>% specify(sex ~ college, success = "female") %>% hypothesize(null = "independence") %>%
-        generate(reps = 100, type = "permute") %>% calculate(stat = "diff in props",
-        order = c("no degree", "degree")) %>% visualize() + shade_p_value(direction = "both")
-    Condition
-      Error in `check_for_piped_visualize()`:
-      ! argument "obs_stat" is missing, with no default
+    argument "obs_stat" is missing, with no default
 
 ---
 
@@ -76,7 +70,7 @@
     Condition
       Warning:
       Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
-      Error:
+      Error in `theoretical_layer()`:
       ! Your `calculate`d statistic and the theoretical distribution are on different scales. Use a standardized `stat` instead.
 
 ---
@@ -85,7 +79,7 @@
       gss_tbl %>% specify(partyid ~ NULL) %>% hypothesize(null = "point", p = c(dem = 0.4,
         rep = 0.4, ind = 0.2)) %>% visualize(method = "traditional")
     Condition
-      Error:
+      Error in `visualize()`:
       ! Provide `method` with one of three options: `"theoretical"`, `"both"`, or `"simulation"`. `"simulation"` is the default for simulation-based null distributions, while `"theoretical"` is the only option for null distributions outputted by `assume()`.
 
 ---
@@ -98,7 +92,7 @@
     Condition
       Warning:
       Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
-      Error:
+      Error in `theoretical_layer()`:
       ! Your `calculate`d statistic and the theoretical distribution are on different scales. Use a standardized `stat` instead.
 
 ---
@@ -122,7 +116,7 @@
       gss_tbl %>% specify(hours ~ NULL) %>% hypothesize(null = "point", mu = 4) %>%
         generate(reps = 100, type = "bootstrap") %>% visualize(method = "both")
     Condition
-      Error:
+      Error in `visualize()`:
       ! `generate()` and `calculate()` are both required to be done prior to `visualize(method = "both")`
 
 ---
@@ -187,7 +181,7 @@
     Code
       res_ <- gss_tbl_boot %>% visualize() + shade_confidence_interval(endpoints = df_error)
     Condition
-      Error:
+      Error in `shade_confidence_interval()`:
       ! Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector.
 
 ---

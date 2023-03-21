@@ -140,13 +140,14 @@ shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
 
 shade_confidence_interval_term <- function(plot, endpoints,
                                            color = "mediumaquamarine",
-                                           fill = "turquoise", dots) {
+                                           fill = "turquoise", dots,
+                                           call = rlang::call2("shade_confidence_interval")) {
   if (all(is.na(endpoints))) {
     endpoints <- NULL
   }
 
   # argument checking
-  endpoints <- impute_endpoints(endpoints, plot)
+  endpoints <- impute_endpoints(endpoints, plot, call = call)
   check_shade_confidence_interval_args(color, fill)
 
   res <- list()

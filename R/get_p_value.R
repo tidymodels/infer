@@ -131,10 +131,10 @@ get_p_value <- function(x, obs_stat, direction) {
 get_p_value.default <- function(x, obs_stat, direction) {
   check_type(x, is.data.frame)
   if (!is_generated(x) & is_hypothesized(x)) {
-    stop_glue(
+     abort(paste0(
       "Theoretical p-values are not yet supported. ",
       "`x` should be the result of calling `generate()`."
-    )
+    ))
   }
   check_for_nan(x, "get_p_value")
   check_direction(direction)
@@ -214,8 +214,8 @@ get_p_value.infer_dist <- function(x, obs_stat, direction) {
   tibble::tibble(p_value = res)
 }
 
-simulation_based_p_value <- function(x, obs_stat, direction) {
-  check_x_vs_obs_stat(x, obs_stat)
+simulation_based_p_value <- function(x, obs_stat, direction, call = caller_env()) {
+  check_x_vs_obs_stat(x, obs_stat, call = call)
   obs_stat <- check_obs_stat(obs_stat)
 
   # x[[ncol(x)]] pulls out the stat or estimate column
@@ -266,17 +266,17 @@ check_hypotheses_align <- function(x, obs_stat) {
   }
 }
 
-check_x_vs_obs_stat <- function(x, obs_stat) {
+check_x_vs_obs_stat <- function(x, obs_stat, call = caller_env()) {
   # check if x and obs_stat might have been mistakenly supplied
   # in the reverse order
   if (is_generated(obs_stat) &&
       !is_generated(x)) {
-    stop_glue(
+     abort(paste0(
       "It seems like the `obs_stat` argument has been passed to `get_p_value()` ",
       "as the first argument when `get_p_value()` expects `x`, a distribution ",
       "of statistics or coefficient estimates, as the first argument. ",
       "Have you mistakenly switched the order of `obs_stat` and `x`?"
-    )
+    ), call = call)
   }
 
   invisible(TRUE)
