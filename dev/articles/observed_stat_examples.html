@@ -171,7 +171,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.048</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.04</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="one-numerical-variable-standardized-mean-t">One numerical variable (standardized mean <span class="math inline">\(t\)</span>)<a class="anchor" aria-label="anchor" href="#one-numerical-variable-standardized-mean-t"></a>
@@ -228,7 +228,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.046</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.036</span></span></code></pre>
 <p>Alternatively, using the <code>t_test</code> wrapper:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -274,7 +274,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.004</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.006</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="one-categorical-one-proportion">One categorical (one proportion)<a class="anchor" aria-label="anchor" href="#one-categorical-one-proportion"></a>
@@ -310,7 +310,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.266</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.25</span></span></code></pre>
 <p>Note that logical variables will be coerced to factors:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">null_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -355,7 +355,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.23</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.246</span></span></code></pre>
 <p>The package also supplies a wrapper around <code>prop.test</code> for
 tests of a single proportion on tidy data.</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
@@ -407,7 +407,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.974</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.984</span></span></code></pre>
 <p><code>infer</code> also provides functionality to calculate ratios of
 proportions. The workflow looks similar to that for
 <code>diff in props</code>.</p>
@@ -443,7 +443,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.986</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.96</span></span></code></pre>
 <p>In addition, the package provides functionality to calculate odds
 ratios. The workflow also looks similar to that for
 <code>diff in props</code>.</p>
@@ -473,7 +473,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.98</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.978</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="two-categorical-2-level-variables-z">Two categorical (2 level) variables (z)<a class="anchor" aria-label="anchor" href="#two-categorical-2-level-variables-z"></a>
@@ -531,7 +531,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.974</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.98</span></span></code></pre>
 <p>Note the similarities in this plot and the previous one.</p>
 <p>The package also supplies a wrapper around <code>prop.test</code> to
 allow for tests of equality of proportions on tidy data.</p>
@@ -692,7 +692,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.085</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.11</span></span></code></pre>
 <p>Alternatively, using the wrapper to carry out the test,</p>
 <div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -738,7 +738,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.466</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.454</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="one-numerical-variable-one-categorical-2-levels-t">One numerical variable, one categorical (2 levels) (t)<a class="anchor" aria-label="anchor" href="#one-numerical-variable-one-categorical-2-levels-t"></a>
@@ -796,7 +796,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.464</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.436</span></span></code></pre>
 <p>Note the similarities in this plot and the previous one.</p>
 </div>
 <div class="section level3">
@@ -835,7 +835,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.176</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.172</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="one-numerical-one-categorical-2-levels---anova">One numerical, one categorical (&gt;2 levels) - ANOVA<a class="anchor" aria-label="anchor" href="#one-numerical-one-categorical-2-levels---anova"></a>
@@ -892,7 +892,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.055</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.053</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="two-numerical-vars---slr">Two numerical vars - SLR<a class="anchor" aria-label="anchor" href="#two-numerical-vars---slr"></a>
@@ -928,7 +928,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.906</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.882</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="two-numerical-vars---correlation">Two numerical vars - correlation<a class="anchor" aria-label="anchor" href="#two-numerical-vars---correlation"></a>
@@ -964,7 +964,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.818</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.854</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="two-numerical-vars---slr-t">Two numerical vars - SLR (t)<a class="anchor" aria-label="anchor" href="#two-numerical-vars---slr-t"></a>
@@ -1008,9 +1008,9 @@ permuted independently,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 3 × 2</span></span></span>
 <span><span class="co">##   term          p_value</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> age             0.97 </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">2</span> collegedegree   0.256</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">3</span> intercept       0.772</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> age             0.864</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">2</span> collegedegree   0.254</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">3</span> intercept       0.688</span></span></code></pre>
 <p>Note that this <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code>-based workflow can be applied to
 use cases with differing numbers of explanatory variables and
 explanatory variable types.</p>
