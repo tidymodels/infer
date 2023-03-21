@@ -193,15 +193,6 @@ is_truefalse <- function(x) {
   identical(x, TRUE) || identical(x, FALSE)
 }
 
-# Messaging, warning, and erroring ------------------------------------------
-message_glue <- function(..., .sep = "", .envir = parent.frame(),
-                         .domain = NULL, .appendLF = TRUE) {
-  message(
-    glue(..., .sep = .sep, .envir = .envir, .null = "NULL"),
-    domain = .domain, appendLF = .appendLF
-  )
-}
-
 # Helpers for test statistics --------------------------------------
 
 # Simplify and standardize checks by grouping statistics based on variable types

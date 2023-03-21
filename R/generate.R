@@ -116,10 +116,10 @@ sanitize_generation_type <- function(x, call = caller_env()) {
   }
 
   if (x == "simulate") {
-    message_glue(
+     inform(paste0(
       'The `"simulate"` generation type has been renamed to `"draw"`. ',
       'Use `type = "draw"` instead to quiet this message.'
-    )
+    ))
   }
 
   x
@@ -159,7 +159,7 @@ has_p_param <- function(x) {
 }
 
 use_auto_type <- function(auto_type) {
-  message_glue('Setting `type = "{auto_type}"` in `generate()`.')
+   inform(glue('Setting `type = "{auto_type}"` in `generate()`.'))
   auto_type
 }
 
@@ -285,11 +285,11 @@ process_variables <- function(variables, should_prompt) {
   interactions <- purrr::map_lgl(out, `%in%`, x = "*")
 
   if (any(interactions) && should_prompt) {
-    message_glue(
+     inform(glue(
       "Message: Please supply only data columns to the `variables` argument. ",
       "Note that any derived effects that depend on these columns will also ",
       "be affected."
-    )
+    ))
   }
 
   out <- out[!interactions]

@@ -524,10 +524,10 @@ prop_test <- function(x, formula,
       table()
 
     if (is.null(p)) {
-      message_glue(
+      inform(glue(
         "No `p` argument was hypothesized, so the test will ",
         "assume a null hypothesis `p = .5`."
-      )
+      ))
     }
 
     prelim <- stats::prop.test(x = response_tbl,

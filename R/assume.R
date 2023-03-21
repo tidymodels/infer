@@ -314,12 +314,12 @@ process_df <- function(df) {
 determine_df <- function(x, dist, df) {
 
   if (!is.null(df) && !all(round(df) %in% round(acceptable_dfs(x)))) {
-    message_glue(
+    inform(glue(
       "Message: The supplied `df` argument does not match its ",
       "expected value. If this is unexpected, ensure that your calculation ",
       "for `df` is correct (see `?assume` for recognized values) or ",
       "supply `df = NULL` to `assume()`."
-    )
+    ))
 
     return(df)
   }

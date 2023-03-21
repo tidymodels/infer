@@ -41,7 +41,7 @@
 #' vignette("infer")
 #' }
 #'
-#' @importFrom rlang f_lhs f_rhs get_expr caller_env abort warn
+#' @importFrom rlang f_lhs f_rhs get_expr caller_env abort warn inform
 #' @importFrom dplyr select any_of across
 #' @importFrom methods hasArg
 #' @family core functions

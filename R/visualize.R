@@ -188,12 +188,12 @@ visualize <- function(data, bins = 15, method = "simulation",
     do_warn <- FALSE
   } else {
     if (method == "theoretical") {
-      message_glue(
+      inform(glue(
         'Rather than setting `method = "theoretical"` with a simulation-based ',
         'null distribution, the preferred method for visualizing theory-based ',
         'distributions with infer is now to pass the output of `assume()` as ',
         'the first argument to `visualize()`.'
-      )
+      ))
     }
 
     do_warn <- TRUE

@@ -229,13 +229,13 @@ message_on_excessive_null <- function(x, stat = "mean", fn) {
     null_type <- attr(x, "null")
     null_param <- attr(x, "params")
 
-    message_glue(
+    inform(glue(
       "Message: The {null_type} null hypothesis ",
       "{if (null_type == 'point') {paste0('`', names(null_param), ' = ', unname(null_param), '` ')} else {''}}",
       "does not inform calculation of the observed ",
       "{if (fn == 'calculate') {paste0('statistic (', tolower(get_stat_desc(stat)), ') ')} else {'fit '}}",
       "and will be ignored."
-    )
+    ))
   }
 
   x
