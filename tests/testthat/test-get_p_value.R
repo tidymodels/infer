@@ -68,26 +68,25 @@ test_that("theoretical p-value not supported error", {
 })
 
 test_that("get_p_value warns in case of zero p-value", {
-  expect_warning(
-    get_p_value(gss_calc, obs_stat = -10, direction = "left"),
-    "be cautious"
+  expect_snapshot(
+    res_ <- get_p_value(gss_calc, obs_stat = -10, direction = "left")
   )
 })
 
 test_that("get_p_value throws error in case of `NaN` stat", {
   gss_calc$stat[1] <- NaN
   expect_snapshot(error = TRUE,
-    get_p_value(gss_calc, 0, "both")
+    res_ <- get_p_value(gss_calc, 0, "both")
   )
 
   gss_calc$stat[2] <- NaN
   expect_snapshot(error = TRUE,
-    get_p_value(gss_calc, 0, "both")
+    res_ <- get_p_value(gss_calc, 0, "both")
   )
 
   # In the case that _all_ values are NaN, error should have different text
   gss_calc$stat <- NaN
-  expect_snapshot(error = TRUE, get_p_value(gss_calc, 0, "both"))
+  expect_snapshot(error = TRUE, res_ <- get_p_value(gss_calc, 0, "both"))
 })
 
 test_that("get_p_value can handle fitted objects", {
@@ -333,7 +332,7 @@ test_that("get_p_value can handle theoretical distributions", {
     tolerance = 1e-3
   )
 
-  expect_warning(
+  expect_snapshot(
     old_way <- chisq_test(gss, college ~ finrela)
   )
 
@@ -434,13 +433,12 @@ test_that("get_p_value warns with bad theoretical distributions", {
     )
   )
 
-  expect_warning(
-    get_p_value(
+  expect_snapshot(
+    res_ <- get_p_value(
       t_dist_30,
       t_obs,
       direction = "both"
-    ),
-    "generated using different null hypotheses"
+    )
   )
 })
 

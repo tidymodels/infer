@@ -166,3 +166,11 @@
       * You passed in 'character'.
       * Did you forget to name one or more arguments?
 
+# is_complete works
+
+    Code
+      res_ <- specify(some_missing, response = vec)
+    Condition
+      Warning:
+      Removed 1 rows containing missing values.
+

@@ -15,10 +15,18 @@
       Error:
       ! Theoretical p-values are not yet supported. `x` should be the result of calling `generate()`.
 
+# get_p_value warns in case of zero p-value
+
+    Code
+      res_ <- get_p_value(gss_calc, obs_stat = -10, direction = "left")
+    Condition
+      Warning:
+      Please be cautious in reporting a p-value of 0. This result is an approximation based on the number of `reps` chosen in the `generate()` step. See `?get_p_value()` for more information.
+
 # get_p_value throws error in case of `NaN` stat
 
     Code
-      get_p_value(gss_calc, 0, "both")
+      res_ <- get_p_value(gss_calc, 0, "both")
     Condition
       Error:
       ! 1 calculated statistic was `NaN`. Simulation-based p-values are not well-defined for null distributions with non-finite values. See ?calculate for more details.
@@ -26,7 +34,7 @@
 ---
 
     Code
-      get_p_value(gss_calc, 0, "both")
+      res_ <- get_p_value(gss_calc, 0, "both")
     Condition
       Error:
       ! 2 calculated statistics were `NaN`. Simulation-based p-values are not well-defined for null distributions with non-finite values. See ?calculate for more details.
@@ -34,7 +42,7 @@
 ---
 
     Code
-      get_p_value(gss_calc, 0, "both")
+      res_ <- get_p_value(gss_calc, 0, "both")
     Condition
       Error:
       ! All calculated statistics were `NaN`. See ?calculate for more details.
@@ -86,4 +94,20 @@
     Condition
       Error:
       ! It seems like the `obs_stat` argument has been passed to `get_p_value()` as the first argument when `get_p_value()` expects `x`, a distribution of statistics or coefficient estimates, as the first argument. Have you mistakenly switched the order of `obs_stat` and `x`?
+
+# get_p_value can handle theoretical distributions
+
+    Code
+      old_way <- chisq_test(gss, college ~ finrela)
+    Condition
+      Warning in `stats::chisq.test()`:
+      Chi-squared approximation may be incorrect
+
+# get_p_value warns with bad theoretical distributions
+
+    Code
+      res_ <- get_p_value(t_dist_30, t_obs, direction = "both")
+    Condition
+      Warning:
+      `x` and `obs_stat` were generated using different null hypotheses. This workflow is untested and results may not mean what you think they mean.
 

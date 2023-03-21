@@ -76,7 +76,7 @@ test_that("formula argument is a formula", {
 
 test_that("is_complete works", {
   some_missing <- data.frame(vec = c(NA, 2, 3))
-  expect_warning(specify(some_missing, response = vec))
+  expect_snapshot(res_ <- specify(some_missing, response = vec))
 })
 
 test_that("specify doesn't have NSE issues (#256)", {

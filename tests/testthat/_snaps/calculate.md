@@ -237,6 +237,14 @@
       Error:
       ! A t statistic is not well-defined for a dichotomous categorical response variable (sex) and a multinomial categorical explanatory variable (partyid).
 
+---
+
+    Code
+      res_ <- calculate(gen_gss4a, stat = "z")
+    Condition
+      Warning:
+      The statistic is based on a difference or ratio; by default, for difference-based statistics, the explanatory variable is subtracted in the order "male" - "female", or divided in the order "male" / "female" for ratio-based statistics. To specify this order yourself, supply `order = c("male", "female")` to the calculate() function.
+
 # response variable is numeric (two var problems)
 
     Code
@@ -244,6 +252,22 @@
     Condition
       Error:
       ! The infer team has not implemented test statistics for the supplied variable types.
+
+# two sample mean-type problems are working
+
+    Code
+      res_ <- calculate(gen_gss5a, stat = "diff in means")
+    Condition
+      Warning:
+      The statistic is based on a difference or ratio; by default, for difference-based statistics, the explanatory variable is subtracted in the order "no degree" - "degree", or divided in the order "no degree" / "degree" for ratio-based statistics. To specify this order yourself, supply `order = c("no degree", "degree")` to the calculate() function.
+
+---
+
+    Code
+      res_ <- calculate(gen_gss5a, stat = "t")
+    Condition
+      Warning:
+      The statistic is based on a difference or ratio; by default, for difference-based statistics, the explanatory variable is subtracted in the order "no degree" - "degree", or divided in the order "no degree" / "degree" for ratio-based statistics. To specify this order yourself, supply `order = c("no degree", "degree")` to the calculate() function.
 
 # properties of tibble passed-in are correct
 
@@ -307,6 +331,14 @@
       Error:
       ! `order` is expecting only two entries.
 
+---
+
+    Code
+      res_ <- calculate(gen_gss_tbl11, stat = "diff in means")
+    Condition
+      Warning:
+      The statistic is based on a difference or ratio; by default, for difference-based statistics, the explanatory variable is subtracted in the order "no degree" - "degree", or divided in the order "no degree" / "degree" for ratio-based statistics. To specify this order yourself, supply `order = c("no degree", "degree")` to the calculate() function.
+
 # NULL response gives error
 
     Code
@@ -316,6 +348,32 @@
       i In argument: `resp == response_type & exp == explanatory_type`.
       Caused by error:
       ! `..1` must be of size 10 or 1, not size 0.
+
+# order being given when not needed gives warning
+
+    Code
+      res_ <- calculate(gen_gss_tbl15, stat = "Chisq", order = c("dem", "ind"))
+    Condition
+      Warning:
+      Statistic is not based on a difference or ratio; the `order` argument will be ignored. Check `?calculate` for details.
+
+# specify() %>% calculate() works
+
+    Code
+      res_ <- gss_tbl %>% specify(partyid ~ NULL) %>% calculate(stat = "Chisq")
+    Condition
+      Warning:
+      A chi-square statistic requires a null hypothesis to calculate the observed statistic. 
+      Output assumes the following null values: `p = c(dem = 0.333333333333333, ind = 0.333333333333333, rep = 0.333333333333333)`.
+
+# One sample t hypothesis test is working
+
+    Code
+      res_ <- gss_tbl %>% specify(response = hours) %>% calculate(stat = "t")
+    Condition
+      Warning:
+      A t statistic requires a null hypothesis to calculate the observed statistic. 
+      Output assumes the following null value: `mu = 0`.
 
 # specify done before calculate
 
@@ -346,6 +404,54 @@
       i In argument: `resp == response_type & exp == explanatory_type`.
       Caused by error:
       ! `..1` must be of size 10 or 1, not size 0.
+
+# chisq GoF has params specified for observed stat
+
+    Code
+      res_ <- calculate(no_params, stat = "Chisq")
+    Condition
+      Warning:
+      A chi-square statistic requires a null hypothesis to calculate the observed statistic. 
+      Output assumes the following null values: `p = c(dem = 0.333333333333333, ind = 0.333333333333333, rep = 0.333333333333333)`.
+
+# One sample t bootstrap is working
+
+    Code
+      res_ <- gss_tbl %>% specify(hours ~ NULL) %>% generate(reps = 10, type = "bootstrap") %>%
+        calculate(stat = "t")
+    Condition
+      Warning:
+      A t statistic requires a null hypothesis to calculate the observed statistic. 
+      Output assumes the following null value: `mu = 0`.
+
+# calculate warns informatively with insufficient null
+
+    Code
+      res_ <- gss %>% specify(response = sex, success = "female") %>% calculate(stat = "z")
+    Condition
+      Warning:
+      A z statistic requires a null hypothesis to calculate the observed statistic. 
+      Output assumes the following null value: `p = .5`.
+
+---
+
+    Code
+      res_ <- gss %>% specify(hours ~ NULL) %>% calculate(stat = "t")
+    Condition
+      Warning:
+      A t statistic requires a null hypothesis to calculate the observed statistic. 
+      Output assumes the following null value: `mu = 0`.
+
+---
+
+    Code
+      res_ <- gss %>% specify(response = partyid) %>% calculate(stat = "Chisq")
+    Message
+      Dropping unused factor levels DK from the supplied response variable 'partyid'.
+    Condition
+      Warning:
+      A chi-square statistic requires a null hypothesis to calculate the observed statistic. 
+      Output assumes the following null values: `p = c(dem = 0.2, ind = 0.2, rep = 0.2, other = 0.2, DK = 0.2)`.
 
 # calculate errors out with multiple explanatory variables
 

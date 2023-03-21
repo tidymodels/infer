@@ -189,16 +189,14 @@ test_that("`rep_slice_sample` checks input", {
 
 test_that("`rep_slice_sample` warns on big sample size if `replace = FALSE`", {
   # Using big `n`
-  expect_warning(
-    out <- rep_slice_sample(population, n = n_population * 2, reps = 1),
-    "sample size.*bigger.*number of rows"
+  expect_snapshot(
+    out <- rep_slice_sample(population, n = n_population * 2, reps = 1)
   )
   expect_true(nrow(out) == n_population)
 
   # Using big `prop`
-  expect_warning(
-    out <- rep_slice_sample(population, prop = 2, reps = 1),
-    "sample size.*bigger.*number of rows"
+  expect_snapshot(
+    out <- rep_slice_sample(population, prop = 2, reps = 1)
   )
   expect_true(nrow(out) == n_population)
 })

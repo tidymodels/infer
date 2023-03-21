@@ -136,7 +136,7 @@ test_that("observe() works with either specify() interface", {
 })
 
 test_that("observe() output is the same as the old wrappers", {
-   expect_warning(
+   expect_snapshot(
       res_wrap <- gss_tbl %>%
          chisq_stat(college ~ partyid)
    )
@@ -148,7 +148,7 @@ test_that("observe() output is the same as the old wrappers", {
     res_wrap
   )
 
-  expect_warning(
+  expect_snapshot(
     res_wrap_2 <- gss_tbl %>%
        t_stat(hours ~ sex, order = c("male", "female"))
   )

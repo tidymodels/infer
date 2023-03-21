@@ -182,7 +182,7 @@ test_that("response variable is a factor (two var problems)", {
   expect_silent(
     calculate(gen_gss4a, stat = "z", order = c("female", "male"))
   )
-  expect_warning(calculate(gen_gss4a, stat = "z"))
+  expect_snapshot(res_ <- calculate(gen_gss4a, stat = "z"))
 })
 
 gen_gss5 <- gss_tbl %>%
@@ -198,14 +198,14 @@ test_that("two sample mean-type problems are working", {
     specify(hours ~ college) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_warning(calculate(gen_gss5a, stat = "diff in means"))
+  expect_snapshot(res_ <- calculate(gen_gss5a, stat = "diff in means"))
   expect_silent(
     calculate(gen_gss5a,
       stat = "diff in means",
       order = c("no degree", "degree")
     )
   )
-  expect_warning(calculate(gen_gss5a, stat = "t"))
+  expect_snapshot(res_ <- calculate(gen_gss5a, stat = "t"))
   expect_silent(calculate(gen_gss5a,
     stat = "t",
     order = c("no degree", "degree")
@@ -396,9 +396,8 @@ test_that("`order` is working", {
     )
   )
   # order not given
-  expect_warning(
-    calculate(gen_gss_tbl11, stat = "diff in means"),
-    "The statistic is based on a difference or ratio"
+  expect_snapshot(
+     res_ <- calculate(gen_gss_tbl11, stat = "diff in means")
   )
 })
 
@@ -441,14 +440,14 @@ test_that("order being given when not needed gives warning", {
     specify(college ~ partyid, success = "no degree") %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_warning(
-    calculate(gen_gss_tbl15, stat = "Chisq", order = c("dem", "ind"))
+  expect_snapshot(
+     res_ <- calculate(gen_gss_tbl15, stat = "Chisq", order = c("dem", "ind"))
   )
 })
 
 ## Breaks oldrel build. Commented out for now.
 # test_that("warning given if calculate without generate", {
-#   expect_warning(
+#   expect_snapshot(
 #     gss_tbl %>%
 #       specify(partyid ~ NULL) %>%
 #       hypothesize(
@@ -471,8 +470,8 @@ test_that("specify() %>% calculate() works", {
       calculate(stat = "mean")
   )
 
-  expect_warning(
-    gss_tbl %>% specify(partyid ~ NULL) %>% calculate(stat = "Chisq")
+  expect_snapshot(
+     res_ <- gss_tbl %>% specify(partyid ~ NULL) %>% calculate(stat = "Chisq")
   )
 })
 
@@ -485,11 +484,10 @@ test_that("One sample t hypothesis test is working", {
       calculate(stat = "t")
   )
 
-  expect_warning(
-    gss_tbl %>%
+  expect_snapshot(
+     res_ <- gss_tbl %>%
       specify(response = hours) %>%
-      calculate(stat = "t"),
-    "A t statistic requires"
+      calculate(stat = "t")
   )
 
   gss_tbl %>%
@@ -510,7 +508,7 @@ test_that("specify done before calculate", {
 
 test_that("chisq GoF has params specified for observed stat", {
   no_params <- gss_tbl %>% specify(response = partyid)
-  expect_warning(calculate(no_params, stat = "Chisq"))
+  expect_snapshot(res_ <- calculate(no_params, stat = "Chisq"))
 
   params <- gss_tbl %>%
     specify(response = partyid) %>%
@@ -522,8 +520,8 @@ test_that("chisq GoF has params specified for observed stat", {
 })
 
 test_that("One sample t bootstrap is working", {
-  expect_warning(
-    gss_tbl %>%
+  expect_snapshot(
+     res_ <- gss_tbl %>%
       specify(hours ~ NULL) %>%
       generate(reps = 10, type = "bootstrap") %>%
       calculate(stat = "t")
@@ -675,27 +673,23 @@ test_that("calc_impl.z works for one sample proportions", {
 })
 
 test_that("calculate warns informatively with insufficient null", {
-  expect_warning(
-    gss %>%
-      specify(response = sex, success = "female") %>%
-      calculate(stat = "z"),
-    "following null value: `p = .5`"
-  )
+   expect_snapshot(
+      res_ <- gss %>%
+         specify(response = sex, success = "female") %>%
+         calculate(stat = "z")
+   )
 
-  expect_warning(
-    gss %>%
-      specify(hours ~ NULL) %>%
-      calculate(stat = "t"),
-    "following null value: `mu = 0`"
-  )
+   expect_snapshot(
+      res_ <- gss %>%
+         specify(hours ~ NULL) %>%
+         calculate(stat = "t")
+   )
 
-  expect_warning(
-    gss %>%
-      specify(response = partyid) %>%
-      calculate(stat = "Chisq"),
-    "the following null values: `p = c(dem = 0.2",
-    fixed = TRUE
-  )
+   expect_snapshot(
+      res_ <- gss %>%
+         specify(response = partyid) %>%
+         calculate(stat = "Chisq")
+   )
 })
 
 test_that("calculate messages informatively with excessive null", {

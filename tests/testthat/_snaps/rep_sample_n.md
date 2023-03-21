@@ -206,3 +206,19 @@
       Error:
       ! `reps` must be 'single number not less than 1', not 'double'.
 
+# `rep_slice_sample` warns on big sample size if `replace = FALSE`
+
+    Code
+      out <- rep_slice_sample(population, n = n_population * 2, reps = 1)
+    Condition
+      Warning:
+      Asked sample size (10) is bigger than number of rows in data (5) while `replace` is FALSE. Using number of rows as sample size.
+
+---
+
+    Code
+      out <- rep_slice_sample(population, prop = 2, reps = 1)
+    Condition
+      Warning:
+      Asked sample size (10) is bigger than number of rows in data (5) while `replace` is FALSE. Using number of rows as sample size.
+

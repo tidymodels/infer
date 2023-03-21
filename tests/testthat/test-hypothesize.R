@@ -102,18 +102,17 @@ test_that(
 
 test_that(
   "hypothesize() throws a warning when params are set with independence", {
-  expect_warning(
-    mtcars_df %>%
+  expect_snapshot(
+    res_ <- mtcars_df %>%
       specify(mpg ~ vs) %>%
-      hypothesize(null = "independence", mu = 25),
-    'Parameter values are not specified when testing that two variables are independent.'
+      hypothesize(null = "independence", mu = 25)
   )
 })
 
 test_that(
   "hypothesize() throws an error when p is greater than 1", {
   expect_snapshot(error = TRUE,
-    mtcars_df %>%
+    res_ <- mtcars_df %>%
       specify(response = vs, success = "1") %>%
       hypothesize(null = "point", p = 1 + .Machine$double.eps)
   )
@@ -122,7 +121,7 @@ test_that(
 test_that(
   "hypothesize() throws an error when p is less than 0", {
   expect_snapshot(error = TRUE,
-    mtcars_df %>%
+    res_ <- mtcars_df %>%
       specify(response = vs, success = "1") %>%
       hypothesize(null = "point", p = - .Machine$double.neg.eps)
   )
@@ -131,7 +130,7 @@ test_that(
 test_that(
   "hypothesize() throws an error when p contains missing values", {
   expect_snapshot(error = TRUE,
-    mtcars_df %>%
+    res_ <- mtcars_df %>%
       specify(response = vs, success = "1") %>%
       hypothesize(null = "point", p = c("0" = 0.5, "1" = NA_real_))
   )
@@ -140,7 +139,7 @@ test_that(
 test_that(
   "hypothesize() throws an error when vector p does not sum to 1", {
   expect_snapshot(error = TRUE,
-    mtcars_df %>%
+    res_ <- mtcars_df %>%
       specify(response = vs, success = "1") %>%
       hypothesize(null = "point", p = c("0" = 0.5, "1" = 0.5 + (eps *2)))
   )
@@ -151,35 +150,35 @@ test_that("hypothesize arguments function", {
   mtcars_s <- mtcars_f %>% specify(response = mpg)
   matrix1 <- matrix(data = NA, nrow = 3, ncol = 3)
 
-  expect_snapshot(error = TRUE, hypothesize(matrix1))
-  expect_snapshot(error = TRUE, hypothesize(mtcars_s, null = NA))
-  expect_snapshot(error = TRUE, hypothesize(mtcars_s))
+  expect_snapshot(error = TRUE, res_ <- hypothesize(matrix1))
+  expect_snapshot(error = TRUE, res_ <- hypothesize(mtcars_s, null = NA))
+  expect_snapshot(error = TRUE, res_ <- hypothesize(mtcars_s))
 
-  expect_snapshot(error = TRUE, mtcars_s %>% hypothesize(null = "point", mean = 3))
+  expect_snapshot(error = TRUE, res_ <- mtcars_s %>% hypothesize(null = "point", mean = 3))
 
-  expect_snapshot(error = TRUE, mtcars_s %>% hypothesize(null = "independence"))
-  expect_snapshot(error = TRUE, mtcars_s %>% hypothesize(null = "point"))
+  expect_snapshot(error = TRUE, res_ <- mtcars_s %>% hypothesize(null = "independence"))
+  expect_snapshot(error = TRUE, res_ <- mtcars_s %>% hypothesize(null = "point"))
   # Produces error on win-build
-#   expect_warning(
-#     mtcars_s %>% hypothesize(null = c("point", "independence"), mu = 3)
-#   )
-
   expect_snapshot(error = TRUE,
-    mtcars_df %>% dplyr::select(vs) %>% hypothesize(null = "point", mu = 1)
+    res <- mtcars_s %>% hypothesize(null = c("point", "independence"), mu = 3)
   )
 
   expect_snapshot(error = TRUE,
-    mtcars_df %>% specify(response = vs) %>% hypothesize(null = "point", mu = 1)
+    res_ <- mtcars_df %>% dplyr::select(vs) %>% hypothesize(null = "point", mu = 1)
   )
 
-  expect_snapshot(error = TRUE, mtcars_s %>% hypothesize(null = "point", p = 0.2))
+  expect_snapshot(error = TRUE,
+    res_ <- mtcars_df %>% specify(response = vs) %>% hypothesize(null = "point", mu = 1)
+  )
 
-  expect_snapshot(error = TRUE, mtcars_s %>% hypothesize())
+  expect_snapshot(error = TRUE, res_ <- mtcars_s %>% hypothesize(null = "point", p = 0.2))
+
+  expect_snapshot(error = TRUE, res_ <- mtcars_s %>% hypothesize())
 })
 
 test_that("params correct", {
-  expect_snapshot(error = TRUE, hypothesize(one_prop_specify, null = "point", mu = 2))
-  expect_snapshot(error = TRUE, hypothesize(one_mean_specify, null = "point", mean = 0.5))
+  expect_snapshot(error = TRUE, res_ <- hypothesize(one_prop_specify, null = "point", mu = 2))
+  expect_snapshot(error = TRUE, res_ <- hypothesize(one_mean_specify, null = "point", mean = 0.5))
 })
 
 test_that("sensible output", {
@@ -200,8 +199,8 @@ test_that("user can specify multiple explanatory variables", {
   expect_equal(explanatory_name(x), c("sex", "college"))
   expect_equal(response_name(x), "hours")
 
-  expect_warning(
-    gss %>%
+  expect_snapshot(
+    res_ <- gss %>%
       specify(hours ~ sex + college) %>%
       hypothesize(null = "independence", mu = 40)
   )

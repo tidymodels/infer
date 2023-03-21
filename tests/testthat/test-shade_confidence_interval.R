@@ -58,27 +58,27 @@ test_that("shade_confidence_interval uses extra aesthetic", {
 test_that("shade_confidence_interval throws errors and warnings", {
   skip_if(getRversion() < "4.1.0")
 
-  expect_warning(gss_viz_sim + shade_confidence_interval(c(1, 2, 3)), "2")
+  expect_snapshot(res_ <- gss_viz_sim + shade_confidence_interval(c(1, 2, 3)))
   expect_snapshot(error = TRUE,
-    gss_viz_sim + shade_confidence_interval(data.frame(x = 1))
+    res_ <- gss_viz_sim + shade_confidence_interval(data.frame(x = 1))
   )
   expect_snapshot(error = TRUE,
-    gss_viz_sim + shade_confidence_interval(c(-1, 1), color = "x")
+    res_ <- gss_viz_sim + shade_confidence_interval(c(-1, 1), color = "x")
   )
   expect_snapshot(error = TRUE,
-    gss_viz_sim + shade_confidence_interval(c(-1, 1), fill = "x")
+    res_ <- gss_viz_sim + shade_confidence_interval(c(-1, 1), fill = "x")
   )
   expect_snapshot(error = TRUE,
-    gss_viz_sim %>% shade_confidence_interval(c(-1, 1))
+    res_ <- gss_viz_sim %>% shade_confidence_interval(c(-1, 1))
   )
   expect_snapshot(error = TRUE,
-    gss_viz_sim %>% shade_confidence_interval(endpoints = c(-1, 1))
+    res_ <- gss_viz_sim %>% shade_confidence_interval(endpoints = c(-1, 1))
   )
   expect_snapshot(error = TRUE,
-    gss_viz_sim %>% shade_ci(c(-1, 1))
+    res_ <- gss_viz_sim %>% shade_ci(c(-1, 1))
   )
   expect_snapshot(error = TRUE,
-    gss_viz_sim %>% shade_ci(endpoints = c(-1, 1))
+    res_ <- gss_viz_sim %>% shade_ci(endpoints = c(-1, 1))
   )
 })
 

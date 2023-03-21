@@ -11,7 +11,7 @@ test_that("aliases work", {
 })
 
 test_that("old aliases produce warning", {
-  expect_warning(
+  expect_snapshot(
     res <- gss_calc %>%
       p_value(obs_stat = -0.2, direction = "right") %>%
       dplyr::pull()
@@ -19,5 +19,5 @@ test_that("old aliases produce warning", {
 
   expect_equal(res, 1)
 
-  expect_warning(gss_permute %>% conf_int())
+  expect_snapshot(res_ <- gss_permute %>% conf_int())
 })

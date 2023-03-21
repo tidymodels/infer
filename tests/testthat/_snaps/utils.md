@@ -6,6 +6,14 @@
       Error:
       ! Hello NULL!
 
+# warning_glue handles `NULL`
+
+    Code
+      warning_glue("Hello {null_val}", "!")
+    Condition
+      Warning:
+      Hello NULL!
+
 # check_type works
 
     Code
