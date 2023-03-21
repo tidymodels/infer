@@ -103,3 +103,11 @@
       Error:
       ! The `x` argument must be the output of a core infer function, likely `specify()` or `hypothesize()`.
 
+# assume() handles automatic df gracefully
+
+    Code
+      res_ <- gss %>% specify(response = hours) %>% hypothesize(null = "point", mu = 40) %>%
+        assume("t", nrow(gss) - 2)
+    Message
+      Message: The supplied `df` argument does not match its expected value. If this is unexpected, ensure that your calculation for `df` is correct (see `?assume` for recognized values) or supply `df = NULL` to `assume()`.
+

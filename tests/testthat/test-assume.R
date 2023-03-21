@@ -191,12 +191,11 @@ test_that("assume() handles automatic df gracefully", {
     )
   )
 
-  expect_message(
-    gss %>%
+  expect_snapshot(
+    res_ <- gss %>%
       specify(response = hours) %>%
       hypothesize(null = "point", mu = 40) %>%
-      assume("t", nrow(gss) - 2),
-    "does not match its expected value..*calculation for `df`"
+      assume("t", nrow(gss) - 2)
   )
 
   # t.test param with var.equal = FALSE

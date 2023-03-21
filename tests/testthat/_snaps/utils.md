@@ -14,6 +14,13 @@
       Warning:
       Hello NULL!
 
+# message_glue handles `NULL`
+
+    Code
+      message_glue("Hello {null_val}", "!")
+    Message
+      Hello NULL!
+
 # check_type works
 
     Code

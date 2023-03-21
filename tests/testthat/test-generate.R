@@ -280,10 +280,8 @@ test_that("mismatches lead to error", {
 })
 
 test_that("generate() handles `NULL` value of `type`", {
-  expect_message(
-    generate(hyp_prop, type = NULL),
-    'Setting `type = "draw"` in `generate()`.',
-    fixed = TRUE
+  expect_snapshot(
+    res_ <- generate(hyp_prop, type = NULL)
   )
 })
 
@@ -443,20 +441,18 @@ test_that("variables argument prompts when it ought to", {
       generate(reps = 2, type = "permute", variables = "hours")
   )
 
-  expect_message(
-    gss[1:10,] %>%
+  expect_snapshot(
+    res_ <- gss[1:10,] %>%
       specify(hours ~ age + college + age*college) %>%
       hypothesize(null = "independence") %>%
-      generate(reps = 2, type = "permute", variables = age*college),
-    "supply only data columns"
+      generate(reps = 2, type = "permute", variables = age*college)
   )
 
-  expect_message(
-    gss[1:10,] %>%
+  expect_snapshot(
+    res_ <- gss[1:10,] %>%
       specify(hours ~ age + college + age*college) %>%
       hypothesize(null = "independence") %>%
-      generate(reps = 2, type = "permute", variables = c(hours, age*college)),
-    "supply only data columns"
+      generate(reps = 2, type = "permute", variables = c(hours, age*college))
   )
 
   expect_silent(
@@ -496,12 +492,11 @@ test_that("variables argument prompts when it ought to", {
 
 test_that("type = 'draw'/'simulate' superseding handled gracefully", {
   # message on type = 'simulate'
-  expect_message(
-    mtcars_df %>%
+  expect_snapshot(
+    res_ <- mtcars_df %>%
       specify(response = am, success = "1") %>%
       hypothesize(null = "point", p = .5) %>%
-      generate(type = "simulate"),
-    '`"simulate"` generation type.*renamed to `"draw"`.*quiet'
+      generate(type = "simulate")
   )
 
   # don't message on type = 'draw'

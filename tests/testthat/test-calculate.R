@@ -331,24 +331,22 @@ test_that("chi-square works with factors with unused levels", {
   )
 
   # Unused levels in explanatory variable
-  expect_message(
+  expect_snapshot(
     out <- test_tbl %>%
       specify(y ~ x) %>%
       calculate(stat = "Chisq") %>%
-      pull(),
-    "Dropping unused factor levels.*explanatory"
+      pull()
   )
   expect_true(!is.na(out))
 
   # Unused levels in response variable
   test_tbl[["x"]] <- factor(test_tbl[["x"]])
   levels(test_tbl[["y"]]) <- c("e", "f", "g")
-  expect_message(
+  expect_snapshot(
     out <- test_tbl %>%
       specify(y ~ x) %>%
       calculate(stat = "Chisq") %>%
-      pull(),
-    "Dropping unused factor levels.*response"
+      pull()
   )
   expect_true(!is.na(out))
 })
@@ -463,8 +461,8 @@ test_that("specify() %>% calculate() works", {
   expect_silent(
     gss_tbl %>% specify(hours ~ NULL) %>% calculate(stat = "mean")
   )
-  expect_message(
-    gss_tbl %>%
+  expect_snapshot(
+    res_ <- gss_tbl %>%
       specify(hours ~ NULL) %>%
       hypothesize(null = "point", mu = 4) %>%
       calculate(stat = "mean")
@@ -476,8 +474,8 @@ test_that("specify() %>% calculate() works", {
 })
 
 test_that("One sample t hypothesis test is working", {
-  expect_message(
-    gss_tbl %>%
+  expect_snapshot(
+    res_ <- gss_tbl %>%
       specify(hours ~ NULL) %>%
       hypothesize(null = "point", mu = 1) %>%
       generate(reps = 10) %>%
@@ -693,28 +691,25 @@ test_that("calculate warns informatively with insufficient null", {
 })
 
 test_that("calculate messages informatively with excessive null", {
-  expect_message(
-    gss %>%
+  expect_snapshot(
+    res_ <- gss %>%
       specify(hours ~ NULL) %>%
       hypothesize(null = "point", mu = 40) %>%
-      calculate(stat = "mean"),
-    "point null hypothesis `mu = 40` does not inform calculation"
+      calculate(stat = "mean")
   )
 
-  expect_message(
-    gss %>%
+  expect_snapshot(
+    res_ <- gss %>%
       specify(hours ~ NULL) %>%
       hypothesize(null = "point", sigma = 10) %>%
-      calculate(stat = "sd"),
-    "point null hypothesis `sigma = 10` does not inform calculation"
+      calculate(stat = "sd")
   )
 
-  expect_message(
-    gss %>%
+  expect_snapshot(
+    res_ <- gss %>%
       specify(hours ~ college) %>%
       hypothesize(null = "independence") %>%
-      calculate("diff in means", order = c("no degree", "degree")),
-    "independence null hypothesis does not inform calculation"
+      calculate("diff in means", order = c("no degree", "degree"))
   )
 })
 

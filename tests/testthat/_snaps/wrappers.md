@@ -188,6 +188,13 @@
 # one sample prop_test works
 
     Code
+      res_ <- prop_test(df_1, resp ~ NULL)
+    Message
+      No `p` argument was hypothesized, so the test will assume a null hypothesis `p = .5`.
+
+---
+
+    Code
       res_ <- prop_test(df_1, resp ~ NULL, p = 0.2, success = "b")
     Condition
       Error:

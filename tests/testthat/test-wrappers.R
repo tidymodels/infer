@@ -365,7 +365,7 @@ test_that("one sample prop_test works", {
                tolerance = .001)
 
   # expect message for unspecified p
-  expect_message(prop_test(df_1, resp ~ NULL))
+  expect_snapshot(res_ <- prop_test(df_1, resp ~ NULL))
 
   # check that the success argument changes output
   infer3 <- prop_test(df_1, resp ~ NULL, p = .2, success = "c")

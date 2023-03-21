@@ -174,3 +174,27 @@
       Warning:
       Removed 1 rows containing missing values.
 
+# specify messages when dropping unused levels
+
+    Code
+      res_ <- gss %>% dplyr::filter(partyid %in% c("rep", "dem")) %>% specify(age ~
+        partyid)
+    Message
+      Dropping unused factor levels c("ind", "other", "DK") from the supplied explanatory variable 'partyid'.
+
+---
+
+    Code
+      res_ <- gss %>% dplyr::filter(partyid %in% c("rep", "dem")) %>% specify(
+        partyid ~ age)
+    Message
+      Dropping unused factor levels c("ind", "other", "DK") from the supplied response variable 'partyid'.
+
+---
+
+    Code
+      res_ <- gss %>% dplyr::filter(partyid %in% c("rep", "dem")) %>% specify(
+        partyid ~ NULL)
+    Message
+      Dropping unused factor levels c("ind", "other", "DK") from the supplied response variable 'partyid'.
+

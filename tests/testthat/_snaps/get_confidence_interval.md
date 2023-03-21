@@ -1,3 +1,10 @@
+# get_confidence_interval messages with no explicit `level`
+
+    Code
+      res_ <- get_confidence_interval(test_df)
+    Message
+      Using `level = 0.95` to compute confidence interval.
+
 # get_confidence_interval checks input
 
     Code

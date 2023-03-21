@@ -100,7 +100,7 @@ test_that("get_confidence_interval supports data frame `point_estimate`", {
 })
 
 test_that("get_confidence_interval messages with no explicit `level`", {
-  expect_message(get_confidence_interval(test_df), "Using `level = 0.95`")
+  expect_snapshot(res_ <- get_confidence_interval(test_df))
   expect_silent(get_confidence_interval(test_df, level = 0.95))
   expect_silent(get_confidence_interval(test_df, 0.95))
 })

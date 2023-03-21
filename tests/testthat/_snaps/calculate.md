@@ -289,6 +289,20 @@
       Caused by error in `correct && nrow(x) == 2L`:
       ! invalid 'x' type in 'x && y'
 
+# chi-square works with factors with unused levels
+
+    Code
+      out <- test_tbl %>% specify(y ~ x) %>% calculate(stat = "Chisq") %>% pull()
+    Message
+      Dropping unused factor levels d from the supplied explanatory variable 'x'.
+
+---
+
+    Code
+      out <- test_tbl %>% specify(y ~ x) %>% calculate(stat = "Chisq") %>% pull()
+    Message
+      Dropping unused factor levels g from the supplied response variable 'y'.
+
 # `order` is working
 
     Code
@@ -360,6 +374,14 @@
 # specify() %>% calculate() works
 
     Code
+      res_ <- gss_tbl %>% specify(hours ~ NULL) %>% hypothesize(null = "point", mu = 4) %>%
+        calculate(stat = "mean")
+    Message
+      Message: The point null hypothesis `mu = 4` does not inform calculation of the observed statistic (a mean) and will be ignored.
+
+---
+
+    Code
       res_ <- gss_tbl %>% specify(partyid ~ NULL) %>% calculate(stat = "Chisq")
     Condition
       Warning:
@@ -367,6 +389,14 @@
       Output assumes the following null values: `p = c(dem = 0.333333333333333, ind = 0.333333333333333, rep = 0.333333333333333)`.
 
 # One sample t hypothesis test is working
+
+    Code
+      res_ <- gss_tbl %>% specify(hours ~ NULL) %>% hypothesize(null = "point", mu = 1) %>%
+        generate(reps = 10) %>% calculate(stat = "t")
+    Message
+      Setting `type = "bootstrap"` in `generate()`.
+
+---
 
     Code
       res_ <- gss_tbl %>% specify(response = hours) %>% calculate(stat = "t")
@@ -452,6 +482,30 @@
       Warning:
       A chi-square statistic requires a null hypothesis to calculate the observed statistic. 
       Output assumes the following null values: `p = c(dem = 0.2, ind = 0.2, rep = 0.2, other = 0.2, DK = 0.2)`.
+
+# calculate messages informatively with excessive null
+
+    Code
+      res_ <- gss %>% specify(hours ~ NULL) %>% hypothesize(null = "point", mu = 40) %>%
+        calculate(stat = "mean")
+    Message
+      Message: The point null hypothesis `mu = 40` does not inform calculation of the observed statistic (a mean) and will be ignored.
+
+---
+
+    Code
+      res_ <- gss %>% specify(hours ~ NULL) %>% hypothesize(null = "point", sigma = 10) %>%
+        calculate(stat = "sd")
+    Message
+      Message: The point null hypothesis `sigma = 10` does not inform calculation of the observed statistic (a standard deviation) and will be ignored.
+
+---
+
+    Code
+      res_ <- gss %>% specify(hours ~ college) %>% hypothesize(null = "independence") %>%
+        calculate("diff in means", order = c("no degree", "degree"))
+    Message
+      Message: The independence null hypothesis does not inform calculation of the observed statistic (a difference in means) and will be ignored.
 
 # calculate errors out with multiple explanatory variables
 

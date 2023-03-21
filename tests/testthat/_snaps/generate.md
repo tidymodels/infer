@@ -230,6 +230,13 @@
       Error:
       ! The `type` argument should be one of "bootstrap", "permute", or "draw". See `?generate` for more details.
 
+# generate() handles `NULL` value of `type`
+
+    Code
+      res_ <- generate(hyp_prop, type = NULL)
+    Message
+      Setting `type = "draw"` in `generate()`.
+
 # variables argument prompts when it ought to
 
     Code
@@ -269,6 +276,24 @@
 ---
 
     Code
+      res_ <- gss[1:10, ] %>% specify(hours ~ age + college + age * college) %>%
+        hypothesize(null = "independence") %>% generate(reps = 2, type = "permute",
+        variables = age * college)
+    Message
+      Message: Please supply only data columns to the `variables` argument. Note that any derived effects that depend on these columns will also be affected.
+
+---
+
+    Code
+      res_ <- gss[1:10, ] %>% specify(hours ~ age + college + age * college) %>%
+        hypothesize(null = "independence") %>% generate(reps = 2, type = "permute",
+        variables = c(hours, age * college))
+    Message
+      Message: Please supply only data columns to the `variables` argument. Note that any derived effects that depend on these columns will also be affected.
+
+---
+
+    Code
       res_ <- gss[1:10, ] %>% specify(hours ~ age * college) %>% generate(reps = 2,
         type = "bootstrap", variables = c(hours, age * college))
     Condition
@@ -276,6 +301,14 @@
       The `variables` argument is only relevant for the "permute" generation type and will be ignored.
 
 # type = 'draw'/'simulate' superseding handled gracefully
+
+    Code
+      res_ <- mtcars_df %>% specify(response = am, success = "1") %>% hypothesize(
+        null = "point", p = 0.5) %>% generate(type = "simulate")
+    Message
+      The `"simulate"` generation type has been renamed to `"draw"`. Use `type = "draw"` instead to quiet this message.
+
+---
 
     Code
       res_ <- mtcars_df %>% specify(response = am, success = "1") %>% hypothesize(

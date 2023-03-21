@@ -60,7 +60,7 @@ test_that("warning_glue handles `NULL`", {
 })
 
 test_that("message_glue handles `NULL`", {
-  expect_message(message_glue("Hello {null_val}", "!"))
+  expect_snapshot(message_glue("Hello {null_val}", "!"))
 })
 
 test_that("glue_null works", {

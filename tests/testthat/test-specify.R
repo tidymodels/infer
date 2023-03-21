@@ -84,25 +84,22 @@ test_that("specify doesn't have NSE issues (#256)", {
 })
 
 test_that("specify messages when dropping unused levels", {
-  expect_message(
-    gss %>%
+   expect_snapshot(
+    res_ <- gss %>%
       dplyr::filter(partyid %in% c("rep", "dem")) %>%
-      specify(age ~ partyid),
-    "Dropping unused factor levels c\\(\"ind\", \"other\""
+      specify(age ~ partyid)
   )
 
-  expect_message(
-    gss %>%
+  expect_snapshot(
+    res_ <- gss %>%
       dplyr::filter(partyid %in% c("rep", "dem")) %>%
-      specify(partyid ~ age),
-    "Dropping unused factor levels c\\(\"ind\", \"other\""
+      specify(partyid ~ age)
   )
 
-  expect_message(
-    gss %>%
+  expect_snapshot(
+    res_ <- gss %>%
       dplyr::filter(partyid %in% c("rep", "dem")) %>%
-      specify(partyid ~ NULL),
-    "Dropping unused factor levels c\\(\"ind\", \"other\""
+      specify(partyid ~ NULL)
   )
 
   expect_silent(
