@@ -251,11 +251,11 @@ warn_on_insufficient_null <- function(x, stat, ...) {
     attr(x, "null") <- "point"
     attr(x, "params") <- assume_null(x, stat)
 
-    warning_glue(
+    warn(glue(
       "{get_stat_desc(stat)} requires a null ",
       "hypothesis to calculate the observed statistic. \nOutput assumes ",
       "the following null value{print_params(x)}."
-    )
+    ))
   }
 
   x

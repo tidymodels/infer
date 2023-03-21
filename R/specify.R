@@ -41,7 +41,7 @@
 #' vignette("infer")
 #' }
 #'
-#' @importFrom rlang f_lhs f_rhs get_expr caller_env abort
+#' @importFrom rlang f_lhs f_rhs get_expr caller_env abort warn
 #' @importFrom dplyr select any_of across
 #' @importFrom methods hasArg
 #' @family core functions
@@ -75,7 +75,7 @@ specify <- function(x, formula, response = NULL,
   is_complete <- stats::complete.cases(x)
   if (!all(is_complete)) {
     x <- dplyr::filter(x, is_complete)
-    warning_glue("Removed {sum(!is_complete)} rows containing missing values.")
+    warn(glue("Removed {sum(!is_complete)} rows containing missing values."))
   }
 
   # Add "infer" class

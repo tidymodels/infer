@@ -136,12 +136,11 @@ compare_type_vs_auto_type <- function(type, auto_type, x) {
         # make sure auto_type vs type difference isn't just an alias
         (any(!c(auto_type, type) %in% c("draw", "simulate"))))
      ) {
-     warning_glue(
-        "You have given `type = \"{type}\"`, but `type` is expected",
-        "to be `\"{auto_type}\"`. This workflow is untested and",
-        "the results may not mean what you think they mean.",
-        .sep = " "
-     )
+     warn(glue(
+        "You have given `type = \"{type}\"`, but `type` is expected ",
+        "to be `\"{auto_type}\"`. This workflow is untested and ",
+        "the results may not mean what you think they mean."
+     ))
   }
 
   type
@@ -182,10 +181,10 @@ check_cols <- function(x, variables, type, missing, arg_name = "variables", call
   }
 
   if (!missing && type != "permute") {
-    warning_glue(
+     warn(glue(
       'The `{arg_name}` argument is only relevant for the "permute" ',
       'generation type and will be ignored.'
-    )
+    ))
 
     should_prompt <- FALSE
   } else {

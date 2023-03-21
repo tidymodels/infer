@@ -11,7 +11,7 @@
     Code
       gss_tbl %>% t_test(response = "hours", explanatory = "sex")
     Condition
-      Error in `parse_variables()`:
+      Error in `t_test()`:
       ! The response should be a bare variable name (not a string in quotation marks).
 
 # chisq_test works

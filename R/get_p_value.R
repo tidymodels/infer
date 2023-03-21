@@ -228,11 +228,11 @@ simulation_based_p_value <- function(x, obs_stat, direction, call = caller_env()
   }
 
   if (abs(pval) < 1e-16) {
-    warning_glue(
+     warn(paste0(
       "Please be cautious in reporting a p-value of 0. This result is an ",
       "approximation based on the number of `reps` chosen in the `generate()` ",
       "step. See `?get_p_value()` for more information."
-    )
+    ))
   }
 
   tibble::tibble(p_value = pval)
@@ -258,11 +258,11 @@ check_hypotheses_align <- function(x, obs_stat) {
   if (is_hypothesized(x) &&
       is_hypothesized(obs_stat) &&
       any(attr(x, "params") != attr(obs_stat, "params"))) {
-    warning_glue(
+     warn(paste0(
       "`x` and `obs_stat` were generated using different null hypotheses. ",
       "This workflow is untested and results may not mean what you think ",
       "they mean."
-    )
+    ))
   }
 }
 

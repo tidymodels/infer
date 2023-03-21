@@ -196,7 +196,7 @@ notify_extra_size <- function(size, tbl, replace, notify_type, call = caller_env
     switch(
       notify_type,
       sample_n = abort(glue("{msg}. Use `replace = TRUE`."), call = call),
-      slice_sample = warning_glue("{msg}. Using number of rows as sample size.")
+      slice_sample = warn(glue("{msg}. Using number of rows as sample size."))
     )
   }
 

@@ -51,10 +51,6 @@ test_that("is_truefalse works", {
   expect_false(is_truefalse(1L))
 })
 
-test_that("warning_glue handles `NULL`", {
-  expect_snapshot(warning_glue("Hello {null_val}", "!"))
-})
-
 test_that("message_glue handles `NULL`", {
   expect_snapshot(message_glue("Hello {null_val}", "!"))
 })

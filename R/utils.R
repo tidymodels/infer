@@ -194,14 +194,6 @@ is_truefalse <- function(x) {
 }
 
 # Messaging, warning, and erroring ------------------------------------------
-warning_glue <- function(..., .sep = "", .envir = parent.frame(),
-                         call. = FALSE, .domain = NULL) {
-  warning(
-    glue(..., .sep = .sep, .envir = .envir, .null = "NULL"),
-    call. = call., domain = .domain
-  )
-}
-
 message_glue <- function(..., .sep = "", .envir = parent.frame(),
                          .domain = NULL, .appendLF = TRUE) {
   message(
@@ -354,10 +346,10 @@ check_order <- function(x, order, in_calculate = TRUE, stat, call = caller_env()
         stat %in% c("diff in means", "diff in medians",
                     "diff in props", "ratio of props", "odds ratio"))) {
     if (!is.null(order)) {
-       warning_glue(
+       warn(paste0(
         "Statistic is not based on a difference or ratio; the `order` argument ",
         "will be ignored. Check `?calculate` for details."
-      )
+      ))
     } else {
       return(order)
     }
@@ -371,24 +363,24 @@ check_order <- function(x, order, in_calculate = TRUE, stat, call = caller_env()
     # second, unless the explanatory variable is a factor (in which case order
     # is preserved); raise a warning if this was done implicitly.
     order <- as.character(unique_ex)
-    warning_glue(
+    warn(glue(
       "The statistic is based on a difference or ratio; by default, for ",
       "difference-based statistics, the explanatory variable is subtracted ",
       "in the order \"{unique_ex[1]}\" - \"{unique_ex[2]}\", or divided in ",
       "the order \"{unique_ex[1]}\" / \"{unique_ex[2]}\" for ratio-based ",
       "statistics. To specify this order yourself, supply `order = ",
       "c(\"{unique_ex[1]}\", \"{unique_ex[2]}\")` to the calculate() function."
-    )
+    ))
   } else if (is.null(order)) {
     order <- as.character(unique_ex)
-    warning_glue(
+    warn(glue(
       "The statistic is based on a difference or ratio; by default, for ",
       "difference-based statistics, the explanatory variable is subtracted ",
       "in the order \"{unique_ex[1]}\" - \"{unique_ex[2]}\", or divided in ",
       "the order \"{unique_ex[1]}\" / \"{unique_ex[2]}\" for ratio-based ",
       "statistics. To specify this order yourself, supply `order = ",
       "c(\"{unique_ex[1]}\", \"{unique_ex[2]}\")`."
-    )
+    ))
   } else {
     if (xor(is.na(order[1]), is.na(order[2]))) {
        abort(paste0(
@@ -458,9 +450,9 @@ check_for_nan <- function(x, context) {
 
   if (context == "visualize") {
     # Raise a warning and plot the data with NaNs removed
-    warning_glue(
+     warn(glue(
       "{num_nans_msg}. `NaN`s have been omitted from visualization. {calc_ref}."
-    )
+    ))
     return(x[!stat_is_nan, ])
   } else if (context == "get_p_value") {
     # Raise an error
@@ -506,10 +498,10 @@ check_obs_stat <- function(obs_stat, plot = NULL, call = caller_env()) {
 
       check_type(obs_stat, is.data.frame, call = call)
       if ((nrow(obs_stat) != 1) || (ncol(obs_stat) != 1)) {
-        warning_glue(
+         warn(glue(
           "The first row and first column value of the given `obs_stat` will ",
           "be used."
-        )
+        ))
       }
 
       # [[1]] is used in case `stat` is not specified as name of 1x1

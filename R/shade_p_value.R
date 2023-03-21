@@ -166,11 +166,11 @@ shade_p_value_term <- function(plot, obs_stat, direction,
 
       res <- c(res, do.call(geom_tail_area, c(list(tail_area, fill), dots)))
     } else {
-      warning_glue(
+       warn(paste0(
         '`direction` should be one of `"less"`, `"left"`, `"greater"`, ',
         '`"right"`, `"two-sided"`, `"both"`, `"two_sided"`, `"two sided"`, ',
         'or `"two.sided"`.'
-      )
+      ))
     }
   }
 
@@ -362,10 +362,10 @@ warn_right_tail_test <- function(direction, stat_name, do_warn = TRUE) {
   if (do_warn && !is.null(direction) &&
       !(direction %in% c("greater", "right")) &&
       (stat_name %in% c("F", "Chi-Square"))) {
-    warning_glue(
+     warn(glue(
       "{stat_name} usually corresponds to right-tailed tests. ",
       "Proceed with caution."
-    )
+    ))
   }
 
   TRUE

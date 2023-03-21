@@ -119,10 +119,10 @@ match_null_hypothesis <- function(null, call = caller_env()) {
 
 sanitize_hypothesis_params_independence <- function(dots) {
   if (length(dots) > 0) {
-    warning_glue(
+     warn(paste0(
       "Parameter values are not specified when testing that two variables are ",
       "independent."
-    )
+    ))
   }
 
   NULL

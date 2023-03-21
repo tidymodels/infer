@@ -1,11 +1,3 @@
-# warning_glue handles `NULL`
-
-    Code
-      warning_glue("Hello {null_val}", "!")
-    Condition
-      Warning:
-      Hello NULL!
-
 # message_glue handles `NULL`
 
     Code
