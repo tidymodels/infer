@@ -15,48 +15,41 @@ test_that("`rep_sample_n` works", {
 
 test_that("`rep_sample_n` checks input", {
   # `tbl`
-  expect_error(rep_sample_n("a", size = 1), "`tbl`.*'data.frame'")
+  expect_snapshot(error = TRUE, rep_sample_n("a", size = 1))
 
   # `size`
-  expect_error(rep_sample_n(population, size = "a"), "`size`.*number")
-  expect_error(rep_sample_n(population, size = 1:2), "`size`.*single")
-  expect_error(rep_sample_n(population, size = -1), "`size`.*non-negative")
+  expect_snapshot(error = TRUE, rep_sample_n(population, size = "a"))
+  expect_snapshot(error = TRUE, rep_sample_n(population, size = 1:2))
+  expect_snapshot(error = TRUE, rep_sample_n(population, size = -1))
 
   # `replace`
-  expect_error(
-    rep_sample_n(population, size = 1, replace = "a"),
-    "`replace`.*'TRUE or FALSE'"
+  expect_snapshot(error = TRUE,
+    rep_sample_n(population, size = 1, replace = "a")
   )
 
   # `reps`
-  expect_error(
-    rep_sample_n(population, size = 1, reps = "a"),
-    "`reps`.*number"
+  expect_snapshot(error = TRUE,
+    rep_sample_n(population, size = 1, reps = "a")
   )
-  expect_error(
-    rep_sample_n(population, size = 1, reps = 1:2),
-    "`reps`.*single"
+  expect_snapshot(error = TRUE,
+    rep_sample_n(population, size = 1, reps = 1:2)
   )
-  expect_error(
-    rep_sample_n(population, size = 1, reps = 0.5),
-    "`reps`.*not less than 1"
+  expect_snapshot(error = TRUE,
+    rep_sample_n(population, size = 1, reps = 0.5)
   )
 
   # `prob`
-  expect_error(
-    rep_sample_n(population, size = 1, prob = "a"),
-    "`prob`.*numeric"
+  expect_snapshot(error = TRUE,
+    rep_sample_n(population, size = 1, prob = "a")
   )
-  expect_error(
-    rep_sample_n(population, size = 1, prob = c(0.1, 0.9)),
-    glue::glue("`prob`.*length.*{nrow(population)}")
+  expect_snapshot(error = TRUE,
+    rep_sample_n(population, size = 1, prob = c(0.1, 0.9))
   )
 })
 
 test_that("`rep_sample_n` gives error on big sample size if `replace=FALSE`", {
-  expect_error(
-    rep_sample_n(population, size = n_population * 2),
-    "Use `replace = TRUE`"
+  expect_snapshot(error = TRUE,
+    rep_sample_n(population, size = n_population * 2)
   )
 })
 
@@ -149,56 +142,48 @@ test_that("`rep_slice_sample` works", {
 
 test_that("`rep_slice_sample` checks input", {
   # `.data`
-  expect_error(rep_slice_sample("a", n = 1), "`.data`.*'data.frame'")
+  expect_snapshot(error = TRUE, rep_slice_sample("a", n = 1))
 
   # `n`
-  expect_error(rep_slice_sample(population, n = "a"), "`n`.*number")
-  expect_error(rep_slice_sample(population, n = 1:2), "`n`.*single")
-  expect_error(rep_slice_sample(population, n = -1), "`n`.*non-negative")
+  expect_snapshot(error = TRUE, rep_slice_sample(population, n = "a"))
+  expect_snapshot(error = TRUE, rep_slice_sample(population, n = 1:2))
+  expect_snapshot(error = TRUE, rep_slice_sample(population, n = -1))
 
   # `prop`
-  expect_error(rep_slice_sample(population, prop = "a"), "`prop`.*number")
-  expect_error(rep_slice_sample(population, prop = 1:2), "`prop`.*single")
-  expect_error(rep_slice_sample(population, prop = -1), "`prop`.*non-negative")
+  expect_snapshot(error = TRUE, rep_slice_sample(population, prop = "a"))
+  expect_snapshot(error = TRUE, rep_slice_sample(population, prop = 1:2))
+  expect_snapshot(error = TRUE, rep_slice_sample(population, prop = -1))
 
   # Only one `n` or `prop` should be supplied
-  expect_error(
-    rep_slice_sample(population, n = 1, prop = 0.5),
-    "exactly one.*`n` or `prop`"
+  expect_snapshot(error = TRUE,
+    rep_slice_sample(population, n = 1, prop = 0.5)
   )
 
   # `replace`
-  expect_error(
-    rep_slice_sample(population, n = 1, replace = "a"),
-    "`replace`.*'TRUE or FALSE'"
+  expect_snapshot(error = TRUE,
+    rep_slice_sample(population, n = 1, replace = "a")
   )
 
   # `weight_by`
-  expect_error(
-    rep_slice_sample(population, n = 1, weight_by = "a"),
-    "`weight_by`.*numeric"
+  expect_snapshot(error = TRUE,
+    rep_slice_sample(population, n = 1, weight_by = "a")
   )
-  expect_error(
-    rep_slice_sample(population, n = 1, weight_by = c(0.1, 0.9)),
-    glue::glue("`weight_by`.*length.*{nrow(population)}")
+  expect_snapshot(error = TRUE,
+    rep_slice_sample(population, n = 1, weight_by = c(0.1, 0.9))
   )
-  expect_error(
-     rep_slice_sample(population, n = 1, weight_by = wts),
-     glue::glue("`wts`.*`weight_by`.*not in the supplied data")
+  expect_snapshot(error = TRUE,
+     rep_slice_sample(population, n = 1, weight_by = wts)
   )
 
   # `reps`
-  expect_error(
-    rep_slice_sample(population, n = 1, reps = "a"),
-    "`reps`.*number"
+  expect_snapshot(error = TRUE,
+    rep_slice_sample(population, n = 1, reps = "a")
   )
-  expect_error(
-    rep_slice_sample(population, n = 1, reps = 1:2),
-    "`reps`.*single"
+  expect_snapshot(error = TRUE,
+    rep_slice_sample(population, n = 1, reps = 1:2)
   )
-  expect_error(
-    rep_slice_sample(population, n = 1, reps = 0.5),
-    "`reps`.*not less than 1"
+  expect_snapshot(error = TRUE,
+    rep_slice_sample(population, n = 1, reps = 0.5)
   )
 })
 

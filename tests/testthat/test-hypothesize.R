@@ -59,11 +59,10 @@ test_that("auto `type` works (hypothesize)", {
 
 test_that(
   "hypothesize() throws an error when null is not point or independence", {
-  expect_error(
+  expect_snapshot(error = TRUE,
     mtcars_df %>%
       specify(response = mpg) %>%
-      hypothesize(null = "dependence"),
-    '`null` should be either "point" or "independence".'
+      hypothesize(null = "dependence")
   )
 })
 
@@ -85,21 +84,19 @@ test_that(
 
 test_that(
   "hypothesize() throws an error when multiple null values are provided", {
-  expect_error(
+  expect_snapshot(error = TRUE,
     mtcars_df %>%
       specify(response = mpg) %>%
-      hypothesize(null = c("point", "independence")),
-    "You should specify exactly one type of null hypothesis"
+      hypothesize(null = c("point", "independence"))
   )
 })
 
 test_that(
   "hypothesize() throws an error when multiple params are set", {
-  expect_error(
+  expect_snapshot(error = TRUE,
     mtcars_df %>%
       specify(response = mpg) %>%
-      hypothesize(null = "point", mu = 25, med = 20),
-    "You must specify exactly one of `p`, `mu`, `med`, or `sigma`"
+      hypothesize(null = "point", mu = 25, med = 20)
   )
 })
 
@@ -115,41 +112,37 @@ test_that(
 
 test_that(
   "hypothesize() throws an error when p is greater than 1", {
-  expect_error(
+  expect_snapshot(error = TRUE,
     mtcars_df %>%
       specify(response = vs, success = "1") %>%
-      hypothesize(null = "point", p = 1 + .Machine$double.eps),
-    "`p` should only contain values between zero and one."
+      hypothesize(null = "point", p = 1 + .Machine$double.eps)
   )
 })
 
 test_that(
   "hypothesize() throws an error when p is less than 0", {
-  expect_error(
+  expect_snapshot(error = TRUE,
     mtcars_df %>%
       specify(response = vs, success = "1") %>%
-      hypothesize(null = "point", p = - .Machine$double.neg.eps),
-    "`p` should only contain values between zero and one."
+      hypothesize(null = "point", p = - .Machine$double.neg.eps)
   )
 })
 
 test_that(
   "hypothesize() throws an error when p contains missing values", {
-  expect_error(
+  expect_snapshot(error = TRUE,
     mtcars_df %>%
       specify(response = vs, success = "1") %>%
-      hypothesize(null = "point", p = c("0" = 0.5, "1" = NA_real_)),
-    "`p` should not contain missing values"
+      hypothesize(null = "point", p = c("0" = 0.5, "1" = NA_real_))
   )
 })
 
 test_that(
   "hypothesize() throws an error when vector p does not sum to 1", {
-  expect_error(
+  expect_snapshot(error = TRUE,
     mtcars_df %>%
       specify(response = vs, success = "1") %>%
-      hypothesize(null = "point", p = c("0" = 0.5, "1" = 0.5 + (eps *2))),
-    "Make sure the hypothesized values for the `p` parameters sum to 1. Please try again."
+      hypothesize(null = "point", p = c("0" = 0.5, "1" = 0.5 + (eps *2)))
   )
 })
 
@@ -158,35 +151,35 @@ test_that("hypothesize arguments function", {
   mtcars_s <- mtcars_f %>% specify(response = mpg)
   matrix1 <- matrix(data = NA, nrow = 3, ncol = 3)
 
-  expect_error(hypothesize(matrix1))
-  expect_error(hypothesize(mtcars_s, null = NA))
-  expect_error(hypothesize(mtcars_s))
+  expect_snapshot(error = TRUE, hypothesize(matrix1))
+  expect_snapshot(error = TRUE, hypothesize(mtcars_s, null = NA))
+  expect_snapshot(error = TRUE, hypothesize(mtcars_s))
 
-  expect_error(mtcars_s %>% hypothesize(null = "point", mean = 3))
+  expect_snapshot(error = TRUE, mtcars_s %>% hypothesize(null = "point", mean = 3))
 
-  expect_error(mtcars_s %>% hypothesize(null = "independence"))
-  expect_error(mtcars_s %>% hypothesize(null = "point"))
+  expect_snapshot(error = TRUE, mtcars_s %>% hypothesize(null = "independence"))
+  expect_snapshot(error = TRUE, mtcars_s %>% hypothesize(null = "point"))
   # Produces error on win-build
 #   expect_warning(
 #     mtcars_s %>% hypothesize(null = c("point", "independence"), mu = 3)
 #   )
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     mtcars_df %>% dplyr::select(vs) %>% hypothesize(null = "point", mu = 1)
   )
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     mtcars_df %>% specify(response = vs) %>% hypothesize(null = "point", mu = 1)
   )
 
-  expect_error(mtcars_s %>% hypothesize(null = "point", p = 0.2))
+  expect_snapshot(error = TRUE, mtcars_s %>% hypothesize(null = "point", p = 0.2))
 
-  expect_error(mtcars_s %>% hypothesize())
+  expect_snapshot(error = TRUE, mtcars_s %>% hypothesize())
 })
 
 test_that("params correct", {
-  expect_error(hypothesize(one_prop_specify, null = "point", mu = 2))
-  expect_error(hypothesize(one_mean_specify, null = "point", mean = 0.5))
+  expect_snapshot(error = TRUE, hypothesize(one_prop_specify, null = "point", mu = 2))
+  expect_snapshot(error = TRUE, hypothesize(one_mean_specify, null = "point", mean = 0.5))
 })
 
 test_that("sensible output", {
@@ -210,8 +203,7 @@ test_that("user can specify multiple explanatory variables", {
   expect_warning(
     gss %>%
       specify(hours ~ sex + college) %>%
-      hypothesize(null = "independence", mu = 40),
-    "Parameter values are not specified when testing"
+      hypothesize(null = "independence", mu = 40)
   )
 })
 

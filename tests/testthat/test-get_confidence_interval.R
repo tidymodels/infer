@@ -106,31 +106,27 @@ test_that("get_confidence_interval messages with no explicit `level`", {
 })
 
 test_that("get_confidence_interval checks input", {
-  expect_error(test_df %>% get_confidence_interval(type = "other"), "`type`")
-  expect_error(test_df %>% get_confidence_interval(level = 1.2), "`level`")
+  expect_snapshot(error = TRUE, test_df %>% get_confidence_interval(type = "other"))
+  expect_snapshot(error = TRUE, test_df %>% get_confidence_interval(level = 1.2))
 
-  expect_error(
-    test_df %>% get_confidence_interval(point_estimate = "a"),
-    "`point_estimate`"
+  expect_snapshot(error = TRUE,
+    test_df %>% get_confidence_interval(point_estimate = "a")
   )
-  expect_error(
-    test_df %>% get_confidence_interval(type = "se", point_estimate = "a"),
-    "`point_estimate`"
+  expect_snapshot(error = TRUE,
+    test_df %>% get_confidence_interval(type = "se", point_estimate = "a")
   )
-  expect_error(
+  expect_snapshot(error = TRUE,
     test_df %>%
       get_confidence_interval(
         type = "se", point_estimate = data.frame(p = "a")
-      ),
-    "`point_estimate\\[\\[1\\]\\]\\[\\[1\\]\\]`"
+      )
   )
 
-  expect_error(
-    test_df %>% get_confidence_interval(type = "se"), '`point_estimate`.*"se"'
+  expect_snapshot(error = TRUE,
+    test_df %>% get_confidence_interval(type = "se")
   )
-  expect_error(
-    test_df %>% get_confidence_interval(type = "bias-corrected"),
-    '`point_estimate`.*"bias-corrected"'
+  expect_snapshot(error = TRUE,
+    test_df %>% get_confidence_interval(type = "bias-corrected")
   )
 })
 
@@ -199,9 +195,8 @@ test_that("get_confidence_interval can handle fitted objects", {
     specify(hours ~ age) %>%
     fit()
 
-  expect_error(
-    get_confidence_interval(null_fits, point_estimate = obs_fit_2, level = .95),
-    "explanatory variables.*are not the same used"
+  expect_snapshot(error = TRUE,
+    get_confidence_interval(null_fits, point_estimate = obs_fit_2, level = .95)
   )
 
   obs_fit_3 <-
@@ -209,9 +204,8 @@ test_that("get_confidence_interval can handle fitted objects", {
     specify(year ~ age + college) %>%
     fit()
 
-  expect_error(
-    get_confidence_interval(null_fits, point_estimate = obs_fit_3, level = .95),
-    "response variable.*\\(hours\\) is not the same.*observed fit \\(year\\)."
+  expect_snapshot(error = TRUE,
+    get_confidence_interval(null_fits, point_estimate = obs_fit_3, level = .95)
   )
 })
 
@@ -228,20 +222,17 @@ test_that("get_confidence_interval can handle bad args with fitted objects", {
     specify(hours ~ age + college) %>%
     fit()
 
-  expect_error(
-    get_confidence_interval(null_fits, point_estimate = "boop", level = .95),
-    "`point_estimate` arg.*output of `fit\\(\\)`. See.*`?get_con"
+  expect_snapshot(error = TRUE,
+    get_confidence_interval(null_fits, point_estimate = "boop", level = .95)
   )
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     get_confidence_interval(null_fits, point_estimate = obs_fit$estimate,
-                            level = .95),
-    "`point_estimate` arg.*output of `fit\\(\\)`. See.*`?get_con"
+                            level = .95)
   )
 
-  expect_error(
-    get_confidence_interval(obs_fit, point_estimate = null_fits, level = .95),
-    "`x` argument.*be passed to `generate\\(\\)`"
+  expect_snapshot(error = TRUE,
+    get_confidence_interval(obs_fit, point_estimate = null_fits, level = .95)
   )
 })
 
@@ -406,43 +397,39 @@ test_that("theoretical CIs check arguments properly", {
     )
   )
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     get_confidence_interval(
       null_dist_theory,
       level = .95,
       type = "percentile",
       point_estimate = x_bar
-    ),
-    "only `type` option for theory-based confidence"
+    )
   )
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     get_confidence_interval(
       null_dist_theory,
       level = .95,
       type = "boop",
       point_estimate = x_bar
-    ),
-    "only `type` option for theory-based confidence"
+    )
   )
 
   # check that point estimate hasn't been post-processed
-  expect_error(
+  expect_snapshot(error = TRUE,
     get_confidence_interval(
       null_dist_theory,
       level = .95,
       point_estimate = dplyr::pull(x_bar)
-    ),
-    "must be an `infer` object"
+    )
   )
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     get_confidence_interval(
       null_dist_theory,
       level = .95,
       point_estimate = x_bar$stat
-    ),
-    "must be an `infer` object"
+    )
   )
 
   # check that statistics are implemented
@@ -451,13 +438,12 @@ test_that("theoretical CIs check arguments properly", {
     hypothesize(null = "point", mu = 40) %>%
     calculate(stat = "t")
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     get_confidence_interval(
       null_dist_theory,
       level = .95,
       point_estimate = obs_t
-    ),
-    'allowable statistics.*See the \\"Details\\" section of `\\?get_c'
+    )
   )
 
   # check that stat and distribution align
@@ -469,21 +455,19 @@ test_that("theoretical CIs check arguments properly", {
     specify(response = sex, success = "female") %>%
     assume(distribution = "z")
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     get_confidence_interval(
       null_dist_theory,
       level = .95,
       point_estimate = p_hat
-    ),
-    'using a `t` distribution for `stat = prop` are not implemented'
+    )
   )
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     get_confidence_interval(
       null_dist_z,
       level = .95,
       point_estimate = x_bar
-    ),
-    'using a `z` distribution for `stat = mean` are not implemented'
+    )
   )
 })

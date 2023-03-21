@@ -107,7 +107,7 @@ test_that("visualize basic tests", {
   # visualise also works
   expect_doppelganger("visualise", visualise(hours_resamp))
 
-  expect_error(hours_resamp %>% visualize(bins = "yep"))
+  expect_snapshot(error = TRUE, hours_resamp %>% visualize(bins = "yep"))
   expect_doppelganger(
     "vis-sim-right-1",
     gss_tbl %>%
@@ -120,7 +120,7 @@ test_that("visualize basic tests", {
   )
 
   # obs_stat not specified
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss_tbl %>%
       specify(sex ~ college, success = "female") %>%
       hypothesize(null = "independence") %>%
@@ -153,7 +153,7 @@ test_that("visualize basic tests", {
   )
 
   # diff in props and z on different scales
-  expect_error(
+  expect_snapshot(error = TRUE,
     expect_warning(
       gss_tbl %>%
         specify(sex ~ college, success = "female") %>%
@@ -328,7 +328,7 @@ test_that("visualize basic tests", {
   )
 
   # traditional instead of theoretical
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss_tbl %>%
       specify(partyid ~ NULL) %>%
       hypothesize(
@@ -367,7 +367,7 @@ test_that("visualize basic tests", {
   )
 
   # Produces warning first for not checking conditions but would also error
-  expect_error(
+  expect_snapshot(error = TRUE,
     expect_warning(
       gss_tbl %>%
         specify(hours ~ sex) %>%
@@ -462,7 +462,7 @@ test_that('method = "both" behaves nicely', {
   #   '`generate()` and `calculate()` are both required to be done prior ',
   #   'to `visualize(method = "both")`'
   # )
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss_tbl %>%
       specify(hours ~ NULL) %>%
       hypothesize(null = "point", mu = 4) %>%
@@ -541,7 +541,7 @@ test_that("confidence interval plots are working", {
 
   perc_ci <- gss_tbl_boot %>% get_ci()
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss_tbl_boot %>%
       visualize() +
       shade_confidence_interval(endpoints = df_error)
@@ -621,7 +621,7 @@ test_that("visualize warns about removing `NaN`", {
 
   # In the case that _all_ values are NaN, error should be raised
   dist$stat <- rep(NaN, nrow(dist))
-  expect_error(visualize(dist), "All calculated stat")
+  expect_snapshot(error = TRUE, visualize(dist))
 })
 
 test_that("visualize can handle multiple explanatory variables", {

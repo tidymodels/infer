@@ -1,12 +1,12 @@
 # calculate arguments
 test_that("x is a tibble", {
   vec <- 1:10
-  expect_error(calculate(vec, stat = "mean"))
+  expect_snapshot(error = TRUE, calculate(vec, stat = "mean"))
 })
 
 test_that("calculate checks `stat` argument", {
   # stat is a string
-  expect_error(calculate(gss_tbl, stat = 3))
+  expect_snapshot(error = TRUE, calculate(gss_tbl, stat = 3))
 
   # stat is one of the implemented options with informative error
   gen_gss_slope <- gss_tbl %>%
@@ -14,21 +14,17 @@ test_that("calculate checks `stat` argument", {
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
 
-  expect_error(
-    calculate(gen_gss_slope, stat = "slopee"),
-    '`stat` must be one of.*Did you mean "slope"'
+  expect_snapshot(error = TRUE,
+    calculate(gen_gss_slope, stat = "slopee")
   )
-  expect_error(
-    calculate(gen_gss_slope, stat = "stdev"),
-    "`stat` must be one of"
+  expect_snapshot(error = TRUE,
+    calculate(gen_gss_slope, stat = "stdev")
   )
-  expect_error(
-    calculate(gen_gss_slope, stat = "stat"),
-    "`stat` must be one of"
+  expect_snapshot(error = TRUE,
+    calculate(gen_gss_slope, stat = "stat")
   )
-  expect_error(
-    calculate(gen_gss_slope, stat = "chi sq"),
-    '`stat` must be one of.*Did you mean "Chisq"'
+  expect_snapshot(error = TRUE,
+    calculate(gen_gss_slope, stat = "chi sq")
   )
 
   # stat can be one of the allowed aliases
@@ -46,21 +42,19 @@ test_that("calculate checks `stat` argument", {
 })
 
 test_that("errors informatively with incompatible stat vs hypothesis", {
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
       specify(college ~ sex, success = "degree") %>%
       hypothesise(null = "point", p = .40) %>%
-      calculate(stat = "diff in props", order = c("female", "male")),
-    'statistic \\`stat = "diff in props"\\` is incompatible'
+      calculate(stat = "diff in props", order = c("female", "male"))
   )
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
       specify(college ~ sex, success = "degree") %>%
       hypothesise(null = "point", p = .40) %>%
       generate(reps = 10, type = "draw") %>%
-      calculate(stat = "diff in props", order = c("female", "male")),
-    'statistic \\`stat = "diff in props"\\` is incompatible'
+      calculate(stat = "diff in props", order = c("female", "male"))
   )
 
   expect_silent(
@@ -85,7 +79,7 @@ test_that("errors informatively with incompatible stat vs hypothesis", {
 })
 
 test_that("response attribute has been set", {
-  expect_error(
+  expect_snapshot(error = TRUE,
     tibble::as_tibble(gss) %>% calculate(stat = "median")
   )
 })
@@ -99,34 +93,34 @@ test_that("variable chosen is of appropriate class (one var problems)", {
       p = c("dem" = .5, "rep" = .25, "ind" = .25)
     ) %>%
     generate(reps = 10, type = "draw")
-  expect_error(calculate(gen_gss1, stat = "mean"))
+  expect_snapshot(error = TRUE, calculate(gen_gss1, stat = "mean"))
 
   # One mean example
   gen_gss_num <- gss_tbl %>%
     specify(hours ~ NULL) %>%
     hypothesize(null = "point", mu = 40) %>%
     generate(reps = 10, type = "bootstrap")
-  expect_error(calculate(gen_gss_num, stat = "prop"))
+  expect_snapshot(error = TRUE, calculate(gen_gss_num, stat = "prop"))
   expect_silent(calculate(gen_gss_num, stat = "mean"))
-  expect_error(calculate(gen_gss_num, stat = "median"))
-  expect_error(calculate(gen_gss_num, stat = "sd"))
+  expect_snapshot(error = TRUE, calculate(gen_gss_num, stat = "median"))
+  expect_snapshot(error = TRUE, calculate(gen_gss_num, stat = "sd"))
 
   gen_gss_num2 <- gss_tbl %>%
     specify(hours ~ NULL) %>%
     hypothesize(null = "point", med = 40) %>%
     generate(reps = 10, type = "bootstrap")
-  expect_error(calculate(gen_gss_num2, stat = "prop"))
-  expect_error(calculate(gen_gss_num2, stat = "mean"))
+  expect_snapshot(error = TRUE, calculate(gen_gss_num2, stat = "prop"))
+  expect_snapshot(error = TRUE, calculate(gen_gss_num2, stat = "mean"))
   expect_silent(calculate(gen_gss_num2, stat = "median"))
-  expect_error(calculate(gen_gss_num2, stat = "sd"))
+  expect_snapshot(error = TRUE, calculate(gen_gss_num2, stat = "sd"))
 
   gen_gss_num3 <- gss_tbl %>%
     specify(hours ~ NULL) %>%
     hypothesize(null = "point", sigma = 0.6) %>%
     generate(reps = 10, type = "bootstrap")
-  expect_error(calculate(gen_gss_num3, stat = "prop"))
-  expect_error(calculate(gen_gss_num3, stat = "mean"))
-  expect_error(calculate(gen_gss_num3, stat = "median"))
+  expect_snapshot(error = TRUE, calculate(gen_gss_num3, stat = "prop"))
+  expect_snapshot(error = TRUE, calculate(gen_gss_num3, stat = "mean"))
+  expect_snapshot(error = TRUE, calculate(gen_gss_num3, stat = "median"))
   expect_silent(calculate(gen_gss_num3, stat = "sd"))
 })
 
@@ -135,8 +129,8 @@ test_that("grouping (explanatory) variable is a factor (two var problems)", {
     specify(hours ~ age) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_error(calculate(gen_gss2, stat = "diff in means"))
-  expect_error(calculate(gen_gss2, stat = "diff in medians"))
+  expect_snapshot(error = TRUE, calculate(gen_gss2, stat = "diff in means"))
+  expect_snapshot(error = TRUE, calculate(gen_gss2, stat = "diff in medians"))
   # Since shifts to "Slope with t"
   ## Not implemented
   # expect_silent(calculate(gen_gss2, stat = "t"))
@@ -147,10 +141,10 @@ test_that("grouping (explanatory) variable is numeric (two var problems)", {
     specify(partyid ~ hours) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_error(calculate(gen_gss2a, stat = "slope"))
+  expect_snapshot(error = TRUE, calculate(gen_gss2a, stat = "slope"))
   # Since shifts to "Slope with t"
-  expect_error(calculate(gen_gss2a, stat = "t"))
-  expect_error(calculate(gen_gss2a, stat = "diff in medians"))
+  expect_snapshot(error = TRUE, calculate(gen_gss2a, stat = "t"))
+  expect_snapshot(error = TRUE, calculate(gen_gss2a, stat = "diff in medians"))
 })
 
 test_that("response variable is a factor (two var problems)", {
@@ -158,18 +152,18 @@ test_that("response variable is a factor (two var problems)", {
     specify(hours ~ partyid) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_error(calculate(gen_gss3, stat = "Chisq"))
+  expect_snapshot(error = TRUE, calculate(gen_gss3, stat = "Chisq"))
 
   # explanatory has more than 2 levels
   gen_gss4 <- gss_tbl %>%
     specify(sex ~ partyid, success = "female") %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_error(calculate(gen_gss4, stat = "diff in props"))
-  expect_error(calculate(gen_gss4, stat = "ratio of props"))
-  expect_error(calculate(gen_gss4, stat = "odds ratio"))
+  expect_snapshot(error = TRUE, calculate(gen_gss4, stat = "diff in props"))
+  expect_snapshot(error = TRUE, calculate(gen_gss4, stat = "ratio of props"))
+  expect_snapshot(error = TRUE, calculate(gen_gss4, stat = "odds ratio"))
 
-  expect_error(calculate(gen_gss4, stat = "t"))
+  expect_snapshot(error = TRUE, calculate(gen_gss4, stat = "t"))
 
   # Check successful diff in props
   gen_gss4a <- gss_tbl %>%
@@ -196,7 +190,7 @@ gen_gss5 <- gss_tbl %>%
   generate(reps = 10, type = "bootstrap")
 
 test_that("response variable is numeric (two var problems)", {
-  expect_error(calculate(gen_gss5, stat = "F"))
+  expect_snapshot(error = TRUE, calculate(gen_gss5, stat = "F"))
 })
 
 test_that("two sample mean-type problems are working", {
@@ -226,7 +220,7 @@ test_that("properties of tibble passed-in are correct", {
     specify(hours ~ NULL) %>%
     generate(reps = 10)
   expect_equal(ncol(gen_gss6), 2)
-  expect_error(calculate(gen_gss6))
+  expect_snapshot(error = TRUE, calculate(gen_gss6))
 })
 
 test_that("order is working for diff in means", {
@@ -323,7 +317,7 @@ test_that("chi-square matches chisq.test value", {
 
   expect_false(promote_f$stat == promote_t$stat)
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     dat %>%
      specify(action ~ sex, success = "promote") %>%
      calculate(stat = "Chisq", order = c("male", "female"), correct = "boop")
@@ -364,26 +358,26 @@ test_that("`order` is working", {
     specify(hours ~ college) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute")
-  expect_error(
+  expect_snapshot(error = TRUE,
     calculate(gen_gss_tbl10, stat = "diff in means", order = c(TRUE, FALSE))
   )
 
   gen_gss_tbl11 <- gss_tbl %>%
     specify(hours ~ college) %>%
     generate(reps = 10, type = "bootstrap")
-  expect_error(
+  expect_snapshot(error = TRUE,
     calculate(gen_gss_tbl11,
       stat = "diff in medians",
       order = "no degree"
     )
   )
-  expect_error(
+  expect_snapshot(error = TRUE,
     calculate(gen_gss_tbl11,
       stat = "diff in medians",
       order = c(NA, "no degree")
     )
   )
-  expect_error(
+  expect_snapshot(error = TRUE,
     calculate(gen_gss_tbl11,
       stat = "diff in medians",
       order = c("no degree", "other")
@@ -395,7 +389,7 @@ test_that("`order` is working", {
       order = c("no degree", "degree")
     )
   )
-  expect_error(
+  expect_snapshot(error = TRUE,
     calculate(gen_gss_tbl11,
       stat = "diff in means",
       order = c("no degree", "degree", "the last one")
@@ -422,7 +416,7 @@ test_that("NULL response gives error", {
   gss_tbl_improp <- tibble::as_tibble(gss_tbl) %>%
     dplyr::select(hours, age)
 
-  expect_error(gss_tbl_improp %>% calculate(stat = "mean"))
+  expect_snapshot(error = TRUE, gss_tbl_improp %>% calculate(stat = "mean"))
 })
 
 test_that("Permute F test works", {
@@ -506,12 +500,12 @@ test_that("One sample t hypothesis test is working", {
 test_that("specify done before calculate", {
   gss_tbl_mean <- gss_tbl %>%
     dplyr::select(stat = hours)
-  expect_error(calculate(gss_tbl_mean, stat = "mean"))
+  expect_snapshot(error = TRUE, calculate(gss_tbl_mean, stat = "mean"))
 
   gss_tbl_prop <- gss_tbl %>% dplyr::select(college)
   attr(gss_tbl_prop, "response") <- "college"
-  expect_error(calculate(gss_tbl_prop, stat = "prop"))
-  expect_error(calculate(gss_tbl_prop, stat = "count"))
+  expect_snapshot(error = TRUE, calculate(gss_tbl_prop, stat = "prop"))
+  expect_snapshot(error = TRUE, calculate(gss_tbl_prop, stat = "count"))
 })
 
 test_that("chisq GoF has params specified for observed stat", {
@@ -753,21 +747,19 @@ test_that("calculate can handle variables named x", {
 })
 
 test_that("calculate errors out with multiple explanatory variables", {
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
-      calculate(stat = "t"),
-    "Multiple explanatory variables.*in calculate"
+      calculate(stat = "t")
   )
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
       specify(hours ~ age + college) %>%
       hypothesize(null = "independence") %>%
       generate(reps = 3, type = "permute") %>%
-      calculate(stat = "t"),
-    "Multiple explanatory variables.*in calculate"
+      calculate(stat = "t")
   )
 })
 

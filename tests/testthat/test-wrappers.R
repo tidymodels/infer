@@ -2,7 +2,7 @@ test_that("t_test works", {
   # Two Sample
   expect_warning(gss_tbl %>% t_test(hours ~ sex))
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss_tbl %>% t_test(response = "hours", explanatory = "sex")
   )
 
@@ -74,10 +74,10 @@ test_that("chisq_test works", {
   expect_equal(new_way, old_way, tolerance = 1e-5)
 
   # check that function errors out when response is numeric
-  expect_error(chisq_test(x = gss_tbl, response = age, explanatory = partyid))
+  expect_snapshot(error = TRUE, chisq_test(x = gss_tbl, response = age, explanatory = partyid))
 
   # check that function errors out when explanatory is numeric
-  expect_error(chisq_test(x = gss_tbl, response = partyid, explanatory = age))
+  expect_snapshot(error = TRUE, chisq_test(x = gss_tbl, response = partyid, explanatory = age))
 
 })
 
@@ -184,16 +184,15 @@ test_that("_stat functions work", {
   expect_equal(another_way, obs_stat_way, ignore_attr = TRUE)
   expect_equal(another_way, obs_stat_way_alt, ignore_attr = TRUE)
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     expect_warning(
       chisq_stat(x = gss_tbl, response = age, explanatory = sex)
     )
   )
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     expect_warning(
-      chisq_stat(x = gss_tbl, response = sex, explanatory = age),
-      "deprecated in favor of the more general"
+      chisq_stat(x = gss_tbl, response = sex, explanatory = age)
     )
   )
 })
@@ -232,7 +231,7 @@ test_that("conf_int argument works", {
   expect_equal(ci_test$lower_ci[1], old_way[1], tolerance = 1e-5)
   expect_equal(ci_test$upper_ci[1], old_way[2], tolerance = 1e-5)
 
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss_tbl %>%
       t_test(
         hours ~ sex, order = c("female", "male"),
@@ -333,8 +332,8 @@ test_that("two sample prop_test works", {
   infer4 <- prop_test(df, resp ~ exp, order = c("b", "a"), conf_int = TRUE)
   expect_equal(infer4[["lower_ci"]], -infer3[["upper_ci"]], tolerance = .001)
 
-  expect_error(prop_test(bad_df, resp ~ exp))
-  expect_error(prop_test(bad_df2, resp ~ exp))
+  expect_snapshot(error = TRUE, prop_test(bad_df, resp ~ exp))
+  expect_snapshot(error = TRUE, prop_test(bad_df2, resp ~ exp))
 
   # check that the success argument changes output
   infer5 <- prop_test(df, resp ~ exp, order = c("a", "b"), success = "d", conf_int = TRUE)
@@ -388,9 +387,8 @@ test_that("one sample prop_test works", {
   infer3 <- prop_test(df_1, resp ~ NULL, p = .2, success = "c")
   infer4 <- prop_test(df_1, resp ~ NULL, p = .8, success = "d")
   expect_equal(infer3[["chisq_df"]], infer4[["chisq_df"]], tolerance = .001)
-  expect_error(
-    prop_test(df_1, resp ~ NULL, p = .2, success = "b"),
-    "b is not a valid level"
+  expect_snapshot(error = TRUE,
+    prop_test(df_1, resp ~ NULL, p = .2, success = "b")
   )
 })
 

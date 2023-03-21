@@ -102,11 +102,10 @@ test_that("fit.infer logistic regression works", {
   )
 
   # errors informatively with multinomial response variable
-  expect_error(
+  expect_snapshot(error = TRUE,
     gss %>%
       specify(finrela ~ age + college) %>%
-      fit(),
-    "infer does not support.*more than two levels"
+      fit()
   )
 
   # works as expected for `generate()`d objects
