@@ -51,7 +51,7 @@
         generate(reps = 100, type = "permute") %>% calculate(stat = "diff in props",
         order = c("no degree", "degree")) %>% visualize() + shade_p_value(direction = "both")
     Condition
-      Error in `vapply()`:
+      Error in `check_for_piped_visualize()`:
       ! argument "obs_stat" is missing, with no default
 
 ---
