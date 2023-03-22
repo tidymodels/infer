@@ -133,7 +133,8 @@ shade_p_value <- function(obs_stat, direction,
 shade_pvalue <- shade_p_value
 
 shade_p_value_term <- function(plot, obs_stat, direction,
-                               color = "red2", fill = "pink", dots) {
+                               color = "red2", fill = "pink", dots,
+                               call = rlang::call2("shade_p_value")) {
   if (all(is.na(obs_stat))) {
     obs_stat <- NULL
   }
@@ -143,8 +144,8 @@ shade_p_value_term <- function(plot, obs_stat, direction,
   }
 
   # argument checking
-  obs_stat <- check_obs_stat(obs_stat, plot)
-  check_shade_p_value_args(obs_stat, direction, color, fill)
+  obs_stat <- check_obs_stat(obs_stat, plot, call = call)
+  check_shade_p_value_args(obs_stat, direction, color, fill, call = call)
 
   term <- x_axis_label(plot)
 
@@ -165,11 +166,11 @@ shade_p_value_term <- function(plot, obs_stat, direction,
 
       res <- c(res, do.call(geom_tail_area, c(list(tail_area, fill), dots)))
     } else {
-      warning_glue(
+       warn(paste0(
         '`direction` should be one of `"less"`, `"left"`, `"greater"`, ',
         '`"right"`, `"two-sided"`, `"both"`, `"two_sided"`, `"two sided"`, ',
         'or `"two.sided"`.'
-      )
+      ))
     }
   }
 
@@ -197,15 +198,15 @@ shade_p_value_term <- function(plot, obs_stat, direction,
 }
 
 
-check_shade_p_value_args <- function(obs_stat, direction, color, fill) {
+check_shade_p_value_args <- function(obs_stat, direction, color, fill, call = caller_env()) {
   if (!is.null(obs_stat)) {
-    check_type(obs_stat, is.numeric)
+    check_type(obs_stat, is.numeric, call = call)
   }
   if (!is.null(direction)) {
-    check_type(direction, is.character)
+    check_type(direction, is.character, call = call)
   }
-  check_type(color, is_color_string, "color string")
-  check_type(fill, is_color_string, "color string")
+  check_type(color, is_color_string, "color string", call = call)
+  check_type(fill, is_color_string, "color string", call = call)
 
   TRUE
 }
@@ -361,10 +362,10 @@ warn_right_tail_test <- function(direction, stat_name, do_warn = TRUE) {
   if (do_warn && !is.null(direction) &&
       !(direction %in% c("greater", "right")) &&
       (stat_name %in% c("F", "Chi-Square"))) {
-    warning_glue(
+     warn(glue(
       "{stat_name} usually corresponds to right-tailed tests. ",
       "Proceed with caution."
-    )
+    ))
   }
 
   TRUE

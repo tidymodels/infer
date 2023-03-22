@@ -63,7 +63,7 @@
     Condition
       Warning:
       You have given `type = "permute"`, but `type` is expected to be `"draw"`. This workflow is untested and the results may not mean what you think they mean.
-      Error:
+      Error in `generate()`:
       ! Please `specify()` an explanatory and a response variable when permuting.
 
 ---
@@ -73,7 +73,7 @@
     Condition
       Warning:
       You have given `type = "permute"`, but `type` is expected to be `"draw"`. This workflow is untested and the results may not mean what you think they mean.
-      Error:
+      Error in `generate()`:
       ! Please `specify()` an explanatory and a response variable when permuting.
 
 ---
@@ -83,7 +83,7 @@
     Condition
       Warning:
       You have given `type = "permute"`, but `type` is expected to be `"bootstrap"`. This workflow is untested and the results may not mean what you think they mean.
-      Error:
+      Error in `generate()`:
       ! Please `specify()` an explanatory and a response variable when permuting.
 
 # sensible output
@@ -91,7 +91,7 @@
     Code
       generate(hyp_mean, reps = 1, type = "other")
     Condition
-      Error:
+      Error in `generate()`:
       ! The `type` argument should be one of "bootstrap", "permute", or "draw". See `?generate` for more details.
 
 # auto `type` works (generate)
@@ -102,7 +102,7 @@
     Condition
       Warning:
       You have given `type = "permute"`, but `type` is expected to be `"bootstrap"`. This workflow is untested and the results may not mean what you think they mean.
-      Error:
+      Error in `generate()`:
       ! Please `specify()` an explanatory and a response variable when permuting.
 
 ---
@@ -121,7 +121,7 @@
     Condition
       Warning:
       You have given `type = "permute"`, but `type` is expected to be `"bootstrap"`. This workflow is untested and the results may not mean what you think they mean.
-      Error:
+      Error in `generate()`:
       ! Please `specify()` an explanatory and a response variable when permuting.
 
 ---
@@ -176,7 +176,7 @@
     Condition
       Warning:
       You have given `type = "permute"`, but `type` is expected to be `"bootstrap"`. This workflow is untested and the results may not mean what you think they mean.
-      Error:
+      Error in `generate()`:
       ! Permuting should be done only when doing independence hypothesis test. See `hypothesize()`.
 
 ---
@@ -201,7 +201,7 @@
     Code
       res_ <- mtcars_df %>% generate(reps = 10, type = "permute")
     Condition
-      Error:
+      Error in `generate()`:
       ! The `variables` argument should be one or more unquoted variable names (not strings in quotation marks).
 
 ---
@@ -210,7 +210,7 @@
       res_ <- mtcars_df %>% specify(am ~ NULL, success = "1") %>% hypothesize(null = "independence",
         p = c(`1` = 0.5)) %>% generate(reps = 100, type = "draw")
     Condition
-      Error:
+      Error in `hypothesize()`:
       ! Please `specify()` an explanatory and a response variable when testing a null hypothesis of `"independence"`.
 
 ---
@@ -227,7 +227,7 @@
     Code
       res_ <- mtcars_df %>% specify(mpg ~ hp) %>% generate(reps = 100, type = "other")
     Condition
-      Error:
+      Error in `generate()`:
       ! The `type` argument should be one of "bootstrap", "permute", or "draw". See `?generate` for more details.
 
 # generate() handles `NULL` value of `type`
@@ -243,7 +243,7 @@
       res_ <- gss[1:10, ] %>% specify(hours ~ age + college) %>% hypothesize(null = "independence") %>%
         generate(reps = 2, type = "permute", variables = c(howdy))
     Condition
-      Error:
+      Error in `generate()`:
       ! The column `list("howdy")` provided to the `variables` argument is not in the supplied data.
 
 ---
@@ -252,7 +252,7 @@
       res <- gss[1:10, ] %>% specify(hours ~ age + college) %>% hypothesize(null = "independence") %>%
         generate(reps = 2, type = "permute", variables = c(howdy, doo))
     Condition
-      Error:
+      Error in `generate()`:
       ! The columns `list("howdy", "doo")` provided to the `variables` argument are not in the supplied data.
 
 ---
@@ -270,7 +270,7 @@
       res_ <- gss[1:10, ] %>% specify(hours ~ age + college) %>% hypothesize(null = "independence") %>%
         generate(reps = 2, type = "permute", variables = "hours")
     Condition
-      Error:
+      Error in `generate()`:
       ! The `variables` argument should be one or more unquoted variable names (not strings in quotation marks).
 
 ---
@@ -314,7 +314,7 @@
       res_ <- mtcars_df %>% specify(response = am, success = "1") %>% hypothesize(
         null = "point", p = 0.5) %>% generate(type = "boop")
     Condition
-      Error:
+      Error in `generate()`:
       ! The `type` argument should be one of "bootstrap", "permute", or "draw". See `?generate` for more details.
 
 ---

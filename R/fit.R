@@ -158,15 +158,15 @@ fit.infer <- function(object, ...) {
   x
 }
 
-check_family <- function(object, ...) {
+check_family <- function(object, ..., call = caller_env()) {
   response_type <- attr(object, "type_desc_response")
 
   if (response_type == "mult") {
-    stop_glue(
+    abort(paste0(
       "infer does not support fitting models for categorical response variables ",
       "with more than two levels. Please see `multinom_reg()` from the ",
       "parsnip package."
-    )
+    ), call = call)
   }
 
   dots <- list(...)
@@ -204,9 +204,10 @@ get_formula <- function(x) {
     exp <- paste0(explanatory_name(x), collapse = " + ")
 
     as.formula(
-      glue_null(
+      glue(
         '{response_name(x)} ~
-         {if (exp == "") NULL else exp}'
+         {if (exp == "") NULL else exp}',
+        .null = "NULL"
       )
     )
   }

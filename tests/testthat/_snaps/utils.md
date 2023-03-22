@@ -1,26 +1,3 @@
-# stop_glue handles `NULL`
-
-    Code
-      stop_glue("Hello {null_val}", "!")
-    Condition
-      Error:
-      ! Hello NULL!
-
-# warning_glue handles `NULL`
-
-    Code
-      warning_glue("Hello {null_val}", "!")
-    Condition
-      Warning:
-      Hello NULL!
-
-# message_glue handles `NULL`
-
-    Code
-      message_glue("Hello {null_val}", "!")
-    Message
-      Hello NULL!
-
 # check_type works
 
     Code
@@ -74,6 +51,6 @@
     Code
       hypothesize(c(1, 2, 3), null = "point")
     Condition
-      Error:
+      Error in `hypothesize()`:
       ! x must be a data.frame or tibble
 

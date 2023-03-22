@@ -3,7 +3,7 @@
     Code
       calculate(vec, stat = "mean")
     Condition
-      Error:
+      Error in `calculate()`:
       ! `x` must be 'tibble', not 'integer'.
 
 # calculate checks `stat` argument
@@ -11,7 +11,7 @@
     Code
       calculate(gss_tbl, stat = 3)
     Condition
-      Error:
+      Error in `calculate()`:
       ! `stat` must be 'string', not 'double'.
 
 ---
@@ -54,7 +54,7 @@
       gss %>% specify(college ~ sex, success = "degree") %>% hypothesise(null = "point",
         p = 0.4) %>% calculate(stat = "diff in props", order = c("female", "male"))
     Condition
-      Error:
+      Error in `calculate()`:
       ! The supplied statistic `stat = "diff in props"` is incompatible with the supplied hypothesis `null = "point"`.
 
 ---
@@ -64,7 +64,7 @@
         p = 0.4) %>% generate(reps = 10, type = "draw") %>% calculate(stat = "diff in props",
         order = c("female", "male"))
     Condition
-      Error:
+      Error in `calculate()`:
       ! The supplied statistic `stat = "diff in props"` is incompatible with the supplied hypothesis `null = "point"`.
 
 # response attribute has been set
@@ -82,7 +82,7 @@
     Code
       calculate(gen_gss1, stat = "mean")
     Condition
-      Error:
+      Error in `calculate()`:
       ! A mean is not well-defined for a multinomial categorical response variable (partyid) and no explanatory variable.
 
 ---
@@ -90,7 +90,7 @@
     Code
       calculate(gen_gss_num, stat = "prop")
     Condition
-      Error:
+      Error in `calculate()`:
       ! A proportion is not well-defined for a numeric response variable (hours) and no explanatory variable.
 
 ---
@@ -98,7 +98,7 @@
     Code
       calculate(gen_gss_num, stat = "median")
     Condition
-      Error:
+      Error in `calculate()`:
       ! `"mu"` does not correspond to `stat = "median"`.
 
 ---
@@ -106,7 +106,7 @@
     Code
       calculate(gen_gss_num, stat = "sd")
     Condition
-      Error:
+      Error in `calculate()`:
       ! `"mu"` does not correspond to `stat = "sd"`.
 
 ---
@@ -114,7 +114,7 @@
     Code
       calculate(gen_gss_num2, stat = "prop")
     Condition
-      Error:
+      Error in `calculate()`:
       ! A proportion is not well-defined for a numeric response variable (hours) and no explanatory variable.
 
 ---
@@ -122,7 +122,7 @@
     Code
       calculate(gen_gss_num2, stat = "mean")
     Condition
-      Error:
+      Error in `calculate()`:
       ! `stat == "mean"` requires `"mu"` to be set in `hypothesize()`.
 
 ---
@@ -130,7 +130,7 @@
     Code
       calculate(gen_gss_num2, stat = "sd")
     Condition
-      Error:
+      Error in `calculate()`:
       ! `"med"` does not correspond to `stat = "sd"`.
 
 ---
@@ -138,7 +138,7 @@
     Code
       calculate(gen_gss_num3, stat = "prop")
     Condition
-      Error:
+      Error in `calculate()`:
       ! A proportion is not well-defined for a numeric response variable (hours) and no explanatory variable.
 
 ---
@@ -146,7 +146,7 @@
     Code
       calculate(gen_gss_num3, stat = "mean")
     Condition
-      Error:
+      Error in `calculate()`:
       ! `stat == "mean"` requires `"mu"` to be set in `hypothesize()`.
 
 ---
@@ -154,7 +154,7 @@
     Code
       calculate(gen_gss_num3, stat = "median")
     Condition
-      Error:
+      Error in `calculate()`:
       ! `stat == "median"` requires `"med"` to be set in `hypothesize()`.
 
 # grouping (explanatory) variable is a factor (two var problems)
@@ -162,7 +162,7 @@
     Code
       calculate(gen_gss2, stat = "diff in means")
     Condition
-      Error:
+      Error in `calculate()`:
       ! A difference in means is not well-defined for a numeric response variable (hours) and a numeric explanatory variable (age).
 
 ---
@@ -170,7 +170,7 @@
     Code
       calculate(gen_gss2, stat = "diff in medians")
     Condition
-      Error:
+      Error in `calculate()`:
       ! A difference in medians is not well-defined for a numeric response variable (hours) and a numeric explanatory variable (age).
 
 # grouping (explanatory) variable is numeric (two var problems)
@@ -178,7 +178,7 @@
     Code
       calculate(gen_gss2a, stat = "slope")
     Condition
-      Error:
+      Error in `calculate()`:
       ! The infer team has not implemented test statistics for the supplied variable types.
 
 ---
@@ -186,7 +186,7 @@
     Code
       calculate(gen_gss2a, stat = "t")
     Condition
-      Error:
+      Error in `calculate()`:
       ! The infer team has not implemented test statistics for the supplied variable types.
 
 ---
@@ -194,7 +194,7 @@
     Code
       calculate(gen_gss2a, stat = "diff in medians")
     Condition
-      Error:
+      Error in `calculate()`:
       ! The infer team has not implemented test statistics for the supplied variable types.
 
 # response variable is a factor (two var problems)
@@ -202,7 +202,7 @@
     Code
       calculate(gen_gss3, stat = "Chisq")
     Condition
-      Error:
+      Error in `calculate()`:
       ! A chi-square statistic is not well-defined for a numeric response variable (hours) and a multinomial categorical explanatory variable (partyid).
 
 ---
@@ -210,7 +210,7 @@
     Code
       calculate(gen_gss4, stat = "diff in props")
     Condition
-      Error:
+      Error in `calculate()`:
       ! A difference in proportions is not well-defined for a dichotomous categorical response variable (sex) and a multinomial categorical explanatory variable (partyid).
 
 ---
@@ -218,7 +218,7 @@
     Code
       calculate(gen_gss4, stat = "ratio of props")
     Condition
-      Error:
+      Error in `calculate()`:
       ! A ratio of proportions is not well-defined for a dichotomous categorical response variable (sex) and a multinomial categorical explanatory variable (partyid).
 
 ---
@@ -226,7 +226,7 @@
     Code
       calculate(gen_gss4, stat = "odds ratio")
     Condition
-      Error:
+      Error in `calculate()`:
       ! An odds ratio is not well-defined for a dichotomous categorical response variable (sex) and a multinomial categorical explanatory variable (partyid).
 
 ---
@@ -234,7 +234,7 @@
     Code
       calculate(gen_gss4, stat = "t")
     Condition
-      Error:
+      Error in `calculate()`:
       ! A t statistic is not well-defined for a dichotomous categorical response variable (sex) and a multinomial categorical explanatory variable (partyid).
 
 ---
@@ -250,7 +250,7 @@
     Code
       calculate(gen_gss5, stat = "F")
     Condition
-      Error:
+      Error in `calculate()`:
       ! The infer team has not implemented test statistics for the supplied variable types.
 
 # two sample mean-type problems are working
@@ -274,7 +274,7 @@
     Code
       calculate(gen_gss6)
     Condition
-      Error:
+      Error in `calculate()`:
       ! `stat` must be 'string', not 'character'.
 
 # chi-square matches chisq.test value
@@ -308,7 +308,7 @@
     Code
       calculate(gen_gss_tbl10, stat = "diff in means", order = c(TRUE, FALSE))
     Condition
-      Error:
+      Error in `calculate()`:
       ! TRUE is not a level of the explanatory variable.
 
 ---
@@ -316,7 +316,7 @@
     Code
       calculate(gen_gss_tbl11, stat = "diff in medians", order = "no degree")
     Condition
-      Error:
+      Error in `calculate()`:
       ! Only one level specified in `order`. Both levels need to be specified.
 
 ---
@@ -324,7 +324,7 @@
     Code
       calculate(gen_gss_tbl11, stat = "diff in medians", order = c(NA, "no degree"))
     Condition
-      Error:
+      Error in `calculate()`:
       ! Only one level specified in `order`. Both levels need to be specified.
 
 ---
@@ -333,7 +333,7 @@
       calculate(gen_gss_tbl11, stat = "diff in medians", order = c("no degree",
         "other"))
     Condition
-      Error:
+      Error in `calculate()`:
       ! other is not a level of the explanatory variable.
 
 ---
@@ -342,7 +342,7 @@
       calculate(gen_gss_tbl11, stat = "diff in means", order = c("no degree",
         "degree", "the last one"))
     Condition
-      Error:
+      Error in `calculate()`:
       ! `order` is expecting only two entries.
 
 ---
@@ -513,7 +513,7 @@
       gss %>% specify(hours ~ age + college) %>% hypothesize(null = "independence") %>%
         calculate(stat = "t")
     Condition
-      Error:
+      Error in `calculate()`:
       ! Multiple explanatory variables are not supported in calculate(). When working with multiple explanatory variables, use fit() instead.
 
 ---
@@ -522,6 +522,6 @@
       gss %>% specify(hours ~ age + college) %>% hypothesize(null = "independence") %>%
         generate(reps = 3, type = "permute") %>% calculate(stat = "t")
     Condition
-      Error:
+      Error in `calculate()`:
       ! Multiple explanatory variables are not supported in calculate(). When working with multiple explanatory variables, use fit() instead.
 

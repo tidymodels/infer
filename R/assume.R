@@ -148,10 +148,10 @@
 #' @export
 assume <- function(x, distribution, df = NULL, ...) {
   if (!inherits(x, "infer")) {
-    stop_glue(
+    abort(paste0(
       "The `x` argument must be the output of a core infer function, ",
       "likely `specify()` or `hypothesize()`."
-    )
+    ))
   }
 
   # check that `distribution` aligns with what is expected from
@@ -159,8 +159,9 @@ assume <- function(x, distribution, df = NULL, ...) {
   df <- check_distribution(x, distribution, df, ...)
 
   structure(
-    glue_null(
+    glue(
       "{distribution_desc(distribution)} distribution{df_desc(df)}.",
+      .null = "NULL"
     ),
     # store distribution as the suffix to p* in dist function
     distribution = dist_fn(distribution),
@@ -182,12 +183,13 @@ assume <- function(x, distribution, df = NULL, ...) {
 }
 
 # check that the distribution is well-specified
-check_distribution <- function(x, distribution, df, ...) {
+check_distribution <- function(x, distribution, df, ..., call = caller_env()) {
   dist <- tolower(distribution)
 
   if (!dist %in% c("f", "chisq", "t", "z")) {
-    stop_glue(
-      'The distribution argument must be one of "Chisq", "F", "t", or "z".'
+     abort(
+      'The distribution argument must be one of "Chisq", "F", "t", or "z".',
+      call = call
     )
   }
 
@@ -199,48 +201,49 @@ check_distribution <- function(x, distribution, df, ...) {
       (dist == "z" && !attr(x, "theory_type") %in% c("One sample prop z",
                                                      "Two sample props z"))) {
     if (has_explanatory(x)) {
-      msg_tail <- glue_null(
+      msg_tail <- glue(
         "a {get_stat_type_desc(attr(x, 'type_desc_explanatory'))} ",
-        "explanatory variable ({explanatory_name(x)})."
+        "explanatory variable ({explanatory_name(x)}).",
+        .null = "NULL"
       )
     } else {
       msg_tail <- "no explanatory variable."
     }
 
-    stop_glue(
+     abort(glue(
       'The supplied distribution "{distribution}" is not well-defined for a ',
       "{get_stat_type_desc(attr(x, 'type_desc_response'))} response ",
       "variable ({response_name(x)}) and ", msg_tail
-    )
+     ), call = call)
   }
 
   if (!is.numeric(df) && !is.null(df)) {
-    stop_glue(
+     abort(glue(
       "`assume()` expects the `df` argument to be a numeric vector, ",
       "but you supplied a {list(class(df))} object."
-    )
+    ), call = call)
   }
 
   if (length(list(...)) != 0) {
     plural <- length(list(...)) != 1
     dots <- list(...)
 
-    stop_glue(
+    abort(glue(
       "`assume()` ignores the dots `...` argument, though the ",
       "argument{if (plural) 's' else ''} `{list(dots)}` ",
       "{if (plural) 'were' else 'was'} supplied. Did you forget to ",
       "concatenate the `df` argument with `c()`?"
-    )
+    ), call = call)
   }
 
   if (dist_df_length(distribution) != length(df) && !is.null(df)) {
     plural <- length(df) != 1
-    stop_glue(
+    abort(glue(
       '{distribution_desc(distribution)} distribution requires ',
       '{dist_df_length(distribution)} degrees of freedom argument',
       '{if (!plural) "s" else ""}, but {length(df)} ',
       '{if (plural) "were" else "was"} supplied.'
-    )
+    ), call = call)
   }
 
   df <- determine_df(x, dist, df)
@@ -311,12 +314,12 @@ process_df <- function(df) {
 determine_df <- function(x, dist, df) {
 
   if (!is.null(df) && !all(round(df) %in% round(acceptable_dfs(x)))) {
-    message_glue(
+    inform(glue(
       "Message: The supplied `df` argument does not match its ",
       "expected value. If this is unexpected, ensure that your calculation ",
       "for `df` is correct (see `?assume` for recognized values) or ",
       "supply `df = NULL` to `assume()`."
-    )
+    ))
 
     return(df)
   }

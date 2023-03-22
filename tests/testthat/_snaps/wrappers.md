@@ -11,7 +11,7 @@
     Code
       gss_tbl %>% t_test(response = "hours", explanatory = "sex")
     Condition
-      Error:
+      Error in `t_test()`:
       ! The response should be a bare variable name (not a string in quotation marks).
 
 # chisq_test works
@@ -19,7 +19,7 @@
     Code
       chisq_test(x = gss_tbl, response = age, explanatory = partyid)
     Condition
-      Error:
+      Error in `chisq_test()`:
       ! The response variable of `age` is not appropriate since the response variable is expected to be categorical.
 
 ---
@@ -27,7 +27,7 @@
     Code
       chisq_test(x = gss_tbl, response = partyid, explanatory = age)
     Condition
-      Error:
+      Error in `chisq_test()`:
       ! The explanatory variable of `age` is not appropriate since the explanatory variable is expected to be categorical.
 
 # _stat functions work
@@ -118,7 +118,7 @@
     Condition
       Warning:
       The chisq_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
-      Error:
+      Error in `chisq_stat()`:
       ! The response variable of `age` is not appropriate since the response variable is expected to be categorical.
 
 ---
@@ -128,7 +128,7 @@
     Condition
       Warning:
       The chisq_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
-      Error:
+      Error in `chisq_stat()`:
       ! The explanatory variable of `age` is not appropriate since the response variable is expected to be categorical.
 
 # conf_int argument works
@@ -137,7 +137,7 @@
       res_ <- gss_tbl %>% t_test(hours ~ sex, order = c("female", "male"), conf_int = TRUE,
       conf_level = 1.1)
     Condition
-      Error:
+      Error in `t_test()`:
       ! The `conf_level` argument must be a number between 0 and 1.
 
 ---
@@ -173,16 +173,15 @@
     Condition
       Warning in `anova.lm()`:
       ANOVA F-tests on an essentially perfect fit are unreliable
-      Error:
-      ! The response variable of `resp` is not appropriate
-      since the response variable is expected to be categorical.
+      Error in `prop_test()`:
+      ! The response variable of `resp` is not appropriate since the response variable is expected to be categorical.
 
 ---
 
     Code
       res_ <- prop_test(bad_df2, resp ~ exp)
     Condition
-      Error:
+      Error in `prop_test()`:
       ! The explanatory variable of `exp` is not appropriate since the explanatory variable is expected to be categorical.
 
 # one sample prop_test works
@@ -197,7 +196,7 @@
     Code
       res_ <- prop_test(df_1, resp ~ NULL, p = 0.2, success = "b")
     Condition
-      Error:
+      Error in `prop_test()`:
       ! b is not a valid level of resp.
 
 # wrappers can handled ordered factors

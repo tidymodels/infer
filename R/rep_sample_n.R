@@ -187,7 +187,7 @@ make_replicate_tbl <- function(tbl, size, replace, prob, reps) {
     dplyr::group_by(replicate)
 }
 
-notify_extra_size <- function(size, tbl, replace, notify_type) {
+notify_extra_size <- function(size, tbl, replace, notify_type, call = caller_env()) {
   if (!replace && (size > nrow(tbl))) {
     msg <- glue::glue(
       "Asked sample size ({size}) is bigger than ",
@@ -195,8 +195,8 @@ notify_extra_size <- function(size, tbl, replace, notify_type) {
     )
     switch(
       notify_type,
-      sample_n = stop_glue("{msg}. Use `replace = TRUE`."),
-      slice_sample = warning_glue("{msg}. Using number of rows as sample size.")
+      sample_n = abort(glue("{msg}. Use `replace = TRUE`."), call = call),
+      slice_sample = warn(glue("{msg}. Using number of rows as sample size."))
     )
   }
 
@@ -219,7 +219,7 @@ sample_int <- function(n, size, replace = FALSE, prob = NULL) {
   }
 }
 
-make_slice_size <- function(n, prop, n_total) {
+make_slice_size <- function(n, prop, n_total, call = caller_env()) {
   if (is.null(n)) {
     if (is.null(prop)) {
       # By default return size 1
@@ -231,7 +231,8 @@ make_slice_size <- function(n, prop, n_total) {
     if (is.null(prop)) {
       n
     } else {
-      stop_glue("Please supply exactly one of the `n` or `prop` arguments.")
+       abort(paste0("Please supply exactly one of the `n` or `prop` arguments."),
+             call = call)
     }
   }
 }

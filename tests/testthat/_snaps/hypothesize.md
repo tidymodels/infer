@@ -3,7 +3,7 @@
     Code
       mtcars_df %>% specify(response = mpg) %>% hypothesize(null = "dependence")
     Condition
-      Error:
+      Error in `hypothesize()`:
       ! `null` should be either "point" or "independence".
 
 # hypothesize() throws an error when multiple null values are provided
@@ -12,7 +12,7 @@
       mtcars_df %>% specify(response = mpg) %>% hypothesize(null = c("point",
         "independence"))
     Condition
-      Error:
+      Error in `hypothesize()`:
       ! You should specify exactly one type of null hypothesis.
 
 # hypothesize() throws an error when multiple params are set
@@ -21,7 +21,7 @@
       mtcars_df %>% specify(response = mpg) %>% hypothesize(null = "point", mu = 25,
         med = 20)
     Condition
-      Error:
+      Error in `hypothesize()`:
       ! You must specify exactly one of `p`, `mu`, `med`, or `sigma`.
 
 # hypothesize() throws a warning when params are set with independence
@@ -39,7 +39,7 @@
       res_ <- mtcars_df %>% specify(response = vs, success = "1") %>% hypothesize(
         null = "point", p = 1 + .Machine$double.eps)
     Condition
-      Error:
+      Error in `hypothesize()`:
       ! `p` should only contain values between zero and one.
 
 # hypothesize() throws an error when p is less than 0
@@ -48,7 +48,7 @@
       res_ <- mtcars_df %>% specify(response = vs, success = "1") %>% hypothesize(
         null = "point", p = -.Machine$double.neg.eps)
     Condition
-      Error:
+      Error in `hypothesize()`:
       ! `p` should only contain values between zero and one.
 
 # hypothesize() throws an error when p contains missing values
@@ -57,7 +57,7 @@
       res_ <- mtcars_df %>% specify(response = vs, success = "1") %>% hypothesize(
         null = "point", p = c(`0` = 0.5, `1` = NA_real_))
     Condition
-      Error:
+      Error in `hypothesize()`:
       ! `p` should not contain missing values.
 
 # hypothesize() throws an error when vector p does not sum to 1
@@ -66,7 +66,7 @@
       res_ <- mtcars_df %>% specify(response = vs, success = "1") %>% hypothesize(
         null = "point", p = c(`0` = 0.5, `1` = 0.5 + (eps * 2)))
     Condition
-      Error:
+      Error in `hypothesize()`:
       ! Make sure the hypothesized values for the `p` parameters sum to 1. Please try again.
 
 # hypothesize arguments function
@@ -82,7 +82,7 @@
     Code
       res_ <- hypothesize(mtcars_s, null = NA)
     Condition
-      Error:
+      Error in `hypothesize()`:
       ! `null` should be either "point" or "independence".
 
 ---
@@ -106,7 +106,7 @@
     Code
       res_ <- mtcars_s %>% hypothesize(null = "independence")
     Condition
-      Error:
+      Error in `hypothesize()`:
       ! Please `specify()` an explanatory and a response variable when testing a null hypothesis of `"independence"`.
 
 ---
@@ -114,7 +114,7 @@
     Code
       res_ <- mtcars_s %>% hypothesize(null = "point")
     Condition
-      Error:
+      Error in `hypothesize()`:
       ! You must specify exactly one of `p`, `mu`, `med`, or `sigma`.
 
 ---
@@ -122,7 +122,7 @@
     Code
       res <- mtcars_s %>% hypothesize(null = c("point", "independence"), mu = 3)
     Condition
-      Error:
+      Error in `hypothesize()`:
       ! You should specify exactly one type of null hypothesis.
 
 ---
@@ -139,7 +139,7 @@
       res_ <- mtcars_df %>% specify(response = vs) %>% hypothesize(null = "point",
         mu = 1)
     Condition
-      Error:
+      Error in `specify()`:
       ! A level of the response variable `vs` needs to be specified for the `success` argument in `specify()`.
 
 ---
@@ -147,7 +147,7 @@
     Code
       res_ <- mtcars_s %>% hypothesize(null = "point", p = 0.2)
     Condition
-      Error:
+      Error in `hypothesize()`:
       ! A point null regarding a proportion requires that `success` be indicated in `specify()`.
 
 ---
@@ -163,7 +163,7 @@
     Code
       res_ <- hypothesize(one_prop_specify, null = "point", mu = 2)
     Condition
-      Error:
+      Error in `hypothesize()`:
       ! Testing one categorical variable requires `p` to be used as a parameter.
 
 ---

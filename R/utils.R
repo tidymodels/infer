@@ -19,9 +19,9 @@ print_params <- function(x) {
 
   switch(
     as.character(length(params)),
-    "1" = glue_null(": `{names(params)} = {unname(params)}`"),
-    "2" = glue_null(": `p = .5`"),
-          glue_null("s: `p = c({put_params(x, params)})`")
+    "1" = glue(": `{names(params)} = {unname(params)}`", .null = "NULL"),
+    "2" = glue(": `p = .5`", .null = "NULL"),
+          glue("s: `p = c({put_params(x, params)})`", .null = "NULL")
   )
 }
 
@@ -193,48 +193,6 @@ is_truefalse <- function(x) {
   identical(x, TRUE) || identical(x, FALSE)
 }
 
-# Messaging, warning, and erroring ------------------------------------------
-
-stop_glue <- function(..., .sep = "", .envir = parent.frame(),
-                      call. = FALSE, .domain = NULL) {
-  stop(
-    glue_null(..., .sep = .sep, .envir = .envir),
-    call. = call., domain = .domain
-  )
-}
-
-warning_glue <- function(..., .sep = "", .envir = parent.frame(),
-                         call. = FALSE, .domain = NULL) {
-  warning(
-    glue_null(..., .sep = .sep, .envir = .envir),
-    call. = call., domain = .domain
-  )
-}
-
-message_glue <- function(..., .sep = "", .envir = parent.frame(),
-                         .domain = NULL, .appendLF = TRUE) {
-  message(
-    glue_null(..., .sep = .sep, .envir = .envir),
-    domain = .domain, appendLF = .appendLF
-  )
-}
-
-glue_null <- function(..., .sep = "", .envir = parent.frame()) {
-  glue::glue(
-    ..., .sep = .sep, .envir = .envir, .transformer = null_transformer
-  )
-}
-
-# This allows to print 'NULL' in `glue()` for code which evaluates in `NULL`
-null_transformer <- function(text, envir) {
-  out <- eval(parse(text = text, keep.source = FALSE), envir)
-  if (is.null(out)) {
-    return("NULL")
-  }
-
-  out
-}
-
 # Helpers for test statistics --------------------------------------
 
 # Simplify and standardize checks by grouping statistics based on variable types
@@ -371,7 +329,7 @@ determine_variable_type <- function(x, variable) {
 
 # Argument checking --------------------------------------------------------
 
-check_order <- function(x, order, in_calculate = TRUE, stat) {
+check_order <- function(x, order, in_calculate = TRUE, stat, call = caller_env()) {
   # If there doesn't need to be an order argument, warn if there is one,
   # and otherwise, skip checks
   if (!(theory_type(x) %in% c("Two sample props z", "Two sample t") ||
@@ -379,10 +337,10 @@ check_order <- function(x, order, in_calculate = TRUE, stat) {
         stat %in% c("diff in means", "diff in medians",
                     "diff in props", "ratio of props", "odds ratio"))) {
     if (!is.null(order)) {
-       warning_glue(
+       warn(paste0(
         "Statistic is not based on a difference or ratio; the `order` argument ",
         "will be ignored. Check `?calculate` for details."
-      )
+      ))
     } else {
       return(order)
     }
@@ -396,60 +354,62 @@ check_order <- function(x, order, in_calculate = TRUE, stat) {
     # second, unless the explanatory variable is a factor (in which case order
     # is preserved); raise a warning if this was done implicitly.
     order <- as.character(unique_ex)
-    warning_glue(
+    warn(glue(
       "The statistic is based on a difference or ratio; by default, for ",
       "difference-based statistics, the explanatory variable is subtracted ",
       "in the order \"{unique_ex[1]}\" - \"{unique_ex[2]}\", or divided in ",
       "the order \"{unique_ex[1]}\" / \"{unique_ex[2]}\" for ratio-based ",
       "statistics. To specify this order yourself, supply `order = ",
       "c(\"{unique_ex[1]}\", \"{unique_ex[2]}\")` to the calculate() function."
-    )
+    ))
   } else if (is.null(order)) {
     order <- as.character(unique_ex)
-    warning_glue(
+    warn(glue(
       "The statistic is based on a difference or ratio; by default, for ",
       "difference-based statistics, the explanatory variable is subtracted ",
       "in the order \"{unique_ex[1]}\" - \"{unique_ex[2]}\", or divided in ",
       "the order \"{unique_ex[1]}\" / \"{unique_ex[2]}\" for ratio-based ",
       "statistics. To specify this order yourself, supply `order = ",
       "c(\"{unique_ex[1]}\", \"{unique_ex[2]}\")`."
-    )
+    ))
   } else {
     if (xor(is.na(order[1]), is.na(order[2]))) {
-      stop_glue(
+       abort(paste0(
         "Only one level specified in `order`. Both levels need to be specified."
-      )
+      ), call = call)
     }
     if (length(order) > 2) {
-      stop_glue("`order` is expecting only two entries.")
+       abort(paste0("`order` is expecting only two entries."), call = call)
     }
     if (order[1] %in% unique_ex == FALSE) {
-      stop_glue("{order[1]} is not a level of the explanatory variable.")
+       abort(glue("{order[1]} is not a level of the explanatory variable."),
+             call = call)
     }
     if (order[2] %in% unique_ex == FALSE) {
-      stop_glue("{order[2]} is not a level of the explanatory variable.")
+       abort(glue("{order[2]} is not a level of the explanatory variable."),
+             call = call)
     }
   }
   # return the order as given (unless the argument was invalid or NULL)
   order
 }
 
-check_point_params <- function(x, stat) {
+check_point_params <- function(x, stat, call = caller_env()) {
   param_names <- attr(attr(x, "params"), "names")
   hyp_text <- 'to be set in `hypothesize()`.'
   if (is_hypothesized(x)) {
     if (stat %in% c("mean", "median", "sd", "prop")) {
       if ((stat == "mean") && !("mu" %in% param_names)) {
-        stop_glue('`stat == "mean"` requires `"mu"` {hyp_text}')
+         abort(glue('`stat == "mean"` requires `"mu"` {hyp_text}'), call = call)
       }
       if (!(stat == "mean") && ("mu" %in% param_names)) {
-        stop_glue('`"mu"` does not correspond to `stat = "{stat}"`.')
+         abort(glue('`"mu"` does not correspond to `stat = "{stat}"`.'), call = call)
       }
       if ((stat == "median") && !("med" %in% param_names)) {
-        stop_glue('`stat == "median"` requires `"med"` {hyp_text}')
+         abort(glue('`stat == "median"` requires `"med"` {hyp_text}'), call = call)
       }
       if (!(stat == "median") && ("med" %in% param_names)) {
-        stop_glue('`"med"` does not correspond to `stat = "{stat}"`.')
+         abort(glue('`"med"` does not correspond to `stat = "{stat}"`.'), call = call)
       }
     }
   }
@@ -472,7 +432,8 @@ check_for_nan <- function(x, context) {
   calc_ref <- "See ?calculate for more details"
   # If all of the data is NaN, raise an error
   if (num_nans == nrow(x)) {
-    stop_glue("All calculated statistics were `NaN`. {calc_ref}.")
+     abort(glue("All calculated statistics were `NaN`. {calc_ref}."),
+           call = NULL)
   }
 
   stats_were <- if (num_nans == 1) {"statistic was"} else {"statistics were"}
@@ -480,38 +441,38 @@ check_for_nan <- function(x, context) {
 
   if (context == "visualize") {
     # Raise a warning and plot the data with NaNs removed
-    warning_glue(
+     warn(glue(
       "{num_nans_msg}. `NaN`s have been omitted from visualization. {calc_ref}."
-    )
+    ))
     return(x[!stat_is_nan, ])
   } else if (context == "get_p_value") {
     # Raise an error
-    stop_glue(
+    abort(glue(
       "{num_nans_msg}. Simulation-based p-values are not well-defined for ",
       "null distributions with non-finite values. {calc_ref}."
-    )
+    ), call = NULL)
   }
 }
 
 check_direction <- function(direction = c("less", "greater", "two_sided",
                                           "left", "right", "both",
                                           "two-sided", "two sided",
-                                          "two.sided")) {
-  check_type(direction, is.character)
+                                          "two.sided"), call = caller_env()) {
+  check_type(direction, is.character, call = call)
 
   if (
     !(direction %in% c("less", "greater", "two_sided", "left", "right",
                        "both", "two-sided", "two sided", "two.sided"))
   ) {
-    stop_glue(
+     abort(paste0(
       'The provided value for `direction` is not appropriate. Possible values ',
       'are "less", "greater", "two-sided", "left", "right", "both", ',
       '"two_sided", "two sided", or "two.sided".'
-    )
+    ), call = call)
   }
 }
 
-check_obs_stat <- function(obs_stat, plot = NULL) {
+check_obs_stat <- function(obs_stat, plot = NULL, call = caller_env()) {
   if (!is.null(obs_stat)) {
 
     if ("data.frame" %in% class(obs_stat)) {
@@ -526,53 +487,53 @@ check_obs_stat <- function(obs_stat, plot = NULL) {
         return(obs_stat)
       }
 
-      check_type(obs_stat, is.data.frame)
+      check_type(obs_stat, is.data.frame, call = call)
       if ((nrow(obs_stat) != 1) || (ncol(obs_stat) != 1)) {
-        warning_glue(
+         warn(glue(
           "The first row and first column value of the given `obs_stat` will ",
           "be used."
-        )
+        ))
       }
 
       # [[1]] is used in case `stat` is not specified as name of 1x1
       obs_stat <- obs_stat[[1]][[1]]
-      check_type(obs_stat, is.numeric)
+      check_type(obs_stat, is.numeric, call = call)
     } else {
-      check_type(obs_stat, is.numeric)
+      check_type(obs_stat, is.numeric, call = call)
     }
   }
 
   obs_stat
 }
 
-check_mlr_x_and_obs_stat <- function(x, obs_stat, fn, arg) {
+check_mlr_x_and_obs_stat <- function(x, obs_stat, fn, arg, call = caller_env()) {
   if (!is_fitted(obs_stat)) {
-    stop_glue(
+     abort(glue(
       "The `{arg}` argument should be the output of `fit()`. ",
       "See the documentation with `?{fn}`."
-    )
+    ), call = call)
   }
 
   if (!is_generated(x)) {
-    stop_glue(
+     abort(paste0(
       "The `x` argument needs to be passed to `generate()` ",
       "before `fit()`."
-    )
+    ), call = call)
   }
 
   if (any(!unique(x$term) %in% unique(obs_stat$term)) ||
       any(!unique(obs_stat$term) %in% unique(x$term))) {
-    stop_glue(
+     abort(paste0(
       "The explanatory variables used to generate the distribution of ",
       "null fits are not the same used to fit the observed data."
-    )
+    ), call = call)
   }
 
   if (response_name(x) != response_name(obs_stat)) {
-    stop_glue(
+     abort(glue(
       "The response variable of the null fits ({response_name(x)}) is not ",
       "the same as that of the observed fit ({response_name(obs_stat)})."
-    )
+    ), call = call)
   }
 
   invisible(TRUE)
@@ -612,7 +573,7 @@ check_mlr_x_and_obs_stat <- function(x, obs_stat, fn, arg) {
 #' @keywords internal
 #' @noRd
 check_type <- function(x, predicate, type_name = NULL, x_name = NULL,
-                        allow_null = FALSE, ...) {
+                        allow_null = FALSE, ..., call = caller_env()) {
   if (is.null(x_name)) {
     x_name <- deparse(substitute(x))
   }
@@ -628,7 +589,8 @@ check_type <- function(x, predicate, type_name = NULL, x_name = NULL,
 
   if (!is_pred_true) {
     # Not using "must be of type" because of 'tibble' and 'string' cases
-    stop_glue("`{x_name}` must be '{type_name}', not '{get_type(x)}'.")
+     abort(glue("`{x_name}` must be '{type_name}', not '{get_type(x)}'."),
+           call = call)
   }
 
   x
@@ -656,11 +618,11 @@ parse_type <- function(f_name) {
   res
 }
 
-check_is_distribution <- function(x, fn) {
+check_is_distribution <- function(x, fn, call = caller_env()) {
   if (!any(inherits(x, "infer_dist") || is.data.frame(x))) {
-    stop_glue(
+     abort(glue(
       "The `x` argument to `{fn}()` must be an infer distribution, ",
       "outputted by `assume()` or `calculate()`."
-    )
+    ), call = call)
   }
 }

@@ -147,7 +147,7 @@ get_confidence_interval <- function(x, level = 0.95, type = NULL,
                                     point_estimate = NULL) {
   # Inform if no `level` was explicitly supplied
   if (!("level" %in% rlang::call_args_names(match.call()))) {
-    message_glue("Using `level = {level}` to compute confidence interval.")
+     inform(glue("Using `level = {level}` to compute confidence interval."))
   }
 
   if (is.null(type)) {
@@ -281,70 +281,71 @@ ci_bias_corrected <- function(x, level, point_estimate) {
   make_ci_df(ci_vec)
 }
 
-check_ci_args <- function(x, level, type, point_estimate) {
+check_ci_args <- function(x, level, type, point_estimate, call = caller_env()) {
   if (!is.null(point_estimate)) {
     if (!is.data.frame(point_estimate)) {
-      check_type(point_estimate, is.numeric)
+      check_type(point_estimate, is.numeric, call = call)
     } else {
-      check_type(point_estimate, is.data.frame)
-      check_type(point_estimate[[1]][[1]], is.numeric)
+      check_type(point_estimate, is.data.frame, call = call)
+      check_type(point_estimate[[1]][[1]], is.numeric, call = call)
     }
   }
   check_is_distribution(x, "get_confidence_interval")
-  check_type(level, is.numeric)
+  check_type(level, is.numeric, call = call)
 
   if ((level <= 0) || (level >= 1)) {
-    stop_glue("The value of `level` must be between 0 and 1 non-inclusive.")
+     abort(paste0("The value of `level` must be between 0 and 1 non-inclusive."),
+           call = call)
   }
 
   if (inherits(x, "infer_dist") && !is.null(type) && type != "se") {
-    stop_glue(
+     abort(paste0(
       'The only `type` option for theory-based confidence intervals ',
       'is `type = "se"`.'
-    )
+    ), call = call)
   }
 
   if (!(type %in% c("percentile", "se", "bias-corrected"))) {
-    stop_glue(
+     abort(paste0(
       'The options for `type` are "percentile", "se", or "bias-corrected".'
-    )
+    ), call = call)
   }
 
   if ((type %in% c("se", "bias-corrected")) && is.null(point_estimate)) {
-    stop_glue(
+     abort(paste0(
       "A numeric value needs to be given for `point_estimate` ",
       'for `type` "se" or "bias-corrected".'
-    )
+    ), call = call)
   }
 
   if (inherits(x, "infer_dist")) {
     # theoretical CIs require the full point estimate infer object as they
     # contain the necessary standard error
     if (!inherits(point_estimate, "infer")) {
-      stop_glue(
+       abort(paste0(
         'For theoretical confidence intervals, the `point_estimate` argument ',
         'must be an `infer` object. Have you made sure to supply the output of ',
         '`calculate()` as the `point_estimate` argument?'
-      )
+      ), call = call)
     }
 
     if (!attr(point_estimate, "stat") %in%
         c("mean", "prop", "diff in means", "diff in props")) {
-      stop_glue(
+       abort(paste0(
         'The only allowable statistics for theoretical confidence intervals ',
         'are "mean", "prop", "diff in means", and "diff in props". See ',
         'the "Details" section of `?get_confidence_interval` for more details.'
-      )
+      ), call = call)
     }
 
     if ((attr(x, "distribution") == "t" &&
          !attr(point_estimate, "stat") %in% c("mean", "diff in means")) ||
         (attr(x, "distribution") == "norm" &&
          !attr(point_estimate, "stat") %in% c("prop", "diff in props"))) {
-      stop_glue(
+       abort(glue(
         'Confidence intervals using a `{attr(x, "dist_")}` distribution for ',
         '`stat = {attr(point_estimate, "stat")}` are not implemented.'
-      )
+      ), call = call)
     }
   }
 }

@@ -51,34 +51,6 @@ test_that("is_truefalse works", {
   expect_false(is_truefalse(1L))
 })
 
-test_that("stop_glue handles `NULL`", {
-  expect_snapshot(error = TRUE, stop_glue("Hello {null_val}", "!"))
-})
-
-test_that("warning_glue handles `NULL`", {
-  expect_snapshot(warning_glue("Hello {null_val}", "!"))
-})
-
-test_that("message_glue handles `NULL`", {
-  expect_snapshot(message_glue("Hello {null_val}", "!"))
-})
-
-test_that("glue_null works", {
-  adj <- "quick"
-
-  expect_equal(
-    glue_null(
-      "The {adj} brown {null_val} jumps ", "over the lazy {NULL}."
-    ),
-    "The quick brown NULL jumps over the lazy NULL."
-  )
-
-  expect_equal(
-    glue_null("The {adj}", "brown", .sep = "-"),
-    "The quick-brown"
-  )
-})
-
 test_that("check_type works", {
   x_var <- 1L
 
