@@ -45,6 +45,7 @@
 #'
 #' @importFrom rlang f_lhs
 #' @importFrom rlang f_rhs
+#' @importFrom rlang new_formula
 #' @importFrom stats as.formula
 #' @family wrapper functions
 #' @export
@@ -78,9 +79,7 @@ t_test <- function(x, formula,
   if (has_explanatory(x)) {
     order <- check_order(x, order, in_calculate = FALSE, stat = NULL)
     x <- reorder_explanatory(x, order)
-    prelim <- stats::t.test(formula = as.formula(paste0(response_name(x),
-                                                        " ~ ",
-                                                        explanatory_name(x))),
+    prelim <- stats::t.test(formula = rlang::new_formula(response_expr(x), explanatory_expr(x)),
                             data = x,
                             alternative = alternative,
                             mu = mu,
@@ -191,9 +190,7 @@ t_stat <- function(x, formula,
   if (has_explanatory(x)) {
     order <- check_order(x, order, in_calculate = FALSE, stat = NULL)
     x <- reorder_explanatory(x, order)
-    prelim <- stats::t.test(formula = as.formula(paste0(response_name(x),
-                                                        " ~ ",
-                                                        explanatory_name(x))),
+    prelim <- stats::t.test(formula = new_formula(response_expr(x), explanatory_expr(x)),
                             data = x,
                             alternative = alternative,
                             mu = mu,
@@ -575,7 +572,7 @@ prop_test <- function(x, formula,
 calculate_z <- function(x, results, success, p, order) {
   exp <- if (has_explanatory(x)) {explanatory_name(x)} else {"NULL"}
 
-  form <- as.formula(paste0(response_name(x), " ~ ", exp))
+  form <- new_formula(response_expr(x), exp)
 
   stat <- x %>%
     specify(formula = form, success = success) %>%

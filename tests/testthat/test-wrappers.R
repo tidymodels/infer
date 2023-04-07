@@ -452,3 +452,21 @@ test_that("wrappers can handled ordered factors", {
       prop_test(resp ~ NULL, p = .5)
   )
 })
+
+test_that("spaces work in variable names", {
+   mtcars$`m p g` <- mtcars$mpg
+
+   expect_equal(
+      mtcars %>%
+         t_test(mpg ~ wt),
+      mtcars %>%
+         t_test(`m p g` ~ wt)
+   )
+
+   expect_equal(
+      mtcars %>%
+         t_test(response = mpg, explanatory =  wt),
+      mtcars %>%
+         t_test(response = `m p g`, explanatory =  wt)
+   )
+})
