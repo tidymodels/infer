@@ -192,7 +192,7 @@ in, say, the <code>age</code> of the respondents, you might write:</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>    36</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>    30</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>    33</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># ℹ 490 more rows</span></span></span></code></pre>
 <p>On the front-end, the output of <code>specify</code> just looks like
 it selects off the columns in the dataframe that you’ve specified.
 Checking the class of this object, though:</p>
@@ -225,7 +225,7 @@ relationship in one of two (equivalent) ways:</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>    36 ind    </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>    30 rep    </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>    33 dem    </span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># ℹ 490 more rows</span></span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># with the named arguments</span></span>
 <span><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -245,7 +245,7 @@ relationship in one of two (equivalent) ways:</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>    36 ind    </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>    30 rep    </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>    33 dem    </span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># ℹ 490 more rows</span></span></span></code></pre>
 <p>If you’re doing inference on one proportion or a difference in
 proportions, you will need to use the <code>success</code> argument to
 specify which level of your <code>response</code> variable is a success.
@@ -269,7 +269,7 @@ with a college degree, you might use the following code:</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span> degree   </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> degree   </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> no degree</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># ℹ 490 more rows</span></span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="hypothesize-declaring-the-null-hypothesis">hypothesize(): Declaring the Null Hypothesis<a class="anchor" aria-label="anchor" href="#hypothesize-declaring-the-null-hypothesis"></a>
@@ -300,7 +300,7 @@ variables, then this is all you need to supply to
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span> degree    ind    </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> degree    rep    </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> no degree dem    </span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># ℹ 490 more rows</span></span></span></code></pre>
 <p>If you’re doing inference on a point estimate, you will also need to
 provide one of <code>p</code> (the true proportion of successes, between
 0 and 1), <code>mu</code> (the true mean), <code>med</code> (the true
@@ -326,7 +326,7 @@ per week in our population is 40, we would write:</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>    20</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>    40</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>    40</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 490 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># ℹ 490 more rows</span></span></span></code></pre>
 <p>Again, from the front-end, the dataframe outputted from
 <code><a href="../reference/hypothesize.html">hypothesize()</a></code> looks almost exactly the same as it did when
 it came out of <code><a href="../reference/specify.html">specify()</a></code>, but <code>infer</code> now
@@ -382,7 +382,7 @@ hours worked a week, we might write:</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>         1 78.6 </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>         1 38.6 </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>         1 38.6 </span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 499,990 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># ℹ 499,990 more rows</span></span></span></code></pre>
 <p>In the above example, we take 1000 bootstrap samples to form our null
 distribution.</p>
 <p>Note that, before <code><a href="../reference/generate.html">generate()</a></code>ing, we’ve set the seed for
@@ -420,7 +420,7 @@ not affected by age:</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span> rep        36         1</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> dem        30         1</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span> rep        33         1</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 499,990 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># ℹ 499,990 more rows</span></span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="calculate-calculating-summary-statistics">calculate(): Calculating Summary Statistics<a class="anchor" aria-label="anchor" href="#calculate-calculating-summary-statistics"></a>
@@ -453,7 +453,7 @@ of mean hours worked per week:</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>         8  40.4</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>         9  41.5</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>        10  40.9</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 990 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># ℹ 990 more rows</span></span></span></code></pre>
 <p>The output of <code><a href="../reference/calculate.html">calculate()</a></code> here shows us the sample
 statistic (in this case, the mean) for each of our 1000 replicates. If
 you’re carrying out inference on differences in means, medians, or
@@ -484,7 +484,7 @@ might write:</p>
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>         8 -<span style="color: #BB0000;">1.07</span> </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>         9  1.68 </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>        10  0.888</span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 990 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># ℹ 990 more rows</span></span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="other-utilities">Other Utilities<a class="anchor" aria-label="anchor" href="#other-utilities"></a>
@@ -698,7 +698,7 @@ the same as the above except for the addition of the
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>         3 age           -<span style="color: #BB0000;">0.037</span><span style="color: #BB0000; text-decoration: underline;">1</span> </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>         3 collegedegree  0.004<span style="text-decoration: underline;">31</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>         4 intercept     42.7    </span></span>
-<span><span class="co">## <span style="color: #949494;"># … with 2,990 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># ℹ 2,990 more rows</span></span></span></code></pre>
 <p>To permute variables other than the response variable, the
 <code>variables</code> argument to <code><a href="../reference/generate.html">generate()</a></code> allows you to
 choose columns from the data to permute. Note that any derived effects
