@@ -43,6 +43,9 @@
 hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) {
 
   # Check arguments
+  if (missing(null)) {
+     null <- NA
+  }
   null <- match_null_hypothesis(null)
   hypothesize_checks(x, null)
 
