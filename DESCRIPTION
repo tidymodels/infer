@@ -47,7 +47,8 @@ Imports:
     purrr,
     rlang (>= 0.2.0),
     tibble,
-    tidyr
+    tidyr,
+    vctrs
 Suggests:
     covr,
     devtools (>= 1.12.0),
