@@ -184,7 +184,7 @@ make_replicate_tbl <- function(tbl, size, replace, prob, reps) {
     dplyr::mutate(replicate = rep(seq_len(reps), each = sample_size)) %>%
     dplyr::select(replicate, dplyr::everything()) %>%
     tibble::as_tibble() %>%
-    dplyr::group_by(replicate)
+    group_by_replicate(reps = reps, n = sample_size)
 }
 
 notify_extra_size <- function(size, tbl, replace, notify_type, call = caller_env()) {
