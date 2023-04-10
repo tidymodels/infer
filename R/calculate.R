@@ -274,8 +274,7 @@ calc_impl_one_f <- function(f) {
       dplyr::summarize(stat = f(!!(sym(col)), ...))
 
     # calculate SE for confidence intervals
-    if ("replicate" %in% dplyr::group_vars(x) &&
-        nrow(dplyr::group_keys(x)) == 1) {
+    if (nrow(dplyr::group_keys(x)) == 1) {
       sample_sd <- x %>%
         dplyr::summarize(stats::sd(!!(sym(col)))) %>%
         dplyr::pull()
