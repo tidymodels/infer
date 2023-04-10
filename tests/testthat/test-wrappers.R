@@ -274,7 +274,7 @@ bad_df2 <- data.frame(resp = letters[1:5],
                      exp = 1:5)
 
 df_l <- df %>%
-   mutate(resp = dplyr::if_else(resp == "c", TRUE, FALSE))
+   dplyr::mutate(resp = dplyr::if_else(resp == "c", TRUE, FALSE))
 
 test_that("two sample prop_test works", {
 
@@ -451,4 +451,48 @@ test_that("wrappers can handled ordered factors", {
       dplyr::mutate(resp = factor(resp, ordered = FALSE)) %>%
       prop_test(resp ~ NULL, p = .5)
   )
+})
+
+test_that("handles spaces in variable names (t_test)", {
+   gss_ <- gss %>%
+      tidyr::drop_na(college) %>%
+      dplyr::mutate(`h o u r s` = hours)
+
+   expect_equal(
+      t_test(gss_,
+             formula = hours ~ college,
+             order = c("degree", "no degree"),
+             alternative = "two-sided"),
+      t_test(gss_,
+             formula = `h o u r s` ~ college,
+             order = c("degree", "no degree"),
+             alternative = "two-sided")
+   )
+
+   expect_equal(
+      t_test(gss_,
+             response = hours,
+             explanatory = college,
+             order = c("degree", "no degree"),
+             alternative = "two-sided"),
+      t_test(gss_,
+             response = `h o u r s`,
+             explanatory = college,
+             order = c("degree", "no degree"),
+             alternative = "two-sided")
+   )
+})
+
+test_that("handles spaces in variable names (prop_test)", {
+   df$`r e s p` <- df$resp
+
+   expect_equal(
+      prop_test(df, `r e s p` ~ exp, order = c("a", "b")),
+      prop_test(df, resp ~ exp, order = c("a", "b"))
+   )
+
+   expect_equal(
+      prop_test(df, response = `r e s p`, explanatory = exp, order = c("a", "b")),
+      prop_test(df, response = resp, explanatory = exp, order = c("a", "b"))
+   )
 })
