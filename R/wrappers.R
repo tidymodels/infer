@@ -570,7 +570,7 @@ prop_test <- function(x, formula,
 }
 
 calculate_z <- function(x, results, success, p, order) {
-  exp <- if (has_explanatory(x)) {explanatory_name(x)} else {"NULL"}
+  exp <- if (has_explanatory(x)) {explanatory_expr(x)} else {NULL}
 
   form <- new_formula(response_expr(x), exp)
 
