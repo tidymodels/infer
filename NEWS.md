@@ -2,7 +2,7 @@
 
 * The `weight_by` argument to `rep_slice_sample()` can now be passed either as a vector of numeric weights or an unquoted column name in `.data` (#480).
 
-* Fix issue with spaces in variable names (#472)
+* Newly accommodates variables with spaces in names in the wrapper functions `t_test()` and `prop_test()` (#472).
 
 # infer v1.0.4
 
