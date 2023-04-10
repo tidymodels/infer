@@ -214,11 +214,11 @@ randomization-based approximation to the null distribution:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.065</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.051</span></span></code></pre>
 <p>Thus, if there were really no relationship between age and political
 party affiliation, our approximation of the probability that we would
 see a statistic as or more extreme than 2.4842 is approximately
-0.065.</p>
+0.051.</p>
 <p>To calculate the p-value using the true <span class="math inline">\(F\)</span> distribution, we can use the
 <code>pf</code> function from base R. This function allows us to situate
 the test statistic we calculated previously in the <span class="math inline">\(F\)</span> distribution with the appropriate

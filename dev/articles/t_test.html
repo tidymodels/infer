@@ -201,10 +201,10 @@ can calculate the p-value:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.038</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.05</span></span></code></pre>
 <p>Thus, if the true mean number of hours worked per week was really 40,
 our approximation of the probability that we would see a test statistic
-as or more extreme than 41.382 is approximately 0.038.</p>
+as or more extreme than 41.382 is approximately 0.05.</p>
 <p>Analogously to the steps shown above, the package supplies a wrapper
 function, <code>t_test</code>, to carry out 1-sample <span class="math inline">\(t\)</span>-tests on tidy data. Rather than using
 randomization, the wrappers carry out the theory-based <span class="math inline">\(t\)</span>-test. The syntax looks like this:</p>
@@ -356,11 +356,11 @@ null distribution to do calculate the p-value.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.256</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.29</span></span></code></pre>
 <p>Thus, if there were really no relationship between the number of
 hours worked a week and whether one has a college degree, the
 probability that we would see a statistic as or more extreme than 1.5384
-is approximately 0.256.</p>
+is approximately 0.29.</p>
 <p>Note that, similarly to the steps shown above, the package supplies a
 wrapper function, <code>t_test</code>, to carry out 2-sample <span class="math inline">\(t\)</span>-tests on tidy data. The syntax looks
 like this:</p>
