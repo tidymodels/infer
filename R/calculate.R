@@ -269,8 +269,11 @@ calc_impl_one_f <- function(f) {
   function(type, x, order, ...) {
     col <- base::setdiff(names(x), "replicate")
 
+    if (!identical(dplyr::group_vars(x), "replicate")) {
+       x <- dplyr::group_by(x, replicate)
+    }
+
     res <- x %>%
-      dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = f(!!(sym(col)), ...))
 
     # calculate SE for confidence intervals
@@ -299,8 +302,12 @@ calc_impl_success_f <- function(f, output_name) {
     col <- base::setdiff(names(x), "replicate")
 
     success <- attr(x, "success")
+
+    if (!identical(dplyr::group_vars(x), "replicate")) {
+       x <- dplyr::group_by(x, replicate)
+    }
+
     res <- x %>%
-      dplyr::group_by(replicate) %>%
       dplyr::summarize(stat = f(!!sym(col), success))
 
     # calculate SE for confidence intervals
