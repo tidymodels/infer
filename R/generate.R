@@ -311,9 +311,10 @@ permute_column <- function(col, permute) {
 draw <- function(x, reps = 1, ...) {
   fct_levels <- as.character(unique(response_variable(x)))
 
+  probs <- format_params(x)
   col_simmed <- unlist(replicate(
     reps,
-    sample(fct_levels, size = nrow(x), replace = TRUE, prob = format_params(x)),
+    sample(fct_levels, size = nrow(x), replace = TRUE, prob = probs),
     simplify = FALSE
   ))
 
