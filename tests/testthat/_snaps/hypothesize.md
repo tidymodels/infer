@@ -74,8 +74,8 @@
     Code
       res_ <- hypothesize(matrix1)
     Condition
-      Error in `match_null_hypothesis()`:
-      ! argument "null" is missing, with no default
+      Error in `hypothesize()`:
+      ! `null` should be either "point" or "independence".
 
 ---
 
@@ -90,8 +90,8 @@
     Code
       res_ <- hypothesize(mtcars_s)
     Condition
-      Error in `match_null_hypothesis()`:
-      ! argument "null" is missing, with no default
+      Error in `hypothesize()`:
+      ! `null` should be either "point" or "independence".
 
 ---
 
@@ -155,8 +155,8 @@
     Code
       res_ <- mtcars_s %>% hypothesize()
     Condition
-      Error in `match_null_hypothesis()`:
-      ! argument "null" is missing, with no default
+      Error in `hypothesize()`:
+      ! `null` should be either "point" or "independence".
 
 # params correct
 
