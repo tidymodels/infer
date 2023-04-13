@@ -163,28 +163,34 @@ rep_slice_sample <- function(.data, n = NULL, prop = NULL, replace = FALSE,
 }
 
 make_replicate_tbl <- function(tbl, size, replace, prob, reps) {
-  # NOTE: this implementation is a way faster alternative to using
-  # `purrr::map_dfr()` + `dplyr::slice_sample()` (or other sampling function)
-
   # Generate row indexes for every future replicate (this way it respects
   # possibility of `replace = FALSE`)
   n <- nrow(tbl)
-  idx_list <- replicate(
-    reps,
-    sample_int(n, size, replace = replace, prob = prob),
-    simplify = FALSE
-  )
+
+  if (!replace) {
+     idx_list <- replicate(
+        reps,
+        sample_int(n, size, replace = FALSE, prob = prob),
+        simplify = FALSE
+     )
+  } else {
+     idx_list <- sample_int(n, size * reps, replace = TRUE, prob = prob)
+     idx_list <- vctrs::vec_chop(idx_list, sizes = rep(size, reps))
+  }
+
   # Get actual sample size which can differ from `size` (currently if it is
   # bigger than number of rows in `tbl` inside `rep_slice_sample()`)
   sample_size <- length(idx_list[[1]])
   i <- unlist(idx_list)
 
-  tbl %>%
-    dplyr::slice(i) %>%
-    dplyr::mutate(replicate = rep(seq_len(reps), each = sample_size)) %>%
-    dplyr::select(replicate, dplyr::everything()) %>%
-    tibble::as_tibble() %>%
-    group_by_replicate(reps = reps, n = sample_size)
+  res <- vctrs::vec_slice(tbl, i)
+  res <-
+     dplyr::bind_cols(
+        tibble::new_tibble(list(replicate = rep(seq_len(reps), each = sample_size))),
+        res
+     )
+  res <- group_by_replicate(res, reps = reps, n = sample_size)
+  copy_attrs(res, tbl)
 }
 
 notify_extra_size <- function(size, tbl, replace, notify_type, call = caller_env()) {

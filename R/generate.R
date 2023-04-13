@@ -256,7 +256,8 @@ permute_once <- function(x, variables, ..., call = caller_env()) {
     needs_permuting <- colnames(x) %in% process_variables(variables, FALSE)
 
     # pass each to permute_column with its associated logical
-    out <- purrr::map2_dfc(x, needs_permuting, permute_column)
+    out <- purrr::map2(x, needs_permuting, permute_column)
+    out <- dplyr::bind_cols(out)
 
     copy_attrs(out, x)
   } else {
