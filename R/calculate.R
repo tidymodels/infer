@@ -274,7 +274,7 @@ calc_impl_one_f <- function(f) {
       dplyr::summarize(stat = f(!!(sym(col)), ...))
 
     # calculate SE for confidence intervals
-    if (length(unique(x[["replicate"]])) == 1) {
+    if (!is_generated(x)) {
       sample_sd <- x %>%
         dplyr::summarize(stats::sd(!!(sym(col)))) %>%
         dplyr::pull()
@@ -304,7 +304,7 @@ calc_impl_success_f <- function(f, output_name) {
       dplyr::summarize(stat = f(!!sym(col), success))
 
     # calculate SE for confidence intervals
-    if (length(unique(x[["replicate"]])) == 1 && output_name == "proportion") {
+    if (!is_generated(x) && output_name == "proportion") {
       prop <- res[["stat"]]
 
       attr(res, "se") <- sqrt((prop * (1 - prop)) / nrow(x))
@@ -367,7 +367,7 @@ calc_impl_diff_f <- function(f, operator) {
       )
 
     # calculate SE for confidence intervals
-    if (length(unique(x[["replicate"]])) == 1 && identical(operator, `-`)) {
+    if (!is_generated(x) && identical(operator, `-`)) {
       sample_sds <- x %>%
         dplyr::group_by(replicate, !!explanatory_expr(x), .drop = FALSE) %>%
         dplyr::summarize(stats::sd(!!response_expr(x))) %>%
@@ -466,7 +466,7 @@ calc_impl.function_of_props <- function(type, x, order, operator, ...) {
     )
 
   # calculate SE for confidence intervals
-  if (length(unique(x[["replicate"]])) == 1) {
+  if (!is_generated(x)) {
     props <- x %>%
       dplyr::group_by(!!explanatory_expr(x), .drop = FALSE) %>%
       dplyr::summarize(prop = mean(!!sym(col) == success, ...)) %>%
