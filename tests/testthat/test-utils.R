@@ -142,3 +142,20 @@ test_that("variables are standardized as expected", {
 
    expect_equal(levels(gss_std$is_dem), c("TRUE", "FALSE"))
 })
+
+test_that("group_by_replicate() helper returns correct results", {
+   reps <- 500
+   nrow_gss <- nrow(gss)
+
+   gss_gen <-
+      gss %>%
+      specify(age ~ college) %>%
+      hypothesize(null = "independence") %>%
+      generate(reps = reps, type = "permute") %>%
+      dplyr::ungroup()
+
+   expect_equal(
+      dplyr::group_by(gss_gen, replicate),
+      group_by_replicate(gss_gen, reps, nrow_gss)
+   )
+})

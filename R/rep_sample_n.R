@@ -189,7 +189,7 @@ make_replicate_tbl <- function(tbl, size, replace, prob, reps) {
         tibble::new_tibble(list(replicate = rep(seq_len(reps), each = sample_size))),
         res
      )
-  res <- dplyr::grouped_df(res, "replicate")
+  res <- group_by_replicate(res, reps = reps, n = sample_size)
   copy_attrs(res, tbl)
 }
 

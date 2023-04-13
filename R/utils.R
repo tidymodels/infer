@@ -95,6 +95,31 @@ standardize_variable_types <- function(x) {
       )
 }
 
+# Performant grouping ----------------------------------------------------------
+group_by_replicate <- function(tbl, reps, n) {
+   dplyr::new_grouped_df(
+      tbl,
+      groups = make_replicate_groups(tbl, reps = reps, n = n)
+   )
+}
+
+
+make_replicate_groups <- function(tbl, reps, n) {
+   res <-
+      tibble::new_tibble(vctrs::df_list(
+         replicate = 1:reps,
+         .rows =
+            vctrs::as_list_of(
+               vctrs::vec_chop(seq_len(n*reps), sizes = rep(n, reps)),
+               .ptype = integer()
+            )
+      ))
+
+   attr(res, ".drop") <- TRUE
+
+   res
+}
+
 # Getters, setters, and indicators ------------------------------------------
 explanatory_expr <- function(x) {
   attr(x, "explanatory")

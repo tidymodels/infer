@@ -237,10 +237,11 @@ bootstrap <- function(x, reps = 1, ...) {
 
 #' @importFrom dplyr bind_rows group_by
 permute <- function(x, reps = 1, variables, ..., call = caller_env()) {
+  nrow_x <- nrow(x)
   df_out <- replicate(reps, permute_once(x, variables, call = call), simplify = FALSE) %>%
     dplyr::bind_rows() %>%
-    dplyr::mutate(replicate = rep(1:reps, each = nrow(!!x))) %>%
-    dplyr::group_by(replicate)
+    dplyr::mutate(replicate = rep(1:reps, each = !!nrow_x)) %>%
+    group_by_replicate(reps, nrow_x)
 
   df_out <- copy_attrs(to = df_out, from = x)
 
@@ -326,7 +327,7 @@ draw <- function(x, reps = 1, ...) {
 
   rep_tbl <- copy_attrs(to = rep_tbl, from = x)
 
-  rep_tbl <- dplyr::group_by(rep_tbl, replicate)
+  rep_tbl <- group_by_replicate(rep_tbl, reps, nrow(x))
 
   append_infer_class(rep_tbl)
 }
