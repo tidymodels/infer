@@ -106,7 +106,7 @@ group_by_replicate <- function(tbl, reps, n) {
 
 make_replicate_groups <- function(tbl, reps, n) {
    res <-
-      tibble::new_tibble(vctrs::df_list(
+      tibble::new_tibble(list(
          replicate = 1:reps,
          .rows =
             vctrs::as_list_of(
