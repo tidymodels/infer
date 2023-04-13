@@ -257,7 +257,7 @@ permute_once <- function(x, variables, ..., call = caller_env()) {
 
     # pass each to permute_column with its associated logical
     out <- purrr::map2(x, needs_permuting, permute_column)
-    out <- dplyr::bind_cols(out)
+    out <- tibble::new_tibble(out)
 
     copy_attrs(out, x)
   } else {
