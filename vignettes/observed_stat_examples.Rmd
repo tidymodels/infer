@@ -195,6 +195,70 @@ null_dist %>%
   get_p_value(obs_stat = x_tilde, direction = "two-sided")
 ```
 
+### One numerical variable (paired)
+
+The example under this header is compatible with `stat`s `"mean"`, `"median"`, `"sum"`, and `"sd"`.
+
+Suppose that each of these survey respondents had provided the number of `hours` worked per week when surveyed 5 years prior, encoded as `hours_previous`. 
+
+```{r}
+set.seed(1)
+
+gss_paired <- gss %>%
+   mutate(
+      hours_previous = hours + 1.8 - rpois(nrow(.), 2),
+      diff = hours - hours_previous
+   )
+
+gss_paired %>%
+   select(hours, hours_previous, diff)
+```
+
+We'd like to test the null hypothesis that the `"mean"` hours worked per week did not change between the sampled time and five years prior.
+
+infer supports paired hypothesis testing via the `null = "paired independence"` argument to `hypothesize()`.
+
+Calculating the observed statistic,
+
+```{r}
+x_tilde <- gss_paired %>%
+  specify(response = diff) %>%
+  calculate(stat = "mean")
+```
+
+Alternatively, using the `observe()` wrapper to calculate the observed statistic,
+
+```{r}
+x_tilde <- gss_paired %>%
+  observe(response = diff, stat = "mean")
+```
+
+Then, generating the null distribution,
+
+```{r}
+null_dist <- gss_paired %>%
+  specify(response = diff) %>%
+  hypothesize(null = "paired independence") %>% 
+  generate(reps = 1000, type = "permute") %>% 
+  calculate(stat = "mean")
+```
+
+Note that the `diff` column itself is not permuted, but rather the signs of the values in the column.
+
+Visualizing the observed statistic alongside the null distribution,
+
+```{r}
+visualize(null_dist) +
+  shade_p_value(obs_stat = x_tilde, direction = "two-sided")
+```
+
+Calculating the p-value from the null distribution and observed statistic,
+
+```{r}
+null_dist %>%
+  get_p_value(obs_stat = x_tilde, direction = "two-sided")
+```
+
 ### One categorical (one proportion)
 
 Calculating the observed statistic,

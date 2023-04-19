@@ -1,5 +1,8 @@
 # infer v1.0.4.9000 (developmental version)
 
+* Implemented support for permutation hypothesis tests for paired data via the 
+  argument value `null = "paired independence"` in `hypothesize()` (#487).
+
 * The `weight_by` argument to `rep_slice_sample()` can now be passed either as a vector of numeric weights or an unquoted column name in `.data` (#480).
 
 * Newly accommodates variables with spaces in names in the wrapper functions `t_test()` and `prop_test()` (#472).

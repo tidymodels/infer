@@ -7,8 +7,8 @@
 #' Learn more in `vignette("infer")`.
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
-#' @param null The null hypothesis. Options include `"independence"` and
-#'   `"point"`.
+#' @param null The null hypothesis. Options include `"independence"`,
+#'   `"point"`, and `"paired independence"`.
 #' @param p The true proportion of successes (a number between 0 and 1). To be used with point null hypotheses when the specified response
 #' variable is categorical.
 #' @param mu The true mean (any numerical value). To be used with point null
@@ -77,6 +77,10 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
         }
         attr(x, "type") <- "bootstrap"
       }
+    },
+    `paired independence` = {
+       params <- sanitize_hypothesis_params_paired_independence(dots)
+       attr(x, "type") <- "permute"
     }
   )
 
@@ -100,10 +104,20 @@ hypothesize_checks <- function(x, null, call = caller_env()) {
       'testing a null hypothesis of `"independence"`.'
     ), call = call)
   }
+
+  if (null == "paired independence" && has_explanatory(x)) {
+     abort(
+        c(      paste0('Please `specify()` only a response variable when ',
+                       'testing a null hypothesis of `"paired independence"`.'),
+          "i" = paste0('The supplied response variable should be the ',
+                       'pre-computed difference between paired observations.')),
+       call = call
+     )
+  }
 }
 
 match_null_hypothesis <- function(null, call = caller_env()) {
-  null_hypothesis_types <- c("point", "independence")
+  null_hypothesis_types <- c("point", "independence", "paired independence")
 
   if(length(null) != 1) {
      abort(paste0('You should specify exactly one type of null hypothesis.'),
@@ -113,7 +127,8 @@ match_null_hypothesis <- function(null, call = caller_env()) {
   i <- pmatch(null, null_hypothesis_types)
 
   if(is.na(i)) {
-     abort(paste0('`null` should be either "point" or "independence".'),
+     abort(paste0('`null` should be either "point", "independence",',
+                  ' or "paired independence".'),
            call = call)
   }
 
@@ -179,3 +194,12 @@ sanitize_hypothesis_params_proportion <- function(p, x, call = caller_env()) {
   p
 }
 
+sanitize_hypothesis_params_paired_independence <- function(dots) {
+   if (length(dots) > 0) {
+      warn(
+        "Parameter values are not specified when testing paired independence."
+      )
+   }
+
+   NULL
+}

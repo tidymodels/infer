@@ -39,8 +39,8 @@ explanatory variable. This is an alternative to using the formula argument.}
 a string. Needed for inference on one proportion, a difference in
 proportions, and corresponding z stats.}
 
-\item{null}{The null hypothesis. Options include \code{"independence"} and
-\code{"point"}.}
+\item{null}{The null hypothesis. Options include \code{"independence"},
+\code{"point"}, and \code{"paired independence"}.}
 
 \item{p}{The true proportion of successes (a number between 0 and 1). To be used with point null hypotheses when the specified response
 variable is categorical.}

@@ -277,6 +277,10 @@ stat_hypotheses <- tibble::tribble(
   "sd",                "point",
   "prop",              "point",
   "count",             "point",
+  "mean",              "paired independence",
+  "median",            "paired independence",
+  "sum",               "paired independence",
+  "sd",                "paired independence",
   "diff in means",     "independence",
   "diff in medians",   "independence",
   "diff in props",     "independence",
@@ -422,7 +426,7 @@ check_order <- function(x, order, in_calculate = TRUE, stat, call = caller_env()
 check_point_params <- function(x, stat, call = caller_env()) {
   param_names <- attr(attr(x, "params"), "names")
   hyp_text <- 'to be set in `hypothesize()`.'
-  if (is_hypothesized(x)) {
+  if (is_hypothesized(x) && !identical(attr(x, "null"), "paired independence")) {
     if (stat %in% c("mean", "median", "sd", "prop")) {
       if ((stat == "mean") && !("mu" %in% param_names)) {
          abort(glue('`stat == "mean"` requires `"mu"` {hyp_text}'), call = call)

@@ -163,8 +163,9 @@ use_auto_type <- function(auto_type) {
   auto_type
 }
 
-check_permutation_attributes <- function(x, attr, call = caller_env()) {
-  if (any(!has_attr(x, "response"), !has_attr(x, "explanatory"))) {
+check_permutation_attributes <- function(x, call = caller_env()) {
+  if (any(!has_attr(x, "response"), !has_attr(x, "explanatory")) &&
+      !identical(attr(x, "null"), "paired independence")) {
      abort(paste0(
        "Please `specify()` an explanatory and a response variable ",
        "when permuting."
@@ -250,22 +251,34 @@ permute <- function(x, reps = 1, variables, ..., call = caller_env()) {
 
 permute_once <- function(x, variables, ..., call = caller_env()) {
   dots <- list(...)
+  null <- attr(x, "null")
 
-  if (is_hypothesized(x) && (attr(x, "null") == "independence")) {
-    # for each column, determine whether it should be permuted
-    needs_permuting <- colnames(x) %in% process_variables(variables, FALSE)
-
-    # pass each to permute_column with its associated logical
-    out <- purrr::map2(x, needs_permuting, permute_column)
-    out <- tibble::new_tibble(out)
-
-    copy_attrs(out, x)
-  } else {
-     abort(paste0(
-      "Permuting should be done only when doing independence hypothesis test. ",
-      "See `hypothesize()`."
-    ), call = call)
+  if (!is_hypothesized(x) ||
+      !null %in% c("independence", "paired independence")) {
+     abort(
+        paste0("Permuting should be done only when doing independence ",
+               "hypothesis test. See `hypothesize()`."),
+        call = call
+     )
   }
+
+  variables <- process_variables(variables, FALSE)
+  if (null == "independence") {
+     # for each column, determine whether it should be permuted
+     needs_permuting <- colnames(x) %in% variables
+
+     # pass each to permute_column with its associated logical
+     out <- purrr::map2(x, needs_permuting, permute_column)
+     out <- tibble::new_tibble(out)
+  } else {
+     out <- x
+     signs <- sample(c(-1, 1), nrow(x), replace = TRUE, prob = c(.5, .5))
+     out[[variables]] <- x[[variables]] * signs
+  }
+
+  copy_attrs(out, x)
+
+  return(out)
 }
 
 process_variables <- function(variables, should_prompt) {

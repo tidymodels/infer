@@ -12,8 +12,8 @@ hypothesise(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL)
 \arguments{
 \item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 
-\item{null}{The null hypothesis. Options include \code{"independence"} and
-\code{"point"}.}
+\item{null}{The null hypothesis. Options include \code{"independence"},
+\code{"point"}, and \code{"paired independence"}.}
 
 \item{p}{The true proportion of successes (a number between 0 and 1). To be used with point null hypotheses when the specified response
 variable is categorical.}
