@@ -138,8 +138,8 @@ match_null_hypothesis <- function(null, call = caller_env()) {
 sanitize_hypothesis_params_independence <- function(dots) {
   if (length(dots) > 0) {
      warn(paste0(
-      "Parameter values are not specified when testing that two variables are ",
-      "independent."
+      "Parameter values should not be specified when testing that two ",
+      "variables are independent."
     ))
   }
 
@@ -197,7 +197,7 @@ sanitize_hypothesis_params_proportion <- function(p, x, call = caller_env()) {
 sanitize_hypothesis_params_paired_independence <- function(dots) {
    if (length(dots) > 0) {
       warn(
-        "Parameter values are not specified when testing paired independence."
+        "Parameter values should not be specified when testing paired independence."
       )
    }
 

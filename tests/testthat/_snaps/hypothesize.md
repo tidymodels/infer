@@ -31,7 +31,7 @@
         mu = 25)
     Condition
       Warning:
-      Parameter values are not specified when testing that two variables are independent.
+      Parameter values should not be specified when testing that two variables are independent.
 
 # hypothesize() throws a warning when params are set with paired independence
 
@@ -40,7 +40,7 @@
         mu = 25)
     Condition
       Warning:
-      Parameter values are not specified when testing paired independence.
+      Parameter values should not be specified when testing paired independence.
 
 # hypothesize() throws an error when p is greater than 1
 
@@ -199,5 +199,5 @@
         mu = 40)
     Condition
       Warning:
-      Parameter values are not specified when testing that two variables are independent.
+      Parameter values should not be specified when testing that two variables are independent.
 
