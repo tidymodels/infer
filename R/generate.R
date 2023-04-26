@@ -256,7 +256,7 @@ permute_once <- function(x, variables, ..., call = caller_env()) {
   if (!is_hypothesized(x) ||
       !null %in% c("independence", "paired independence")) {
      abort(
-        paste0("Permuting should be done only when doing independence ",
+        paste0("Permuting should be done only when doing an independence ",
                "hypothesis test. See `hypothesize()`."),
         call = call
      )
