@@ -237,6 +237,8 @@ bootstrap <- function(x, reps = 1, ...) {
 
 #' @importFrom dplyr bind_rows group_by
 permute <- function(x, reps = 1, variables, ..., call = caller_env()) {
+  contrast_matrices <- purrr::map(x[, explanatory_name(x)], attr, which = "contrasts")
+
   nrow_x <- nrow(x)
   df_out <- replicate(reps, permute_once(x, variables, call = call), simplify = FALSE) %>%
     dplyr::bind_rows() %>%
@@ -245,6 +247,13 @@ permute <- function(x, reps = 1, variables, ..., call = caller_env()) {
 
   df_out <- copy_attrs(to = df_out, from = x)
 
+  df_out[,explanatory_name(x)] <- purrr::map2(.x = df_out[,explanatory_name(x)],
+                                              .y = contrast_matrices,
+                                              function(x, y) {
+                                                 attr(x, "contrasts") <- y
+                                                 return(x)
+                                                }
+                                              )
   append_infer_class(df_out)
 }
 
