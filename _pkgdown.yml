@@ -47,11 +47,12 @@ reference:
 articles:
 - title: Articles
   navbar: ~
-  contents: 
+  contents:
   - infer
   - t_test
   - anova
   - chi_squared
+  - paired
   - observed_stat_examples
 
 development:
