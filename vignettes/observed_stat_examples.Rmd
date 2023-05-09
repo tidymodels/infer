@@ -206,7 +206,7 @@ set.seed(1)
 
 gss_paired <- gss %>%
    mutate(
-      hours_previous = hours + 1.8 - rpois(nrow(.), 2),
+      hours_previous = hours + 5 - rpois(nrow(.), 4.8),
       diff = hours - hours_previous
    )
 
