@@ -9,6 +9,19 @@
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
 #' @param null The null hypothesis. Options include `"independence"`,
 #'   `"point"`, and `"paired independence"`.
+#' \itemize{
+#'   \item `independence`: Should be used with both a `response` and `explanatory`
+#'   variable. Indicates that the values of the specified `response` variable
+#'   are independent of the associated values in `explanatory`.
+#'   \item `point`: Should be used with only a `response` variable. Indicates
+#'   that a point estimate based on the values in `response` is associated
+#'   with a parameter. Sometimes requires supplying one of `p`, `mu`, `med`, or
+#'   `sigma`.
+#'   \item `paired independence`: Should be used with only a `response` variable
+#'   giving the pre-computed difference between paired observations. Indicates
+#'   that the order of subtraction between paired values does not affect the
+#'   resulting distribution.
+#' }
 #' @param p The true proportion of successes (a number between 0 and 1). To be used with point null hypotheses when the specified response
 #' variable is categorical.
 #' @param mu The true mean (any numerical value). To be used with point null

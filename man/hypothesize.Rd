@@ -13,7 +13,20 @@ hypothesise(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL)
 \item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 
 \item{null}{The null hypothesis. Options include \code{"independence"},
-\code{"point"}, and \code{"paired independence"}.}
+\code{"point"}, and \code{"paired independence"}.
+\itemize{
+\item \code{independence}: Should be used with both a \code{response} and \code{explanatory}
+variable. Indicates that the values of the specified \code{response} variable
+are independent of the associated values in \code{explanatory}.
+\item \code{point}: Should be used with only a \code{response} variable. Indicates
+that a point estimate based on the values in \code{response} is associated
+with a parameter. Sometimes requires supplying one of \code{p}, \code{mu}, \code{med}, or
+\code{sigma}.
+\item \verb{paired independence}: Should be used with only a \code{response} variable
+giving the pre-computed difference between paired observations. Indicates
+that the order of subtraction between paired values does not affect the
+resulting distribution.
+}}
 
 \item{p}{The true proportion of successes (a number between 0 and 1). To be used with point null hypotheses when the specified response
 variable is categorical.}
