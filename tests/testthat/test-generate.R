@@ -578,15 +578,34 @@ test_that("Contrast matrices are preserved", {
    # Effect-coded contrasts for a factor with 3 levels
    tmp_ <- gss_tbl %>%
       dplyr::mutate(partyid = as.factor(partyid),
-                    partyid = `contrasts<-`(partyid, value = contr.sum(3))
+                    partyid = `contrasts<-`(partyid,
+                                            value = contr.sum(length(unique(partyid))))
                     )
 
-   contrast_matrix <- attr(tmp_$partyid, "contrasts", exact = TRUE)
+   party_contrast_matrix <- attr(tmp_$partyid, "contrasts", exact = TRUE)
 
    res_ <- tmp_ %>%
       specify(hours ~ partyid) %>%
       hypothesise(null = "independence") %>%
       generate(reps = 2, type = "permute")
 
-   expect_equal(attr(res_$partyid, "contrasts", exact = TRUE), contrast_matrix)
+   expect_equal(attr(res_$partyid, "contrasts", exact = TRUE), party_contrast_matrix)
+
+   # Test that contrast matrices are only set for the correct explanatory
+   # variables when the model has multiple explanatory variables
+   tmp_ <- tmp_ %>%
+      dplyr::mutate(income = as.factor(income),
+                    income = `contrasts<-`(income,
+                                           value = contr.sum(length(unique(income))))
+                    )
+   income_contrast_matrix <- attr(tmp_$income_contrast_matrix, "contrasts", exact = TRUE)
+
+   res_ <- tmp_ %>%
+      specify(hours ~ partyid + income + age) %>%
+      hypothesise(null = "independence") %>%
+      generate(reps = 2, type = "permute")
+
+   expect_equal(attr(res_$partyid, "contrasts", exact = TRUE), party_contrast_matrix)
+   expect_equal(attr(res_$income, "contrasts", exact = TRUE), income_contrast_matrix)
+   expect_equal(attr(res_$age, "contrasts", exact = TRUE), NULL)
 })
