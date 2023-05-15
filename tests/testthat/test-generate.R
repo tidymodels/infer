@@ -573,3 +573,20 @@ test_that("has_p_param handles edge cases", {
    expect_false(has_p_param(set_p_names(x, c(".p.boop"))))
    expect_false(has_p_param(set_p_names(x, c("beep.boop"))))
 })
+
+test_that("Contrast matrices are preserved", {
+   # Effect-coded contrasts for a factor with 3 levels
+   tmp_ <- gss_tbl %>%
+      dplyr::mutate(partyid = as.factor(partyid),
+                    partyid = `contrasts<-`(partyid, value = contr.sum(3))
+                    )
+
+   contrast_matrix <- attr(tmp_$partyid, "contrasts", exact = TRUE)
+
+   res_ <- tmp_ %>%
+      specify(hours ~ partyid) %>%
+      hypothesise(null = "independence") %>%
+      generate(reps = 2, type = "permute")
+
+   expect_equal(attr(res_$partyid, "contrasts", exact = TRUE), contrast_matrix)
+})
