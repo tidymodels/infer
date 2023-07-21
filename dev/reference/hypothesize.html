@@ -32,6 +32,7 @@ Learn more in vignette("infer").'><meta property="og:image" content="https://inf
     <a class="dropdown-item" href="../articles/t_test.html">Tidy t-Tests with infer</a>
     <a class="dropdown-item" href="../articles/anova.html">Tidy ANOVA (Analysis of Variance) with infer</a>
     <a class="dropdown-item" href="../articles/chi_squared.html">Tidy Chi-Squared Tests with infer</a>
+    <a class="dropdown-item" href="../articles/paired.html">Tidy inference for paired data</a>
     <a class="dropdown-item" href="../articles/observed_stat_examples.html">Full infer Pipeline Examples</a>
   </div>
 </li>
@@ -78,8 +79,19 @@ Learn more in vignette("infer").'><meta property="og:image" content="https://inf
 
 
 <dt>null</dt>
-<dd><p>The null hypothesis. Options include <code>"independence"</code> and
-<code>"point"</code>.</p></dd>
+<dd><p>The null hypothesis. Options include <code>"independence"</code>,
+<code>"point"</code>, and <code>"paired independence"</code>.</p><ul><li><p><code>independence</code>: Should be used with both a <code>response</code> and <code>explanatory</code>
+variable. Indicates that the values of the specified <code>response</code> variable
+are independent of the associated values in <code>explanatory</code>.</p></li>
+<li><p><code>point</code>: Should be used with only a <code>response</code> variable. Indicates
+that a point estimate based on the values in <code>response</code> is associated
+with a parameter. Sometimes requires supplying one of <code>p</code>, <code>mu</code>, <code>med</code>, or
+<code>sigma</code>.</p></li>
+<li><p><code>paired independence</code>: Should be used with only a <code>response</code> variable
+giving the pre-computed difference between paired observations. Indicates
+that the order of subtraction between paired values does not affect the
+resulting distribution.</p></li>
+</ul></dd>
 
 
 <dt>p</dt>

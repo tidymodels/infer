@@ -57,6 +57,7 @@
     <a class="dropdown-item" href="../articles/t_test.html">Tidy t-Tests with infer</a>
     <a class="dropdown-item" href="../articles/anova.html">Tidy ANOVA (Analysis of Variance) with infer</a>
     <a class="dropdown-item" href="../articles/chi_squared.html">Tidy Chi-Squared Tests with infer</a>
+    <a class="dropdown-item" href="../articles/paired.html">Tidy inference for paired data</a>
     <a class="dropdown-item" href="../articles/observed_stat_examples.html">Full infer Pipeline Examples</a>
   </div>
 </li>
@@ -201,10 +202,10 @@ can calculate the p-value:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.05</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.032</span></span></code></pre>
 <p>Thus, if the true mean number of hours worked per week was really 40,
 our approximation of the probability that we would see a test statistic
-as or more extreme than 41.382 is approximately 0.05.</p>
+as or more extreme than 41.382 is approximately 0.032.</p>
 <p>Analogously to the steps shown above, the package supplies a wrapper
 function, <code>t_test</code>, to carry out 1-sample <span class="math inline">\(t\)</span>-tests on tidy data. Rather than using
 randomization, the wrappers carry out the theory-based <span class="math inline">\(t\)</span>-test. The syntax looks like this:</p>
@@ -236,30 +237,6 @@ function:</p>
 <span><span class="co">## 0.03756</span></span></code></pre>
 <p>Note that the resulting <span class="math inline">\(t\)</span>-statistics from these two theory-based
 approaches are the same.</p>
-</div>
-<div class="section level3">
-<h3 id="paired-t-test">Paired t-Test<a class="anchor" aria-label="anchor" href="#paired-t-test"></a>
-</h3>
-<p>You might be interested in running a paired <span class="math inline">\(t\)</span>-test. Paired <span class="math inline">\(t\)</span>-tests can be used in situations when
-there is a natural pairing between values in distributions—a common
-example would be two columns, <code>before</code> and
-<code>after</code>, say, that contain measurements from a patient before
-and after some treatment. To compare these two distributions, then,
-we’re not necessarily interested in how the two distributions look
-different altogether, but how these two measurements from each
-individual change across time. (Pairings don’t necessarily have to be
-over time; another common usage is measurements from two married people,
-for example.) Thus, we can create a new column (see
-<code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code> from the <code>dplyr</code> package if you’re not
-sure how to do this) that is the difference between the two:
-<code>difference = after - before</code>, and then examine <em>this</em>
-distribution to see how each individuals’ measurements changed over
-time.</p>
-<p>Once we’ve <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate()</a></code>d that new <code>difference</code>
-column, we can run a 1-sample <span class="math inline">\(t\)</span>-test on it, where our null hypothesis
-is that <code>mu = 0</code> (i.e. the difference between these
-measurements before and after treatment is, on average, 0). To do so,
-we’d use the procedure outlined in the above section.</p>
 </div>
 <div class="section level3">
 <h3 id="sample-t-test-1">2-Sample t-Test<a class="anchor" aria-label="anchor" href="#sample-t-test-1"></a>
@@ -356,11 +333,11 @@ null distribution to do calculate the p-value.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.266</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.316</span></span></code></pre>
 <p>Thus, if there were really no relationship between the number of
 hours worked a week and whether one has a college degree, the
 probability that we would see a statistic as or more extreme than 1.5384
-is approximately 0.266.</p>
+is approximately 0.316.</p>
 <p>Note that, similarly to the steps shown above, the package supplies a
 wrapper function, <code>t_test</code>, to carry out 2-sample <span class="math inline">\(t\)</span>-tests on tidy data. The syntax looks
 like this:</p>

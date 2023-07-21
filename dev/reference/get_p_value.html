@@ -32,6 +32,7 @@ Learn more in vignette("infer").'><meta property="og:image" content="https://inf
     <a class="dropdown-item" href="../articles/t_test.html">Tidy t-Tests with infer</a>
     <a class="dropdown-item" href="../articles/anova.html">Tidy ANOVA (Analysis of Variance) with infer</a>
     <a class="dropdown-item" href="../articles/chi_squared.html">Tidy Chi-Squared Tests with infer</a>
+    <a class="dropdown-item" href="../articles/paired.html">Tidy inference for paired data</a>
     <a class="dropdown-item" href="../articles/observed_stat_examples.html">Full infer Pipeline Examples</a>
   </div>
 </li>
@@ -169,7 +170,7 @@ raised to caution the user against reporting a p-value exactly equal to 0.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   p_value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>    0.04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>   0.038</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># using a theoretical null distribution -----------------------------------</span></span></span>
 <span class="r-in"><span></span></span>
@@ -219,27 +220,27 @@ raised to caution the user against reporting a p-value exactly equal to 0.</p>
 <span class="r-in"><span><span class="va">null_fits</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 300 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   replicate [100]</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    replicate term          estimate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>         1 intercept     41.9    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>         1 age            0.006<span style="text-decoration: underline;">27</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>         1 collegedegree -<span style="color: #BB0000;">2.13</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>         2 intercept     43.7    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>         2 age           -<span style="color: #BB0000;">0.079</span><span style="color: #BB0000; text-decoration: underline;">8</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>         2 collegedegree  2.69   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>         3 intercept     43.9    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>         3 age           -<span style="color: #BB0000;">0.051</span><span style="color: #BB0000; text-decoration: underline;">7</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>         3 collegedegree -<span style="color: #BB0000;">1.31</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>         4 intercept     44.1    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    replicate term           estimate</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>         1 intercept     38.3     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>         1 age            0.082<span style="text-decoration: underline;">1</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>         1 collegedegree -<span style="color: #BB0000;">0.522</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>         2 intercept     42.4     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>         2 age           -<span style="color: #BB0000;">0.021</span><span style="color: #BB0000; text-decoration: underline;">2</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>         2 collegedegree -<span style="color: #BB0000;">0.346</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>         3 intercept     40.4     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>         3 age           -<span style="color: #BB0000;">0.000</span><span style="color: #BB0000; text-decoration: underline;">951</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>         3 collegedegree  3.01    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>         4 intercept     42.8     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 290 more rows</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_p_value</span><span class="op">(</span><span class="va">null_fits</span>, obs_stat <span class="op">=</span> <span class="va">observed_fit</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   term          p_value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> age              0.94</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> age              0.9 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> collegedegree    0.24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> intercept        0.9 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> intercept        0.7 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># more in-depth explanation of how to use the infer package</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
