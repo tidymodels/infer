@@ -70,7 +70,7 @@ test_that(
   "hypothesize() allows partial matching of null arg for point", {
   hyp_p <- mtcars_df %>%
     specify(response = mpg) %>%
-    hypothesize(null = "p", mu = 0)
+    hypothesize(null = "po", mu = 0)
   expect_equal(attr(hyp_p, "null"), "point")
 })
 
@@ -107,6 +107,15 @@ test_that(
       specify(mpg ~ vs) %>%
       hypothesize(null = "independence", mu = 25)
   )
+})
+
+test_that(
+   "hypothesize() throws a warning when params are set with paired independence", {
+   expect_snapshot(
+      res_ <- mtcars_df %>%
+         specify(response = mpg) %>%
+         hypothesize(null = "paired independence", mu = 25)
+   )
 })
 
 test_that(
@@ -158,6 +167,14 @@ test_that("hypothesize arguments function", {
 
   expect_snapshot(error = TRUE, res_ <- mtcars_s %>% hypothesize(null = "independence"))
   expect_snapshot(error = TRUE, res_ <- mtcars_s %>% hypothesize(null = "point"))
+
+  expect_snapshot(error = TRUE,
+    res_ <-
+       mtcars_f %>%
+       specify(mpg ~ am) %>%
+       hypothesize(null = "paired independence")
+  )
+
   # Produces error on win-build
   expect_snapshot(error = TRUE,
     res <- mtcars_s %>% hypothesize(null = c("point", "independence"), mu = 3)

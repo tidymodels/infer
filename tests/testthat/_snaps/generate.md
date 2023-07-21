@@ -177,7 +177,7 @@
       Warning:
       You have given `type = "permute"`, but `type` is expected to be `"bootstrap"`. This workflow is untested and the results may not mean what you think they mean.
       Error in `generate()`:
-      ! Permuting should be done only when doing independence hypothesis test. See `hypothesize()`.
+      ! Permuting should be done only when doing an independence hypothesis test. See `hypothesize()`.
 
 ---
 

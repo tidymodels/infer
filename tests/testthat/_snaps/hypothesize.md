@@ -4,7 +4,7 @@
       mtcars_df %>% specify(response = mpg) %>% hypothesize(null = "dependence")
     Condition
       Error in `hypothesize()`:
-      ! `null` should be either "point" or "independence".
+      ! `null` should be either "point", "independence", or "paired independence".
 
 # hypothesize() throws an error when multiple null values are provided
 
@@ -31,7 +31,16 @@
         mu = 25)
     Condition
       Warning:
-      Parameter values are not specified when testing that two variables are independent.
+      Parameter values should not be specified when testing that two variables are independent.
+
+# hypothesize() throws a warning when params are set with paired independence
+
+    Code
+      res_ <- mtcars_df %>% specify(response = mpg) %>% hypothesize(null = "paired independence",
+        mu = 25)
+    Condition
+      Warning:
+      Parameter values should not be specified when testing paired independence.
 
 # hypothesize() throws an error when p is greater than 1
 
@@ -75,7 +84,7 @@
       res_ <- hypothesize(matrix1)
     Condition
       Error in `hypothesize()`:
-      ! `null` should be either "point" or "independence".
+      ! `null` should be either "point", "independence", or "paired independence".
 
 ---
 
@@ -83,7 +92,7 @@
       res_ <- hypothesize(mtcars_s, null = NA)
     Condition
       Error in `hypothesize()`:
-      ! `null` should be either "point" or "independence".
+      ! `null` should be either "point", "independence", or "paired independence".
 
 ---
 
@@ -91,7 +100,7 @@
       res_ <- hypothesize(mtcars_s)
     Condition
       Error in `hypothesize()`:
-      ! `null` should be either "point" or "independence".
+      ! `null` should be either "point", "independence", or "paired independence".
 
 ---
 
@@ -116,6 +125,15 @@
     Condition
       Error in `hypothesize()`:
       ! You must specify exactly one of `p`, `mu`, `med`, or `sigma`.
+
+---
+
+    Code
+      res_ <- mtcars_f %>% specify(mpg ~ am) %>% hypothesize(null = "paired independence")
+    Condition
+      Error in `hypothesize()`:
+      ! Please `specify()` only a response variable when testing a null hypothesis of `"paired independence"`.
+      i The supplied response variable should be the pre-computed difference between paired observations.
 
 ---
 
@@ -156,7 +174,7 @@
       res_ <- mtcars_s %>% hypothesize()
     Condition
       Error in `hypothesize()`:
-      ! `null` should be either "point" or "independence".
+      ! `null` should be either "point", "independence", or "paired independence".
 
 # params correct
 
@@ -181,5 +199,5 @@
         mu = 40)
     Condition
       Warning:
-      Parameter values are not specified when testing that two variables are independent.
+      Parameter values should not be specified when testing that two variables are independent.
 
