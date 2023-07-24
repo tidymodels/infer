@@ -7,6 +7,12 @@
 
 * Newly accommodates variables with spaces in names in the wrapper functions `t_test()` and `prop_test()` (#472).
 
+* Fixed bug in two-sample `prop_test()` where the response and explanatory 
+  variable were passed in place of each other to `prop.test()`. This enables
+  using `prop_test()` with explanatory variables with greater than 2 levels and,
+  in the process, addresses a bug where `prop_test()` collapsed levels other than
+  the `success` when the response variable had more than 2 levels.
+
 # infer v1.0.4
 
 * Fixed bug in p-value shading where shaded regions no longer correctly overlaid

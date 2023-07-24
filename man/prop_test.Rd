@@ -79,6 +79,22 @@ to see this connection.}
 A tidier version of \link[stats:prop.test]{prop.test()} for equal or given
 proportions.
 }
+\details{
+When testing with an explanatory variable with more than two levels, the
+\code{order} argument as used in the package no longer well-defined. The function
+will thus raise a warning and ignore the value if supplied a non-NULL \code{order}
+argument.
+
+The columns present in output depend on the output of both \code{\link[=prop.test]{prop.test()}}
+and \code{\link[broom:tidy.htest]{broom::glance.htest()}}. See the latter's documentation for column
+definitions; columns have been renamed with the following mapping:
+\itemize{
+\item \code{chisq_df} = \code{parameter}
+\item \code{p_value} = \code{p.value}
+\item \code{lower_ci} = \code{conf.low}
+\item \code{upper_ci} = \code{conf.high}
+}
+}
 \examples{
 # two-sample proportion test for difference in proportions of
 # college completion by respondent sex

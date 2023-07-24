@@ -417,6 +417,21 @@ check_conf_level <- function(conf_level, call = caller_env()) {
 #'   to see this connection.
 #' @param ... Additional arguments for [prop.test()][stats::prop.test()].
 #'
+#' @details
+#' When testing with an explanatory variable with more than two levels, the
+#' `order` argument as used in the package no longer well-defined. The function
+#' will thus raise a warning and ignore the value if supplied a non-NULL `order`
+#' argument.
+#'
+#' The columns present in output depend on the output of both [prop.test()]
+#' and [broom::glance.htest()]. See the latter's documentation for column
+#' definitions; columns have been renamed with the following mapping:
+#'
+#' * `chisq_df` = `parameter`
+#' * `p_value` = `p.value`
+#' * `lower_ci` = `conf.low`
+#' * `upper_ci` = `conf.high`
+#'
 #' @examples
 #' # two-sample proportion test for difference in proportions of
 #' # college completion by respondent sex
@@ -483,6 +498,11 @@ prop_test <- function(x, formula,
   # process "success" arg
   lvls <- levels(factor(response_variable(x)))
 
+  if (length(lvls) > 2) {
+     abort(glue("This test is not well-defined for response variables \\
+                 with more than 2 levels."))
+  }
+
   if (!is.null(success)) {
     check_type(success, rlang::is_string)
 
@@ -497,16 +517,25 @@ prop_test <- function(x, formula,
 
   # two sample
   if (has_explanatory(x)) {
-
-    order <- check_order(x, order, in_calculate = FALSE, stat = NULL)
-
     # make a summary table to supply to prop.test
     sum_table <- x %>%
-      select(response_name(x), explanatory_name(x)) %>%
-      table()
+       select(explanatory_name(x), response_name(x)) %>%
+       table()
 
-    # reorder according to the order and success arguments
-    sum_table <- sum_table[lvls, order]
+    length_exp_levels <- length(levels(explanatory_variable(x)))
+    if (length_exp_levels == 2) {
+       order <- check_order(x, order, in_calculate = FALSE, stat = NULL)
+       # reorder according to the order and success arguments
+       sum_table <- sum_table[order, lvls]
+    } else if (length_exp_levels >= 3 && !is.null(order)) {
+       warn(glue(
+            "The `order` argument will be ignored as it is not well-defined \\
+             for explanatory variables with more than 2 levels. ",
+            "Do not pass the `order` argument to silence this message."
+       ))
+       # reorder according to the success argument
+       sum_table <- sum_table[, lvls]
+    }
 
     prelim <- stats::prop.test(x = sum_table,
                                alternative = alternative,
