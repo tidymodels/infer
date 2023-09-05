@@ -419,11 +419,11 @@ check_conf_level <- function(conf_level, call = caller_env()) {
 #'
 #' @details
 #' When testing with an explanatory variable with more than two levels, the
-#' `order` argument as used in the package no longer well-defined. The function
+#' `order` argument as used in the package is no longer well-defined. The function
 #' will thus raise a warning and ignore the value if supplied a non-NULL `order`
 #' argument.
 #'
-#' The columns present in output depend on the output of both [prop.test()]
+#' The columns present in the output depend on the output of both [prop.test()]
 #' and [broom::glance.htest()]. See the latter's documentation for column
 #' definitions; columns have been renamed with the following mapping:
 #'
