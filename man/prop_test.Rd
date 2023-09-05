@@ -81,11 +81,11 @@ proportions.
 }
 \details{
 When testing with an explanatory variable with more than two levels, the
-\code{order} argument as used in the package no longer well-defined. The function
+\code{order} argument as used in the package is no longer well-defined. The function
 will thus raise a warning and ignore the value if supplied a non-NULL \code{order}
 argument.
 
-The columns present in output depend on the output of both \code{\link[=prop.test]{prop.test()}}
+The columns present in the output depend on the output of both \code{\link[=prop.test]{prop.test()}}
 and \code{\link[broom:tidy.htest]{broom::glance.htest()}}. See the latter's documentation for column
 definitions; columns have been renamed with the following mapping:
 \itemize{
