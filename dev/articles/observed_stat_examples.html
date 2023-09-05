@@ -172,7 +172,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.028</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.04</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="one-numerical-variable-standardized-mean-t">One numerical variable (standardized mean <span class="math inline">\(t\)</span>)<a class="anchor" aria-label="anchor" href="#one-numerical-variable-standardized-mean-t"></a>
@@ -229,7 +229,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.036</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.032</span></span></code></pre>
 <p>Alternatively, using the <code>t_test</code> wrapper:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -275,7 +275,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>       0</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.002</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="one-numerical-variable-paired">One numerical variable (paired)<a class="anchor" aria-label="anchor" href="#one-numerical-variable-paired"></a>
@@ -618,7 +618,7 @@ allow for tests of equality of proportions on tidy data.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 6</span></span></span>
 <span><span class="co">##   statistic chisq_df p_value alternative lower_ci upper_ci</span></span>
 <span><span class="co">##       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0.000<span style="text-decoration: underline;">020</span>4        1   0.996 two.sided     -<span style="color: #BB0000;">0.101</span>   0.091<span style="text-decoration: underline;">7</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> 0.000<span style="text-decoration: underline;">020</span>4        1   0.996 two.sided    -<span style="color: #BB0000;">0.091</span><span style="color: #BB0000; text-decoration: underline;">8</span>   0.083<span style="text-decoration: underline;">4</span></span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="one-categorical-2-level---gof">One categorical (&gt;2 level) - GoF<a class="anchor" aria-label="anchor" href="#one-categorical-2-level---gof"></a>

@@ -167,6 +167,19 @@ to see this connection.</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>When testing with an explanatory variable with more than two levels, the
+<code>order</code> argument as used in the package is no longer well-defined. The function
+will thus raise a warning and ignore the value if supplied a non-NULL <code>order</code>
+argument.</p>
+<p>The columns present in the output depend on the output of both <code><a href="https://rdrr.io/r/stats/prop.test.html" class="external-link">prop.test()</a></code>
+and <code><a href="https://broom.tidymodels.org/reference/tidy.htest.html" class="external-link">broom::glance.htest()</a></code>. See the latter's documentation for column
+definitions; columns have been renamed with the following mapping:</p><ul><li><p><code>chisq_df</code> = <code>parameter</code></p></li>
+<li><p><code>p_value</code> = <code>p.value</code></p></li>
+<li><p><code>lower_ci</code> = <code>conf.low</code></p></li>
+<li><p><code>upper_ci</code> = <code>conf.high</code></p></li>
+</ul></div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other wrapper functions: 
 <code><a href="chisq_stat.html">chisq_stat</a>()</code>,
@@ -186,7 +199,7 @@ to see this connection.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   statistic chisq_df p_value alternative lower_ci upper_ci</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 0.000<span style="text-decoration: underline;">020</span>4        1   0.996 two.sided     -<span style="color: #BB0000;">0.101</span>   0.091<span style="text-decoration: underline;">7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 0.000<span style="text-decoration: underline;">020</span>4        1   0.996 two.sided    -<span style="color: #BB0000;">0.091</span><span style="color: #BB0000; text-decoration: underline;">8</span>   0.083<span style="text-decoration: underline;">4</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># one-sample proportion test for hypothesized null</span></span></span>
 <span class="r-in"><span><span class="co"># proportion of college completion of .2</span></span></span>
