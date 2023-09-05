@@ -51,7 +51,7 @@ v1.0.0 is the first major release of the {infer} package! By and large, the core
 
 ## Behavioral consistency
 
-A major change to the package in this release is a set of standards for behavorial consistency of `calculate()` (#356). Namely, the package will now
+A major change to the package in this release is a set of standards for behavioral consistency of `calculate()` (#356). Namely, the package will now
 
 * supply a consistent error when the supplied `stat` argument isn't well-defined
 for the variables `specify()`d
@@ -131,7 +131,7 @@ To accommodate this behavior, a number of new `calculate` methods were added or 
 - Extended `calculate()` to allow lowercase aliases for `stat` arguments (#373).
 - Fixed bugs in `calculate()` for to allow for programmatic calculation of statistics
 
-This behavorial consistency also allowed for the implementation of `observe()`, a wrapper function around `specify()`, `hypothesize()`, and `calculate()`, to calculate observed statistics. The function provides a shorthand alternative to calculating observed statistics from data:
+This behavioral consistency also allowed for the implementation of `observe()`, a wrapper function around `specify()`, `hypothesize()`, and `calculate()`, to calculate observed statistics. The function provides a shorthand alternative to calculating observed statistics from data:
 
 ``` r
 # calculating the observed mean number of hours worked per week
