@@ -258,11 +258,11 @@ test_that("conf_int argument works", {
 })
 
 # generate some data to test the prop.test wrapper
-df <- data.frame(resp = c(rep("c", 450),
+df <- data.frame(exp = rep(c("a", "b"), each = 500),
+                 resp = c(rep("c", 450),
                           rep("d", 50),
                           rep("c", 400),
                           rep("d", 100)),
-                 exp = rep(c("a", "b"), each = 500),
                  stringsAsFactors = FALSE)
 
 sum_df <- table(df)
@@ -384,17 +384,59 @@ test_that("prop_test output dimensionality is correct", {
                                      conf_int = FALSE)
   infer_2_sample_z <- prop_test(df, resp ~ exp, order = c("a", "b"), z = TRUE)
 
-  # introduce a third response level
-  df$resp[c(1:10, 490:510, 990:1000)] <- "e"
-
-  infer_3_sample <- prop_test(df, resp ~ exp, order = c("a", "b"))
-
   expect_length(infer_1_sample, 4)
   expect_length(infer_1_sample, length(infer_1_sample_z) + 1)
   expect_length(infer_2_sample, 6)
   expect_length(infer_2_sample_no_int, 4)
   expect_length(infer_2_sample_z, length(infer_2_sample) - 1)
-  expect_length(infer_3_sample, 3)
+})
+
+test_that("prop_test handles >2 explanatory levels gracefully", {
+   set.seed(1)
+   dfr <-
+      tibble::tibble(
+         exp = sample(c("a", "b", "c"), 100, replace = TRUE),
+         resp = sample(c("d", "e"), 100, replace = TRUE)
+      )
+
+   res_old <- prop.test(table(dfr))
+
+   # don't pass order
+   expect_silent(
+      res_1 <- prop_test(dfr, resp ~ exp)
+   )
+
+   # pass 2-length order
+   expect_snapshot(
+      res_2 <- prop_test(dfr, resp ~ exp, order = c("a", "b"))
+   )
+
+   # pass 3-length order
+   expect_snapshot(
+      res_3 <- prop_test(dfr, resp ~ exp, order = c("a", "b", "c"))
+   )
+
+   expect_equal(res_1, res_2)
+   expect_equal(res_2, res_3)
+
+   expect_named(res_1, c("statistic", "chisq_df", "p_value"))
+   expect_equal(res_1$statistic, res_old$statistic)
+   expect_equal(res_1$chisq_df, res_old$parameter)
+   expect_equal(res_1$p_value, res_old$p.value)
+})
+
+test_that("prop_test errors with >2 response levels", {
+   set.seed(1)
+   dfr <-
+      tibble::tibble(
+         exp = sample(c("a", "b"), 100, replace = TRUE),
+         resp = sample(c("c", "d", "e"), 100, replace = TRUE)
+      )
+
+   expect_snapshot(
+      error = TRUE,
+      res_1 <- prop_test(dfr, resp ~ exp)
+   )
 })
 
 test_that("prop_test z argument works as expected", {

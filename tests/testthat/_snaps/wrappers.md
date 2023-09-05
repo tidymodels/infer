@@ -199,6 +199,30 @@
       Error in `prop_test()`:
       ! b is not a valid level of resp.
 
+# prop_test handles >2 explanatory levels gracefully
+
+    Code
+      res_2 <- prop_test(dfr, resp ~ exp, order = c("a", "b"))
+    Condition
+      Warning:
+      The `order` argument will be ignored as it is not well-defined for explanatory variables with more than 2 levels. To silence this message, avoid passing the `order` argument.
+
+---
+
+    Code
+      res_3 <- prop_test(dfr, resp ~ exp, order = c("a", "b", "c"))
+    Condition
+      Warning:
+      The `order` argument will be ignored as it is not well-defined for explanatory variables with more than 2 levels. To silence this message, avoid passing the `order` argument.
+
+# prop_test errors with >2 response levels
+
+    Code
+      res_1 <- prop_test(dfr, resp ~ exp)
+    Condition
+      Error in `prop_test()`:
+      ! This test is not defined for response variables with more than 2 levels.
+
 # wrappers can handled ordered factors
 
     Code
