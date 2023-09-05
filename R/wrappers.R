@@ -499,7 +499,7 @@ prop_test <- function(x, formula,
   lvls <- levels(factor(response_variable(x)))
 
   if (length(lvls) > 2) {
-     abort(glue("This test is not well-defined for response variables \\
+     abort(glue("This test is not defined for response variables \\
                  with more than 2 levels."))
   }
 
@@ -531,7 +531,7 @@ prop_test <- function(x, formula,
        warn(glue(
             "The `order` argument will be ignored as it is not well-defined \\
              for explanatory variables with more than 2 levels. ",
-            "Do not pass the `order` argument to silence this message."
+            "To silence this message, avoid passing the `order` argument."
        ))
        # reorder according to the success argument
        sum_table <- sum_table[, lvls]
