@@ -4,7 +4,7 @@ Contributions to the `infer` whether in the form of bug fixes, issue reports, ne
 code or documentation improvements are encouraged and welcome. We welcome novices
 who may have never contributed to a package before as well as friendly
 veterans looking to help us improve the package for users. We are eager to include
-and accepting of contributions from everyone that meets our [code of conduct](CONDUCT.md)
+and accepting of contributions from everyone that meets our [code of conduct](.github/CODE_OF_CONDUCT.md)
 guidelines.
 
 Please use the GitHub issues. For any pull request, please link to or open a
@@ -32,4 +32,4 @@ Besides that, in general follow the
 ## Code of Conduct
 
 When contributing to the `infer` package you must follow the code of 
-conduct defined in [CONDUCT](CONDUCT.md).
+conduct defined in [CONDUCT](.github/CODE_OF_CONDUCT.md).

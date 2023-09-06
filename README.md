@@ -9,7 +9,7 @@
 [![R-CMD-check](https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml)
 [![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)
 [![Coverage
-Status](https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg)](https://codecov.io/github/tidymodels/infer/?branch=main)
+Status](https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg)](https://app.codecov.io/github/tidymodels/infer/?branch=main)
 
 The objective of this package is to perform statistical inference using
 an expressive statistical grammar that coheres with the `tidyverse`
@@ -69,7 +69,7 @@ pak::pak("tidymodels/infer")
 We welcome others helping us make this package as user-friendly and
 efficient as possible. Please review our
 [contributing](https://github.com/tidymodels/infer/blob/main/CONTRIBUTING.md)
-and [conduct](https://github.com/tidymodels/infer/blob/main/CONDUCT.md)
+and [conduct](https://github.com/tidymodels/infer/blob/main/.github/CODE_OF_CONDUCT.md)
 guidelines. By participating in this project you agree to abide by its
 terms.
 

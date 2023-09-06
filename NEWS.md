@@ -1,4 +1,4 @@
-# infer v1.0.4.9000 (developmental version)
+# infer v1.0.5
 
 * Implemented support for permutation hypothesis tests for paired data via the 
   argument value `null = "paired independence"` in `hypothesize()` (#487).
