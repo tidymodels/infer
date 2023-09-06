@@ -1,3 +1,5 @@
+# infer v1.0.5.9000 (development version)
+
 # infer v1.0.5
 
 * Implemented support for permutation hypothesis tests for paired data via the 
