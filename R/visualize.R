@@ -24,7 +24,9 @@ ggplot2::ggplot_add
 #'   this argument will be ignored and default to `"theoretical"`.
 #' @param dens_color A character or hex string specifying the color of the
 #'   theoretical density curve.
-#' @param ... Other arguments passed along to \\{ggplot2\\} functions.
+#' @param ... Additional arguments passed along to functions in ggplot2.
+#'   For `method = "simulation"`, `stat_bin()`, and for `method = "theoretical"`,
+#'   `geom_path()`. Some values may be overwritten by infer internally.
 #'
 #' @details In order to make the visualization workflow more straightforward
 #' and explicit, `visualize()` now only should be used to plot distributions

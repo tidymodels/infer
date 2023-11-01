@@ -27,7 +27,9 @@ this argument will be ignored and default to \code{"theoretical"}.}
 \item{dens_color}{A character or hex string specifying the color of the
 theoretical density curve.}
 
-\item{...}{Other arguments passed along to \\{ggplot2\\} functions.}
+\item{...}{Additional arguments passed along to functions in ggplot2.
+For \code{method = "simulation"}, \code{stat_bin()}, and for \code{method = "theoretical"},
+\code{geom_path()}. Some values may be overwritten by infer internally.}
 }
 \value{
 For \code{\link[=calculate]{calculate()}}-based workflows, a ggplot showing the simulation-based
