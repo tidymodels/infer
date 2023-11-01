@@ -96,7 +96,7 @@
 <!--http://www.r-pkg.org/badges/version/infer-->
 <!--figs/main.svg-->
 <!--https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg-->
-<p><a href="https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml" class="external-link"><img src="https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://cran.r-project.org/package=infer" class="external-link"><img src="https://www.r-pkg.org/badges/version/infer" alt="CRAN_Status_Badge"></a> <a href="https://app.codecov.io/github/tidymodels/infer/?branch=main" class="external-link"><img src="https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg" alt="Coverage Status"></a></p>
+<p><a href="https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml" class="external-link"><img src="https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://cran.r-project.org/package=infer" class="external-link"><img src="https://www.r-pkg.org/badges/version/infer" alt="CRAN_Status_Badge"></a> <a href="https://codecov.io/github/tidymodels/infer/?branch=main" class="external-link"><img src="https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg" alt="Coverage Status"></a></p>
 <p>The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the <code>tidyverse</code> design framework. The package is centered around 4 main verbs, supplemented with many utilities to visualize and extract value from their outputs.</p>
 <ul>
 <li>
@@ -184,7 +184,7 @@
 <div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 1</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="do">##   p_value</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="do">##     &lt;dbl&gt;</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 1   0.055</span></span></code></pre></div>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 1    0.06</span></span></code></pre></div>
 <p>Note that the formula and non-formula interfaces (i.e. <code>age ~ partyid</code> vs. <code>response = age, explanatory =  partyid</code>) work for all implemented inference procedures in <code>infer</code>. Use whatever is more natural for you. If you will be doing modeling using functions like <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> and <code><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm()</a></code>, though, we recommend you begin to use the formula <code>y ~ x</code> notation as soon as possible.</p>
 <p>Other resources are available in the package vignettes! See <code><a href="articles/observed_stat_examples.html">vignette("observed_stat_examples")</a></code> for more examples like the one above, and <code><a href="articles/infer.html">vignette("infer")</a></code> for discussion of the underlying principles of the package design.</p>
 </div>
