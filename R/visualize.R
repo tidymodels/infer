@@ -177,10 +177,10 @@ visualize <- function(data, bins = 15, method = "simulation",
                       ...) {
   if (inherits(data, "infer_dist")) {
     if (!missing(method) && method != "theoretical") {
-       warn(glue(
-        "Simulation-based visualization methods are not well-defined for ",
-        "`assume()` output; the `method` argument will be ignored. Set ",
-        '`method = "theoretical"` to silence this message.'
+       cli_warn(c(
+        'Simulation-based visualization methods are not well-defined for \\
+         `assume()` output; the `method` argument will be ignored.',
+         i = 'Set `method = "theoretical"` to silence this message.'
       ))
     }
 
@@ -188,12 +188,12 @@ visualize <- function(data, bins = 15, method = "simulation",
     do_warn <- FALSE
   } else {
     if (method == "theoretical") {
-      inform(glue(
-        'Rather than setting `method = "theoretical"` with a simulation-based ',
-        'null distribution, the preferred method for visualizing theory-based ',
-        'distributions with infer is now to pass the output of `assume()` as ',
-        'the first argument to `visualize()`.'
-      ))
+      cli_inform(
+        'Rather than setting `method = "theoretical"` with a simulation-based \\
+         null distribution, the preferred method for visualizing theory-based \\
+         distributions with infer is now to pass the output of `assume()` as \\
+         the first argument to `visualize()`.'
+      )
     }
 
     do_warn <- TRUE
@@ -272,11 +272,11 @@ check_dots_for_deprecated <- function(dots) {
   if (any(dep_args %in% names(dots))) {
     bad_args <- dep_args[dep_args %in% names(dots)]
 
-    warn(glue(
-      "The arguments `{list(bad_args)}` are deprecated in `visualize()` ",
-      "and will be ignored. They should now be passed to one of ",
-      "`shade_p_value()` or `shade_confidence_interval()`."
-    ))
+    cli_warn(
+      "The arguments `{list(bad_args)}` are deprecated in `visualize()` \\
+       and will be ignored. They should now be passed to one of \\
+       `shade_p_value()` or `shade_confidence_interval()`."
+    )
 
     dots[!dep_args %in% names(dots)]
   }
@@ -291,29 +291,31 @@ check_visualize_args <- function(data, bins, method, dens_color, call = caller_e
   check_type(dens_color, is.character, call = call)
 
   if (!(method %in% c("simulation", "theoretical", "both"))) {
-     abort(paste0(
-      'Provide `method` with one of three options: `"theoretical"`, `"both"`, ',
-      'or `"simulation"`. `"simulation"` is the default for simulation-based ',
-      'null distributions, while `"theoretical"` is the only option for ',
-      'null distributions outputted by `assume()`.'
-    ), call = call)
+     cli_abort(
+       'Provide `method` with one of three options: `"theoretical"`, `"both"`, \\
+        or `"simulation"`. `"simulation"` is the default for simulation-based \\
+        null distributions, while `"theoretical"` is the only option for \\
+        null distributions outputted by `assume()`.',
+       call = call
+     )
   }
 
   if (method == "both") {
     if (!("stat" %in% names(data))) {
-       abort(paste0(
-        '`generate()` and `calculate()` are both required to be done prior ',
-        'to `visualize(method = "both")`'
-      ), call = call)
+       cli_abort(
+         '`generate()` and `calculate()` are both required to be done prior \\
+          to `visualize(method = "both")`',
+         call = call
+       )
     }
 
     if (
       ("replicate" %in% names(data)) && (length(unique(data$replicate)) < 100)
     ) {
-       warn(glue(
-        "With only {length(unique(data$replicate))} replicates, it may be ",
-        "difficult to see the relationship between simulation and theory."
-      ))
+       cli_warn(
+        "With only {length(unique(data$replicate))} replicates, it may be \\
+         difficult to see the relationship between simulation and theory."
+       )
     }
   }
 
@@ -330,12 +332,13 @@ check_for_piped_visualize <- function(..., call = caller_env()) {
 
     called_function <- sys.call(-1)[[1]]
 
-    abort(glue(
-      "It looks like you piped the result of `visualize()` into ",
-      "`{called_function}()` (using `%>%`) rather than adding the result of ",
-      "`{called_function}()` as a layer with `+`. Consider changing",
-      "`%>%` to `+`."
-    ), call = call)
+    cli_abort(c(
+      "It looks like you piped the result of `visualize()` into \\
+       `{called_function}()` (using `%>%`) rather than adding the result of \\
+       `{called_function}()` as a layer with `+`.",
+       i = "Consider changing `%>%` to `+`."),
+      call = call
+    )
   }
 
   TRUE
@@ -356,18 +359,19 @@ impute_endpoints <- function(endpoints, plot = NULL, call = caller_env()) {
   }
 
   if (is.vector(endpoints) && (length(endpoints) != 2)) {
-     warn(glue(
-      "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector. ",
-      "Using the first two entries as the `endpoints`."
-    ))
+     cli_warn(
+      "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector. \\
+       Using the first two entries as the `endpoints`."
+     )
     res <- endpoints[1:2]
   }
 
   if (is.data.frame(endpoints)) {
     if ((nrow(endpoints) != 1) || (ncol(endpoints) != 2)) {
-       abort(paste0(
-        "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector."
-      ), call = call)
+       cli_abort(
+        "Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector.",
+        call = call
+       )
     }
 
     res <- unlist(endpoints)
@@ -383,10 +387,11 @@ impute_obs_stat <- function(obs_stat, direction, endpoints, call = caller_env())
     !is.null(direction) &&
     (is.null(obs_stat) + is.null(endpoints) != 1)
   ) {
-     abort(paste0(
-      "Shading requires either `endpoints` values for a confidence interval ",
-      "or the observed statistic `obs_stat` to be provided."
-    ), call = call)
+     cli_abort(
+       "Shading requires either `endpoints` values for a confidence interval \\
+        or the observed statistic `obs_stat` to be provided.",
+       call = call
+     )
   }
 
   obs_stat
@@ -493,25 +498,26 @@ warn_theoretical_layer <- function(data, do_warn = TRUE, call = caller_env()) {
 
   method <- get_viz_method(data)
 
-  warn(glue(
-    "Check to make sure the conditions have been met for the theoretical ",
-    "method. {{infer}} currently does not check these for you."
-  ))
+  cli_warn(
+    "Check to make sure the conditions have been met for the theoretical \\
+     method. {.pkg infer} currently does not check these for you."
+  )
 
   if (
     has_attr(data, "stat") &&
     !(attr(data, "stat") %in% c("t", "z", "Chisq", "F"))
   ) {
     if (method == "theoretical") {
-       warn(glue(
-        "Your `calculate`d statistic and the theoretical distribution are on ",
-        "different scales. Displaying only the theoretical distribution."
-      ))
+       cli_warn(
+        "Your `calculate`d statistic and the theoretical distribution are on \\
+         different scales. Displaying only the theoretical distribution."
+       )
     } else if (method == "both") {
-       abort(paste0(
-        "Your `calculate`d statistic and the theoretical distribution are on ",
-        "different scales. Use a standardized `stat` instead."
-      ), call = call)
+       cli_abort(
+        "Your `calculate`d statistic and the theoretical distribution are on \\
+         different scales. Use a standardized `stat` instead.",
+        call = call
+       )
     }
   }
 }

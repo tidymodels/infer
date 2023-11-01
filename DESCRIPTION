@@ -36,6 +36,7 @@ Depends:
     R (>= 3.5.0)
 Imports:
     broom,
+    cli,
     dplyr (>= 0.7.0),
     generics,
     ggplot2,

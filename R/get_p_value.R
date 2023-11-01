@@ -131,9 +131,9 @@ get_p_value <- function(x, obs_stat, direction) {
 get_p_value.default <- function(x, obs_stat, direction) {
   check_type(x, is.data.frame)
   if (!is_generated(x) & is_hypothesized(x)) {
-     abort(paste0(
+     cli_abort(c(
       "Theoretical p-values are not yet supported. ",
-      "`x` should be the result of calling `generate()`."
+      i = "`x` should be the result of calling {.fun generate}."
     ))
   }
   check_for_nan(x, "get_p_value")
@@ -228,10 +228,10 @@ simulation_based_p_value <- function(x, obs_stat, direction, call = caller_env()
   }
 
   if (abs(pval) < 1e-16) {
-     warn(paste0(
-      "Please be cautious in reporting a p-value of 0. This result is an ",
-      "approximation based on the number of `reps` chosen in the `generate()` ",
-      "step. See `?get_p_value()` for more information."
+     cli_warn(c(
+      "Please be cautious in reporting a p-value of 0. This result is an \\
+       approximation based on the number of `reps` chosen in the {.fun generate} step.",
+      i = "See {.help [{.fun get_p_value}](infer::get_p_value)} for more information."
     ))
   }
 
@@ -258,11 +258,11 @@ check_hypotheses_align <- function(x, obs_stat) {
   if (is_hypothesized(x) &&
       is_hypothesized(obs_stat) &&
       any(attr(x, "params") != attr(obs_stat, "params"))) {
-     warn(paste0(
-      "`x` and `obs_stat` were generated using different null hypotheses. ",
-      "This workflow is untested and results may not mean what you think ",
-      "they mean."
-    ))
+     cli_warn(
+       "`x` and `obs_stat` were generated using different null hypotheses. \\
+        This workflow is untested and results may not mean what you think \\
+        they mean."
+     )
   }
 }
 
@@ -271,11 +271,11 @@ check_x_vs_obs_stat <- function(x, obs_stat, call = caller_env()) {
   # in the reverse order
   if (is_generated(obs_stat) &&
       !is_generated(x)) {
-     abort(paste0(
-      "It seems like the `obs_stat` argument has been passed to `get_p_value()` ",
-      "as the first argument when `get_p_value()` expects `x`, a distribution ",
-      "of statistics or coefficient estimates, as the first argument. ",
-      "Have you mistakenly switched the order of `obs_stat` and `x`?"
+     cli_abort(c(
+      "It seems like the `obs_stat` argument has been passed to `get_p_value()` \\
+       as the first argument when `get_p_value()` expects `x`, a distribution \\
+       of statistics or coefficient estimates, as the first argument. ",
+      i = "Have you mistakenly switched the order of `obs_stat` and `x`?"
     ), call = call)
   }
 

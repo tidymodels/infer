@@ -20,7 +20,9 @@
       specify(mtcars_df, mtcars_df$mpg)
     Condition
       Error in `specify()`:
-      ! The first unnamed argument must be a formula. You passed in 'double'. Did you forget to name one or more arguments?
+      ! The first unnamed argument must be a formula.
+      i You passed in 'double'.
+      x Did you forget to name one or more arguments?
 
 # response and explanatory arguments
 
@@ -140,7 +142,9 @@
       specify(mtcars_df, formula = "vs", success = 1)
     Condition
       Error in `specify()`:
-      ! The first unnamed argument must be a formula. You passed in 'character'. Did you forget to name one or more arguments?
+      ! The first unnamed argument must be a formula.
+      i You passed in 'character'.
+      x Did you forget to name one or more arguments?
 
 ---
 
@@ -149,8 +153,8 @@
     Condition
       Error in `specify()`:
       ! The argument you passed in for the formula does not exist.
-      * Were you trying to pass in an unquoted column name?
-      * Did you forget to name one or more arguments?
+      i Were you trying to pass in an unquoted column name?
+      i Did you forget to name one or more arguments?
 
 ---
 
@@ -158,7 +162,9 @@
       specify(mtcars, response = am, "1")
     Condition
       Error in `specify()`:
-      ! The first unnamed argument must be a formula. You passed in 'character'. Did you forget to name one or more arguments?
+      ! The first unnamed argument must be a formula.
+      i You passed in 'character'.
+      x Did you forget to name one or more arguments?
 
 # is_complete works
 

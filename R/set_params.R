@@ -139,10 +139,10 @@ check_factor_levels <- function(x, type, name) {
     unused <- setdiff(levels(x), unique(x))
 
     if (length(unused) > 0) {
-      inform(glue(
-        "Dropping unused factor levels {list(unused)} from the ",
-        "supplied {type} variable '{name}'."
-      ))
+      cli_inform(
+        "Dropping unused factor levels {list(unused)} from the \\
+         supplied {type} variable '{name}'."
+      )
     }
   }
 }

@@ -180,7 +180,7 @@
       rep_slice_sample(population, n = 1, weight_by = wts)
     Condition
       Error in `rep_slice_sample()`:
-      ! The column `wts` provided to the `weight_by` argument is not in the supplied data.
+      ! The column wts provided to the `weight_by` argument is not in the supplied data.
 
 ---
 

@@ -21,7 +21,7 @@
       test_df %>% get_confidence_interval(level = 1.2)
     Condition
       Error in `get_confidence_interval()`:
-      ! The value of `level` must be between 0 and 1 non-inclusive.
+      ! The value of `level` must be between 0 and 1, non-inclusive.
 
 ---
 
@@ -95,7 +95,8 @@
       get_confidence_interval(null_fits, point_estimate = "boop", level = 0.95)
     Condition
       Error in `get_confidence_interval()`:
-      ! The `point_estimate` argument should be the output of `fit()`. See the documentation with `?get_confidence_interval`.
+      ! The `point_estimate` argument should be the output of `fit()`.
+      i See the documentation with `?get_confidence_interval`.
 
 ---
 
@@ -103,7 +104,8 @@
       get_confidence_interval(null_fits, point_estimate = obs_fit$estimate, level = 0.95)
     Condition
       Error in `get_confidence_interval()`:
-      ! The `point_estimate` argument should be the output of `fit()`. See the documentation with `?get_confidence_interval`.
+      ! The `point_estimate` argument should be the output of `fit()`.
+      i See the documentation with `?get_confidence_interval`.
 
 ---
 
@@ -155,7 +157,7 @@
       get_confidence_interval(null_dist_theory, level = 0.95, point_estimate = obs_t)
     Condition
       Error in `get_confidence_interval()`:
-      ! The only allowable statistics for theoretical confidence intervals are "mean", "prop", "diff in means", and "diff in props". See the "Details" section of `?get_confidence_interval` for more details.
+      ! The only allowable statistics for theoretical confidence intervals are "mean", "prop", "diff in means", and "diff in props". See the "Details" section of `get_confidence_interval()` (`?infer::get_confidence_interval()`) for more details.
 
 ---
 

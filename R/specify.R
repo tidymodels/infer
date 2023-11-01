@@ -41,7 +41,7 @@
 #' vignette("infer")
 #' }
 #'
-#' @importFrom rlang f_lhs f_rhs get_expr caller_env abort warn inform
+#' @importFrom rlang f_lhs f_rhs get_expr caller_env
 #' @importFrom dplyr select any_of across
 #' @importFrom methods hasArg
 #' @family core functions
@@ -75,7 +75,7 @@ specify <- function(x, formula, response = NULL,
   is_complete <- stats::complete.cases(x)
   if (!all(is_complete)) {
     x <- dplyr::filter(x, is_complete)
-    warn(glue("Removed {sum(!is_complete)} rows containing missing values."))
+    cli_warn("Removed {sum(!is_complete)} rows containing missing values.")
   }
 
   # Add "infer" class
@@ -87,17 +87,23 @@ parse_variables <- function(x, formula, response, explanatory, call = caller_env
     tryCatch(
       rlang::is_formula(formula),
       error = function(e) {
-         abort(c("The argument you passed in for the formula does not exist.",
-                  "Were you trying to pass in an unquoted column name?",
-                  "Did you forget to name one or more arguments?"),
-               call = call)
+         cli_abort(
+           c("The argument you passed in for the formula does not exist.",
+             i = "Were you trying to pass in an unquoted column name?",
+             i = "Did you forget to name one or more arguments?"),
+           call = call
+         )
       }
     )
     if (!rlang::is_formula(formula)) {
-      abort(glue("The first unnamed argument must be a formula. ",
-                 "You passed in '{get_type(formula)}'. ",
-                 "Did you forget to name one or more arguments?"),
-            call = call)
+      cli_abort(
+         c(
+           "The first unnamed argument must be a formula.",
+            i = "You passed in '{get_type(formula)}'.",
+            x = "Did you forget to name one or more arguments?"
+         ),
+         call = call
+      )
     }
   }
 
@@ -113,8 +119,10 @@ parse_variables <- function(x, formula, response, explanatory, call = caller_env
 
   # Check response and explanatory variables to be appropriate for later use
   if (!has_response(x)) {
-     abort(paste0("Please supply a response variable that is not `NULL`."),
-           call = call)
+     cli_abort(
+       "Please supply a response variable that is not `NULL`.",
+       call = call
+     )
   }
 
   check_var_correct(x, "response", call = call)
@@ -150,23 +158,27 @@ check_success_arg <- function(x, success, call = caller_env()) {
 
   if (!is.null(success)) {
     if (!is.character(success)) {
-       abort(paste0("`success` must be a string."), call = call)
+       cli_abort("`success` must be a string.", call = call)
     }
     if (!is.factor(response_col)) {
-       abort(paste0(
-        "`success` should only be specified if the response is a categorical ",
-        "variable."
-      ), call = call)
+       cli_abort(
+        "`success` should only be specified if the response is a categorical \\
+         variable.",
+        call = call
+       )
     }
     if (!(success %in% levels(response_col))) {
-       abort(glue('{success} is not a valid level of {response_name(x)}.'),
-             call = call)
+       cli_abort(
+         '{success} is not a valid level of {response_name(x)}.',
+         call = call
+       )
     }
     if (sum(table(response_col) > 0) > 2) {
-       abort(paste0(
-        "`success` can only be used if the response has two levels. ",
-        "`filter()` can reduce a variable to two levels."
-      ), call = call)
+       cli_abort(
+        "`success` can only be used if the response has two levels. \\
+         `filter()` can reduce a variable to two levels.",
+        call = call
+       )
     }
   }
 
@@ -175,10 +187,11 @@ check_success_arg <- function(x, success, call = caller_env()) {
       length(levels(response_variable(x))) == 2) &&
      ((!has_attr(x, "explanatory_type") ||
        length(levels(explanatory_variable(x))) == 2))) {
-     abort(glue(
-        'A level of the response variable `{response_name(x)}` needs to be ',
-        'specified for the `success` argument in `specify()`.'
-      ), call = call)
+     cli_abort(
+       'A level of the response variable `{response_name(x)}` needs to be \\
+        specified for the `success` argument in `specify()`.',
+       call = call
+     )
     }
 
 }
@@ -189,16 +202,18 @@ check_var_correct <- function(x, var_name, call = caller_env()) {
   # Variable (if present) should be a symbolic column name
   if (!is.null(var)) {
     if (!rlang::is_symbolic(var)) {
-       abort(glue(
-        "The {var_name} should be a bare variable name (not a string in ",
-        "quotation marks)."
-      ), call = call)
+       cli_abort(
+        "The {var_name} should be a bare variable name (not a string in \\
+         quotation marks).",
+        call = call
+       )
     }
 
     if (any(!(all.vars(var) %in% names(x)))) {
-       abort(glue(
-        'The {var_name} variable `{var}` cannot be found in this dataframe.'
-      ), call = call)
+       cli_abort(
+        'The {var_name} variable `{var}` cannot be found in this dataframe.',
+        call = call
+       )
     }
   }
 
@@ -208,10 +223,11 @@ check_var_correct <- function(x, var_name, call = caller_env()) {
 check_vars_different <- function(x, call = caller_env()) {
   if (has_response(x) && has_explanatory(x)) {
     if (identical(response_name(x), explanatory_name(x))) {
-       abort(paste0(
-        "The response and explanatory variables must be different from one ",
-        "another."
-      ), call = call)
+       cli_abort(
+        "The response and explanatory variables must be different from one \\
+         another.",
+        call = call
+       )
     }
   }
 

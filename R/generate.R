@@ -109,17 +109,18 @@ sanitize_generation_type <- function(x, call = caller_env()) {
   check_type(x, is.character, call = call)
 
   if (!x %in% c("bootstrap", "permute", "simulate", "draw")) {
-    abort(paste0(
-      'The `type` argument should be one of "bootstrap", "permute", ',
-      'or "draw". See `?generate` for more details.'
-    ), call = call)
+    cli_abort(
+      'The `type` argument should be one of "bootstrap", "permute", \\
+       or "draw". See {.help [{.fun generate}](infer::generate)} for more details.',
+      call = call
+     )
   }
 
   if (x == "simulate") {
-     inform(paste0(
-      'The `"simulate"` generation type has been renamed to `"draw"`. ',
-      'Use `type = "draw"` instead to quiet this message.'
-    ))
+     cli_inform(
+      'The `"simulate"` generation type has been renamed to `"draw"`. \\
+       Use `type = "draw"` instead to quiet this message.'
+     )
   }
 
   x
@@ -136,11 +137,11 @@ compare_type_vs_auto_type <- function(type, auto_type, x) {
         # make sure auto_type vs type difference isn't just an alias
         (any(!c(auto_type, type) %in% c("draw", "simulate"))))
      ) {
-     warn(glue(
-        "You have given `type = \"{type}\"`, but `type` is expected ",
-        "to be `\"{auto_type}\"`. This workflow is untested and ",
-        "the results may not mean what you think they mean."
-     ))
+     cli_warn(
+        "You have given `type = \"{type}\"`, but `type` is expected \\
+         to be `\"{auto_type}\"`. This workflow is untested and \\
+         the results may not mean what you think they mean."
+     )
   }
 
   type
@@ -159,33 +160,35 @@ has_p_param <- function(x) {
 }
 
 use_auto_type <- function(auto_type) {
-   inform(glue('Setting `type = "{auto_type}"` in `generate()`.'))
+  cli_inform('Setting `type = "{auto_type}"` in `generate()`.')
   auto_type
 }
 
 check_permutation_attributes <- function(x, call = caller_env()) {
   if (any(!has_attr(x, "response"), !has_attr(x, "explanatory")) &&
       !identical(attr(x, "null"), "paired independence")) {
-     abort(paste0(
-       "Please `specify()` an explanatory and a response variable ",
-       "when permuting."
-     ), call = call)
+     cli_abort(
+       "Please {.fun specify} an explanatory and a response variable \\
+        when permuting.",
+       call = call
+     )
   }
 }
 
 check_cols <- function(x, variables, type, missing, arg_name = "variables", call = caller_env()) {
   if (!rlang::is_symbolic(rlang::get_expr(variables))) {
-     abort(glue(
-      "The `{arg_name}` argument should be one or more unquoted variable names ",
-      "(not strings in quotation marks)."
-    ), call = call)
+     cli_abort(
+       "The {.arg {arg_name}} argument should be one or more unquoted variable names \\
+        (not strings in quotation marks).",
+       call = call
+     )
   }
 
   if (!missing && type != "permute") {
-     warn(glue(
-      'The `{arg_name}` argument is only relevant for the "permute" ',
-      'generation type and will be ignored.'
-    ))
+     cli_warn(
+      'The {.arg {arg_name}} argument is only relevant for the "permute" \\
+       generation type and will be ignored.'
+     )
 
     should_prompt <- FALSE
   } else {
@@ -198,14 +201,11 @@ check_cols <- function(x, variables, type, missing, arg_name = "variables", call
   if (any(!col_names %in% colnames(x))) {
     bad_cols <- col_names[!col_names %in% colnames(x)]
 
-    plurals <- if (length(bad_cols) > 1) {
-        c("s", "are")} else {
-        c("", "is")}
-
-    abort(glue(
-      'The column{plurals[1]} `{list(bad_cols)}` provided to ',
-      'the `{arg_name}` argument {plurals[2]} not in the supplied data.'
-    ), call = call)
+    cli_abort(
+      '{qty(bad_cols)}The column{?s} {.field {bad_cols}} provided to \\
+       the {.arg {arg_name}} argument{qty(bad_cols)} {?is/are} not in the supplied data.',
+      call = call
+    )
   }
 }
 
@@ -255,10 +255,10 @@ permute_once <- function(x, variables, ..., call = caller_env()) {
 
   if (!is_hypothesized(x) ||
       !null %in% c("independence", "paired independence")) {
-     abort(
-        paste0("Permuting should be done only when doing an independence ",
-               "hypothesis test. See `hypothesize()`."),
-        call = call
+     cli_abort(
+       "Permuting should be done only when doing an independence \\
+        hypothesis test. See {.help [{.fun hypothesize}](infer::hypothesize)}.",
+       call = call
      )
   }
 
@@ -300,11 +300,11 @@ process_variables <- function(variables, should_prompt) {
   interactions <- purrr::map_lgl(out, `%in%`, x = "*")
 
   if (any(interactions) && should_prompt) {
-     inform(glue(
-      "Message: Please supply only data columns to the `variables` argument. ",
-      "Note that any derived effects that depend on these columns will also ",
-      "be affected."
-    ))
+     cli_inform(
+      "Message: Please supply only data columns to the {.arg variables} argument. \\
+       Note that any derived effects that depend on these columns will also \\
+       be affected."
+    )
   }
 
   out <- out[!interactions]
