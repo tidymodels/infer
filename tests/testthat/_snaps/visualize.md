@@ -58,7 +58,7 @@
       Rather than setting `method = "theoretical"` with a simulation-based null distribution, the preferred method for visualizing theory-based distributions with infer is now to pass the output of `assume()` as the first argument to `visualize()`.
     Condition
       Warning:
-      Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
+      Check to make sure the conditions have been met for the theoretical method. infer currently does not check these for you.
 
 ---
 
@@ -69,7 +69,7 @@
         shade_p_value(direction = "both", obs_stat = obs_diff)
     Condition
       Warning:
-      Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
+      Check to make sure the conditions have been met for the theoretical method. infer currently does not check these for you.
       Error in `theoretical_layer()`:
       ! Your `calculate`d statistic and the theoretical distribution are on different scales. Use a standardized `stat` instead.
 
@@ -91,7 +91,7 @@
         direction = "both", obs_stat = obs_diff_mean)
     Condition
       Warning:
-      Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
+      Check to make sure the conditions have been met for the theoretical method. infer currently does not check these for you.
       Error in `theoretical_layer()`:
       ! Your `calculate`d statistic and the theoretical distribution are on different scales. Use a standardized `stat` instead.
 
@@ -106,7 +106,7 @@
       Rather than setting `method = "theoretical"` with a simulation-based null distribution, the preferred method for visualizing theory-based distributions with infer is now to pass the output of `assume()` as the first argument to `visualize()`.
     Condition
       Warning:
-      Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
+      Check to make sure the conditions have been met for the theoretical method. infer currently does not check these for you.
       Warning:
       Your `calculate`d statistic and the theoretical distribution are on different scales. Displaying only the theoretical distribution.
 
@@ -129,7 +129,7 @@
       Warning:
       With only 10 replicates, it may be difficult to see the relationship between simulation and theory.
       Warning:
-      Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
+      Check to make sure the conditions have been met for the theoretical method. infer currently does not check these for you.
 
 # Traditional right-tailed tests have warning if not right-tailed
 
@@ -140,7 +140,7 @@
         obs_stat = 2, direction = "left")
     Condition
       Warning:
-      Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
+      Check to make sure the conditions have been met for the theoretical method. infer currently does not check these for you.
 
 ---
 
@@ -150,7 +150,7 @@
         visualize(method = "both") + shade_p_value(obs_stat = 2, direction = "two_sided")
     Condition
       Warning:
-      Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
+      Check to make sure the conditions have been met for the theoretical method. infer currently does not check these for you.
 
 ---
 
@@ -162,7 +162,7 @@
       Rather than setting `method = "theoretical"` with a simulation-based null distribution, the preferred method for visualizing theory-based distributions with infer is now to pass the output of `assume()` as the first argument to `visualize()`.
     Condition
       Warning:
-      Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
+      Check to make sure the conditions have been met for the theoretical method. infer currently does not check these for you.
 
 ---
 
@@ -174,7 +174,7 @@
       Rather than setting `method = "theoretical"` with a simulation-based null distribution, the preferred method for visualizing theory-based distributions with infer is now to pass the output of `assume()` as the first argument to `visualize()`.
     Condition
       Warning:
-      Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
+      Check to make sure the conditions have been met for the theoretical method. infer currently does not check these for you.
 
 # confidence interval plots are working
 
@@ -213,7 +213,7 @@
       A t statistic requires a null hypothesis to calculate the observed statistic.
       Output assumes the following null value: `mu = 0`.
       Warning:
-      Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
+      Check to make sure the conditions have been met for the theoretical method. infer currently does not check these for you.
 
 # warn_right_tail_test works
 
@@ -261,7 +261,8 @@
       res_ <- visualize(dist)
     Condition
       Warning:
-      1 calculated statistic was `NaN`. `NaN`s have been omitted from visualization. See ?calculate for more details.
+      1 calculated statistic was `NaN`. `NaN`s have been omitted from visualization.
+      i See `calculate()` (`?infer::calculate()`) for more details.
 
 ---
 
@@ -269,7 +270,8 @@
       res_ <- visualize(dist)
     Condition
       Warning:
-      2 calculated statistics were `NaN`. `NaN`s have been omitted from visualization. See ?calculate for more details.
+      2 calculated statistics were `NaN`. `NaN`s have been omitted from visualization.
+      i See `calculate()` (`?infer::calculate()`) for more details.
 
 ---
 
@@ -277,7 +279,8 @@
       res_ <- visualize(dist)
     Condition
       Error:
-      ! All calculated statistics were `NaN`. See ?calculate for more details.
+      ! All calculated statistics were `NaN`.
+      i See `calculate()` (`?infer::calculate()`) for more details.
 
 # visualize can handle multiple explanatory variables
 
@@ -291,7 +294,8 @@
       res_viz_assume_t_sim <- visualize(null_dist, method = "simulation")
     Condition
       Warning:
-      Simulation-based visualization methods are not well-defined for `assume()` output; the `method` argument will be ignored. Set `method = "theoretical"` to silence this message.
+      Simulation-based visualization methods are not well-defined for `assume()` output; the `method` argument will be ignored.
+      i Set `method = "theoretical"` to silence this message.
 
 ---
 
@@ -299,5 +303,6 @@
       res_viz_assume_t_both <- visualize(null_dist, method = "both")
     Condition
       Warning:
-      Simulation-based visualization methods are not well-defined for `assume()` output; the `method` argument will be ignored. Set `method = "theoretical"` to silence this message.
+      Simulation-based visualization methods are not well-defined for `assume()` output; the `method` argument will be ignored.
+      i Set `method = "theoretical"` to silence this message.
 

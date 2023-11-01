@@ -111,7 +111,7 @@ sanitize_generation_type <- function(x, call = caller_env()) {
   if (!x %in% c("bootstrap", "permute", "simulate", "draw")) {
     cli_abort(
       'The `type` argument should be one of "bootstrap", "permute", \\
-       or "draw". See `?generate` for more details.',
+       or "draw". See {.help [{.fun generate}](infer::generate)} for more details.',
       call = call
      )
   }
@@ -168,7 +168,7 @@ check_permutation_attributes <- function(x, call = caller_env()) {
   if (any(!has_attr(x, "response"), !has_attr(x, "explanatory")) &&
       !identical(attr(x, "null"), "paired independence")) {
      cli_abort(
-       "Please `specify()` an explanatory and a response variable \\
+       "Please {.fun specify} an explanatory and a response variable \\
         when permuting.",
        call = call
      )
@@ -178,7 +178,7 @@ check_permutation_attributes <- function(x, call = caller_env()) {
 check_cols <- function(x, variables, type, missing, arg_name = "variables", call = caller_env()) {
   if (!rlang::is_symbolic(rlang::get_expr(variables))) {
      cli_abort(
-       "The `{arg_name}` argument should be one or more unquoted variable names \\
+       "The {.arg {arg_name}} argument should be one or more unquoted variable names \\
         (not strings in quotation marks).",
        call = call
      )
@@ -186,7 +186,7 @@ check_cols <- function(x, variables, type, missing, arg_name = "variables", call
 
   if (!missing && type != "permute") {
      cli_warn(
-      'The `{arg_name}` argument is only relevant for the "permute" \\
+      'The {.arg {arg_name}} argument is only relevant for the "permute" \\
        generation type and will be ignored.'
      )
 
@@ -201,13 +201,9 @@ check_cols <- function(x, variables, type, missing, arg_name = "variables", call
   if (any(!col_names %in% colnames(x))) {
     bad_cols <- col_names[!col_names %in% colnames(x)]
 
-    plurals <- if (length(bad_cols) > 1) {
-        c("s", "are")} else {
-        c("", "is")}
-
     cli_abort(
-      'The column{plurals[1]} `{list(bad_cols)}` provided to \\
-       the `{arg_name}` argument {plurals[2]} not in the supplied data.',
+      '{qty(bad_cols)}The column{?s} {.field {bad_cols}} provided to \\
+       the {.arg {arg_name}} argument{qty(bad_cols)} {?is/are} not in the supplied data.',
       call = call
     )
   }
@@ -261,7 +257,7 @@ permute_once <- function(x, variables, ..., call = caller_env()) {
       !null %in% c("independence", "paired independence")) {
      cli_abort(
        "Permuting should be done only when doing an independence \\
-        hypothesis test. See `hypothesize()`.",
+        hypothesis test. See {.help [{.fun hypothesize}](infer::hypothesize)}.",
        call = call
      )
   }
@@ -305,7 +301,7 @@ process_variables <- function(variables, should_prompt) {
 
   if (any(interactions) && should_prompt) {
      cli_inform(
-      "Message: Please supply only data columns to the `variables` argument. \\
+      "Message: Please supply only data columns to the {.arg variables} argument. \\
        Note that any derived effects that depend on these columns will also \\
        be affected."
     )

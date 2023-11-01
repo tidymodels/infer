@@ -23,7 +23,7 @@
     Condition
       Warning:
       Please be cautious in reporting a p-value of 0. This result is an approximation based on the number of `reps` chosen in the `generate()` step.
-      i See `?get_p_value()` for more information.
+      i See `get_p_value()` (`?infer::get_p_value()`) for more information.
 
 # get_p_value throws error in case of `NaN` stat
 
@@ -31,7 +31,8 @@
       res_ <- get_p_value(gss_calc, 0, "both")
     Condition
       Error:
-      ! 1 calculated statistic was `NaN`. Simulation-based p-values are not well-defined for null distributions with non-finite values. See ?calculate for more details.
+      ! 1 calculated statistic was `NaN`. Simulation-based p-values are not well-defined for null distributions with non-finite values.
+      i See `calculate()` (`?infer::calculate()`) for more details.
 
 ---
 
@@ -39,7 +40,8 @@
       res_ <- get_p_value(gss_calc, 0, "both")
     Condition
       Error:
-      ! 2 calculated statistics were `NaN`. Simulation-based p-values are not well-defined for null distributions with non-finite values. See ?calculate for more details.
+      ! 2 calculated statistics were `NaN`. Simulation-based p-values are not well-defined for null distributions with non-finite values.
+      i See `calculate()` (`?infer::calculate()`) for more details.
 
 ---
 
@@ -47,7 +49,8 @@
       res_ <- get_p_value(gss_calc, 0, "both")
     Condition
       Error:
-      ! All calculated statistics were `NaN`. See ?calculate for more details.
+      ! All calculated statistics were `NaN`.
+      i See `calculate()` (`?infer::calculate()`) for more details.
 
 # get_p_value can handle fitted objects
 

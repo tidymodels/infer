@@ -368,7 +368,8 @@ check_order <- function(x, order, in_calculate = TRUE, stat, call = caller_env()
     if (!is.null(order)) {
        cli_warn(
          "Statistic is not based on a difference or ratio; the `order` argument \\
-          will be ignored. Check `?calculate` for details."
+          will be ignored. Check {.help [{.fun calculate}](infer::calculate)} \\
+          for details."
        )
     } else {
       return(order)
@@ -466,11 +467,11 @@ check_for_nan <- function(x, context) {
     return(x)
   }
 
-  calc_ref <- "See ?calculate for more details"
+  calc_ref <- c(i = "See {.help [{.fun calculate}](infer::calculate)} for more details.")
   # If all of the data is NaN, raise an error
   if (num_nans == nrow(x)) {
      cli_abort(
-       "All calculated statistics were `NaN`. {calc_ref}.",
+       c("All calculated statistics were `NaN`.", calc_ref),
        call = NULL
      )
   }
@@ -481,14 +482,14 @@ check_for_nan <- function(x, context) {
   if (context == "visualize") {
     # Raise a warning and plot the data with NaNs removed
     cli_warn(
-      "{num_nans_msg}. `NaN`s have been omitted from visualization. {calc_ref}."
+      c("{num_nans_msg}. `NaN`s have been omitted from visualization.", calc_ref)
     )
     return(x[!stat_is_nan, ])
   } else if (context == "get_p_value") {
     # Raise an error
     cli_abort(
-      "{num_nans_msg}. Simulation-based p-values are not well-defined for \\
-       null distributions with non-finite values. {calc_ref}.",
+      c("{num_nans_msg}. Simulation-based p-values are not well-defined for \\
+       null distributions with non-finite values.", calc_ref),
       call = NULL
     )
   }

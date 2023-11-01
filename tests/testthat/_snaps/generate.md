@@ -92,7 +92,7 @@
       generate(hyp_mean, reps = 1, type = "other")
     Condition
       Error in `generate()`:
-      ! The `type` argument should be one of "bootstrap", "permute", or "draw". See `?generate` for more details.
+      ! The `type` argument should be one of "bootstrap", "permute", or "draw". See `generate()` (`?infer::generate()`) for more details.
 
 # auto `type` works (generate)
 
@@ -177,7 +177,7 @@
       Warning:
       You have given `type = "permute"`, but `type` is expected to be `"bootstrap"`. This workflow is untested and the results may not mean what you think they mean.
       Error in `generate()`:
-      ! Permuting should be done only when doing an independence hypothesis test. See `hypothesize()`.
+      ! Permuting should be done only when doing an independence hypothesis test. See `hypothesize()` (`?infer::hypothesize()`).
 
 ---
 
@@ -228,7 +228,7 @@
       res_ <- mtcars_df %>% specify(mpg ~ hp) %>% generate(reps = 100, type = "other")
     Condition
       Error in `generate()`:
-      ! The `type` argument should be one of "bootstrap", "permute", or "draw". See `?generate` for more details.
+      ! The `type` argument should be one of "bootstrap", "permute", or "draw". See `generate()` (`?infer::generate()`) for more details.
 
 # generate() handles `NULL` value of `type`
 
@@ -244,7 +244,7 @@
         generate(reps = 2, type = "permute", variables = c(howdy))
     Condition
       Error in `generate()`:
-      ! The column `list("howdy")` provided to the `variables` argument is not in the supplied data.
+      ! The column howdy provided to the `variables` argument is not in the supplied data.
 
 ---
 
@@ -253,7 +253,7 @@
         generate(reps = 2, type = "permute", variables = c(howdy, doo))
     Condition
       Error in `generate()`:
-      ! The columns `list("howdy", "doo")` provided to the `variables` argument are not in the supplied data.
+      ! The columns howdy and doo provided to the `variables` argument are not in the supplied data.
 
 ---
 
@@ -315,7 +315,7 @@
         null = "point", p = 0.5) %>% generate(type = "boop")
     Condition
       Error in `generate()`:
-      ! The `type` argument should be one of "bootstrap", "permute", or "draw". See `?generate` for more details.
+      ! The `type` argument should be one of "bootstrap", "permute", or "draw". See `generate()` (`?infer::generate()`) for more details.
 
 ---
 

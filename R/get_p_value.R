@@ -133,7 +133,7 @@ get_p_value.default <- function(x, obs_stat, direction) {
   if (!is_generated(x) & is_hypothesized(x)) {
      cli_abort(c(
       "Theoretical p-values are not yet supported. ",
-      i = "`x` should be the result of calling `generate()`."
+      i = "`x` should be the result of calling {.fun generate}."
     ))
   }
   check_for_nan(x, "get_p_value")
@@ -230,8 +230,8 @@ simulation_based_p_value <- function(x, obs_stat, direction, call = caller_env()
   if (abs(pval) < 1e-16) {
      cli_warn(c(
       "Please be cautious in reporting a p-value of 0. This result is an \\
-       approximation based on the number of `reps` chosen in the `generate()` step.",
-      i = "See `?get_p_value()` for more information."
+       approximation based on the number of `reps` chosen in the {.fun generate} step.",
+      i = "See {.help [{.fun get_p_value}](infer::get_p_value)} for more information."
     ))
   }
 

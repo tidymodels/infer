@@ -295,14 +295,14 @@ check_ci_args <- function(x, level, type, point_estimate, call = caller_env()) {
 
   if ((level <= 0) || (level >= 1)) {
      cli_abort(
-       "The value of `level` must be between 0 and 1 non-inclusive.",
+       "The value of {.arg level} must be between 0 and 1, non-inclusive.",
        call = call
      )
   }
 
   if (inherits(x, "infer_dist") && !is.null(type) && type != "se") {
      cli_abort(
-      'The only `type` option for theory-based confidence intervals \\
+      'The only {.arg type} option for theory-based confidence intervals \\
        is `type = "se"`.',
        call = call
      )
@@ -317,7 +317,7 @@ check_ci_args <- function(x, level, type, point_estimate, call = caller_env()) {
 
   if ((type %in% c("se", "bias-corrected")) && is.null(point_estimate)) {
      cli_abort(
-      'A numeric value needs to be given for `point_estimate` \\
+      'A numeric value needs to be given for {.arg point_estimate} \\
        for `type` "se" or "bias-corrected".',
       call = call
      )
@@ -330,7 +330,7 @@ check_ci_args <- function(x, level, type, point_estimate, call = caller_env()) {
        cli_abort(
         'For theoretical confidence intervals, the `point_estimate` argument \\
          must be an `infer` object. Have you made sure to supply the output of \\
-         `calculate()` as the `point_estimate` argument?', call = call)
+         {.fun calculate} as the `point_estimate` argument?', call = call)
     }
 
     if (!attr(point_estimate, "stat") %in%
@@ -338,7 +338,9 @@ check_ci_args <- function(x, level, type, point_estimate, call = caller_env()) {
        cli_abort(
         'The only allowable statistics for theoretical confidence intervals \\
          are "mean", "prop", "diff in means", and "diff in props". See \\
-         the "Details" section of `?get_confidence_interval` for more details.',
+         the "Details" section of \\
+         {.help [{.fun get_confidence_interval}](infer::get_confidence_interval)} \\
+         for more details.',
         call = call
        )
     }

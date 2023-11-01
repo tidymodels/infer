@@ -149,8 +149,8 @@
 assume <- function(x, distribution, df = NULL, ...) {
   if (!inherits(x, "infer")) {
     cli_abort(
-      "The `x` argument must be the output of a core infer function, \\
-       likely `specify()` or `hypothesize()`."
+      "The {.arg x} argument must be the output of a core infer function, \\
+       likely {.fun specify} or {.fun hypothesize}."
     )
   }
 
@@ -211,39 +211,36 @@ check_distribution <- function(x, distribution, df, ..., call = caller_env()) {
     }
 
      cli_abort(
-      'The supplied distribution "{distribution}" is not well-defined for a \\
+      'The supplied distribution {.val {distribution}} is not well-defined for a \\
       {get_stat_type_desc(attr(x, "type_desc_response"))} response \\
       variable ({response_name(x)}) and {msg_tail}', call = call)
   }
 
   if (!is.numeric(df) && !is.null(df)) {
      cli_abort(
-      "`assume()` expects the `df` argument to be a numeric vector, \\
+      "{.fun assume} expects the {.arg df} argument to be a numeric vector, \\
        but you supplied a {list(class(df))} object.",
       call = call
      )
   }
 
   if (length(list(...)) != 0) {
-    plural <- length(list(...)) != 1
     dots <- list(...)
 
-    cli_abort(
-      "`assume()` ignores the dots `...` argument, though the \\
-       argument{if (plural) 's' else ''} `{list(dots)}` \\
-       {if (plural) 'were' else 'was'} supplied. Did you forget to \\
-       concatenate the `df` argument with `c()`?",
+    cli_abort(c(
+      "{.fun assume} ignores the dots `...` argument, though the \\
+       {qty(dots)}argument{?s} {.field {names(dots)}} {?was/were} supplied. ",
+       i = "Did you forget to concatenate the {.arg df} argument with {.fun c}?"),
       call = call
-     )
+    )
   }
 
   if (dist_df_length(distribution) != length(df) && !is.null(df)) {
-    plural <- length(df) != 1
+
     cli_abort(
       '{distribution_desc(distribution)} distribution requires \\
-       {dist_df_length(distribution)} degrees of freedom argument\\
-       {if (!plural) "s" else ""}, but {length(df)} \\
-       {if (plural) "were" else "was"} supplied.',
+       {dist_df_length(distribution)} degrees of freedom argument{?s}, \\
+       but {length(df)} {?was/were} supplied.',
       call = call
     )
   }
@@ -317,10 +314,10 @@ determine_df <- function(x, dist, df) {
 
   if (!is.null(df) && !all(round(df) %in% round(acceptable_dfs(x)))) {
     cli_inform(
-      "Message: The supplied `df` argument does not match its \\
+      "Message: The supplied {.arg df} argument does not match its \\
        expected value. If this is unexpected, ensure that your calculation \\
-       for `df` is correct (see `?assume` for recognized values) or \\
-       supply `df = NULL` to `assume()`."
+       for {.arg df} is correct (see {.help [{.fun assume}](infer::assume)} for \\
+       recognized values) or supply {.code df = NULL} to {.fun assume}."
     )
 
     return(df)

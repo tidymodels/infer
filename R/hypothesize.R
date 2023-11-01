@@ -113,7 +113,7 @@ hypothesize_checks <- function(x, null, call = caller_env()) {
 
   if ((null == "independence") && !has_explanatory(x)) {
      cli_abort(
-      'Please `specify()` an explanatory and a response variable when \\
+      'Please {.fun specify} an explanatory and a response variable when \\
        testing a null hypothesis of `"independence"`.',
       call = call
      )
@@ -121,7 +121,7 @@ hypothesize_checks <- function(x, null, call = caller_env()) {
 
   if (null == "paired independence" && has_explanatory(x)) {
      cli_abort(
-        c('Please `specify()` only a response variable when \\
+        c('Please {.fun specify} only a response variable when \\
            testing a null hypothesis of `"paired independence"`.',
           "i" = 'The supplied response variable should be the \\
                  pre-computed difference between paired observations.'),

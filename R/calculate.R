@@ -128,15 +128,17 @@ calculate <- function(x,
 
 check_if_mlr <- function(x, fn, call = caller_env()) {
   if (fn == "calculate") {
-    suggestion <- paste0("When working with multiple explanatory",
-                         " variables, use fit() instead.")
+    suggestion <-
+       "When working with multiple explanatory variables, use \\
+        {.help [{.fun fit}](infer::fit.infer)} instead."
   } else {
     suggestion <- ""
   }
 
   if (is_mlr(x)) {
     cli_abort(
-      "Multiple explanatory variables are not supported in {fn}(). {suggestion}",
+      c("Multiple explanatory variables are not supported in {.fun {fn}}.",
+        i = suggestion),
       call = call
     )
   }

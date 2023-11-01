@@ -177,11 +177,11 @@ visualize <- function(data, bins = 15, method = "simulation",
                       ...) {
   if (inherits(data, "infer_dist")) {
     if (!missing(method) && method != "theoretical") {
-       cli_warn(
+       cli_warn(c(
         'Simulation-based visualization methods are not well-defined for \\
-         `assume()` output; the `method` argument will be ignored. Set \\
-         `method = "theoretical"` to silence this message.'
-      )
+         `assume()` output; the `method` argument will be ignored.',
+         i = 'Set `method = "theoretical"` to silence this message.'
+      ))
     }
 
     method <- "theoretical"
@@ -500,7 +500,7 @@ warn_theoretical_layer <- function(data, do_warn = TRUE, call = caller_env()) {
 
   cli_warn(
     "Check to make sure the conditions have been met for the theoretical \\
-     method. {{infer}} currently does not check these for you."
+     method. {.pkg infer} currently does not check these for you."
   )
 
   if (

@@ -162,10 +162,10 @@ check_family <- function(object, ..., call = caller_env()) {
   response_type <- attr(object, "type_desc_response")
 
   if (response_type == "mult") {
-    cli_abort(
+    cli_abort(c(
       "infer does not support fitting models for categorical response variables \\
-       with more than two levels. Please see `multinom_reg()` from the \\
-       parsnip package.",
+       with more than two levels.",
+      i = "Please see {.fun multinom_reg} from the parsnip package."),
       call = call
     )
   }

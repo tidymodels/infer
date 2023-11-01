@@ -369,7 +369,7 @@
       res_ <- calculate(gen_gss_tbl15, stat = "Chisq", order = c("dem", "ind"))
     Condition
       Warning:
-      Statistic is not based on a difference or ratio; the `order` argument will be ignored. Check `?calculate` for details.
+      Statistic is not based on a difference or ratio; the `order` argument will be ignored. Check `calculate()` (`?infer::calculate()`) for details.
 
 # specify() %>% calculate() works
 
@@ -514,7 +514,8 @@
         calculate(stat = "t")
     Condition
       Error in `calculate()`:
-      ! Multiple explanatory variables are not supported in calculate(). When working with multiple explanatory variables, use fit() instead.
+      ! Multiple explanatory variables are not supported in `calculate()`.
+      i When working with multiple explanatory variables, use `fit()` (`?infer::fit.infer()`) instead.
 
 ---
 
@@ -523,5 +524,6 @@
         generate(reps = 3, type = "permute") %>% calculate(stat = "t")
     Condition
       Error in `calculate()`:
-      ! Multiple explanatory variables are not supported in calculate(). When working with multiple explanatory variables, use fit() instead.
+      ! Multiple explanatory variables are not supported in `calculate()`.
+      i When working with multiple explanatory variables, use `fit()` (`?infer::fit.infer()`) instead.
 

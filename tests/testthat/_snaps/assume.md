@@ -47,7 +47,8 @@
       Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.
     Condition
       Error in `assume()`:
-      ! `assume()` ignores the dots `...` argument, though the argument `list(1)` was supplied. Did you forget to concatenate the `df` argument with `c()`?
+      ! `assume()` ignores the dots `...` argument, though the argument were supplied.
+      i Did you forget to concatenate the `df` argument with `c()`?
 
 ---
 
@@ -58,7 +59,8 @@
       Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.
     Condition
       Error in `assume()`:
-      ! `assume()` ignores the dots `...` argument, though the arguments `list(1, 2)` were supplied. Did you forget to concatenate the `df` argument with `c()`?
+      ! `assume()` ignores the dots `...` argument, though the arguments were supplied.
+      i Did you forget to concatenate the `df` argument with `c()`?
 
 ---
 
@@ -109,5 +111,5 @@
       res_ <- gss %>% specify(response = hours) %>% hypothesize(null = "point", mu = 40) %>%
         assume("t", nrow(gss) - 2)
     Message
-      Message: The supplied `df` argument does not match its expected value. If this is unexpected, ensure that your calculation for `df` is correct (see `?assume` for recognized values) or supply `df = NULL` to `assume()`.
+      Message: The supplied `df` argument does not match its expected value. If this is unexpected, ensure that your calculation for `df` is correct (see `assume()` (`?infer::assume()`) for recognized values) or supply `df = NULL` to `assume()`.
 
