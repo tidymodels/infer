@@ -83,10 +83,10 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
       } else {
         # Check one proportion test set up correctly
         if (is.factor(response_variable(x))) {
-          abort(paste0(
-            'Testing one categorical variable requires `p` to be used as a ',
-            'parameter.'
-          ))
+          cli_abort(
+            'Testing one categorical variable requires `p` to be used as a \\
+             parameter.'
+          )
         }
         attr(x, "type") <- "bootstrap"
       }
@@ -108,22 +108,23 @@ hypothesise <- hypothesize
 
 hypothesize_checks <- function(x, null, call = caller_env()) {
   if (!inherits(x, "data.frame")) {
-     abort(paste0("x must be a data.frame or tibble"), call = call)
+     cli_abort("x must be a data.frame or tibble", call = call)
   }
 
   if ((null == "independence") && !has_explanatory(x)) {
-     abort(paste0(
-      'Please `specify()` an explanatory and a response variable when ',
-      'testing a null hypothesis of `"independence"`.'
-    ), call = call)
+     cli_abort(
+      'Please `specify()` an explanatory and a response variable when \\
+       testing a null hypothesis of `"independence"`.',
+      call = call
+     )
   }
 
   if (null == "paired independence" && has_explanatory(x)) {
-     abort(
-        c(      paste0('Please `specify()` only a response variable when ',
-                       'testing a null hypothesis of `"paired independence"`.'),
-          "i" = paste0('The supplied response variable should be the ',
-                       'pre-computed difference between paired observations.')),
+     cli_abort(
+        c('Please `specify()` only a response variable when \\
+           testing a null hypothesis of `"paired independence"`.',
+          "i" = 'The supplied response variable should be the \\
+                 pre-computed difference between paired observations.'),
        call = call
      )
   }
@@ -133,16 +134,19 @@ match_null_hypothesis <- function(null, call = caller_env()) {
   null_hypothesis_types <- c("point", "independence", "paired independence")
 
   if(length(null) != 1) {
-     abort(paste0('You should specify exactly one type of null hypothesis.'),
-           call = call)
+     cli_abort(
+       'You should specify exactly one type of null hypothesis.',
+       call = call
+     )
   }
 
   i <- pmatch(null, null_hypothesis_types)
 
   if(is.na(i)) {
-     abort(paste0('`null` should be either "point", "independence",',
-                  ' or "paired independence".'),
-           call = call)
+     cli_abort(
+       '`null` should be either "point", "independence", or "paired independence".',
+       call = call
+     )
   }
 
   null_hypothesis_types[i]
@@ -150,10 +154,10 @@ match_null_hypothesis <- function(null, call = caller_env()) {
 
 sanitize_hypothesis_params_independence <- function(dots) {
   if (length(dots) > 0) {
-     warn(paste0(
-      "Parameter values should not be specified when testing that two ",
-      "variables are independent."
-    ))
+     cli_warn(
+      "Parameter values should not be specified when testing that two \\
+       variables are independent."
+    )
   }
 
   NULL
@@ -161,8 +165,10 @@ sanitize_hypothesis_params_independence <- function(dots) {
 
 sanitize_hypothesis_params_point <- function(dots, x, call = caller_env()) {
   if(length(dots) != 1) {
-     abort(paste0("You must specify exactly one of `p`, `mu`, `med`, or `sigma`."),
-           call = call)
+     cli_abort(
+       "You must specify exactly one of `p`, `mu`, `med`, or `sigma`.",
+       call = call
+     )
   }
 
   if (!is.null(dots$p)) {
@@ -176,31 +182,37 @@ sanitize_hypothesis_params_proportion <- function(p, x, call = caller_env()) {
   eps <- if (capabilities("long.double")) {sqrt(.Machine$double.eps)} else {0.01}
 
   if(anyNA(p)) {
-     abort(paste0('`p` should not contain missing values.'),
-           call = call)
+     cli_abort(
+       '`p` should not contain missing values.',
+       call = call
+     )
   }
 
   if(any(p < 0 | p > 1)) {
-     abort(paste0('`p` should only contain values between zero and one.'),
-           call = call)
+     cli_abort(
+       '`p` should only contain values between zero and one.',
+       call = call
+     )
   }
 
   if(length(p) == 1) {
     if(!has_attr(x, "success")) {
-       abort(paste0(
-        "A point null regarding a proportion requires that `success` ",
-        "be indicated in `specify()`."
-      ), call = call)
+       cli_abort(
+         "A point null regarding a proportion requires that `success` \\
+          be indicated in `specify()`.",
+         call = call
+       )
     }
 
     p <- c(p, 1 - p)
     names(p) <- get_success_then_response_levels(x)
   } else {
     if (sum(p) < 1 - eps | sum(p) > 1 + eps) {
-       abort(paste0(
-        "Make sure the hypothesized values for the `p` parameters sum to 1. ",
-        "Please try again."
-      ), call = call)
+       cli_abort(
+         "Make sure the hypothesized values for the `p` parameters sum to 1. \\
+          Please try again.",
+         call = call
+       )
     }
   }
 
@@ -209,7 +221,7 @@ sanitize_hypothesis_params_proportion <- function(p, x, call = caller_env()) {
 
 sanitize_hypothesis_params_paired_independence <- function(dots) {
    if (length(dots) > 0) {
-      warn(
+      cli_warn(
         "Parameter values should not be specified when testing paired independence."
       )
    }

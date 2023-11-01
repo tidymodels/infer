@@ -366,10 +366,10 @@ check_order <- function(x, order, in_calculate = TRUE, stat, call = caller_env()
         stat %in% c("diff in means", "diff in medians",
                     "diff in props", "ratio of props", "odds ratio"))) {
     if (!is.null(order)) {
-       warn(paste0(
-        "Statistic is not based on a difference or ratio; the `order` argument ",
-        "will be ignored. Check `?calculate` for details."
-      ))
+       cli_warn(
+         "Statistic is not based on a difference or ratio; the `order` argument \\
+          will be ignored. Check `?calculate` for details."
+       )
     } else {
       return(order)
     }
@@ -383,40 +383,48 @@ check_order <- function(x, order, in_calculate = TRUE, stat, call = caller_env()
     # second, unless the explanatory variable is a factor (in which case order
     # is preserved); raise a warning if this was done implicitly.
     order <- as.character(unique_ex)
-    warn(glue(
-      "The statistic is based on a difference or ratio; by default, for ",
-      "difference-based statistics, the explanatory variable is subtracted ",
-      "in the order \"{unique_ex[1]}\" - \"{unique_ex[2]}\", or divided in ",
-      "the order \"{unique_ex[1]}\" / \"{unique_ex[2]}\" for ratio-based ",
-      "statistics. To specify this order yourself, supply `order = ",
-      "c(\"{unique_ex[1]}\", \"{unique_ex[2]}\")` to the calculate() function."
-    ))
+    cli_warn(
+      "The statistic is based on a difference or ratio; by default, for \\
+       difference-based statistics, the explanatory variable is subtracted \\
+       in the order \"{unique_ex[1]}\" - \"{unique_ex[2]}\", or divided in \\
+       the order \"{unique_ex[1]}\" / \"{unique_ex[2]}\" for ratio-based \\
+       statistics. To specify this order yourself, supply `order = \\
+       c(\"{unique_ex[1]}\", \"{unique_ex[2]}\")` to the calculate() function."
+    )
   } else if (is.null(order)) {
     order <- as.character(unique_ex)
-    warn(glue(
-      "The statistic is based on a difference or ratio; by default, for ",
-      "difference-based statistics, the explanatory variable is subtracted ",
-      "in the order \"{unique_ex[1]}\" - \"{unique_ex[2]}\", or divided in ",
-      "the order \"{unique_ex[1]}\" / \"{unique_ex[2]}\" for ratio-based ",
-      "statistics. To specify this order yourself, supply `order = ",
-      "c(\"{unique_ex[1]}\", \"{unique_ex[2]}\")`."
-    ))
+    cli_warn(
+      "The statistic is based on a difference or ratio; by default, for \\
+       difference-based statistics, the explanatory variable is subtracted \\
+       in the order \"{unique_ex[1]}\" - \"{unique_ex[2]}\", or divided in \\
+       the order \"{unique_ex[1]}\" / \"{unique_ex[2]}\" for ratio-based \\
+       statistics. To specify this order yourself, supply `order = \\
+       c(\"{unique_ex[1]}\", \"{unique_ex[2]}\")`."
+     )
   } else {
     if (xor(is.na(order[1]), is.na(order[2]))) {
-       abort(paste0(
-        "Only one level specified in `order`. Both levels need to be specified."
-      ), call = call)
+       cli_abort(
+        "Only one level specified in `order`. Both levels need to be specified.",
+        call = call
+       )
     }
     if (length(order) > 2) {
-       abort(paste0("`order` is expecting only two entries."), call = call)
+       cli_abort(
+         "`order` is expecting only two entries.",
+         call = call
+       )
     }
     if (order[1] %in% unique_ex == FALSE) {
-       abort(glue("{order[1]} is not a level of the explanatory variable."),
-             call = call)
+       cli_abort(
+         "{order[1]} is not a level of the explanatory variable.",
+         call = call
+       )
     }
     if (order[2] %in% unique_ex == FALSE) {
-       abort(glue("{order[2]} is not a level of the explanatory variable."),
-             call = call)
+       cli_abort(
+         "{order[2]} is not a level of the explanatory variable.",
+         call = call
+       )
     }
   }
   # return the order as given (unless the argument was invalid or NULL)
@@ -429,16 +437,16 @@ check_point_params <- function(x, stat, call = caller_env()) {
   if (is_hypothesized(x) && !identical(attr(x, "null"), "paired independence")) {
     if (stat %in% c("mean", "median", "sd", "prop")) {
       if ((stat == "mean") && !("mu" %in% param_names)) {
-         abort(glue('`stat == "mean"` requires `"mu"` {hyp_text}'), call = call)
+         cli_abort('`stat == "mean"` requires `"mu"` {hyp_text}', call = call)
       }
       if (!(stat == "mean") && ("mu" %in% param_names)) {
-         abort(glue('`"mu"` does not correspond to `stat = "{stat}"`.'), call = call)
+         cli_abort('`"mu"` does not correspond to `stat = "{stat}"`.', call = call)
       }
       if ((stat == "median") && !("med" %in% param_names)) {
-         abort(glue('`stat == "median"` requires `"med"` {hyp_text}'), call = call)
+         cli_abort('`stat == "median"` requires `"med"` {hyp_text}', call = call)
       }
       if (!(stat == "median") && ("med" %in% param_names)) {
-         abort(glue('`"med"` does not correspond to `stat = "{stat}"`.'), call = call)
+         cli_abort('`"med"` does not correspond to `stat = "{stat}"`.', call = call)
       }
     }
   }
@@ -461,8 +469,10 @@ check_for_nan <- function(x, context) {
   calc_ref <- "See ?calculate for more details"
   # If all of the data is NaN, raise an error
   if (num_nans == nrow(x)) {
-     abort(glue("All calculated statistics were `NaN`. {calc_ref}."),
-           call = NULL)
+     cli_abort(
+       "All calculated statistics were `NaN`. {calc_ref}.",
+       call = NULL
+     )
   }
 
   stats_were <- if (num_nans == 1) {"statistic was"} else {"statistics were"}
@@ -470,16 +480,17 @@ check_for_nan <- function(x, context) {
 
   if (context == "visualize") {
     # Raise a warning and plot the data with NaNs removed
-     warn(glue(
+    cli_warn(
       "{num_nans_msg}. `NaN`s have been omitted from visualization. {calc_ref}."
-    ))
+    )
     return(x[!stat_is_nan, ])
   } else if (context == "get_p_value") {
     # Raise an error
-    abort(glue(
-      "{num_nans_msg}. Simulation-based p-values are not well-defined for ",
-      "null distributions with non-finite values. {calc_ref}."
-    ), call = NULL)
+    cli_abort(
+      "{num_nans_msg}. Simulation-based p-values are not well-defined for \\
+       null distributions with non-finite values. {calc_ref}.",
+      call = NULL
+    )
   }
 }
 
@@ -493,11 +504,12 @@ check_direction <- function(direction = c("less", "greater", "two_sided",
     !(direction %in% c("less", "greater", "two_sided", "left", "right",
                        "both", "two-sided", "two sided", "two.sided"))
   ) {
-     abort(paste0(
-      'The provided value for `direction` is not appropriate. Possible values ',
-      'are "less", "greater", "two-sided", "left", "right", "both", ',
-      '"two_sided", "two sided", or "two.sided".'
-    ), call = call)
+    cli_abort(
+     'The provided value for `direction` is not appropriate. Possible values \\
+      are "less", "greater", "two-sided", "left", "right", "both", \
+      "two_sided", "two sided", or "two.sided".',
+     call = call
+    )
   }
 }
 
@@ -518,10 +530,10 @@ check_obs_stat <- function(obs_stat, plot = NULL, call = caller_env()) {
 
       check_type(obs_stat, is.data.frame, call = call)
       if ((nrow(obs_stat) != 1) || (ncol(obs_stat) != 1)) {
-         warn(glue(
-          "The first row and first column value of the given `obs_stat` will ",
-          "be used."
-        ))
+         cli_warn(
+          "The first row and first column value of the given `obs_stat` will \\
+           be used."
+         )
       }
 
       # [[1]] is used in case `stat` is not specified as name of 1x1
@@ -537,32 +549,35 @@ check_obs_stat <- function(obs_stat, plot = NULL, call = caller_env()) {
 
 check_mlr_x_and_obs_stat <- function(x, obs_stat, fn, arg, call = caller_env()) {
   if (!is_fitted(obs_stat)) {
-     abort(glue(
-      "The `{arg}` argument should be the output of `fit()`. ",
-      "See the documentation with `?{fn}`."
-    ), call = call)
+     cli_abort(
+       c("The `{arg}` argument should be the output of `fit()`.",
+         i = "See the documentation with `?{fn}`."),
+       call = call
+     )
   }
 
   if (!is_generated(x)) {
-     abort(paste0(
-      "The `x` argument needs to be passed to `generate()` ",
-      "before `fit()`."
-    ), call = call)
+     cli_abort(
+      "The `x` argument needs to be passed to `generate()` before `fit()`.",
+      call = call
+     )
   }
 
   if (any(!unique(x$term) %in% unique(obs_stat$term)) ||
       any(!unique(obs_stat$term) %in% unique(x$term))) {
-     abort(paste0(
-      "The explanatory variables used to generate the distribution of ",
-      "null fits are not the same used to fit the observed data."
-    ), call = call)
+     cli_abort(
+      "The explanatory variables used to generate the distribution of \\
+       null fits are not the same used to fit the observed data.",
+      call = call
+     )
   }
 
   if (response_name(x) != response_name(obs_stat)) {
-     abort(glue(
-      "The response variable of the null fits ({response_name(x)}) is not ",
-      "the same as that of the observed fit ({response_name(obs_stat)})."
-    ), call = call)
+     cli_abort(
+      "The response variable of the null fits ({response_name(x)}) is not \\
+       the same as that of the observed fit ({response_name(obs_stat)}).",
+       call = call
+     )
   }
 
   invisible(TRUE)
@@ -618,8 +633,10 @@ check_type <- function(x, predicate, type_name = NULL, x_name = NULL,
 
   if (!is_pred_true) {
     # Not using "must be of type" because of 'tibble' and 'string' cases
-     abort(glue("`{x_name}` must be '{type_name}', not '{get_type(x)}'."),
-           call = call)
+     cli_abort(
+       "`{x_name}` must be '{type_name}', not '{get_type(x)}'.",
+       call = call
+     )
   }
 
   x
@@ -649,9 +666,10 @@ parse_type <- function(f_name) {
 
 check_is_distribution <- function(x, fn, call = caller_env()) {
   if (!any(inherits(x, "infer_dist") || is.data.frame(x))) {
-     abort(glue(
-      "The `x` argument to `{fn}()` must be an infer distribution, ",
-      "outputted by `assume()` or `calculate()`."
-    ), call = call)
+     cli_abort(
+      "The `x` argument to `{fn}()` must be an infer distribution, \\
+       outputted by `assume()` or `calculate()`.",
+      call = call
+     )
   }
 }

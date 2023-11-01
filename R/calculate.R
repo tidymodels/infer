@@ -135,9 +135,10 @@ check_if_mlr <- function(x, fn, call = caller_env()) {
   }
 
   if (is_mlr(x)) {
-    abort(glue(
-      "Multiple explanatory variables are not supported in {fn}(). {suggestion}"
-    ), call = call)
+    cli_abort(
+      "Multiple explanatory variables are not supported in {fn}(). {suggestion}",
+      call = call
+    )
   }
 }
 
@@ -168,10 +169,11 @@ check_input_vs_stat <- function(x, stat, call = caller_env()) {
     unlist()
 
   if (is.null(possible_stats)) {
-    abort(paste0(
-      "The infer team has not implemented test statistics for the ",
-      "supplied variable types."
-    ), call = call)
+    cli_abort(
+      "The infer team has not implemented test statistics for the \\
+       supplied variable types.",
+      call = call
+    )
   }
 
   if (!stat %in% possible_stats) {
@@ -185,11 +187,12 @@ check_input_vs_stat <- function(x, stat, call = caller_env()) {
       msg_tail <- "no explanatory variable."
     }
 
-    abort(glue(
-      "{get_stat_desc(stat)} is not well-defined for a ",
-      "{get_stat_type_desc(response_type)} response variable ",
-      "({response_name(x)}) and ", msg_tail
-    ), call = call)
+    cli_abort(
+      "{get_stat_desc(stat)} is not well-defined for a \\
+       {get_stat_type_desc(response_type)} response variable \\
+       ({response_name(x)}) and {msg_tail}",
+      call = call
+    )
   }
 
   if (is_hypothesized(x)) {
@@ -198,10 +201,11 @@ check_input_vs_stat <- function(x, stat, call = caller_env()) {
                     hypothesis == attr(x, "null"))
 
     if (nrow(stat_nulls) == 0) {
-      abort(glue(
-        'The supplied statistic `stat = "{stat}"` is incompatible with the ',
-        'supplied hypothesis `null = "{attr(x, "null")}"`.'
-      ), call = call)
+      cli_abort(
+        'The supplied statistic `stat = "{stat}"` is incompatible with the \\
+         supplied hypothesis `null = "{attr(x, "null")}"`.',
+        call = call
+      )
     }
   }
 
@@ -229,13 +233,13 @@ message_on_excessive_null <- function(x, stat = "mean", fn) {
     null_type <- attr(x, "null")
     null_param <- attr(x, "params")
 
-    inform(glue(
-      "Message: The {null_type} null hypothesis ",
-      "{if (null_type == 'point') {paste0('`', names(null_param), ' = ', unname(null_param), '` ')} else {''}}",
-      "does not inform calculation of the observed ",
-      "{if (fn == 'calculate') {paste0('statistic (', tolower(get_stat_desc(stat)), ') ')} else {'fit '}}",
-      "and will be ignored."
-    ))
+    cli_inform(
+      "Message: The {null_type} null hypothesis \\
+       {if (null_type == 'point') {paste0('`', names(null_param), ' = ', unname(null_param), '` ')} else {''}} \\
+       does not inform calculation of the observed \\
+       {if (fn == 'calculate') {paste0('statistic (', tolower(get_stat_desc(stat)), ') ')} else {'fit '}} \\
+       and will be ignored."
+    )
   }
 
   x
@@ -251,10 +255,10 @@ warn_on_insufficient_null <- function(x, stat, ...) {
     attr(x, "null") <- "point"
     attr(x, "params") <- assume_null(x, stat)
 
-    warn(glue(
-      "{get_stat_desc(stat)} requires a null ",
-      "hypothesis to calculate the observed statistic. \nOutput assumes ",
-      "the following null value{print_params(x)}."
+    cli_warn(c(
+      "{get_stat_desc(stat)} requires a null \\
+       hypothesis to calculate the observed statistic.",
+       "Output assumes the following null value{print_params(x)}."
     ))
   }
 

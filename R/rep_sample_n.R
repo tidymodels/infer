@@ -201,8 +201,8 @@ notify_extra_size <- function(size, tbl, replace, notify_type, call = caller_env
     )
     switch(
       notify_type,
-      sample_n = abort(glue("{msg}. Use `replace = TRUE`."), call = call),
-      slice_sample = warn(glue("{msg}. Using number of rows as sample size."))
+      sample_n = cli_abort("{msg}. Use `replace = TRUE`.", call = call),
+      slice_sample = cli_warn("{msg}. Using number of rows as sample size.")
     )
   }
 
@@ -237,8 +237,10 @@ make_slice_size <- function(n, prop, n_total, call = caller_env()) {
     if (is.null(prop)) {
       n
     } else {
-       abort(paste0("Please supply exactly one of the `n` or `prop` arguments."),
-             call = call)
+       cli_abort(
+         "Please supply exactly one of the `n` or `prop` arguments.",
+         call = call
+       )
     }
   }
 }

@@ -95,7 +95,8 @@
       get_confidence_interval(null_fits, point_estimate = "boop", level = 0.95)
     Condition
       Error in `get_confidence_interval()`:
-      ! The `point_estimate` argument should be the output of `fit()`. See the documentation with `?get_confidence_interval`.
+      ! The `point_estimate` argument should be the output of `fit()`.
+      i See the documentation with `?get_confidence_interval`.
 
 ---
 
@@ -103,7 +104,8 @@
       get_confidence_interval(null_fits, point_estimate = obs_fit$estimate, level = 0.95)
     Condition
       Error in `get_confidence_interval()`:
-      ! The `point_estimate` argument should be the output of `fit()`. See the documentation with `?get_confidence_interval`.
+      ! The `point_estimate` argument should be the output of `fit()`.
+      i See the documentation with `?get_confidence_interval`.
 
 ---
 

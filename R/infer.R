@@ -11,6 +11,8 @@
 #' @name infer
 "_PACKAGE"
 
+#' @importFrom cli cli_abort cli_warn cli_inform qty no
+
 ## quiets concerns of R CMD check re: the .'s that appear in pipelines
 ## From Jenny Bryan's googlesheets package
 if (getRversion() >= "2.15.1") {

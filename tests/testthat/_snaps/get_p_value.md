@@ -13,7 +13,8 @@
         calculate(stat = "F") %>% get_p_value(obs_stat = obs_F, direction = "right")
     Condition
       Error in `get_p_value()`:
-      ! Theoretical p-values are not yet supported. `x` should be the result of calling `generate()`.
+      ! Theoretical p-values are not yet supported.
+      i `x` should be the result of calling `generate()`.
 
 # get_p_value warns in case of zero p-value
 
@@ -21,7 +22,8 @@
       res_ <- get_p_value(gss_calc, obs_stat = -10, direction = "left")
     Condition
       Warning:
-      Please be cautious in reporting a p-value of 0. This result is an approximation based on the number of `reps` chosen in the `generate()` step. See `?get_p_value()` for more information.
+      Please be cautious in reporting a p-value of 0. This result is an approximation based on the number of `reps` chosen in the `generate()` step.
+      i See `?get_p_value()` for more information.
 
 # get_p_value throws error in case of `NaN` stat
 
@@ -69,7 +71,8 @@
       get_p_value(null_fits, "boop", "both")
     Condition
       Error in `get_p_value()`:
-      ! The `obs_stat` argument should be the output of `fit()`. See the documentation with `?get_p_value`.
+      ! The `obs_stat` argument should be the output of `fit()`.
+      i See the documentation with `?get_p_value`.
 
 ---
 
@@ -77,7 +80,8 @@
       get_p_value(null_fits, obs_fit$estimate, "both")
     Condition
       Error in `get_p_value()`:
-      ! The `obs_stat` argument should be the output of `fit()`. See the documentation with `?get_p_value`.
+      ! The `obs_stat` argument should be the output of `fit()`.
+      i See the documentation with `?get_p_value`.
 
 ---
 
@@ -93,7 +97,8 @@
       get_p_value(obs_stat, null_dist, "both")
     Condition
       Error in `get_p_value()`:
-      ! It seems like the `obs_stat` argument has been passed to `get_p_value()` as the first argument when `get_p_value()` expects `x`, a distribution of statistics or coefficient estimates, as the first argument. Have you mistakenly switched the order of `obs_stat` and `x`?
+      ! It seems like the `obs_stat` argument has been passed to `get_p_value()` as the first argument when `get_p_value()` expects `x`, a distribution of statistics or coefficient estimates, as the first argument.
+      i Have you mistakenly switched the order of `obs_stat` and `x`?
 
 # get_p_value can handle theoretical distributions
 

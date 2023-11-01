@@ -385,7 +385,7 @@
       res_ <- gss_tbl %>% specify(partyid ~ NULL) %>% calculate(stat = "Chisq")
     Condition
       Warning:
-      A chi-square statistic requires a null hypothesis to calculate the observed statistic. 
+      A chi-square statistic requires a null hypothesis to calculate the observed statistic.
       Output assumes the following null values: `p = c(dem = 0.333333333333333, ind = 0.333333333333333, rep = 0.333333333333333)`.
 
 # One sample t hypothesis test is working
@@ -402,7 +402,7 @@
       res_ <- gss_tbl %>% specify(response = hours) %>% calculate(stat = "t")
     Condition
       Warning:
-      A t statistic requires a null hypothesis to calculate the observed statistic. 
+      A t statistic requires a null hypothesis to calculate the observed statistic.
       Output assumes the following null value: `mu = 0`.
 
 # specify done before calculate
@@ -441,7 +441,7 @@
       res_ <- calculate(no_params, stat = "Chisq")
     Condition
       Warning:
-      A chi-square statistic requires a null hypothesis to calculate the observed statistic. 
+      A chi-square statistic requires a null hypothesis to calculate the observed statistic.
       Output assumes the following null values: `p = c(dem = 0.333333333333333, ind = 0.333333333333333, rep = 0.333333333333333)`.
 
 # One sample t bootstrap is working
@@ -451,7 +451,7 @@
         calculate(stat = "t")
     Condition
       Warning:
-      A t statistic requires a null hypothesis to calculate the observed statistic. 
+      A t statistic requires a null hypothesis to calculate the observed statistic.
       Output assumes the following null value: `mu = 0`.
 
 # calculate warns informatively with insufficient null
@@ -460,7 +460,7 @@
       res_ <- gss %>% specify(response = sex, success = "female") %>% calculate(stat = "z")
     Condition
       Warning:
-      A z statistic requires a null hypothesis to calculate the observed statistic. 
+      A z statistic requires a null hypothesis to calculate the observed statistic.
       Output assumes the following null value: `p = .5`.
 
 ---
@@ -469,7 +469,7 @@
       res_ <- gss %>% specify(hours ~ NULL) %>% calculate(stat = "t")
     Condition
       Warning:
-      A t statistic requires a null hypothesis to calculate the observed statistic. 
+      A t statistic requires a null hypothesis to calculate the observed statistic.
       Output assumes the following null value: `mu = 0`.
 
 ---
@@ -480,7 +480,7 @@
       Dropping unused factor levels DK from the supplied response variable 'partyid'.
     Condition
       Warning:
-      A chi-square statistic requires a null hypothesis to calculate the observed statistic. 
+      A chi-square statistic requires a null hypothesis to calculate the observed statistic.
       Output assumes the following null values: `p = c(dem = 0.2, ind = 0.2, rep = 0.2, other = 0.2, DK = 0.2)`.
 
 # calculate messages informatively with excessive null

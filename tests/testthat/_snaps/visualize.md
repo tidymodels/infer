@@ -210,7 +210,7 @@
         visualize(method = "both")
     Condition
       Warning:
-      A t statistic requires a null hypothesis to calculate the observed statistic. 
+      A t statistic requires a null hypothesis to calculate the observed statistic.
       Output assumes the following null value: `mu = 0`.
       Warning:
       Check to make sure the conditions have been met for the theoretical method. {infer} currently does not check these for you.
