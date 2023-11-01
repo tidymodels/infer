@@ -10,12 +10,7 @@
 #' A tidier version of [t.test()][stats::t.test()] for two sample tests.
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
-#' @param formula A formula with the response variable on the left and the
-#'   explanatory on the right.
-#' @param response The variable name in `x` that will serve as the response.
-#'   This is alternative to using the `formula` argument.
-#' @param explanatory The variable name in `x` that will serve as the
-#'   explanatory variable.
+#' @inheritParams specify
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction, where `order =
 #'   c("first", "second")` means `("first" - "second")`.
@@ -118,22 +113,13 @@ t_test <- function(x, formula,
 #' This function has been deprecated in favor of the more general [observe()].
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
-#' @param formula A formula with the response variable on the left and the
-#'   explanatory on the right.
-#' @param response The variable name in `x` that will serve as the response.
-#'   This is alternative to using the `formula` argument.
-#' @param explanatory The variable name in `x` that will serve as the
-#'   explanatory variable.
+#' @inheritParams specify
 #' @param order A string vector of specifying the order in which the levels of
 #'   the explanatory variable should be ordered for subtraction, where `order =
 #'   c("first", "second")` means `("first" - "second")`.
-#' @param alternative Character string giving the direction of the alternative
-#'   hypothesis. Options are `"two-sided"` (default), `"greater"`, or `"less"`.
 #' @param mu A numeric value giving the hypothesized null mean value for a one
 #'   sample test and the hypothesized difference for a two sample test.
-#' @param conf_int A logical value for whether to include the confidence
-#'   interval or not. `TRUE` by default.
-#' @param conf_level A numeric value between 0 and 1. Default value is 0.95.
+#' @inheritParams t_test
 #' @param ... Pass in arguments to \\{infer\\} functions.
 #'
 #' @examples
@@ -222,12 +208,7 @@ t_stat <- function(x, formula,
 #' tests and tests of independence.
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
-#' @param formula A formula with the response variable on the left and the
-#'   explanatory on the right.
-#' @param response The variable name in `x` that will serve as the response.
-#'   This is alternative to using the `formula` argument.
-#' @param explanatory The variable name in `x` that will serve as the
-#'   explanatory variable.
+#' @inheritParams specify
 #' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
 #'
 #' @examples
@@ -291,12 +272,7 @@ chisq_test <- function(x, formula, response = NULL,
 #' general [observe()].
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
-#' @param formula A formula with the response variable on the left and the
-#'   explanatory on the right.
-#' @param response The variable name in `x` that will serve as the response.
-#'   This is alternative to using the `formula` argument.
-#' @param explanatory The variable name in `x` that will serve as the
-#'   explanatory variable.
+#' @inheritParams specify
 #' @param ... Additional arguments for [chisq.test()][stats::chisq.test()].
 #'
 #' @examples
@@ -376,15 +352,7 @@ check_conf_level <- function(conf_level, call = caller_env()) {
 #' proportions.
 #'
 #' @param x A data frame that can be coerced into a [tibble][tibble::tibble].
-#' @param formula A formula with the response variable on the left and the
-#'   explanatory on the right, where an explanatory variable NULL indicates
-#'   a test of a single proportion.
-#' @param response The variable name in `x` that will serve as the response.
-#'   This is alternative to using the `formula` argument. This is an alternative
-#'   to the formula interface.
-#' @param explanatory The variable name in `x` that will serve as the
-#'   explanatory variable. Optional. This is an alternative to the formula
-#'   interface.
+#' @inheritParams specify
 #' @param order A string vector specifying the order in which the proportions
 #'   should be subtracted, where  `order = c("first", "second")` means
 #'   `"first" - "second"`. Ignored for one-sample tests, and optional for two
@@ -395,14 +363,7 @@ check_conf_level <- function(conf_level, call = caller_env()) {
 #'   value, or that two proportions are equal; ignored otherwise.
 #' @param p A numeric vector giving the hypothesized null proportion of
 #' success for each group.
-#' @param conf_int A logical value for whether to report the confidence
-#'   interval or not. `TRUE` by default, ignored if `p` is specified for a
-#'   two-sample test. Only used when testing the null that a single
-#'   proportion equals a given value, or that two proportions are equal;
-#'   ignored otherwise.
-#' @param conf_level A numeric value between 0 and 1. Default value is 0.95.
-#'   Only used when testing the null that a single proportion equals a given
-#'   value, or that two proportions are equal; ignored otherwise.
+#' @inheritParams t_test
 #' @param success The level of `response` that will be considered a success, as
 #'   a string. Only used when testing the null that a single
 #'   proportion equals a given value, or that two proportions are equal;

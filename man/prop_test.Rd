@@ -24,16 +24,14 @@ prop_test(
 \item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 
 \item{formula}{A formula with the response variable on the left and the
-explanatory on the right, where an explanatory variable NULL indicates
-a test of a single proportion.}
+explanatory on the right. Alternatively, a \code{response} and \code{explanatory}
+argument can be supplied.}
 
 \item{response}{The variable name in \code{x} that will serve as the response.
-This is alternative to using the \code{formula} argument. This is an alternative
-to the formula interface.}
+This is an alternative to using the \code{formula} argument.}
 
 \item{explanatory}{The variable name in \code{x} that will serve as the
-explanatory variable. Optional. This is an alternative to the formula
-interface.}
+explanatory variable. This is an alternative to using the formula argument.}
 
 \item{p}{A numeric vector giving the hypothesized null proportion of
 success for each group.}
@@ -48,15 +46,10 @@ hypothesis. Options are \code{"two-sided"} (default), \code{"greater"}, or \code
 Only used when testing the null that a single proportion equals a given
 value, or that two proportions are equal; ignored otherwise.}
 
-\item{conf_int}{A logical value for whether to report the confidence
-interval or not. \code{TRUE} by default, ignored if \code{p} is specified for a
-two-sample test. Only used when testing the null that a single
-proportion equals a given value, or that two proportions are equal;
-ignored otherwise.}
+\item{conf_int}{A logical value for whether to include the confidence
+interval or not. \code{TRUE} by default.}
 
-\item{conf_level}{A numeric value between 0 and 1. Default value is 0.95.
-Only used when testing the null that a single proportion equals a given
-value, or that two proportions are equal; ignored otherwise.}
+\item{conf_level}{A numeric value between 0 and 1. Default value is 0.95.}
 
 \item{success}{The level of \code{response} that will be considered a success, as
 a string. Only used when testing the null that a single

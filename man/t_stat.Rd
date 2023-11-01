@@ -21,13 +21,14 @@ t_stat(
 \item{x}{A data frame that can be coerced into a \link[tibble:tibble]{tibble}.}
 
 \item{formula}{A formula with the response variable on the left and the
-explanatory on the right.}
+explanatory on the right. Alternatively, a \code{response} and \code{explanatory}
+argument can be supplied.}
 
 \item{response}{The variable name in \code{x} that will serve as the response.
-This is alternative to using the \code{formula} argument.}
+This is an alternative to using the \code{formula} argument.}
 
 \item{explanatory}{The variable name in \code{x} that will serve as the
-explanatory variable.}
+explanatory variable. This is an alternative to using the formula argument.}
 
 \item{order}{A string vector of specifying the order in which the levels of
 the explanatory variable should be ordered for subtraction, where \code{order = c("first", "second")} means \code{("first" - "second")}.}
