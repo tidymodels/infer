@@ -92,20 +92,18 @@ proportions.</p>
 
 <dt>formula</dt>
 <dd><p>A formula with the response variable on the left and the
-explanatory on the right, where an explanatory variable NULL indicates
-a test of a single proportion.</p></dd>
+explanatory on the right. Alternatively, a <code>response</code> and <code>explanatory</code>
+argument can be supplied.</p></dd>
 
 
 <dt>response</dt>
 <dd><p>The variable name in <code>x</code> that will serve as the response.
-This is alternative to using the <code>formula</code> argument. This is an alternative
-to the formula interface.</p></dd>
+This is an alternative to using the <code>formula</code> argument.</p></dd>
 
 
 <dt>explanatory</dt>
 <dd><p>The variable name in <code>x</code> that will serve as the
-explanatory variable. Optional. This is an alternative to the formula
-interface.</p></dd>
+explanatory variable. This is an alternative to using the formula argument.</p></dd>
 
 
 <dt>p</dt>
@@ -128,17 +126,12 @@ value, or that two proportions are equal; ignored otherwise.</p></dd>
 
 
 <dt>conf_int</dt>
-<dd><p>A logical value for whether to report the confidence
-interval or not. <code>TRUE</code> by default, ignored if <code>p</code> is specified for a
-two-sample test. Only used when testing the null that a single
-proportion equals a given value, or that two proportions are equal;
-ignored otherwise.</p></dd>
+<dd><p>A logical value for whether to include the confidence
+interval or not. <code>TRUE</code> by default.</p></dd>
 
 
 <dt>conf_level</dt>
-<dd><p>A numeric value between 0 and 1. Default value is 0.95.
-Only used when testing the null that a single proportion equals a given
-value, or that two proportions are equal; ignored otherwise.</p></dd>
+<dd><p>A numeric value between 0 and 1. Default value is 0.95.</p></dd>
 
 
 <dt>success</dt>
