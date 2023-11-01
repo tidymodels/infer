@@ -176,7 +176,7 @@ check_permutation_attributes <- function(x, call = caller_env()) {
 }
 
 check_cols <- function(x, variables, type, missing, arg_name = "variables", call = caller_env()) {
-  if (!rlang::is_symbolic(rlang::get_expr(variables))) {
+  if (!rlang::is_symbolic(rlang::get_expr(variables)) && type == "permute") {
      cli_abort(
        "The {.arg {arg_name}} argument should be one or more unquoted variable names \\
         (not strings in quotation marks).",

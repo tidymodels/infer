@@ -6,6 +6,8 @@
      
 * Various improvements to documentation (#501, #504, #508, #512).
 
+* Fixed bug where `generate()` could not be used without first `specify()`ing variables, even in cases where that specification would not affect resampling/simulation (#448). 
+
 # infer v1.0.5
 
 * Implemented support for permutation hypothesis tests for paired data via the 
