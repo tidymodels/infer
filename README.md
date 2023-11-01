@@ -1,5 +1,5 @@
 
-# infer R Package <img src="man/figures/logo.png" align="right" width=280 />
+# infer R Package <img src="man/figures/logo.png" alt="A hexagonal logo. A silhouette of a fir tree sits atop green text, reading 'infer'. The logo has a white background and green border." align="right" width=280 />
 
 <!--figs/infer.svg-->
 <!--http://www.r-pkg.org/badges/version/infer-->
@@ -7,9 +7,9 @@
 <!--https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg-->
 
 [![R-CMD-check](https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml)
-[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)
 [![Coverage
-Status](https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg)](https://app.codecov.io/github/tidymodels/infer/?branch=main)
+Status](https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg)](https://codecov.io/github/tidymodels/infer/?branch=main)
 
 The objective of this package is to perform statistical inference using
 an expressive statistical grammar that coheres with the `tidyverse`
@@ -17,13 +17,13 @@ design framework. The package is centered around 4 main verbs,
 supplemented with many utilities to visualize and extract value from
 their outputs.
 
--   `specify()` allows you to specify the variable, or relationship
-    between variables, that you’re interested in.
--   `hypothesize()` allows you to declare the null hypothesis.
--   `generate()` allows you to generate data reflecting the null
-    hypothesis.
--   `calculate()` allows you to calculate a distribution of statistics
-    from the generated data to form the null distribution.
+- `specify()` allows you to specify the variable, or relationship
+  between variables, that you’re interested in.
+- `hypothesize()` allows you to declare the null hypothesis.
+- `generate()` allows you to generate data reflecting the null
+  hypothesis.
+- `calculate()` allows you to calculate a distribution of statistics
+  from the generated data to form the null distribution.
 
 To learn more about the principles underlying the package design, see
 `vignette("infer")`.
@@ -69,18 +69,20 @@ pak::pak("tidymodels/infer")
 We welcome others helping us make this package as user-friendly and
 efficient as possible. Please review our
 [contributing](https://github.com/tidymodels/infer/blob/main/CONTRIBUTING.md)
-and [conduct](https://github.com/tidymodels/infer/blob/main/.github/CODE_OF_CONDUCT.md)
+and
+[conduct](https://github.com/tidymodels/infer/blob/main/.github/CODE_OF_CONDUCT.md)
 guidelines. By participating in this project you agree to abide by its
 terms.
 
 For questions and discussions about tidymodels packages, modeling, and
 machine learning, please [post on Posit
-Community](https://community.rstudio.com/new-topic?category_id=15&tags=tidymodels,question). If you think you have
-encountered a bug, please [submit an
+Community](https://community.rstudio.com/new-topic?category_id=15&tags=tidymodels,question).
+If you think you have encountered a bug, please [submit an
 issue](https://github.com/tidymodels/infer/issues). Either way, learn
-how to create and share a [reprex](https://reprex.tidyverse.org/articles/learn-reprex.html) (a minimal,
-reproducible example), to clearly communicate about your code. Check out
-further details on [contributing guidelines for tidymodels
+how to create and share a
+[reprex](https://reprex.tidyverse.org/articles/learn-reprex.html) (a
+minimal, reproducible example), to clearly communicate about your code.
+Check out further details on [contributing guidelines for tidymodels
 packages](https://www.tidymodels.org/contribute/) and [how to get
 help](https://www.tidymodels.org/help/).
 
@@ -163,7 +165,7 @@ null_dist %>%
     ## # A tibble: 1 × 1
     ##   p_value
     ##     <dbl>
-    ## 1   0.055
+    ## 1    0.06
 
 Note that the formula and non-formula interfaces (i.e. `age ~ partyid`
 vs. `response = age, explanatory =  partyid`) work for all implemented
