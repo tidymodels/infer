@@ -1692,41 +1692,30 @@ obs_fit <- gss %>%
   fit()
 ```
 
-Generating a distribution of fits with the response variable permuted,
+Then, generating a bootstrap distribution,
 
 ```{r}
-null_dist <- gss %>%
+boot_dist <- gss %>%
   specify(hours ~ age + college) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+  generate(reps = 1000, type = "bootstrap") %>%
   fit()
 ```
 
-Alternatively, generating a distribution of fits where each explanatory variable is permuted independently,
-
-```{r}
-null_dist2 <- gss %>%
-  specify(hours ~ age + college) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute", variables = c(age, college)) %>%
-  fit()
-```
-
-Calculating confidence intervals from the null fits,
+Use the bootstrap distribution to find a confidence interval,
 
 ```{r}
 conf_ints <- 
   get_confidence_interval(
-    null_dist, 
+    boot_dist, 
     level = .95, 
     point_estimate = obs_fit
   )
 ```
 
-Visualizing the observed fit alongside the null fits,
+Visualizing the observed statistic alongside the distribution,
 
 ```{r}
-visualize(null_dist) +
+visualize(boot_dist) +
   shade_confidence_interval(endpoints = conf_ints)
 ```
 
