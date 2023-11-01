@@ -172,7 +172,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.048</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.044</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="one-numerical-variable-standardized-mean-t">One numerical variable (standardized mean <span class="math inline">\(t\)</span>)<a class="anchor" aria-label="anchor" href="#one-numerical-variable-standardized-mean-t"></a>
@@ -229,7 +229,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.024</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.034</span></span></code></pre>
 <p>Alternatively, using the <code>t_test</code> wrapper:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -275,7 +275,7 @@ statistic,</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.008</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.006</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="one-numerical-variable-paired">One numerical variable (paired)<a class="anchor" aria-label="anchor" href="#one-numerical-variable-paired"></a>
@@ -1592,35 +1592,25 @@ standardized correlation.</p>
 <code class="sourceCode R"><span><span class="va">obs_fit</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Generating a distribution of fits with the response variable
-permuted,</p>
+<p>Then, generating a bootstrap distribution,</p>
 <div class="sourceCode" id="cb224"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">null_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">boot_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"bootstrap"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Alternatively, generating a distribution of fits where each
-explanatory variable is permuted independently,</p>
+<p>Use the bootstrap distribution to find a confidence interval,</p>
 <div class="sourceCode" id="cb225"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">null_dist2</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">hours</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">college</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">college</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Calculating confidence intervals from the null fits,</p>
-<div class="sourceCode" id="cb226"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">conf_ints</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="../reference/get_confidence_interval.html">get_confidence_interval</a></span><span class="op">(</span></span>
-<span>    <span class="va">null_dist</span>, </span>
+<span>    <span class="va">boot_dist</span>, </span>
 <span>    level <span class="op">=</span> <span class="fl">.95</span>, </span>
 <span>    point_estimate <span class="op">=</span> <span class="va">obs_fit</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<p>Visualizing the observed fit alongside the null fits,</p>
-<div class="sourceCode" id="cb227"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
+<p>Visualizing the observed statistic alongside the distribution,</p>
+<div class="sourceCode" id="cb226"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">conf_ints</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-191-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-190-1.png" width="576"></p>
 <p>Note that this <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code>-based workflow can be applied to
 use cases with differing numbers of explanatory variables and
 explanatory variable types.</p>
