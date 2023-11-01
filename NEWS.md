@@ -1,5 +1,9 @@
 # infer v1.0.5.9000 (development version)
 
+* Updated infrastructure for errors, warnings, and messages (#513). Most of these changes will not be visible to users, though:
+     - Many longer error messages are now broken up into several lines.
+     - For references to help-files, users can now click on the error message's text to navigate to the cited documentation.
+
 # infer v1.0.5
 
 * Implemented support for permutation hypothesis tests for paired data via the 
