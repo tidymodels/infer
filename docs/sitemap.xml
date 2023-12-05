@@ -4,10 +4,19 @@
     <loc>https://infer.tidymodels.org/404.html</loc>
   </url>
   <url>
+    <loc>https://infer.tidymodels.org/CODE_OF_CONDUCT.html</loc>
+  </url>
+  <url>
     <loc>https://infer.tidymodels.org/CONDUCT.html</loc>
   </url>
   <url>
     <loc>https://infer.tidymodels.org/CONTRIBUTING.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/LICENSE.html</loc>
   </url>
   <url>
     <loc>https://infer.tidymodels.org/TO-DO.html</loc>
@@ -35,6 +44,9 @@
   </url>
   <url>
     <loc>https://infer.tidymodels.org/articles/observed_stat_examples.html</loc>
+  </url>
+  <url>
+    <loc>https://infer.tidymodels.org/articles/paired.html</loc>
   </url>
   <url>
     <loc>https://infer.tidymodels.org/articles/t_test.html</loc>
