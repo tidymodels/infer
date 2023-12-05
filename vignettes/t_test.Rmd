@@ -116,7 +116,7 @@ Note that this pipeline to calculate an observed statistic includes a call to `h
 Then, juxtaposing that $t$ statistic with its associated distribution using the `pt` function:
 
 ```{r}
-pt(observed_statistic, df = nrow(gss) - 1, lower.tail = FALSE)*2
+pt(unname(observed_statistic), df = nrow(gss) - 1, lower.tail = FALSE)*2
 ```
 
 Note that the resulting $t$-statistics from these two theory-based approaches are the same.
@@ -223,7 +223,7 @@ Note that this pipeline to calculate an observed statistic includes `hypothesize
 Then, juxtaposing that $t$ statistic with its associated distribution using the `pt` function:
 
 ```{r}
-pt(observed_statistic, df = nrow(gss) - 2, lower.tail = FALSE)*2
+pt(unname(observed_statistic), df = nrow(gss) - 2, lower.tail = FALSE)*2
 ```
 
 Note that the results from these two theory-based approaches are nearly the same.
