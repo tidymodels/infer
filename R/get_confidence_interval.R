@@ -227,9 +227,23 @@ switch_ci <- function(type, x, level, point_estimate) {
   )
 }
 
+remove_missing_estimates <- function(estimates) {
+  na_estimates <- is.na(estimates)
+  na_estimates_n <- sum(na_estimates)
+
+  if (na_estimates_n > 0) {
+     cli_warn("{na_estimates_n} estimates were missing and were removed when \\
+               calculating the confidence interval.")
+  }
+
+  estimates[!na_estimates]
+}
+
 ci_percentile <- function(x, level) {
   # x[[ncol(x)]] pulls out the stat or estimate column
-  ci_vec <- stats::quantile(x[[ncol(x)]], probs = (1 + c(-level, level)) / 2)
+  estimates <- remove_missing_estimates(x[[ncol(x)]])
+
+  ci_vec <- stats::quantile(estimates, probs = (1 + c(-level, level)) / 2)
 
   make_ci_df(ci_vec)
 }
@@ -247,7 +261,9 @@ ci_se <- function(x, level, point_estimate) {
     }
   } else {
     # x[[ncol(x)]] pulls out the stat or estimate column
-    se <- stats::sd(x[[ncol(x)]])
+    estimates <- remove_missing_estimates(x[[ncol(x)]])
+    se <- stats::sd(estimates)
+
     qfn <- "qnorm"
   }
 
@@ -269,14 +285,16 @@ ci_bias_corrected <- function(x, level, point_estimate) {
   point_estimate <- check_obs_stat(point_estimate)
 
   # x[[ncol(x)]] pulls out the stat or estimate column
-  p <- mean(x[[ncol(x)]] <= point_estimate)
+  estimates <- remove_missing_estimates(x[[ncol(x)]])
+
+  p <- mean(estimates <= point_estimate)
+
   z0 <- stats::qnorm(p)
   # z_alpha_2 is z_(alpha/2)
   z_alpha_2 <- stats::qnorm((1 + c(-level, level)) / 2)
   new_probs <- stats::pnorm(2 * z0 + z_alpha_2)
 
-  # x[[ncol(x)]] pulls out the stat or estimate column
-  ci_vec <- stats::quantile(x[[ncol(x)]], probs = new_probs)
+  ci_vec <- stats::quantile(estimates, probs = new_probs)
 
   make_ci_df(ci_vec)
 }

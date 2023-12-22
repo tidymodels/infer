@@ -175,3 +175,13 @@
       Error in `get_confidence_interval()`:
       ! Confidence intervals using a `z` distribution for `stat = mean` are not implemented.
 
+# handles missing values gracefully (#520)
+
+    Code
+      res <- get_confidence_interval(boot_dist)
+    Message
+      Using `level = 0.95` to compute confidence interval.
+    Condition
+      Warning:
+      4 estimates were missing and were removed when calculating the confidence interval.
+
