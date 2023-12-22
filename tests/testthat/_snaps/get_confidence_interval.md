@@ -178,9 +178,7 @@
 # handles missing values gracefully (#520)
 
     Code
-      res <- get_confidence_interval(boot_dist)
-    Message
-      Using `level = 0.95` to compute confidence interval.
+      res <- get_confidence_interval(boot_dist, 0.95)
     Condition
       Warning:
       4 estimates were missing and were removed when calculating the confidence interval.
