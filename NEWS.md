@@ -1,5 +1,7 @@
 # infer v1.0.5.9000 (development version)
 
+* Fixed bug where `get_confidence_interval()` would error uninformatively when the supplied distribution of estimates contained missing values. The function will now warn and return a confidence interval calculated using the non-missing estimates.
+
 * Updated infrastructure for errors, warnings, and messages (#513). Most of these changes will not be visible to users, though:
      - Many longer error messages are now broken up into several lines.
      - For references to help-files, users can now click on the error message's text to navigate to the cited documentation.

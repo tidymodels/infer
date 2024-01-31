@@ -471,3 +471,22 @@ test_that("theoretical CIs check arguments properly", {
     )
   )
 })
+
+test_that("handles missing values gracefully (#520)", {
+   data <- data.frame(
+      prop = seq(0, 1, length.out = 10),
+      group = rep(c("a", "b"), each = 5L)
+   )
+
+   set.seed(1)
+   boot_dist <-
+     data %>%
+     specify(prop ~ group) %>%
+     hypothesize(null = "independence") %>%
+     generate(reps = 1000, type = "bootstrap") %>%
+     calculate(stat = "diff in medians", order = c("b", "a"))
+
+   expect_snapshot(res <- get_confidence_interval(boot_dist, .95))
+
+   expect_s3_class(res, "data.frame")
+})
