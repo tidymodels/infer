@@ -1,7 +1,7 @@
 Type: Package
 Package: infer
 Title: Tidy Statistical Inference
-Version: 1.0.5.9000
+Version: 1.0.6
 Authors@R: c(
     person("Andrew", "Bray", , "abray@reed.edu", role = "aut"),
     person("Chester", "Ismay", , "chester.ismay@gmail.com", role = "aut",
