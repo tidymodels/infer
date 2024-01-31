@@ -20,9 +20,9 @@
 #'   end points as a vertical lines on the plot.
 #' @param fill A character or hex string specifying the color to shade the
 #'   confidence interval. If `NULL` then no shading is actually done.
-#' @param ... Other arguments passed along to \\{ggplot2\\} functions.
+#' @param ... Other arguments passed along to ggplot2 functions.
 #'
-#' @return If added to an existing {infer} visualization, a \\{ggplot2\\}
+#' @return If added to an existing infer visualization, a ggplot2
 #'   object displaying the supplied intervals on top of its corresponding
 #'   distribution. Otherwise, an `infer_layer` list.
 #'

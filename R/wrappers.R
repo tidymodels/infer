@@ -120,7 +120,7 @@ t_test <- function(x, formula,
 #' @param mu A numeric value giving the hypothesized null mean value for a one
 #'   sample test and the hypothesized difference for a two sample test.
 #' @inheritParams t_test
-#' @param ... Pass in arguments to \\{infer\\} functions.
+#' @param ... Pass in arguments to infer functions.
 #'
 #' @examples
 #' library(tidyr)

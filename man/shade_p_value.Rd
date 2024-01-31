@@ -28,11 +28,11 @@ statistic as a vertical line on the plot.}
 \item{fill}{A character or hex string specifying the color to shade the
 p-value region. If \code{NULL}, the function will not shade any area.}
 
-\item{...}{Other arguments passed along to \\{ggplot2\\} functions.
+\item{...}{Other arguments passed along to ggplot2 functions.
 For expert use only.}
 }
 \value{
-If added to an existing {infer} visualization, a \\{ggplot2\\}
+If added to an existing infer visualization, a ggplot2
 object displaying the supplied statistic on top of its corresponding
 distribution. Otherwise, an \code{infer_layer} list.
 }

@@ -44,7 +44,7 @@ interval or not. \code{TRUE} by default.}
 
 \item{conf_level}{A numeric value between 0 and 1. Default value is 0.95.}
 
-\item{...}{Pass in arguments to \\{infer\\} functions.}
+\item{...}{Pass in arguments to infer functions.}
 }
 \description{
 A shortcut wrapper function to get the observed test statistic for a t test.

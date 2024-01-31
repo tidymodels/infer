@@ -25,7 +25,7 @@ p_value(x, obs_stat, direction)
 }
 \description{
 These functions and objects should no longer be used. They will be removed
-in a future release of \code{infer}.
+in a future release of infer.
 }
 \seealso{
 \code{\link[=get_p_value]{get_p_value()}}, \code{\link[=get_confidence_interval]{get_confidence_interval()}}, \code{\link[=generate]{generate()}}

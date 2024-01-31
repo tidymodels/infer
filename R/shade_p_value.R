@@ -22,10 +22,10 @@
 #'   statistic as a vertical line on the plot.
 #' @param fill A character or hex string specifying the color to shade the
 #'   p-value region. If `NULL`, the function will not shade any area.
-#' @param ... Other arguments passed along to \\{ggplot2\\} functions.
+#' @param ... Other arguments passed along to ggplot2 functions.
 #'   For expert use only.
 #'
-#' @return If added to an existing {infer} visualization, a \\{ggplot2\\}
+#' @return If added to an existing infer visualization, a ggplot2
 #'   object displaying the supplied statistic on top of its corresponding
 #'   distribution. Otherwise, an `infer_layer` list.
 #'

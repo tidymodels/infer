@@ -2,8 +2,8 @@
 % Please edit documentation in R/infer.R
 \docType{package}
 \name{infer}
-\alias{infer}
 \alias{infer-package}
+\alias{infer}
 \title{infer: a grammar for statistical inference}
 \description{
 The objective of this package is to perform statistical inference using a
