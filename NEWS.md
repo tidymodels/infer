@@ -1,3 +1,5 @@
+# infer (development version)
+
 # infer v1.0.6
 
 * Updated infrastructure for errors, warnings, and messages (#513). Most of these changes will not be visible to users, though:
