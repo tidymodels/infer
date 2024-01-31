@@ -8,7 +8,7 @@ articles:
   observed_stat_examples: observed_stat_examples.html
   paired: paired.html
   t_test: t_test.html
-last_built: 2024-01-31T14:36Z
+last_built: 2024-01-31T15:55Z
 urls:
   reference: https://infer.tidymodels.org/reference
   article: https://infer.tidymodels.org/articles

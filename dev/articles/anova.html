@@ -36,7 +36,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">infer</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.5.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -215,11 +215,11 @@ randomization-based approximation to the null distribution:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.051</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.062</span></span></code></pre>
 <p>Thus, if there were really no relationship between age and political
 party affiliation, our approximation of the probability that we would
 see a statistic as or more extreme than 2.4842 is approximately
-0.051.</p>
+0.062.</p>
 <p>To calculate the p-value using the true <span class="math inline">\(F\)</span> distribution, we can use the
 <code>pf</code> function from base R. This function allows us to situate
 the test statistic we calculated previously in the <span class="math inline">\(F\)</span> distribution with the appropriate
