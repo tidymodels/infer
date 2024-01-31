@@ -1,7 +1,7 @@
 #' Deprecated functions and objects
 #'
 #' These functions and objects should no longer be used. They will be removed
-#' in a future release of \code{infer}.
+#' in a future release of infer.
 #' @param x See the non-deprecated function.
 #' @param level See the non-deprecated function.
 #' @param type See the non-deprecated function.

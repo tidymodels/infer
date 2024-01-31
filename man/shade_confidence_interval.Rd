@@ -30,10 +30,10 @@ end points as a vertical lines on the plot.}
 \item{fill}{A character or hex string specifying the color to shade the
 confidence interval. If \code{NULL} then no shading is actually done.}
 
-\item{...}{Other arguments passed along to \\{ggplot2\\} functions.}
+\item{...}{Other arguments passed along to ggplot2 functions.}
 }
 \value{
-If added to an existing {infer} visualization, a \\{ggplot2\\}
+If added to an existing infer visualization, a ggplot2
 object displaying the supplied intervals on top of its corresponding
 distribution. Otherwise, an \code{infer_layer} list.
 }
