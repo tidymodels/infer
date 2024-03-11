@@ -689,6 +689,7 @@ ggplot_add.infer_layer <- function(object, plot, object_name) {
   shade_fn <- attr(object, "fn")
   shade_args <- attributes(object)[!names(attributes(object)) %in%
                                      c("class", "fn")]
+  shade_args["fill"] <- shade_args[["fill"]]
 
   # if a patchwork object, use a custom `infer_layer` `+.gg` method.
   # otherwise, convert the `infer_layer` back to a list and call `+` again.
