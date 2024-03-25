@@ -295,12 +295,16 @@ calc_impl_one_f <- function(f) {
   }
 }
 
+#' @export
 calc_impl.mean <- calc_impl_one_f(mean)
 
+#' @export
 calc_impl.median <- calc_impl_one_f(stats::median)
 
+#' @export
 calc_impl.sum <- calc_impl_one_f(sum)
 
+#' @export
 calc_impl.sd <- calc_impl_one_f(stats::sd)
 
 calc_impl_success_f <- function(f, output_name) {
@@ -327,6 +331,7 @@ calc_impl_success_f <- function(f, output_name) {
   }
 }
 
+#' @export
 calc_impl.prop <- calc_impl_success_f(
   f = function(response, success, ...) {
     mean(response == success, ...)
@@ -334,6 +339,7 @@ calc_impl.prop <- calc_impl_success_f(
   output_name = "proportion"
 )
 
+#' @export
 calc_impl.count <- calc_impl_success_f(
   f = function(response, success, ...) {
     sum(response == success, ...)
@@ -341,6 +347,7 @@ calc_impl.count <- calc_impl_success_f(
   output_name = "count"
 )
 
+#' @export
 calc_impl.F <- function(type, x, order, ...) {
   x %>%
     dplyr::summarize(
@@ -350,6 +357,7 @@ calc_impl.F <- function(type, x, order, ...) {
     )
 }
 
+#' @export
 calc_impl.slope <- function(type, x, order, ...) {
   x %>%
     dplyr::summarize(
@@ -359,6 +367,7 @@ calc_impl.slope <- function(type, x, order, ...) {
     )
 }
 
+#' @export
 calc_impl.correlation <- function(type, x, order, ...) {
   x %>%
     dplyr::summarize(
@@ -403,12 +412,16 @@ calc_impl_diff_f <- function(f, operator) {
   }
 }
 
+#' @export
 calc_impl.diff_in_means <- calc_impl_diff_f(mean, operator = `-`)
 
+#' @export
 calc_impl.diff_in_medians <- calc_impl_diff_f(stats::median, operator = `-`)
 
+#' @export
 calc_impl.ratio_of_means <- calc_impl_diff_f(mean, operator = `/`)
 
+#' @export
 calc_impl.Chisq <- function(type, x, order, ...) {
   resp_var <- response_name(x)
 
@@ -464,6 +477,7 @@ calc_impl.Chisq <- function(type, x, order, ...) {
   )
 }
 
+#' @export
 calc_impl.function_of_props <- function(type, x, order, operator, ...) {
   col <- response_expr(x)
   success <- attr(x, "success")
@@ -501,14 +515,17 @@ calc_impl.function_of_props <- function(type, x, order, operator, ...) {
   res
 }
 
+#' @export
 calc_impl.diff_in_props <- function(type, x, order, ...) {
   calc_impl.function_of_props(type, x, order, operator = `-`, ...)
 }
 
+#' @export
 calc_impl.ratio_of_props <- function(type, x, order, ...) {
   calc_impl.function_of_props(type, x, order, operator = `/`, ...)
 }
 
+#' @export
 calc_impl.odds_ratio <- function(type, x, order, ...) {
   col <- response_expr(x)
   success <- attr(x, "success")
@@ -524,6 +541,7 @@ calc_impl.odds_ratio <- function(type, x, order, ...) {
     dplyr::select(stat)
 }
 
+#' @export
 calc_impl.t <- function(type, x, order, ...) {
   if (theory_type(x) == "Two sample t") {
     x <- reorder_explanatory(x, order)
@@ -556,6 +574,7 @@ calc_impl.t <- function(type, x, order, ...) {
   df_out
 }
 
+#' @export
 calc_impl.z <- function(type, x, order, ...) {
   # Two sample proportions
   if (theory_type(x) == "Two sample props z") {
