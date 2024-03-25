@@ -150,10 +150,10 @@ t_stat <- function(x, formula,
                    conf_int = FALSE,
                    conf_level = 0.95,
                    ...) {
-  .Deprecated(
-    new = "observe",
-    msg = c("The t_stat() wrapper has been deprecated in favor of the more " ,
-            "general observe(). Please use that function instead.")
+  lifecycle::deprecate_warn(
+    when = "1.0.0",
+    what = "t_stat()",
+    with = "observe()"
   )
 
   check_conf_level(conf_level)
@@ -298,11 +298,11 @@ chisq_test <- function(x, formula, response = NULL,
 #' @export
 chisq_stat <- function(x, formula, response = NULL,
                        explanatory = NULL, ...) {
-  .Deprecated(
-    new = "observe",
-    msg = c("The chisq_stat() wrapper has been deprecated in favor of the ",
-            "more general observe(). Please use that function instead.")
-  )
+   lifecycle::deprecate_warn(
+     when = "1.0.0",
+     what = "chisq_stat()",
+     with = "observe()"
+   )
 
   # Parse response and explanatory variables
   response    <- enquo(response)
