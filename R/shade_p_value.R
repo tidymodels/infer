@@ -351,7 +351,7 @@ hist_area <- function(data, obs_stat, direction, yval) {
   # if area will have area 0, return 0-length tibble to trigger
   # `ggplot:::empty()` edge case (#528)
   if (length(x_grid) == 1) {
-    return(tibble::tibble(x = numeric(0), y = numeric(0), dir = direction))
+    return(tibble::tibble(x = numeric(0), y = numeric(0), dir = character(0)))
   }
 
   tibble::tibble(x = x_grid, y = curve_fun(x_grid), dir = direction)
