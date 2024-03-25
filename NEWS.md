@@ -1,5 +1,8 @@
 # infer (development version)
 
+* The aliases `p_value()` and `conf_int()`, first deprecated 6 years ago, now
+  return an error (#530).
+
 * Fixed bug in `shade_p_value()` and `shade_confidence_interval()` where `fill = NULL` was ignored when it was documented as preventing any shading (#525).
 
 # infer v1.0.6
