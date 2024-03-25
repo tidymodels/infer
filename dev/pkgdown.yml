@@ -1,4 +1,4 @@
-pandoc: 2.19.2
+pandoc: 3.1.11
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
@@ -8,7 +8,7 @@ articles:
   observed_stat_examples: observed_stat_examples.html
   paired: paired.html
   t_test: t_test.html
-last_built: 2024-01-31T15:55Z
+last_built: 2024-03-25T14:59Z
 urls:
   reference: https://infer.tidymodels.org/reference
   article: https://infer.tidymodels.org/articles
