@@ -1,5 +1,8 @@
 # infer (development version)
 
+* Addresses ggplot2 warnings when shading p-values for test statistics
+  that are outside of the range of the generated distribution (#528).
+
 # infer v1.0.6
 
 * Updated infrastructure for errors, warnings, and messages (#513). Most of these changes will not be visible to users, though:
