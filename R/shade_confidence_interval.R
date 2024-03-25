@@ -133,7 +133,7 @@ shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
     fn = "shade_confidence_interval",
     endpoints = if (is.null(endpoints)) {NA} else {endpoints},
     color = color,
-    fill = fill,
+    fill = list(fill),
     dots = list(...)
   )
 }

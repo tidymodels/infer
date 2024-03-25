@@ -123,7 +123,7 @@ shade_p_value <- function(obs_stat, direction,
     obs_stat = if (is.null(obs_stat)) {NA} else {obs_stat},
     direction = if (is.null(direction)) {NA} else {direction},
     color = color,
-    fill = fill,
+    fill = list(fill),
     dots = list(...)
   )
 }
