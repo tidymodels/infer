@@ -236,14 +236,12 @@ observed statistic falls, we can use <code><a href="../reference/visualize.html"
 <span>  <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_statistic</span>,</span>
 <span>                direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning in (function (mapping = NULL, data = NULL, stat = "identity", position = "identity", : All aesthetics have length 1, but the data has 1000 rows.</span></span>
-<span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Did you mean to use `annotate()`?</span></span></code></pre>
 <p><img src="paired_files/figure-html/visualize-1.png" width="576"></p>
 <p>It looks like our observed mean of -0.202 would be relatively
 unlikely if there were truly no change in mean number of hours worked
 per week over this time period.</p>
 <p>More exactly, we can calculate the p-value:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># calculate the p value from the test statistic and null distribution</span></span>
 <span><span class="va">p_value</span> <span class="op">&lt;-</span> <span class="va">null_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">observed_statistic</span>,</span>
@@ -262,7 +260,7 @@ approximately 0.028.</p>
 paired difference using <code>type = "bootstrap"</code> in
 <code><a href="../reference/generate.html">generate()</a></code>. As before, we use the pre-computed differences
 when generating bootstrap resamples:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># generate a bootstrap distribution</span></span>
 <span><span class="va">boot_dist</span> <span class="op">&lt;-</span> </span>
 <span>   <span class="va">gss_paired</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
@@ -277,7 +275,7 @@ when generating bootstrap resamples:</p>
 earlier with <code>type = "permute"</code>, this distribution is
 centered at <code>observed_statistic</code>.</p>
 <p>Calculating a confidence interval:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># calculate the confidence from the bootstrap distribution</span></span>
 <span><span class="va">confidence_interval</span> <span class="op">&lt;-</span> <span class="va">boot_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/get_confidence_interval.html">get_confidence_interval</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">.95</span><span class="op">)</span></span>
@@ -291,7 +289,7 @@ centered at <code>observed_statistic</code>.</p>
 lower and upper bounds by taking the observations at the <span class="math inline">\((1 - .95) / 2\)</span> and <span class="math inline">\(1 - ((1-.95) / 2)\)</span>th percentiles. To
 instead build the confidence interval using the standard error of the
 bootstrap distribution, we can write:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="../reference/get_confidence_interval.html">get_confidence_interval</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"se"</span>,</span>
 <span>                          point_estimate <span class="op">=</span> <span class="va">observed_statistic</span>,</span>
