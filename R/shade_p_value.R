@@ -180,6 +180,8 @@ shade_p_value_term <- function(plot, obs_stat, direction,
   segment_args <- c_dedupl(
     # Not overwritable arguments
     list(
+      # Address length-1 aesthetics warning by providing geom-specific data (#528)
+      data = data.frame(obs_stat = obs_stat),
       # Here `aes()` is needed to force {ggplot2} to include segment in the plot
       mapping = aes(x = obs_stat, xend = obs_stat, y = 0, yend = Inf),
       color = color,
