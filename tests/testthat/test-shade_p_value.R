@@ -141,6 +141,16 @@ test_that("shade_p_value throws errors", {
 
 })
 
+test_that("`shade_p_value()` handles 0-area shading without issue (#528)", {
+   expect_no_condition(
+     zero_area_shade <- visualize(gss_permute) + shade_p_value(100, "right")
+   )
+
+   expect_doppelganger(
+     "zero_area_shade",
+     expect_no_condition(print(zero_area_shade)),
+   )
+})
 
 # norm_direction ----------------------------------------------------------
 test_that("norm_direction works", {
