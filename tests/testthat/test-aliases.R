@@ -10,14 +10,15 @@ test_that("aliases work", {
   expect_silent(gss_permute %>% get_ci())
 })
 
-test_that("old aliases produce warning", {
+test_that("old aliases produce informative error", {
   expect_snapshot(
+    error = TRUE,
     res <- gss_calc %>%
-      p_value(obs_stat = -0.2, direction = "right") %>%
-      dplyr::pull()
+      p_value(obs_stat = -0.2, direction = "right")
   )
 
-  expect_equal(res, 1)
-
-  expect_snapshot(res_ <- gss_permute %>% conf_int())
+  expect_snapshot(
+     error = TRUE,
+     res_ <- gss_permute %>% conf_int()
+    )
 })
