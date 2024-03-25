@@ -61,6 +61,7 @@
 <h2 class="pkg-version" data-toc-text="development version" id="infer-development-version">infer (development version)<a class="anchor" aria-label="anchor" href="#infer-development-version"></a></h2>
 <ul><li><p>The aliases <code><a href="../reference/deprecated.html">p_value()</a></code> and <code><a href="../reference/deprecated.html">conf_int()</a></code>, first deprecated 6 years ago, now return an error (<a href="https://github.com/tidymodels/infer/issues/530" class="external-link">#530</a>).</p></li>
 <li><p>Addresses ggplot2 warnings when shading p-values for test statistics that are outside of the range of the generated distribution (<a href="https://github.com/tidymodels/infer/issues/528" class="external-link">#528</a>).</p></li>
+<li><p>Fixed bug in <code><a href="../reference/shade_p_value.html">shade_p_value()</a></code> and <code><a href="../reference/shade_confidence_interval.html">shade_confidence_interval()</a></code> where <code>fill = NULL</code> was ignored when it was documented as preventing any shading (<a href="https://github.com/tidymodels/infer/issues/525" class="external-link">#525</a>).</p></li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.6" id="infer-v106">infer v1.0.6<a class="anchor" aria-label="anchor" href="#infer-v106"></a></h2><p class="text-muted">CRAN release: 2024-01-31</p>
