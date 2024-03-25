@@ -9,9 +9,13 @@ test_that("shade_p_value works", {
   expect_doppelganger("pval-sim-left", gss_viz_sim + shade_p_value(1, "left"))
   expect_doppelganger("pval-sim-both", gss_viz_sim + shade_p_value(1, "both"))
   expect_doppelganger("pval-sim-null", gss_viz_sim + shade_p_value(1, NULL))
+  expect_warning(
+    p_val_sim_corrupt <- gss_viz_sim + shade_p_value(1, "aaa"),
+    "direction"
+  )
   expect_doppelganger(
     "pval-sim-corrupt",
-    expect_warning(gss_viz_sim + shade_p_value(1, "aaa"), "direction")
+    p_val_sim_corrupt
   )
 
   # Adding `shade_p_value()` to theoretical plot
@@ -27,9 +31,13 @@ test_that("shade_p_value works", {
   expect_doppelganger(
     "pval-theor-null", gss_viz_theor + shade_p_value(1, NULL)
   )
+  expect_warning(
+    pval_theor_corrupt <- gss_viz_theor + shade_p_value(1, "aaa"),
+    "direction"
+  )
   expect_doppelganger(
     "pval-theor-corrupt",
-    expect_warning(gss_viz_theor + shade_p_value(1, "aaa"), "direction")
+    pval_theor_corrupt
   )
 
   # Adding `shade_p_value()` to "both" plot
@@ -45,9 +53,13 @@ test_that("shade_p_value works", {
   expect_doppelganger(
     "pval-both-null", gss_viz_both + shade_p_value(1, NULL)
   )
+  expect_warning(
+     pval_both_corrupt <- gss_viz_both + shade_p_value(1, "aaa"),
+    "direction"
+  )
   expect_doppelganger(
     "pval-both-corrupt",
-    expect_warning(gss_viz_both + shade_p_value(1, "aaa"), "direction")
+    pval_both_corrupt
   )
 
   # -roper p-value shading when the calculated statistic falls exactly on the
