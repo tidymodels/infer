@@ -199,7 +199,7 @@ test_that("visualize basic tests", {
   )
 
   expect_warning(
-     vis_both_both_2 <- gss_tbl %>%
+     vis_both_left_1 <- gss_tbl %>%
         specify(age ~ sex) %>%
         hypothesize(null = "independence") %>%
         generate(reps = 100, type = "permute") %>%
