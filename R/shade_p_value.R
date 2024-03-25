@@ -180,6 +180,8 @@ shade_p_value_term <- function(plot, obs_stat, direction,
   segment_args <- c_dedupl(
     # Not overwritable arguments
     list(
+      # Address length-1 aesthetics warning by providing geom-specific data (#528)
+      data = data.frame(obs_stat = obs_stat),
       # Here `aes()` is needed to force {ggplot2} to include segment in the plot
       mapping = aes(x = obs_stat, xend = obs_stat, y = 0, yend = Inf),
       color = color,
@@ -345,6 +347,12 @@ hist_area <- function(data, obs_stat, direction, yval) {
     left  = c(x_extra[x_extra < obs_stat], obs_stat),
     right = c(obs_stat, x_extra[x_extra > obs_stat])
   )
+
+  # if area will have area 0, return 0-length tibble to trigger
+  # `ggplot:::empty()` edge case (#528)
+  if (length(x_grid) == 1) {
+    return(tibble::tibble(x = numeric(0), y = numeric(0), dir = character(0)))
+  }
 
   tibble::tibble(x = x_grid, y = curve_fun(x_grid), dir = direction)
 }
