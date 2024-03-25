@@ -1,5 +1,8 @@
 # infer (development version)
 
+* The aliases `p_value()` and `conf_int()`, first deprecated 6 years ago, now
+  return an error (#530).
+  
 * Addresses ggplot2 warnings when shading p-values for test statistics
   that are outside of the range of the generated distribution (#528).
 

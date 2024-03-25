@@ -36,7 +36,8 @@
       res_ <- gss_tbl %>% chisq_stat(college ~ partyid)
     Condition
       Warning:
-      The chisq_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
+      `chisq_stat()` was deprecated in infer 1.0.0.
+      i Please use `observe()` instead.
 
 ---
 
@@ -44,7 +45,8 @@
       obs_stat_way <- gss_tbl %>% chisq_stat(college ~ partyid)
     Condition
       Warning:
-      The chisq_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
+      `chisq_stat()` was deprecated in infer 1.0.0.
+      i Please use `observe()` instead.
 
 ---
 
@@ -52,7 +54,8 @@
       obs_stat_way <- gss_tbl %>% chisq_stat(partyid ~ NULL)
     Condition
       Warning:
-      The chisq_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
+      `chisq_stat()` was deprecated in infer 1.0.0.
+      i Please use `observe()` instead.
 
 ---
 
@@ -60,7 +63,8 @@
       obs_stat_way_alt <- gss_tbl %>% chisq_stat(response = partyid)
     Condition
       Warning:
-      The chisq_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
+      `chisq_stat()` was deprecated in infer 1.0.0.
+      i Please use `observe()` instead.
 
 ---
 
@@ -68,7 +72,8 @@
       res_ <- gss_tbl %>% t_stat(hours ~ sex, order = c("male", "female"))
     Condition
       Warning:
-      The t_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
+      `t_stat()` was deprecated in infer 1.0.0.
+      i Please use `observe()` instead.
 
 ---
 
@@ -76,7 +81,8 @@
       obs_stat_way <- gss_tbl %>% t_stat(hours ~ sex, order = c("male", "female"))
     Condition
       Warning:
-      The t_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
+      `t_stat()` was deprecated in infer 1.0.0.
+      i Please use `observe()` instead.
 
 ---
 
@@ -85,7 +91,8 @@
         order = c("male", "female"))
     Condition
       Warning:
-      The t_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
+      `t_stat()` was deprecated in infer 1.0.0.
+      i Please use `observe()` instead.
 
 ---
 
@@ -93,7 +100,8 @@
       res_ <- gss_tbl %>% t_stat(hours ~ NULL)
     Condition
       Warning:
-      The t_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
+      `t_stat()` was deprecated in infer 1.0.0.
+      i Please use `observe()` instead.
 
 ---
 
@@ -101,7 +109,8 @@
       obs_stat_way <- gss_tbl %>% t_stat(hours ~ NULL)
     Condition
       Warning:
-      The t_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
+      `t_stat()` was deprecated in infer 1.0.0.
+      i Please use `observe()` instead.
 
 ---
 
@@ -109,7 +118,8 @@
       obs_stat_way_alt <- gss_tbl %>% t_stat(response = hours)
     Condition
       Warning:
-      The t_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
+      `t_stat()` was deprecated in infer 1.0.0.
+      i Please use `observe()` instead.
 
 ---
 
@@ -117,7 +127,8 @@
       res_ <- chisq_stat(x = gss_tbl, response = age, explanatory = sex)
     Condition
       Warning:
-      The chisq_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
+      `chisq_stat()` was deprecated in infer 1.0.0.
+      i Please use `observe()` instead.
       Error in `chisq_stat()`:
       ! The response variable of `age` is not appropriate since the response variable is expected to be categorical.
 
@@ -127,7 +138,8 @@
       res_ <- chisq_stat(x = gss_tbl, response = sex, explanatory = age)
     Condition
       Warning:
-      The chisq_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
+      `chisq_stat()` was deprecated in infer 1.0.0.
+      i Please use `observe()` instead.
       Error in `chisq_stat()`:
       ! The explanatory variable of `age` is not appropriate since the response variable is expected to be categorical.
 
@@ -147,7 +159,8 @@
         "male"))
     Condition
       Warning:
-      The t_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
+      `t_stat()` was deprecated in infer 1.0.0.
+      i Please use `observe()` instead.
 
 ---
 
@@ -156,7 +169,8 @@
       var.equal = TRUE)
     Condition
       Warning:
-      The t_stat() wrapper has been deprecated in favor of the more general observe(). Please use that function instead.
+      `t_stat()` was deprecated in infer 1.0.0.
+      i Please use `observe()` instead.
 
 # two sample prop_test works
 
