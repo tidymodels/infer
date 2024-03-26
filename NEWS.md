@@ -1,3 +1,5 @@
+# infer (development version)
+
 # infer 1.0.7
 
 * The aliases `p_value()` and `conf_int()`, first deprecated 6 years ago, now
