@@ -36,7 +36,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">infer</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.6.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.7.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -202,10 +202,10 @@ can calculate the p-value:</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.044</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>    0.03</span></span></code></pre>
 <p>Thus, if the true mean number of hours worked per week was really 40,
 our approximation of the probability that we would see a test statistic
-as or more extreme than 41.382 is approximately 0.044.</p>
+as or more extreme than 41.382 is approximately 0.03.</p>
 <p>Analogously to the steps shown above, the package supplies a wrapper
 function, <code>t_test</code>, to carry out 1-sample <span class="math inline">\(t\)</span>-tests on tidy data. Rather than using
 randomization, the wrappers carry out the theory-based <span class="math inline">\(t\)</span>-test. The syntax looks like this:</p>
@@ -332,11 +332,11 @@ null distribution to do calculate the p-value.</p>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 1</span></span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span>     0.3</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span>   0.234</span></span></code></pre>
 <p>Thus, if there were really no relationship between the number of
 hours worked a week and whether one has a college degree, the
 probability that we would see a statistic as or more extreme than 1.5384
-is approximately 0.3.</p>
+is approximately 0.234.</p>
 <p>Note that, similarly to the steps shown above, the package supplies a
 wrapper function, <code>t_test</code>, to carry out 2-sample <span class="math inline">\(t\)</span>-tests on tidy data. The syntax looks
 like this:</p>
