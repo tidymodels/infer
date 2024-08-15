@@ -665,7 +665,8 @@ null_dist %>%
 Alternatively, using the `chisq_test` wrapper:
 
 ```{r}
-chisq_test(gss,
+chisq_test(
+  gss,
   response = finrela,
   p = c(
     "far below average" = 1 / 6,
