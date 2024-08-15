@@ -224,7 +224,8 @@ This statistic seems like it would be quite unlikely if income class self-identi
 ```{r get-p-value-gof, warning = FALSE, message = FALSE}
 # calculate the p-value
 p_value_gof <- null_dist_gof %>%
-  get_p_value(observed_gof_statistic,
+  get_p_value(
+    observed_gof_statistic,
     direction = "greater"
   )
 
@@ -242,7 +243,8 @@ pchisq(observed_gof_statistic$stat, 5, lower.tail = FALSE)
 Again, equivalently to the theory-based approach shown above, the package supplies a wrapper function, `chisq_test()`, to carry out Chi-Squared goodness of fit tests on tidy data. The syntax goes like this:
 
 ```{r chisq-gof-wrapper, message = FALSE, warning = FALSE}
-chisq_test(gss,
+chisq_test(
+  gss,
   response = finrela,
   p = c(
     "far below average" = 1 / 6,
