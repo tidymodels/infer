@@ -16,7 +16,7 @@ output: github_document
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)
 [![Coverage Status](https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg)](https://app.codecov.io/github/tidymodels/infer/?branch=main)
 
-The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the `tidyverse` design framework. The package is centered around 4 main verbs, supplemented with many utilities to visualize and extract value from their outputs.
+The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the tidyverse design framework. The package is centered around 4 main verbs, supplemented with many utilities to visualize and extract value from their outputs.
 
 + `specify()` allows you to specify the variable, or relationship between variables, that you're interested in.
 + `hypothesize()` allows you to declare the null hypothesis.
@@ -39,13 +39,13 @@ If you're interested in learning more about randomization-based statistical infe
 
 ------------------------------------------------------------------------
 
-To install the current stable version of `infer` from CRAN:
+To install the current stable version of infer from CRAN:
 
 ```{r, eval = FALSE}
 install.packages("infer")
 ```
 
-To install the developmental stable version of `infer`, make sure to install `remotes` first. The `pkgdown` website for this version is at [infer.tidymodels.org](https://infer.tidymodels.org/).
+To install the developmental stable version of infer, make sure to install remotes first. The `pkgdown` website for this version is at [infer.tidymodels.org](https://infer.tidymodels.org/).
 
 ```{r, eval = FALSE}
 # install.packages("pak")
@@ -113,6 +113,6 @@ null_dist %>%
 ```
 
 
-Note that the formula and non-formula interfaces  (i.e. `age ~ partyid` vs. `response = age, explanatory =  partyid`) work for all implemented inference procedures in `infer`. Use whatever is more natural for you. If you will be doing modeling using functions like `lm()` and `glm()`, though, we recommend you begin to use the formula `y ~ x` notation as soon as possible.
+Note that the formula and non-formula interfaces  (i.e., `age ~ partyid` vs. `response = age, explanatory =  partyid`) work for all implemented inference procedures in `infer`. Use whatever is more natural for you. If you will be doing modeling using functions like `lm()` and `glm()`, though, we recommend you begin to use the formula `y ~ x` notation as soon as possible.
 
 Other resources are available in the package vignettes! See `vignette("observed_stat_examples")` for more examples like the one above, and `vignette("infer")` for discussion of the underlying principles of the package design.
