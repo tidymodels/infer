@@ -19,9 +19,9 @@ library(dplyr)
 library(infer)
 ```
 
-In this vignette, we'll walk through conducting an analysis of variance (ANOVA) test using `infer`. ANOVAs are used to analyze differences in group means.
+In this vignette, we'll walk through conducting an analysis of variance (ANOVA) test using infer. ANOVAs are used to analyze differences in group means.
 
-Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
+Throughout this vignette, we'll make use of the `gss` dataset supplied by infer, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
 ```{r glimpse-gss-actual, warning = FALSE, message = FALSE}
 dplyr::glimpse(gss)
@@ -57,7 +57,7 @@ observed_f_statistic <- gss %>%
 
 The observed $F$ statistic is `r observed_f_statistic`. Now, we want to compare this statistic to a null distribution, generated under the assumption that age and political party affiliation are not actually related, to get a sense of how likely it would be for us to see this observed statistic if there were actually no association between the two variables.
 
-We can `generate` an approximation of the null distribution using randomization. The randomization approach permutes the response and explanatory variables, so that each person's party affiliation is matched up with a random age from the sample in order to break up any association between the two.
+We can `generate()` an approximation of the null distribution using randomization. The randomization approach permutes the response and explanatory variables, so that each person's party affiliation is matched up with a random age from the sample in order to break up any association between the two.
 
 ```{r generate-null-f, warning = FALSE, message = FALSE}
 # generate the null distribution using randomization
@@ -116,7 +116,7 @@ p_value
 
 Thus, if there were really no relationship between age and political party affiliation, our approximation of the probability that we would see a statistic as or more extreme than `r observed_f_statistic` is approximately `r p_value`.
 
-To calculate the p-value using the true $F$ distribution, we can use the `pf` function from base R. This function allows us to situate the test statistic we calculated previously in the $F$ distribution with the appropriate degrees of freedom.
+To calculate the p-value using the true $F$ distribution, we can use the `pf()` function from base R. This function allows us to situate the test statistic we calculated previously in the $F$ distribution with the appropriate degrees of freedom.
 
 ```{r}
 pf(observed_f_statistic$stat, 3, 496, lower.tail = FALSE)

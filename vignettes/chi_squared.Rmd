@@ -21,9 +21,9 @@ library(infer)
 
 ### Introduction
 
-In this vignette, we'll walk through conducting a $\chi^2$ (chi-squared) test of independence and a chi-squared goodness of fit test using `infer`. We'll start out with a  chi-squared test of independence, which can be used to test the association between two categorical variables. Then, we'll move on to a chi-squared goodness of fit test, which tests how well the distribution of one categorical variable can be approximated by some theoretical distribution.
+In this vignette, we'll walk through conducting a $\chi^2$ (chi-squared) test of independence and a chi-squared goodness of fit test using infer. We'll start out with a  chi-squared test of independence, which can be used to test the association between two categorical variables. Then, we'll move on to a chi-squared goodness of fit test, which tests how well the distribution of one categorical variable can be approximated by some theoretical distribution.
 
-Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
+Throughout this vignette, we'll make use of the `gss` dataset supplied by infer, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
 ```{r glimpse-gss-actual, warning = FALSE, message = FALSE}
 dplyr::glimpse(gss)
@@ -41,10 +41,14 @@ gss %>%
   ggplot2::aes(x = finrela, fill = college) +
   ggplot2::geom_bar(position = "fill") +
   ggplot2::scale_fill_brewer(type = "qual") +
-  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, 
-                                                     vjust = .5)) +
-    ggplot2::labs(x = "finrela: Self-Identification of Income Class",
-                  y = "Proportion")
+  ggplot2::theme(axis.text.x = ggplot2::element_text(
+    angle = 45,
+    vjust = .5
+  )) +
+  ggplot2::labs(
+    x = "finrela: Self-Identification of Income Class",
+    y = "Proportion"
+  )
 ```
 
 If there were no relationship, we would expect to see the purple bars reaching to the same height, regardless of income class. Are the differences we see here, though, just due to random noise?
@@ -61,7 +65,7 @@ observed_indep_statistic <- gss %>%
 
 The observed $\chi^2$ statistic is `r observed_indep_statistic`. Now, we want to compare this statistic to a null distribution, generated under the assumption that these variables are not actually related, to get a sense of how likely it would be for us to see this observed statistic if there were actually no association between education and income.
 
-We can `generate` the null distribution in one of two ways---using randomization or theory-based methods. The randomization approach approximates the null distribution by permuting the response and explanatory variables, so that each person's educational attainment is matched up with a random income from the sample in order to break up any association between the two.
+We can `generate()` the null distribution in one of two ways---using randomization or theory-based methods. The randomization approach approximates the null distribution by permuting the response and explanatory variables, so that each person's educational attainment is matched up with a random income from the sample in order to break up any association between the two.
 
 ```{r generate-null-indep, warning = FALSE, message = FALSE}
 # generate the null distribution using randomization
@@ -86,9 +90,10 @@ To get a sense for what these distributions look like, and where our observed st
 ```{r visualize-indep, warning = FALSE, message = FALSE}
 # visualize the null distribution and test statistic!
 null_dist_sim %>%
-  visualize() + 
+  visualize() +
   shade_p_value(observed_indep_statistic,
-                direction = "greater")
+    direction = "greater"
+  )
 ```
 
 We could also visualize the observed statistic against the theoretical null distribution. To do so, use the `assume()` verb to define a theoretical null distribution and then pass it to `visualize()` like a null distribution outputted from `generate()` and `calculate()`.
@@ -98,9 +103,10 @@ We could also visualize the observed statistic against the theoretical null dist
 gss %>%
   specify(college ~ finrela) %>%
   assume(distribution = "Chisq") %>%
-  visualize() + 
+  visualize() +
   shade_p_value(observed_indep_statistic,
-                direction = "greater")
+    direction = "greater"
+  )
 ```
 
 To visualize both the randomization-based and theoretical null distributions to get a sense of how the two relate, we can pipe the randomization-based null distribution into `visualize()`, and further provide `method = "both"`.
@@ -108,9 +114,10 @@ To visualize both the randomization-based and theoretical null distributions to 
 ```{r visualize-indep-both, warning = FALSE, message = FALSE}
 # visualize both null distributions and the test statistic!
 null_dist_sim %>%
-  visualize(method = "both") + 
+  visualize(method = "both") +
   shade_p_value(observed_indep_statistic,
-                direction = "greater")
+    direction = "greater"
+  )
 ```
 
 Either way, it looks like our observed test statistic would be quite unlikely if there were actually no association between education and income. More exactly, we can approximate the p-value with `get_p_value`:
@@ -118,8 +125,10 @@ Either way, it looks like our observed test statistic would be quite unlikely if
 ```{r p-value-indep, warning = FALSE, message = FALSE}
 # calculate the p value from the observed statistic and null distribution
 p_value_independence <- null_dist_sim %>%
-  get_p_value(obs_stat = observed_indep_statistic,
-              direction = "greater")
+  get_p_value(
+    obs_stat = observed_indep_statistic,
+    direction = "greater"
+  )
 
 p_value_independence
 ```
@@ -149,8 +158,10 @@ gss %>%
   ggplot2::aes(x = finrela) +
   ggplot2::geom_bar() +
   ggplot2::geom_hline(yintercept = 466.3, col = "red") +
-  ggplot2::labs(x = "finrela: Self-Identification of Income Class",
-                y = "Number of Responses")
+  ggplot2::labs(
+    x = "finrela: Self-Identification of Income Class",
+    y = "Number of Responses"
+  )
 ```
 
 It seems like a uniform distribution may not be the most appropriate description of the data--many more people describe their income as average than than any of the other options. Lets now test whether this difference in distributions is statistically significant.
@@ -161,13 +172,17 @@ First, to carry out this hypothesis test, we would calculate our observed statis
 # calculating the null distribution
 observed_gof_statistic <- gss %>%
   specify(response = finrela) %>%
-  hypothesize(null = "point",
-              p = c("far below average" = 1/6,
-                    "below average" = 1/6,
-                    "average" = 1/6,
-                    "above average" = 1/6,
-                    "far above average" = 1/6,
-                    "DK" = 1/6)) %>%
+  hypothesize(
+    null = "point",
+    p = c(
+      "far below average" = 1 / 6,
+      "below average" = 1 / 6,
+      "average" = 1 / 6,
+      "above average" = 1 / 6,
+      "far above average" = 1 / 6,
+      "DK" = 1 / 6
+    )
+  ) %>%
   calculate(stat = "Chisq")
 ```
 
@@ -178,13 +193,17 @@ The observed statistic is `r observed_gof_statistic`. Now, generating a null dis
 # generating a null distribution, assuming each income class is equally likely
 null_dist_gof <- gss %>%
   specify(response = finrela) %>%
-  hypothesize(null = "point",
-              p = c("far below average" = 1/6,
-                    "below average" = 1/6,
-                    "average" = 1/6,
-                    "above average" = 1/6,
-                    "far above average" = 1/6,
-                    "DK" = 1/6)) %>%
+  hypothesize(
+    null = "point",
+    p = c(
+      "far below average" = 1 / 6,
+      "below average" = 1 / 6,
+      "average" = 1 / 6,
+      "above average" = 1 / 6,
+      "far above average" = 1 / 6,
+      "DK" = 1 / 6
+    )
+  ) %>%
   generate(reps = 1000, type = "draw") %>%
   calculate(stat = "Chisq")
 ```
@@ -194,9 +213,10 @@ Again, to get a sense for what these distributions look like, and where our obse
 ```{r visualize-indep-gof, warning = FALSE, message = FALSE}
 # visualize the null distribution and test statistic!
 null_dist_gof %>%
-  visualize() + 
+  visualize() +
   shade_p_value(observed_gof_statistic,
-                direction = "greater")
+    direction = "greater"
+  )
 ```
 
 This statistic seems like it would be quite unlikely if income class self-identification actually followed a uniform distribution! How unlikely, though? Calculating the p-value:
@@ -205,7 +225,8 @@ This statistic seems like it would be quite unlikely if income class self-identi
 # calculate the p-value
 p_value_gof <- null_dist_gof %>%
   get_p_value(observed_gof_statistic,
-              direction = "greater")
+    direction = "greater"
+  )
 
 p_value_gof
 ```
@@ -218,17 +239,20 @@ To calculate the p-value using the true $\chi^2$ distribution, we can use the `p
 pchisq(observed_gof_statistic$stat, 5, lower.tail = FALSE)
 ```
 
-Again, equivalently to the theory-based approach shown above, the package supplies a wrapper function, `chisq_test`, to carry out Chi-Squared goodness of fit tests on tidy data. The syntax goes like this:
+Again, equivalently to the theory-based approach shown above, the package supplies a wrapper function, `chisq_test()`, to carry out Chi-Squared goodness of fit tests on tidy data. The syntax goes like this:
 
 ```{r chisq-gof-wrapper, message = FALSE, warning = FALSE}
-chisq_test(gss, 
-           response = finrela,
-           p = c("far below average" = 1/6,
-                    "below average" = 1/6,
-                    "average" = 1/6,
-                    "above average" = 1/6,
-                    "far above average" = 1/6,
-                    "DK" = 1/6))
+chisq_test(gss,
+  response = finrela,
+  p = c(
+    "far below average" = 1 / 6,
+    "below average" = 1 / 6,
+    "average" = 1 / 6,
+    "above average" = 1 / 6,
+    "far above average" = 1 / 6,
+    "DK" = 1 / 6
+  )
+)
 ```
 
 
