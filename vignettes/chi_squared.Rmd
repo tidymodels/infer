@@ -224,7 +224,8 @@ This statistic seems like it would be quite unlikely if income class self-identi
 ```{r get-p-value-gof, warning = FALSE, message = FALSE}
 # calculate the p-value
 p_value_gof <- null_dist_gof %>%
-  get_p_value(observed_gof_statistic,
+  get_p_value(
+    observed_gof_statistic,
     direction = "greater"
   )
 
