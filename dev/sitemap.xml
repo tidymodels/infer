@@ -1,120 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://infer.tidymodels.org/dev/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/articles/anova.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/articles/chi_squared.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/articles/infer.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/articles/observed_stat_examples.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/articles/paired.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/articles/t_test.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/index.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/assume.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/calculate.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/chisq_stat.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/chisq_test.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/deprecated.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/fit.infer.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/generate.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/get_confidence_interval.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/get_p_value.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/gss.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/hypothesize.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/infer.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/observe.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/print.infer.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/prop_test.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/rep_sample_n.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/shade_confidence_interval.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/shade_p_value.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/specify.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/t_stat.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/t_test.html</loc>
-  </url>
-  <url>
-    <loc>https://infer.tidymodels.org/dev/reference/visualize.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://infer.tidymodels.org/dev/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/CONTRIBUTING.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/LICENSE-text.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/LICENSE.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/articles/anova.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/articles/chi_squared.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/articles/index.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/articles/infer.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/articles/observed_stat_examples.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/articles/paired.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/articles/t_test.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/authors.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/index.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/news/index.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/assume.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/calculate.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/chisq_stat.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/chisq_test.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/deprecated.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/fit.infer.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/generate.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/get_confidence_interval.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/get_p_value.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/gss.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/hypothesize.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/index.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/infer.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/observe.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/pipe.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/print.infer.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/prop_test.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/reexports.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/rep_sample_n.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/shade_confidence_interval.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/shade_p_value.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/specify.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/t_stat.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/t_test.html</loc></url>
+<url><loc>https://infer.tidymodels.org/dev/reference/visualize.html</loc></url>
 </urlset>
+
