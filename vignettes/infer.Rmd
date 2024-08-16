@@ -17,7 +17,7 @@ options(digits = 4)
 
 ### Introduction
 
-`infer` implements an expressive grammar to perform statistical inference that coheres with the `tidyverse` design framework. Rather than providing methods for specific statistical tests, this package consolidates the principles that are shared among common hypothesis tests into a set of 4 main verbs (functions), supplemented with many utilities to visualize and extract value from their outputs.
+infer implements an expressive grammar to perform statistical inference that coheres with the tidyverse design framework. Rather than providing methods for specific statistical tests, this package consolidates the principles that are shared among common hypothesis tests into a set of 4 main verbs (functions), supplemented with many utilities to visualize and extract value from their outputs.
 
 Regardless of which hypothesis test we're using, we're still asking the same kind of question: is the effect/difference in our observed data real, or due to chance? To answer this question, we start by assuming that the observed data came from some world where "nothing is going on" (i.e. the observed effect was simply due to random chance), and call this assumption our *null hypothesis*. (In reality, we might not believe in the null hypothesis at all---the null hypothesis is in opposition to the *alternate hypothesis*, which supposes that the effect present in the observed data is actually due to the fact that "something is going on.") We then calculate a *test statistic* from our data that describes the observed effect. We can use this test statistic to calculate a *p-value*, giving the probability that our observed data could come about if the null hypothesis was true. If this probability is below some pre-defined *significance level* $\alpha$, then we can reject our null hypothesis.
 
@@ -48,14 +48,14 @@ Each row is an individual survey response, containing some basic demographic inf
 
 ### specify(): Specifying Response (and Explanatory) Variables
 
-The `specify` function can be used to specify which of the variables in the dataset you're interested in. If you're only interested in, say, the `age` of the respondents, you might write:
+The `specify()` function can be used to specify which of the variables in the dataset you're interested in. If you're only interested in, say, the `age` of the respondents, you might write:
 
 ```{r specify-example, warning = FALSE, message = FALSE}
 gss %>%
   specify(response = age)
 ```
 
-On the front-end, the output of `specify` just looks like it selects off the columns in the dataframe that you've specified. Checking the class of this object, though:
+On the front-end, the output of `specify()` just looks like it selects off the columns in the dataframe that you've specified. Checking the class of this object, though:
 
 ```{r specify-one, warning = FALSE, message = FALSE}
 gss %>%
@@ -65,7 +65,7 @@ gss %>%
 
 We can see that the `infer` class has been appended on top of the dataframe classes--this new class stores some extra metadata.
 
-If you're interested in two variables--`age` and `partyid`, for example--you can `specify` their relationship in one of two (equivalent) ways:
+If you're interested in two variables--`age` and `partyid`, for example--you can `specify()` their relationship in one of two (equivalent) ways:
 
 ```{r specify-two, warning = FALSE, message = FALSE}
 # as a formula
@@ -87,7 +87,7 @@ gss %>%
 
 ### hypothesize(): Declaring the Null Hypothesis
 
-The next step in the `infer` pipeline is often to declare a null hypothesis using `hypothesize()`. The first step is to supply one of "independence" or "point" to the `null` argument. If your null hypothesis assumes independence between two variables, then this is all you need to supply to `hypothesize()`:
+The next step in the infer pipeline is often to declare a null hypothesis using `hypothesize()`. The first step is to supply one of "independence" or "point" to the `null` argument. If your null hypothesis assumes independence between two variables, then this is all you need to supply to `hypothesize()`:
 
 ```{r hypothesize-independence, warning = FALSE, message = FALSE}
 gss %>%
@@ -103,7 +103,7 @@ gss %>%
   hypothesize(null = "point", mu = 40)
 ```
 
-Again, from the front-end, the dataframe outputted from `hypothesize()` looks almost exactly the same as it did when it came out of `specify()`, but `infer` now "knows" your null hypothesis.
+Again, from the front-end, the dataframe outputted from `hypothesize()` looks almost exactly the same as it did when it came out of `specify()`, but infer now "knows" your null hypothesis.
 
 ### generate(): Generating the Null Distribution
 
@@ -161,7 +161,7 @@ gss %>%
 
 ### Other Utilities
 
-`infer` also offers several utilities to extract the meaning out of summary statistics and distributions---the package provides functions to visualize where a statistic is relative to a distribution (with `visualize()`), calculate p-values (with `get_p_value()`), and calculate confidence intervals (with `get_confidence_interval()`).
+infer also offers several utilities to extract the meaning out of summary statistics and distributions---the package provides functions to visualize where a statistic is relative to a distribution (with `visualize()`), calculate p-values (with `get_p_value()`), and calculate confidence intervals (with `get_confidence_interval()`).
 
 To illustrate, we'll go back to the example of determining whether the mean number of hours worked per week is 40 hours.
 
@@ -196,7 +196,7 @@ null_dist %>%
   shade_p_value(obs_stat = obs_mean, direction = "two-sided")
 ```
 
-Notice that `infer` has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the `+` operator to apply the `shade_p_value` function. This is because `visualize` outputs a plot object from `ggplot2` instead of a data frame, and the `+` operator is needed to add the p-value layer to the plot object.) The red bar looks like it's slightly far out on the right tail of the null distribution, so observing a sample mean of `r obs_mean` hours would be somewhat unlikely if the mean was actually 40 hours. How unlikely, though?
+Notice that infer has also shaded the regions of the null distribution that are as (or more) extreme than our observed statistic. (Also, note that we now use the `+` operator to apply the `shade_p_value()` function. This is because `visualize` outputs a plot object from `ggplot2` instead of a data frame, and the `+` operator is needed to add the p-value layer to the plot object.) The red bar looks like it's slightly far out on the right tail of the null distribution, so observing a sample mean of `r obs_mean` hours would be somewhat unlikely if the mean was actually 40 hours. How unlikely, though?
 
 ```{r get_p_value, warning = FALSE, message = FALSE}
 # get a two-tailed p-value
@@ -221,11 +221,13 @@ boot_dist <- gss %>%
 # start with the bootstrap distribution
 ci <- boot_dist %>%
   # calculate the confidence interval around the point estimate
-  get_confidence_interval(point_estimate = obs_mean,
-                          # at the 95% confidence level
-                          level = .95,
-                          # using the standard error
-                          type = "se")
+  get_confidence_interval(
+    point_estimate = obs_mean,
+    # at the 95% confidence level
+    level = .95,
+    # using the standard error
+    type = "se"
+  )
 
 ci
 ```
@@ -240,7 +242,7 @@ boot_dist %>%
 
 ### Theoretical Methods
 
-{infer} also provides functionality to use theoretical methods for `"Chisq"`, `"F"`, `"t"` and `"z"` distributions. 
+infer also provides functionality to use theoretical methods for `"Chisq"`, `"F"`, `"t"` and `"z"` distributions. 
 
 Generally, to find a null distribution using theory-based methods, use the same code that you would use to find the observed statistic elsewhere, replacing calls to `calculate()` with `assume()`. For example, to calculate the observed $t$ statistic (a standardized mean):
 
@@ -306,7 +308,7 @@ observed_fit <- gss %>%
   fit()
 ```
 
-Now, to generate null distributions for each of these terms, we can fit 1000 models to resamples of the `gss` dataset, where the response `hours` is permuted in each. Note that this code is the same as the above except for the addition of the `hypothesize` and `generate` step.
+Now, to generate null distributions for each of these terms, we can fit 1000 models to resamples of the `gss` dataset, where the response `hours` is permuted in each. Note that this code is the same as the above except for the addition of the `hypothesize()` and `generate()` step.
 
 ```{r}
 null_fits <- gss %>%
