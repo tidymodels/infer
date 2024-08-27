@@ -23,7 +23,7 @@ library(infer)
 
 In this vignette, we'll walk through conducting a randomization-based paired test of independence with infer.
 
-Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
+Throughout this vignette, we'll make use of the `gss` dataset supplied by infer, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
 ```{r glimpse-gss-actual, warning = FALSE, message = FALSE}
 dplyr::glimpse(gss)
@@ -56,8 +56,10 @@ gss_paired %>%
   ggplot2::ggplot() +
   ggplot2::aes(x = diff) +
   ggplot2::geom_histogram(bins = diff(range(unique_diff))) +
-  ggplot2::labs(x = "diff: Difference in Number of Hours Worked",
-                y = "Number of Responses") +
+  ggplot2::labs(
+    x = "diff: Difference in Number of Hours Worked",
+    y = "Number of Responses"
+  ) +
   ggplot2::scale_x_continuous(breaks = c(range(unique_diff), 0))
 ```
 

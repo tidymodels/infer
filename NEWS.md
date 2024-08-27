@@ -5,6 +5,9 @@
   now supply a function defining any scalar-valued test statistic. See
   `?calculate()` to learn more.
 
+* Added missing commas and addressed formatting issues throughout the vignettes and articles. Backticks for package names were removed and missing parentheses for functions were added (@Joscelinrocha).
+
+
 # infer 1.0.7
 
 * The aliases `p_value()` and `conf_int()`, first deprecated 6 years ago, now

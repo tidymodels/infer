@@ -21,9 +21,9 @@ library(infer)
 
 ### Introduction
 
-In this vignette, we'll walk through conducting $t$-tests and their randomization-based analogue using `infer`. We'll start out with a 1-sample $t$-test, which compares a sample mean to a hypothesized true mean value. Then, we'll discuss paired $t$-tests, which are a special use case of 1-sample $t$-tests, and evaluate whether differences in paired values (e.g. some measure taken of a person before and after an experiment) differ from 0. Finally, we'll wrap up with 2-sample $t$-tests, testing the difference in means of two populations using a sample of data drawn from them.
+In this vignette, we'll walk through conducting $t$-tests and their randomization-based analogue using infer. We'll start out with a 1-sample $t$-test, which compares a sample mean to a hypothesized true mean value. Then, we'll discuss paired $t$-tests, which are a special use case of 1-sample $t$-tests, and evaluate whether differences in paired values (e.g. some measure taken of a person before and after an experiment) differ from 0. Finally, we'll wrap up with 2-sample $t$-tests, testing the difference in means of two populations using a sample of data drawn from them.
 
-Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
+Throughout this vignette, we'll make use of the `gss` dataset supplied by infer, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
 ```{r glimpse-gss-actual, warning = FALSE, message = FALSE}
 dplyr::glimpse(gss)
@@ -40,8 +40,10 @@ gss %>%
   ggplot2::ggplot() +
   ggplot2::aes(x = hours) +
   ggplot2::geom_histogram(bins = 20) +
-  ggplot2::labs(x = "hours: Number of Hours Worked",
-                y = "Number of Responses") +
+  ggplot2::labs(
+    x = "hours: Number of Hours Worked",
+    y = "Number of Responses"
+  ) +
   ggplot2::scale_x_continuous(breaks = seq(0, 90, 10))
 ```
 
@@ -60,7 +62,7 @@ observed_statistic <- gss %>%
 
 The observed statistic is `r observed_statistic`. Now, we want to compare this statistic to a null distribution, generated under the assumption that the mean was actually 40, to get a sense of how likely it would be for us to see this observed mean if the true number of hours worked per week in the population was really 40.
 
-We can `generate` the null distribution using the bootstrap. In the bootstrap, for each replicate, a sample of size equal to the input sample size is drawn (with replacement) from the input sample data. This allows us to get a sense of how much variability we'd expect to see in the entire population so that we can then understand how unlikely our sample mean would be.
+We can `generate()` the null distribution using the bootstrap. In the bootstrap, for each replicate, a sample of size equal to the input sample size is drawn (with replacement) from the input sample data. This allows us to get a sense of how much variability we'd expect to see in the entire population so that we can then understand how unlikely our sample mean would be.
 
 ```{r generate-null-1-sample, warning = FALSE, message = FALSE}
 # generate the null distribution
@@ -76,9 +78,10 @@ To get a sense for what these distributions look like, and where our observed st
 ```{r visualize-1-sample, warning = FALSE, message = FALSE}
 # visualize the null distribution and test statistic!
 null_dist_1_sample %>%
-  visualize() + 
+  visualize() +
   shade_p_value(observed_statistic,
-                direction = "two-sided")
+    direction = "two-sided"
+  )
 ```
 
 It looks like our observed mean of `r observed_statistic` would be relatively unlikely if the true mean was actually 40 hours a week. More exactly, we can calculate the p-value:
@@ -157,7 +160,7 @@ The `order` argument in that `calculate` line gives the order to subtract the me
 
 Now, we want to compare this difference in means to a null distribution, generated under the assumption that the number of hours worked a week has no relationship with whether or not one has a college degree, to get a sense of how likely it would be for us to see this observed difference in means if there were really no relationship between these two variables.
 
-We can `generate` the null distribution using permutation, where, for each replicate, each value of degree status will be randomly reassigned (without replacement) to a new number of hours worked per week in the sample in order to break any association between the two.
+We can `generate()` the null distribution using permutation, where, for each replicate, each value of degree status will be randomly reassigned (without replacement) to a new number of hours worked per week in the sample in order to break any association between the two.
 
 ```{r generate-null-2-sample, warning = FALSE, message = FALSE}
 # generate the null distribution with randomization
@@ -194,7 +197,7 @@ p_value_2_sample
 
 Thus, if there were really no relationship between the number of hours worked a week and whether one has a college degree, the probability that we would see a statistic as or more extreme than `r observed_statistic` is approximately `r p_value_2_sample`.
 
-Note that, similarly to the steps shown above, the package supplies a wrapper function, `t_test`, to carry out 2-sample $t$-tests on tidy data. The syntax looks like this:
+Note that, similarly to the steps shown above, the package supplies a wrapper function, `t_test()`, to carry out 2-sample $t$-tests on tidy data. The syntax looks like this:
 
 ```{r 2-sample-t-test-wrapper, message = FALSE, warning = FALSE}
 t_test(x = gss, 
@@ -220,7 +223,7 @@ observed_statistic
 
 Note that this pipeline to calculate an observed statistic includes `hypothesize()` since the $t$ statistic requires a hypothesized mean value.
 
-Then, juxtaposing that $t$ statistic with its associated distribution using the `pt` function:
+Then, juxtaposing that $t$ statistic with its associated distribution using the `pt()` function:
 
 ```{r}
 pt(unname(observed_statistic), df = nrow(gss) - 2, lower.tail = FALSE)*2

@@ -19,9 +19,9 @@ knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5,
 options(digits = 4)
 ```
 
-This vignette is intended to provide a set of examples that nearly exhaustively demonstrate the functionalities provided by `infer`. Commentary on these examples is limited---for more discussion of the intuition behind the package, see the "Getting to Know infer" vignette, accessible by calling `vignette("infer")`.
+This vignette is intended to provide a set of examples that nearly exhaustively demonstrate the functionalities provided by infer. Commentary on these examples is limited---for more discussion of the intuition behind the package, see the "Getting to Know infer" vignette, accessible by calling `vignette("infer")`.
 
-Throughout this vignette, we'll make use of the `gss` dataset supplied by `infer`, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
+Throughout this vignette, we'll make use of the `gss` dataset supplied by infer, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
 ```{r load-packages, echo = FALSE}
 library(dplyr)
@@ -145,7 +145,7 @@ null_dist %>%
   get_p_value(obs_stat = t_bar, direction = "two-sided")
 ```
 
-Alternatively, using the `t_test` wrapper:
+Alternatively, using the `t_test()` wrapper:
 
 ```{r}
 gss %>%
@@ -353,7 +353,7 @@ null_dist %>%
   get_p_value(obs_stat = p_hat, direction = "two-sided")
 ```
 
-The package also supplies a wrapper around `prop.test` for tests of a single proportion on tidy data.
+The package also supplies a wrapper around `prop.test()` for tests of a single proportion on tidy data.
 
 ```{r prop_test_1_grp}
 prop_test(gss,
@@ -361,7 +361,7 @@ prop_test(gss,
           p = .2)
 ```
 
-`infer` does not support testing two means via the `z` distribution.
+infer does not support testing two means via the `z` distribution.
 
 ### Two categorical (2 level) variables
 
@@ -378,9 +378,12 @@ d_hat <- gss %>%
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-d_hat <- gss %>% 
-  observe(college ~ sex, success = "no degree", 
-          stat = "diff in props", order = c("female", "male"))
+d_hat <- gss %>%
+  observe(
+    college ~ sex,
+    success = "no degree",
+    stat = "diff in props", order = c("female", "male")
+  )
 ```
 
 Then, generating the null distribution,
@@ -388,8 +391,8 @@ Then, generating the null distribution,
 ```{r}
 null_dist <- gss %>%
   specify(college ~ sex, success = "no degree") %>%
-  hypothesize(null = "independence") %>% 
-  generate(reps = 1000) %>% 
+  hypothesize(null = "independence") %>%
+  generate(reps = 1000) %>%
   calculate(stat = "diff in props", order = c("female", "male"))
 ```
 
@@ -407,7 +410,7 @@ null_dist %>%
   get_p_value(obs_stat = d_hat, direction = "two-sided")
 ```
 
-`infer` also provides functionality to calculate ratios of proportions. The workflow looks similar to that for `diff in props`.
+infer also provides functionality to calculate ratios of proportions. The workflow looks similar to that for `diff in props`.
 
 Calculating the observed statistic,
 
@@ -569,13 +572,17 @@ Note the need to add in the hypothesized values here to compute the observed sta
 ```{r}
 Chisq_hat <- gss %>%
   specify(response = finrela) %>%
-  hypothesize(null = "point",
-              p = c("far below average" = 1/6,
-                    "below average" = 1/6,
-                    "average" = 1/6,
-                    "above average" = 1/6,
-                    "far above average" = 1/6,
-                    "DK" = 1/6)) %>%
+  hypothesize(
+    null = "point",
+    p = c(
+      "far below average" = 1 / 6,
+      "below average" = 1 / 6,
+      "average" = 1 / 6,
+      "above average" = 1 / 6,
+      "far above average" = 1 / 6,
+      "DK" = 1 / 6
+    )
+  ) %>%
   calculate(stat = "Chisq")
 ```
 
@@ -583,15 +590,19 @@ Alternatively, using the `observe()` wrapper to calculate the observed statistic
 
 ```{r}
 Chisq_hat <- gss %>%
-  observe(response = finrela,
-          null = "point",
-          p = c("far below average" = 1/6,
-                "below average" = 1/6,
-                "average" = 1/6,
-                "above average" = 1/6,
-                "far above average" = 1/6,
-                "DK" = 1/6),
-          stat = "Chisq")
+  observe(
+    response = finrela,
+    null = "point",
+    p = c(
+      "far below average" = 1 / 6,
+      "below average" = 1 / 6,
+      "average" = 1 / 6,
+      "above average" = 1 / 6,
+      "far above average" = 1 / 6,
+      "DK" = 1 / 6
+    ),
+    stat = "Chisq"
+  )
 ```
 
 Then, generating the null distribution,
@@ -599,13 +610,17 @@ Then, generating the null distribution,
 ```{r}
 null_dist <- gss %>%
   specify(response = finrela) %>%
-  hypothesize(null = "point",
-              p = c("far below average" = 1/6,
-                    "below average" = 1/6,
-                    "average" = 1/6,
-                    "above average" = 1/6,
-                    "far above average" = 1/6,
-                    "DK" = 1/6)) %>%
+  hypothesize(
+    null = "point",
+    p = c(
+      "far below average" = 1 / 6,
+      "below average" = 1 / 6,
+      "average" = 1 / 6,
+      "above average" = 1 / 6,
+      "far above average" = 1 / 6,
+      "DK" = 1 / 6
+    )
+  ) %>%
   generate(reps = 1000, type = "draw") %>%
   calculate(stat = "Chisq")
 ```
@@ -651,14 +666,18 @@ null_dist %>%
 Alternatively, using the `chisq_test` wrapper:
 
 ```{r}
-chisq_test(gss, 
-           response = finrela,
-           p = c("far below average" = 1/6,
-                 "below average" = 1/6,
-                 "average" = 1/6,
-                 "above average" = 1/6,
-                 "far above average" = 1/6,
-                 "DK" = 1/6))
+chisq_test(
+  gss,
+  response = finrela,
+  p = c(
+    "far below average" = 1 / 6,
+    "below average" = 1 / 6,
+    "average" = 1 / 6,
+    "above average" = 1 / 6,
+    "far above average" = 1 / 6,
+    "DK" = 1 / 6
+  )
+)
 ```
 
 ### Two categorical (\>2 level): Chi-squared test of independence
@@ -1154,7 +1173,7 @@ visualize(sampling_dist) +
   shade_confidence_interval(endpoints = theor_ci)
 ```
 
-Note that the `t` distribution is recentered and rescaled to lie on the scale of the observed data. `infer` does not support confidence intervals on means via the `z` distribution.
+Note that the `t` distribution is recentered and rescaled to lie on the scale of the observed data. infer does not support confidence intervals on means via the `z` distribution.
 
 ### One numerical (one mean - standardized)
 
@@ -1208,7 +1227,7 @@ visualize(boot_dist) +
   shade_confidence_interval(endpoints = standard_error_ci)
 ```
 
-See the above subsection (one mean) for a theory-based approach. Note that `infer` does not support confidence intervals on means via the `z` distribution.
+See the above subsection (one mean) for a theory-based approach. Note that infer does not support confidence intervals on means via the `z` distribution.
 
 ### One categorical (one proportion)
 
