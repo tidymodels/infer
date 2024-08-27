@@ -1,5 +1,10 @@
 # infer (development version)
 
+* Introduced support for arbitrary test statistics in `calculate()`. In addition 
+  to the pre-implemented `calculate(stat)` options, taken as strings, users can 
+  now supply a function defining any scalar-valued test statistic. See
+  `?calculate()` to learn more.
+
 # infer 1.0.7
 
 * The aliases `p_value()` and `conf_int()`, first deprecated 6 years ago, now

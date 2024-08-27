@@ -527,3 +527,49 @@
       ! Multiple explanatory variables are not supported in `calculate()`.
       i When working with multiple explanatory variables, use `fit()` (`?infer::fit.infer()`) instead.
 
+# arbitrary test statistic works
+
+    Code
+      gss %>% specify(response = hours) %>% calculate(stat = function(x, ...) {
+        mean(x$hour)
+      })
+    Condition
+      Error in `calculate()`:
+      ! The supplied `stat` function encountered an issue.
+      Caused by warning:
+      ! Unknown or uninitialised column: `hour`.
+
+---
+
+    Code
+      gss %>% specify(response = hours) %>% calculate(stat = function(x, ...) {
+        mean("hey there")
+      })
+    Condition
+      Error in `calculate()`:
+      ! The supplied `stat` function encountered an issue.
+      Caused by warning in `mean.default()`:
+      ! argument is not numeric or logical: returning NA
+
+---
+
+    Code
+      gss %>% specify(response = hours) %>% calculate(stat = function(x, ...) {
+        data.frame(woops = mean(x$hours))
+      })
+    Condition
+      Error in `calculate()`:
+      ! The supplied `stat` function must return a scalar value.
+      i It returned a data frame.
+
+---
+
+    Code
+      gss %>% specify(response = hours) %>% calculate(stat = function(x, ...) {
+        identity
+      })
+    Condition
+      Error in `calculate()`:
+      ! The supplied `stat` function must return a scalar value.
+      i It returned a function.
+
