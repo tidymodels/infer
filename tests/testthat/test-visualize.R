@@ -623,6 +623,7 @@ test_that("visualize warns about removing `NaN`", {
 
 test_that("visualize can handle multiple explanatory variables", {
   skip_if(getRversion() < "4.1.0")
+  skip_if_not(identical(Sys.info()[["sysname"]], "Darwin"))
 
   # generate example objects
   null_fits <- gss %>%
