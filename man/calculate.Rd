@@ -17,13 +17,15 @@ calculate(
 \item{x}{The output from \code{\link[=generate]{generate()}} for computation-based inference or the
 output from \code{\link[=hypothesize]{hypothesize()}} piped in to here for theory-based inference.}
 
-\item{stat}{A string giving the type of the statistic to calculate. Current
+\item{stat}{A string giving the type of the statistic to calculate or a
+function that takes in a replicate of \code{x} and returns a scalar value. Current
 options include \code{"mean"}, \code{"median"}, \code{"sum"}, \code{"sd"}, \code{"prop"}, \code{"count"},
 \code{"diff in means"}, \code{"diff in medians"}, \code{"diff in props"}, \code{"Chisq"} (or
 \code{"chisq"}), \code{"F"} (or \code{"f"}), \code{"t"}, \code{"z"}, \code{"ratio of props"}, \code{"slope"},
 \code{"odds ratio"}, \code{"ratio of means"}, and \code{"correlation"}. \code{infer} only
 supports theoretical tests on one or two means via the \code{"t"} distribution
-and one or two proportions via the \code{"z"}.}
+and one or two proportions via the \code{"z"}. See the "Arbitrary test statistics"
+section below for more on how to define a custom statistic.}
 
 \item{order}{A string vector of specifying the order in which the levels of
 the explanatory variable should be ordered for subtraction (or division
@@ -48,6 +50,39 @@ supplied \code{stat} for each \code{replicate}.
 
 Learn more in \code{vignette("infer")}.
 }
+\section{Arbitrary test statistics}{
+
+
+In addition to the pre-implemented statistics documented in \code{stat}, users can
+supply an arbitrary test statistic by supplying a function to the \code{stat}
+argument.
+
+The function should have arguments \code{stat(x, order, ...)}, where \code{x} is one
+replicate's worth of \code{x}. The \code{order} argument and ellipses will be supplied
+directly to the \code{stat} function. Internally, \code{calculate()} will split \code{x} up
+into data frames by replicate and pass them one-by-one to the supplied \code{stat}.
+For example, to implement \code{stat = "mean"} as a function, one could write:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{stat_mean <- function(x, order, ...) \{mean(x$hours)\}
+obs_mean <-
+  gss \%>\%
+  specify(response = hours) \%>\%
+  calculate(stat = stat_mean)
+
+set.seed(1)
+null_dist_mean <-
+  gss \%>\%
+  specify(response = hours) \%>\%
+  hypothesize(null = "point", mu = 40) \%>\%
+  generate(reps = 5, type = "bootstrap") \%>\%
+  calculate(stat = stat_mean)
+}\if{html}{\out{</div>}}
+
+Note that the same \code{stat_mean} function is supplied to both \code{generate()}d and
+non-\code{generate()}d infer objects--no need to implement support for grouping
+by \code{replicate} yourself.
+}
+
 \section{Missing levels in small samples}{
 
 In some cases, when bootstrapping with small samples, some generated
