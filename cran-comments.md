@@ -6,4 +6,4 @@ With current CRAN checks, we do see failures on R-devel with Windows. This check
 
 ## Reverse dependencies
 
-We checked 7 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package, and saw no new problems.
+We checked 5 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package, and saw no new problems.
