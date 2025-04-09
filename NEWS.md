@@ -1,7 +1,6 @@
 # infer (development version)
 
-* The infer print method now truncates output when descriptions of explanatory 
-  or responses variables exceed the console width (#543).
+* The infer print method now truncates output when descriptions of explanatory or responses variables exceed the console width (#543).
 
 * Added missing commas and addressed formatting issues throughout the vignettes and articles. Backticks for package names were removed and missing parentheses for functions were added (@Joscelinrocha).
 
