@@ -39,7 +39,7 @@ Imports:
     cli,
     dplyr (>= 0.7.0),
     generics,
-    ggplot2,
+    ggplot2 (>= 3.5.2),
     glue (>= 1.3.0),
     grDevices,
     lifecycle,

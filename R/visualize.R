@@ -328,7 +328,7 @@ check_visualize_args <- function(data, bins, method, dens_color, call = caller_e
 # to visualize()d objects to make sure they weren't mistakenly piped
 check_for_piped_visualize <- function(..., call = caller_env()) {
 
-  is_ggplot_output <- vapply(list(...), ggplot2::is.ggplot, logical(1))
+  is_ggplot_output <- vapply(list(...), ggplot2::is_ggplot, logical(1))
 
   if (any(is_ggplot_output)) {
 
