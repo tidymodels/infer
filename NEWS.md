@@ -1,4 +1,4 @@
-# infer (development version)
+# infer 1.0.8
 
 * The infer print method now truncates output when descriptions of explanatory or responses variables exceed the console width (#543).
 
