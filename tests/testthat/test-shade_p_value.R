@@ -73,7 +73,7 @@ test_that("shade_p_value works", {
 
   # -roper p-value shading when the calculated statistic falls exactly on the
   # boundaries of a histogram bin (#424)
-  r_hat <- gss %>%
+  r_hat <- gss |>
     observe(
       college ~ sex,
       success = "no degree",
@@ -83,10 +83,10 @@ test_that("shade_p_value works", {
 
   set.seed(33)
 
-  null_dist <- gss %>%
-    specify(college ~ sex, success = "no degree") %>%
-    hypothesize(null = "independence") %>%
-    generate(reps = 1000) %>%
+  null_dist <- gss |>
+    specify(college ~ sex, success = "no degree") |>
+    hypothesize(null = "independence") |>
+    generate(reps = 1000) |>
     calculate(stat = "ratio of props", order = c("female", "male"))
 
   expect_doppelganger(
@@ -167,17 +167,17 @@ test_that("shade_p_value throws errors", {
     error = TRUE,
     gss_viz_sim + shade_p_value(1, "right", fill = "x")
   )
-  expect_snapshot(error = TRUE, gss_viz_sim %>% shade_p_value(1, "right"))
-  expect_snapshot(error = TRUE, gss_viz_sim %>% shade_p_value(obs_stat = 1))
+  expect_snapshot(error = TRUE, gss_viz_sim |> shade_p_value(1, "right"))
+  expect_snapshot(error = TRUE, gss_viz_sim |> shade_p_value(obs_stat = 1))
   expect_snapshot(
     error = TRUE,
-    gss_viz_sim %>% shade_p_value(obs_stat = 1, direction = "right")
+    gss_viz_sim |> shade_p_value(obs_stat = 1, direction = "right")
   )
-  expect_snapshot(error = TRUE, gss_viz_sim %>% shade_pvalue(1, "right"))
-  expect_snapshot(error = TRUE, gss_viz_sim %>% shade_pvalue(obs_stat = 1))
+  expect_snapshot(error = TRUE, gss_viz_sim |> shade_pvalue(1, "right"))
+  expect_snapshot(error = TRUE, gss_viz_sim |> shade_pvalue(obs_stat = 1))
   expect_snapshot(
     error = TRUE,
-    gss_viz_sim %>% shade_pvalue(obs_stat = 1, direction = "right")
+    gss_viz_sim |> shade_pvalue(obs_stat = 1, direction = "right")
   )
 })
 

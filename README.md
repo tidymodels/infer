@@ -124,18 +124,18 @@ political party affiliation.
 Calculating the observed statistic,
 
 ``` r
-F_hat <- gss %>% 
-  specify(age ~ partyid) %>%
+F_hat <- gss |> 
+  specify(age ~ partyid) |>
   calculate(stat = "F")
 ```
 
 Then, generating the null distribution,
 
 ``` r
-null_dist <- gss %>%
-   specify(age ~ partyid) %>%
-   hypothesize(null = "independence") %>%
-   generate(reps = 1000, type = "permute") %>%
+null_dist <- gss |>
+   specify(age ~ partyid) |>
+   hypothesize(null = "independence") |>
+   generate(reps = 1000, type = "permute") |>
    calculate(stat = "F")
 ```
 
@@ -158,7 +158,7 @@ Calculating the p-value from the null distribution and observed
 statistic,
 
 ``` r
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = F_hat, direction = "greater")
 ```
 

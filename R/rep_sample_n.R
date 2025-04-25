@@ -43,15 +43,15 @@
 #' library(tibble)
 #'
 #' # take 1000 samples of size n = 50, without replacement
-#' slices <- gss %>%
+#' slices <- gss |>
 #'   rep_slice_sample(n = 50, reps = 1000)
 #'
 #' slices
 #'
 #' # compute the proportion of respondents with a college
 #' # degree in each replicate
-#' p_hats <- slices %>%
-#'   group_by(replicate) %>%
+#' p_hats <- slices |>
+#'   group_by(replicate) |>
 #'   summarize(prop_college = mean(college == "degree"))
 #'
 #' # plot sampling distribution
@@ -72,7 +72,7 @@
 #' rep_slice_sample(df, n = 2, reps = 5, weight_by = c(.5, .4, .3, .2, .1))
 #'
 #' # alternatively, pass an unquoted column name in `.data` as `weight_by`
-#' df <- df %>% mutate(wts = c(.5, .4, .3, .2, .1))
+#' df <- df |> mutate(wts = c(.5, .4, .3, .2, .1))
 #'
 #' rep_slice_sample(df, n = 2, reps = 5, weight_by = wts)
 #' @export

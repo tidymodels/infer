@@ -1,15 +1,14 @@
 # fit.infer messages informatively on excessive null
 
     Code
-      res_ <- gss %>% specify(hours ~ age + college) %>% hypothesize(null = "independence") %>%
-        fit()
+      res_ <- fit(hypothesize(specify(gss, hours ~ age + college), null = "independence"))
     Message
       Message: The independence null hypothesis does not inform calculation of the observed fit and will be ignored.
 
 # fit.infer logistic regression works
 
     Code
-      gss %>% specify(finrela ~ age + college) %>% fit()
+      fit(specify(gss, finrela ~ age + college))
     Condition
       Error in `fit()`:
       ! infer does not support fitting models for categorical response variables with more than two levels.

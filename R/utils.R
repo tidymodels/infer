@@ -86,21 +86,21 @@ reorder_explanatory <- function(x, order) {
 }
 
 standardize_variable_types <- function(x) {
-  tibble::as_tibble(x) %>%
+  tibble::as_tibble(x) |>
     # character and ordered to factor
     dplyr::mutate(
       dplyr::across(
         where(~ is.character(.x) || is.ordered(.x)),
         ~ factor(.x, ordered = FALSE)
       )
-    ) %>%
+    ) |>
     # logical to factor, with TRUE as the first level
     dplyr::mutate(
       dplyr::across(
         where(~ is.logical(.x)),
         ~ factor(.x, levels = c("TRUE", "FALSE"))
       )
-    ) %>%
+    ) |>
     # integer to numeric
     dplyr::mutate(
       dplyr::across(
@@ -708,8 +708,8 @@ check_obs_stat <- function(obs_stat, plot = NULL, call = caller_env()) {
         x_lab <- x_axis_label(plot)
 
         obs_stat <-
-          obs_stat %>%
-          dplyr::filter(term == x_lab) %>%
+          obs_stat |>
+          dplyr::filter(term == x_lab) |>
           dplyr::pull(estimate)
 
         return(obs_stat)

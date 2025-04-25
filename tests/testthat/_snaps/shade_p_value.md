@@ -33,54 +33,54 @@
 ---
 
     Code
-      gss_viz_sim %>% shade_p_value(1, "right")
+      shade_p_value(gss_viz_sim, 1, "right")
     Condition
       Error in `shade_p_value()`:
-      ! It looks like you piped the result of `visualize()` into `shade_p_value()` (using `%>%`) rather than adding the result of `shade_p_value()` as a layer with `+`.
-      i Consider changing `%>%` to `+`.
+      ! It looks like you piped the result of `visualize()` into `shade_p_value()` rather than adding the result of `shade_p_value()` as a layer with `+`.
+      i Consider changing `|>` (or `%>%`) to `+`.
 
 ---
 
     Code
-      gss_viz_sim %>% shade_p_value(obs_stat = 1)
+      shade_p_value(gss_viz_sim, obs_stat = 1)
     Condition
       Error in `shade_p_value()`:
-      ! It looks like you piped the result of `visualize()` into `shade_p_value()` (using `%>%`) rather than adding the result of `shade_p_value()` as a layer with `+`.
-      i Consider changing `%>%` to `+`.
+      ! It looks like you piped the result of `visualize()` into `shade_p_value()` rather than adding the result of `shade_p_value()` as a layer with `+`.
+      i Consider changing `|>` (or `%>%`) to `+`.
 
 ---
 
     Code
-      gss_viz_sim %>% shade_p_value(obs_stat = 1, direction = "right")
+      shade_p_value(gss_viz_sim, obs_stat = 1, direction = "right")
     Condition
       Error in `shade_p_value()`:
-      ! It looks like you piped the result of `visualize()` into `shade_p_value()` (using `%>%`) rather than adding the result of `shade_p_value()` as a layer with `+`.
-      i Consider changing `%>%` to `+`.
+      ! It looks like you piped the result of `visualize()` into `shade_p_value()` rather than adding the result of `shade_p_value()` as a layer with `+`.
+      i Consider changing `|>` (or `%>%`) to `+`.
 
 ---
 
     Code
-      gss_viz_sim %>% shade_pvalue(1, "right")
+      shade_pvalue(gss_viz_sim, 1, "right")
     Condition
       Error in `shade_pvalue()`:
-      ! It looks like you piped the result of `visualize()` into `shade_pvalue()` (using `%>%`) rather than adding the result of `shade_pvalue()` as a layer with `+`.
-      i Consider changing `%>%` to `+`.
+      ! It looks like you piped the result of `visualize()` into `shade_pvalue()` rather than adding the result of `shade_pvalue()` as a layer with `+`.
+      i Consider changing `|>` (or `%>%`) to `+`.
 
 ---
 
     Code
-      gss_viz_sim %>% shade_pvalue(obs_stat = 1)
+      shade_pvalue(gss_viz_sim, obs_stat = 1)
     Condition
       Error in `shade_pvalue()`:
-      ! It looks like you piped the result of `visualize()` into `shade_pvalue()` (using `%>%`) rather than adding the result of `shade_pvalue()` as a layer with `+`.
-      i Consider changing `%>%` to `+`.
+      ! It looks like you piped the result of `visualize()` into `shade_pvalue()` rather than adding the result of `shade_pvalue()` as a layer with `+`.
+      i Consider changing `|>` (or `%>%`) to `+`.
 
 ---
 
     Code
-      gss_viz_sim %>% shade_pvalue(obs_stat = 1, direction = "right")
+      shade_pvalue(gss_viz_sim, obs_stat = 1, direction = "right")
     Condition
       Error in `shade_pvalue()`:
-      ! It looks like you piped the result of `visualize()` into `shade_pvalue()` (using `%>%`) rather than adding the result of `shade_pvalue()` as a layer with `+`.
-      i Consider changing `%>%` to `+`.
+      ! It looks like you piped the result of `visualize()` into `shade_pvalue()` rather than adding the result of `shade_pvalue()` as a layer with `+`.
+      i Consider changing `|>` (or `%>%`) to `+`.
 

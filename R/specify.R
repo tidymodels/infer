@@ -25,15 +25,15 @@
 #'
 #' @examples
 #' # specifying for a point estimate on one variable
-#' gss %>%
+#' gss |>
 #'    specify(response = age)
 #'
 #' # specify a relationship between variables as a formula...
-#' gss %>%
+#' gss |>
 #'   specify(age ~ partyid)
 #'
 #' # ...or with named arguments!
-#' gss %>%
+#' gss |>
 #'   specify(response = age, explanatory = partyid)
 #'
 #' # more in-depth explanation of how to use the infer package
@@ -74,7 +74,7 @@ specify <- function(
   check_success_arg(x, success)
 
   # Select variables
-  x <- x %>%
+  x <- x |>
     select(any_of(c(response_name(x), explanatory_name(x))))
 
   is_complete <- stats::complete.cases(x)

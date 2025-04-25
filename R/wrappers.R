@@ -28,8 +28,8 @@
 #'
 #' # t test for number of hours worked per week
 #' # by college degree status
-#' gss %>%
-#'    tidyr::drop_na(college) %>%
+#' gss |>
+#'    tidyr::drop_na(college) |>
 #'    t_test(formula = hours ~ college,
 #'       order = c("degree", "no degree"),
 #'       alternative = "two-sided")
@@ -87,7 +87,7 @@ t_test <- function(
       mu = mu,
       conf.level = conf_level,
       ...
-    ) %>%
+    ) |>
       broom::glance()
   } else {
     # one sample
@@ -96,12 +96,12 @@ t_test <- function(
       alternative = alternative,
       mu = mu,
       conf.level = conf_level
-    ) %>%
+    ) |>
       broom::glance()
   }
 
   if (conf_int) {
-    results <- prelim %>%
+    results <- prelim |>
       dplyr::select(
         statistic,
         t_df = parameter,
@@ -112,7 +112,7 @@ t_test <- function(
         upper_ci = conf.high
       )
   } else {
-    results <- prelim %>%
+    results <- prelim |>
       dplyr::select(
         statistic,
         t_df = parameter,
@@ -147,13 +147,13 @@ t_test <- function(
 #'
 #' # t test statistic for true mean number of hours worked
 #' # per week of 40
-#' gss %>%
+#' gss |>
 #'    t_stat(response = hours, mu = 40)
 #'
 #' # t test statistic for number of hours worked per week
 #' # by college degree status
-#' gss %>%
-#'    tidyr::drop_na(college) %>%
+#' gss |>
+#'    tidyr::drop_na(college) |>
 #'    t_stat(formula = hours ~ college,
 #'       order = c("degree", "no degree"),
 #'       alternative = "two-sided")
@@ -210,7 +210,7 @@ t_stat <- function(
       mu = mu,
       conf.level = conf_level,
       ...
-    ) %>%
+    ) |>
       broom::glance()
   } else {
     # one sample
@@ -219,14 +219,14 @@ t_stat <- function(
       alternative = alternative,
       mu = mu,
       conf.level = conf_level
-    ) %>%
+    ) |>
       broom::glance()
   }
 
   # removed unnecessary if(conf_int) clause; only the statistic itself
   # was returned regardless
-  results <- prelim %>%
-    dplyr::select(statistic) %>%
+  results <- prelim |>
+    dplyr::select(statistic) |>
     pull()
 
   results
@@ -291,11 +291,11 @@ chisq_test <- function(x, formula, response = NULL, explanatory = NULL, ...) {
     )
   }
 
-  x <- x %>%
+  x <- x |>
     select(any_of(c(response_name(x), explanatory_name(x))))
 
-  stats::chisq.test(table(x), ...) %>%
-    broom::glance() %>%
+  stats::chisq.test(table(x), ...) |>
+    broom::glance() |>
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
 }
 
@@ -368,12 +368,12 @@ chisq_stat <- function(x, formula, response = NULL, explanatory = NULL, ...) {
     )
   }
 
-  x <- x %>%
+  x <- x |>
     select(any_of(c(response_name(x), explanatory_name(x))))
 
-  suppressWarnings(stats::chisq.test(table(x), ...)) %>%
-    broom::glance() %>%
-    dplyr::select(statistic) %>%
+  suppressWarnings(stats::chisq.test(table(x), ...)) |>
+    broom::glance() |>
+    dplyr::select(statistic) |>
     pull()
 }
 
@@ -539,8 +539,8 @@ prop_test <- function(
   # two sample
   if (has_explanatory(x)) {
     # make a summary table to supply to prop.test
-    sum_table <- x %>%
-      select(explanatory_name(x), response_name(x)) %>%
+    sum_table <- x |>
+      select(explanatory_name(x), response_name(x)) |>
       table()
 
     length_exp_levels <- length(levels(explanatory_variable(x)))
@@ -568,9 +568,9 @@ prop_test <- function(
     )
   } else {
     # one sample
-    response_tbl <- response_variable(x) %>%
-      factor() %>%
-      stats::relevel(success) %>%
+    response_tbl <- response_variable(x) |>
+      factor() |>
+      stats::relevel(success) |>
       table()
 
     if (is.null(p)) {
@@ -592,8 +592,8 @@ prop_test <- function(
 
   if (length(prelim$estimate) <= 2) {
     if (conf_int & is.null(p)) {
-      results <- prelim %>%
-        broom::glance() %>%
+      results <- prelim |>
+        broom::glance() |>
         dplyr::select(
           statistic,
           chisq_df = parameter,
@@ -603,8 +603,8 @@ prop_test <- function(
           upper_ci = conf.high
         )
     } else {
-      results <- prelim %>%
-        broom::glance() %>%
+      results <- prelim |>
+        broom::glance() |>
         dplyr::select(
           statistic,
           chisq_df = parameter,
@@ -613,8 +613,8 @@ prop_test <- function(
         )
     }
   } else {
-    results <- prelim %>%
-      broom::glance() %>%
+    results <- prelim |>
+      broom::glance() |>
       dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
   }
 
@@ -634,8 +634,8 @@ calculate_z <- function(x, results, success, p, order) {
 
   form <- new_formula(response_expr(x), exp)
 
-  stat <- x %>%
-    specify(formula = form, success = success) %>%
+  stat <- x |>
+    specify(formula = form, success = success) |>
     hypothesize(
       null = if (has_explanatory(x)) {
         "independence"
@@ -647,7 +647,7 @@ calculate_z <- function(x, results, success, p, order) {
       } else {
         p
       }
-    ) %>%
+    ) |>
     calculate(
       stat = "z",
       order = if (has_explanatory(x)) {
@@ -655,7 +655,7 @@ calculate_z <- function(x, results, success, p, order) {
       } else {
         NULL
       }
-    ) %>%
+    ) |>
     dplyr::pull()
 
   results$statistic <- stat

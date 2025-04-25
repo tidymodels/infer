@@ -32,7 +32,7 @@ To carry out an ANOVA, we'll examine the association between age and political p
 This is what the relationship looks like in the observed data:
 
 ```{r plot-f, echo = FALSE}
-gss %>%
+gss |>
   ggplot2::ggplot() +
   ggplot2::aes(x = partyid, y = age) +
   ggplot2::geom_boxplot() +
@@ -49,9 +49,9 @@ First, to calculate the observed statistic, we can use `specify()` and `calculat
 
 ```{r calc-obs-stat-f, warning = FALSE, message = FALSE}
 # calculate the observed statistic
-observed_f_statistic <- gss %>%
-  specify(age ~ partyid) %>%
-  hypothesize(null = "independence") %>%
+observed_f_statistic <- gss |>
+  specify(age ~ partyid) |>
+  hypothesize(null = "independence") |>
   calculate(stat = "F")
 ```
 
@@ -61,10 +61,10 @@ We can `generate()` an approximation of the null distribution using randomizatio
 
 ```{r generate-null-f, warning = FALSE, message = FALSE}
 # generate the null distribution using randomization
-null_dist <- gss %>%
-  specify(age ~ partyid) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+null_dist <- gss |>
+  specify(age ~ partyid) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
   calculate(stat = "F")
 ```
 
@@ -74,7 +74,7 @@ To get a sense for what this distribution looks like, and where our observed sta
 
 ```{r visualize-f, warning = FALSE, message = FALSE}
 # visualize the null distribution and test statistic!
-null_dist %>%
+null_dist |>
   visualize() + 
   shade_p_value(observed_f_statistic,
                 direction = "greater")
@@ -84,8 +84,8 @@ We could also visualize the observed statistic against the theoretical null dist
 
 ```{r visualize-f-theor, warning = FALSE, message = FALSE}
 # visualize the theoretical null distribution and test statistic!
-null_dist_theory <- gss %>%
-  specify(age ~ partyid) %>%
+null_dist_theory <- gss |>
+  specify(age ~ partyid) |>
   assume(distribution = "F")
 
 visualize(null_dist_theory) +
@@ -97,7 +97,7 @@ To visualize both the randomization-based and theoretical null distributions to 
 
 ```{r visualize-indep-both, warning = FALSE, message = FALSE}
 # visualize both null distributions and the test statistic!
-null_dist %>%
+null_dist |>
   visualize(method = "both") + 
   shade_p_value(observed_f_statistic,
                 direction = "greater")
@@ -107,7 +107,7 @@ Either way, it looks like our observed test statistic would be quite unlikely if
 
 ```{r p-value-indep, warning = FALSE, message = FALSE}
 # calculate the p value from the observed statistic and null distribution
-p_value <- null_dist %>%
+p_value <- null_dist |>
   get_p_value(obs_stat = observed_f_statistic,
               direction = "greater")
 

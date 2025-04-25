@@ -1,47 +1,47 @@
-one_mean <- mtcars_df %>%
-  specify(response = mpg) %>% # formula alt: mpg ~ NULL
+one_mean <- mtcars_df |>
+  specify(response = mpg) |> # formula alt: mpg ~ NULL
   hypothesize(null = "point", mu = 25)
 
-one_mean_specify <- mtcars_df %>%
+one_mean_specify <- mtcars_df |>
   specify(response = mpg)
 
-one_median <- mtcars_df %>%
-  specify(response = mpg) %>% # formula alt: mpg ~ NULL
+one_median <- mtcars_df |>
+  specify(response = mpg) |> # formula alt: mpg ~ NULL
   hypothesize(null = "point", med = 26)
 
-one_prop <- mtcars_df %>%
-  specify(response = am, success = "1") %>% # formula alt: am ~ NULL
+one_prop <- mtcars_df |>
+  specify(response = am, success = "1") |> # formula alt: am ~ NULL
   hypothesize(null = "point", p = .25)
 
-one_prop_specify <- mtcars_df %>%
+one_prop_specify <- mtcars_df |>
   specify(response = am, success = "1")
 
-two_props <- mtcars_df %>%
-  specify(am ~ vs, success = "1") %>% # alt: response = am, explanatory = vs
+two_props <- mtcars_df |>
+  specify(am ~ vs, success = "1") |> # alt: response = am, explanatory = vs
   hypothesize(null = "independence")
 
-gof_chisq <- mtcars_df %>%
-  specify(cyl ~ NULL) %>% # alt: response = cyl
+gof_chisq <- mtcars_df |>
+  specify(cyl ~ NULL) |> # alt: response = cyl
   hypothesize(null = "point", p = c("4" = .5, "6" = .25, "8" = .25))
 
-indep_chisq <- mtcars_df %>%
-  specify(cyl ~ am) %>% # alt: response = cyl, explanatory = am
+indep_chisq <- mtcars_df |>
+  specify(cyl ~ am) |> # alt: response = cyl, explanatory = am
   hypothesize(null = "independence")
 
-two_means <- mtcars_df %>%
-  specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
+two_means <- mtcars_df |>
+  specify(mpg ~ am) |> # alt: response = mpg, explanatory = am
   hypothesize(null = "independence")
 
-two_medians <- mtcars_df %>%
-  specify(mpg ~ am) %>% # alt: response = mpg, explanatory = am
+two_medians <- mtcars_df |>
+  specify(mpg ~ am) |> # alt: response = mpg, explanatory = am
   hypothesize(null = "independence")
 
-anova_f <- mtcars_df %>%
-  specify(mpg ~ cyl) %>% # alt: response = mpg, explanatory = cyl
+anova_f <- mtcars_df |>
+  specify(mpg ~ cyl) |> # alt: response = mpg, explanatory = cyl
   hypothesize(null = "independence")
 
-slopes <- mtcars_df %>%
-  specify(mpg ~ hp) %>% # alt: response = mpg, explanatory = cyl
+slopes <- mtcars_df |>
+  specify(mpg ~ hp) |> # alt: response = mpg, explanatory = cyl
   hypothesize(null = "independence")
 
 test_that("auto `type` works (hypothesize)", {
@@ -60,22 +60,22 @@ test_that("auto `type` works (hypothesize)", {
 test_that("hypothesize() throws an error when null is not point or independence", {
   expect_snapshot(
     error = TRUE,
-    mtcars_df %>%
-      specify(response = mpg) %>%
+    mtcars_df |>
+      specify(response = mpg) |>
       hypothesize(null = "dependence")
   )
 })
 
 test_that("hypothesize() allows partial matching of null arg for point", {
-  hyp_p <- mtcars_df %>%
-    specify(response = mpg) %>%
+  hyp_p <- mtcars_df |>
+    specify(response = mpg) |>
     hypothesize(null = "po", mu = 0)
   expect_equal(attr(hyp_p, "null"), "point")
 })
 
 test_that("hypothesize() allows partial matching of null arg for independence", {
-  hyp_i <- mtcars_df %>%
-    specify(mpg ~ vs) %>%
+  hyp_i <- mtcars_df |>
+    specify(mpg ~ vs) |>
     hypothesize(null = "i")
   expect_equal(attr(hyp_i, "null"), "independence")
 })
@@ -83,8 +83,8 @@ test_that("hypothesize() allows partial matching of null arg for independence", 
 test_that("hypothesize() throws an error when multiple null values are provided", {
   expect_snapshot(
     error = TRUE,
-    mtcars_df %>%
-      specify(response = mpg) %>%
+    mtcars_df |>
+      specify(response = mpg) |>
       hypothesize(null = c("point", "independence"))
   )
 })
@@ -92,24 +92,24 @@ test_that("hypothesize() throws an error when multiple null values are provided"
 test_that("hypothesize() throws an error when multiple params are set", {
   expect_snapshot(
     error = TRUE,
-    mtcars_df %>%
-      specify(response = mpg) %>%
+    mtcars_df |>
+      specify(response = mpg) |>
       hypothesize(null = "point", mu = 25, med = 20)
   )
 })
 
 test_that("hypothesize() throws a warning when params are set with independence", {
   expect_snapshot(
-    res_ <- mtcars_df %>%
-      specify(mpg ~ vs) %>%
+    res_ <- mtcars_df |>
+      specify(mpg ~ vs) |>
       hypothesize(null = "independence", mu = 25)
   )
 })
 
 test_that("hypothesize() throws a warning when params are set with paired independence", {
   expect_snapshot(
-    res_ <- mtcars_df %>%
-      specify(response = mpg) %>%
+    res_ <- mtcars_df |>
+      specify(response = mpg) |>
       hypothesize(null = "paired independence", mu = 25)
   )
 })
@@ -117,8 +117,8 @@ test_that("hypothesize() throws a warning when params are set with paired indepe
 test_that("hypothesize() throws an error when p is greater than 1", {
   expect_snapshot(
     error = TRUE,
-    res_ <- mtcars_df %>%
-      specify(response = vs, success = "1") %>%
+    res_ <- mtcars_df |>
+      specify(response = vs, success = "1") |>
       hypothesize(null = "point", p = 1 + .Machine$double.eps)
   )
 })
@@ -126,8 +126,8 @@ test_that("hypothesize() throws an error when p is greater than 1", {
 test_that("hypothesize() throws an error when p is less than 0", {
   expect_snapshot(
     error = TRUE,
-    res_ <- mtcars_df %>%
-      specify(response = vs, success = "1") %>%
+    res_ <- mtcars_df |>
+      specify(response = vs, success = "1") |>
       hypothesize(null = "point", p = -.Machine$double.neg.eps)
   )
 })
@@ -135,8 +135,8 @@ test_that("hypothesize() throws an error when p is less than 0", {
 test_that("hypothesize() throws an error when p contains missing values", {
   expect_snapshot(
     error = TRUE,
-    res_ <- mtcars_df %>%
-      specify(response = vs, success = "1") %>%
+    res_ <- mtcars_df |>
+      specify(response = vs, success = "1") |>
       hypothesize(null = "point", p = c("0" = 0.5, "1" = NA_real_))
   )
 })
@@ -144,15 +144,15 @@ test_that("hypothesize() throws an error when p contains missing values", {
 test_that("hypothesize() throws an error when vector p does not sum to 1", {
   expect_snapshot(
     error = TRUE,
-    res_ <- mtcars_df %>%
-      specify(response = vs, success = "1") %>%
+    res_ <- mtcars_df |>
+      specify(response = vs, success = "1") |>
       hypothesize(null = "point", p = c("0" = 0.5, "1" = 0.5 + (eps * 2)))
   )
 })
 
 test_that("hypothesize arguments function", {
   mtcars_f <- dplyr::mutate(mtcars, cyl = factor(cyl))
-  mtcars_s <- mtcars_f %>% specify(response = mpg)
+  mtcars_s <- mtcars_f |> specify(response = mpg)
   matrix1 <- matrix(data = NA, nrow = 3, ncol = 3)
 
   expect_snapshot(error = TRUE, res_ <- hypothesize(matrix1))
@@ -161,52 +161,52 @@ test_that("hypothesize arguments function", {
 
   expect_snapshot(
     error = TRUE,
-    res_ <- mtcars_s %>% hypothesize(null = "point", mean = 3)
+    res_ <- mtcars_s |> hypothesize(null = "point", mean = 3)
   )
 
   expect_snapshot(
     error = TRUE,
-    res_ <- mtcars_s %>% hypothesize(null = "independence")
+    res_ <- mtcars_s |> hypothesize(null = "independence")
   )
   expect_snapshot(
     error = TRUE,
-    res_ <- mtcars_s %>% hypothesize(null = "point")
+    res_ <- mtcars_s |> hypothesize(null = "point")
   )
 
   expect_snapshot(
     error = TRUE,
     res_ <-
-      mtcars_f %>%
-      specify(mpg ~ am) %>%
+      mtcars_f |>
+      specify(mpg ~ am) |>
       hypothesize(null = "paired independence")
   )
 
   # Produces error on win-build
   expect_snapshot(
     error = TRUE,
-    res <- mtcars_s %>% hypothesize(null = c("point", "independence"), mu = 3)
+    res <- mtcars_s |> hypothesize(null = c("point", "independence"), mu = 3)
   )
 
   expect_snapshot(
     error = TRUE,
-    res_ <- mtcars_df %>%
-      dplyr::select(vs) %>%
+    res_ <- mtcars_df |>
+      dplyr::select(vs) |>
       hypothesize(null = "point", mu = 1)
   )
 
   expect_snapshot(
     error = TRUE,
-    res_ <- mtcars_df %>%
-      specify(response = vs) %>%
+    res_ <- mtcars_df |>
+      specify(response = vs) |>
       hypothesize(null = "point", mu = 1)
   )
 
   expect_snapshot(
     error = TRUE,
-    res_ <- mtcars_s %>% hypothesize(null = "point", p = 0.2)
+    res_ <- mtcars_s |> hypothesize(null = "point", p = 0.2)
   )
 
-  expect_snapshot(error = TRUE, res_ <- mtcars_s %>% hypothesize())
+  expect_snapshot(error = TRUE, res_ <- mtcars_s |> hypothesize())
 })
 
 test_that("params correct", {
@@ -226,8 +226,8 @@ test_that("sensible output", {
 
 test_that("user can specify multiple explanatory variables", {
   x <-
-    gss %>%
-    specify(hours ~ sex + college) %>%
+    gss |>
+    specify(hours ~ sex + college) |>
     hypothesize(null = "independence")
 
   expect_true(inherits(x, "infer"))
@@ -239,8 +239,8 @@ test_that("user can specify multiple explanatory variables", {
   expect_equal(response_name(x), "hours")
 
   expect_snapshot(
-    res_ <- gss %>%
-      specify(hours ~ sex + college) %>%
+    res_ <- gss |>
+      specify(hours ~ sex + college) |>
       hypothesize(null = "independence", mu = 40)
   )
 })

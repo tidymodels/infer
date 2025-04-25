@@ -36,13 +36,13 @@
 #'
 #' @examples
 #' # hypothesize independence of two variables
-#' gss %>%
-#'  specify(college ~ partyid, success = "degree") %>%
+#' gss |>
+#'  specify(college ~ partyid, success = "degree") |>
 #'  hypothesize(null = "independence")
 #'
 #' # hypothesize a mean number of hours worked per week of 40
-#' gss %>%
-#'   specify(response = hours) %>%
+#' gss |>
+#'   specify(response = hours) |>
 #'   hypothesize(null = "point", mu = 40)
 #'
 #' # more in-depth explanation of how to use the infer package

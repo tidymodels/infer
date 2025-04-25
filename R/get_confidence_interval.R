@@ -64,15 +64,15 @@
 #'
 #' @examples
 #'
-#' boot_dist <- gss %>%
+#' boot_dist <- gss |>
 #'   # We're interested in the number of hours worked per week
-#'   specify(response = hours) %>%
+#'   specify(response = hours) |>
 #'   # Generate bootstrap samples
-#'   generate(reps = 1000, type = "bootstrap") %>%
+#'   generate(reps = 1000, type = "bootstrap") |>
 #'   # Calculate mean of each bootstrap sample
 #'   calculate(stat = "mean")
 #'
-#' boot_dist %>%
+#' boot_dist |>
 #'   # Calculate the confidence interval around the point estimate
 #'   get_confidence_interval(
 #'     # At the 95% confidence level; percentile method
@@ -80,11 +80,11 @@
 #'   )
 #'
 #' # for type = "se" or type = "bias-corrected" we need a point estimate
-#' sample_mean <- gss %>%
-#'   specify(response = hours) %>%
+#' sample_mean <- gss |>
+#'   specify(response = hours) |>
 #'   calculate(stat = "mean")
 #'
-#' boot_dist %>%
+#' boot_dist |>
 #'   get_confidence_interval(
 #'     point_estimate = sample_mean,
 #'     # At the 95% confidence level
@@ -96,8 +96,8 @@
 #' # using a theoretical distribution -----------------------------------
 #'
 #' # define a sampling distribution
-#' sampling_dist <- gss %>%
-#'   specify(response = hours) %>%
+#' sampling_dist <- gss |>
+#'   specify(response = hours) |>
 #'   assume("t")
 #'
 #' # get the confidence interval---note that the
@@ -112,8 +112,8 @@
 #'
 #' # fit a linear model predicting number of hours worked per
 #' # week using respondent age and degree status.
-#' observed_fit <- gss %>%
-#'   specify(hours ~ age + college) %>%
+#' observed_fit <- gss |>
+#'   specify(hours ~ age + college) |>
 #'   fit()
 #'
 #' observed_fit
@@ -121,10 +121,10 @@
 #' # fit 100 models to resamples of the gss dataset, where the response
 #' # `hours` is permuted in each. note that this code is the same as
 #' # the above except for the addition of the `generate` step.
-#' null_fits <- gss %>%
-#'   specify(hours ~ age + college) %>%
-#'   hypothesize(null = "independence") %>%
-#'   generate(reps = 100, type = "permute") %>%
+#' null_fits <- gss |>
+#'   specify(hours ~ age + college) |>
+#'   hypothesize(null = "independence") |>
+#'   generate(reps = 100, type = "permute") |>
 #'   fit()
 #'
 #' null_fits
@@ -172,15 +172,15 @@ get_confidence_interval <- function(
     )
 
     # split up x and point estimate by term
-    term_data <- x %>%
-      dplyr::ungroup() %>%
-      dplyr::group_by(term) %>%
-      dplyr::group_split() %>%
+    term_data <- x |>
+      dplyr::ungroup() |>
+      dplyr::group_by(term) |>
+      dplyr::group_split() |>
       purrr::map(copy_attrs, x)
 
-    term_estimates <- point_estimate %>%
-      dplyr::ungroup() %>%
-      dplyr::group_by(term) %>%
+    term_estimates <- point_estimate |>
+      dplyr::ungroup() |>
+      dplyr::group_by(term) |>
       dplyr::group_split()
 
     # check arguments for each term
@@ -199,11 +199,11 @@ get_confidence_interval <- function(
       switch_ci,
       level = level,
       type = type
-    ) %>%
+    ) |>
       dplyr::mutate(
         term = purrr::map_chr(term_estimates, purrr::pluck, "term"),
         .before = dplyr::everything()
-      ) %>%
+      ) |>
       copy_attrs(x)
   } else {
     check_ci_args(x, level, type, point_estimate)

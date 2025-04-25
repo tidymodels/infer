@@ -106,14 +106,14 @@ test_that("hypothesize errors out when x isn't a dataframe", {
 
 test_that("p_null supplies appropriate params", {
   expect_equal(
-    gss %>% specify(partyid ~ NULL) %>% p_null(),
+    gss |> specify(partyid ~ NULL) |> p_null(),
     c(p.dem = 0.2, p.ind = 0.2, p.rep = 0.2, p.other = 0.2, p.DK = 0.2)
   )
 })
 
 test_that("variables are standardized as expected", {
   gss_types <-
-    gss %>%
+    gss |>
     dplyr::mutate(
       age = as.integer(age),
       is_dem = dplyr::if_else(partyid == "dem", TRUE, FALSE),
@@ -144,10 +144,10 @@ test_that("group_by_replicate() helper returns correct results", {
   nrow_gss <- nrow(gss)
 
   gss_gen <-
-    gss %>%
-    specify(age ~ college) %>%
-    hypothesize(null = "independence") %>%
-    generate(reps = reps, type = "permute") %>%
+    gss |>
+    specify(age ~ college) |>
+    hypothesize(null = "independence") |>
+    generate(reps = reps, type = "permute") |>
     dplyr::ungroup()
 
   expect_equal(

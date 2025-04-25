@@ -9,13 +9,13 @@ download.file("https://gss.norc.org/documents/stata/GSS_stata.zip", temp)
 
 # if this next line errors with "No such file or directory", try
 # incrementing the number after "_R"
-gss_orig <- haven::read_dta(unz(temp, filename = "GSS7218_R2.DTA")) %>%
+gss_orig <- haven::read_dta(unz(temp, filename = "GSS7218_R2.DTA")) |>
   haven::as_factor()
 unlink(temp)
 
 # select relevant columns
-gss_small <- gss_orig %>%
-  filter(!stringr::str_detect(sample, "blk oversamp")) %>% # this is for weighting
+gss_small <- gss_orig |>
+  filter(!stringr::str_detect(sample, "blk oversamp")) |> # this is for weighting
   select(
     year,
     age,
@@ -28,26 +28,26 @@ gss_small <- gss_orig %>%
     class,
     finrela,
     weight = wtssall
-  ) %>%
+  ) |>
   mutate_if(
     is.factor,
     ~ fct_collapse(., NULL = c("IAP", "NA", "iap", "na"))
-  ) %>%
+  ) |>
   mutate(
-    age = age %>%
-      fct_recode("89" = "89 or older", NULL = "DK") %>% # truncated at 89
-      as.character() %>%
+    age = age |>
+      fct_recode("89" = "89 or older", NULL = "DK") |> # truncated at 89
+      as.character() |>
       as.numeric(),
-    hompop = hompop %>%
-      fct_collapse(NULL = c("DK")) %>%
-      as.character() %>%
+    hompop = hompop |>
+      fct_collapse(NULL = c("DK")) |>
+      as.character() |>
       as.numeric(),
-    hours = hours %>%
-      fct_recode("89" = "89+ hrs", NULL = "DK") %>% # truncated at 89
-      as.character() %>%
+    hours = hours |>
+      fct_recode("89" = "89+ hrs", NULL = "DK") |> # truncated at 89
+      as.character() |>
       as.numeric(),
-    weight = weight %>%
-      as.character() %>%
+    weight = weight |>
+      as.character() |>
       as.numeric(),
     partyid = fct_collapse(
       partyid,
@@ -67,22 +67,22 @@ gss_small <- gss_orig %>%
 
 # sample 3k rows, first dropping NAs
 set.seed(20200201)
-gss <- gss_small %>%
-  drop_na() %>%
+gss <- gss_small |>
+  drop_na() |>
   sample_n(500)
 
 # check that the sample is similar unweighted to weighted
 gss_wt <- srvyr::as_survey_design(gss, weights = weight)
 
-unweighted <- gss %>%
-  group_by(year, sex, partyid) %>%
-  summarize(n = n()) %>%
-  ungroup() %>%
-  group_by(year, sex) %>%
+unweighted <- gss |>
+  group_by(year, sex, partyid) |>
+  summarize(n = n()) |>
+  ungroup() |>
+  group_by(year, sex) |>
   mutate(prop = n / sum(n))
 
-weighted <- gss_wt %>%
-  group_by(year, sex, partyid) %>%
+weighted <- gss_wt |>
+  group_by(year, sex, partyid) |>
   summarize(prop = srvyr::survey_mean())
 
 # save data into package

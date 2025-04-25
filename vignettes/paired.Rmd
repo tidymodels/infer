@@ -34,13 +34,13 @@ Two sets of observations are paired if each observation in one column has a spec
 ```{r}
 set.seed(1)
 
-gss_paired <- gss %>%
+gss_paired <- gss |>
    mutate(
       hours_previous = hours + 5 - rpois(nrow(.), 4.8),
       diff = hours - hours_previous
    )
 
-gss_paired %>%
+gss_paired |>
    select(hours, hours_previous, diff)
 ```
 
@@ -52,7 +52,7 @@ Here, we pre-compute the difference between paired observations as `diff`. The d
 
 ```{r plot-diff, echo = FALSE}
 unique_diff <- unique(gss_paired$diff)
-gss_paired %>%
+gss_paired |>
   ggplot2::ggplot() +
   ggplot2::aes(x = diff) +
   ggplot2::geom_histogram(bins = diff(range(unique_diff))) +
@@ -70,8 +70,8 @@ We calculate the observed statistic in the paired setting in the same way that w
 ```{r calc-obs-mean}
 # calculate the observed statistic
 observed_statistic <- 
-   gss_paired %>% 
-   specify(response = diff) %>% 
+   gss_paired |> 
+   specify(response = diff) |> 
    calculate(stat = "mean")
 ```
 
@@ -82,10 +82,10 @@ Tests for paired data are carried out via the `null = "paired independence"` arg
 ```{r generate-null}
 # generate the null distribution
 null_dist <- 
-   gss_paired %>% 
-   specify(response = diff) %>% 
-   hypothesize(null = "paired independence") %>%
-   generate(reps = 1000, type = "permute") %>%
+   gss_paired |> 
+   specify(response = diff) |> 
+   hypothesize(null = "paired independence") |>
+   generate(reps = 1000, type = "permute") |>
    calculate(stat = "mean")
    
 null_dist
@@ -100,7 +100,7 @@ To get a sense for what this distribution looks like, and where our observed sta
 
 ```{r visualize}
 # visualize the null distribution and test statistic
-null_dist %>%
+null_dist |>
   visualize() + 
   shade_p_value(observed_statistic,
                 direction = "two-sided")
@@ -112,7 +112,7 @@ More exactly, we can calculate the p-value:
 
 ```{r p-value}
 # calculate the p value from the test statistic and null distribution
-p_value <- null_dist %>%
+p_value <- null_dist |>
   get_p_value(obs_stat = observed_statistic,
               direction = "two-sided")
 
@@ -126,10 +126,10 @@ We can also generate a bootstrap confidence interval for the mean paired differe
 ```{r generate-boot}
 # generate a bootstrap distribution
 boot_dist <- 
-   gss_paired %>% 
-   specify(response = diff) %>% 
-   hypothesize(null = "paired independence") %>%
-   generate(reps = 1000, type = "bootstrap") %>%
+   gss_paired |> 
+   specify(response = diff) |> 
+   hypothesize(null = "paired independence") |>
+   generate(reps = 1000, type = "bootstrap") |>
    calculate(stat = "mean")
    
 visualize(boot_dist)
@@ -141,7 +141,7 @@ Calculating a confidence interval:
 
 ```{r confidence-interval}
 # calculate the confidence from the bootstrap distribution
-confidence_interval <- boot_dist %>%
+confidence_interval <- boot_dist |>
   get_confidence_interval(level = .95)
 
 confidence_interval
@@ -150,7 +150,7 @@ confidence_interval
 By default, `get_confidence_interval()` constructs the lower and upper bounds by taking the observations at the $(1 - .95) / 2$ and $1 - ((1-.95) / 2)$th percentiles. To instead build the confidence interval using the standard error of the bootstrap distribution, we can write:
 
 ```{r}
-boot_dist %>%
+boot_dist |>
   get_confidence_interval(type = "se",
                           point_estimate = observed_statistic,
                           level = .95)

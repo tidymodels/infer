@@ -56,35 +56,35 @@ ggplot2::ggplot_add
 #' @examples
 #'
 #' # generate a null distribution
-#' null_dist <- gss %>%
+#' null_dist <- gss |>
 #'   # we're interested in the number of hours worked per week
-#'   specify(response = hours) %>%
+#'   specify(response = hours) |>
 #'   # hypothesizing that the mean is 40
-#'   hypothesize(null = "point", mu = 40) %>%
+#'   hypothesize(null = "point", mu = 40) |>
 #'   # generating data points for a null distribution
-#'   generate(reps = 1000, type = "bootstrap") %>%
+#'   generate(reps = 1000, type = "bootstrap") |>
 #'   # calculating a distribution of means
 #'   calculate(stat = "mean")
 #'
 #' # or a bootstrap distribution, omitting the hypothesize() step,
 #' # for use in confidence intervals
-#' boot_dist <- gss %>%
-#'   specify(response = hours) %>%
-#'   generate(reps = 1000, type = "bootstrap") %>%
+#' boot_dist <- gss |>
+#'   specify(response = hours) |>
+#'   generate(reps = 1000, type = "bootstrap") |>
 #'   calculate(stat = "mean")
 #'
 #' # we can easily plot the null distribution by piping into visualize
-#' null_dist %>%
+#' null_dist |>
 #'   visualize()
 #'
 #' # we can add layers to the plot as in ggplot, as well...
 #' # find the point estimate---mean number of hours worked per week
-#' point_estimate <- gss %>%
-#'   specify(response = hours) %>%
+#' point_estimate <- gss |>
+#'   specify(response = hours) |>
 #'   calculate(stat = "mean")
 #'
 #' # find a confidence interval around the point estimate
-#' ci <- boot_dist %>%
+#' ci <- boot_dist |>
 #'   get_confidence_interval(point_estimate = point_estimate,
 #'                           # at the 95% confidence level
 #'                           level = .95,
@@ -92,19 +92,19 @@ ggplot2::ggplot_add
 #'                           type = "se")
 #'
 #' # display a shading of the area beyond the p-value on the plot
-#' null_dist %>%
+#' null_dist |>
 #'   visualize() +
 #'   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 #'
 #' # ...or within the bounds of the confidence interval
-#' null_dist %>%
+#' null_dist |>
 #'   visualize() +
 #'   shade_confidence_interval(ci)
 #'
 #' # plot a theoretical sampling distribution by creating
 #' # a theory-based distribution with `assume()`
-#' sampling_dist <- gss %>%
-#'   specify(response = hours) %>%
+#' sampling_dist <- gss |>
+#'   specify(response = hours) |>
 #'   assume(distribution = "t")
 #'
 #' visualize(sampling_dist)
@@ -120,15 +120,15 @@ ggplot2::ggplot_add
 #' # to plot both a theory-based and simulation-based null distribution,
 #' # use a theorized statistic (i.e. one of t, z, F, or Chisq)
 #' # and supply the simulation-based null distribution
-#' null_dist_t <- gss %>%
-#'   specify(response = hours) %>%
-#'   hypothesize(null = "point", mu = 40) %>%
-#'   generate(reps = 1000, type = "bootstrap") %>%
+#' null_dist_t <- gss |>
+#'   specify(response = hours) |>
+#'   hypothesize(null = "point", mu = 40) |>
+#'   generate(reps = 1000, type = "bootstrap") |>
 #'   calculate(stat = "t")
 #'
-#' obs_stat <- gss %>%
-#'   specify(response = hours) %>%
-#'   hypothesize(null = "point", mu = 40) %>%
+#' obs_stat <- gss |>
+#'   specify(response = hours) |>
+#'   hypothesize(null = "point", mu = 40) |>
 #'   calculate(stat = "t")
 #'
 #' visualize(null_dist_t, method = "both")
@@ -141,10 +141,10 @@ ggplot2::ggplot_add
 #' # explanatory variables, use a `fit()`-based workflow
 #'
 #' # fit 1000 models with the `hours` variable permuted
-#' null_fits <- gss %>%
-#'  specify(hours ~ age + college) %>%
-#'  hypothesize(null = "independence") %>%
-#'  generate(reps = 1000, type = "permute") %>%
+#' null_fits <- gss |>
+#'  specify(hours ~ age + college) |>
+#'  hypothesize(null = "independence") |>
+#'  generate(reps = 1000, type = "permute") |>
 #'  fit()
 #'
 #' null_fits
@@ -159,10 +159,10 @@ ggplot2::ggplot_add
 #' library(ggplot2)
 #'
 #' # to add a ggplot2 theme to a `calculate()`-based visualization, use `+`
-#' null_dist %>% visualize() + theme_dark()
+#' null_dist |> visualize() + theme_dark()
 #'
 #' # to add a ggplot2 theme to a `fit()`-based visualization, use `&`
-#' null_fits %>% visualize() & theme_dark()
+#' null_fits |> visualize() & theme_dark()
 #' }
 #'
 #' # More in-depth explanation of how to use the infer package
@@ -211,12 +211,12 @@ visualize <- function(
   dots <- check_dots_for_deprecated(list(...))
 
   if (is_fitted(data)) {
-    term_data <- data %>%
-      dplyr::rename(stat = estimate) %>%
-      dplyr::ungroup() %>%
-      dplyr::group_by(term) %>%
-      dplyr::group_split() %>%
-      purrr::map(copy_attrs, data) %>%
+    term_data <- data |>
+      dplyr::rename(stat = estimate) |>
+      dplyr::ungroup() |>
+      dplyr::group_by(term) |>
+      dplyr::group_split() |>
+      purrr::map(copy_attrs, data) |>
       purrr::map(copy_attrs, data, c("viz_method", "viz_bins"))
 
     plots <- purrr::map2(
@@ -359,9 +359,9 @@ check_for_piped_visualize <- function(..., call = caller_env()) {
     cli_abort(
       c(
         "It looks like you piped the result of `visualize()` into \\
-       `{called_function}()` (using `%>%`) rather than adding the result of \\
+       `{called_function}()` rather than adding the result of \\
        `{called_function}()` as a layer with `+`.",
-        i = "Consider changing `%>%` to `+`."
+        i = "Consider changing `|>` (or `%>%`) to `+`."
       ),
       call = call
     )
@@ -377,8 +377,8 @@ impute_endpoints <- function(endpoints, plot = NULL, call = caller_env()) {
     x_lab <- x_axis_label(plot)
 
     res <-
-      endpoints %>%
-      dplyr::filter(term == x_lab) %>%
+      endpoints |>
+      dplyr::filter(term == x_lab) |>
       dplyr::select(-term)
 
     return(unlist(res))
@@ -403,7 +403,7 @@ impute_endpoints <- function(endpoints, plot = NULL, call = caller_env()) {
     res <- unlist(endpoints)
   }
 
-  res %>% copy_attrs(endpoints, attrs = c("se", "point_estimate"))
+  res |> copy_attrs(endpoints, attrs = c("se", "point_estimate"))
 }
 
 impute_obs_stat <- function(
@@ -756,7 +756,7 @@ ggplot_add.infer_layer <- function(object, plot, object_name) {
   # - object_name is the unevaluated call on the RHS of the `+`
   #
   # output is the actual output of the addition - this allows for
-  # a more %>%-esque programming style
+  # a more |>-esque programming style
   #
   # the biggest advantage this offers us is that we can
   # overwrite existing elements, i.e. subsetting into the patchwork,
@@ -810,12 +810,12 @@ ggplot_add.infer_layer <- function(object, plot, object_name) {
 # extract the x axis label from a ggplot -- these are unique
 # ids for terms in visualize() workflows
 x_axis_label <- function(x) {
-  x %>% purrr::pluck("labels", "x")
+  x |> purrr::pluck("labels", "x")
 }
 
 create_plot_data <- function(data) {
   if (inherits(data, "infer_dist")) {
-    res <- tibble::tibble() %>%
+    res <- tibble::tibble() |>
       copy_attrs(
         data,
         c("theory_type", "distr_param", "distr_param2", "viz_method")

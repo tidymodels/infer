@@ -21,7 +21,7 @@ test_df$stat <- sample(c(
 test_that("direction is appropriate", {
   expect_snapshot(
     error = TRUE,
-    test_df %>% get_p_value(obs_stat = 0.5, direction = "righ")
+    test_df |> get_p_value(obs_stat = 0.5, direction = "righ")
   )
 })
 
@@ -104,15 +104,15 @@ test_that("get_p_value works", {
 })
 
 test_that("theoretical p-value not supported error", {
-  obs_F <- gss_tbl %>%
-    specify(hours ~ partyid) %>%
+  obs_F <- gss_tbl |>
+    specify(hours ~ partyid) |>
     calculate(stat = "F")
   expect_snapshot(
     error = TRUE,
-    gss_tbl %>%
-      specify(hours ~ partyid) %>%
-      hypothesize(null = "independence") %>%
-      calculate(stat = "F") %>%
+    gss_tbl |>
+      specify(hours ~ partyid) |>
+      hypothesize(null = "independence") |>
+      calculate(stat = "F") |>
       get_p_value(obs_stat = obs_F, direction = "right")
   )
 })
@@ -138,14 +138,14 @@ test_that("get_p_value throws error in case of `NaN` stat", {
 test_that("get_p_value can handle fitted objects", {
   set.seed(1)
 
-  null_fits <- gss[1:50, ] %>%
-    specify(hours ~ age + college) %>%
-    hypothesize(null = "independence") %>%
-    generate(reps = 10, type = "permute") %>%
+  null_fits <- gss[1:50, ] |>
+    specify(hours ~ age + college) |>
+    hypothesize(null = "independence") |>
+    generate(reps = 10, type = "permute") |>
     fit()
 
-  obs_fit <- gss[1:50, ] %>%
-    specify(hours ~ age + college) %>%
+  obs_fit <- gss[1:50, ] |>
+    specify(hours ~ age + college) |>
     fit()
 
   expect_equal(
@@ -162,28 +162,28 @@ test_that("get_p_value can handle fitted objects", {
   )
 
   # errors out when it ought to
-  obs_fit_2 <- gss[1:50, ] %>%
-    specify(hours ~ age) %>%
+  obs_fit_2 <- gss[1:50, ] |>
+    specify(hours ~ age) |>
     fit()
 
   expect_snapshot(error = TRUE, get_p_value(null_fits, obs_fit_2, "both"))
 
-  obs_fit_3 <- gss[1:50, ] %>%
-    specify(year ~ age + college) %>%
+  obs_fit_3 <- gss[1:50, ] |>
+    specify(year ~ age + college) |>
     fit()
 
   expect_snapshot(error = TRUE, get_p_value(null_fits, obs_fit_3, "both"))
 
   set.seed(1)
 
-  null_fits_4 <- gss[1:50, ] %>%
-    specify(hours ~ age) %>%
-    hypothesize(null = "independence") %>%
-    generate(reps = 10, type = "permute") %>%
+  null_fits_4 <- gss[1:50, ] |>
+    specify(hours ~ age) |>
+    hypothesize(null = "independence") |>
+    generate(reps = 10, type = "permute") |>
     fit()
 
-  obs_fit_4 <- gss[1:50, ] %>%
-    specify(hours ~ age) %>%
+  obs_fit_4 <- gss[1:50, ] |>
+    specify(hours ~ age) |>
     fit()
 
   obs_fit_4
@@ -219,14 +219,14 @@ test_that("get_p_value can handle fitted objects", {
 test_that("get_p_value can handle bad args with fitted objects", {
   set.seed(1)
 
-  null_fits <- gss[1:50, ] %>%
-    specify(hours ~ age + college) %>%
-    hypothesize(null = "independence") %>%
-    generate(reps = 10, type = "permute") %>%
+  null_fits <- gss[1:50, ] |>
+    specify(hours ~ age + college) |>
+    hypothesize(null = "independence") |>
+    generate(reps = 10, type = "permute") |>
     fit()
 
-  obs_fit <- gss[1:50, ] %>%
-    specify(hours ~ age + college) %>%
+  obs_fit <- gss[1:50, ] |>
+    specify(hours ~ age + college) |>
     fit()
 
   expect_snapshot(error = TRUE, get_p_value(null_fits, "boop", "both"))
@@ -241,16 +241,16 @@ test_that("get_p_value can handle bad args with fitted objects", {
 
 test_that("get_p_value errors informatively when args are switched", {
   # switch obs_stat and x
-  obs_stat <- gss %>%
-    specify(response = hours) %>%
+  obs_stat <- gss |>
+    specify(response = hours) |>
     calculate(stat = "mean")
 
   set.seed(1)
 
-  null_dist <- gss %>%
-    specify(response = hours) %>%
-    hypothesize(null = "point", mu = 41) %>%
-    generate(reps = 20, type = "bootstrap") %>%
+  null_dist <- gss |>
+    specify(response = hours) |>
+    hypothesize(null = "point", mu = 41) |>
+    generate(reps = 20, type = "bootstrap") |>
     calculate(stat = "mean")
 
   expect_snapshot(error = TRUE, get_p_value(obs_stat, null_dist, "both"))
@@ -270,14 +270,14 @@ test_that("get_p_value can handle theoretical distributions", {
   # f ------------------------------------------------------------
   # direction = "right" is the only valid one
   f_dist <-
-    gss %>%
-    specify(age ~ partyid) %>%
-    hypothesize(null = "independence") %>%
+    gss |>
+    specify(age ~ partyid) |>
+    hypothesize(null = "independence") |>
     assume(distribution = "F")
 
   f_obs <-
-    gss %>%
-    specify(age ~ partyid) %>%
+    gss |>
+    specify(age ~ partyid) |>
     calculate(stat = "F")
 
   expect_equal(
@@ -296,15 +296,15 @@ test_that("get_p_value can handle theoretical distributions", {
 
   # t ------------------------------------------------------------
   t_dist <-
-    gss %>%
-    specify(response = hours) %>%
-    hypothesize(null = "point", mu = 40) %>%
+    gss |>
+    specify(response = hours) |>
+    hypothesize(null = "point", mu = 40) |>
     assume("t")
 
   t_obs <-
-    gss %>%
-    specify(response = hours) %>%
-    hypothesize(null = "point", mu = 40) %>%
+    gss |>
+    specify(response = hours) |>
+    hypothesize(null = "point", mu = 40) |>
     calculate(stat = "t")
 
   expect_equal(
@@ -356,14 +356,14 @@ test_that("get_p_value can handle theoretical distributions", {
   # chisq ------------------------------------------------------------
   # direction = "right" is the only valid one
   chisq_dist <-
-    gss %>%
-    specify(college ~ finrela) %>%
-    hypothesize(null = "independence") %>%
+    gss |>
+    specify(college ~ finrela) |>
+    hypothesize(null = "independence") |>
     assume(distribution = "Chisq")
 
   chisq_obs <-
-    gss %>%
-    specify(college ~ finrela) %>%
+    gss |>
+    specify(college ~ finrela) |>
     calculate(stat = "Chisq")
 
   expect_equal(
@@ -384,15 +384,15 @@ test_that("get_p_value can handle theoretical distributions", {
 
   # z ------------------------------------------------------------
   z_dist <-
-    gss %>%
-    specify(response = sex, success = "female") %>%
-    hypothesize(null = "point", p = .5) %>%
+    gss |>
+    specify(response = sex, success = "female") |>
+    hypothesize(null = "point", p = .5) |>
     assume("z")
 
   z_obs <-
-    gss %>%
-    specify(response = sex, success = "female") %>%
-    hypothesize(null = "point", p = .5) %>%
+    gss |>
+    specify(response = sex, success = "female") |>
+    hypothesize(null = "point", p = .5) |>
     calculate(stat = "z")
 
   expect_equal(
@@ -466,21 +466,21 @@ test_that("get_p_value can handle theoretical distributions", {
 
 test_that("get_p_value warns with bad theoretical distributions", {
   t_dist_40 <-
-    gss %>%
-    specify(response = hours) %>%
-    hypothesize(null = "point", mu = 40) %>%
+    gss |>
+    specify(response = hours) |>
+    hypothesize(null = "point", mu = 40) |>
     assume("t")
 
   t_dist_30 <-
-    gss %>%
-    specify(response = hours) %>%
-    hypothesize(null = "point", mu = 30) %>%
+    gss |>
+    specify(response = hours) |>
+    hypothesize(null = "point", mu = 30) |>
     assume("t")
 
   t_obs <-
-    gss %>%
-    specify(response = hours) %>%
-    hypothesize(null = "point", mu = 40) %>%
+    gss |>
+    specify(response = hours) |>
+    hypothesize(null = "point", mu = 40) |>
     calculate(stat = "t")
 
   expect_silent(

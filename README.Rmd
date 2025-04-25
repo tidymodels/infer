@@ -79,18 +79,18 @@ As an example, we'll run an analysis of variance on `age` and `partyid`, testing
 Calculating the observed statistic,
 
 ```{r, message = FALSE, warning = FALSE}
-F_hat <- gss %>% 
-  specify(age ~ partyid) %>%
+F_hat <- gss |> 
+  specify(age ~ partyid) |>
   calculate(stat = "F")
 ```
 
 Then, generating the null distribution,
 
 ```{r, message = FALSE, warning = FALSE}
-null_dist <- gss %>%
-   specify(age ~ partyid) %>%
-   hypothesize(null = "independence") %>%
-   generate(reps = 1000, type = "permute") %>%
+null_dist <- gss |>
+   specify(age ~ partyid) |>
+   hypothesize(null = "independence") |>
+   generate(reps = 1000, type = "permute") |>
    calculate(stat = "F")
 ```
 
@@ -108,7 +108,7 @@ knitr::include_graphics("https://raw.githubusercontent.com/tidymodels/infer/main
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r, message = FALSE, warning = FALSE}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = F_hat, direction = "greater")
 ```
 

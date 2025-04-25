@@ -46,24 +46,24 @@
 #'
 #' @examples
 #' # generate a null distribution by taking 200 bootstrap samples
-#' gss %>%
-#'  specify(response = hours) %>%
-#'  hypothesize(null = "point", mu = 40) %>%
+#' gss |>
+#'  specify(response = hours) |>
+#'  hypothesize(null = "point", mu = 40) |>
 #'  generate(reps = 200, type = "bootstrap")
 #'
 #' # generate a null distribution for the independence of
 #' # two variables by permuting their values 200 times
-#' gss %>%
-#'  specify(partyid ~ age) %>%
-#'  hypothesize(null = "independence") %>%
+#' gss |>
+#'  specify(partyid ~ age) |>
+#'  hypothesize(null = "independence") |>
 #'  generate(reps = 200, type = "permute")
 #'
 #' # generate a null distribution via sampling from a
 #' # binomial distribution 200 times
-#' gss %>%
-#' specify(response = sex, success = "female") %>%
-#'   hypothesize(null = "point", p = .5) %>%
-#'   generate(reps = 200, type = "draw") %>%
+#' gss |>
+#' specify(response = sex, success = "female") |>
+#'   hypothesize(null = "point", p = .5) |>
+#'   generate(reps = 200, type = "draw") |>
 #'   calculate(stat = "z")
 #'
 #' # more in-depth explanation of how to use the infer package
@@ -257,9 +257,9 @@ permute <- function(x, reps = 1, variables, ..., call = caller_env()) {
     reps,
     permute_once(x, variables, call = call),
     simplify = FALSE
-  ) %>%
-    dplyr::bind_rows() %>%
-    dplyr::mutate(replicate = rep(1:reps, each = !!nrow_x)) %>%
+  ) |>
+    dplyr::bind_rows() |>
+    dplyr::mutate(replicate = rep(1:reps, each = !!nrow_x)) |>
     group_by_replicate(reps, nrow_x)
 
   df_out <- copy_attrs(to = df_out, from = x)

@@ -73,16 +73,16 @@ test_that("shade_confidence_interval throws errors and warnings", {
   )
   expect_snapshot(
     error = TRUE,
-    res_ <- gss_viz_sim %>% shade_confidence_interval(c(-1, 1))
+    res_ <- gss_viz_sim |> shade_confidence_interval(c(-1, 1))
   )
   expect_snapshot(
     error = TRUE,
-    res_ <- gss_viz_sim %>% shade_confidence_interval(endpoints = c(-1, 1))
+    res_ <- gss_viz_sim |> shade_confidence_interval(endpoints = c(-1, 1))
   )
-  expect_snapshot(error = TRUE, res_ <- gss_viz_sim %>% shade_ci(c(-1, 1)))
+  expect_snapshot(error = TRUE, res_ <- gss_viz_sim |> shade_ci(c(-1, 1)))
   expect_snapshot(
     error = TRUE,
-    res_ <- gss_viz_sim %>% shade_ci(endpoints = c(-1, 1))
+    res_ <- gss_viz_sim |> shade_ci(endpoints = c(-1, 1))
   )
 })
 

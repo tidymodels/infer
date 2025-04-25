@@ -2,22 +2,22 @@ library(dplyr)
 
 set.seed(42)
 
-hours_resamp <- gss_tbl %>%
-  specify(hours ~ NULL) %>%
-  hypothesize(null = "point", med = 3) %>%
-  generate(reps = 10, type = "bootstrap") %>%
+hours_resamp <- gss_tbl |>
+  specify(hours ~ NULL) |>
+  hypothesize(null = "point", med = 3) |>
+  generate(reps = 10, type = "bootstrap") |>
   calculate(stat = "median")
 
-obs_slope <- lm(age ~ hours, data = gss_tbl) %>%
-  broom::tidy() %>%
-  dplyr::filter(term == "hours") %>%
-  dplyr::select(estimate) %>%
+obs_slope <- lm(age ~ hours, data = gss_tbl) |>
+  broom::tidy() |>
+  dplyr::filter(term == "hours") |>
+  dplyr::select(estimate) |>
   dplyr::pull()
 
-obs_diff <- gss_tbl %>%
-  group_by(college) %>%
-  summarize(prop = mean(college == "no degree")) %>%
-  summarize(diff(prop)) %>%
+obs_diff <- gss_tbl |>
+  group_by(college) |>
+  summarize(prop = mean(college == "no degree")) |>
+  summarize(diff(prop)) |>
   pull()
 
 obs_z <- sqrt(
@@ -29,13 +29,13 @@ obs_z <- sqrt(
   )$statistic
 )
 
-obs_diff_mean <- gss_tbl %>%
-  group_by(college) %>%
-  summarize(mean_sepal_width = mean(hours)) %>%
-  summarize(diff(mean_sepal_width)) %>%
+obs_diff_mean <- gss_tbl |>
+  group_by(college) |>
+  summarize(mean_sepal_width = mean(hours)) |>
+  summarize(diff(mean_sepal_width)) |>
   pull()
 
-obs_t <- gss_tbl %>%
+obs_t <- gss_tbl |>
   observe(hours ~ college, order = c("no degree", "degree"), stat = "t")
 
 obs_F <- anova(
@@ -48,48 +48,48 @@ test_that("visualize warns with bad arguments", {
   # warns when supplied deprecated args in what used to be
   # a valid way
   expect_snapshot(
-    res_ <- gss_tbl %>%
-      specify(age ~ hours) %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "slope") %>%
+    res_ <- gss_tbl |>
+      specify(age ~ hours) |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "slope") |>
       visualize(obs_stat = obs_slope, direction = "right")
   )
 
   # warning is the same when deprecated args are inappropriate
   expect_snapshot(
-    res_ <- gss_tbl %>%
-      specify(age ~ hours) %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "slope") %>%
+    res_ <- gss_tbl |>
+      specify(age ~ hours) |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "slope") |>
       visualize(obs_stat = obs_slope)
   )
 
   # same goes for CI args
   expect_snapshot(
-    res_ <- gss_tbl %>%
-      specify(age ~ hours) %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "slope") %>%
+    res_ <- gss_tbl |>
+      specify(age ~ hours) |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "slope") |>
       visualize(endpoints = c(.01, .02))
   )
 
   # output should not change when supplied a deprecated argument
-  age_hours_df <- gss_tbl %>%
-    specify(age ~ hours) %>%
-    hypothesize(null = "independence") %>%
-    generate(reps = 100, type = "permute") %>%
+  age_hours_df <- gss_tbl |>
+    specify(age ~ hours) |>
+    hypothesize(null = "independence") |>
+    generate(reps = 100, type = "permute") |>
     calculate(stat = "slope")
 
   expect_snapshot(
-    res <- age_hours_df %>%
+    res <- age_hours_df |>
       visualize(endpoints = c(.01, .02))
   )
 
   expect_equal(
-    age_hours_df %>%
+    age_hours_df |>
       visualize(),
     res
   )
@@ -103,45 +103,45 @@ test_that("visualize basic tests", {
   # visualise also works
   expect_doppelganger("visualise", visualise(hours_resamp))
 
-  expect_snapshot(error = TRUE, hours_resamp %>% visualize(bins = "yep"))
+  expect_snapshot(error = TRUE, hours_resamp |> visualize(bins = "yep"))
   expect_doppelganger(
     "vis-sim-right-1",
-    gss_tbl %>%
-      specify(age ~ hours) %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "slope") %>%
+    gss_tbl |>
+      specify(age ~ hours) |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "slope") |>
       visualize() +
       shade_p_value(obs_stat = obs_slope, direction = "right")
   )
 
   # obs_stat not specified
   expect_snapshot_error(
-    gss_tbl %>%
-      specify(sex ~ college, success = "female") %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "diff in props", order = c("no degree", "degree")) %>%
+    gss_tbl |>
+      specify(sex ~ college, success = "female") |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "diff in props", order = c("no degree", "degree")) |>
       visualize() +
       shade_p_value(direction = "both")
   )
 
   expect_doppelganger(
     "vis-sim-both-1",
-    gss_tbl %>%
-      specify(sex ~ college, success = "female") %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "diff in props", order = c("no degree", "degree")) %>%
+    gss_tbl |>
+      specify(sex ~ college, success = "female") |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "diff in props", order = c("no degree", "degree")) |>
       visualize() +
       shade_p_value(direction = "both", obs_stat = obs_diff)
   )
 
   expect_snapshot(
-    res_vis_theor_none_1 <- gss_tbl %>%
-      specify(sex ~ college, success = "female") %>%
-      hypothesize(null = "independence") %>%
-      calculate(stat = "z", order = c("no degree", "degree")) %>%
+    res_vis_theor_none_1 <- gss_tbl |>
+      specify(sex ~ college, success = "female") |>
+      hypothesize(null = "independence") |>
+      calculate(stat = "z", order = c("no degree", "degree")) |>
       visualize(method = "theoretical")
   )
 
@@ -150,11 +150,11 @@ test_that("visualize basic tests", {
   # diff in props and z on different scales
   expect_snapshot(
     error = TRUE,
-    gss_tbl %>%
-      specify(sex ~ college, success = "female") %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "diff in props", order = c("no degree", "degree")) %>%
+    gss_tbl |>
+      specify(sex ~ college, success = "female") |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "diff in props", order = c("no degree", "degree")) |>
       visualize(method = "both") +
       shade_p_value(direction = "both", obs_stat = obs_diff)
   )
@@ -162,21 +162,21 @@ test_that("visualize basic tests", {
   expect_doppelganger(
     "vis-sim-none-1",
     expect_silent(
-      gss_tbl %>%
-        specify(sex ~ college, success = "female") %>%
-        hypothesize(null = "independence") %>%
-        generate(reps = 100, type = "permute") %>%
-        calculate(stat = "diff in props", order = c("no degree", "degree")) %>%
+      gss_tbl |>
+        specify(sex ~ college, success = "female") |>
+        hypothesize(null = "independence") |>
+        generate(reps = 100, type = "permute") |>
+        calculate(stat = "diff in props", order = c("no degree", "degree")) |>
         visualize()
     )
   )
 
   expect_warning(
-    vis_both_both_1 <- gss_tbl %>%
-      specify(sex ~ college, success = "female") %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "z", order = c("no degree", "degree")) %>%
+    vis_both_both_1 <- gss_tbl |>
+      specify(sex ~ college, success = "female") |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "z", order = c("no degree", "degree")) |>
       visualize(method = "both") +
       shade_p_value(direction = "both", obs_stat = obs_z)
   )
@@ -186,11 +186,11 @@ test_that("visualize basic tests", {
   )
 
   expect_warning(
-    vis_both_both_2 <- gss_tbl %>%
-      specify(sex ~ college, success = "female") %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "z", order = c("degree", "no degree")) %>%
+    vis_both_both_2 <- gss_tbl |>
+      specify(sex ~ college, success = "female") |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "z", order = c("degree", "no degree")) |>
       visualize(method = "both") +
       shade_p_value(direction = "both", obs_stat = -obs_z)
   )
@@ -200,11 +200,11 @@ test_that("visualize basic tests", {
   )
 
   expect_warning(
-    vis_both_left_1 <- gss_tbl %>%
-      specify(age ~ sex) %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "t", order = c("female", "male")) %>%
+    vis_both_left_1 <- gss_tbl |>
+      specify(age ~ sex) |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "t", order = c("female", "male")) |>
       visualize(method = "both") +
       shade_p_value(direction = "left", obs_stat = obs_t)
   )
@@ -214,11 +214,11 @@ test_that("visualize basic tests", {
   )
 
   expect_warning(
-    vis_theor_left_1 <- gss_tbl %>%
-      specify(age ~ sex) %>%
-      hypothesize(null = "independence") %>%
-      # generate(reps = 100, type = "permute") %>%
-      calculate(stat = "t", order = c("female", "male")) %>%
+    vis_theor_left_1 <- gss_tbl |>
+      specify(age ~ sex) |>
+      hypothesize(null = "independence") |>
+      # generate(reps = 100, type = "permute") |>
+      calculate(stat = "t", order = c("female", "male")) |>
       visualize(method = "theoretical") +
       shade_p_value(direction = "left", obs_stat = obs_t)
   )
@@ -228,11 +228,11 @@ test_that("visualize basic tests", {
   )
 
   expect_warning(
-    vis_both_none_1 <- gss_tbl %>%
-      specify(hours ~ NULL) %>%
-      hypothesize(null = "point", mu = 1) %>%
-      generate(reps = 100) %>%
-      calculate(stat = "t") %>%
+    vis_both_none_1 <- gss_tbl |>
+      specify(hours ~ NULL) |>
+      hypothesize(null = "point", mu = 1) |>
+      generate(reps = 100) |>
+      calculate(stat = "t") |>
       visualize(method = "both")
   )
   expect_doppelganger(
@@ -241,9 +241,9 @@ test_that("visualize basic tests", {
   )
 
   expect_warning(
-    vis_theor_none_2 <- gss_tbl %>%
-      specify(age ~ college) %>%
-      hypothesize(null = "independence") %>%
+    vis_theor_none_2 <- gss_tbl |>
+      specify(age ~ college) |>
+      hypothesize(null = "independence") |>
       visualize(method = "theoretical")
   )
   expect_doppelganger(
@@ -252,9 +252,9 @@ test_that("visualize basic tests", {
   )
 
   expect_warning(
-    vis_theor_none_3 <- gss_tbl %>%
-      specify(age ~ partyid) %>%
-      hypothesize(null = "independence") %>%
+    vis_theor_none_3 <- gss_tbl |>
+      specify(age ~ partyid) |>
+      hypothesize(null = "independence") |>
       visualize(method = "theoretical")
   )
   expect_doppelganger(
@@ -263,11 +263,11 @@ test_that("visualize basic tests", {
   )
 
   expect_warning(
-    vis_both_right_1 <- gss_tbl %>%
-      specify(age ~ partyid) %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "F") %>%
+    vis_both_right_1 <- gss_tbl |>
+      specify(age ~ partyid) |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "F") |>
       visualize(method = "both") +
       shade_p_value(obs_stat = obs_F, direction = "right")
   )
@@ -277,11 +277,11 @@ test_that("visualize basic tests", {
   )
 
   expect_warning(
-    vis_both_left_2 <- gss_tbl %>%
-      specify(sex ~ college, success = "female") %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "z", order = c("no degree", "degree")) %>%
+    vis_both_left_2 <- gss_tbl |>
+      specify(sex ~ college, success = "female") |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "z", order = c("no degree", "degree")) |>
       visualize(method = "both") +
       shade_p_value(direction = "left", obs_stat = obs_z)
   )
@@ -291,11 +291,11 @@ test_that("visualize basic tests", {
   )
 
   expect_warning(
-    vis_both_right_2 <- gss_tbl %>%
-      specify(sex ~ partyid, success = "female") %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "Chisq") %>%
+    vis_both_right_2 <- gss_tbl |>
+      specify(sex ~ partyid, success = "female") |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "Chisq") |>
       visualize(method = "both") +
       shade_p_value(obs_stat = obs_F, direction = "right")
   )
@@ -305,10 +305,10 @@ test_that("visualize basic tests", {
   )
 
   expect_warning(
-    vis_theor_right_1 <- gss_tbl %>%
-      specify(sex ~ partyid, success = "female") %>%
-      hypothesize(null = "independence") %>%
-      # alculate(stat = "Chisq") %>%
+    vis_theor_right_1 <- gss_tbl |>
+      specify(sex ~ partyid, success = "female") |>
+      hypothesize(null = "independence") |>
+      # alculate(stat = "Chisq") |>
       visualize(method = "theoretical") +
       shade_p_value(obs_stat = obs_F, direction = "right")
   )
@@ -318,14 +318,14 @@ test_that("visualize basic tests", {
   )
 
   expect_warning(
-    vis_both_none_2 <- gss_tbl %>%
-      specify(partyid ~ NULL) %>%
+    vis_both_none_2 <- gss_tbl |>
+      specify(partyid ~ NULL) |>
       hypothesize(
         null = "point",
         p = c("dem" = 0.4, "rep" = 0.4, "ind" = 0.2)
-      ) %>%
-      generate(reps = 100, type = "draw") %>%
-      calculate(stat = "Chisq") %>%
+      ) |>
+      generate(reps = 100, type = "draw") |>
+      calculate(stat = "Chisq") |>
       visualize(method = "both")
   )
   expect_doppelganger(
@@ -336,26 +336,26 @@ test_that("visualize basic tests", {
   # traditional instead of theoretical
   expect_snapshot(
     error = TRUE,
-    gss_tbl %>%
-      specify(partyid ~ NULL) %>%
+    gss_tbl |>
+      specify(partyid ~ NULL) |>
       hypothesize(
         null = "point",
         p = c("dem" = 0.4, "rep" = 0.4, "ind" = 0.2)
-      ) %>%
-      #       generate(reps = 100, type = "draw") %>%
-      #       calculate(stat = "Chisq") %>%
+      ) |>
+      #       generate(reps = 100, type = "draw") |>
+      #       calculate(stat = "Chisq") |>
       visualize(method = "traditional")
   )
 
   expect_warning(
-    vis_theor_none_4 <- gss_tbl %>%
-      specify(partyid ~ NULL) %>%
+    vis_theor_none_4 <- gss_tbl |>
+      specify(partyid ~ NULL) |>
       hypothesize(
         null = "point",
         p = c("dem" = 0.4, "rep" = 0.4, "ind" = 0.2)
-      ) %>%
-      #         generate(reps = 100, type = "draw") %>%
-      #         calculate(stat = "Chisq") %>%
+      ) |>
+      #         generate(reps = 100, type = "draw") |>
+      #         calculate(stat = "Chisq") |>
       visualize(method = "theoretical")
   )
   expect_doppelganger(
@@ -365,11 +365,11 @@ test_that("visualize basic tests", {
 
   expect_doppelganger(
     "vis-sim-both-2",
-    gss_tbl %>%
-      specify(hours ~ sex) %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 10, type = "permute") %>%
-      calculate(stat = "diff in means", order = c("female", "male")) %>%
+    gss_tbl |>
+      specify(hours ~ sex) |>
+      hypothesize(null = "independence") |>
+      generate(reps = 10, type = "permute") |>
+      calculate(stat = "diff in means", order = c("female", "male")) |>
       visualize() +
       shade_p_value(direction = "both", obs_stat = obs_diff_mean)
   )
@@ -377,21 +377,21 @@ test_that("visualize basic tests", {
   # Produces warning first for not checking conditions but would also error
   expect_snapshot(
     error = TRUE,
-    gss_tbl %>%
-      specify(hours ~ sex) %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "diff in means", order = c("female", "male")) %>%
+    gss_tbl |>
+      specify(hours ~ sex) |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "diff in means", order = c("female", "male")) |>
       visualize(method = "both") +
       shade_p_value(direction = "both", obs_stat = obs_diff_mean)
   )
 
   expect_snapshot(
-    res_vis_theor_both_1 <- gss_tbl %>%
-      specify(hours ~ sex) %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "diff in means", order = c("female", "male")) %>%
+    res_vis_theor_both_1 <- gss_tbl |>
+      specify(hours ~ sex) |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "diff in means", order = c("female", "male")) |>
       visualize(method = "theoretical") +
       shade_p_value(direction = "both", obs_stat = obs_diff_mean)
   )
@@ -399,11 +399,11 @@ test_that("visualize basic tests", {
   expect_doppelganger("vis-theor-both-1", res_vis_theor_both_1)
 
   expect_warning(
-    vis_theor_both_2 <- gss_tbl %>%
-      specify(sex ~ NULL, success = "female") %>%
-      hypothesize(null = "point", p = 0.8) %>%
-      #         generate(reps = 100, type = "draw") %>%
-      #         calculate(stat = "z") %>%
+    vis_theor_both_2 <- gss_tbl |>
+      specify(sex ~ NULL, success = "female") |>
+      hypothesize(null = "point", p = 0.8) |>
+      #         generate(reps = 100, type = "draw") |>
+      #         calculate(stat = "z") |>
       visualize(method = "theoretical") +
       shade_p_value(obs_stat = 2, direction = "both")
   )
@@ -414,11 +414,11 @@ test_that("visualize basic tests", {
 
   expect_doppelganger(
     "vis-sim-left-1",
-    gss_tbl %>%
-      specify(hours ~ NULL) %>%
-      hypothesize(null = "point", mu = 1.3) %>%
-      generate(reps = 100, type = "bootstrap") %>%
-      calculate(stat = "mean") %>%
+    gss_tbl |>
+      specify(hours ~ NULL) |>
+      hypothesize(null = "point", mu = 1.3) |>
+      generate(reps = 100, type = "bootstrap") |>
+      calculate(stat = "mean") |>
       visualize() +
       shade_p_value(direction = "left", obs_stat = mean(gss_tbl$hours))
   )
@@ -433,27 +433,27 @@ test_that("mirror_obs_stat works", {
 test_that("obs_stat as a data.frame works", {
   skip_if(getRversion() < "4.1.0")
 
-  mean_petal_width <- gss_tbl %>%
-    specify(hours ~ NULL) %>%
+  mean_petal_width <- gss_tbl |>
+    specify(hours ~ NULL) |>
     calculate(stat = "mean")
   expect_doppelganger(
     "df-obs_stat-1",
-    gss_tbl %>%
-      specify(hours ~ NULL) %>%
-      hypothesize(null = "point", mu = 4) %>%
-      generate(reps = 100, type = "bootstrap") %>%
-      calculate(stat = "mean") %>%
+    gss_tbl |>
+      specify(hours ~ NULL) |>
+      hypothesize(null = "point", mu = 4) |>
+      generate(reps = 100, type = "bootstrap") |>
+      calculate(stat = "mean") |>
       visualize() +
       shade_p_value(obs_stat = mean_petal_width, direction = "both")
   )
 
   mean_df_test <- data.frame(x = c(4.1, 1), y = c(1, 2))
   expect_warning(
-    df_obs_stat_2 <- gss_tbl %>%
-      specify(hours ~ NULL) %>%
-      hypothesize(null = "point", mu = 4) %>%
-      generate(reps = 100, type = "bootstrap") %>%
-      calculate(stat = "mean") %>%
+    df_obs_stat_2 <- gss_tbl |>
+      specify(hours ~ NULL) |>
+      hypothesize(null = "point", mu = 4) |>
+      generate(reps = 100, type = "bootstrap") |>
+      calculate(stat = "mean") |>
       visualize() +
       shade_p_value(obs_stat = mean_df_test, direction = "both")
   )
@@ -468,20 +468,20 @@ test_that('method = "both" behaves nicely', {
 
   expect_snapshot(
     error = TRUE,
-    gss_tbl %>%
-      specify(hours ~ NULL) %>%
-      hypothesize(null = "point", mu = 4) %>%
-      generate(reps = 100, type = "bootstrap") %>%
-      #       calculate(stat = "mean") %>%
+    gss_tbl |>
+      specify(hours ~ NULL) |>
+      hypothesize(null = "point", mu = 4) |>
+      generate(reps = 100, type = "bootstrap") |>
+      #       calculate(stat = "mean") |>
       visualize(method = "both")
   )
 
   expect_snapshot(
-    res_method_both <- gss_tbl %>%
-      specify(hours ~ college) %>%
-      hypothesize(null = "point", mu = 4) %>%
-      generate(reps = 10, type = "bootstrap") %>%
-      calculate(stat = "t", order = c("no degree", "degree")) %>%
+    res_method_both <- gss_tbl |>
+      specify(hours ~ college) |>
+      hypothesize(null = "point", mu = 4) |>
+      generate(reps = 10, type = "bootstrap") |>
+      calculate(stat = "t", order = c("no degree", "degree")) |>
       visualize(method = "both")
   )
 
@@ -492,41 +492,41 @@ test_that("Traditional right-tailed tests have warning if not right-tailed", {
   skip_if(getRversion() < "4.1.0")
 
   expect_snapshot(
-    res_ <- gss_tbl %>%
-      specify(sex ~ partyid, success = "female") %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "Chisq") %>%
+    res_ <- gss_tbl |>
+      specify(sex ~ partyid, success = "female") |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "Chisq") |>
       visualize(method = "both") +
       shade_p_value(obs_stat = 2, direction = "left")
   )
 
   expect_snapshot(
-    res_ <- gss_tbl %>%
-      specify(age ~ partyid) %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = 100, type = "permute") %>%
-      calculate(stat = "F") %>%
+    res_ <- gss_tbl |>
+      specify(age ~ partyid) |>
+      hypothesize(null = "independence") |>
+      generate(reps = 100, type = "permute") |>
+      calculate(stat = "F") |>
       visualize(method = "both") +
       shade_p_value(obs_stat = 2, direction = "two_sided")
   )
 
   expect_snapshot(
-    res_ <- gss_tbl %>%
-      specify(sex ~ partyid, success = "female") %>%
-      hypothesize(null = "independence") %>%
-      #       generate(reps = 100, type = "permute") %>%
-      calculate(stat = "Chisq") %>%
+    res_ <- gss_tbl |>
+      specify(sex ~ partyid, success = "female") |>
+      hypothesize(null = "independence") |>
+      #       generate(reps = 100, type = "permute") |>
+      calculate(stat = "Chisq") |>
       visualize(method = "theoretical") +
       shade_p_value(obs_stat = 2, direction = "left")
   )
 
   expect_snapshot(
-    res_ <- gss_tbl %>%
-      specify(age ~ partyid) %>%
-      hypothesize(null = "independence") %>%
-      #       generate(reps = 100, type = "permute") %>%
-      calculate(stat = "F") %>%
+    res_ <- gss_tbl |>
+      specify(age ~ partyid) |>
+      hypothesize(null = "independence") |>
+      #       generate(reps = 100, type = "permute") |>
+      calculate(stat = "F") |>
       visualize(method = "theoretical") +
       shade_p_value(obs_stat = 2, direction = "two_sided")
   )
@@ -535,31 +535,31 @@ test_that("Traditional right-tailed tests have warning if not right-tailed", {
 test_that("confidence interval plots are working", {
   skip_if(getRversion() < "4.1.0")
 
-  gss_tbl_boot <- gss_tbl %>%
-    specify(sex ~ college, success = "female") %>%
-    generate(reps = 100) %>%
+  gss_tbl_boot <- gss_tbl |>
+    specify(sex ~ college, success = "female") |>
+    generate(reps = 100) |>
     calculate(stat = "diff in props", order = c("no degree", "degree"))
 
   df_error <- tibble::tibble(col1 = rnorm(5), col2 = rnorm(5))
   vec_error <- 1:10
 
-  perc_ci <- gss_tbl_boot %>% get_ci()
+  perc_ci <- gss_tbl_boot |> get_ci()
 
   expect_snapshot(
     error = TRUE,
-    res_ <- gss_tbl_boot %>%
+    res_ <- gss_tbl_boot |>
       visualize() +
       shade_confidence_interval(endpoints = df_error)
   )
 
   expect_snapshot(
-    res_ <- gss_tbl_boot %>%
+    res_ <- gss_tbl_boot |>
       visualize() +
       shade_confidence_interval(endpoints = vec_error)
   )
 
   expect_snapshot(
-    res_ci_vis <- gss_tbl_boot %>%
+    res_ci_vis <- gss_tbl_boot |>
       visualize() +
       shade_confidence_interval(endpoints = perc_ci, direction = "between")
   )
@@ -571,19 +571,19 @@ test_that("title adapts to not hypothesis testing workflow", {
   skip_if(getRversion() < "4.1.0")
 
   set.seed(100)
-  gss_tbl_boot_tbl <- gss_tbl %>%
-    specify(response = hours) %>%
+  gss_tbl_boot_tbl <- gss_tbl |>
+    specify(response = hours) |>
     generate(reps = 100, type = "bootstrap")
 
   expect_doppelganger(
     "vis-no-hypothesize-sim",
-    gss_tbl_boot_tbl %>%
-      calculate(stat = "mean") %>%
+    gss_tbl_boot_tbl |>
+      calculate(stat = "mean") |>
       visualize()
   )
   expect_snapshot(
-    res_vis_no_hypothesize_both <- gss_tbl_boot_tbl %>%
-      calculate(stat = "t") %>%
+    res_vis_no_hypothesize_both <- gss_tbl_boot_tbl |>
+      calculate(stat = "t") |>
       visualize(method = "both")
   )
 
@@ -607,9 +607,9 @@ test_that("warn_right_tail_test works", {
 test_that("visualize warns about removing `NaN`", {
   skip_if(getRversion() < "4.1.0")
 
-  dist <- gss_tbl_boot_tbl <- gss_tbl %>%
-    specify(response = hours) %>%
-    generate(reps = 10, type = "bootstrap") %>%
+  dist <- gss_tbl_boot_tbl <- gss_tbl |>
+    specify(response = hours) |>
+    generate(reps = 10, type = "bootstrap") |>
     calculate("mean")
 
   # A warning should be raised if there is NaN in a visualized dist
@@ -630,14 +630,14 @@ test_that("visualize can handle multiple explanatory variables", {
   skip_if_not(identical(Sys.info()[["sysname"]], "Darwin"))
 
   # generate example objects
-  null_fits <- gss %>%
-    specify(hours ~ age + college) %>%
-    hypothesize(null = "independence") %>%
-    generate(reps = 20, type = "permute") %>%
+  null_fits <- gss |>
+    specify(hours ~ age + college) |>
+    hypothesize(null = "independence") |>
+    generate(reps = 20, type = "permute") |>
     fit()
 
-  obs_fit <- gss %>%
-    specify(hours ~ age + college) %>%
+  obs_fit <- gss |>
+    specify(hours ~ age + college) |>
     fit()
 
   conf_ints <-
@@ -650,28 +650,28 @@ test_that("visualize can handle multiple explanatory variables", {
   # visualize with multiple panes
   expect_doppelganger(
     "viz-fit-bare",
-    null_fits %>%
+    null_fits |>
       visualize()
   )
 
   # with p values shaded -- test each possible direction
   expect_doppelganger(
     "viz-fit-p-val-both",
-    null_fits %>%
+    null_fits |>
       visualize() +
       shade_p_value(obs_stat = obs_fit, direction = "both")
   )
 
   expect_doppelganger(
     "viz-fit-p-val-left",
-    null_fits %>%
+    null_fits |>
       visualize() +
       shade_p_value(obs_stat = obs_fit, direction = "left")
   )
 
   expect_snapshot(
     res_viz_fit_p_val_right <-
-      null_fits %>%
+      null_fits |>
       visualize() +
       shade_p_value(obs_stat = obs_fit, direction = "right")
   )
@@ -684,7 +684,7 @@ test_that("visualize can handle multiple explanatory variables", {
   # with confidence intervals shaded
   expect_doppelganger(
     "viz-fit-conf-int",
-    null_fits %>%
+    null_fits |>
       visualize() +
       shade_confidence_interval(endpoints = conf_ints)
   )
@@ -692,10 +692,10 @@ test_that("visualize can handle multiple explanatory variables", {
   # with no hypothesize()
   expect_doppelganger(
     "viz-fit-no-h0",
-    gss %>%
-      specify(hours ~ age + college) %>%
-      generate(reps = 20, type = "bootstrap") %>%
-      fit() %>%
+    gss |>
+      specify(hours ~ age + college) |>
+      generate(reps = 20, type = "bootstrap") |>
+      fit() |>
       visualize()
   )
 
@@ -706,13 +706,13 @@ test_that("visualize can handle `assume()` output", {
   skip_if(getRversion() < "4.1.0")
 
   # F ----------------------------------------------------------------------
-  obs_stat <- gss %>%
-    specify(age ~ partyid) %>%
+  obs_stat <- gss |>
+    specify(age ~ partyid) |>
     calculate(stat = "F")
 
-  null_dist <- gss %>%
-    specify(age ~ partyid) %>%
-    hypothesize(null = "independence") %>%
+  null_dist <- gss |>
+    specify(age ~ partyid) |>
+    hypothesize(null = "independence") |>
     assume(distribution = "F")
 
   expect_doppelganger(
@@ -726,18 +726,18 @@ test_that("visualize can handle `assume()` output", {
   )
 
   # t (mean) -----------------------------------------------------------------
-  obs_stat <- gss %>%
-    specify(response = hours) %>%
-    hypothesize(null = "point", mu = 40) %>%
+  obs_stat <- gss |>
+    specify(response = hours) |>
+    hypothesize(null = "point", mu = 40) |>
     calculate(stat = "t")
 
-  null_dist <- gss %>%
-    specify(response = hours) %>%
-    hypothesize(null = "point", mu = 40) %>%
+  null_dist <- gss |>
+    specify(response = hours) |>
+    hypothesize(null = "point", mu = 40) |>
     assume("t")
 
-  obs_mean <- gss %>%
-    specify(response = hours) %>%
+  obs_mean <- gss |>
+    specify(response = hours) |>
     calculate(stat = "mean")
 
   ci <-
@@ -791,17 +791,17 @@ test_that("visualize can handle `assume()` output", {
   )
 
   # t (diff in means) -----------------------------------------------------------------
-  obs_stat <- gss %>%
-    specify(hours ~ college) %>%
+  obs_stat <- gss |>
+    specify(hours ~ college) |>
     calculate(stat = "t", order = c("degree", "no degree"))
 
-  null_dist <- gss %>%
-    specify(hours ~ college) %>%
-    hypothesize(null = "independence") %>%
+  null_dist <- gss |>
+    specify(hours ~ college) |>
+    hypothesize(null = "independence") |>
     assume("t")
 
-  obs_diff <- gss %>%
-    specify(hours ~ college) %>%
+  obs_diff <- gss |>
+    specify(hours ~ college) |>
     calculate(stat = "diff in means", order = c("degree", "no degree"))
 
   ci <-
@@ -837,18 +837,18 @@ test_that("visualize can handle `assume()` output", {
   )
 
   # z (prop) -----------------------------------------------------------------
-  obs_stat <- gss %>%
-    specify(response = sex, success = "female") %>%
-    hypothesize(null = "point", p = .5) %>%
+  obs_stat <- gss |>
+    specify(response = sex, success = "female") |>
+    hypothesize(null = "point", p = .5) |>
     calculate(stat = "z")
 
-  null_dist <- gss %>%
-    specify(response = sex, success = "female") %>%
-    hypothesize(null = "point", p = .5) %>%
+  null_dist <- gss |>
+    specify(response = sex, success = "female") |>
+    hypothesize(null = "point", p = .5) |>
     assume("z")
 
-  obs_prop <- gss %>%
-    specify(response = sex, success = "female") %>%
+  obs_prop <- gss |>
+    specify(response = sex, success = "female") |>
     calculate(stat = "prop")
 
   ci <-
@@ -884,17 +884,17 @@ test_that("visualize can handle `assume()` output", {
   )
 
   # z (diff in props) --------------------------------------------------------
-  obs_stat <- gss %>%
-    specify(college ~ sex, success = "no degree") %>%
+  obs_stat <- gss |>
+    specify(college ~ sex, success = "no degree") |>
     calculate(stat = "z", order = c("female", "male"))
 
-  null_dist <- gss %>%
-    specify(college ~ sex, success = "no degree") %>%
-    hypothesize(null = "independence") %>%
+  null_dist <- gss |>
+    specify(college ~ sex, success = "no degree") |>
+    hypothesize(null = "independence") |>
     assume("z")
 
-  obs_diff <- gss %>%
-    specify(college ~ sex, success = "no degree") %>%
+  obs_diff <- gss |>
+    specify(college ~ sex, success = "no degree") |>
     calculate(stat = "diff in props", order = c("female", "male"))
 
   ci <-

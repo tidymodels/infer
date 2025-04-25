@@ -51,15 +51,15 @@ Each row is an individual survey response, containing some basic demographic inf
 The `specify()` function can be used to specify which of the variables in the dataset you're interested in. If you're only interested in, say, the `age` of the respondents, you might write:
 
 ```{r specify-example, warning = FALSE, message = FALSE}
-gss %>%
+gss |>
   specify(response = age)
 ```
 
 On the front-end, the output of `specify()` just looks like it selects off the columns in the dataframe that you've specified. Checking the class of this object, though:
 
 ```{r specify-one, warning = FALSE, message = FALSE}
-gss %>%
-  specify(response = age) %>%
+gss |>
+  specify(response = age) |>
   class()
 ```
 
@@ -69,11 +69,11 @@ If you're interested in two variables--`age` and `partyid`, for example--you can
 
 ```{r specify-two, warning = FALSE, message = FALSE}
 # as a formula
-gss %>%
+gss |>
   specify(age ~ partyid)
 
 # with the named arguments
-gss %>%
+gss |>
   specify(response = age, explanatory = partyid)
 ```
 
@@ -81,7 +81,7 @@ If you're doing inference on one proportion or a difference in proportions, you 
 
 ```{r specify-success, warning = FALSE, message = FALSE}
 # specifying for inference on proportions
-gss %>%
+gss |>
   specify(response = college, success = "degree")
 ```
 
@@ -90,16 +90,16 @@ gss %>%
 The next step in the infer pipeline is often to declare a null hypothesis using `hypothesize()`. The first step is to supply one of "independence" or "point" to the `null` argument. If your null hypothesis assumes independence between two variables, then this is all you need to supply to `hypothesize()`:
 
 ```{r hypothesize-independence, warning = FALSE, message = FALSE}
-gss %>%
-  specify(college ~ partyid, success = "degree") %>%
+gss |>
+  specify(college ~ partyid, success = "degree") |>
   hypothesize(null = "independence")
 ```
 
 If you're doing inference on a point estimate, you will also need to provide one of `p` (the true proportion of successes, between 0 and 1), `mu` (the true mean), `med` (the true median), or `sigma` (the true standard deviation). For instance, if the null hypothesis is that the mean number of hours worked per week in our population is 40, we would write:
 
 ```{r hypothesize-40-hr-week, warning = FALSE, message = FALSE}
-gss %>%
-  specify(response = hours) %>%
+gss |>
+  specify(response = hours) |>
   hypothesize(null = "point", mu = 40)
 ```
 
@@ -118,9 +118,9 @@ Continuing on with our example above, about the average number of hours worked a
 ```{r generate-point, warning = FALSE, message = FALSE}
 set.seed(1)
 
-gss %>%
-  specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
+gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
   generate(reps = 1000, type = "bootstrap")
 ```
 
@@ -131,9 +131,9 @@ Note that, before `generate()`ing, we've set the seed for random number generati
 To generate a null distribution for the independence of two variables, we could also randomly reshuffle the pairings of explanatory and response variables to break any existing association. For instance, to generate 1000 replicates that can be used to create a null distribution under the assumption that political party affiliation is not affected by age:
 
 ```{r generate-permute, warning = FALSE, message = FALSE}
-gss %>%
-  specify(partyid ~ age) %>%
-  hypothesize(null = "independence") %>%
+gss |>
+  specify(partyid ~ age) |>
+  hypothesize(null = "independence") |>
   generate(reps = 1000, type = "permute")
 ```
 
@@ -142,20 +142,20 @@ gss %>%
 `calculate()` calculates summary statistics from the output of infer core functions. The function takes in a `stat` argument, which is currently one of "mean", "median", "sum", "sd", "prop", "count", "diff in means", "diff in medians", "diff in props", "Chisq", "F", "t", "z", "slope", or "correlation". For example, continuing our example above to calculate the null distribution of mean hours worked per week:
 
 ```{r calculate-point, warning = FALSE, message = FALSE}
-gss %>%
-  specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
-  generate(reps = 1000, type = "bootstrap") %>%
+gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
+  generate(reps = 1000, type = "bootstrap") |>
   calculate(stat = "mean")
 ```
 
 The output of `calculate()` here shows us the sample statistic (in this case, the mean) for each of our 1000 replicates. If you're carrying out inference on differences in means, medians, or proportions, or t and z statistics, you will need to supply an `order` argument, giving the order in which the explanatory variables should be subtracted. For instance, to find the difference in mean age of those that have a college degree and those that don't, we might write:
 
 ```{r specify-diff-in-means, warning = FALSE, message = FALSE}
-gss %>%
-  specify(age ~ college) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+gss |>
+  specify(age ~ college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
   calculate("diff in means", order = c("degree", "no degree"))
 ```
 
@@ -167,15 +167,15 @@ To illustrate, we'll go back to the example of determining whether the mean numb
 
 ```{r utilities-examples}
 # find the point estimate
-obs_mean <- gss %>%
-  specify(response = hours) %>%
+obs_mean <- gss |>
+  specify(response = hours) |>
   calculate(stat = "mean")
 
 # generate a null distribution
-null_dist <- gss %>%
-  specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
-  generate(reps = 1000, type = "bootstrap") %>%
+null_dist <- gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
+  generate(reps = 1000, type = "bootstrap") |>
   calculate(stat = "mean")
 ```
 
@@ -184,14 +184,14 @@ Our point estimate `r obs_mean` seems *pretty* close to 40, but a little bit dif
 We could initially just visualize the null distribution.
 
 ```{r visualize, warning = FALSE, message = FALSE}
-null_dist %>%
+null_dist |>
   visualize()
 ```
 
 Where does our sample's observed statistic lie on this distribution? We can use the `obs_stat` argument to specify this.
 
 ```{r visualize2, warning = FALSE, message = FALSE}
-null_dist %>%
+null_dist |>
   visualize() +
   shade_p_value(obs_stat = obs_mean, direction = "two-sided")
 ```
@@ -200,7 +200,7 @@ Notice that infer has also shaded the regions of the null distribution that are 
 
 ```{r get_p_value, warning = FALSE, message = FALSE}
 # get a two-tailed p-value
-p_value <- null_dist %>%
+p_value <- null_dist |>
   get_p_value(obs_stat = obs_mean, direction = "two-sided")
 
 p_value
@@ -213,13 +213,13 @@ To get a confidence interval around our estimate, we can write:
 ```{r get_conf, message = FALSE, warning = FALSE}
 # generate a distribution like the null distribution, 
 # though exclude the null hypothesis from the pipeline
-boot_dist <- gss %>%
-  specify(response = hours) %>%
-  generate(reps = 1000, type = "bootstrap") %>%
+boot_dist <- gss |>
+  specify(response = hours) |>
+  generate(reps = 1000, type = "bootstrap") |>
   calculate(stat = "mean")
 
 # start with the bootstrap distribution
-ci <- boot_dist %>%
+ci <- boot_dist |>
   # calculate the confidence interval around the point estimate
   get_confidence_interval(
     point_estimate = obs_mean,
@@ -235,7 +235,7 @@ ci
 As you can see, 40 hours per week is not contained in this interval, which aligns with our previous conclusion that this finding is significant at the confidence level $\alpha = .05$. To see this interval represented visually, we can use the `shade_confidence_interval()` utility:
 
 ```{r visualize-ci, warning = FALSE, message = FALSE}
-boot_dist %>%
+boot_dist |>
   visualize() +
   shade_confidence_interval(endpoints = ci)
 ```
@@ -248,9 +248,9 @@ Generally, to find a null distribution using theory-based methods, use the same 
 
 ```{r, message = FALSE, warning = FALSE}
 # calculate an observed t statistic
-obs_t <- gss %>%
-  specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
+obs_t <- gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
   calculate(stat = "t")
 ```
 
@@ -258,8 +258,8 @@ Then, to define a theoretical $t$ distribution, we could write:
 
 ```{r, message = FALSE, warning = FALSE}
 # switch out calculate with assume to define a distribution
-t_dist <- gss %>%
-  specify(response = hours) %>%
+t_dist <- gss |>
+  specify(response = hours) |>
   assume(distribution = "t")
 ```
 
@@ -303,18 +303,18 @@ To accommodate randomization-based inference with multiple explanatory variables
 As an example, suppose that we want to fit `hours` worked per week using the respondent `age` and `college` completion status. We could first begin by fitting a linear model to the observed data.
 
 ```{r}
-observed_fit <- gss %>%
-  specify(hours ~ age + college) %>%
+observed_fit <- gss |>
+  specify(hours ~ age + college) |>
   fit()
 ```
 
 Now, to generate null distributions for each of these terms, we can fit 1000 models to resamples of the `gss` dataset, where the response `hours` is permuted in each. Note that this code is the same as the above except for the addition of the `hypothesize()` and `generate()` step.
 
 ```{r}
-null_fits <- gss %>%
-  specify(hours ~ age + college) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+null_fits <- gss |>
+  specify(hours ~ age + college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
   fit()
 
 null_fits

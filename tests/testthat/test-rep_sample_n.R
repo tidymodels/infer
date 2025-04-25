@@ -262,7 +262,7 @@ test_that("`rep_slice_sample` uses `weight_by`", {
   )
 
   population_wt <-
-    population %>%
+    population |>
     dplyr::mutate(wts = rep(1, n_population) / n_population)
   set.seed(1)
   res3 <- rep_slice_sample(

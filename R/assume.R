@@ -67,37 +67,37 @@
 #'
 #' # F distribution
 #' # with the `partyid` explanatory variable
-#' gss %>%
-#'   specify(age ~ partyid) %>%
+#' gss |>
+#'   specify(age ~ partyid) |>
 #'   assume(distribution = "F")
 #'
 #' # Chi-squared goodness of fit distribution
 #' # on the `finrela` variable
-#' gss %>%
-#'   specify(response = finrela) %>%
+#' gss |>
+#'   specify(response = finrela) |>
 #'   hypothesize(null = "point",
 #'               p = c("far below average" = 1/6,
 #'                     "below average" = 1/6,
 #'                     "average" = 1/6,
 #'                     "above average" = 1/6,
 #'                     "far above average" = 1/6,
-#'                     "DK" = 1/6)) %>%
+#'                     "DK" = 1/6)) |>
 #'   assume("Chisq")
 #'
 #' # Chi-squared test of independence
 #' # on the `finrela` and `sex` variables
-#' gss %>%
-#'   specify(formula = finrela ~ sex) %>%
+#' gss |>
+#'   specify(formula = finrela ~ sex) |>
 #'   assume(distribution = "Chisq")
 #'
 #' # T distribution
-#' gss %>%
-#'   specify(age ~ college) %>%
+#' gss |>
+#'   specify(age ~ college) |>
 #'   assume("t")
 #'
 #' # Z distribution
-#' gss %>%
-#'   specify(response = sex, success = "female") %>%
+#' gss |>
+#'   specify(response = sex, success = "female") |>
 #'   assume("z")
 #'
 #' \dontrun{
@@ -107,14 +107,14 @@
 #' # for example, a 1-sample t-test -------------------------------------
 #'
 #' # calculate the observed statistic
-#' obs_stat <- gss %>%
-#'   specify(response = hours) %>%
-#'   hypothesize(null = "point", mu = 40) %>%
+#' obs_stat <- gss |>
+#'   specify(response = hours) |>
+#'   hypothesize(null = "point", mu = 40) |>
 #'   calculate(stat = "t")
 #'
 #' # construct a null distribution
-#' null_dist <- gss %>%
-#'   specify(response = hours) %>%
+#' null_dist <- gss |>
+#'   specify(response = hours) |>
 #'   assume("t")
 #'
 #' # juxtapose them visually
@@ -127,14 +127,14 @@
 #' # or, an F test ------------------------------------------------------
 #'
 #' # calculate the observed statistic
-#' obs_stat <- gss %>%
-#'   specify(age ~ partyid) %>%
-#'   hypothesize(null = "independence") %>%
+#' obs_stat <- gss |>
+#'   specify(age ~ partyid) |>
+#'   hypothesize(null = "independence") |>
 #'   calculate(stat = "F")
 #'
 #' # construct a null distribution
-#' null_dist <- gss %>%
-#'   specify(age ~ partyid) %>%
+#' null_dist <- gss |>
+#'   specify(age ~ partyid) |>
 #'   assume(distribution = "F")
 #'
 #' # juxtapose them visually
@@ -361,6 +361,11 @@ determine_df <- function(x, dist, df) {
 
 # return a vector of dfs recognized by `assume`
 acceptable_dfs <- function(x) {
+  # base R pipe doesn't support operators or anonymous functions
+  # in piped expressions (#553)
+  minus_one <- function(x) {x - 1}
+  minus_two <- function(x) {x - 2}
+
   if (attr(x, "theory_type") == "Two sample t") {
     c(
       # t.test param with var.equal = FALSE
@@ -383,17 +388,17 @@ acceptable_dfs <- function(x) {
         )
       ),
       # min(n1 - 1, n2 - 1)
-      x %>%
-        dplyr::count(!!explanatory_expr(x)) %>%
-        dplyr::pull(n) %>%
-        min() %>%
-        `-`(1),
+      x |>
+        dplyr::count(!!explanatory_expr(x)) |>
+        dplyr::pull(n) |>
+        min() |>
+        minus_one(),
       # n1 + n2 - 2
-      x %>%
-        dplyr::count(!!explanatory_expr(x)) %>%
-        dplyr::pull(n) %>%
-        sum() %>%
-        `-`(2)
+      x |>
+        dplyr::count(!!explanatory_expr(x)) |>
+        dplyr::pull(n) |>
+        sum() |>
+        minus_two()
     )
   } else {
     c(

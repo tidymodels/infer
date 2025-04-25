@@ -77,8 +77,8 @@ generics::fit
 #' @examples
 #' # fit a linear model predicting number of hours worked per
 #' # week using respondent age and degree status.
-#' observed_fit <- gss %>%
-#'   specify(hours ~ age + college) %>%
+#' observed_fit <- gss |>
+#'   specify(hours ~ age + college) |>
 #'   fit()
 #'
 #' observed_fit
@@ -86,18 +86,18 @@ generics::fit
 #' # fit 100 models to resamples of the gss dataset, where the response
 #' # `hours` is permuted in each. note that this code is the same as
 #' # the above except for the addition of the `generate` step.
-#' null_fits <- gss %>%
-#'   specify(hours ~ age + college) %>%
-#'   hypothesize(null = "independence") %>%
-#'   generate(reps = 100, type = "permute") %>%
+#' null_fits <- gss |>
+#'   specify(hours ~ age + college) |>
+#'   hypothesize(null = "independence") |>
+#'   generate(reps = 100, type = "permute") |>
 #'   fit()
 #'
 #' null_fits
 #'
 #' # for logistic regression, just supply a binary response variable!
 #' # (this can also be made explicit via the `family` argument in ...)
-#' gss %>%
-#'   specify(college ~ age + hours) %>%
+#' gss |>
+#'   specify(college ~ age + hours) |>
 #'   fit()
 #'
 #' # more in-depth explanation of how to use the infer package
@@ -126,9 +126,9 @@ fit.infer <- function(object, ...) {
   formula <- get_formula(object)
 
   if (is_generated(object)) {
-    x <- object %>%
-      tidyr::nest(data = -replicate) %>%
-      dplyr::rowwise() %>%
+    x <- object |>
+      tidyr::nest(data = -replicate) |>
+      dplyr::rowwise() |>
       dplyr::mutate(
         model = list(
           do.call(
@@ -139,8 +139,8 @@ fit.infer <- function(object, ...) {
             )
           )
         )
-      ) %>%
-      dplyr::select(replicate, model) %>%
+      ) |>
+      dplyr::select(replicate, model) |>
       tidyr::unnest(model)
   } else {
     x <- do.call(
@@ -220,13 +220,12 @@ fit_linear_model <- function(object, formula, ...) {
     formula = formula,
     data = object,
     ...
-  ) %>%
-    broom::tidy() %>%
+  ) |>
+    broom::tidy() |>
     dplyr::select(
-      .,
       term,
       estimate
-    ) %>%
+    ) |>
     dplyr::mutate(
       term = dplyr::case_when(
         term == "(Intercept)" ~ "intercept",

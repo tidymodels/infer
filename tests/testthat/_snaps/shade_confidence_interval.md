@@ -33,36 +33,36 @@
 ---
 
     Code
-      res_ <- gss_viz_sim %>% shade_confidence_interval(c(-1, 1))
+      res_ <- shade_confidence_interval(gss_viz_sim, c(-1, 1))
     Condition
       Error in `shade_confidence_interval()`:
-      ! It looks like you piped the result of `visualize()` into `shade_confidence_interval()` (using `%>%`) rather than adding the result of `shade_confidence_interval()` as a layer with `+`.
-      i Consider changing `%>%` to `+`.
+      ! It looks like you piped the result of `visualize()` into `shade_confidence_interval()` rather than adding the result of `shade_confidence_interval()` as a layer with `+`.
+      i Consider changing `|>` (or `%>%`) to `+`.
 
 ---
 
     Code
-      res_ <- gss_viz_sim %>% shade_confidence_interval(endpoints = c(-1, 1))
+      res_ <- shade_confidence_interval(gss_viz_sim, endpoints = c(-1, 1))
     Condition
       Error in `shade_confidence_interval()`:
-      ! It looks like you piped the result of `visualize()` into `shade_confidence_interval()` (using `%>%`) rather than adding the result of `shade_confidence_interval()` as a layer with `+`.
-      i Consider changing `%>%` to `+`.
+      ! It looks like you piped the result of `visualize()` into `shade_confidence_interval()` rather than adding the result of `shade_confidence_interval()` as a layer with `+`.
+      i Consider changing `|>` (or `%>%`) to `+`.
 
 ---
 
     Code
-      res_ <- gss_viz_sim %>% shade_ci(c(-1, 1))
+      res_ <- shade_ci(gss_viz_sim, c(-1, 1))
     Condition
       Error in `shade_ci()`:
-      ! It looks like you piped the result of `visualize()` into `shade_ci()` (using `%>%`) rather than adding the result of `shade_ci()` as a layer with `+`.
-      i Consider changing `%>%` to `+`.
+      ! It looks like you piped the result of `visualize()` into `shade_ci()` rather than adding the result of `shade_ci()` as a layer with `+`.
+      i Consider changing `|>` (or `%>%`) to `+`.
 
 ---
 
     Code
-      res_ <- gss_viz_sim %>% shade_ci(endpoints = c(-1, 1))
+      res_ <- shade_ci(gss_viz_sim, endpoints = c(-1, 1))
     Condition
       Error in `shade_ci()`:
-      ! It looks like you piped the result of `visualize()` into `shade_ci()` (using `%>%`) rather than adding the result of `shade_ci()` as a layer with `+`.
-      i Consider changing `%>%` to `+`.
+      ! It looks like you piped the result of `visualize()` into `shade_ci()` rather than adding the result of `shade_ci()` as a layer with `+`.
+      i Consider changing `|>` (or `%>%`) to `+`.
 

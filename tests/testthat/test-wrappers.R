@@ -1,10 +1,10 @@
 test_that("t_test works", {
   # Two Sample
-  expect_snapshot(res_ <- gss_tbl %>% t_test(hours ~ sex))
+  expect_snapshot(res_ <- gss_tbl |> t_test(hours ~ sex))
 
   expect_snapshot(
     error = TRUE,
-    gss_tbl %>% t_test(response = "hours", explanatory = "sex")
+    gss_tbl |> t_test(response = "hours", explanatory = "sex")
   )
 
   new_way <- t_test(gss_tbl, hours ~ sex, order = c("male", "female"))
@@ -14,8 +14,8 @@ test_that("t_test works", {
     explanatory = sex,
     order = c("male", "female")
   )
-  old_way <- t.test(hours ~ sex, data = gss_tbl) %>%
-    broom::glance() %>%
+  old_way <- t.test(hours ~ sex, data = gss_tbl) |>
+    broom::glance() |>
     dplyr::select(
       statistic,
       t_df = parameter,
@@ -35,12 +35,12 @@ test_that("t_test works", {
   expect_equal(new_way[["statistic"]], -new_way2[["statistic"]])
 
   # One Sample
-  new_way <- gss_tbl %>%
+  new_way <- gss_tbl |>
     t_test(hours ~ NULL, mu = 0)
-  new_way_alt <- gss_tbl %>%
+  new_way_alt <- gss_tbl |>
     t_test(response = hours, mu = 0)
-  old_way <- t.test(x = gss_tbl$hours, mu = 0) %>%
-    broom::glance() %>%
+  old_way <- t.test(x = gss_tbl$hours, mu = 0) |>
+    broom::glance() |>
     dplyr::select(
       statistic,
       t_df = parameter,
@@ -58,15 +58,15 @@ test_that("t_test works", {
 test_that("chisq_test works", {
   # maleependence
   expect_silent(
-    gss_tbl %>%
+    gss_tbl |>
       chisq_test(college ~ partyid)
   )
-  new_way <- gss_tbl %>%
+  new_way <- gss_tbl |>
     chisq_test(college ~ partyid)
-  new_way_alt <- gss_tbl %>%
+  new_way_alt <- gss_tbl |>
     chisq_test(response = college, explanatory = partyid)
-  old_way <- chisq.test(x = table(gss_tbl$partyid, gss_tbl$college)) %>%
-    broom::glance() %>%
+  old_way <- chisq.test(x = table(gss_tbl$partyid, gss_tbl$college)) |>
+    broom::glance() |>
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
 
   expect_equal(new_way, new_way_alt, tolerance = eps)
@@ -74,15 +74,15 @@ test_that("chisq_test works", {
 
   # Goodness of Fit
   expect_silent(
-    gss_tbl %>%
+    gss_tbl |>
       chisq_test(response = partyid, p = c(.3, .4, .3))
   )
-  new_way <- gss_tbl %>%
+  new_way <- gss_tbl |>
     chisq_test(partyid ~ NULL, p = c(.3, .4, .3))
-  new_way_alt <- gss_tbl %>%
+  new_way_alt <- gss_tbl |>
     chisq_test(response = partyid, p = c(.3, .4, .3))
-  old_way <- chisq.test(x = table(gss_tbl$partyid), p = c(.3, .4, .3)) %>%
-    broom::glance() %>%
+  old_way <- chisq.test(x = table(gss_tbl$partyid), p = c(.3, .4, .3)) |>
+    broom::glance() |>
     dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
 
   expect_equal(new_way, new_way_alt, tolerance = 1e-5)
@@ -104,15 +104,15 @@ test_that("chisq_test works", {
 test_that("_stat functions work", {
   # Test of maleependence
   expect_snapshot(
-    res_ <- gss_tbl %>% chisq_stat(college ~ partyid)
+    res_ <- gss_tbl |> chisq_stat(college ~ partyid)
   )
 
-  another_way <- gss_tbl %>%
-    chisq_test(college ~ partyid) %>%
+  another_way <- gss_tbl |>
+    chisq_test(college ~ partyid) |>
     dplyr::select(statistic)
 
   expect_snapshot(
-    obs_stat_way <- gss_tbl %>% chisq_stat(college ~ partyid)
+    obs_stat_way <- gss_tbl |> chisq_stat(college ~ partyid)
   )
   one_more <- chisq.test(
     table(gss_tbl$partyid, gss_tbl$college)
@@ -122,16 +122,16 @@ test_that("_stat functions work", {
   expect_equal(one_more, obs_stat_way, ignore_attr = TRUE)
 
   # Goodness of Fit
-  new_way <- gss_tbl %>%
-    chisq_test(partyid ~ NULL) %>%
+  new_way <- gss_tbl |>
+    chisq_test(partyid ~ NULL) |>
     dplyr::select(statistic)
 
   expect_snapshot(
-    obs_stat_way <- gss_tbl %>%
+    obs_stat_way <- gss_tbl |>
       chisq_stat(partyid ~ NULL)
   )
   expect_snapshot(
-    obs_stat_way_alt <- gss_tbl %>%
+    obs_stat_way_alt <- gss_tbl |>
       chisq_stat(response = partyid)
   )
 
@@ -139,33 +139,33 @@ test_that("_stat functions work", {
   expect_equal(dplyr::pull(new_way), obs_stat_way_alt, ignore_attr = TRUE)
 
   # robust to the named vector
-  unordered_p <- gss_tbl %>%
+  unordered_p <- gss_tbl |>
     chisq_test(response = partyid, p = c(.2, .3, .5))
-  ordered_p <- gss_tbl %>%
+  ordered_p <- gss_tbl |>
     chisq_test(response = partyid, p = c(ind = .2, rep = .3, dem = .5))
 
   expect_equal(unordered_p, ordered_p, ignore_attr = TRUE)
 
   # Two sample t
   expect_snapshot(
-    res_ <- gss_tbl %>%
+    res_ <- gss_tbl |>
       t_stat(
         hours ~ sex,
         order = c("male", "female")
       )
   )
-  another_way <- gss_tbl %>%
-    t_test(hours ~ sex, order = c("male", "female")) %>%
-    dplyr::select(statistic) %>%
+  another_way <- gss_tbl |>
+    t_test(hours ~ sex, order = c("male", "female")) |>
+    dplyr::select(statistic) |>
     pull()
 
   expect_snapshot(
-    obs_stat_way <- gss_tbl %>%
+    obs_stat_way <- gss_tbl |>
       t_stat(hours ~ sex, order = c("male", "female"))
   )
 
   expect_snapshot(
-    obs_stat_way_alt <- gss_tbl %>%
+    obs_stat_way_alt <- gss_tbl |>
       t_stat(response = hours, explanatory = sex, order = c("male", "female"))
   )
 
@@ -174,20 +174,20 @@ test_that("_stat functions work", {
 
   # One sample t
   expect_snapshot(
-    res_ <- gss_tbl %>% t_stat(hours ~ NULL)
+    res_ <- gss_tbl |> t_stat(hours ~ NULL)
   )
 
-  another_way <- gss_tbl %>%
-    t_test(hours ~ NULL) %>%
-    dplyr::select(statistic) %>%
+  another_way <- gss_tbl |>
+    t_test(hours ~ NULL) |>
+    dplyr::select(statistic) |>
     pull()
 
   expect_snapshot(
-    obs_stat_way <- gss_tbl %>%
+    obs_stat_way <- gss_tbl |>
       t_stat(hours ~ NULL)
   )
   expect_snapshot(
-    obs_stat_way_alt <- gss_tbl %>%
+    obs_stat_way_alt <- gss_tbl |>
       t_stat(response = hours)
   )
 
@@ -208,7 +208,7 @@ test_that("_stat functions work", {
 test_that("conf_int argument works", {
   expect_equal(
     names(
-      gss_tbl %>%
+      gss_tbl |>
         t_test(hours ~ sex, order = c("male", "female"), conf_int = FALSE)
     ),
     c("statistic", "t_df", "p_value", "alternative", "estimate"),
@@ -216,7 +216,7 @@ test_that("conf_int argument works", {
   )
   expect_equal(
     names(
-      gss_tbl %>%
+      gss_tbl |>
         t_test(
           hours ~ sex,
           order = c("male", "female"),
@@ -235,7 +235,7 @@ test_that("conf_int argument works", {
     tolerance = 1e-5
   )
 
-  ci_test <- gss_tbl %>%
+  ci_test <- gss_tbl |>
     t_test(
       hours ~ sex,
       order = c("male", "female"),
@@ -252,7 +252,7 @@ test_that("conf_int argument works", {
 
   expect_snapshot(
     error = TRUE,
-    res_ <- gss_tbl %>%
+    res_ <- gss_tbl |>
       t_test(
         hours ~ sex,
         order = c("female", "male"),
@@ -263,15 +263,15 @@ test_that("conf_int argument works", {
 
   # Check that var.equal produces different results
   # Thanks for fmaleing this @EllaKaye!
-  gss_tbl_small <- gss_tbl %>% dplyr::slice(1:6, 90:100)
+  gss_tbl_small <- gss_tbl |> dplyr::slice(1:6, 90:100)
 
   expect_snapshot(
-    no_var_equal <- gss_tbl_small %>%
+    no_var_equal <- gss_tbl_small |>
       t_stat(hours ~ sex, order = c("female", "male"))
   )
 
   expect_snapshot(
-    var_equal <- gss_tbl_small %>%
+    var_equal <- gss_tbl_small |>
       t_stat(
         hours ~ sex,
         order = c("female", "male"),
@@ -281,12 +281,12 @@ test_that("conf_int argument works", {
 
   expect_false(no_var_equal == var_equal)
 
-  shortcut_no_var_equal <- gss_tbl_small %>%
-    specify(hours ~ sex) %>%
+  shortcut_no_var_equal <- gss_tbl_small |>
+    specify(hours ~ sex) |>
     calculate(stat = "t", order = c("female", "male"))
 
-  shortcut_var_equal <- gss_tbl_small %>%
-    specify(hours ~ sex) %>%
+  shortcut_var_equal <- gss_tbl_small |>
+    specify(hours ~ sex) |>
     calculate(
       stat = "t",
       order = c("female", "male"),
@@ -308,7 +308,7 @@ bad_df <- data.frame(resp = 1:5, exp = letters[1:5])
 
 bad_df2 <- data.frame(resp = letters[1:5], exp = 1:5)
 
-df_l <- df %>%
+df_l <- df |>
   dplyr::mutate(resp = dplyr::if_else(resp == "c", TRUE, FALSE))
 
 test_that("two sample prop_test works", {
@@ -368,7 +368,7 @@ test_that("two sample prop_test works", {
 })
 
 # ...and some data for the one sample wrapper
-df_1 <- df %>%
+df_1 <- df |>
   select(resp)
 
 sum_df_1 <- table(df_1)
@@ -478,55 +478,55 @@ test_that("prop_test z argument works as expected", {
 
 test_that("wrappers can handled ordered factors", {
   expect_equal(
-    gss_tbl %>%
-      dplyr::mutate(sex = factor(sex, ordered = FALSE)) %>%
+    gss_tbl |>
+      dplyr::mutate(sex = factor(sex, ordered = FALSE)) |>
       t_test(hours ~ sex, order = c("male", "female")),
-    gss_tbl %>%
-      dplyr::mutate(sex = factor(sex, ordered = TRUE)) %>%
+    gss_tbl |>
+      dplyr::mutate(sex = factor(sex, ordered = TRUE)) |>
       t_test(hours ~ sex, order = c("male", "female"))
   )
 
   expect_snapshot(
-    ordered_t_1 <- gss_tbl %>%
-      dplyr::mutate(income = factor(income, ordered = TRUE)) %>%
+    ordered_t_1 <- gss_tbl |>
+      dplyr::mutate(income = factor(income, ordered = TRUE)) |>
       chisq_test(income ~ partyid)
   )
 
   expect_snapshot(
-    ordered_f_1 <- gss_tbl %>%
-      dplyr::mutate(income = factor(income, ordered = FALSE)) %>%
+    ordered_f_1 <- gss_tbl |>
+      dplyr::mutate(income = factor(income, ordered = FALSE)) |>
       chisq_test(income ~ partyid)
   )
 
   expect_equal(ordered_t_1, ordered_f_1)
 
   expect_snapshot(
-    ordered_t_2 <- gss_tbl %>%
-      dplyr::mutate(income = factor(income, ordered = TRUE)) %>%
+    ordered_t_2 <- gss_tbl |>
+      dplyr::mutate(income = factor(income, ordered = TRUE)) |>
       chisq_test(partyid ~ income)
   )
 
   expect_snapshot(
-    ordered_f_2 <- gss_tbl %>%
-      dplyr::mutate(income = factor(income, ordered = FALSE)) %>%
+    ordered_f_2 <- gss_tbl |>
+      dplyr::mutate(income = factor(income, ordered = FALSE)) |>
       chisq_test(partyid ~ income)
   )
 
   expect_equal(ordered_t_2, ordered_f_2)
 
   expect_equal(
-    df %>%
-      dplyr::mutate(resp = factor(resp, ordered = TRUE)) %>%
+    df |>
+      dplyr::mutate(resp = factor(resp, ordered = TRUE)) |>
       prop_test(resp ~ NULL, p = .5),
-    df %>%
-      dplyr::mutate(resp = factor(resp, ordered = FALSE)) %>%
+    df |>
+      dplyr::mutate(resp = factor(resp, ordered = FALSE)) |>
       prop_test(resp ~ NULL, p = .5)
   )
 })
 
 test_that("handles spaces in variable names (t_test)", {
-  gss_ <- gss %>%
-    tidyr::drop_na(college) %>%
+  gss_ <- gss |>
+    tidyr::drop_na(college) |>
     dplyr::mutate(`h o u r s` = hours)
 
   expect_equal(
