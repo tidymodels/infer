@@ -13,7 +13,8 @@ vignette: |
 
 #### Introduction
 
-```{r include=FALSE}
+```{r}
+#| include: false
 knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5, 
                       message = FALSE, warning = FALSE) 
 options(digits = 4)
@@ -23,12 +24,15 @@ This vignette is intended to provide a set of examples that nearly exhaustively 
 
 Throughout this vignette, we'll make use of the `gss` dataset supplied by infer, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
-```{r load-packages, echo = FALSE}
+```{r}
+#| label: load-packages
+#| echo: false
 library(dplyr)
 library(infer)
 ```
 
-```{r load-gss}
+```{r}
+#| label: load-gss
 # load in the dataset
 data(gss)
 
@@ -355,7 +359,8 @@ null_dist |>
 
 The package also supplies a wrapper around `prop.test()` for tests of a single proportion on tidy data.
 
-```{r prop_test_1_grp}
+```{r}
+#| label: prop_test_1_grp
 prop_test(gss,
           college ~ NULL,
           p = .2)
@@ -557,7 +562,8 @@ Note the similarities in this plot and the previous one.
 
 The package also supplies a wrapper around `prop.test` to allow for tests of equality of proportions on tidy data.
 
-```{r prop_test_2_grp}
+```{r}
+#| label: prop_test_2_grp
 prop_test(gss, 
           college ~ sex,  
           order = c("female", "male"))
