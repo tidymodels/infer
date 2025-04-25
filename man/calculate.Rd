@@ -69,10 +69,10 @@ the following code.
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{set.seed(1)
 
-gss \%>\%
-  specify(age ~ college) \%>\%
-  hypothesize(null = "independence") \%>\%
-  generate(reps = 5, type = "permute") \%>\%
+gss |>
+  specify(age ~ college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 5, type = "permute") |>
   calculate("diff in means", order = c("degree", "no degree"))
 }\if{html}{\out{</div>}}
 
@@ -95,10 +95,10 @@ will produce the same result.
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{# set the seed
 set.seed(1)
 
-gss \%>\%
-  specify(age ~ college) \%>\%
-  hypothesize(null = "independence") \%>\%
-  generate(reps = 5, type = "permute") \%>\%
+gss |>
+  specify(age ~ college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 5, type = "permute") |>
   calculate("diff in means", order = c("degree", "no degree"))
 }\if{html}{\out{</div>}}
 
@@ -123,34 +123,34 @@ resampling with \code{generate()}.
 
 # calculate a null distribution of hours worked per week under
 # the null hypothesis that the mean is 40
-gss \%>\%
-  specify(response = hours) \%>\%
-  hypothesize(null = "point", mu = 40) \%>\%
-  generate(reps = 200, type = "bootstrap") \%>\%
+gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
+  generate(reps = 200, type = "bootstrap") |>
   calculate(stat = "mean")
 
 # calculate the corresponding observed statistic
-gss \%>\%
-  specify(response = hours) \%>\%
+gss |>
+  specify(response = hours) |>
   calculate(stat = "mean")
 
 # calculate a null distribution assuming independence between age
 # of respondent and whether they have a college degree
-gss \%>\%
-  specify(age ~ college) \%>\%
-  hypothesize(null = "independence") \%>\%
-  generate(reps = 200, type = "permute") \%>\%
+gss |>
+  specify(age ~ college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 200, type = "permute") |>
   calculate("diff in means", order = c("degree", "no degree"))
 
 # calculate the corresponding observed statistic
-gss \%>\%
-  specify(age ~ college) \%>\%
+gss |>
+  specify(age ~ college) |>
   calculate("diff in means", order = c("degree", "no degree"))
 
 # some statistics require a null hypothesis
- gss \%>\%
-   specify(response = hours) \%>\%
-   hypothesize(null = "point", mu = 40) \%>\%
+ gss |>
+   specify(response = hours) |>
+   hypothesize(null = "point", mu = 40) |>
    calculate(stat = "t")
 
 # more in-depth explanation of how to use the infer package

@@ -83,10 +83,10 @@ the following code.
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{set.seed(1)
 
-gss \%>\%
-  specify(age ~ college) \%>\%
-  hypothesize(null = "independence") \%>\%
-  generate(reps = 5, type = "permute") \%>\%
+gss |>
+  specify(age ~ college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 5, type = "permute") |>
   calculate("diff in means", order = c("degree", "no degree"))
 }\if{html}{\out{</div>}}
 
@@ -109,10 +109,10 @@ will produce the same result.
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{# set the seed
 set.seed(1)
 
-gss \%>\%
-  specify(age ~ college) \%>\%
-  hypothesize(null = "independence") \%>\%
-  generate(reps = 5, type = "permute") \%>\%
+gss |>
+  specify(age ~ college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 5, type = "permute") |>
   calculate("diff in means", order = c("degree", "no degree"))
 }\if{html}{\out{</div>}}
 
@@ -136,8 +136,8 @@ resampling with \code{generate()}.
 \examples{
 # fit a linear model predicting number of hours worked per
 # week using respondent age and degree status.
-observed_fit <- gss \%>\%
-  specify(hours ~ age + college) \%>\%
+observed_fit <- gss |>
+  specify(hours ~ age + college) |>
   fit()
 
 observed_fit
@@ -145,18 +145,18 @@ observed_fit
 # fit 100 models to resamples of the gss dataset, where the response
 # `hours` is permuted in each. note that this code is the same as
 # the above except for the addition of the `generate` step.
-null_fits <- gss \%>\%
-  specify(hours ~ age + college) \%>\%
-  hypothesize(null = "independence") \%>\%
-  generate(reps = 100, type = "permute") \%>\%
+null_fits <- gss |>
+  specify(hours ~ age + college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 100, type = "permute") |>
   fit()
 
 null_fits
 
 # for logistic regression, just supply a binary response variable!
 # (this can also be made explicit via the `family` argument in ...)
-gss \%>\%
-  specify(college ~ age + hours) \%>\%
+gss |>
+  specify(college ~ age + hours) |>
   fit()
 
 # more in-depth explanation of how to use the infer package

@@ -6,8 +6,8 @@
 #'
 #' @param lhs,rhs Inference functions and the initial data frame.
 #'
-#' @importFrom magrittr |>
-#' @name |>
+#' @importFrom magrittr %>%
+#' @name %>%
 #' @rdname pipe
 #' @export
 NULL
