@@ -26,3 +26,5 @@ README_files/
 ^\.github$
 ^LICENSE\.md$
 ^man-roxygen$
+^[\.]?air\.toml$
+^\.vscode$
