@@ -76,7 +76,7 @@ gss \%>\%
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{## Response: age (numeric)
 ## Explanatory: college (factor)
-## Null Hypothesis: independence
+## Null Hypothesis: indepe...
 ## # A tibble: 5 x 2
 ##   replicate   stat
 ##       <int>  <dbl>
@@ -102,7 +102,7 @@ gss \%>\%
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{## Response: age (numeric)
 ## Explanatory: college (factor)
-## Null Hypothesis: independence
+## Null Hypothesis: indepe...
 ## # A tibble: 5 x 2
 ##   replicate   stat
 ##       <int>  <dbl>
