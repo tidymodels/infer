@@ -18,7 +18,7 @@ test_that("old aliases produce informative error", {
   )
 
   expect_snapshot(
-     error = TRUE,
-     res_ <- gss_permute %>% conf_int()
-    )
+    error = TRUE,
+    res_ <- gss_permute %>% conf_int()
+  )
 })

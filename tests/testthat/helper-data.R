@@ -5,7 +5,11 @@ expect_doppelganger <- function(title, fig, ...) {
   vdiffr::expect_doppelganger(title, fig, ...)
 }
 
-eps <- if (capabilities("long.double")) {sqrt(.Machine$double.eps)} else {0.01}
+eps <- if (capabilities("long.double")) {
+  sqrt(.Machine$double.eps)
+} else {
+  0.01
+}
 
 gss_tbl <- tibble::as_tibble(gss) %>%
   dplyr::filter(!(is.na(sex) | is.na(college))) %>%
@@ -20,7 +24,10 @@ gss_calc <- gss_tbl %>%
 
 mtcars_df <- mtcars %>%
   dplyr::mutate(
-    cyl = factor(cyl), vs = factor(vs), am = factor(am), gear = factor(gear),
+    cyl = factor(cyl),
+    vs = factor(vs),
+    am = factor(am),
+    gear = factor(gear),
     carb = factor(carb)
   )
 

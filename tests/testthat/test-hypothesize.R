@@ -57,51 +57,48 @@ test_that("auto `type` works (hypothesize)", {
   expect_equal(attr(slopes, "type"), "permute")
 })
 
-test_that(
-  "hypothesize() throws an error when null is not point or independence", {
-  expect_snapshot(error = TRUE,
+test_that("hypothesize() throws an error when null is not point or independence", {
+  expect_snapshot(
+    error = TRUE,
     mtcars_df %>%
       specify(response = mpg) %>%
       hypothesize(null = "dependence")
   )
 })
 
-test_that(
-  "hypothesize() allows partial matching of null arg for point", {
+test_that("hypothesize() allows partial matching of null arg for point", {
   hyp_p <- mtcars_df %>%
     specify(response = mpg) %>%
     hypothesize(null = "po", mu = 0)
   expect_equal(attr(hyp_p, "null"), "point")
 })
 
-test_that(
-  "hypothesize() allows partial matching of null arg for independence", {
+test_that("hypothesize() allows partial matching of null arg for independence", {
   hyp_i <- mtcars_df %>%
     specify(mpg ~ vs) %>%
     hypothesize(null = "i")
   expect_equal(attr(hyp_i, "null"), "independence")
 })
 
-test_that(
-  "hypothesize() throws an error when multiple null values are provided", {
-  expect_snapshot(error = TRUE,
+test_that("hypothesize() throws an error when multiple null values are provided", {
+  expect_snapshot(
+    error = TRUE,
     mtcars_df %>%
       specify(response = mpg) %>%
       hypothesize(null = c("point", "independence"))
   )
 })
 
-test_that(
-  "hypothesize() throws an error when multiple params are set", {
-  expect_snapshot(error = TRUE,
+test_that("hypothesize() throws an error when multiple params are set", {
+  expect_snapshot(
+    error = TRUE,
     mtcars_df %>%
       specify(response = mpg) %>%
       hypothesize(null = "point", mu = 25, med = 20)
   )
 })
 
-test_that(
-  "hypothesize() throws a warning when params are set with independence", {
+test_that("hypothesize() throws a warning when params are set with independence", {
   expect_snapshot(
     res_ <- mtcars_df %>%
       specify(mpg ~ vs) %>%
@@ -109,48 +106,47 @@ test_that(
   )
 })
 
-test_that(
-   "hypothesize() throws a warning when params are set with paired independence", {
-   expect_snapshot(
-      res_ <- mtcars_df %>%
-         specify(response = mpg) %>%
-         hypothesize(null = "paired independence", mu = 25)
-   )
+test_that("hypothesize() throws a warning when params are set with paired independence", {
+  expect_snapshot(
+    res_ <- mtcars_df %>%
+      specify(response = mpg) %>%
+      hypothesize(null = "paired independence", mu = 25)
+  )
 })
 
-test_that(
-  "hypothesize() throws an error when p is greater than 1", {
-  expect_snapshot(error = TRUE,
+test_that("hypothesize() throws an error when p is greater than 1", {
+  expect_snapshot(
+    error = TRUE,
     res_ <- mtcars_df %>%
       specify(response = vs, success = "1") %>%
       hypothesize(null = "point", p = 1 + .Machine$double.eps)
   )
 })
 
-test_that(
-  "hypothesize() throws an error when p is less than 0", {
-  expect_snapshot(error = TRUE,
+test_that("hypothesize() throws an error when p is less than 0", {
+  expect_snapshot(
+    error = TRUE,
     res_ <- mtcars_df %>%
       specify(response = vs, success = "1") %>%
-      hypothesize(null = "point", p = - .Machine$double.neg.eps)
+      hypothesize(null = "point", p = -.Machine$double.neg.eps)
   )
 })
 
-test_that(
-  "hypothesize() throws an error when p contains missing values", {
-  expect_snapshot(error = TRUE,
+test_that("hypothesize() throws an error when p contains missing values", {
+  expect_snapshot(
+    error = TRUE,
     res_ <- mtcars_df %>%
       specify(response = vs, success = "1") %>%
       hypothesize(null = "point", p = c("0" = 0.5, "1" = NA_real_))
   )
 })
 
-test_that(
-  "hypothesize() throws an error when vector p does not sum to 1", {
-  expect_snapshot(error = TRUE,
+test_that("hypothesize() throws an error when vector p does not sum to 1", {
+  expect_snapshot(
+    error = TRUE,
     res_ <- mtcars_df %>%
       specify(response = vs, success = "1") %>%
-      hypothesize(null = "point", p = c("0" = 0.5, "1" = 0.5 + (eps *2)))
+      hypothesize(null = "point", p = c("0" = 0.5, "1" = 0.5 + (eps * 2)))
   )
 })
 
@@ -163,39 +159,65 @@ test_that("hypothesize arguments function", {
   expect_snapshot(error = TRUE, res_ <- hypothesize(mtcars_s, null = NA))
   expect_snapshot(error = TRUE, res_ <- hypothesize(mtcars_s))
 
-  expect_snapshot(error = TRUE, res_ <- mtcars_s %>% hypothesize(null = "point", mean = 3))
+  expect_snapshot(
+    error = TRUE,
+    res_ <- mtcars_s %>% hypothesize(null = "point", mean = 3)
+  )
 
-  expect_snapshot(error = TRUE, res_ <- mtcars_s %>% hypothesize(null = "independence"))
-  expect_snapshot(error = TRUE, res_ <- mtcars_s %>% hypothesize(null = "point"))
+  expect_snapshot(
+    error = TRUE,
+    res_ <- mtcars_s %>% hypothesize(null = "independence")
+  )
+  expect_snapshot(
+    error = TRUE,
+    res_ <- mtcars_s %>% hypothesize(null = "point")
+  )
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     res_ <-
-       mtcars_f %>%
-       specify(mpg ~ am) %>%
-       hypothesize(null = "paired independence")
+      mtcars_f %>%
+      specify(mpg ~ am) %>%
+      hypothesize(null = "paired independence")
   )
 
   # Produces error on win-build
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     res <- mtcars_s %>% hypothesize(null = c("point", "independence"), mu = 3)
   )
 
-  expect_snapshot(error = TRUE,
-    res_ <- mtcars_df %>% dplyr::select(vs) %>% hypothesize(null = "point", mu = 1)
+  expect_snapshot(
+    error = TRUE,
+    res_ <- mtcars_df %>%
+      dplyr::select(vs) %>%
+      hypothesize(null = "point", mu = 1)
   )
 
-  expect_snapshot(error = TRUE,
-    res_ <- mtcars_df %>% specify(response = vs) %>% hypothesize(null = "point", mu = 1)
+  expect_snapshot(
+    error = TRUE,
+    res_ <- mtcars_df %>%
+      specify(response = vs) %>%
+      hypothesize(null = "point", mu = 1)
   )
 
-  expect_snapshot(error = TRUE, res_ <- mtcars_s %>% hypothesize(null = "point", p = 0.2))
+  expect_snapshot(
+    error = TRUE,
+    res_ <- mtcars_s %>% hypothesize(null = "point", p = 0.2)
+  )
 
   expect_snapshot(error = TRUE, res_ <- mtcars_s %>% hypothesize())
 })
 
 test_that("params correct", {
-  expect_snapshot(error = TRUE, res_ <- hypothesize(one_prop_specify, null = "point", mu = 2))
-  expect_snapshot(error = TRUE, res_ <- hypothesize(one_mean_specify, null = "point", mean = 0.5))
+  expect_snapshot(
+    error = TRUE,
+    res_ <- hypothesize(one_prop_specify, null = "point", mu = 2)
+  )
+  expect_snapshot(
+    error = TRUE,
+    res_ <- hypothesize(one_mean_specify, null = "point", mean = 0.5)
+  )
 })
 
 test_that("sensible output", {
@@ -228,4 +250,3 @@ test_that("is_hypothesized works", {
   expect_true(is_hypothesized(one_mean))
   expect_false(is_hypothesized(one_mean_specify))
 })
-

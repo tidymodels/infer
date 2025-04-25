@@ -25,21 +25,13 @@ test_that("data argument", {
 
 test_that("response and explanatory arguments", {
   expect_snapshot(error = TRUE, specify(mtcars_df, response = blah))
-  expect_snapshot(error = TRUE,
-    specify(mtcars_df, response = "blah")
-  )
-  expect_snapshot(error = TRUE,
-    specify(mtcars_df, formula = mpg ~ blah)
-  )
+  expect_snapshot(error = TRUE, specify(mtcars_df, response = "blah"))
+  expect_snapshot(error = TRUE, specify(mtcars_df, formula = mpg ~ blah))
   expect_snapshot(error = TRUE, specify(mtcars_df, blah2 ~ cyl))
   expect_snapshot(error = TRUE, specify(mtcars_df))
   expect_snapshot(error = TRUE, specify(mtcars_df, formula = mpg ~ mpg))
-  expect_snapshot(error = TRUE,
-    specify(mtcars_df, formula = "mpg" ~ cyl)
-  )
-  expect_snapshot(error = TRUE,
-    specify(mtcars_df, formula = mpg ~ "cyl")
-  )
+  expect_snapshot(error = TRUE, specify(mtcars_df, formula = "mpg" ~ cyl))
+  expect_snapshot(error = TRUE, specify(mtcars_df, formula = mpg ~ "cyl"))
   expect_silent(specify(mtcars_df, formula = mpg ~ cyl))
 
   expect_snapshot(error = TRUE, specify(mtcars_df, formula = NULL ~ cyl))
@@ -47,12 +39,20 @@ test_that("response and explanatory arguments", {
 
 test_that("success argument", {
   expect_snapshot(error = TRUE, specify(mtcars_df, response = vs, success = 1))
-  expect_snapshot(error = TRUE, specify(mtcars_df, response = vs, success = "bogus"))
-  expect_snapshot(error = TRUE, specify(mtcars_df, response = mpg, success = "1"))
-  expect_snapshot(error = TRUE, specify(mtcars_df, response = cyl, success = "4"))
+  expect_snapshot(
+    error = TRUE,
+    specify(mtcars_df, response = vs, success = "bogus")
+  )
+  expect_snapshot(
+    error = TRUE,
+    specify(mtcars_df, response = mpg, success = "1")
+  )
+  expect_snapshot(
+    error = TRUE,
+    specify(mtcars_df, response = cyl, success = "4")
+  )
   # success not given
   expect_snapshot(error = TRUE, specify(mtcars_df, response = am))
-
 })
 
 test_that("sensible output", {
@@ -84,7 +84,7 @@ test_that("specify doesn't have NSE issues (#256)", {
 })
 
 test_that("specify messages when dropping unused levels", {
-   expect_snapshot(
+  expect_snapshot(
     res_ <- gss %>%
       dplyr::filter(partyid %in% c("rep", "dem")) %>%
       specify(age ~ partyid)

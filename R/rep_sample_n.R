@@ -107,8 +107,14 @@ rep_sample_n <- function(tbl, size, replace = FALSE, reps = 1, prob = NULL) {
 
 #' @rdname rep_sample_n
 #' @export
-rep_slice_sample <- function(.data, n = NULL, prop = NULL, replace = FALSE,
-                             weight_by = NULL, reps = 1) {
+rep_slice_sample <- function(
+  .data,
+  n = NULL,
+  prop = NULL,
+  replace = FALSE,
+  weight_by = NULL,
+  reps = 1
+) {
   check_type(.data, is.data.frame)
   check_type(
     n,
@@ -127,16 +133,18 @@ rep_slice_sample <- function(.data, n = NULL, prop = NULL, replace = FALSE,
   check_type(replace, is_truefalse, "TRUE or FALSE")
   eval_weight_by <- try(rlang::eval_tidy(weight_by), silent = TRUE)
   if (inherits(eval_weight_by, "try-error")) {
-     weight_by <- rlang::enquo(weight_by)
-     check_cols(.data, weight_by, "permute", FALSE, "weight_by")
-     weight_by <- .data[[rlang::as_name(weight_by)]]
+    weight_by <- rlang::enquo(weight_by)
+    check_cols(.data, weight_by, "permute", FALSE, "weight_by")
+    weight_by <- .data[[rlang::as_name(weight_by)]]
   }
   check_type(
-     weight_by,
-     ~ is.numeric(.) && (length(.) == nrow(.data)),
-     glue::glue("a numeric vector with length `nrow(.data)` = {nrow(.data)} \\
-                 or an unquoted column name"),
-     allow_null = TRUE
+    weight_by,
+    ~ is.numeric(.) && (length(.) == nrow(.data)),
+    glue::glue(
+      "a numeric vector with length `nrow(.data)` = {nrow(.data)} \\
+                 or an unquoted column name"
+    ),
+    allow_null = TRUE
   )
   check_type(
     reps,
@@ -168,14 +176,14 @@ make_replicate_tbl <- function(tbl, size, replace, prob, reps) {
   n <- nrow(tbl)
 
   if (!replace) {
-     idx_list <- replicate(
-        reps,
-        sample_int(n, size, replace = FALSE, prob = prob),
-        simplify = FALSE
-     )
+    idx_list <- replicate(
+      reps,
+      sample_int(n, size, replace = FALSE, prob = prob),
+      simplify = FALSE
+    )
   } else {
-     idx_list <- sample_int(n, size * reps, replace = TRUE, prob = prob)
-     idx_list <- vctrs::vec_chop(idx_list, sizes = rep(size, reps))
+    idx_list <- sample_int(n, size * reps, replace = TRUE, prob = prob)
+    idx_list <- vctrs::vec_chop(idx_list, sizes = rep(size, reps))
   }
 
   # Get actual sample size which can differ from `size` (currently if it is
@@ -185,15 +193,23 @@ make_replicate_tbl <- function(tbl, size, replace, prob, reps) {
 
   res <- vctrs::vec_slice(tbl, i)
   res <-
-     dplyr::bind_cols(
-        tibble::new_tibble(list(replicate = rep(seq_len(reps), each = sample_size))),
-        res
-     )
+    dplyr::bind_cols(
+      tibble::new_tibble(list(
+        replicate = rep(seq_len(reps), each = sample_size)
+      )),
+      res
+    )
   res <- group_by_replicate(res, reps = reps, n = sample_size)
   copy_attrs(res, tbl)
 }
 
-notify_extra_size <- function(size, tbl, replace, notify_type, call = caller_env()) {
+notify_extra_size <- function(
+  size,
+  tbl,
+  replace,
+  notify_type,
+  call = caller_env()
+) {
   if (!replace && (size > nrow(tbl))) {
     msg <- glue::glue(
       "Asked sample size ({size}) is bigger than ",
@@ -237,10 +253,10 @@ make_slice_size <- function(n, prop, n_total, call = caller_env()) {
     if (is.null(prop)) {
       n
     } else {
-       cli_abort(
-         "Please supply exactly one of the `n` or `prop` arguments.",
-         call = call
-       )
+      cli_abort(
+        "Please supply exactly one of the `n` or `prop` arguments.",
+        call = call
+      )
     }
   }
 }

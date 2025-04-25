@@ -9,8 +9,8 @@ test_that("distribution description works as expected", {
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
       assume_(
-       distribution = "F",
-       df = c(length(unique(gss$partyid)) - 1, nrow(gss) - 4)
+        distribution = "F",
+        df = c(length(unique(gss$partyid)) - 1, nrow(gss) - 4)
       ),
     "An F distribution with 3 and 496 degrees of freedom."
   )
@@ -32,13 +32,17 @@ test_that("distribution description works as expected", {
   expect_equal(
     gss %>%
       specify(response = finrela) %>%
-      hypothesize(null = "point",
-                  p = c("far below average" = 1/6,
-                        "below average" = 1/6,
-                        "average" = 1/6,
-                        "above average" = 1/6,
-                        "far above average" = 1/6,
-                        "DK" = 1/6)) %>%
+      hypothesize(
+        null = "point",
+        p = c(
+          "far below average" = 1 / 6,
+          "below average" = 1 / 6,
+          "average" = 1 / 6,
+          "above average" = 1 / 6,
+          "far above average" = 1 / 6,
+          "DK" = 1 / 6
+        )
+      ) %>%
       assume_("Chisq", length(unique(gss$finrela)) - 1),
     "A Chi-squared distribution with 5 degrees of freedom."
   )
@@ -46,13 +50,17 @@ test_that("distribution description works as expected", {
   expect_equal(
     gss %>%
       specify(response = finrela) %>%
-      hypothesize(null = "point",
-                  p = c("far below average" = 1/6,
-                        "below average" = 1/6,
-                        "average" = 1/6,
-                        "above average" = 1/6,
-                        "far above average" = 1/6,
-                        "DK" = 1/6)) %>%
+      hypothesize(
+        null = "point",
+        p = c(
+          "far below average" = 1 / 6,
+          "below average" = 1 / 6,
+          "average" = 1 / 6,
+          "above average" = 1 / 6,
+          "far above average" = 1 / 6,
+          "DK" = 1 / 6
+        )
+      ) %>%
       assume_("Chisq"),
     "A Chi-squared distribution with 5 degrees of freedom."
   )
@@ -96,7 +104,8 @@ test_that("distribution description works as expected", {
 
 test_that("assume errors with bad arguments", {
   # supply a bad distribution
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     gss %>%
       specify(age ~ college) %>%
       hypothesize(null = "independence") %>%
@@ -104,14 +113,16 @@ test_that("assume errors with bad arguments", {
   )
 
   # bad number of df arguments
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     gss %>%
       specify(age ~ college) %>%
       hypothesize(null = "independence") %>%
       assume("t", c(nrow(gss) - 1, 2))
-   )
+  )
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     gss %>%
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
@@ -119,7 +130,8 @@ test_that("assume errors with bad arguments", {
   )
 
   # bad df argument type
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     gss %>%
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
@@ -127,14 +139,16 @@ test_that("assume errors with bad arguments", {
   )
 
   # df argument possibly passed to dots
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     gss %>%
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
       assume("F", nrow(gss) - 1, 1)
   )
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     gss %>%
       specify(age ~ partyid) %>%
       hypothesize(null = "independence") %>%
@@ -142,21 +156,24 @@ test_that("assume errors with bad arguments", {
   )
 
   # supply `distribution`s that don't align with the supplied variables
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     gss %>%
       specify(age ~ finrela) %>%
       hypothesize(null = "independence") %>%
       assume("t", nrow(gss) - 1)
   )
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     gss %>%
       specify(age ~ finrela) %>%
       hypothesize(null = "independence") %>%
       assume("z", nrow(gss) - 1)
   )
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     gss %>%
       specify(age ~ NULL) %>%
       hypothesize(null = "point", mu = 40) %>%
@@ -164,12 +181,14 @@ test_that("assume errors with bad arguments", {
   )
 
   # supply bad `x` arguments
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     gss %>%
       assume("z", nrow(gss) - 1)
   )
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     "boop" %>%
       assume("z", nrow(gss) - 1)
   )
@@ -234,7 +253,6 @@ test_that("assume() handles automatic df gracefully", {
     173
   )
 
-
   # n1 + n2 - 2
   expect_equal(
     expect_silent(
@@ -249,7 +267,7 @@ test_that("assume() handles automatic df gracefully", {
 })
 
 test_that("assume() brings along supplied arguments", {
-  t_dist <-  gss %>%
+  t_dist <- gss %>%
     specify(age ~ college) %>%
     hypothesize(null = "independence") %>%
     assume("t")

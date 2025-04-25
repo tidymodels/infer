@@ -120,8 +120,12 @@ NULL
 #' @rdname shade_confidence_interval
 #' @family visualization functions
 #' @export
-shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
-                                      fill = "turquoise", ...) {
+shade_confidence_interval <- function(
+  endpoints,
+  color = "mediumaquamarine",
+  fill = "turquoise",
+  ...
+) {
   # since most of the logic for shading is in shade_confidence_interval_term, which
   # is only called by `+.gg`, we need to check for mistakenly piped inputs here
   check_for_piped_visualize(endpoints, color, fill)
@@ -131,17 +135,25 @@ shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
     "A confidence interval shading layer.",
     class = "infer_layer",
     fn = "shade_confidence_interval",
-    endpoints = if (is.null(endpoints)) {NA} else {endpoints},
+    endpoints = if (is.null(endpoints)) {
+      NA
+    } else {
+      endpoints
+    },
     color = color,
     fill = list(fill),
     dots = list(...)
   )
 }
 
-shade_confidence_interval_term <- function(plot, endpoints,
-                                           color = "mediumaquamarine",
-                                           fill = "turquoise", dots,
-                                           call = rlang::call2("shade_confidence_interval")) {
+shade_confidence_interval_term <- function(
+  plot,
+  endpoints,
+  color = "mediumaquamarine",
+  fill = "turquoise",
+  dots,
+  call = rlang::call2("shade_confidence_interval")
+) {
   if (all(is.na(endpoints))) {
     endpoints <- NULL
   }
@@ -163,7 +175,10 @@ shade_confidence_interval_term <- function(plot, endpoints,
       list(
         data = data.frame(endpoints[1]),
         mapping = aes(
-          xmin = endpoints[1], xmax = endpoints[2], ymin = 0, ymax = Inf
+          xmin = endpoints[1],
+          xmax = endpoints[2],
+          ymin = 0,
+          ymax = Inf
         ),
         fill = fill,
         inherit.aes = FALSE

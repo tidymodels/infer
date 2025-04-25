@@ -21,7 +21,7 @@ print_params <- function(x) {
     as.character(length(params)),
     "1" = glue(": `{names(params)} = {unname(params)}`", .null = "NULL"),
     "2" = glue(": `p = .5`", .null = "NULL"),
-          glue("s: `p = c({put_params(x, params)})`", .null = "NULL")
+    glue("s: `p = c({put_params(x, params)})`", .null = "NULL")
   )
 }
 
@@ -34,14 +34,29 @@ get_par_levels <- function(x) {
   gsub("^.\\.", "", par_names)
 }
 
-copy_attrs <- function(to, from,
-                       attrs = c(
-                         "response", "success", "explanatory", "response_type",
-                         "explanatory_type", "distr_param", "distr_param2",
-                         "null", "params", "theory_type", "generated", "type",
-                         "hypothesized", "formula", "fitted",
-                         "type_desc_response", "type_desc_explanatory"
-                       )) {
+copy_attrs <- function(
+  to,
+  from,
+  attrs = c(
+    "response",
+    "success",
+    "explanatory",
+    "response_type",
+    "explanatory_type",
+    "distr_param",
+    "distr_param2",
+    "null",
+    "params",
+    "theory_type",
+    "generated",
+    "type",
+    "hypothesized",
+    "formula",
+    "fitted",
+    "type_desc_response",
+    "type_desc_explanatory"
+  )
+) {
   for (at in attrs) {
     attr(to, at) <- attr(from, at)
   }
@@ -71,53 +86,52 @@ reorder_explanatory <- function(x, order) {
 }
 
 standardize_variable_types <- function(x) {
-   tibble::as_tibble(x) %>%
-      # character and ordered to factor
-      dplyr::mutate(
-         dplyr::across(
-            where(~ is.character(.x) || is.ordered(.x)),
-            ~ factor(.x, ordered = FALSE)
-         )
-      ) %>%
-      # logical to factor, with TRUE as the first level
-      dplyr::mutate(
-         dplyr::across(
-            where(~ is.logical(.x)),
-            ~ factor(.x, levels = c("TRUE", "FALSE"))
-         )
-      )  %>%
-      # integer to numeric
-      dplyr::mutate(
-         dplyr::across(
-            where(is.integer),
-            as.numeric
-         )
+  tibble::as_tibble(x) %>%
+    # character and ordered to factor
+    dplyr::mutate(
+      dplyr::across(
+        where(~ is.character(.x) || is.ordered(.x)),
+        ~ factor(.x, ordered = FALSE)
       )
+    ) %>%
+    # logical to factor, with TRUE as the first level
+    dplyr::mutate(
+      dplyr::across(
+        where(~ is.logical(.x)),
+        ~ factor(.x, levels = c("TRUE", "FALSE"))
+      )
+    ) %>%
+    # integer to numeric
+    dplyr::mutate(
+      dplyr::across(
+        where(is.integer),
+        as.numeric
+      )
+    )
 }
 
 # Performant grouping ----------------------------------------------------------
 group_by_replicate <- function(tbl, reps, n) {
-   dplyr::new_grouped_df(
-      tbl,
-      groups = make_replicate_groups(tbl, reps = reps, n = n)
-   )
+  dplyr::new_grouped_df(
+    tbl,
+    groups = make_replicate_groups(tbl, reps = reps, n = n)
+  )
 }
 
 
 make_replicate_groups <- function(tbl, reps, n) {
-   res <-
-      tibble::new_tibble(list(
-         replicate = 1:reps,
-         .rows =
-            vctrs::as_list_of(
-               vctrs::vec_chop(seq_len(n*reps), sizes = rep(n, reps)),
-               .ptype = integer()
-            )
-      ))
+  res <-
+    tibble::new_tibble(list(
+      replicate = 1:reps,
+      .rows = vctrs::as_list_of(
+        vctrs::vec_chop(seq_len(n * reps), sizes = rep(n, reps)),
+        .ptype = integer()
+      )
+    ))
 
-   attr(res, ".drop") <- TRUE
+  attr(res, ".drop") <- TRUE
 
-   res
+  res
 }
 
 # Getters, setters, and indicators ------------------------------------------
@@ -176,11 +190,11 @@ is_generated <- function(x) {
   isTRUE(attr(x, "generated"))
 }
 
-is_hypothesized <- function(x){
+is_hypothesized <- function(x) {
   isTRUE(attr(x, "hypothesized"))
 }
 
-is_fitted <- function(x){
+is_fitted <- function(x) {
   isTRUE(attr(x, "fitted"))
 }
 
@@ -202,16 +216,34 @@ has_response <- function(x) {
 
 is_color_string <- function(x) {
   rlang::is_string(x) &&
-    tryCatch(is.matrix(grDevices::col2rgb(x)), error = function(e) {FALSE})
+    tryCatch(is.matrix(grDevices::col2rgb(x)), error = function(e) {
+      FALSE
+    })
 }
 
-is_single_number <- function(x, min_val = -Inf, max_val = Inf,
-                             include_min_val = TRUE, include_max_val = TRUE) {
-  left_compare <- if (include_min_val) {`>=`} else {`>`}
-  right_compare <- if (include_max_val) {`<=`} else {`<`}
+is_single_number <- function(
+  x,
+  min_val = -Inf,
+  max_val = Inf,
+  include_min_val = TRUE,
+  include_max_val = TRUE
+) {
+  left_compare <- if (include_min_val) {
+    `>=`
+  } else {
+    `>`
+  }
+  right_compare <- if (include_max_val) {
+    `<=`
+  } else {
+    `<`
+  }
 
-  is.numeric(x) && (length(x) == 1) && is.finite(x) &&
-    left_compare(x, min_val) && right_compare(x, max_val)
+  is.numeric(x) &&
+    (length(x) == 1) &&
+    is.finite(x) &&
+    left_compare(x, min_val) &&
+    right_compare(x, max_val)
 }
 
 is_truefalse <- function(x) {
@@ -223,24 +255,50 @@ is_truefalse <- function(x) {
 # Simplify and standardize checks by grouping statistics based on variable types
 # num = numeric, bin = binary (dichotomous), mult = multinomial
 stat_types <- tibble::tribble(
-  ~resp,   ~exp,   ~stats,
-  "num",   "",     c("mean", "median", "sum", "sd", "t"),
-  "num",   "num",  c("slope", "correlation"),
-  "num",   "bin",  c("diff in means", "diff in medians", "t", "ratio of means"),
-  "num",   "mult", c("F"),
-  "bin",   "",     c("prop", "count", "z"),
-  "bin",   "bin",  c("diff in props", "z", "ratio of props", "odds ratio", "Chisq"),
-  "bin",   "mult", c("Chisq"),
-  "mult",  "bin",  c("Chisq"),
-  "mult",  "",     c("Chisq"),
-  "mult",  "mult", c("Chisq"),
+  ~resp,
+  ~exp,
+  ~stats,
+  "num",
+  "",
+  c("mean", "median", "sum", "sd", "t"),
+  "num",
+  "num",
+  c("slope", "correlation"),
+  "num",
+  "bin",
+  c("diff in means", "diff in medians", "t", "ratio of means"),
+  "num",
+  "mult",
+  c("F"),
+  "bin",
+  "",
+  c("prop", "count", "z"),
+  "bin",
+  "bin",
+  c("diff in props", "z", "ratio of props", "odds ratio", "Chisq"),
+  "bin",
+  "mult",
+  c("Chisq"),
+  "mult",
+  "bin",
+  c("Chisq"),
+  "mult",
+  "",
+  c("Chisq"),
+  "mult",
+  "mult",
+  c("Chisq"),
 )
 
 stat_type_desc <- tibble::tribble(
-  ~type,  ~description,
-  "num",  "numeric",
-  "bin",  "dichotomous categorical",
-  "mult", "multinomial categorical"
+  ~type,
+  ~description,
+  "num",
+  "numeric",
+  "bin",
+  "dichotomous categorical",
+  "mult",
+  "multinomial categorical"
 )
 
 get_stat_type_desc <- function(stat_type) {
@@ -248,54 +306,99 @@ get_stat_type_desc <- function(stat_type) {
 }
 
 stat_desc <- tibble::tribble(
-  ~stat,               ~description,
-  "mean",              "A mean",
-  "median",            "A median",
-  "sum",               "A sum",
-  "sd",                "A standard deviation",
-  "prop",              "A proportion",
-  "count",             "A count",
-  "diff in means",     "A difference in means",
-  "diff in medians",   "A difference in medians",
-  "diff in props",     "A difference in proportions",
-  "Chisq",             "A chi-square statistic",
-  "F",                 "An F statistic",
-  "slope",             "A slope",
-  "correlation",       "A correlation",
-  "t",                 "A t statistic",
-  "z",                 "A z statistic",
-  "ratio of props",    "A ratio of proportions",
-  "ratio of means",    "A ratio of means",
-  "odds ratio",        "An odds ratio"
+  ~stat,
+  ~description,
+  "mean",
+  "A mean",
+  "median",
+  "A median",
+  "sum",
+  "A sum",
+  "sd",
+  "A standard deviation",
+  "prop",
+  "A proportion",
+  "count",
+  "A count",
+  "diff in means",
+  "A difference in means",
+  "diff in medians",
+  "A difference in medians",
+  "diff in props",
+  "A difference in proportions",
+  "Chisq",
+  "A chi-square statistic",
+  "F",
+  "An F statistic",
+  "slope",
+  "A slope",
+  "correlation",
+  "A correlation",
+  "t",
+  "A t statistic",
+  "z",
+  "A z statistic",
+  "ratio of props",
+  "A ratio of proportions",
+  "ratio of means",
+  "A ratio of means",
+  "odds ratio",
+  "An odds ratio"
 )
 
 stat_hypotheses <- tibble::tribble(
-  ~stat,               ~hypothesis,
-  "mean",              "point",
-  "median",            "point",
-  "sum",               "point",
-  "sd",                "point",
-  "prop",              "point",
-  "count",             "point",
-  "mean",              "paired independence",
-  "median",            "paired independence",
-  "sum",               "paired independence",
-  "sd",                "paired independence",
-  "diff in means",     "independence",
-  "diff in medians",   "independence",
-  "diff in props",     "independence",
-  "Chisq",             "independence",
-  "Chisq",             "point",
-  "F",                 "independence",
-  "slope",             "independence",
-  "correlation",       "independence",
-  "t",                 "independence",
-  "t",                 "point",
-  "z",                 "independence",
-  "z",                 "point",
-  "ratio of props",    "independence",
-  "ratio of means",    "independence",
-  "odds ratio",        "independence"
+  ~stat,
+  ~hypothesis,
+  "mean",
+  "point",
+  "median",
+  "point",
+  "sum",
+  "point",
+  "sd",
+  "point",
+  "prop",
+  "point",
+  "count",
+  "point",
+  "mean",
+  "paired independence",
+  "median",
+  "paired independence",
+  "sum",
+  "paired independence",
+  "sd",
+  "paired independence",
+  "diff in means",
+  "independence",
+  "diff in medians",
+  "independence",
+  "diff in props",
+  "independence",
+  "Chisq",
+  "independence",
+  "Chisq",
+  "point",
+  "F",
+  "independence",
+  "slope",
+  "independence",
+  "correlation",
+  "independence",
+  "t",
+  "independence",
+  "t",
+  "point",
+  "z",
+  "independence",
+  "z",
+  "point",
+  "ratio of props",
+  "independence",
+  "ratio of means",
+  "independence",
+  "odds ratio",
+  "independence"
 )
 
 get_stat_desc <- function(stat) {
@@ -303,23 +406,46 @@ get_stat_desc <- function(stat) {
 }
 
 # Values of `stat` argument of `calculate()`
-implemented_stats <-  c(
-  "mean", "median", "sum", "sd", "prop", "count",
-  "diff in means", "diff in medians", "diff in props",
-  "Chisq", "F", "slope", "correlation", "t", "z",
-  "ratio of props", "ratio of means", "odds ratio"
+implemented_stats <- c(
+  "mean",
+  "median",
+  "sum",
+  "sd",
+  "prop",
+  "count",
+  "diff in means",
+  "diff in medians",
+  "diff in props",
+  "Chisq",
+  "F",
+  "slope",
+  "correlation",
+  "t",
+  "z",
+  "ratio of props",
+  "ratio of means",
+  "odds ratio"
 )
 
 implemented_stats_aliases <- tibble::tribble(
-  ~ alias, ~ target,
+  ~alias,
+  ~target,
   # Allow case insensitive stat names
-  "f",     "F",
-  "chisq", "Chisq"
+  "f",
+  "F",
+  "chisq",
+  "Chisq"
 )
 
-untheorized_stats <- implemented_stats[!implemented_stats %in% c(
-  "Chisq", "F", "t", "z"
-)]
+untheorized_stats <- implemented_stats[
+  !implemented_stats %in%
+    c(
+      "Chisq",
+      "F",
+      "t",
+      "z"
+    )
+]
 
 # Given a statistic and theory type, assume a reasonable null
 p_null <- function(x) {
@@ -332,10 +458,16 @@ p_null <- function(x) {
 
 # The "null_fn" column is a function(x) whose output gives attr(x, "params")
 theorized_nulls <- tibble::tribble(
-  ~stat,    ~null_fn,
-  "Chisq", p_null,
-  "t",     function(x) {setNames(0, "mu")},
-  "z",     p_null
+  ~stat,
+  ~null_fn,
+  "Chisq",
+  p_null,
+  "t",
+  function(x) {
+    setNames(0, "mu")
+  },
+  "z",
+  p_null
 )
 
 determine_variable_type <- function(x, variable) {
@@ -358,19 +490,34 @@ determine_variable_type <- function(x, variable) {
 
 # Argument checking --------------------------------------------------------
 
-check_order <- function(x, order, in_calculate = TRUE, stat, call = caller_env()) {
+check_order <- function(
+  x,
+  order,
+  in_calculate = TRUE,
+  stat,
+  call = caller_env()
+) {
   # If there doesn't need to be an order argument, warn if there is one,
   # and otherwise, skip checks
-  if (!(theory_type(x) %in% c("Two sample props z", "Two sample t") ||
-        is.null(stat) ||
-        stat %in% c("diff in means", "diff in medians",
-                    "diff in props", "ratio of props", "odds ratio"))) {
+  if (
+    !(theory_type(x) %in%
+      c("Two sample props z", "Two sample t") ||
+      is.null(stat) ||
+      stat %in%
+        c(
+          "diff in means",
+          "diff in medians",
+          "diff in props",
+          "ratio of props",
+          "odds ratio"
+        ))
+  ) {
     if (!is.null(order)) {
-       cli_warn(
-         "Statistic is not based on a difference or ratio; the `order` argument \\
+      cli_warn(
+        "Statistic is not based on a difference or ratio; the `order` argument \\
           will be ignored. Check {.help [{.fun calculate}](infer::calculate)} \\
           for details."
-       )
+      )
     } else {
       return(order)
     }
@@ -401,31 +548,31 @@ check_order <- function(x, order, in_calculate = TRUE, stat, call = caller_env()
        the order \"{unique_ex[1]}\" / \"{unique_ex[2]}\" for ratio-based \\
        statistics. To specify this order yourself, supply `order = \\
        c(\"{unique_ex[1]}\", \"{unique_ex[2]}\")`."
-     )
+    )
   } else {
     if (xor(is.na(order[1]), is.na(order[2]))) {
-       cli_abort(
+      cli_abort(
         "Only one level specified in `order`. Both levels need to be specified.",
         call = call
-       )
+      )
     }
     if (length(order) > 2) {
-       cli_abort(
-         "`order` is expecting only two entries.",
-         call = call
-       )
+      cli_abort(
+        "`order` is expecting only two entries.",
+        call = call
+      )
     }
     if (order[1] %in% unique_ex == FALSE) {
-       cli_abort(
-         "{order[1]} is not a level of the explanatory variable.",
-         call = call
-       )
+      cli_abort(
+        "{order[1]} is not a level of the explanatory variable.",
+        call = call
+      )
     }
     if (order[2] %in% unique_ex == FALSE) {
-       cli_abort(
-         "{order[2]} is not a level of the explanatory variable.",
-         call = call
-       )
+      cli_abort(
+        "{order[2]} is not a level of the explanatory variable.",
+        call = call
+      )
     }
   }
   # return the order as given (unless the argument was invalid or NULL)
@@ -435,19 +582,27 @@ check_order <- function(x, order, in_calculate = TRUE, stat, call = caller_env()
 check_point_params <- function(x, stat, call = caller_env()) {
   param_names <- attr(attr(x, "params"), "names")
   hyp_text <- 'to be set in `hypothesize()`.'
-  if (is_hypothesized(x) && !identical(attr(x, "null"), "paired independence")) {
+  if (
+    is_hypothesized(x) && !identical(attr(x, "null"), "paired independence")
+  ) {
     if (stat %in% c("mean", "median", "sd", "prop")) {
       if ((stat == "mean") && !("mu" %in% param_names)) {
-         cli_abort('`stat == "mean"` requires `"mu"` {hyp_text}', call = call)
+        cli_abort('`stat == "mean"` requires `"mu"` {hyp_text}', call = call)
       }
       if (!(stat == "mean") && ("mu" %in% param_names)) {
-         cli_abort('`"mu"` does not correspond to `stat = "{stat}"`.', call = call)
+        cli_abort(
+          '`"mu"` does not correspond to `stat = "{stat}"`.',
+          call = call
+        )
       }
       if ((stat == "median") && !("med" %in% param_names)) {
-         cli_abort('`stat == "median"` requires `"med"` {hyp_text}', call = call)
+        cli_abort('`stat == "median"` requires `"med"` {hyp_text}', call = call)
       }
       if (!(stat == "median") && ("med" %in% param_names)) {
-         cli_abort('`"med"` does not correspond to `stat = "{stat}"`.', call = call)
+        cli_abort(
+          '`"med"` does not correspond to `stat = "{stat}"`.',
+          call = call
+        )
       }
     }
   }
@@ -467,56 +622,87 @@ check_for_nan <- function(x, context) {
     return(x)
   }
 
-  calc_ref <- c(i = "See {.help [{.fun calculate}](infer::calculate)} for more details.")
+  calc_ref <- c(
+    i = "See {.help [{.fun calculate}](infer::calculate)} for more details."
+  )
   # If all of the data is NaN, raise an error
   if (num_nans == nrow(x)) {
-     cli_abort(
-       c("All calculated statistics were `NaN`.", calc_ref),
-       call = NULL
-     )
+    cli_abort(
+      c("All calculated statistics were `NaN`.", calc_ref),
+      call = NULL
+    )
   }
 
-  stats_were <- if (num_nans == 1) {"statistic was"} else {"statistics were"}
+  stats_were <- if (num_nans == 1) {
+    "statistic was"
+  } else {
+    "statistics were"
+  }
   num_nans_msg <- glue::glue("{num_nans} calculated {stats_were} `NaN`")
 
   if (context == "visualize") {
     # Raise a warning and plot the data with NaNs removed
     cli_warn(
-      c("{num_nans_msg}. `NaN`s have been omitted from visualization.", calc_ref)
+      c(
+        "{num_nans_msg}. `NaN`s have been omitted from visualization.",
+        calc_ref
+      )
     )
     return(x[!stat_is_nan, ])
   } else if (context == "get_p_value") {
     # Raise an error
     cli_abort(
-      c("{num_nans_msg}. Simulation-based p-values are not well-defined for \\
-       null distributions with non-finite values.", calc_ref),
+      c(
+        "{num_nans_msg}. Simulation-based p-values are not well-defined for \\
+       null distributions with non-finite values.",
+        calc_ref
+      ),
       call = NULL
     )
   }
 }
 
-check_direction <- function(direction = c("less", "greater", "two_sided",
-                                          "left", "right", "both",
-                                          "two-sided", "two sided",
-                                          "two.sided"), call = caller_env()) {
+check_direction <- function(
+  direction = c(
+    "less",
+    "greater",
+    "two_sided",
+    "left",
+    "right",
+    "both",
+    "two-sided",
+    "two sided",
+    "two.sided"
+  ),
+  call = caller_env()
+) {
   check_type(direction, is.character, call = call)
 
   if (
-    !(direction %in% c("less", "greater", "two_sided", "left", "right",
-                       "both", "two-sided", "two sided", "two.sided"))
+    !(direction %in%
+      c(
+        "less",
+        "greater",
+        "two_sided",
+        "left",
+        "right",
+        "both",
+        "two-sided",
+        "two sided",
+        "two.sided"
+      ))
   ) {
     cli_abort(
-     'The provided value for `direction` is not appropriate. Possible values \\
+      'The provided value for `direction` is not appropriate. Possible values \\
       are "less", "greater", "two-sided", "left", "right", "both", \
       "two_sided", "two sided", or "two.sided".',
-     call = call
+      call = call
     )
   }
 }
 
 check_obs_stat <- function(obs_stat, plot = NULL, call = caller_env()) {
   if (!is.null(obs_stat)) {
-
     if ("data.frame" %in% class(obs_stat)) {
       if (is_fitted(obs_stat)) {
         x_lab <- x_axis_label(plot)
@@ -531,10 +717,10 @@ check_obs_stat <- function(obs_stat, plot = NULL, call = caller_env()) {
 
       check_type(obs_stat, is.data.frame, call = call)
       if ((nrow(obs_stat) != 1) || (ncol(obs_stat) != 1)) {
-         cli_warn(
+        cli_warn(
           "The first row and first column value of the given `obs_stat` will \\
            be used."
-         )
+        )
       }
 
       # [[1]] is used in case `stat` is not specified as name of 1x1
@@ -548,37 +734,47 @@ check_obs_stat <- function(obs_stat, plot = NULL, call = caller_env()) {
   obs_stat
 }
 
-check_mlr_x_and_obs_stat <- function(x, obs_stat, fn, arg, call = caller_env()) {
+check_mlr_x_and_obs_stat <- function(
+  x,
+  obs_stat,
+  fn,
+  arg,
+  call = caller_env()
+) {
   if (!is_fitted(obs_stat)) {
-     cli_abort(
-       c("The `{arg}` argument should be the output of `fit()`.",
-         i = "See the documentation with `?{fn}`."),
-       call = call
-     )
+    cli_abort(
+      c(
+        "The `{arg}` argument should be the output of `fit()`.",
+        i = "See the documentation with `?{fn}`."
+      ),
+      call = call
+    )
   }
 
   if (!is_generated(x)) {
-     cli_abort(
+    cli_abort(
       "The `x` argument needs to be passed to `generate()` before `fit()`.",
       call = call
-     )
+    )
   }
 
-  if (any(!unique(x$term) %in% unique(obs_stat$term)) ||
-      any(!unique(obs_stat$term) %in% unique(x$term))) {
-     cli_abort(
+  if (
+    any(!unique(x$term) %in% unique(obs_stat$term)) ||
+      any(!unique(obs_stat$term) %in% unique(x$term))
+  ) {
+    cli_abort(
       "The explanatory variables used to generate the distribution of \\
        null fits are not the same used to fit the observed data.",
       call = call
-     )
+    )
   }
 
   if (response_name(x) != response_name(obs_stat)) {
-     cli_abort(
+    cli_abort(
       "The response variable of the null fits ({response_name(x)}) is not \\
        the same as that of the observed fit ({response_name(obs_stat)}).",
-       call = call
-     )
+      call = call
+    )
   }
 
   invisible(TRUE)
@@ -617,8 +813,15 @@ check_mlr_x_and_obs_stat <- function(x, obs_stat, fn, arg, call = caller_env()) 
 #'
 #' @keywords internal
 #' @noRd
-check_type <- function(x, predicate, type_name = NULL, x_name = NULL,
-                        allow_null = FALSE, ..., call = caller_env()) {
+check_type <- function(
+  x,
+  predicate,
+  type_name = NULL,
+  x_name = NULL,
+  allow_null = FALSE,
+  ...,
+  call = caller_env()
+) {
   if (is.null(x_name)) {
     x_name <- deparse(substitute(x))
   }
@@ -634,10 +837,10 @@ check_type <- function(x, predicate, type_name = NULL, x_name = NULL,
 
   if (!is_pred_true) {
     # Not using "must be of type" because of 'tibble' and 'string' cases
-     cli_abort(
-       "`{x_name}` must be '{type_name}', not '{get_type(x)}'.",
-       call = call
-     )
+    cli_abort(
+      "`{x_name}` must be '{type_name}', not '{get_type(x)}'.",
+      call = call
+    )
   }
 
   x
@@ -667,10 +870,10 @@ parse_type <- function(f_name) {
 
 check_is_distribution <- function(x, fn, call = caller_env()) {
   if (!any(inherits(x, "infer_dist") || is.data.frame(x))) {
-     cli_abort(
+    cli_abort(
       "The `x` argument to `{fn}()` must be an infer distribution, \\
        outputted by `assume()` or `calculate()`.",
       call = call
-     )
+    )
   }
 }

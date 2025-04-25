@@ -57,15 +57,11 @@ test_that("check_type works", {
   expect_silent(check_type(x_var, is.integer))
 
   expect_snapshot(error = TRUE, check_type(x_var, is.character))
-  expect_snapshot(error = TRUE,
-    check_type(x_var, is.character, "symbolic")
-  )
+  expect_snapshot(error = TRUE, check_type(x_var, is.character, "symbolic"))
 
   x_df <- data.frame(x = TRUE)
   expect_silent(check_type(x_df, is.data.frame))
-  expect_snapshot(error = TRUE,
-    check_type(x_df, is.logical)
-  )
+  expect_snapshot(error = TRUE, check_type(x_df, is.logical))
 })
 
 test_that("check_type allows `NULL`", {
@@ -105,7 +101,7 @@ test_that("c_dedupl returns input when unnamed", {
 })
 
 test_that("hypothesize errors out when x isn't a dataframe", {
-   expect_snapshot(error = TRUE, hypothesize(c(1, 2, 3), null = "point"))
+  expect_snapshot(error = TRUE, hypothesize(c(1, 2, 3), null = "point"))
 })
 
 test_that("p_null supplies appropriate params", {
@@ -116,46 +112,46 @@ test_that("p_null supplies appropriate params", {
 })
 
 test_that("variables are standardized as expected", {
-   gss_types <-
-      gss %>%
-      dplyr::mutate(
-         age = as.integer(age),
-         is_dem = dplyr::if_else(partyid == "dem", TRUE, FALSE),
-         finrela = as.character(finrela)
-      )
+  gss_types <-
+    gss %>%
+    dplyr::mutate(
+      age = as.integer(age),
+      is_dem = dplyr::if_else(partyid == "dem", TRUE, FALSE),
+      finrela = as.character(finrela)
+    )
 
-   gss_std <- standardize_variable_types(gss_types)
+  gss_std <- standardize_variable_types(gss_types)
 
-   expect_true(inherits(gss_types$age,     "integer"))
-   expect_true(inherits(gss_types$finrela, "character"))
-   expect_true(inherits(gss_types$income,  "ordered"))
-   expect_true(inherits(gss_types$college, "factor"))
-   expect_true(inherits(gss_types$is_dem,  "logical"))
+  expect_true(inherits(gss_types$age, "integer"))
+  expect_true(inherits(gss_types$finrela, "character"))
+  expect_true(inherits(gss_types$income, "ordered"))
+  expect_true(inherits(gss_types$college, "factor"))
+  expect_true(inherits(gss_types$is_dem, "logical"))
 
-   expect_null(levels(gss_types$is_dem))
+  expect_null(levels(gss_types$is_dem))
 
-   expect_true(inherits(gss_std$age,     "numeric"))
-   expect_true(inherits(gss_std$finrela, "factor"))
-   expect_true(inherits(gss_std$income,  "factor"))
-   expect_true(inherits(gss_std$college, "factor"))
-   expect_true(inherits(gss_std$is_dem,  "factor"))
+  expect_true(inherits(gss_std$age, "numeric"))
+  expect_true(inherits(gss_std$finrela, "factor"))
+  expect_true(inherits(gss_std$income, "factor"))
+  expect_true(inherits(gss_std$college, "factor"))
+  expect_true(inherits(gss_std$is_dem, "factor"))
 
-   expect_equal(levels(gss_std$is_dem), c("TRUE", "FALSE"))
+  expect_equal(levels(gss_std$is_dem), c("TRUE", "FALSE"))
 })
 
 test_that("group_by_replicate() helper returns correct results", {
-   reps <- 500
-   nrow_gss <- nrow(gss)
+  reps <- 500
+  nrow_gss <- nrow(gss)
 
-   gss_gen <-
-      gss %>%
-      specify(age ~ college) %>%
-      hypothesize(null = "independence") %>%
-      generate(reps = reps, type = "permute") %>%
-      dplyr::ungroup()
+  gss_gen <-
+    gss %>%
+    specify(age ~ college) %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = reps, type = "permute") %>%
+    dplyr::ungroup()
 
-   expect_equal(
-      dplyr::group_by(gss_gen, replicate),
-      group_by_replicate(gss_gen, reps, nrow_gss)
-   )
+  expect_equal(
+    dplyr::group_by(gss_gen, replicate),
+    group_by_replicate(gss_gen, reps, nrow_gss)
+  )
 })

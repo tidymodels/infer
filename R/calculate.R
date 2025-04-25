@@ -86,15 +86,31 @@
 #' @importFrom rlang !! sym quo enquo eval_tidy
 #' @family core functions
 #' @export
-calculate <- function(x,
-                      stat = c(
-                        "mean", "median", "sum", "sd", "prop", "count",
-                        "diff in means", "diff in medians", "diff in props",
-                        "Chisq", "F", "slope", "correlation", "t", "z",
-                        "ratio of props", "odds ratio", "ratio of means"
-                      ),
-                      order = NULL,
-                      ...) {
+calculate <- function(
+  x,
+  stat = c(
+    "mean",
+    "median",
+    "sum",
+    "sd",
+    "prop",
+    "count",
+    "diff in means",
+    "diff in medians",
+    "diff in props",
+    "Chisq",
+    "F",
+    "slope",
+    "correlation",
+    "t",
+    "z",
+    "ratio of props",
+    "odds ratio",
+    "ratio of means"
+  ),
+  order = NULL,
+  ...
+) {
   check_type(x, tibble::is_tibble)
   check_if_mlr(x, "calculate")
   stat <- check_calculate_stat(stat)
@@ -112,7 +128,10 @@ calculate <- function(x,
 
   # Use S3 method to match correct calculation
   result <- calc_impl(
-    structure(stat, class = gsub(" ", "_", stat)), x, order, ...
+    structure(stat, class = gsub(" ", "_", stat)),
+    x,
+    order,
+    ...
   )
 
   result <- copy_attrs(to = result, from = x)
@@ -129,7 +148,7 @@ calculate <- function(x,
 check_if_mlr <- function(x, fn, call = caller_env()) {
   if (fn == "calculate") {
     suggestion <-
-       "When working with multiple explanatory variables, use \\
+      "When working with multiple explanatory variables, use \\
         {.help [{.fun fit}](infer::fit.infer)} instead."
   } else {
     suggestion <- ""
@@ -137,15 +156,16 @@ check_if_mlr <- function(x, fn, call = caller_env()) {
 
   if (is_mlr(x)) {
     cli_abort(
-      c("Multiple explanatory variables are not supported in {.fun {fn}}.",
-        i = suggestion),
+      c(
+        "Multiple explanatory variables are not supported in {.fun {fn}}.",
+        i = suggestion
+      ),
       call = call
     )
   }
 }
 
 check_calculate_stat <- function(stat, call = caller_env()) {
-
   check_type(stat, rlang::is_string, call = call)
 
   # Check for possible `stat` aliases
@@ -199,8 +219,10 @@ check_input_vs_stat <- function(x, stat, call = caller_env()) {
 
   if (is_hypothesized(x)) {
     stat_nulls <- stat_hypotheses %>%
-      dplyr::filter(stat == !!stat &
-                    hypothesis == attr(x, "null"))
+      dplyr::filter(
+        stat == !!stat &
+          hypothesis == attr(x, "null")
+      )
 
     if (nrow(stat_nulls) == 0) {
       cli_abort(
@@ -250,17 +272,19 @@ message_on_excessive_null <- function(x, stat = "mean", fn) {
 # User didn't supply "enough" information - no hypothesis for a theorized
 # statistic on a point estimate, so warn that a reasonable value was assumed.
 warn_on_insufficient_null <- function(x, stat, ...) {
-  if (!is_hypothesized(x)          &&
-      !has_explanatory(x)          &&
+  if (
+    !is_hypothesized(x) &&
+      !has_explanatory(x) &&
       !stat %in% untheorized_stats &&
-      !(stat == "t" && "mu" %in% names(list(...)))) {
+      !(stat == "t" && "mu" %in% names(list(...)))
+  ) {
     attr(x, "null") <- "point"
     attr(x, "params") <- assume_null(x, stat)
 
     cli_warn(c(
       "{get_stat_desc(stat)} requires a null \\
        hypothesis to calculate the observed statistic.",
-       "Output assumes the following null value{print_params(x)}."
+      "Output assumes the following null value{print_params(x)}."
     ))
   }
 
@@ -276,7 +300,7 @@ calc_impl_one_f <- function(f) {
     col <- base::setdiff(names(x), "replicate")
 
     if (!identical(dplyr::group_vars(x), "replicate")) {
-       x <- dplyr::group_by(x, replicate)
+      x <- dplyr::group_by(x, replicate)
     }
 
     res <- x %>%
@@ -314,7 +338,7 @@ calc_impl_success_f <- function(f, output_name) {
     success <- attr(x, "success")
 
     if (!identical(dplyr::group_vars(x), "replicate")) {
-       x <- dplyr::group_by(x, replicate)
+      x <- dplyr::group_by(x, replicate)
     }
 
     res <- x %>%
@@ -383,8 +407,8 @@ calc_impl_diff_f <- function(f, operator) {
       dplyr::group_by(replicate) %>%
       dplyr::summarize(
         stat = operator(
-           value[!!(explanatory_expr(x)) == order[1]],
-           value[!!(explanatory_expr(x)) == order[2]]
+          value[!!(explanatory_expr(x)) == order[1]],
+          value[!!(explanatory_expr(x)) == order[2]]
         )
       )
 
@@ -468,11 +492,19 @@ calc_impl.Chisq <- function(type, x, order, ...) {
   }
 
   copy_attrs(
-    to = result, from = x,
+    to = result,
+    from = x,
     attrs = c(
-      "response", "success", "explanatory", "response_type",
-      "explanatory_type", "distr_param", "distr_param2", "theory_type",
-      "type_desc_response", "type_desc_explanatory"
+      "response",
+      "success",
+      "explanatory",
+      "response_type",
+      "explanatory_type",
+      "distr_param",
+      "distr_param2",
+      "theory_type",
+      "type_desc_response",
+      "type_desc_explanatory"
     )
   )
 }
@@ -549,7 +581,8 @@ calc_impl.t <- function(type, x, order, ...) {
     df_out <- x %>%
       dplyr::summarize(
         stat = stats::t.test(
-          !!response_expr(x) ~ !!explanatory_expr(x), ...
+          !!response_expr(x) ~ !!explanatory_expr(x),
+          ...
         )[["statistic"]]
       )
   } else if (theory_type(x) == "One sample t") {
@@ -618,9 +651,9 @@ calc_impl.z <- function(type, x, order, ...) {
 
     df_out <- x %>%
       dplyr::summarize(
-        stat = (
-          mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...) - p0
-        ) / sqrt((p0 * (1 - p0)) / num_rows)
+        stat = (mean(rlang::eval_tidy(col) == rlang::eval_tidy(success), ...) -
+          p0) /
+          sqrt((p0 * (1 - p0)) / num_rows)
       )
 
     df_out

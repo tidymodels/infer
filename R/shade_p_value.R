@@ -109,8 +109,13 @@ NULL
 #' @rdname shade_p_value
 #' @family visualization functions
 #' @export
-shade_p_value <- function(obs_stat, direction,
-                          color = "red2", fill = "pink", ...) {
+shade_p_value <- function(
+  obs_stat,
+  direction,
+  color = "red2",
+  fill = "pink",
+  ...
+) {
   # since most of the logic for p-value shading is in shade_p_value_term, which
   # is only called by `+.gg`, we need to check for mistakenly piped inputs here
   check_for_piped_visualize(obs_stat, direction, color, fill)
@@ -120,8 +125,16 @@ shade_p_value <- function(obs_stat, direction,
     "A p-value shading layer.",
     class = "infer_layer",
     fn = "shade_p_value",
-    obs_stat = if (is.null(obs_stat)) {NA} else {obs_stat},
-    direction = if (is.null(direction)) {NA} else {direction},
+    obs_stat = if (is.null(obs_stat)) {
+      NA
+    } else {
+      obs_stat
+    },
+    direction = if (is.null(direction)) {
+      NA
+    } else {
+      direction
+    },
     color = color,
     fill = list(fill),
     dots = list(...)
@@ -132,9 +145,15 @@ shade_p_value <- function(obs_stat, direction,
 #' @export
 shade_pvalue <- shade_p_value
 
-shade_p_value_term <- function(plot, obs_stat, direction,
-                               color = "red2", fill = "pink", dots,
-                               call = rlang::call2("shade_p_value")) {
+shade_p_value_term <- function(
+  plot,
+  obs_stat,
+  direction,
+  color = "red2",
+  fill = "pink",
+  dots,
+  call = rlang::call2("shade_p_value")
+) {
   if (all(is.na(obs_stat))) {
     obs_stat <- NULL
   }
@@ -160,17 +179,19 @@ shade_p_value_term <- function(plot, obs_stat, direction,
       tail_area <- one_tail_area(obs_stat, direction)
 
       res <- c(res, do.call(geom_tail_area, c(list(tail_area, fill), dots)))
-    } else if (direction %in% c("two_sided", "both",
-                                "two-sided", "two sided", "two.sided")) {
+    } else if (
+      direction %in%
+        c("two_sided", "both", "two-sided", "two sided", "two.sided")
+    ) {
       tail_area <- two_tail_area(obs_stat, direction)
 
       res <- c(res, do.call(geom_tail_area, c(list(tail_area, fill), dots)))
     } else {
-       cli_warn(
+      cli_warn(
         '`direction` should be one of `"less"`, `"left"`, `"greater"`, \\
          `"right"`, `"two-sided"`, `"both"`, `"two_sided"`, `"two sided"`, \\
          or `"two.sided"`.'
-       )
+      )
     }
   }
 
@@ -200,7 +221,13 @@ shade_p_value_term <- function(plot, obs_stat, direction,
 }
 
 
-check_shade_p_value_args <- function(obs_stat, direction, color, fill, call = caller_env()) {
+check_shade_p_value_args <- function(
+  obs_stat,
+  direction,
+  color,
+  fill,
+  call = caller_env()
+) {
   if (!is.null(obs_stat)) {
     check_type(obs_stat, is.numeric, call = call)
   }
@@ -246,10 +273,14 @@ two_tail_area <- function(obs_stat, direction) {
     }
 
     left_area <- one_tail_area(
-      min(obs_stat, second_border), "left", do_warn = FALSE
+      min(obs_stat, second_border),
+      "left",
+      do_warn = FALSE
     )(data)
     right_area <- one_tail_area(
-      max(obs_stat, second_border), "right", do_warn = FALSE
+      max(obs_stat, second_border),
+      "right",
+      do_warn = FALSE
     )(data)
 
     ret <- dplyr::bind_rows(left_area, right_area)
@@ -258,7 +289,7 @@ two_tail_area <- function(obs_stat, direction) {
     # so that their heights aren't summed
     common_x <- which.max(ret$x[ret$dir == "left"])
 
-    ret$x[common_x] <- ret$x[common_x] - 1e-5*ret$x[common_x]
+    ret$x[common_x] <- ret$x[common_x] - 1e-5 * ret$x[common_x]
 
     ret
   }
@@ -276,8 +307,8 @@ one_tail_area <- function(obs_stat, direction, do_warn = TRUE) {
     switch(
       viz_method,
       theoretical = theor_area(data, obs_stat, norm_dir),
-      simulation  = hist_area(data, obs_stat, norm_dir, yval = "ymax"),
-      both        = hist_area(data, obs_stat, norm_dir, yval = "density")
+      simulation = hist_area(data, obs_stat, norm_dir, yval = "ymax"),
+      both = hist_area(data, obs_stat, norm_dir, yval = "density")
     )
   }
 }
@@ -289,14 +320,17 @@ theor_area <- function(data, obs_stat, direction, n_grid = 1001) {
   g_data <- ggplot2::ggplot_build(g)[["data"]][[1]]
 
   curve_fun <- stats::approxfun(
-    x = g_data[["x"]], y = g_data[["y"]], yleft = 0, yright = 0
+    x = g_data[["x"]],
+    y = g_data[["y"]],
+    yleft = 0,
+    yright = 0
   )
 
   # Compute "x" grid of curve, area under which will be shaded.
   x_grid <- switch(
     # `direction` can be one of "left" or "right" at this point of execution
     direction,
-    left  = seq(from = min(g_data[["x"]]), to = obs_stat, length.out = n_grid),
+    left = seq(from = min(g_data[["x"]]), to = obs_stat, length.out = n_grid),
     right = seq(from = obs_stat, to = max(g_data[["x"]]), length.out = n_grid)
   )
 
@@ -311,8 +345,8 @@ hist_area <- function(data, obs_stat, direction, yval) {
   # between them.
   # "x" coordinates are computed from `x_left` and `x_right`: "x" coordinates
   # of "shrinked" (to avoid duplicte points later) histogram bars.
-  x_left <- (1-1e-5)*g_data[["xmin"]] + 1e-5*g_data[["xmax"]]
-  x_right <- 1e-5*g_data[["xmin"]] + (1 - 1e-5)*g_data[["xmax"]]
+  x_left <- (1 - 1e-5) * g_data[["xmin"]] + 1e-5 * g_data[["xmax"]]
+  x_right <- 1e-5 * g_data[["xmin"]] + (1 - 1e-5) * g_data[["xmax"]]
   # `x` is created as `c(x_left[1], x_right[1], x_left[2], ...)`
   x <- c(t(cbind(x_left, x_right)))
 
@@ -339,12 +373,16 @@ hist_area <- function(data, obs_stat, direction, yval) {
   # "almost vertical" lines with `geom_area()` usage. If don't do this, then
   # area might be shaded under line segments connecting edges of consequtive
   # histogram bars.
-  x_extra <- switch(direction, left = g_data[["xmax"]], right = g_data[["xmin"]])
+  x_extra <- switch(
+    direction,
+    left = g_data[["xmax"]],
+    right = g_data[["xmin"]]
+  )
   x_extra <- sort(c(x, x_extra))
   x_grid <- switch(
     # `direction` can be one of "left" or "right" at this point of execution
     direction,
-    left  = c(x_extra[x_extra < obs_stat], obs_stat),
+    left = c(x_extra[x_extra < obs_stat], obs_stat),
     right = c(obs_stat, x_extra[x_extra > obs_stat])
   )
 
@@ -360,20 +398,29 @@ hist_area <- function(data, obs_stat, direction, yval) {
 norm_direction <- function(direction) {
   switch(
     direction,
-    less = , left = "left",
-    greater = , right = "right",
-    two_sided = , `two-sided` = , `two sided` = , `two.sided` = , both = "both"
+    less = ,
+    left = "left",
+    greater = ,
+    right = "right",
+    two_sided = ,
+    `two-sided` = ,
+    `two sided` = ,
+    `two.sided` = ,
+    both = "both"
   )
 }
 
 warn_right_tail_test <- function(direction, stat_name, do_warn = TRUE) {
-  if (do_warn && !is.null(direction) &&
+  if (
+    do_warn &&
+      !is.null(direction) &&
       !(direction %in% c("greater", "right")) &&
-      (stat_name %in% c("F", "Chi-Square"))) {
-     cli_warn(
+      (stat_name %in% c("F", "Chi-Square"))
+  ) {
+    cli_warn(
       "{stat_name} usually corresponds to right-tailed tests. \\
        Proceed with caution."
-     )
+    )
   }
 
   TRUE
@@ -384,4 +431,3 @@ mirror_obs_stat <- function(vector, observation) {
 
   stats::quantile(vector, probs = 1 - obs_percentile)
 }
-

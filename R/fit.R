@@ -162,10 +162,12 @@ check_family <- function(object, ..., call = caller_env()) {
   response_type <- attr(object, "type_desc_response")
 
   if (response_type == "mult") {
-    cli_abort(c(
-      "infer does not support fitting models for categorical response variables \\
+    cli_abort(
+      c(
+        "infer does not support fitting models for categorical response variables \\
        with more than two levels.",
-      i = "Please see {.fun multinom_reg} from the parsnip package."),
+        i = "Please see {.fun multinom_reg} from the parsnip package."
+      ),
       call = call
     )
   }
@@ -194,7 +196,6 @@ relevel_response <- function(x) {
       )
   }
 
-
   x
 }
 
@@ -216,10 +217,10 @@ get_formula <- function(x) {
 
 fit_linear_model <- function(object, formula, ...) {
   stats::glm(
-      formula = formula,
-      data = object,
-      ...
-    ) %>%
+    formula = formula,
+    data = object,
+    ...
+  ) %>%
     broom::tidy() %>%
     dplyr::select(
       .,

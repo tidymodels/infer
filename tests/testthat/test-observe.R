@@ -35,25 +35,29 @@ test_that("observe messages/warns/errors informatively", {
     expect_message(
       gss %>%
         observe(hours ~ NULL, stat = "mean", mu = 40)
-    ) %>% conditionMessage(),
+    ) %>%
+      conditionMessage(),
     expect_message(
       gss %>%
         specify(hours ~ NULL) %>%
         hypothesize(null = "point", mu = 40) %>%
         calculate(stat = "mean")
-    ) %>% conditionMessage()
+    ) %>%
+      conditionMessage()
   )
 
   expect_equal(
-     expect_warning(
-        gss %>%
-           observe(hours ~ NULL, stat = "t")
-     ) %>% conditionMessage(),
-     expect_warning(
-        gss %>%
-           specify(hours ~ NULL) %>%
-           calculate(stat = "t")
-     ) %>% conditionMessage()
+    expect_warning(
+      gss %>%
+        observe(hours ~ NULL, stat = "t")
+    ) %>%
+      conditionMessage(),
+    expect_warning(
+      gss %>%
+        specify(hours ~ NULL) %>%
+        calculate(stat = "t")
+    ) %>%
+      conditionMessage()
   )
 
   expect_error(
@@ -136,12 +140,12 @@ test_that("observe() works with either specify() interface", {
 })
 
 test_that("observe() output is the same as the old wrappers", {
-   expect_snapshot(
-      res_wrap <- gss_tbl %>%
-         chisq_stat(college ~ partyid)
-   )
+  expect_snapshot(
+    res_wrap <- gss_tbl %>%
+      chisq_stat(college ~ partyid)
+  )
 
-   expect_equal(
+  expect_equal(
     gss_tbl %>%
       observe(college ~ partyid, stat = "Chisq") %>%
       dplyr::pull(),
@@ -150,7 +154,7 @@ test_that("observe() output is the same as the old wrappers", {
 
   expect_snapshot(
     res_wrap_2 <- gss_tbl %>%
-       t_stat(hours ~ sex, order = c("male", "female"))
+      t_stat(hours ~ sex, order = c("male", "female"))
   )
 
   expect_equal(
@@ -160,4 +164,3 @@ test_that("observe() output is the same as the old wrappers", {
     res_wrap_2
   )
 })
-

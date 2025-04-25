@@ -23,32 +23,27 @@ test_that("`rep_sample_n` checks input", {
   expect_snapshot(error = TRUE, rep_sample_n(population, size = -1))
 
   # `replace`
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     rep_sample_n(population, size = 1, replace = "a")
   )
 
   # `reps`
-  expect_snapshot(error = TRUE,
-    rep_sample_n(population, size = 1, reps = "a")
-  )
-  expect_snapshot(error = TRUE,
-    rep_sample_n(population, size = 1, reps = 1:2)
-  )
-  expect_snapshot(error = TRUE,
-    rep_sample_n(population, size = 1, reps = 0.5)
-  )
+  expect_snapshot(error = TRUE, rep_sample_n(population, size = 1, reps = "a"))
+  expect_snapshot(error = TRUE, rep_sample_n(population, size = 1, reps = 1:2))
+  expect_snapshot(error = TRUE, rep_sample_n(population, size = 1, reps = 0.5))
 
   # `prob`
-  expect_snapshot(error = TRUE,
-    rep_sample_n(population, size = 1, prob = "a")
-  )
-  expect_snapshot(error = TRUE,
+  expect_snapshot(error = TRUE, rep_sample_n(population, size = 1, prob = "a"))
+  expect_snapshot(
+    error = TRUE,
     rep_sample_n(population, size = 1, prob = c(0.1, 0.9))
   )
 })
 
 test_that("`rep_sample_n` gives error on big sample size if `replace=FALSE`", {
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     rep_sample_n(population, size = n_population * 2)
   )
 })
@@ -155,36 +150,32 @@ test_that("`rep_slice_sample` checks input", {
   expect_snapshot(error = TRUE, rep_slice_sample(population, prop = -1))
 
   # Only one `n` or `prop` should be supplied
-  expect_snapshot(error = TRUE,
-    rep_slice_sample(population, n = 1, prop = 0.5)
-  )
+  expect_snapshot(error = TRUE, rep_slice_sample(population, n = 1, prop = 0.5))
 
   # `replace`
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     rep_slice_sample(population, n = 1, replace = "a")
   )
 
   # `weight_by`
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     rep_slice_sample(population, n = 1, weight_by = "a")
   )
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     rep_slice_sample(population, n = 1, weight_by = c(0.1, 0.9))
   )
-  expect_snapshot(error = TRUE,
-     rep_slice_sample(population, n = 1, weight_by = wts)
+  expect_snapshot(
+    error = TRUE,
+    rep_slice_sample(population, n = 1, weight_by = wts)
   )
 
   # `reps`
-  expect_snapshot(error = TRUE,
-    rep_slice_sample(population, n = 1, reps = "a")
-  )
-  expect_snapshot(error = TRUE,
-    rep_slice_sample(population, n = 1, reps = 1:2)
-  )
-  expect_snapshot(error = TRUE,
-    rep_slice_sample(population, n = 1, reps = 0.5)
-  )
+  expect_snapshot(error = TRUE, rep_slice_sample(population, n = 1, reps = "a"))
+  expect_snapshot(error = TRUE, rep_slice_sample(population, n = 1, reps = 1:2))
+  expect_snapshot(error = TRUE, rep_slice_sample(population, n = 1, reps = 0.5))
 })
 
 test_that("`rep_slice_sample` warns on big sample size if `replace = FALSE`", {
@@ -271,13 +262,13 @@ test_that("`rep_slice_sample` uses `weight_by`", {
   )
 
   population_wt <-
-     population %>%
-     dplyr::mutate(wts = rep(1, n_population) / n_population)
+    population %>%
+    dplyr::mutate(wts = rep(1, n_population) / n_population)
   set.seed(1)
   res3 <- rep_slice_sample(
-     population_wt,
-     n = n_population,
-     weight_by = wts
+    population_wt,
+    n = n_population,
+    weight_by = wts
   )
 
   expect_equal(res1[["ball_id"]], res2[["ball_id"]])

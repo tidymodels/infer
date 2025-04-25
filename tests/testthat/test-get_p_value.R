@@ -1,26 +1,75 @@
 set.seed(2018)
-test_df <- gss_calc[1:20,]
+test_df <- gss_calc[1:20, ]
 test_df$stat <- sample(c(
-  -5, -4, -4, -4, -1, -0.5, rep(0, 6), 1, 1, 3.999, 4, 4, 4.001, 5, 5
+  -5,
+  -4,
+  -4,
+  -4,
+  -1,
+  -0.5,
+  rep(0, 6),
+  1,
+  1,
+  3.999,
+  4,
+  4,
+  4.001,
+  5,
+  5
 ))
 
 test_that("direction is appropriate", {
-  expect_snapshot(error = TRUE, test_df %>% get_p_value(obs_stat = 0.5, direction = "righ"))
+  expect_snapshot(
+    error = TRUE,
+    test_df %>% get_p_value(obs_stat = 0.5, direction = "righ")
+  )
 })
 
 test_that("get_p_value works", {
-  expect_equal(get_p_value(test_df, 4, "right")[[1]][1], 5/20, tolerance = eps)
-  expect_equal(get_p_value(test_df, 4, "left")[[1]][1], 17/20, tolerance = eps)
-  expect_equal(get_p_value(test_df, 4, "both")[[1]][1], 10/20, tolerance = eps)
+  expect_equal(
+    get_p_value(test_df, 4, "right")[[1]][1],
+    5 / 20,
+    tolerance = eps
+  )
+  expect_equal(
+    get_p_value(test_df, 4, "left")[[1]][1],
+    17 / 20,
+    tolerance = eps
+  )
+  expect_equal(
+    get_p_value(test_df, 4, "both")[[1]][1],
+    10 / 20,
+    tolerance = eps
+  )
 
-  expect_equal(get_p_value(test_df, 0, "right")[[1]][1], 14/20, tolerance = eps)
-  expect_equal(get_p_value(test_df, 0, "left")[[1]][1], 12/20, tolerance = eps)
+  expect_equal(
+    get_p_value(test_df, 0, "right")[[1]][1],
+    14 / 20,
+    tolerance = eps
+  )
+  expect_equal(
+    get_p_value(test_df, 0, "left")[[1]][1],
+    12 / 20,
+    tolerance = eps
+  )
   # This is also a check for not returning value more than 1
   expect_equal(get_p_value(test_df, 0, "both")[[1]][1], 1, tolerance = eps)
 
-  expect_equal(get_p_value(test_df, -3.999, "right")[[1]][1], 16/20, tolerance = eps)
-  expect_equal(get_p_value(test_df, -3.999, "left")[[1]][1], 4/20, tolerance = eps)
-  expect_equal(get_p_value(test_df, -3.999, "both")[[1]][1], 8/20, tolerance = eps)
+  expect_equal(
+    get_p_value(test_df, -3.999, "right")[[1]][1],
+    16 / 20,
+    tolerance = eps
+  )
+  expect_equal(
+    get_p_value(test_df, -3.999, "left")[[1]][1],
+    4 / 20,
+    tolerance = eps
+  )
+  expect_equal(
+    get_p_value(test_df, -3.999, "both")[[1]][1],
+    8 / 20,
+    tolerance = eps
+  )
 
   expect_equal(
     get_p_value(test_df, 4, "greater"),
@@ -58,7 +107,8 @@ test_that("theoretical p-value not supported error", {
   obs_F <- gss_tbl %>%
     specify(hours ~ partyid) %>%
     calculate(stat = "F")
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     gss_tbl %>%
       specify(hours ~ partyid) %>%
       hypothesize(null = "independence") %>%
@@ -75,14 +125,10 @@ test_that("get_p_value warns in case of zero p-value", {
 
 test_that("get_p_value throws error in case of `NaN` stat", {
   gss_calc$stat[1] <- NaN
-  expect_snapshot(error = TRUE,
-    res_ <- get_p_value(gss_calc, 0, "both")
-  )
+  expect_snapshot(error = TRUE, res_ <- get_p_value(gss_calc, 0, "both"))
 
   gss_calc$stat[2] <- NaN
-  expect_snapshot(error = TRUE,
-    res_ <- get_p_value(gss_calc, 0, "both")
-  )
+  expect_snapshot(error = TRUE, res_ <- get_p_value(gss_calc, 0, "both"))
 
   # In the case that _all_ values are NaN, error should have different text
   gss_calc$stat <- NaN
@@ -92,21 +138,23 @@ test_that("get_p_value throws error in case of `NaN` stat", {
 test_that("get_p_value can handle fitted objects", {
   set.seed(1)
 
-  null_fits <- gss[1:50,] %>%
+  null_fits <- gss[1:50, ] %>%
     specify(hours ~ age + college) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute") %>%
     fit()
 
-  obs_fit <- gss[1:50,] %>%
+  obs_fit <- gss[1:50, ] %>%
     specify(hours ~ age + college) %>%
     fit()
 
   expect_equal(
     get_p_value(null_fits, obs_fit, "both"),
     structure(
-      list(term = c("age", "collegedegree", "intercept"),
-           p_value = c(0.6, 0.4, 0.6)),
+      list(
+        term = c("age", "collegedegree", "intercept"),
+        p_value = c(0.6, 0.4, 0.6)
+      ),
       row.names = c(NA, -3L),
       class = c("tbl_df", "tbl", "data.frame")
     ),
@@ -114,31 +162,27 @@ test_that("get_p_value can handle fitted objects", {
   )
 
   # errors out when it ought to
-  obs_fit_2 <- gss[1:50,] %>%
+  obs_fit_2 <- gss[1:50, ] %>%
     specify(hours ~ age) %>%
     fit()
 
-  expect_snapshot(error = TRUE,
-    get_p_value(null_fits, obs_fit_2, "both")
-  )
+  expect_snapshot(error = TRUE, get_p_value(null_fits, obs_fit_2, "both"))
 
-  obs_fit_3 <- gss[1:50,] %>%
+  obs_fit_3 <- gss[1:50, ] %>%
     specify(year ~ age + college) %>%
     fit()
 
-  expect_snapshot(error = TRUE,
-    get_p_value(null_fits, obs_fit_3, "both")
-  )
+  expect_snapshot(error = TRUE, get_p_value(null_fits, obs_fit_3, "both"))
 
   set.seed(1)
 
-  null_fits_4 <- gss[1:50,] %>%
+  null_fits_4 <- gss[1:50, ] %>%
     specify(hours ~ age) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute") %>%
     fit()
 
-  obs_fit_4 <- gss[1:50,] %>%
+  obs_fit_4 <- gss[1:50, ] %>%
     specify(hours ~ age) %>%
     fit()
 
@@ -149,7 +193,8 @@ test_that("get_p_value can handle fitted objects", {
     structure(
       list(
         term = c("age", "intercept"),
-        p_value = c(0.6, 0.6)),
+        p_value = c(0.6, 0.6)
+      ),
       row.names = c(NA, -2L),
       class = c("tbl_df", "tbl", "data.frame")
     ),
@@ -174,27 +219,24 @@ test_that("get_p_value can handle fitted objects", {
 test_that("get_p_value can handle bad args with fitted objects", {
   set.seed(1)
 
-  null_fits <- gss[1:50,] %>%
+  null_fits <- gss[1:50, ] %>%
     specify(hours ~ age + college) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute") %>%
     fit()
 
-  obs_fit <- gss[1:50,] %>%
+  obs_fit <- gss[1:50, ] %>%
     specify(hours ~ age + college) %>%
     fit()
 
-  expect_snapshot(error = TRUE,
-    get_p_value(null_fits, "boop", "both")
-  )
+  expect_snapshot(error = TRUE, get_p_value(null_fits, "boop", "both"))
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     get_p_value(null_fits, obs_fit$estimate, "both")
   )
 
-  expect_snapshot(error = TRUE,
-    get_p_value(obs_fit, null_fits, "both")
-  )
+  expect_snapshot(error = TRUE, get_p_value(obs_fit, null_fits, "both"))
 })
 
 test_that("get_p_value errors informatively when args are switched", {
@@ -211,9 +253,7 @@ test_that("get_p_value errors informatively when args are switched", {
     generate(reps = 20, type = "bootstrap") %>%
     calculate(stat = "mean")
 
-  expect_snapshot(error = TRUE,
-    get_p_value(obs_stat, null_dist, "both")
-  )
+  expect_snapshot(error = TRUE, get_p_value(obs_stat, null_dist, "both"))
 
   expect_silent(
     get_p_value(null_dist, obs_stat, "both")
@@ -379,12 +419,30 @@ test_that("get_p_value can handle theoretical distributions", {
     tolerance = 1e-3
   )
 
-  old_way_z_both <- prop_test(gss, sex ~ NULL, success = "female", p = .5,
-                              alternative = "two.sided", z = TRUE)
-  old_way_z_left <- prop_test(gss, sex ~ NULL, success = "female", p = .5,
-                              alternative = "less", z = TRUE)
-  old_way_z_right <- prop_test(gss, sex ~ NULL, success = "female", p = .5,
-                               alternative = "greater", z = TRUE)
+  old_way_z_both <- prop_test(
+    gss,
+    sex ~ NULL,
+    success = "female",
+    p = .5,
+    alternative = "two.sided",
+    z = TRUE
+  )
+  old_way_z_left <- prop_test(
+    gss,
+    sex ~ NULL,
+    success = "female",
+    p = .5,
+    alternative = "less",
+    z = TRUE
+  )
+  old_way_z_right <- prop_test(
+    gss,
+    sex ~ NULL,
+    success = "female",
+    p = .5,
+    alternative = "greater",
+    z = TRUE
+  )
 
   expect_equal(
     get_p_value_(z_dist, z_obs, direction = "both"),
@@ -441,4 +499,3 @@ test_that("get_p_value warns with bad theoretical distributions", {
     )
   )
 })
-

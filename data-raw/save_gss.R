@@ -5,7 +5,7 @@ library(ggplot2)
 
 # pull gss data
 temp <- tempfile()
-download.file("https://gss.norc.org/documents/stata/GSS_stata.zip",temp)
+download.file("https://gss.norc.org/documents/stata/GSS_stata.zip", temp)
 
 # if this next line errors with "No such file or directory", try
 # incrementing the number after "_R"
@@ -16,39 +16,54 @@ unlink(temp)
 # select relevant columns
 gss_small <- gss_orig %>%
   filter(!stringr::str_detect(sample, "blk oversamp")) %>% # this is for weighting
-  select(year, age, sex, college = degree, partyid, hompop,
-         hours = hrs1, income, class, finrela, weight = wtssall) %>%
-  mutate_if(is.factor, ~fct_collapse(., NULL = c("IAP", "NA", "iap", "na"))) %>%
-  mutate(age = age %>%
-           fct_recode("89" = "89 or older",
-                      NULL = "DK") %>% # truncated at 89
-           as.character() %>%
-           as.numeric(),
-         hompop = hompop %>%
-           fct_collapse(NULL = c("DK")) %>%
-           as.character() %>%
-           as.numeric(),
-         hours = hours %>%
-           fct_recode("89" = "89+ hrs",
-                      NULL = "DK") %>% # truncated at 89
-           as.character() %>%
-           as.numeric(),
-         weight = weight %>%
-           as.character() %>%
-           as.numeric(),
-         partyid = fct_collapse(partyid,
-           dem = c("strong democrat", "not str democrat"),
-           rep = c("strong republican", "not str republican"),
-           ind = c("ind,near dem", "independent", "ind,near rep"),
-           other = "other party"
-         ),
-         income = factor(income, ordered = TRUE),
-         college = fct_collapse(college,
-           degree = c("junior college", "bachelor", "graduate"),
-           "no degree"  = c("lt high school", "high school"),
-           NULL = "dk" # no dks show up in the data, so drop this level
-         )
-         )
+  select(
+    year,
+    age,
+    sex,
+    college = degree,
+    partyid,
+    hompop,
+    hours = hrs1,
+    income,
+    class,
+    finrela,
+    weight = wtssall
+  ) %>%
+  mutate_if(
+    is.factor,
+    ~ fct_collapse(., NULL = c("IAP", "NA", "iap", "na"))
+  ) %>%
+  mutate(
+    age = age %>%
+      fct_recode("89" = "89 or older", NULL = "DK") %>% # truncated at 89
+      as.character() %>%
+      as.numeric(),
+    hompop = hompop %>%
+      fct_collapse(NULL = c("DK")) %>%
+      as.character() %>%
+      as.numeric(),
+    hours = hours %>%
+      fct_recode("89" = "89+ hrs", NULL = "DK") %>% # truncated at 89
+      as.character() %>%
+      as.numeric(),
+    weight = weight %>%
+      as.character() %>%
+      as.numeric(),
+    partyid = fct_collapse(
+      partyid,
+      dem = c("strong democrat", "not str democrat"),
+      rep = c("strong republican", "not str republican"),
+      ind = c("ind,near dem", "independent", "ind,near rep"),
+      other = "other party"
+    ),
+    income = factor(income, ordered = TRUE),
+    college = fct_collapse(
+      college,
+      degree = c("junior college", "bachelor", "graduate"),
+      "no degree" = c("lt high school", "high school"),
+      NULL = "dk" # no dks show up in the data, so drop this level
+    )
+  )
 
 # sample 3k rows, first dropping NAs
 set.seed(20200201)

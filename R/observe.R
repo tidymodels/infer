@@ -58,44 +58,73 @@
 #' @family functions for calculating observed statistics
 #' @export
 observe <- function(
-    x,
-    # specify arguments
-    formula, response = NULL, explanatory = NULL, success = NULL,
-    # hypothesize arguments
-    null = NULL, p = NULL, mu = NULL, med = NULL, sigma = NULL,
-    # calculate arguments
-    stat = c("mean", "median", "sum", "sd", "prop", "count", "diff in means",
-             "diff in medians", "diff in props", "Chisq", "F", "slope",
-             "correlation", "t", "z", "ratio of props", "odds ratio"),
-    order = NULL,
-    ...) {
-
+  x,
+  # specify arguments
+  formula,
+  response = NULL,
+  explanatory = NULL,
+  success = NULL,
+  # hypothesize arguments
+  null = NULL,
+  p = NULL,
+  mu = NULL,
+  med = NULL,
+  sigma = NULL,
+  # calculate arguments
+  stat = c(
+    "mean",
+    "median",
+    "sum",
+    "sd",
+    "prop",
+    "count",
+    "diff in means",
+    "diff in medians",
+    "diff in props",
+    "Chisq",
+    "F",
+    "slope",
+    "correlation",
+    "t",
+    "z",
+    "ratio of props",
+    "odds ratio"
+  ),
+  order = NULL,
+  ...
+) {
   # use hypothesize() if appropriate (or needed to pass an informative
   # message/warning). otherwise, pipe directly to calculate().
   if (!all(sapply(list(p, mu, med, sigma), is.null))) {
     hypothesize_fn <- hypothesize
   } else {
-    hypothesize_fn <- function(x, ...) {x}
+    hypothesize_fn <- function(x, ...) {
+      x
+    }
   }
 
   # pass arguments on to core verbs
   specify(
     x = x,
     formula = formula,
-    response = {{response}},
-    explanatory = {{explanatory}},
+    response = {{ response }},
+    explanatory = {{ explanatory }},
     success = success
   ) %>%
-  hypothesize_fn(
-    null = if (has_explanatory(.)) {"independence"} else {"point"},
-    p = p,
-    mu = mu,
-    med = med,
-    sigma = sigma
-  ) %>%
-  calculate(
-    stat = stat,
-    order = order,
-    ...
-  )
+    hypothesize_fn(
+      null = if (has_explanatory(.)) {
+        "independence"
+      } else {
+        "point"
+      },
+      p = p,
+      mu = mu,
+      med = med,
+      sigma = sigma
+    ) %>%
+    calculate(
+      stat = stat,
+      order = order,
+      ...
+    )
 }

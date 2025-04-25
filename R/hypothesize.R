@@ -53,11 +53,17 @@
 #' @importFrom purrr compact
 #' @family core functions
 #' @export
-hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) {
-
+hypothesize <- function(
+  x,
+  null,
+  p = NULL,
+  mu = NULL,
+  med = NULL,
+  sigma = NULL
+) {
   # Check arguments
   if (missing(null)) {
-     null <- NA
+    null <- NA
   }
   null <- match_null_hypothesis(null)
   hypothesize_checks(x, null)
@@ -70,7 +76,7 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
   # Set parameters and determine appropriate generation type
   switch(
     null,
-    independence =  {
+    independence = {
       params <- sanitize_hypothesis_params_independence(dots)
       attr(x, "type") <- "permute"
     },
@@ -92,8 +98,8 @@ hypothesize <- function(x, null, p = NULL, mu = NULL, med = NULL, sigma = NULL) 
       }
     },
     `paired independence` = {
-       params <- sanitize_hypothesis_params_paired_independence(dots)
-       attr(x, "type") <- "permute"
+      params <- sanitize_hypothesis_params_paired_independence(dots)
+      attr(x, "type") <- "permute"
     }
   )
 
@@ -108,45 +114,47 @@ hypothesise <- hypothesize
 
 hypothesize_checks <- function(x, null, call = caller_env()) {
   if (!inherits(x, "data.frame")) {
-     cli_abort("x must be a data.frame or tibble", call = call)
+    cli_abort("x must be a data.frame or tibble", call = call)
   }
 
   if ((null == "independence") && !has_explanatory(x)) {
-     cli_abort(
+    cli_abort(
       'Please {.fun specify} an explanatory and a response variable when \\
        testing a null hypothesis of `"independence"`.',
       call = call
-     )
+    )
   }
 
   if (null == "paired independence" && has_explanatory(x)) {
-     cli_abort(
-        c('Please {.fun specify} only a response variable when \\
+    cli_abort(
+      c(
+        'Please {.fun specify} only a response variable when \\
            testing a null hypothesis of `"paired independence"`.',
-          "i" = 'The supplied response variable should be the \\
-                 pre-computed difference between paired observations.'),
-       call = call
-     )
+        "i" = 'The supplied response variable should be the \\
+                 pre-computed difference between paired observations.'
+      ),
+      call = call
+    )
   }
 }
 
 match_null_hypothesis <- function(null, call = caller_env()) {
   null_hypothesis_types <- c("point", "independence", "paired independence")
 
-  if(length(null) != 1) {
-     cli_abort(
-       'You should specify exactly one type of null hypothesis.',
-       call = call
-     )
+  if (length(null) != 1) {
+    cli_abort(
+      'You should specify exactly one type of null hypothesis.',
+      call = call
+    )
   }
 
   i <- pmatch(null, null_hypothesis_types)
 
-  if(is.na(i)) {
-     cli_abort(
-       '`null` should be either "point", "independence", or "paired independence".',
-       call = call
-     )
+  if (is.na(i)) {
+    cli_abort(
+      '`null` should be either "point", "independence", or "paired independence".',
+      call = call
+    )
   }
 
   null_hypothesis_types[i]
@@ -154,7 +162,7 @@ match_null_hypothesis <- function(null, call = caller_env()) {
 
 sanitize_hypothesis_params_independence <- function(dots) {
   if (length(dots) > 0) {
-     cli_warn(
+    cli_warn(
       "Parameter values should not be specified when testing that two \\
        variables are independent."
     )
@@ -164,11 +172,11 @@ sanitize_hypothesis_params_independence <- function(dots) {
 }
 
 sanitize_hypothesis_params_point <- function(dots, x, call = caller_env()) {
-  if(length(dots) != 1) {
-     cli_abort(
-       "You must specify exactly one of `p`, `mu`, `med`, or `sigma`.",
-       call = call
-     )
+  if (length(dots) != 1) {
+    cli_abort(
+      "You must specify exactly one of `p`, `mu`, `med`, or `sigma`.",
+      call = call
+    )
   }
 
   if (!is.null(dots$p)) {
@@ -179,40 +187,44 @@ sanitize_hypothesis_params_point <- function(dots, x, call = caller_env()) {
 }
 
 sanitize_hypothesis_params_proportion <- function(p, x, call = caller_env()) {
-  eps <- if (capabilities("long.double")) {sqrt(.Machine$double.eps)} else {0.01}
-
-  if(anyNA(p)) {
-     cli_abort(
-       '`p` should not contain missing values.',
-       call = call
-     )
+  eps <- if (capabilities("long.double")) {
+    sqrt(.Machine$double.eps)
+  } else {
+    0.01
   }
 
-  if(any(p < 0 | p > 1)) {
-     cli_abort(
-       '`p` should only contain values between zero and one.',
-       call = call
-     )
+  if (anyNA(p)) {
+    cli_abort(
+      '`p` should not contain missing values.',
+      call = call
+    )
   }
 
-  if(length(p) == 1) {
-    if(!has_attr(x, "success")) {
-       cli_abort(
-         "A point null regarding a proportion requires that `success` \\
+  if (any(p < 0 | p > 1)) {
+    cli_abort(
+      '`p` should only contain values between zero and one.',
+      call = call
+    )
+  }
+
+  if (length(p) == 1) {
+    if (!has_attr(x, "success")) {
+      cli_abort(
+        "A point null regarding a proportion requires that `success` \\
           be indicated in `specify()`.",
-         call = call
-       )
+        call = call
+      )
     }
 
     p <- c(p, 1 - p)
     names(p) <- get_success_then_response_levels(x)
   } else {
     if (sum(p) < 1 - eps | sum(p) > 1 + eps) {
-       cli_abort(
-         "Make sure the hypothesized values for the `p` parameters sum to 1. \\
+      cli_abort(
+        "Make sure the hypothesized values for the `p` parameters sum to 1. \\
           Please try again.",
-         call = call
-       )
+        call = call
+      )
     }
   }
 
@@ -220,11 +232,11 @@ sanitize_hypothesis_params_proportion <- function(p, x, call = caller_env()) {
 }
 
 sanitize_hypothesis_params_paired_independence <- function(dots) {
-   if (length(dots) > 0) {
-      cli_warn(
-        "Parameter values should not be specified when testing paired independence."
-      )
-   }
+  if (length(dots) > 0) {
+    cli_warn(
+      "Parameter values should not be specified when testing paired independence."
+    )
+  }
 
-   NULL
+  NULL
 }

@@ -1,13 +1,13 @@
-x1 <- gss[1:100,] %>% specify(response = hours)
-x2 <- gss[1:100,] %>% specify(hours ~ NULL)
-x3 <- gss[1:100,] %>% specify(response = hours, explanatory = c(age, college))
-x4 <- gss[1:100,] %>% specify(hours ~ age + college)
+x1 <- gss[1:100, ] %>% specify(response = hours)
+x2 <- gss[1:100, ] %>% specify(hours ~ NULL)
+x3 <- gss[1:100, ] %>% specify(response = hours, explanatory = c(age, college))
+x4 <- gss[1:100, ] %>% specify(hours ~ age + college)
 
 test_that("get_formula helper works", {
   expect_false(has_attr(x1, "formula"))
-  expect_true(has_attr( x2, "formula"))
+  expect_true(has_attr(x2, "formula"))
   expect_false(has_attr(x3, "formula"))
-  expect_true(has_attr( x4, "formula"))
+  expect_true(has_attr(x4, "formula"))
 
   expect_equal(get_formula(x1), get_formula(x2), ignore_attr = TRUE)
   expect_equal(get_formula(x3), get_formula(x4), ignore_attr = TRUE)
@@ -51,7 +51,7 @@ test_that("fit.infer can handle generated objects", {
 
   x3_gen_fit <- x3 %>%
     hypothesize(null = 'independence') %>%
-    generate(reps = 2, type = "permute")%>%
+    generate(reps = 2, type = "permute") %>%
     fit()
 
   expect_equal(unique(x3_fit$term), unique(x3_gen_fit$term))
@@ -101,7 +101,8 @@ test_that("fit.infer logistic regression works", {
   )
 
   # errors informatively with multinomial response variable
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     gss %>%
       specify(finrela ~ age + college) %>%
       fit()

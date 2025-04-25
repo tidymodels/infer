@@ -15,8 +15,12 @@ NULL
 
 #' @rdname deprecated
 #' @export
-conf_int <- function(x, level = 0.95, type = "percentile",
-  point_estimate = NULL) {
+conf_int <- function(
+  x,
+  level = 0.95,
+  type = "percentile",
+  point_estimate = NULL
+) {
   lifecycle::deprecate_stop("0.4.0", "conf_int()", "get_confidence_interval()")
 }
 
@@ -24,5 +28,5 @@ conf_int <- function(x, level = 0.95, type = "percentile",
 #' @rdname deprecated
 #' @export
 p_value <- function(x, obs_stat, direction) {
-   lifecycle::deprecate_stop("0.4.0", "conf_int()", "get_p_value()")
+  lifecycle::deprecate_stop("0.4.0", "conf_int()", "get_p_value()")
 }

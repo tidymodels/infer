@@ -44,26 +44,32 @@
 #' @importFrom stats as.formula
 #' @family wrapper functions
 #' @export
-t_test <- function(x, formula,
-                   response = NULL,
-                   explanatory = NULL,
-                   order = NULL,
-                   alternative = "two-sided",
-                   mu = 0,
-                   conf_int = TRUE,
-                   conf_level = 0.95,
-                   ...) {
-
+t_test <- function(
+  x,
+  formula,
+  response = NULL,
+  explanatory = NULL,
+  order = NULL,
+  alternative = "two-sided",
+  mu = 0,
+  conf_int = TRUE,
+  conf_level = 0.95,
+  ...
+) {
   check_conf_level(conf_level)
 
   # convert all character and logical variables to be factor variables
   x <- standardize_variable_types(x)
 
   # parse response and explanatory variables
-  response    <- enquo(response)
+  response <- enquo(response)
   explanatory <- enquo(explanatory)
-  x <- parse_variables(x = x, formula = formula,
-                       response = response, explanatory = explanatory)
+  x <- parse_variables(
+    x = x,
+    formula = formula,
+    response = response,
+    explanatory = explanatory
+  )
 
   # match with old "dot" syntax in t.test
   if (alternative %in% c("two-sided", "two_sided", "two sided", "two.sided")) {
@@ -74,31 +80,45 @@ t_test <- function(x, formula,
   if (has_explanatory(x)) {
     order <- check_order(x, order, in_calculate = FALSE, stat = NULL)
     x <- reorder_explanatory(x, order)
-    prelim <- stats::t.test(formula = new_formula(response_expr(x), explanatory_expr(x)),
-                            data = x,
-                            alternative = alternative,
-                            mu = mu,
-                            conf.level = conf_level,
-                            ...) %>%
+    prelim <- stats::t.test(
+      formula = new_formula(response_expr(x), explanatory_expr(x)),
+      data = x,
+      alternative = alternative,
+      mu = mu,
+      conf.level = conf_level,
+      ...
+    ) %>%
       broom::glance()
-  } else { # one sample
-    prelim <- stats::t.test(response_variable(x),
-                            alternative = alternative,
-                            mu = mu,
-                            conf.level = conf_level) %>%
+  } else {
+    # one sample
+    prelim <- stats::t.test(
+      response_variable(x),
+      alternative = alternative,
+      mu = mu,
+      conf.level = conf_level
+    ) %>%
       broom::glance()
   }
 
   if (conf_int) {
     results <- prelim %>%
       dplyr::select(
-        statistic, t_df = parameter, p_value = p.value, alternative,
-        estimate, lower_ci = conf.low, upper_ci = conf.high
+        statistic,
+        t_df = parameter,
+        p_value = p.value,
+        alternative,
+        estimate,
+        lower_ci = conf.low,
+        upper_ci = conf.high
       )
   } else {
     results <- prelim %>%
       dplyr::select(
-        statistic, t_df = parameter, p_value = p.value, alternative, estimate
+        statistic,
+        t_df = parameter,
+        p_value = p.value,
+        alternative,
+        estimate
       )
   }
 
@@ -141,15 +161,18 @@ t_test <- function(x, formula,
 #' @family wrapper functions
 #' @family functions for calculating observed statistics
 #' @export
-t_stat <- function(x, formula,
-                   response = NULL,
-                   explanatory = NULL,
-                   order = NULL,
-                   alternative = "two-sided",
-                   mu = 0,
-                   conf_int = FALSE,
-                   conf_level = 0.95,
-                   ...) {
+t_stat <- function(
+  x,
+  formula,
+  response = NULL,
+  explanatory = NULL,
+  order = NULL,
+  alternative = "two-sided",
+  mu = 0,
+  conf_int = FALSE,
+  conf_level = 0.95,
+  ...
+) {
   lifecycle::deprecate_warn(
     when = "1.0.0",
     what = "t_stat()",
@@ -162,10 +185,14 @@ t_stat <- function(x, formula,
   x <- standardize_variable_types(x)
 
   # parse response and explanatory variables
-  response    <- enquo(response)
+  response <- enquo(response)
   explanatory <- enquo(explanatory)
-  x <- parse_variables(x = x, formula = formula,
-                       response = response, explanatory = explanatory)
+  x <- parse_variables(
+    x = x,
+    formula = formula,
+    response = response,
+    explanatory = explanatory
+  )
 
   # match with old "dot" syntax in t.test
   if (alternative %in% c("two-sided", "two_sided", "two sided", "two.sided")) {
@@ -176,18 +203,23 @@ t_stat <- function(x, formula,
   if (has_explanatory(x)) {
     order <- check_order(x, order, in_calculate = FALSE, stat = NULL)
     x <- reorder_explanatory(x, order)
-    prelim <- stats::t.test(formula = new_formula(response_expr(x), explanatory_expr(x)),
-                            data = x,
-                            alternative = alternative,
-                            mu = mu,
-                            conf.level = conf_level,
-                            ...) %>%
+    prelim <- stats::t.test(
+      formula = new_formula(response_expr(x), explanatory_expr(x)),
+      data = x,
+      alternative = alternative,
+      mu = mu,
+      conf.level = conf_level,
+      ...
+    ) %>%
       broom::glance()
-  } else { # one sample
-    prelim <- stats::t.test(response_variable(x),
-                            alternative = alternative,
-                            mu = mu,
-                            conf.level = conf_level) %>%
+  } else {
+    # one sample
+    prelim <- stats::t.test(
+      response_variable(x),
+      alternative = alternative,
+      mu = mu,
+      conf.level = conf_level
+    ) %>%
       broom::glance()
   }
 
@@ -229,29 +261,34 @@ t_stat <- function(x, formula,
 #'
 #' @family wrapper functions
 #' @export
-chisq_test <- function(x, formula, response = NULL,
-                       explanatory = NULL, ...) {
+chisq_test <- function(x, formula, response = NULL, explanatory = NULL, ...) {
   # Parse response and explanatory variables
-  response    <- enquo(response)
+  response <- enquo(response)
   explanatory <- enquo(explanatory)
 
   x <- standardize_variable_types(x)
 
-  x <- parse_variables(x = x, formula = formula,
-                       response = response, explanatory = explanatory)
+  x <- parse_variables(
+    x = x,
+    formula = formula,
+    response = response,
+    explanatory = explanatory
+  )
 
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
-     cli_abort(
+    cli_abort(
       'The response variable of `{response_name(x)}` is not appropriate \\
        since the response variable is expected to be categorical.'
-     )
+    )
   }
-  if (has_explanatory(x) &&
-      !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
-     cli_abort(
+  if (
+    has_explanatory(x) &&
+      !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))
+  ) {
+    cli_abort(
       'The explanatory variable of `{explanatory_name(x)}` is not appropriate \\
        since the explanatory variable is expected to be categorical.'
-     )
+    )
   }
 
   x <- x %>%
@@ -296,34 +333,39 @@ chisq_test <- function(x, formula, response = NULL,
 #' @family wrapper functions
 #' @family functions for calculating observed statistics
 #' @export
-chisq_stat <- function(x, formula, response = NULL,
-                       explanatory = NULL, ...) {
-   lifecycle::deprecate_warn(
-     when = "1.0.0",
-     what = "chisq_stat()",
-     with = "observe()"
-   )
+chisq_stat <- function(x, formula, response = NULL, explanatory = NULL, ...) {
+  lifecycle::deprecate_warn(
+    when = "1.0.0",
+    what = "chisq_stat()",
+    with = "observe()"
+  )
 
   # Parse response and explanatory variables
-  response    <- enquo(response)
+  response <- enquo(response)
   explanatory <- enquo(explanatory)
   x <- standardize_variable_types(x)
 
-  x <- parse_variables(x = x, formula = formula,
-                       response = response, explanatory = explanatory)
+  x <- parse_variables(
+    x = x,
+    formula = formula,
+    response = response,
+    explanatory = explanatory
+  )
 
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
-     cli_abort(
+    cli_abort(
       'The response variable of `{response_name(x)}` is not appropriate \\
        since the response variable is expected to be categorical.'
-     )
+    )
   }
-  if (has_explanatory(x) &&
-      !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
-     cli_abort(
+  if (
+    has_explanatory(x) &&
+      !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))
+  ) {
+    cli_abort(
       'The explanatory variable of `{explanatory_name(x)}` is not appropriate \\
        since the response variable is expected to be categorical.'
-     )
+    )
   }
 
   x <- x %>%
@@ -339,10 +381,10 @@ check_conf_level <- function(conf_level, call = caller_env()) {
   if (
     (!inherits(conf_level, "numeric")) | (conf_level < 0) | (conf_level > 1)
   ) {
-     cli_abort(
-       "The `conf_level` argument must be a number between 0 and 1.",
-       call = call
-     )
+    cli_abort(
+      "The `conf_level` argument must be a number between 0 and 1.",
+      call = call
+    )
   }
 }
 
@@ -418,40 +460,55 @@ check_conf_level <- function(conf_level, call = caller_env()) {
 #'
 #' @family wrapper functions
 #' @export
-prop_test <- function(x, formula,
-                      response = NULL,
-                      explanatory = NULL,
-                      p = NULL,
-                      order = NULL,
-                      alternative = "two-sided",
-                      conf_int = TRUE,
-                      conf_level = 0.95,
-                      success = NULL,
-                      correct = NULL,
-                      z = FALSE,
-                      ...) {
+prop_test <- function(
+  x,
+  formula,
+  response = NULL,
+  explanatory = NULL,
+  p = NULL,
+  order = NULL,
+  alternative = "two-sided",
+  conf_int = TRUE,
+  conf_level = 0.95,
+  success = NULL,
+  correct = NULL,
+  z = FALSE,
+  ...
+) {
   # Parse response and explanatory variables
-  response    <- enquo(response)
+  response <- enquo(response)
   explanatory <- enquo(explanatory)
   x <- standardize_variable_types(x)
 
-  x <- parse_variables(x = x, formula = formula,
-                       response = response, explanatory = explanatory)
+  x <- parse_variables(
+    x = x,
+    formula = formula,
+    response = response,
+    explanatory = explanatory
+  )
 
-  correct <- if (z) {FALSE} else if (is.null(correct)) {TRUE} else {correct}
+  correct <- if (z) {
+    FALSE
+  } else if (is.null(correct)) {
+    TRUE
+  } else {
+    correct
+  }
 
   if (!(class(response_variable(x)) %in% c("logical", "character", "factor"))) {
-     cli_abort(
+    cli_abort(
       'The response variable of `{response_name(x)}` is not appropriate \\
       since the response variable is expected to be categorical.'
-     )
+    )
   }
-  if (has_explanatory(x) &&
-      !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))) {
-     cli_abort(
+  if (
+    has_explanatory(x) &&
+      !(class(explanatory_variable(x)) %in% c("logical", "character", "factor"))
+  ) {
+    cli_abort(
       'The explanatory variable of `{explanatory_name(x)}` is not appropriate \\
        since the explanatory variable is expected to be categorical.'
-     )
+    )
   }
   # match with old "dot" syntax in t.test
   if (alternative %in% c("two-sided", "two_sided", "two sided", "two.sided")) {
@@ -483,31 +540,34 @@ prop_test <- function(x, formula,
   if (has_explanatory(x)) {
     # make a summary table to supply to prop.test
     sum_table <- x %>%
-       select(explanatory_name(x), response_name(x)) %>%
-       table()
+      select(explanatory_name(x), response_name(x)) %>%
+      table()
 
     length_exp_levels <- length(levels(explanatory_variable(x)))
     if (length_exp_levels == 2) {
-       order <- check_order(x, order, in_calculate = FALSE, stat = NULL)
-       # reorder according to the order and success arguments
-       sum_table <- sum_table[order, lvls]
+      order <- check_order(x, order, in_calculate = FALSE, stat = NULL)
+      # reorder according to the order and success arguments
+      sum_table <- sum_table[order, lvls]
     } else if (length_exp_levels >= 3 && !is.null(order)) {
-       cli_warn(c(
-            "The `order` argument will be ignored as it is not well-defined \\
+      cli_warn(c(
+        "The `order` argument will be ignored as it is not well-defined \\
              for explanatory variables with more than 2 levels. ",
-            i = "To silence this message, avoid passing the `order` argument."
-       ))
-       # reorder according to the success argument
-       sum_table <- sum_table[, lvls]
+        i = "To silence this message, avoid passing the `order` argument."
+      ))
+      # reorder according to the success argument
+      sum_table <- sum_table[, lvls]
     }
 
-    prelim <- stats::prop.test(x = sum_table,
-                               alternative = alternative,
-                               conf.level = conf_level,
-                               p = p,
-                               correct = correct,
-                               ...)
-  } else { # one sample
+    prelim <- stats::prop.test(
+      x = sum_table,
+      alternative = alternative,
+      conf.level = conf_level,
+      p = p,
+      correct = correct,
+      ...
+    )
+  } else {
+    # one sample
     response_tbl <- response_variable(x) %>%
       factor() %>%
       stats::relevel(success) %>%
@@ -520,39 +580,42 @@ prop_test <- function(x, formula,
       )
     }
 
-    prelim <- stats::prop.test(x = response_tbl,
-                               alternative = alternative,
-                               conf.level = conf_level,
-                               p = p,
-                               correct = correct,
-                               ...)
-
+    prelim <- stats::prop.test(
+      x = response_tbl,
+      alternative = alternative,
+      conf.level = conf_level,
+      p = p,
+      correct = correct,
+      ...
+    )
   }
 
   if (length(prelim$estimate) <= 2) {
     if (conf_int & is.null(p)) {
-       results <- prelim %>%
-         broom::glance() %>%
-         dplyr::select(statistic,
-                       chisq_df = parameter,
-                       p_value = p.value,
-                       alternative,
-                       lower_ci = conf.low,
-                       upper_ci = conf.high)
+      results <- prelim %>%
+        broom::glance() %>%
+        dplyr::select(
+          statistic,
+          chisq_df = parameter,
+          p_value = p.value,
+          alternative,
+          lower_ci = conf.low,
+          upper_ci = conf.high
+        )
     } else {
-       results <- prelim %>%
-         broom::glance() %>%
-         dplyr::select(statistic,
-                       chisq_df = parameter,
-                       p_value = p.value,
-                       alternative)
+      results <- prelim %>%
+        broom::glance() %>%
+        dplyr::select(
+          statistic,
+          chisq_df = parameter,
+          p_value = p.value,
+          alternative
+        )
     }
   } else {
     results <- prelim %>%
       broom::glance() %>%
-      dplyr::select(statistic,
-                    chisq_df = parameter,
-                    p_value = p.value)
+      dplyr::select(statistic, chisq_df = parameter, p_value = p.value)
   }
 
   if (z) {
@@ -563,19 +626,35 @@ prop_test <- function(x, formula,
 }
 
 calculate_z <- function(x, results, success, p, order) {
-  exp <- if (has_explanatory(x)) {explanatory_expr(x)} else {NULL}
+  exp <- if (has_explanatory(x)) {
+    explanatory_expr(x)
+  } else {
+    NULL
+  }
 
   form <- new_formula(response_expr(x), exp)
 
   stat <- x %>%
     specify(formula = form, success = success) %>%
     hypothesize(
-      null = if (has_explanatory(x)) {"independence"} else {"point"},
-      p = if (is.null(p) && !has_explanatory(x)) {.5} else {p}
+      null = if (has_explanatory(x)) {
+        "independence"
+      } else {
+        "point"
+      },
+      p = if (is.null(p) && !has_explanatory(x)) {
+        .5
+      } else {
+        p
+      }
     ) %>%
     calculate(
       stat = "z",
-      order = if (has_explanatory(x)) {order} else {NULL}
+      order = if (has_explanatory(x)) {
+        order
+      } else {
+        NULL
+      }
     ) %>%
     dplyr::pull()
 

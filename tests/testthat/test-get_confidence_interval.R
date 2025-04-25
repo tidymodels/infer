@@ -1,7 +1,21 @@
 set.seed(2018)
-test_df <- gss_calc[1:20,]
+test_df <- gss_calc[1:20, ]
 test_df$stat <- c(
-  -5, -4, -4, -4, -1, -0.5, rep(0, 6), 1, 1, 3.999, 4, 4, 4.001, 5, 5
+  -5,
+  -4,
+  -4,
+  -4,
+  -1,
+  -0.5,
+  rep(0, 6),
+  1,
+  1,
+  3.999,
+  4,
+  4,
+  4.001,
+  5,
+  5
 )
 point <- mean(test_df[["stat"]])
 
@@ -20,7 +34,8 @@ test_that("get_confidence_interval works with defaults", {
 test_that("get_confidence_interval works with `type = 'percentile'`", {
   expect_message(
     expect_equal(
-      test_df %>% get_confidence_interval(type = "percentile"), perc_def_out
+      test_df %>% get_confidence_interval(type = "percentile"),
+      perc_def_out
     ),
     "Using `level = 0.95`"
   )
@@ -62,7 +77,8 @@ test_that("get_confidence_interval works with `type = 'bias-corrected'`", {
     expect_equal(
       test_df %>%
         get_confidence_interval(
-          type = "bias-corrected", point_estimate = point
+          type = "bias-corrected",
+          point_estimate = point
         ),
       tibble::tibble(lower_ci = -4.00, upper_ci = 5),
       tolerance = 1e-3
@@ -73,7 +89,9 @@ test_that("get_confidence_interval works with `type = 'bias-corrected'`", {
   expect_equal(
     test_df %>%
       get_confidence_interval(
-        level = 0.5, type = "bias-corrected", point_estimate = point
+        level = 0.5,
+        type = "bias-corrected",
+        point_estimate = point
       ),
     tibble::tibble(lower_ci = 0, upper_ci = 4.0007),
     tolerance = 1e-3
@@ -93,7 +111,8 @@ test_that("get_confidence_interval supports data frame `point_estimate`", {
       get_confidence_interval(type = "bias-corrected", point_estimate = point),
     test_df %>%
       get_confidence_interval(
-        type = "bias-corrected", point_estimate = point_df
+        type = "bias-corrected",
+        point_estimate = point_df
       ),
     tolerance = eps
   )
@@ -106,26 +125,38 @@ test_that("get_confidence_interval messages with no explicit `level`", {
 })
 
 test_that("get_confidence_interval checks input", {
-  expect_snapshot(error = TRUE, test_df %>% get_confidence_interval(type = "other"))
-  expect_snapshot(error = TRUE, test_df %>% get_confidence_interval(level = 1.2))
+  expect_snapshot(
+    error = TRUE,
+    test_df %>% get_confidence_interval(type = "other")
+  )
+  expect_snapshot(
+    error = TRUE,
+    test_df %>% get_confidence_interval(level = 1.2)
+  )
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     test_df %>% get_confidence_interval(point_estimate = "a")
   )
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     test_df %>% get_confidence_interval(type = "se", point_estimate = "a")
   )
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     test_df %>%
       get_confidence_interval(
-        type = "se", point_estimate = data.frame(p = "a")
+        type = "se",
+        point_estimate = data.frame(p = "a")
       )
   )
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     test_df %>% get_confidence_interval(type = "se")
   )
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     test_df %>% get_confidence_interval(type = "bias-corrected")
   )
 })
@@ -135,13 +166,13 @@ test_that("get_confidence_interval can handle fitted objects", {
   # generate example objects
   set.seed(1)
 
-  null_fits <- gss[1:50,] %>%
+  null_fits <- gss[1:50, ] %>%
     specify(hours ~ age + college) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute") %>%
     fit()
 
-  obs_fit <- gss[1:50,] %>%
+  obs_fit <- gss[1:50, ] %>%
     specify(hours ~ age + college) %>%
     fit()
 
@@ -152,7 +183,8 @@ test_that("get_confidence_interval can handle fitted objects", {
       list(
         term = c("age", "collegedegree", "intercept"),
         lower_ci = c(-0.2139, -6.6020, 36.4537),
-        upper_ci = c(0.1064, 8.7479, 50.8005)),
+        upper_ci = c(0.1064, 8.7479, 50.8005)
+      ),
       row.names = c(NA, -3L),
       class = c("tbl_df", "tbl", "data.frame")
     ),
@@ -161,13 +193,18 @@ test_that("get_confidence_interval can handle fitted objects", {
   )
 
   expect_equal(
-    get_confidence_interval(null_fits, point_estimate = obs_fit,
-                            level = .95, type = "se"),
+    get_confidence_interval(
+      null_fits,
+      point_estimate = obs_fit,
+      level = .95,
+      type = "se"
+    ),
     structure(
       list(
         term = c("age", "collegedegree", "intercept"),
         lower_ci = c(-0.3809, -13.6182, 36.8694),
-        upper_ci = c(0.1124, 6.1680, 59.1752)),
+        upper_ci = c(0.1124, 6.1680, 59.1752)
+      ),
       row.names = c(NA, -3L),
       class = c("tbl_df", "tbl", "data.frame")
     ),
@@ -176,13 +213,18 @@ test_that("get_confidence_interval can handle fitted objects", {
   )
 
   expect_equal(
-    get_confidence_interval(null_fits, point_estimate = obs_fit,
-                            level = .95, type = "bias-corrected"),
+    get_confidence_interval(
+      null_fits,
+      point_estimate = obs_fit,
+      level = .95,
+      type = "bias-corrected"
+    ),
     structure(
       list(
         term = c("age", "collegedegree", "intercept"),
         lower_ci = c(-0.2177, -7.1506, 37.2941),
-        upper_ci = c(0.0806, 1.9707, 51.0512)),
+        upper_ci = c(0.0806, 1.9707, 51.0512)
+      ),
       row.names = c(NA, -3L),
       class = c("tbl_df", "tbl", "data.frame")
     ),
@@ -191,20 +233,22 @@ test_that("get_confidence_interval can handle fitted objects", {
   )
 
   # errors out when it ought to
-  obs_fit_2 <- gss[1:50,] %>%
+  obs_fit_2 <- gss[1:50, ] %>%
     specify(hours ~ age) %>%
     fit()
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     get_confidence_interval(null_fits, point_estimate = obs_fit_2, level = .95)
   )
 
   obs_fit_3 <-
-    obs_fit_2 <- gss[1:50,] %>%
-    specify(year ~ age + college) %>%
-    fit()
+    obs_fit_2 <- gss[1:50, ] %>%
+      specify(year ~ age + college) %>%
+      fit()
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     get_confidence_interval(null_fits, point_estimate = obs_fit_3, level = .95)
   )
 })
@@ -212,26 +256,32 @@ test_that("get_confidence_interval can handle fitted objects", {
 test_that("get_confidence_interval can handle bad args with fitted objects", {
   set.seed(1)
 
-  null_fits <- gss[1:50,] %>%
+  null_fits <- gss[1:50, ] %>%
     specify(hours ~ age + college) %>%
     hypothesize(null = "independence") %>%
     generate(reps = 10, type = "permute") %>%
     fit()
 
-  obs_fit <- gss[1:50,] %>%
+  obs_fit <- gss[1:50, ] %>%
     specify(hours ~ age + college) %>%
     fit()
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     get_confidence_interval(null_fits, point_estimate = "boop", level = .95)
   )
 
-  expect_snapshot(error = TRUE,
-    get_confidence_interval(null_fits, point_estimate = obs_fit$estimate,
-                            level = .95)
+  expect_snapshot(
+    error = TRUE,
+    get_confidence_interval(
+      null_fits,
+      point_estimate = obs_fit$estimate,
+      level = .95
+    )
   )
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     get_confidence_interval(obs_fit, point_estimate = null_fits, level = .95)
   )
 })
@@ -397,7 +447,8 @@ test_that("theoretical CIs check arguments properly", {
     )
   )
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     get_confidence_interval(
       null_dist_theory,
       level = .95,
@@ -406,7 +457,8 @@ test_that("theoretical CIs check arguments properly", {
     )
   )
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     get_confidence_interval(
       null_dist_theory,
       level = .95,
@@ -416,7 +468,8 @@ test_that("theoretical CIs check arguments properly", {
   )
 
   # check that point estimate hasn't been post-processed
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     get_confidence_interval(
       null_dist_theory,
       level = .95,
@@ -424,7 +477,8 @@ test_that("theoretical CIs check arguments properly", {
     )
   )
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     get_confidence_interval(
       null_dist_theory,
       level = .95,
@@ -438,7 +492,8 @@ test_that("theoretical CIs check arguments properly", {
     hypothesize(null = "point", mu = 40) %>%
     calculate(stat = "t")
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     get_confidence_interval(
       null_dist_theory,
       level = .95,
@@ -455,7 +510,8 @@ test_that("theoretical CIs check arguments properly", {
     specify(response = sex, success = "female") %>%
     assume(distribution = "z")
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     get_confidence_interval(
       null_dist_theory,
       level = .95,
@@ -463,7 +519,8 @@ test_that("theoretical CIs check arguments properly", {
     )
   )
 
-  expect_snapshot(error = TRUE,
+  expect_snapshot(
+    error = TRUE,
     get_confidence_interval(
       null_dist_z,
       level = .95,
@@ -473,20 +530,20 @@ test_that("theoretical CIs check arguments properly", {
 })
 
 test_that("handles missing values gracefully (#520)", {
-   data <- data.frame(
-      prop = seq(0, 1, length.out = 10),
-      group = rep(c("a", "b"), each = 5L)
-   )
+  data <- data.frame(
+    prop = seq(0, 1, length.out = 10),
+    group = rep(c("a", "b"), each = 5L)
+  )
 
-   set.seed(1)
-   boot_dist <-
-     data %>%
-     specify(prop ~ group) %>%
-     hypothesize(null = "independence") %>%
-     generate(reps = 1000, type = "bootstrap") %>%
-     calculate(stat = "diff in medians", order = c("b", "a"))
+  set.seed(1)
+  boot_dist <-
+    data %>%
+    specify(prop ~ group) %>%
+    hypothesize(null = "independence") %>%
+    generate(reps = 1000, type = "bootstrap") %>%
+    calculate(stat = "diff in medians", order = c("b", "a"))
 
-   expect_snapshot(res <- get_confidence_interval(boot_dist, .95))
+  expect_snapshot(res <- get_confidence_interval(boot_dist, .95))
 
-   expect_s3_class(res, "data.frame")
+  expect_s3_class(res, "data.frame")
 })
