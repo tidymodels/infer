@@ -32,10 +32,11 @@ set_params <- function(x) {
 
   # One variable
   if (
-    has_response(x) && !has_explanatory(x) &&
-    has_attr(x, "response_type") && !has_attr(x, "explanatory_type")
+    has_response(x) &&
+      !has_explanatory(x) &&
+      has_attr(x, "response_type") &&
+      !has_attr(x, "explanatory_type")
   ) {
-
     # One mean
     if (attr(x, "response_type") %in% c("integer", "numeric")) {
       attr(x, "theory_type") <- "One sample t"
@@ -44,7 +45,6 @@ set_params <- function(x) {
       )[["parameter"]]
       attr(x, "type") <- "bootstrap"
     } else if (
-
       # One prop
       (attr(x, "response_type") == "factor") && (num_response_levels == 2)
     ) {
@@ -61,17 +61,18 @@ set_params <- function(x) {
 
   # Two variables
   if (
-    has_response(x) && has_explanatory(x) &
-    has_attr(x, "response_type") && has_attr(x, "explanatory_type")
+    has_response(x) &&
+      has_explanatory(x) &
+      has_attr(x, "response_type") &&
+      has_attr(x, "explanatory_type")
   ) {
     attr(x, "type") <- "bootstrap"
 
     # Response is numeric, explanatory is categorical
     if (
       (attr(x, "response_type") %in% c("integer", "numeric")) &
-      (attr(x, "explanatory_type") == "factor")
+        (attr(x, "explanatory_type") == "factor")
     ) {
-
       # Two sample means (t distribution)
       if (num_explanatory_levels == 2) {
         attr(x, "theory_type") <- "Two sample t"
@@ -81,7 +82,6 @@ set_params <- function(x) {
           response_variable(x) ~ explanatory_variable(x)
         )[["parameter"]]
       } else {
-
         # >2 sample means (F distribution)
         attr(x, "theory_type") <- "ANOVA"
         # Get numerator and denominator degrees of freedom
@@ -96,7 +96,7 @@ set_params <- function(x) {
     # Response is categorical, explanatory is categorical
     if (
       (attr(x, "response_type") == "factor") &
-      (attr(x, "explanatory_type") == "factor")
+        (attr(x, "explanatory_type") == "factor")
     ) {
       attr(x, "type") <- "bootstrap"
 
@@ -104,11 +104,10 @@ set_params <- function(x) {
       # Parameter(s) not needed since standard normal
       if (
         (num_response_levels == 2) &
-        (num_explanatory_levels == 2)
+          (num_explanatory_levels == 2)
       ) {
         attr(x, "theory_type") <- "Two sample props z"
       } else {
-
         # >2 sample proportions (chi-square test of indep)
         attr(x, "theory_type") <- "Chi-square test of indep"
         attr(x, "distr_param") <- suppressWarnings(
@@ -122,7 +121,7 @@ set_params <- function(x) {
     # Response is numeric, explanatory is numeric
     if (
       (attr(x, "response_type") %in% c("integer", "numeric")) &
-      (attr(x, "explanatory_type") %in% c("integer", "numeric"))
+        (attr(x, "explanatory_type") %in% c("integer", "numeric"))
     ) {
       response_string <- response_name(x)
       explanatory_string <- explanatory_name(x)

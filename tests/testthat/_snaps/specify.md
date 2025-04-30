@@ -177,24 +177,22 @@
 # specify messages when dropping unused levels
 
     Code
-      res_ <- gss %>% dplyr::filter(partyid %in% c("rep", "dem")) %>% specify(age ~
-        partyid)
+      res_ <- specify(dplyr::filter(gss, partyid %in% c("rep", "dem")), age ~ partyid)
     Message
       Dropping unused factor levels c("ind", "other", "DK") from the supplied explanatory variable 'partyid'.
 
 ---
 
     Code
-      res_ <- gss %>% dplyr::filter(partyid %in% c("rep", "dem")) %>% specify(
-        partyid ~ age)
+      res_ <- specify(dplyr::filter(gss, partyid %in% c("rep", "dem")), partyid ~ age)
     Message
       Dropping unused factor levels c("ind", "other", "DK") from the supplied response variable 'partyid'.
 
 ---
 
     Code
-      res_ <- gss %>% dplyr::filter(partyid %in% c("rep", "dem")) %>% specify(
-        partyid ~ NULL)
+      res_ <- specify(dplyr::filter(gss, partyid %in% c("rep", "dem")), partyid ~
+      NULL)
     Message
       Dropping unused factor levels c("ind", "other", "DK") from the supplied response variable 'partyid'.
 

@@ -33,7 +33,7 @@ License: MIT + file LICENSE
 URL: https://github.com/tidymodels/infer, https://infer.tidymodels.org/
 BugReports: https://github.com/tidymodels/infer/issues
 Depends:
-    R (>= 3.5.0)
+    R (>= 4.1)
 Imports:
     broom,
     cli,
@@ -65,8 +65,9 @@ Suggests:
 VignetteBuilder:
     knitr
 Config/Needs/website: tidyverse/tidytemplate
+Config/testthat/edition: 3
+Config/usethis/last-upkeep: 2025-04-25
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
-Config/testthat/edition: 3
+RoxygenNote: 7.3.2

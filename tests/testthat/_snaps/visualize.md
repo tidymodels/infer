@@ -1,9 +1,9 @@
 # visualize warns with bad arguments
 
     Code
-      res_ <- gss_tbl %>% specify(age ~ hours) %>% hypothesize(null = "independence") %>%
-        generate(reps = 100, type = "permute") %>% calculate(stat = "slope") %>%
-        visualize(obs_stat = obs_slope, direction = "right")
+      res_ <- visualize(calculate(generate(hypothesize(specify(gss_tbl, age ~ hours),
+      null = "independence"), reps = 100, type = "permute"), stat = "slope"),
+      obs_stat = obs_slope, direction = "right")
     Condition
       Warning:
       The arguments `c("obs_stat", "direction")` are deprecated in `visualize()` and will be ignored. They should now be passed to one of `shade_p_value()` or `shade_confidence_interval()`.
@@ -11,9 +11,9 @@
 ---
 
     Code
-      res_ <- gss_tbl %>% specify(age ~ hours) %>% hypothesize(null = "independence") %>%
-        generate(reps = 100, type = "permute") %>% calculate(stat = "slope") %>%
-        visualize(obs_stat = obs_slope)
+      res_ <- visualize(calculate(generate(hypothesize(specify(gss_tbl, age ~ hours),
+      null = "independence"), reps = 100, type = "permute"), stat = "slope"),
+      obs_stat = obs_slope)
     Condition
       Warning:
       The arguments `obs_stat` are deprecated in `visualize()` and will be ignored. They should now be passed to one of `shade_p_value()` or `shade_confidence_interval()`.
@@ -21,9 +21,9 @@
 ---
 
     Code
-      res_ <- gss_tbl %>% specify(age ~ hours) %>% hypothesize(null = "independence") %>%
-        generate(reps = 100, type = "permute") %>% calculate(stat = "slope") %>%
-        visualize(endpoints = c(0.01, 0.02))
+      res_ <- visualize(calculate(generate(hypothesize(specify(gss_tbl, age ~ hours),
+      null = "independence"), reps = 100, type = "permute"), stat = "slope"),
+      endpoints = c(0.01, 0.02))
     Condition
       Warning:
       The arguments `endpoints` are deprecated in `visualize()` and will be ignored. They should now be passed to one of `shade_p_value()` or `shade_confidence_interval()`.
@@ -31,7 +31,7 @@
 ---
 
     Code
-      res <- age_hours_df %>% visualize(endpoints = c(0.01, 0.02))
+      res <- visualize(age_hours_df, endpoints = c(0.01, 0.02))
     Condition
       Warning:
       The arguments `endpoints` are deprecated in `visualize()` and will be ignored. They should now be passed to one of `shade_p_value()` or `shade_confidence_interval()`.
@@ -39,7 +39,7 @@
 # visualize basic tests
 
     Code
-      hours_resamp %>% visualize(bins = "yep")
+      visualize(hours_resamp, bins = "yep")
     Condition
       Error in `visualize()`:
       ! `bins` must be 'numeric', not 'character'.
@@ -51,9 +51,9 @@
 ---
 
     Code
-      res_vis_theor_none_1 <- gss_tbl %>% specify(sex ~ college, success = "female") %>%
-        hypothesize(null = "independence") %>% calculate(stat = "z", order = c(
-        "no degree", "degree")) %>% visualize(method = "theoretical")
+      res_vis_theor_none_1 <- visualize(calculate(hypothesize(specify(gss_tbl, sex ~
+        college, success = "female"), null = "independence"), stat = "z", order = c(
+        "no degree", "degree")), method = "theoretical")
     Message
       Rather than setting `method = "theoretical"` with a simulation-based null distribution, the preferred method for visualizing theory-based distributions with infer is now to pass the output of `assume()` as the first argument to `visualize()`.
     Condition
@@ -63,9 +63,9 @@
 ---
 
     Code
-      gss_tbl %>% specify(sex ~ college, success = "female") %>% hypothesize(null = "independence") %>%
-        generate(reps = 100, type = "permute") %>% calculate(stat = "diff in props",
-        order = c("no degree", "degree")) %>% visualize(method = "both") +
+      visualize(calculate(generate(hypothesize(specify(gss_tbl, sex ~ college,
+      success = "female"), null = "independence"), reps = 100, type = "permute"),
+      stat = "diff in props", order = c("no degree", "degree")), method = "both") +
         shade_p_value(direction = "both", obs_stat = obs_diff)
     Condition
       Warning:
@@ -76,8 +76,8 @@
 ---
 
     Code
-      gss_tbl %>% specify(partyid ~ NULL) %>% hypothesize(null = "point", p = c(dem = 0.4,
-        rep = 0.4, ind = 0.2)) %>% visualize(method = "traditional")
+      visualize(hypothesize(specify(gss_tbl, partyid ~ NULL), null = "point", p = c(
+        dem = 0.4, rep = 0.4, ind = 0.2)), method = "traditional")
     Condition
       Error in `visualize()`:
       ! Provide `method` with one of three options: `"theoretical"`, `"both"`, or `"simulation"`. `"simulation"` is the default for simulation-based null distributions, while `"theoretical"` is the only option for null distributions outputted by `assume()`.
@@ -85,10 +85,9 @@
 ---
 
     Code
-      gss_tbl %>% specify(hours ~ sex) %>% hypothesize(null = "independence") %>%
-        generate(reps = 100, type = "permute") %>% calculate(stat = "diff in means",
-        order = c("female", "male")) %>% visualize(method = "both") + shade_p_value(
-        direction = "both", obs_stat = obs_diff_mean)
+      visualize(calculate(generate(hypothesize(specify(gss_tbl, hours ~ sex), null = "independence"),
+      reps = 100, type = "permute"), stat = "diff in means", order = c("female",
+        "male")), method = "both") + shade_p_value(direction = "both", obs_stat = obs_diff_mean)
     Condition
       Warning:
       Check to make sure the conditions have been met for the theoretical method. infer currently does not check these for you.
@@ -98,9 +97,9 @@
 ---
 
     Code
-      res_vis_theor_both_1 <- gss_tbl %>% specify(hours ~ sex) %>% hypothesize(null = "independence") %>%
-        generate(reps = 100, type = "permute") %>% calculate(stat = "diff in means",
-        order = c("female", "male")) %>% visualize(method = "theoretical") +
+      res_vis_theor_both_1 <- visualize(calculate(generate(hypothesize(specify(
+        gss_tbl, hours ~ sex), null = "independence"), reps = 100, type = "permute"),
+      stat = "diff in means", order = c("female", "male")), method = "theoretical") +
         shade_p_value(direction = "both", obs_stat = obs_diff_mean)
     Message
       Rather than setting `method = "theoretical"` with a simulation-based null distribution, the preferred method for visualizing theory-based distributions with infer is now to pass the output of `assume()` as the first argument to `visualize()`.
@@ -113,8 +112,8 @@
 # method = "both" behaves nicely
 
     Code
-      gss_tbl %>% specify(hours ~ NULL) %>% hypothesize(null = "point", mu = 4) %>%
-        generate(reps = 100, type = "bootstrap") %>% visualize(method = "both")
+      visualize(generate(hypothesize(specify(gss_tbl, hours ~ NULL), null = "point",
+      mu = 4), reps = 100, type = "bootstrap"), method = "both")
     Condition
       Error in `visualize()`:
       ! `generate()` and `calculate()` are both required to be done prior to `visualize(method = "both")`
@@ -122,9 +121,9 @@
 ---
 
     Code
-      res_method_both <- gss_tbl %>% specify(hours ~ college) %>% hypothesize(null = "point",
-        mu = 4) %>% generate(reps = 10, type = "bootstrap") %>% calculate(stat = "t",
-        order = c("no degree", "degree")) %>% visualize(method = "both")
+      res_method_both <- visualize(calculate(generate(hypothesize(specify(gss_tbl,
+        hours ~ college), null = "point", mu = 4), reps = 10, type = "bootstrap"),
+      stat = "t", order = c("no degree", "degree")), method = "both")
     Condition
       Warning:
       With only 10 replicates, it may be difficult to see the relationship between simulation and theory.
@@ -134,10 +133,9 @@
 # Traditional right-tailed tests have warning if not right-tailed
 
     Code
-      res_ <- gss_tbl %>% specify(sex ~ partyid, success = "female") %>% hypothesize(
-        null = "independence") %>% generate(reps = 100, type = "permute") %>%
-        calculate(stat = "Chisq") %>% visualize(method = "both") + shade_p_value(
-        obs_stat = 2, direction = "left")
+      res_ <- visualize(calculate(generate(hypothesize(specify(gss_tbl, sex ~ partyid,
+      success = "female"), null = "independence"), reps = 100, type = "permute"),
+      stat = "Chisq"), method = "both") + shade_p_value(obs_stat = 2, direction = "left")
     Condition
       Warning:
       Check to make sure the conditions have been met for the theoretical method. infer currently does not check these for you.
@@ -145,9 +143,9 @@
 ---
 
     Code
-      res_ <- gss_tbl %>% specify(age ~ partyid) %>% hypothesize(null = "independence") %>%
-        generate(reps = 100, type = "permute") %>% calculate(stat = "F") %>%
-        visualize(method = "both") + shade_p_value(obs_stat = 2, direction = "two_sided")
+      res_ <- visualize(calculate(generate(hypothesize(specify(gss_tbl, age ~ partyid),
+      null = "independence"), reps = 100, type = "permute"), stat = "F"), method = "both") +
+        shade_p_value(obs_stat = 2, direction = "two_sided")
     Condition
       Warning:
       Check to make sure the conditions have been met for the theoretical method. infer currently does not check these for you.
@@ -155,8 +153,8 @@
 ---
 
     Code
-      res_ <- gss_tbl %>% specify(sex ~ partyid, success = "female") %>% hypothesize(
-        null = "independence") %>% calculate(stat = "Chisq") %>% visualize(method = "theoretical") +
+      res_ <- visualize(calculate(hypothesize(specify(gss_tbl, sex ~ partyid,
+      success = "female"), null = "independence"), stat = "Chisq"), method = "theoretical") +
         shade_p_value(obs_stat = 2, direction = "left")
     Message
       Rather than setting `method = "theoretical"` with a simulation-based null distribution, the preferred method for visualizing theory-based distributions with infer is now to pass the output of `assume()` as the first argument to `visualize()`.
@@ -167,9 +165,8 @@
 ---
 
     Code
-      res_ <- gss_tbl %>% specify(age ~ partyid) %>% hypothesize(null = "independence") %>%
-        calculate(stat = "F") %>% visualize(method = "theoretical") + shade_p_value(
-        obs_stat = 2, direction = "two_sided")
+      res_ <- visualize(calculate(hypothesize(specify(gss_tbl, age ~ partyid), null = "independence"),
+      stat = "F"), method = "theoretical") + shade_p_value(obs_stat = 2, direction = "two_sided")
     Message
       Rather than setting `method = "theoretical"` with a simulation-based null distribution, the preferred method for visualizing theory-based distributions with infer is now to pass the output of `assume()` as the first argument to `visualize()`.
     Condition
@@ -179,7 +176,7 @@
 # confidence interval plots are working
 
     Code
-      res_ <- gss_tbl_boot %>% visualize() + shade_confidence_interval(endpoints = df_error)
+      res_ <- visualize(gss_tbl_boot) + shade_confidence_interval(endpoints = df_error)
     Condition
       Error in `shade_confidence_interval()`:
       ! Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector.
@@ -187,7 +184,7 @@
 ---
 
     Code
-      res_ <- gss_tbl_boot %>% visualize() + shade_confidence_interval(endpoints = vec_error)
+      res_ <- visualize(gss_tbl_boot) + shade_confidence_interval(endpoints = vec_error)
     Condition
       Warning:
       Expecting `endpoints` to be a 1 x 2 data frame or 2 element vector. Using the first two entries as the `endpoints`.
@@ -195,8 +192,8 @@
 ---
 
     Code
-      res_ci_vis <- gss_tbl_boot %>% visualize() + shade_confidence_interval(
-        endpoints = perc_ci, direction = "between")
+      res_ci_vis <- visualize(gss_tbl_boot) + shade_confidence_interval(endpoints = perc_ci,
+        direction = "between")
     Condition
       Warning:
       Ignoring unknown parameters: `direction`
@@ -206,8 +203,8 @@
 # title adapts to not hypothesis testing workflow
 
     Code
-      res_vis_no_hypothesize_both <- gss_tbl_boot_tbl %>% calculate(stat = "t") %>%
-        visualize(method = "both")
+      res_vis_no_hypothesize_both <- visualize(calculate(gss_tbl_boot_tbl, stat = "t"),
+      method = "both")
     Condition
       Warning:
       A t statistic requires a null hypothesis to calculate the observed statistic.
@@ -285,7 +282,7 @@
 # visualize can handle multiple explanatory variables
 
     Code
-      res_viz_fit_p_val_right <- null_fits %>% visualize() + shade_p_value(obs_stat = obs_fit,
+      res_viz_fit_p_val_right <- visualize(null_fits) + shade_p_value(obs_stat = obs_fit,
         direction = "right")
 
 # visualize can handle `assume()` output

@@ -36,15 +36,15 @@ Learn more in \code{vignette("infer")}.
 }
 \examples{
 # specifying for a point estimate on one variable
-gss \%>\%
+gss |>
    specify(response = age)
 
 # specify a relationship between variables as a formula...
-gss \%>\%
+gss |>
   specify(age ~ partyid)
 
 # ...or with named arguments!
-gss \%>\%
+gss |>
   specify(response = age, explanatory = partyid)
 
 # more in-depth explanation of how to use the infer package

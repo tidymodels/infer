@@ -1,5 +1,7 @@
 # infer (development version)
 
+* Increased the minimum required R version to R 4.1
+
 # infer 1.0.8
 
 * The infer print method now truncates output when descriptions of explanatory or responses variables exceed the console width (#543).

@@ -55,13 +55,13 @@ library(tidyr)
 
 # t test statistic for true mean number of hours worked
 # per week of 40
-gss \%>\%
+gss |>
    t_stat(response = hours, mu = 40)
 
 # t test statistic for number of hours worked per week
 # by college degree status
-gss \%>\%
-   tidyr::drop_na(college) \%>\%
+gss |>
+   tidyr::drop_na(college) |>
    t_stat(formula = hours ~ college,
       order = c("degree", "no degree"),
       alternative = "two-sided")

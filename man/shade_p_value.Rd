@@ -45,34 +45,34 @@ Learn more in \code{vignette("infer")}.
 }
 \examples{
 # find the point estimate---mean number of hours worked per week
-point_estimate <- gss \%>\%
-  specify(response = hours) \%>\%
-  hypothesize(null = "point", mu = 40) \%>\%
+point_estimate <- gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
   calculate(stat = "t")
 
 # ...and a null distribution
-null_dist <- gss \%>\%
+null_dist <- gss |>
   # ...we're interested in the number of hours worked per week
-  specify(response = hours) \%>\%
+  specify(response = hours) |>
   # hypothesizing that the mean is 40
-  hypothesize(null = "point", mu = 40) \%>\%
+  hypothesize(null = "point", mu = 40) |>
   # generating data points for a null distribution
-  generate(reps = 1000, type = "bootstrap") \%>\%
+  generate(reps = 1000, type = "bootstrap") |>
   # estimating the null distribution
   calculate(stat = "t")
 
 # shade the p-value of the point estimate
-null_dist \%>\%
+null_dist |>
   visualize() +
   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 
 # you can shade confidence intervals on top of
 # theoretical distributions, too!
-null_dist_theory <- gss \%>\%
-  specify(response = hours) \%>\%
+null_dist_theory <- gss |>
+  specify(response = hours) |>
   assume(distribution = "t")
 
-null_dist_theory \%>\%
+null_dist_theory |>
   visualize() +
   shade_p_value(obs_stat = point_estimate, direction = "two-sided")
 
@@ -81,17 +81,17 @@ null_dist_theory \%>\%
 # explanatory variables, use a `fit()`-based workflow
 
 # fit 1000 linear models with the `hours` variable permuted
-null_fits <- gss \%>\%
- specify(hours ~ age + college) \%>\%
- hypothesize(null = "independence") \%>\%
- generate(reps = 1000, type = "permute") \%>\%
+null_fits <- gss |>
+ specify(hours ~ age + college) |>
+ hypothesize(null = "independence") |>
+ generate(reps = 1000, type = "permute") |>
  fit()
 
 null_fits
 
 # fit a linear model to the observed data
-obs_fit <- gss \%>\%
-  specify(hours ~ age + college) \%>\%
+obs_fit <- gss |>
+  specify(hours ~ age + college) |>
   fit()
 
 obs_fit

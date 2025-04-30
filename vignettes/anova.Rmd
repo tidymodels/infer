@@ -8,12 +8,18 @@ vignette: |
   \usepackage[utf8]{inputenc}
 ---
 
-```{r settings, include=FALSE}
+```{r}
+#| label: settings
+#| include: false
 knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5) 
 options(digits = 4)
 ```
 
-```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
+```{r}
+#| label: load-packages
+#| echo: false
+#| message: false
+#| warning: false
 library(ggplot2)
 library(dplyr)
 library(infer)
@@ -23,7 +29,10 @@ In this vignette, we'll walk through conducting an analysis of variance (ANOVA) 
 
 Throughout this vignette, we'll make use of the `gss` dataset supplied by infer, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
-```{r glimpse-gss-actual, warning = FALSE, message = FALSE}
+```{r}
+#| label: glimpse-gss-actual
+#| warning: false
+#| message: false
 dplyr::glimpse(gss)
 ```
 
@@ -31,8 +40,10 @@ To carry out an ANOVA, we'll examine the association between age and political p
 
 This is what the relationship looks like in the observed data:
 
-```{r plot-f, echo = FALSE}
-gss %>%
+```{r}
+#| label: plot-f
+#| echo: false
+gss |>
   ggplot2::ggplot() +
   ggplot2::aes(x = partyid, y = age) +
   ggplot2::geom_boxplot() +
@@ -47,11 +58,14 @@ If there were no relationship, we would expect to see the each of these boxplots
 
 First, to calculate the observed statistic, we can use `specify()` and `calculate()`.
 
-```{r calc-obs-stat-f, warning = FALSE, message = FALSE}
+```{r}
+#| label: calc-obs-stat-f
+#| warning: false
+#| message: false
 # calculate the observed statistic
-observed_f_statistic <- gss %>%
-  specify(age ~ partyid) %>%
-  hypothesize(null = "independence") %>%
+observed_f_statistic <- gss |>
+  specify(age ~ partyid) |>
+  hypothesize(null = "independence") |>
   calculate(stat = "F")
 ```
 
@@ -59,12 +73,15 @@ The observed $F$ statistic is `r observed_f_statistic`. Now, we want to compare 
 
 We can `generate()` an approximation of the null distribution using randomization. The randomization approach permutes the response and explanatory variables, so that each person's party affiliation is matched up with a random age from the sample in order to break up any association between the two.
 
-```{r generate-null-f, warning = FALSE, message = FALSE}
+```{r}
+#| label: generate-null-f
+#| warning: false
+#| message: false
 # generate the null distribution using randomization
-null_dist <- gss %>%
-  specify(age ~ partyid) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+null_dist <- gss |>
+  specify(age ~ partyid) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
   calculate(stat = "F")
 ```
 
@@ -72,9 +89,12 @@ Note that, in the line `specify(age ~ partyid)` above, we could use the equivale
 
 To get a sense for what this distribution looks like, and where our observed statistic falls, we can use `visualize()`:
 
-```{r visualize-f, warning = FALSE, message = FALSE}
+```{r}
+#| label: visualize-f
+#| warning: false
+#| message: false
 # visualize the null distribution and test statistic!
-null_dist %>%
+null_dist |>
   visualize() + 
   shade_p_value(observed_f_statistic,
                 direction = "greater")
@@ -82,10 +102,13 @@ null_dist %>%
 
 We could also visualize the observed statistic against the theoretical null distribution. To do so, use the `assume()` verb to define a theoretical null distribution and then pass it to `visualize()` like a null distribution outputted from `generate()` and `calculate()`.
 
-```{r visualize-f-theor, warning = FALSE, message = FALSE}
+```{r}
+#| label: visualize-f-theor
+#| warning: false
+#| message: false
 # visualize the theoretical null distribution and test statistic!
-null_dist_theory <- gss %>%
-  specify(age ~ partyid) %>%
+null_dist_theory <- gss |>
+  specify(age ~ partyid) |>
   assume(distribution = "F")
 
 visualize(null_dist_theory) +
@@ -95,9 +118,12 @@ visualize(null_dist_theory) +
 
 To visualize both the randomization-based and theoretical null distributions to get a sense of how the two relate, we can pipe the randomization-based null distribution into `visualize()`, and then further provide `method = "both"` to `visualize()`.
 
-```{r visualize-indep-both, warning = FALSE, message = FALSE}
+```{r}
+#| label: visualize-indep-both
+#| warning: false
+#| message: false
 # visualize both null distributions and the test statistic!
-null_dist %>%
+null_dist |>
   visualize(method = "both") + 
   shade_p_value(observed_f_statistic,
                 direction = "greater")
@@ -105,9 +131,12 @@ null_dist %>%
 
 Either way, it looks like our observed test statistic would be quite unlikely if there were actually no association between age and political party affiliation. More exactly, we can approximate the p-value from the randomization-based approximation to the null distribution:
 
-```{r p-value-indep, warning = FALSE, message = FALSE}
+```{r}
+#| label: p-value-indep
+#| warning: false
+#| message: false
 # calculate the p value from the observed statistic and null distribution
-p_value <- null_dist %>%
+p_value <- null_dist |>
   get_p_value(obs_stat = observed_f_statistic,
               direction = "greater")
 

@@ -77,37 +77,37 @@ By default, the package will use the \code{"parameter"} entry of the analogous
 
 # F distribution
 # with the `partyid` explanatory variable
-gss \%>\%
-  specify(age ~ partyid) \%>\%
+gss |>
+  specify(age ~ partyid) |>
   assume(distribution = "F")
 
 # Chi-squared goodness of fit distribution
 # on the `finrela` variable
-gss \%>\%
-  specify(response = finrela) \%>\%
+gss |>
+  specify(response = finrela) |>
   hypothesize(null = "point",
               p = c("far below average" = 1/6,
                     "below average" = 1/6,
                     "average" = 1/6,
                     "above average" = 1/6,
                     "far above average" = 1/6,
-                    "DK" = 1/6)) \%>\%
+                    "DK" = 1/6)) |>
   assume("Chisq")
 
 # Chi-squared test of independence
 # on the `finrela` and `sex` variables
-gss \%>\%
-  specify(formula = finrela ~ sex) \%>\%
+gss |>
+  specify(formula = finrela ~ sex) |>
   assume(distribution = "Chisq")
 
 # T distribution
-gss \%>\%
-  specify(age ~ college) \%>\%
+gss |>
+  specify(age ~ college) |>
   assume("t")
 
 # Z distribution
-gss \%>\%
-  specify(response = sex, success = "female") \%>\%
+gss |>
+  specify(response = sex, success = "female") |>
   assume("z")
 
 \dontrun{
@@ -117,14 +117,14 @@ gss \%>\%
 # for example, a 1-sample t-test -------------------------------------
 
 # calculate the observed statistic
-obs_stat <- gss \%>\%
-  specify(response = hours) \%>\%
-  hypothesize(null = "point", mu = 40) \%>\%
+obs_stat <- gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
   calculate(stat = "t")
 
 # construct a null distribution
-null_dist <- gss \%>\%
-  specify(response = hours) \%>\%
+null_dist <- gss |>
+  specify(response = hours) |>
   assume("t")
 
 # juxtapose them visually
@@ -137,14 +137,14 @@ get_p_value(null_dist, obs_stat, direction = "both")
 # or, an F test ------------------------------------------------------
 
 # calculate the observed statistic
-obs_stat <- gss \%>\%
-  specify(age ~ partyid) \%>\%
-  hypothesize(null = "independence") \%>\%
+obs_stat <- gss |>
+  specify(age ~ partyid) |>
+  hypothesize(null = "independence") |>
   calculate(stat = "F")
 
 # construct a null distribution
-null_dist <- gss \%>\%
-  specify(age ~ partyid) \%>\%
+null_dist <- gss |>
+  specify(age ~ partyid) |>
   assume(distribution = "F")
 
 # juxtapose them visually

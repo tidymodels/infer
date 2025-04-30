@@ -8,12 +8,18 @@ vignette: |
   \usepackage[utf8]{inputenc}
 ---
 
-```{r settings, include=FALSE}
+```{r}
+#| label: settings
+#| include: false
 knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5) 
 options(digits = 4)
 ```
 
-```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
+```{r}
+#| label: load-packages
+#| echo: false
+#| message: false
+#| warning: false
 library(ggplot2)
 library(dplyr)
 library(infer)
@@ -25,7 +31,10 @@ In this vignette, we'll walk through conducting $t$-tests and their randomizatio
 
 Throughout this vignette, we'll make use of the `gss` dataset supplied by infer, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
-```{r glimpse-gss-actual, warning = FALSE, message = FALSE}
+```{r}
+#| label: glimpse-gss-actual
+#| warning: false
+#| message: false
 dplyr::glimpse(gss)
 ```
 
@@ -35,8 +44,10 @@ The 1-sample $t$-test can be used to test whether a sample of continuous data co
 
 As an example, we'll test whether the average American adult works 40 hours a week using data from the `gss`. To do so, we make use of the `hours` variable, giving the number of hours that respondents reported having worked in the previous week. The distribution of `hours` in the observed data looks like this:
 
-```{r plot-1-sample, echo = FALSE}
-gss %>%
+```{r}
+#| label: plot-1-sample
+#| echo: false
+gss |>
   ggplot2::ggplot() +
   ggplot2::aes(x = hours) +
   ggplot2::geom_histogram(bins = 20) +
@@ -53,10 +64,13 @@ infer's randomization-based analogue to the 1-sample $t$-test is a 1-sample mean
 
 First, to calculate the observed statistic, we can use `specify()` and `calculate()`.
 
-```{r calc-obs-stat-1-sample, warning = FALSE, message = FALSE}
+```{r}
+#| label: calc-obs-stat-1-sample
+#| warning: false
+#| message: false
 # calculate the observed statistic
-observed_statistic <- gss %>%
-  specify(response = hours) %>%
+observed_statistic <- gss |>
+  specify(response = hours) |>
   calculate(stat = "mean")
 ```
 
@@ -64,20 +78,26 @@ The observed statistic is `r observed_statistic`. Now, we want to compare this s
 
 We can `generate()` the null distribution using the bootstrap. In the bootstrap, for each replicate, a sample of size equal to the input sample size is drawn (with replacement) from the input sample data. This allows us to get a sense of how much variability we'd expect to see in the entire population so that we can then understand how unlikely our sample mean would be.
 
-```{r generate-null-1-sample, warning = FALSE, message = FALSE}
+```{r}
+#| label: generate-null-1-sample
+#| warning: false
+#| message: false
 # generate the null distribution
-null_dist_1_sample <- gss %>%
-  specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
-  generate(reps = 1000, type = "bootstrap") %>%
+null_dist_1_sample <- gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
+  generate(reps = 1000, type = "bootstrap") |>
   calculate(stat = "mean")
 ```
 
 To get a sense for what these distributions look like, and where our observed statistic falls, we can use `visualize()`:
 
-```{r visualize-1-sample, warning = FALSE, message = FALSE}
+```{r}
+#| label: visualize-1-sample
+#| warning: false
+#| message: false
 # visualize the null distribution and test statistic!
-null_dist_1_sample %>%
+null_dist_1_sample |>
   visualize() +
   shade_p_value(observed_statistic,
     direction = "two-sided"
@@ -86,9 +106,12 @@ null_dist_1_sample %>%
 
 It looks like our observed mean of `r observed_statistic` would be relatively unlikely if the true mean was actually 40 hours a week. More exactly, we can calculate the p-value:
 
-```{r p-value-1-sample, warning = FALSE, message = FALSE}
+```{r}
+#| label: p-value-1-sample
+#| warning: false
+#| message: false
 # calculate the p value from the test statistic and null distribution
-p_value_1_sample <- null_dist_1_sample %>%
+p_value_1_sample <- null_dist_1_sample |>
   get_p_value(obs_stat = observed_statistic,
               direction = "two-sided")
 
@@ -99,7 +122,10 @@ Thus, if the true mean number of hours worked per week was really 40, our approx
 
 Analogously to the steps shown above, the package supplies a wrapper function, `t_test`, to carry out 1-sample $t$-tests on tidy data. Rather than using randomization, the wrappers carry out the theory-based $t$-test. The syntax looks like this:
 
-```{r t-test-wrapper, message = FALSE, warning = FALSE}
+```{r}
+#| label: t-test-wrapper
+#| message: false
+#| warning: false
 t_test(gss, response = hours, mu = 40)
 ```
 
@@ -107,10 +133,10 @@ An alternative approach to the `t_test()` wrapper is to calculate the observed s
 
 ```{r}
 # calculate the observed statistic
-observed_statistic <- gss %>%
-  specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
-  calculate(stat = "t") %>%
+observed_statistic <- gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
+  calculate(stat = "t") |>
   dplyr::pull()
 ```
 
@@ -128,8 +154,10 @@ Note that the resulting $t$-statistics from these two theory-based approaches ar
 
 2-Sample $t$-tests evaluate the difference in mean values of two populations using data randomly-sampled from the population that approximately follows a normal distribution. As an example, we'll test if Americans work the same number of hours a week regardless of whether they have a college degree or not using data from the `gss`. The `college` and `hours` variables allow us to do so:
 
-```{r plot-2-sample, echo = FALSE}
-gss %>%
+```{r}
+#| label: plot-2-sample
+#| echo: false
+gss |>
   ggplot2::ggplot() +
   ggplot2::aes(x = college, y = hours) +
   ggplot2::geom_boxplot() +
@@ -145,10 +173,13 @@ infer's randomization-based analogue to the 2-sample $t$-test is a difference in
 
 As with the one-sample test, to calculate the observed difference in means, we can use `specify()` and `calculate()`.
 
-```{r calc-obs-stat-2-sample, warning = FALSE, message = FALSE}
+```{r}
+#| label: calc-obs-stat-2-sample
+#| warning: false
+#| message: false
 # calculate the observed statistic
-observed_statistic <- gss %>%
-  specify(hours ~ college) %>%
+observed_statistic <- gss |>
+  specify(hours ~ college) |>
   calculate(stat = "diff in means", order = c("degree", "no degree"))
 
 observed_statistic
@@ -162,12 +193,15 @@ Now, we want to compare this difference in means to a null distribution, generat
 
 We can `generate()` the null distribution using permutation, where, for each replicate, each value of degree status will be randomly reassigned (without replacement) to a new number of hours worked per week in the sample in order to break any association between the two.
 
-```{r generate-null-2-sample, warning = FALSE, message = FALSE}
+```{r}
+#| label: generate-null-2-sample
+#| warning: false
+#| message: false
 # generate the null distribution with randomization
-null_dist_2_sample <- gss %>%
-  specify(hours ~ college) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+null_dist_2_sample <- gss |>
+  specify(hours ~ college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
   calculate(stat = "diff in means", order = c("degree", "no degree"))
 ```
 
@@ -175,9 +209,12 @@ Again, note that, in the lines `specify(hours ~ college)` in the above chunk, we
 
 To get a sense for what these distributions look like, and where our observed statistic falls, we can use `visualize()`.
 
-```{r visualize-2-sample, warning = FALSE, message = FALSE}
+```{r}
+#| label: visualize-2-sample
+#| warning: false
+#| message: false
 # visualize the randomization-based null distribution and test statistic!
-null_dist_2_sample %>%
+null_dist_2_sample |>
   visualize() + 
   shade_p_value(observed_statistic,
                 direction = "two-sided")
@@ -185,10 +222,13 @@ null_dist_2_sample %>%
 
 It looks like our observed statistic of `r observed_statistic` would be unlikely if there was truly no relationship between degree status and number of hours worked. More exactly, we can calculate the p-value; theoretical p-values are not yet supported, so we'll use the randomization-based null distribution to do calculate the p-value.
 
-```{r p-value-2-sample, warning = FALSE, message = FALSE}
+```{r}
+#| label: p-value-2-sample
+#| warning: false
+#| message: false
 # calculate the p value from the randomization-based null 
 # distribution and the observed statistic
-p_value_2_sample <- null_dist_2_sample %>%
+p_value_2_sample <- null_dist_2_sample |>
   get_p_value(obs_stat = observed_statistic,
               direction = "two-sided")
 
@@ -199,7 +239,10 @@ Thus, if there were really no relationship between the number of hours worked a 
 
 Note that, similarly to the steps shown above, the package supplies a wrapper function, `t_test()`, to carry out 2-sample $t$-tests on tidy data. The syntax looks like this:
 
-```{r 2-sample-t-test-wrapper, message = FALSE, warning = FALSE}
+```{r}
+#| label: 2-sample-t-test-wrapper
+#| message: false
+#| warning: false
 t_test(x = gss, 
        formula = hours ~ college, 
        order = c("degree", "no degree"),
@@ -212,10 +255,10 @@ An alternative approach to the `t_test()` wrapper is to calculate the observed s
 
 ```{r}
 # calculate the observed statistic
-observed_statistic <- gss %>%
-  specify(hours ~ college) %>%
-  hypothesize(null = "point", mu = 40) %>%
-  calculate(stat = "t", order = c("degree", "no degree")) %>%
+observed_statistic <- gss |>
+  specify(hours ~ college) |>
+  hypothesize(null = "point", mu = 40) |>
+  calculate(stat = "t", order = c("degree", "no degree")) |>
   dplyr::pull()
 
 observed_statistic

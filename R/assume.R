@@ -67,37 +67,37 @@
 #'
 #' # F distribution
 #' # with the `partyid` explanatory variable
-#' gss %>%
-#'   specify(age ~ partyid) %>%
+#' gss |>
+#'   specify(age ~ partyid) |>
 #'   assume(distribution = "F")
 #'
 #' # Chi-squared goodness of fit distribution
 #' # on the `finrela` variable
-#' gss %>%
-#'   specify(response = finrela) %>%
+#' gss |>
+#'   specify(response = finrela) |>
 #'   hypothesize(null = "point",
 #'               p = c("far below average" = 1/6,
 #'                     "below average" = 1/6,
 #'                     "average" = 1/6,
 #'                     "above average" = 1/6,
 #'                     "far above average" = 1/6,
-#'                     "DK" = 1/6)) %>%
+#'                     "DK" = 1/6)) |>
 #'   assume("Chisq")
 #'
 #' # Chi-squared test of independence
 #' # on the `finrela` and `sex` variables
-#' gss %>%
-#'   specify(formula = finrela ~ sex) %>%
+#' gss |>
+#'   specify(formula = finrela ~ sex) |>
 #'   assume(distribution = "Chisq")
 #'
 #' # T distribution
-#' gss %>%
-#'   specify(age ~ college) %>%
+#' gss |>
+#'   specify(age ~ college) |>
 #'   assume("t")
 #'
 #' # Z distribution
-#' gss %>%
-#'   specify(response = sex, success = "female") %>%
+#' gss |>
+#'   specify(response = sex, success = "female") |>
 #'   assume("z")
 #'
 #' \dontrun{
@@ -107,14 +107,14 @@
 #' # for example, a 1-sample t-test -------------------------------------
 #'
 #' # calculate the observed statistic
-#' obs_stat <- gss %>%
-#'   specify(response = hours) %>%
-#'   hypothesize(null = "point", mu = 40) %>%
+#' obs_stat <- gss |>
+#'   specify(response = hours) |>
+#'   hypothesize(null = "point", mu = 40) |>
 #'   calculate(stat = "t")
 #'
 #' # construct a null distribution
-#' null_dist <- gss %>%
-#'   specify(response = hours) %>%
+#' null_dist <- gss |>
+#'   specify(response = hours) |>
 #'   assume("t")
 #'
 #' # juxtapose them visually
@@ -127,14 +127,14 @@
 #' # or, an F test ------------------------------------------------------
 #'
 #' # calculate the observed statistic
-#' obs_stat <- gss %>%
-#'   specify(age ~ partyid) %>%
-#'   hypothesize(null = "independence") %>%
+#' obs_stat <- gss |>
+#'   specify(age ~ partyid) |>
+#'   hypothesize(null = "independence") |>
 #'   calculate(stat = "F")
 #'
 #' # construct a null distribution
-#' null_dist <- gss %>%
-#'   specify(age ~ partyid) %>%
+#' null_dist <- gss |>
+#'   specify(age ~ partyid) |>
 #'   assume(distribution = "F")
 #'
 #' # juxtapose them visually
@@ -169,8 +169,16 @@ assume <- function(x, distribution, df = NULL, ...) {
     # store df for easier passing to p* functions
     df = df,
     # store df in `specify`-esque format for use in `visualize`
-    distr_param = if (length(df) > 0) {df[1]} else {NULL},
-    distr_param2 = if (length(df) == 2) {df[2]} else {NULL},
+    distr_param = if (length(df) > 0) {
+      df[1]
+    } else {
+      NULL
+    },
+    distr_param2 = if (length(df) == 2) {
+      df[2]
+    } else {
+      NULL
+    },
     # bring along x attributes
     theory_type = attr(x, "theory_type"),
     params = attr(x, "params"),
@@ -187,19 +195,23 @@ check_distribution <- function(x, distribution, df, ..., call = caller_env()) {
   dist <- tolower(distribution)
 
   if (!dist %in% c("f", "chisq", "t", "z")) {
-     cli_abort(
+    cli_abort(
       'The distribution argument must be one of "Chisq", "F", "t", or "z".',
       call = call
     )
   }
 
-  if ((dist == "f" && attr(x, "theory_type") != "ANOVA") ||
-      (dist == "chisq" && !attr(x, "theory_type") %in% c("Chi-square test of indep",
-                                                         "Chi-square Goodness of Fit")) ||
-      (dist == "t" && !attr(x, "theory_type") %in% c("One sample t",
-                                                     "Two sample t")) ||
-      (dist == "z" && !attr(x, "theory_type") %in% c("One sample prop z",
-                                                     "Two sample props z"))) {
+  if (
+    (dist == "f" && attr(x, "theory_type") != "ANOVA") ||
+      (dist == "chisq" &&
+        !attr(x, "theory_type") %in%
+          c("Chi-square test of indep", "Chi-square Goodness of Fit")) ||
+      (dist == "t" &&
+        !attr(x, "theory_type") %in% c("One sample t", "Two sample t")) ||
+      (dist == "z" &&
+        !attr(x, "theory_type") %in%
+          c("One sample prop z", "Two sample props z"))
+  ) {
     if (has_explanatory(x)) {
       msg_tail <- glue(
         "a {get_stat_type_desc(attr(x, 'type_desc_explanatory'))} ",
@@ -210,33 +222,36 @@ check_distribution <- function(x, distribution, df, ..., call = caller_env()) {
       msg_tail <- "no explanatory variable."
     }
 
-     cli_abort(
+    cli_abort(
       'The supplied distribution {.val {distribution}} is not well-defined for a \\
       {get_stat_type_desc(attr(x, "type_desc_response"))} response \\
-      variable ({response_name(x)}) and {msg_tail}', call = call)
+      variable ({response_name(x)}) and {msg_tail}',
+      call = call
+    )
   }
 
   if (!is.numeric(df) && !is.null(df)) {
-     cli_abort(
+    cli_abort(
       "{.fun assume} expects the {.arg df} argument to be a numeric vector, \\
        but you supplied a {list(class(df))} object.",
       call = call
-     )
+    )
   }
 
   if (length(list(...)) != 0) {
     dots <- list(...)
 
-    cli_abort(c(
-      "{.fun assume} ignores the dots `...` argument, though the \\
+    cli_abort(
+      c(
+        "{.fun assume} ignores the dots `...` argument, though the \\
        {qty(dots)}argument{?s} {.field {names(dots)}} {?was/were} supplied. ",
-       i = "Did you forget to concatenate the {.arg df} argument with {.fun c}?"),
+        i = "Did you forget to concatenate the {.arg df} argument with {.fun c}?"
+      ),
       call = call
     )
   }
 
   if (dist_df_length(distribution) != length(df) && !is.null(df)) {
-
     cli_abort(
       '{distribution_desc(distribution)} distribution requires \\
        {dist_df_length(distribution)} degrees of freedom argument{?s}, \\
@@ -266,7 +281,8 @@ dist_df_length <- function(distribution) {
   switch(
     tolower(distribution),
     `f` = 2,
-    `chisq` = , `t` = 1,
+    `chisq` = ,
+    `t` = 1,
     `z` = 0
   )
 }
@@ -291,16 +307,26 @@ df_desc <- function(df) {
 
     paste0(
       ' with ',
-      if (plural) {paste0(round(df), collapse = " and ")} else {round(df)},
+      if (plural) {
+        paste0(round(df), collapse = " and ")
+      } else {
+        round(df)
+      },
       ' degree',
-      if (!plural && df == 1) {''} else {'s'},
-      ' of freedom')
+      if (!plural && df == 1) {
+        ''
+      } else {
+        's'
+      },
+      ' of freedom'
+    )
   }
 }
 
 # process df for passing to p* functions
 process_df <- function(df) {
-  switch(as.character(length(df)),
+  switch(
+    as.character(length(df)),
     "0" = list(),
     "1" = list(df = df),
     "2" = list(df1 = df[1], df2 = df[2])
@@ -311,7 +337,6 @@ process_df <- function(df) {
 # hypothesize and, if it doesn't match the
 # supplied one, raise a message
 determine_df <- function(x, dist, df) {
-
   if (!is.null(df) && !all(round(df) %in% round(acceptable_dfs(x)))) {
     cli_inform(
       "Message: The supplied {.arg df} argument does not match its \\
@@ -336,37 +361,44 @@ determine_df <- function(x, dist, df) {
 
 # return a vector of dfs recognized by `assume`
 acceptable_dfs <- function(x) {
+  # base R pipe doesn't support operators or anonymous functions
+  # in piped expressions (#553)
+  minus_one <- function(x) {x - 1}
+  minus_two <- function(x) {x - 2}
+
   if (attr(x, "theory_type") == "Two sample t") {
     c(
       # t.test param with var.equal = FALSE
       unname(
         unlist(
           attr(x, "distr_param") <-
-            stats::t.test(response_variable(x) ~
-                          explanatory_variable(x))[["parameter"]]
+            stats::t.test(response_variable(x) ~ explanatory_variable(x))[[
+              "parameter"
+            ]]
         )
       ),
       # t.test param with var.equal = TRUE
       unname(
         unlist(
           attr(x, "distr_param") <-
-            stats::t.test(response_variable(x) ~
-                          explanatory_variable(x),
-                          var.equal = TRUE)[["parameter"]]
+            stats::t.test(
+              response_variable(x) ~ explanatory_variable(x),
+              var.equal = TRUE
+            )[["parameter"]]
         )
       ),
       # min(n1 - 1, n2 - 1)
-      x %>%
-        dplyr::count(!!explanatory_expr(x)) %>%
-        dplyr::pull(n) %>%
-        min() %>%
-        `-`(1),
+      x |>
+        dplyr::count(!!explanatory_expr(x)) |>
+        dplyr::pull(n) |>
+        min() |>
+        minus_one(),
       # n1 + n2 - 2
-      x %>%
-        dplyr::count(!!explanatory_expr(x)) %>%
-        dplyr::pull(n) %>%
-        sum() %>%
-        `-`(2)
+      x |>
+        dplyr::count(!!explanatory_expr(x)) |>
+        dplyr::pull(n) |>
+        sum() |>
+        minus_two()
     )
   } else {
     c(
