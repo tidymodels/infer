@@ -6,16 +6,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Tidy ANOVA (Analysis of Variance) with infer • infer</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
+<link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="icon" sizes="any" href="../favicon.ico">
+<link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.9/font.css" rel="stylesheet">
-<link href="../deps/Source_Code_Pro-0.4.9/font.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Source_Sans_Pro-0.4.10/font.css" rel="stylesheet">
+<link href="../deps/Source_Code_Pro-0.4.10/font.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Tidy ANOVA (Analysis of Variance) with infer">
@@ -125,9 +124,9 @@ though?</p>
 <code><a href="../reference/specify.html">specify()</a></code> and <code><a href="../reference/calculate.html">calculate()</a></code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># calculate the observed statistic</span></span>
-<span><span class="va">observed_f_statistic</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="va">observed_f_statistic</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span></span></code></pre></div>
 <p>The observed
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
@@ -143,10 +142,10 @@ affiliation is matched up with a random age from the sample in order to
 break up any association between the two.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># generate the null distribution using randomization</span></span>
-<span><span class="va">null_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="va">null_dist</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/hypothesize.html">hypothesize</a></span><span class="op">(</span>null <span class="op">=</span> <span class="st">"independence"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/generate.html">generate</a></span><span class="op">(</span>reps <span class="op">=</span> <span class="fl">1000</span>, type <span class="op">=</span> <span class="st">"permute"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/calculate.html">calculate</a></span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span></span></code></pre></div>
 <p>Note that, in the line <code>specify(age ~ partyid)</code> above, we
 could use the equivalent syntax
@@ -155,7 +154,7 @@ could use the equivalent syntax
 observed statistic falls, we can use <code><a href="../reference/visualize.html">visualize()</a></code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># visualize the null distribution and test statistic!</span></span>
-<span><span class="va">null_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="va">null_dist</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_f_statistic</span>,</span>
 <span>                direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
@@ -167,8 +166,8 @@ verb to define a theoretical null distribution and then pass it to
 <code><a href="../reference/generate.html">generate()</a></code> and <code><a href="../reference/calculate.html">calculate()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># visualize the theoretical null distribution and test statistic!</span></span>
-<span><span class="va">null_dist_theory</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="va">null_dist_theory</span> <span class="op">&lt;-</span> <span class="va">gss</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/specify.html">specify</a></span><span class="op">(</span><span class="va">age</span> <span class="op">~</span> <span class="va">partyid</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/assume.html">assume</a></span><span class="op">(</span>distribution <span class="op">=</span> <span class="st">"F"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist_theory</span><span class="op">)</span> <span class="op">+</span></span>
@@ -182,7 +181,7 @@ then further provide <code>method = "both"</code> to
 <code><a href="../reference/visualize.html">visualize()</a></code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># visualize both null distributions and the test statistic!</span></span>
-<span><span class="va">null_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="va">null_dist</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_f_statistic</span>,</span>
 <span>                direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
@@ -193,7 +192,7 @@ party affiliation. More exactly, we can approximate the p-value from the
 randomization-based approximation to the null distribution:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># calculate the p value from the observed statistic and null distribution</span></span>
-<span><span class="va">p_value</span> <span class="op">&lt;-</span> <span class="va">null_dist</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span><span class="va">p_value</span> <span class="op">&lt;-</span> <span class="va">null_dist</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">observed_f_statistic</span>,</span>
 <span>              direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span>
 <span></span>
@@ -237,7 +236,7 @@ tests.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
   </div></footer>
