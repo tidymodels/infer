@@ -27,7 +27,7 @@ library(infer)
 
 ### Introduction
 
-In this vignette, we'll walk through conducting $t$-tests and their randomization-based analogue using infer. We'll start out with a 1-sample $t$-test, which compares a sample mean to a hypothesized true mean value. Then, we'll discuss paired $t$-tests, which are a special use case of 1-sample $t$-tests, and evaluate whether differences in paired values (e.g. some measure taken of a person before and after an experiment) differ from 0. Finally, we'll wrap up with 2-sample $t$-tests, testing the difference in means of two populations using a sample of data drawn from them.
+In this vignette, we'll walk through conducting $t$-tests and their randomization-based analogue using infer. We'll start out with a 1-sample $t$-test, which compares a sample mean to a hypothesized true mean value. Then, we'll discuss 2-sample $t$-tests, testing the difference in means of two populations using a sample of data drawn from them. If you're interested in evaluating whether differences in paired values (e.g. some measure taken of a person before and after an experiment) differ from 0, see `vignette("paired", package = "infer")`.
 
 Throughout this vignette, we'll make use of the `gss` dataset supplied by infer, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
@@ -167,8 +167,6 @@ gss |>
 
 It looks like both of these distributions are centered near 40 hours a week, but the distribution for those with a degree is slightly right skewed.
 
-Again, note the warning about missing values---many respondents' values are missing. If we were actually carrying out this hypothesis test, we might look further into how this data was collected; it's possible that whether or not a value in either of these columns is missing is related to what that value would be. 
-
 infer's randomization-based analogue to the 2-sample $t$-test is a difference in means test. We'll start off showcasing that test before demonstrating how to carry out a theory-based $t$-test with the package.
 
 As with the one-sample test, to calculate the observed difference in means, we can use `specify()` and `calculate()`.
@@ -220,7 +218,7 @@ null_dist_2_sample |>
                 direction = "two-sided")
 ```
 
-It looks like our observed statistic of `r observed_statistic` would be unlikely if there was truly no relationship between degree status and number of hours worked. More exactly, we can calculate the p-value; theoretical p-values are not yet supported, so we'll use the randomization-based null distribution to do calculate the p-value.
+It looks like our observed statistic of `r observed_statistic` would be unlikely if there was truly no relationship between degree status and number of hours worked. More exactly, we'll use the randomization-based null distribution to calculate the p-value.
 
 ```{r}
 #| label: p-value-2-sample
