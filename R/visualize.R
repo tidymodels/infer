@@ -170,7 +170,7 @@ ggplot2::ggplot_add
 #' vignette("infer")
 #' }
 #'
-#' @importFrom ggplot2 ggplot geom_histogram aes ggtitle
+#' @importFrom ggplot2 ggplot geom_histogram aes
 #' @importFrom ggplot2 geom_vline geom_rect geom_bar labs
 #' @importFrom stats dt qt df qf dnorm qnorm dchisq qchisq
 #' @export
@@ -651,7 +651,7 @@ redraw_theory_layer <- function(plot, mean_shift, sd_shift) {
 }
 
 
-title_layer <- function(data, title_fn = ggplot2::ggtitle) {
+title_layer <- function(data, title_fn = function(x) labs(title = x)) {
   method <- get_viz_method(data)
   theory_type <- short_theory_type(data)
 
