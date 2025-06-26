@@ -749,7 +749,7 @@ get_viz_bins <- function(data) {
 
 #' @method ggplot_add infer_layer
 #' @export
-ggplot_add.infer_layer <- function(object, plot, object_name) {
+ggplot_add.infer_layer <- function(object, plot, ...) {
   # a method for the `+` operator for infer objects.
   # - "object to add" (arguments to the RHS of the `+`)
   # - plot is the existing plot (on the LHS of the `+`)
