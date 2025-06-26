@@ -1,5 +1,9 @@
 # infer (development version)
 
+* Replaced usage of deprecated functions ahead of a new release of the ggplot2 package (#557).
+
+* Addressed narrative mistakes in the `t_test` vignette (#556).
+
 * Increased the minimum required R version to R 4.1
 
 # infer 1.0.8
