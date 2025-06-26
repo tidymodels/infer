@@ -170,8 +170,8 @@ ggplot2::ggplot_add
 #' vignette("infer")
 #' }
 #'
-#' @importFrom ggplot2 ggplot geom_histogram aes ggtitle
-#' @importFrom ggplot2 xlab ylab geom_vline geom_rect geom_bar
+#' @importFrom ggplot2 ggplot geom_histogram aes
+#' @importFrom ggplot2 geom_vline geom_rect geom_bar labs
 #' @importFrom stats dt qt df qf dnorm qnorm dchisq qchisq
 #' @export
 visualize <- function(
@@ -651,7 +651,7 @@ redraw_theory_layer <- function(plot, mean_shift, sd_shift) {
 }
 
 
-title_layer <- function(data, title_fn = ggplot2::ggtitle) {
+title_layer <- function(data, title_fn = function(x) labs(title = x)) {
   method <- get_viz_method(data)
   theory_type <- short_theory_type(data)
 
@@ -691,9 +691,9 @@ labels_layer <- function(data, term) {
   x_lab <- switch(method, simulation = "{term}", "{theory_type} stat")
   y_lab <- switch(method, simulation = "count", "density")
 
-  list(
-    xlab(glue(x_lab, .null = "NULL")),
-    ylab(glue(y_lab, .null = "NULL"))
+  labs(
+    x = glue(x_lab, .null = "NULL"),
+    y = glue(y_lab, .null = "NULL")
   )
 }
 
@@ -749,7 +749,7 @@ get_viz_bins <- function(data) {
 
 #' @method ggplot_add infer_layer
 #' @export
-ggplot_add.infer_layer <- function(object, plot, object_name) {
+ggplot_add.infer_layer <- function(object, plot, ...) {
   # a method for the `+` operator for infer objects.
   # - "object to add" (arguments to the RHS of the `+`)
   # - plot is the existing plot (on the LHS of the `+`)
