@@ -42,7 +42,7 @@ To learn more about the principles underlying the package design, see
 If you’re interested in learning more about randomization-based
 statistical inference generally, including applied examples of this
 package, we recommend checking out [Statistical Inference Via Data
-Science: A ModernDive Into R and the Tidyverse](https://moderndive.com/)
+Science: A ModernDive Into R and the Tidyverse](https://moderndive.com/v2/)
 and [Introduction to Modern
 Statistics](https://openintro-ims.netlify.app/).
 
