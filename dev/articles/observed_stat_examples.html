@@ -22,7 +22,7 @@
 <meta property="og:description" content="A near-exhaustive demonstration of the functionality in infer.">
 <meta property="og:image" content="https://infer.tidymodels.org/logo.png">
 <meta name="robots" content="noindex">
-<script defer data-domain="infer.tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script><script defer data-domain="infer.tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script>
 </head>
 <body>
     <a href="#container" class="visually-hidden-focusable">Skip to content</a>
@@ -146,7 +146,7 @@ distribution,</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">x_bar</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" width="576"></p>
 <p>Calculating the p-value from the null distribution and observed
 statistic,</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -190,19 +190,19 @@ distribution,</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">t_bar</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-11-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, visualizing the observed statistic using the
 theory-based null distribution,</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist_theory</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">t_bar</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-12-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, visualizing the observed statistic using both of the
 null distributions,</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span>, method <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">t_bar</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-13-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" width="576"></p>
 <p>Note that the above code makes use of the randomization-based null
 distribution.</p>
 <p>Calculating the p-value from the null distribution and observed
@@ -250,7 +250,7 @@ distribution,</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">x_tilde</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-19-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-19-1.png" class="r-plt" width="576"></p>
 <p>Calculating the p-value from the null distribution and observed
 statistic,</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
@@ -325,7 +325,7 @@ distribution,</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">x_tilde</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-25-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-25-1.png" class="r-plt" width="576"></p>
 <p>Calculating the p-value from the null distribution and observed
 statistic,</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
@@ -361,7 +361,7 @@ distribution,</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">p_hat</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-30-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-30-1.png" class="r-plt" width="576"></p>
 <p>Calculating the p-value from the null distribution and observed
 statistic,</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
@@ -407,7 +407,7 @@ distribution,</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">p_hat</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-36-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-36-1.png" class="r-plt" width="576"></p>
 <p>Calculating the p-value from the null distribution and observed
 statistic,</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
@@ -462,7 +462,7 @@ distribution,</p>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">d_hat</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-41-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-41-1.png" class="r-plt" width="576"></p>
 <p>Calculating the p-value from the null distribution and observed
 statistic,</p>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
@@ -497,7 +497,7 @@ distribution,</p>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">r_hat</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-46-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-46-1.png" class="r-plt" width="576"></p>
 <p>Calculating the p-value from the null distribution and observed
 statistic,</p>
 <div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
@@ -527,7 +527,7 @@ distribution,</p>
 <div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">or_hat</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-50-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-50-1.png" class="r-plt" width="576"></p>
 <p>Calculating the p-value from the null distribution and observed
 statistic,</p>
 <div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
@@ -571,19 +571,19 @@ distribution,</p>
 <div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">z_hat</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-56-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-56-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, visualizing the observed statistic using the
 theory-based null distribution,</p>
 <div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist_theory</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">z_hat</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-57-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-57-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, visualizing the observed statistic using both of the
 null distributions,</p>
 <div class="sourceCode" id="cb72"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span>, method <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">z_hat</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-58-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-58-1.png" class="r-plt" width="576"></p>
 <p>Note that the above code makes use of the randomization-based null
 distribution.</p>
 <p>Calculating the p-value from the null distribution and observed
@@ -673,19 +673,19 @@ distribution,</p>
 <div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">Chisq_hat</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-64-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-64-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, visualizing the observed statistic using the
 theory-based null distribution,</p>
 <div class="sourceCode" id="cb82"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist_theory</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">Chisq_hat</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-65-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-65-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, visualizing the observed statistic using both of the
 null distributions,</p>
 <div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist_theory</span>, method <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">Chisq_hat</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-66-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-66-1.png" class="r-plt" width="576"></p>
 <p>Note that the above code makes use of the randomization-based null
 distribution.</p>
 <p>Calculating the p-value from the null distribution and observed
@@ -748,19 +748,19 @@ distribution,</p>
 <div class="sourceCode" id="cb92"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">Chisq_hat</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-73-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-73-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, visualizing the observed statistic using the
 theory-based null distribution,</p>
 <div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist_theory</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">Chisq_hat</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-74-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-74-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, visualizing the observed statistic using both of the
 null distributions,</p>
 <div class="sourceCode" id="cb94"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span>, method <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">Chisq_hat</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-75-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-75-1.png" class="r-plt" width="576"></p>
 <p>Note that the above code makes use of the randomization-based null
 distribution.</p>
 <p>Calculating the p-value from the null distribution and observed
@@ -808,7 +808,7 @@ distribution,</p>
 <div class="sourceCode" id="cb102"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">d_hat</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-81-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-81-1.png" class="r-plt" width="576"></p>
 <p>Calculating the p-value from the null distribution and observed
 statistic,</p>
 <div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
@@ -852,19 +852,19 @@ distribution,</p>
 <div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">t_hat</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-87-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-87-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, visualizing the observed statistic using the
 theory-based null distribution,</p>
 <div class="sourceCode" id="cb110"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist_theory</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">t_hat</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-88-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-88-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, visualizing the observed statistic using both of the
 null distributions,</p>
 <div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span>, method <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">t_hat</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-89-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-89-1.png" class="r-plt" width="576"></p>
 <p>Note that the above code makes use of the randomization-based null
 distribution.</p>
 <p>Calculating the p-value from the null distribution and observed
@@ -905,7 +905,7 @@ distribution,</p>
 <div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">d_hat</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-94-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-94-1.png" class="r-plt" width="576"></p>
 <p>Calculating the p-value from the null distribution and observed
 statistic,</p>
 <div class="sourceCode" id="cb118"><pre class="downlit sourceCode r">
@@ -948,19 +948,19 @@ distribution,</p>
 <div class="sourceCode" id="cb124"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">F_hat</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-100-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-100-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, visualizing the observed statistic using the
 theory-based null distribution,</p>
 <div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist_theory</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">F_hat</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-101-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-101-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, visualizing the observed statistic using both of the
 null distributions,</p>
 <div class="sourceCode" id="cb126"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span>, method <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">F_hat</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-102-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-102-1.png" class="r-plt" width="576"></p>
 <p>Note that the above code makes use of the randomization-based null
 distribution.</p>
 <p>Calculating the p-value from the null distribution and observed
@@ -998,7 +998,7 @@ distribution,</p>
 <div class="sourceCode" id="cb132"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">slope_hat</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-107-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-107-1.png" class="r-plt" width="576"></p>
 <p>Calculating the p-value from the null distribution and observed
 statistic,</p>
 <div class="sourceCode" id="cb133"><pre class="downlit sourceCode r">
@@ -1034,7 +1034,7 @@ distribution,</p>
 <div class="sourceCode" id="cb138"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">correlation_hat</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-112-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-112-1.png" class="r-plt" width="576"></p>
 <p>Calculating the p-value from the null distribution and observed
 statistic,</p>
 <div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
@@ -1080,7 +1080,7 @@ permuted independently,</p>
 <div class="sourceCode" id="cb144"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">obs_fit</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-117-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-117-1.png" class="r-plt" width="576"></p>
 <p>Calculating p-values from the null distribution and observed fit,</p>
 <div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">null_dist</span> <span class="op">|&gt;</span></span>
@@ -1125,7 +1125,7 @@ the observed statistic,</p>
 <div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-123-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-123-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, use the bootstrap distribution to find a confidence
 interval using the standard error,</p>
 <div class="sourceCode" id="cb152"><pre class="downlit sourceCode r">
@@ -1133,7 +1133,7 @@ interval using the standard error,</p>
 <span></span>
 <span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-124-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-124-1.png" class="r-plt" width="576"></p>
 <p>Instead of a simulation-based bootstrap distribution, we can also
 define a theory-based sampling distribution,</p>
 <div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
@@ -1153,7 +1153,7 @@ the same way as with the simulation-based distribution,</p>
 <div class="sourceCode" id="cb156"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">sampling_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">theor_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-126-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-126-1.png" class="r-plt" width="576"></p>
 <p>Note that the <code>t</code> distribution is recentered and rescaled
 to lie on the scale of the observed data. infer does not support
 confidence intervals on means via the <code>z</code> distribution.</p>
@@ -1187,7 +1187,7 @@ the observed statistic,</p>
 <div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-131-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-131-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, use the bootstrap distribution to find a confidence
 interval using the standard error,</p>
 <div class="sourceCode" id="cb162"><pre class="downlit sourceCode r">
@@ -1196,7 +1196,7 @@ interval using the standard error,</p>
 <span></span>
 <span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-132-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-132-1.png" class="r-plt" width="576"></p>
 <p>See the above subsection (one mean) for a theory-based approach. Note
 that infer does not support confidence intervals on means via the
 <code>z</code> distribution.</p>
@@ -1227,7 +1227,7 @@ the observed statistic,</p>
 <div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-137-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-137-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, use the bootstrap distribution to find a confidence
 interval using the standard error,</p>
 <div class="sourceCode" id="cb168"><pre class="downlit sourceCode r">
@@ -1236,7 +1236,7 @@ interval using the standard error,</p>
 <span></span>
 <span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-138-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-138-1.png" class="r-plt" width="576"></p>
 <p>Instead of a simulation-based bootstrap distribution, we can also
 define a theory-based sampling distribution,</p>
 <div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
@@ -1256,7 +1256,7 @@ the same way as with the simulation-based distribution,</p>
 <div class="sourceCode" id="cb172"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">sampling_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">theor_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-140-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-140-1.png" class="r-plt" width="576"></p>
 <p>Note that the <code>z</code> distribution is recentered and rescaled
 to lie on the scale of the observed data. <code>infer</code> does not
 support confidence intervals on means via the <code>z</code>
@@ -1297,7 +1297,7 @@ the observed statistic,</p>
 <div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-145-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-145-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, use the bootstrap distribution to find a confidence
 interval using the standard error,</p>
 <div class="sourceCode" id="cb178"><pre class="downlit sourceCode r">
@@ -1306,7 +1306,7 @@ interval using the standard error,</p>
 <span></span>
 <span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-146-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-146-1.png" class="r-plt" width="576"></p>
 <p>Instead of a simulation-based bootstrap distribution, we can also
 define a theory-based sampling distribution,</p>
 <div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
@@ -1326,7 +1326,7 @@ the same way as with the simulation-based distribution,</p>
 <div class="sourceCode" id="cb182"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">sampling_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">theor_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-148-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-148-1.png" class="r-plt" width="576"></p>
 <p>Note that the <code>t</code> distribution is recentered and rescaled
 to lie on the scale of the observed data.</p>
 <p><code>infer</code> also provides functionality to calculate ratios of
@@ -1356,7 +1356,7 @@ the observed statistic,</p>
 <div class="sourceCode" id="cb187"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-153-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-153-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, use the bootstrap distribution to find a confidence
 interval using the standard error,</p>
 <div class="sourceCode" id="cb188"><pre class="downlit sourceCode r">
@@ -1365,7 +1365,7 @@ interval using the standard error,</p>
 <span></span>
 <span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-154-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-154-1.png" class="r-plt" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="one-numerical-variable-one-categorical-2-levels-t-1">One numerical variable, one categorical (2 levels) (t)<a class="anchor" aria-label="anchor" href="#one-numerical-variable-one-categorical-2-levels-t-1"></a>
@@ -1394,7 +1394,7 @@ the observed statistic,</p>
 <div class="sourceCode" id="cb193"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-159-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-159-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, use the bootstrap distribution to find a confidence
 interval using the standard error,</p>
 <div class="sourceCode" id="cb194"><pre class="downlit sourceCode r">
@@ -1403,7 +1403,7 @@ interval using the standard error,</p>
 <span></span>
 <span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-160-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-160-1.png" class="r-plt" width="576"></p>
 <p>See the above subsection (diff in means) for a theory-based approach.
 <code>infer</code> does not support confidence intervals on means via
 the <code>z</code> distribution.</p>
@@ -1435,7 +1435,7 @@ the observed statistic,</p>
 <div class="sourceCode" id="cb199"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-165-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-165-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, use the bootstrap distribution to find a confidence
 interval using the standard error,</p>
 <div class="sourceCode" id="cb200"><pre class="downlit sourceCode r">
@@ -1444,7 +1444,7 @@ interval using the standard error,</p>
 <span></span>
 <span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-166-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-166-1.png" class="r-plt" width="576"></p>
 <p>Instead of a simulation-based bootstrap distribution, we can also
 define a theory-based sampling distribution,</p>
 <div class="sourceCode" id="cb201"><pre class="downlit sourceCode r">
@@ -1464,7 +1464,7 @@ the same way as with the simulation-based distribution,</p>
 <div class="sourceCode" id="cb204"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">sampling_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">theor_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-168-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-168-1.png" class="r-plt" width="576"></p>
 <p>Note that the <code>z</code> distribution is recentered and rescaled
 to lie on the scale of the observed data.</p>
 </div>
@@ -1495,7 +1495,7 @@ the observed statistic,</p>
 <div class="sourceCode" id="cb209"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-173-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-173-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, use the bootstrap distribution to find a confidence
 interval using the standard error,</p>
 <div class="sourceCode" id="cb210"><pre class="downlit sourceCode r">
@@ -1504,7 +1504,7 @@ interval using the standard error,</p>
 <span></span>
 <span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-174-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-174-1.png" class="r-plt" width="576"></p>
 <p>See the above subsection (diff in props) for a theory-based
 approach.</p>
 </div>
@@ -1534,7 +1534,7 @@ the observed statistic,</p>
 <div class="sourceCode" id="cb215"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-179-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-179-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, use the bootstrap distribution to find a confidence
 interval using the standard error,</p>
 <div class="sourceCode" id="cb216"><pre class="downlit sourceCode r">
@@ -1543,7 +1543,7 @@ interval using the standard error,</p>
 <span></span>
 <span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-180-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-180-1.png" class="r-plt" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="two-numerical-vars---correlation-1">Two numerical vars - correlation<a class="anchor" aria-label="anchor" href="#two-numerical-vars---correlation-1"></a>
@@ -1571,7 +1571,7 @@ the observed statistic,</p>
 <div class="sourceCode" id="cb221"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-185-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-185-1.png" class="r-plt" width="576"></p>
 <p>Alternatively, use the bootstrap distribution to find a confidence
 interval using the standard error,</p>
 <div class="sourceCode" id="cb222"><pre class="downlit sourceCode r">
@@ -1580,7 +1580,7 @@ interval using the standard error,</p>
 <span></span>
 <span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">standard_error_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-186-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-186-1.png" class="r-plt" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="two-numerical-vars---t">Two numerical vars - t<a class="anchor" aria-label="anchor" href="#two-numerical-vars---t"></a>
@@ -1615,7 +1615,7 @@ could refer to standardized slope or standardized correlation.</p>
 <div class="sourceCode" id="cb226"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">boot_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">conf_ints</span><span class="op">)</span></span></code></pre></div>
-<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-190-1.png" width="576"></p>
+<p><img src="observed_stat_examples_files/figure-html/unnamed-chunk-190-1.png" class="r-plt" width="576"></p>
 <p>Note that this <code><a href="https://generics.r-lib.org/reference/fit.html" class="external-link">fit()</a></code>-based workflow can be applied to
 use cases with differing numbers of explanatory variables and
 explanatory variable types.</p>
@@ -1634,7 +1634,7 @@ explanatory variable types.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
   </div></footer>
