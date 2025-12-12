@@ -162,7 +162,7 @@ null_dist |>
 ## # A tibble: 1 × 1
 ##   p_value
 ##     <dbl>
-## 1   0.059
+## 1   0.053
 ```
 
 Note that the formula and non-formula interfaces (i.e., `age ~ partyid`
