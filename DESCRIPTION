@@ -50,7 +50,8 @@ Imports:
     rlang (>= 0.2.0),
     tibble,
     tidyr,
-    vctrs (>= 0.6.5)
+    vctrs (>= 0.6.5),
+    withr
 Suggests:
     covr,
     devtools (>= 1.12.0),
