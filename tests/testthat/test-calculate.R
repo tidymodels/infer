@@ -839,3 +839,99 @@ test_that("reported standard errors are correct", {
 
   expect_null(attr(rat_hat, "se"))
 })
+
+test_that("arbitrary test statistic works", {
+  # observed test statistics match pre-implemented ones
+  obs_stat_manual <-
+    gss |>
+    specify(response = hours) |>
+    calculate(stat = function(x, ...) {mean(x$hours)})
+
+  obs_stat_pre_implemented <-
+    gss |>
+    specify(response = hours) |>
+    calculate(stat = function(x, ...) {mean(x$hours)})
+
+  expect_equal(obs_stat_manual, obs_stat_pre_implemented)
+
+  # can supply a stat totally unknown to infer
+  mode_hours <- function(x, ...) {
+    hours_tbl <- table(x$hours)
+    as.numeric(names(sort(hours_tbl)))[length(hours_tbl)]
+  }
+
+  obs_stat_manual <-
+    gss |>
+    specify(response = hours) |>
+    calculate(stat = mode_hours)
+
+  expect_s3_class(obs_stat_manual, c("infer", "tbl_df"))
+  expect_named(obs_stat_manual, "stat")
+  expect_equal(obs_stat_manual$stat[[1]], 40)
+
+  # ...even one with a character value!
+  mode_partyid <- function(x, ...) {
+    partyid_tbl <- table(x$partyid)
+    names(sort(partyid_tbl))[length(partyid_tbl)]
+  }
+
+  obs_stat_manual <-
+    gss |>
+    specify(response = partyid) |>
+    calculate(stat = mode_partyid)
+
+  expect_s3_class(obs_stat_manual, c("infer", "tbl_df"))
+  expect_named(obs_stat_manual, "stat")
+  expect_equal(obs_stat_manual$stat[[1]], "ind")
+
+  # resampled test statistics match pre-implemented ones
+  set.seed(1)
+  stat_dist_manual <-
+    gss |>
+    specify(response = hours) |>
+    hypothesize(null = "point", mu = 40) |>
+    generate(reps = 5, type = "bootstrap") |>
+    calculate(stat = function(x, ...) {mean(x$hours)})
+
+  set.seed(1)
+  stat_dist_pre_implemented <-
+    gss |>
+    specify(response = hours) |>
+    hypothesize(null = "point", mu = 40) |>
+    generate(reps = 5, type = "bootstrap") |>
+    calculate(stat = function(x, ...) {mean(x$hours)})
+
+  expect_equal(stat_dist_manual, stat_dist_pre_implemented)
+
+  # errors and warnings are rethrown informatively
+  expect_snapshot(
+    error = TRUE,
+    gss |>
+      specify(response = hours) |>
+      # intentionally misspell `hour` to trigger warning
+      calculate(stat = function(x, ...) {mean(x$hour)})
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    gss |>
+      specify(response = hours) |>
+      # intentionally raise error
+      calculate(stat = function(x, ...) {mean("hey there")})
+  )
+
+  # incompatible functions are handled gracefully
+  expect_snapshot(
+    error = TRUE,
+    gss |>
+      specify(response = hours) |>
+      calculate(stat = function(x, ...) {data.frame(woops = mean(x$hours))})
+  )
+
+  expect_snapshot(
+    error = TRUE,
+    gss |>
+      specify(response = hours) |>
+      calculate(stat = function(x, ...) {identity})
+  )
+})

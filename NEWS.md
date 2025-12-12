@@ -1,5 +1,10 @@
 # infer (development version)
 
+* Introduced support for arbitrary test statistics in `calculate()`. In addition
+  to the pre-implemented `calculate(stat)` options, taken as strings, users can
+  now supply a function defining any scalar-valued test statistic. See
+  `?calculate()` to learn more.
+
 # infer 1.0.9
 
 * Replaced usage of deprecated functions ahead of a new release of the ggplot2 package (#557).
@@ -13,6 +18,7 @@
 * The infer print method now truncates output when descriptions of explanatory or responses variables exceed the console width (#543).
 
 * Added missing commas and addressed formatting issues throughout the vignettes and articles. Backticks for package names were removed and missing parentheses for functions were added (@Joscelinrocha).
+
 
 # infer 1.0.7
 
