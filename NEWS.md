@@ -1,5 +1,7 @@
 # infer (development version)
 
+* Fixed bug where adding `shade_confidence_interval(NULL)` or `shade_p_value(NULL)` to plots resulted in `list()` rather than the unmodified plot (#566).
+
 # infer 1.0.9
 
 * Replaced usage of deprecated functions ahead of a new release of the ggplot2 package (#557).
