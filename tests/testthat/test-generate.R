@@ -289,6 +289,8 @@ test_that("mismatches lead to error", {
 })
 
 test_that("generate() handles `NULL` value of `type`", {
+  withr::local_envvar(SUPPRESS_INFER_MESSAGES = "false")
+
   expect_snapshot(
     res_ <- generate(hyp_prop, type = NULL)
   )
@@ -316,7 +318,9 @@ test_that("generate() can permute with multiple explanatory variables", {
   # if the y variable is the one being permuted and the x's
   # are being left alone, then each age + college combination
   # should exist in every replicate
-  equals_3 <- function(x) {x == 3}
+  equals_3 <- function(x) {
+    x == 3
+  }
   expect_true(
     gss |>
       # add random noise to make the variable truly continuous

@@ -115,15 +115,15 @@ test_that("shade_p_value accepts synonyms for 'direction'", {
     gss_viz_sim + shade_p_value(1, "two_sided")
   )
   expect_doppelganger(
-    "pval-direction-both",
+    "pval-direction-both-2",
     gss_viz_sim + shade_p_value(1, "two-sided")
   )
   expect_doppelganger(
-    "pval-direction-both",
+    "pval-direction-both-3",
     gss_viz_sim + shade_p_value(1, "two sided")
   )
   expect_doppelganger(
-    "pval-direction-both",
+    "pval-direction-both-4",
     gss_viz_sim + shade_p_value(1, "two.sided")
   )
 })

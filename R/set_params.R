@@ -137,7 +137,7 @@ check_factor_levels <- function(x, type, name) {
   if (is.factor(x)) {
     unused <- setdiff(levels(x), unique(x))
 
-    if (length(unused) > 0) {
+    if (length(unused) > 0 && !suppress_infer_messages()) {
       cli_inform(
         "Dropping unused factor levels {list(unused)} from the \\
          supplied {type} variable '{name}'."

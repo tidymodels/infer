@@ -293,15 +293,11 @@
 
     Code
       out <- pull(calculate(specify(test_tbl, y ~ x), stat = "Chisq"))
-    Message
-      Dropping unused factor levels d from the supplied explanatory variable 'x'.
 
 ---
 
     Code
       out <- pull(calculate(specify(test_tbl, y ~ x), stat = "Chisq"))
-    Message
-      Dropping unused factor levels g from the supplied response variable 'y'.
 
 # `order` is working
 
@@ -393,8 +389,6 @@
     Code
       res_ <- calculate(generate(hypothesize(specify(gss_tbl, hours ~ NULL), null = "point",
       mu = 1), reps = 10), stat = "t")
-    Message
-      Setting `type = "bootstrap"` in `generate()`.
 
 ---
 
@@ -476,8 +470,6 @@
 
     Code
       res_ <- calculate(specify(gss, response = partyid), stat = "Chisq")
-    Message
-      Dropping unused factor levels DK from the supplied response variable 'partyid'.
     Condition
       Warning:
       A chi-square statistic requires a null hypothesis to calculate the observed statistic.

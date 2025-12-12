@@ -193,7 +193,7 @@ visualize <- function(
     method <- "theoretical"
     do_warn <- FALSE
   } else {
-    if (method == "theoretical") {
+    if (method == "theoretical" && !suppress_infer_messages()) {
       cli_inform(
         'Rather than setting `method = "theoretical"` with a simulation-based \\
          null distribution, the preferred method for visualizing theory-based \\

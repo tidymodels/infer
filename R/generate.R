@@ -167,7 +167,9 @@ has_p_param <- function(x) {
 }
 
 use_auto_type <- function(auto_type) {
-  cli_inform('Setting `type = "{auto_type}"` in `generate()`.')
+  if (!suppress_infer_messages()) {
+    cli_inform('Setting `type = "{auto_type}"` in `generate()`.')
+  }
   auto_type
 }
 

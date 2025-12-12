@@ -9,8 +9,6 @@
 
     Code
       get_confidence_interval(test_df, type = "other")
-    Message
-      Using `level = 0.95` to compute confidence interval.
     Condition
       Error in `get_confidence_interval()`:
       ! The options for `type` are "percentile", "se", or "bias-corrected".
@@ -27,8 +25,6 @@
 
     Code
       get_confidence_interval(test_df, point_estimate = "a")
-    Message
-      Using `level = 0.95` to compute confidence interval.
     Condition
       Error in `get_confidence_interval()`:
       ! `point_estimate` must be 'numeric', not 'character'.
@@ -37,8 +33,6 @@
 
     Code
       get_confidence_interval(test_df, type = "se", point_estimate = "a")
-    Message
-      Using `level = 0.95` to compute confidence interval.
     Condition
       Error in `get_confidence_interval()`:
       ! `point_estimate` must be 'numeric', not 'character'.
@@ -47,8 +41,6 @@
 
     Code
       get_confidence_interval(test_df, type = "se", point_estimate = data.frame(p = "a"))
-    Message
-      Using `level = 0.95` to compute confidence interval.
     Condition
       Error in `get_confidence_interval()`:
       ! `point_estimate[[1]][[1]]` must be 'numeric', not 'character'.
@@ -57,8 +49,6 @@
 
     Code
       get_confidence_interval(test_df, type = "se")
-    Message
-      Using `level = 0.95` to compute confidence interval.
     Condition
       Error in `get_confidence_interval()`:
       ! A numeric value needs to be given for `point_estimate` for `type` "se" or "bias-corrected".
@@ -67,8 +57,6 @@
 
     Code
       get_confidence_interval(test_df, type = "bias-corrected")
-    Message
-      Using `level = 0.95` to compute confidence interval.
     Condition
       Error in `get_confidence_interval()`:
       ! A numeric value needs to be given for `point_estimate` for `type` "se" or "bias-corrected".

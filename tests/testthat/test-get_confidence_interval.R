@@ -25,19 +25,13 @@ perc_def_out <- tibble::tibble(
 )
 
 test_that("get_confidence_interval works with defaults", {
-  expect_message(
-    expect_equal(test_df |> get_confidence_interval(), perc_def_out),
-    "Using `level = 0.95`"
-  )
+  expect_equal(test_df |> get_confidence_interval(), perc_def_out)
 })
 
 test_that("get_confidence_interval works with `type = 'percentile'`", {
-  expect_message(
-    expect_equal(
-      test_df |> get_confidence_interval(type = "percentile"),
-      perc_def_out
-    ),
-    "Using `level = 0.95`"
+  expect_equal(
+    test_df |> get_confidence_interval(type = "percentile"),
+    perc_def_out
   )
 
   expect_equal(
@@ -50,16 +44,12 @@ test_that("get_confidence_interval works with `type = 'percentile'`", {
 })
 
 test_that("get_confidence_interval works with `type = 'se'`", {
-  expect_message(
-    # use equivalent rather than equal as ci has attributes for se and point est
-    expect_equal(
-      test_df |>
-        get_confidence_interval(type = "se", point_estimate = point),
-      tibble::tibble(lower_ci = -5.653, upper_ci = 6.603),
-      tolerance = 1e-3,
-      ignore_attr = TRUE
-    ),
-    "Using `level = 0.95`"
+  expect_equal(
+    test_df |>
+      get_confidence_interval(type = "se", point_estimate = point),
+    tibble::tibble(lower_ci = -5.653, upper_ci = 6.603),
+    tolerance = 1e-3,
+    ignore_attr = TRUE
   )
 
   # use equivalent rather than equal as ci has attributes for se and point est
@@ -73,17 +63,14 @@ test_that("get_confidence_interval works with `type = 'se'`", {
 })
 
 test_that("get_confidence_interval works with `type = 'bias-corrected'`", {
-  expect_message(
-    expect_equal(
-      test_df |>
-        get_confidence_interval(
-          type = "bias-corrected",
-          point_estimate = point
-        ),
-      tibble::tibble(lower_ci = -4.00, upper_ci = 5),
-      tolerance = 1e-3
-    ),
-    "Using `level = 0.95`"
+  expect_equal(
+    test_df |>
+      get_confidence_interval(
+        type = "bias-corrected",
+        point_estimate = point
+      ),
+    tibble::tibble(lower_ci = -4.00, upper_ci = 5),
+    tolerance = 1e-3
   )
 
   expect_equal(
@@ -119,6 +106,7 @@ test_that("get_confidence_interval supports data frame `point_estimate`", {
 })
 
 test_that("get_confidence_interval messages with no explicit `level`", {
+  withr::local_envvar(SUPPRESS_INFER_MESSAGES = "false")
   expect_snapshot(res_ <- get_confidence_interval(test_df))
   expect_silent(get_confidence_interval(test_df, level = 0.95))
   expect_silent(get_confidence_interval(test_df, 0.95))

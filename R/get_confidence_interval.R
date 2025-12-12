@@ -150,7 +150,7 @@ get_confidence_interval <- function(
   point_estimate = NULL
 ) {
   # Inform if no `level` was explicitly supplied
-  if (!("level" %in% rlang::call_args_names(match.call()))) {
+  if (!("level" %in% rlang::call_args_names(match.call())) && !suppress_infer_messages()) {
     cli_inform("Using `level = {level}` to compute confidence interval.")
   }
 
