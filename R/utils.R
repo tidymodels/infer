@@ -1,4 +1,8 @@
 # Miscellaneous Helpers -----------------------------------------------
+suppress_infer_messages <- function() {
+  identical(Sys.getenv("SUPPRESS_INFER_MESSAGES"), "true")
+}
+
 append_infer_class <- function(x) {
   x_cl <- class(x)
   if (x_cl[1] != "infer") {

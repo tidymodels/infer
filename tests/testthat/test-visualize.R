@@ -490,6 +490,7 @@ test_that('method = "both" behaves nicely', {
 
 test_that("Traditional right-tailed tests have warning if not right-tailed", {
   skip_if(getRversion() < "4.1.0")
+  withr::local_envvar(SUPPRESS_INFER_MESSAGES = "false")
 
   expect_snapshot(
     res_ <- gss_tbl |>

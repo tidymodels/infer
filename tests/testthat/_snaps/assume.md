@@ -21,8 +21,6 @@
     Code
       assume(hypothesize(specify(gss, age ~ partyid), null = "independence"), "F",
       nrow(gss) - 1)
-    Message
-      Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.
     Condition
       Error in `assume()`:
       ! An F distribution requires 2 degrees of freedom arguments, but 1 was supplied.
@@ -32,8 +30,6 @@
     Code
       assume(hypothesize(specify(gss, age ~ partyid), null = "independence"), "F",
       "boop")
-    Message
-      Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.
     Condition
       Error in `assume()`:
       ! `assume()` expects the `df` argument to be a numeric vector, but you supplied a character object.
@@ -43,8 +39,6 @@
     Code
       assume(hypothesize(specify(gss, age ~ partyid), null = "independence"), "F",
       nrow(gss) - 1, 1)
-    Message
-      Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.
     Condition
       Error in `assume()`:
       ! `assume()` ignores the dots `...` argument, though the argument were supplied.
@@ -55,8 +49,6 @@
     Code
       assume(hypothesize(specify(gss, age ~ partyid), null = "independence"), "F",
       nrow(gss) - 1, 1, 2)
-    Message
-      Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.
     Condition
       Error in `assume()`:
       ! `assume()` ignores the dots `...` argument, though the arguments were supplied.

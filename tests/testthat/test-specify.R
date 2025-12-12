@@ -84,6 +84,7 @@ test_that("specify doesn't have NSE issues (#256)", {
 })
 
 test_that("specify messages when dropping unused levels", {
+  withr::local_envvar(SUPPRESS_INFER_MESSAGES = "false")
   expect_snapshot(
     res_ <- gss |>
       dplyr::filter(partyid %in% c("rep", "dem")) |>

@@ -54,8 +54,6 @@
       res_vis_theor_none_1 <- visualize(calculate(hypothesize(specify(gss_tbl, sex ~
         college, success = "female"), null = "independence"), stat = "z", order = c(
         "no degree", "degree")), method = "theoretical")
-    Message
-      Rather than setting `method = "theoretical"` with a simulation-based null distribution, the preferred method for visualizing theory-based distributions with infer is now to pass the output of `assume()` as the first argument to `visualize()`.
     Condition
       Warning:
       Check to make sure the conditions have been met for the theoretical method. infer currently does not check these for you.
@@ -101,8 +99,6 @@
         gss_tbl, hours ~ sex), null = "independence"), reps = 100, type = "permute"),
       stat = "diff in means", order = c("female", "male")), method = "theoretical") +
         shade_p_value(direction = "both", obs_stat = obs_diff_mean)
-    Message
-      Rather than setting `method = "theoretical"` with a simulation-based null distribution, the preferred method for visualizing theory-based distributions with infer is now to pass the output of `assume()` as the first argument to `visualize()`.
     Condition
       Warning:
       Check to make sure the conditions have been met for the theoretical method. infer currently does not check these for you.
