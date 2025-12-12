@@ -15,6 +15,8 @@
 #'
 #' @return A 1-column tibble containing the calculated statistic `stat`.
 #'
+#' @inheritSection calculate Arbitrary test statistics
+#'
 #' @examples
 #' # calculating the observed mean number of hours worked per week
 #' gss |>

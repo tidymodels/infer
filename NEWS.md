@@ -1,6 +1,12 @@
 # infer (development version)
 
-* Fixed bug where adding `shade_confidence_interval(NULL)` or `shade_p_value(NULL)` to plots resulted in `list()` rather than the unmodified plot (#566).
+* Fixed bug where adding `shade_confidence_interval(NULL)` or `shade_p_value(NULL)` 
+  to plots resulted in `list()` rather than the unmodified plot (#566).
+
+* Introduced support for arbitrary test statistics in `calculate()`. In addition
+  to the pre-implemented `calculate(stat)` options, taken as strings, users can
+  now supply a function defining any scalar-valued test statistic. See
+  `?calculate()` to learn more (#542).
 
 # infer 1.0.9
 
@@ -15,6 +21,7 @@
 * The infer print method now truncates output when descriptions of explanatory or responses variables exceed the console width (#543).
 
 * Added missing commas and addressed formatting issues throughout the vignettes and articles. Backticks for package names were removed and missing parentheses for functions were added (@Joscelinrocha).
+
 
 # infer 1.0.7
 

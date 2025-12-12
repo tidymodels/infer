@@ -164,3 +164,17 @@ test_that("observe() output is the same as the old wrappers", {
     res_wrap_2
   )
 })
+
+test_that("observe() can handle arbitrary test statistics", {
+  mean_manual <-
+    gss |>
+    specify(response = hours) |>
+    calculate(stat = "mean")
+
+  mean_observe <-
+    observe(gss, response = hours, stat = function(x, ...) {mean(x$hours)})
+
+  # use `ignore_attr` since infer will only calculate standard errors with
+  # some pre-implemented statistics
+  expect_equal(mean_manual, mean_observe, ignore_attr = TRUE)
+})
