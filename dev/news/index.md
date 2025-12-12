@@ -2,6 +2,12 @@
 
 ## infer (development version)
 
+- Introduced support for arbitrary test statistics in
+  [`calculate()`](https://infer.tidymodels.org/dev/reference/calculate.md).
+  In addition to the pre-implemented `calculate(stat)` options, taken as
+  strings, users can now supply a function defining any scalar-valued
+  test statistic. See `?calculate()` to learn more.
+
 ## infer 1.0.9
 
 CRAN release: 2025-06-26

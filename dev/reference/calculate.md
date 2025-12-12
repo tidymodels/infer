@@ -38,14 +38,16 @@ calculate(
 
 - stat:
 
-  A string giving the type of the statistic to calculate. Current
+  A string giving the type of the statistic to calculate or a function
+  that takes in a replicate of `x` and returns a scalar value. Current
   options include `"mean"`, `"median"`, `"sum"`, `"sd"`, `"prop"`,
   `"count"`, `"diff in means"`, `"diff in medians"`, `"diff in props"`,
   `"Chisq"` (or `"chisq"`), `"F"` (or `"f"`), `"t"`, `"z"`,
   `"ratio of props"`, `"slope"`, `"odds ratio"`, `"ratio of means"`, and
   `"correlation"`. `infer` only supports theoretical tests on one or two
   means via the `"t"` distribution and one or two proportions via the
-  `"z"`.
+  `"z"`. See the "Arbitrary test statistics" section below for more on
+  how to define a custom statistic.
 
 - order:
 
@@ -68,6 +70,40 @@ calculate(
 ## Value
 
 A tibble containing a `stat` column of calculated statistics.
+
+## Arbitrary test statistics
+
+In addition to the pre-implemented statistics documented in `stat`,
+users can supply an arbitrary test statistic by supplying a function to
+the `stat` argument.
+
+The function should have arguments `stat(x, order, ...)`, where `x` is
+one replicate's worth of `x`. The `order` argument and ellipses will be
+supplied directly to the `stat` function. Internally, `calculate()` will
+split `x` up into data frames by replicate and pass them one-by-one to
+the supplied `stat`. For example, to implement `stat = "mean"` as a
+function, one could write:
+
+    stat_mean <- function(x, order, ...) {mean(x$hours)}
+    obs_mean <-
+      gss %>%
+      specify(response = hours) %>%
+      calculate(stat = stat_mean)
+
+    set.seed(1)
+    null_dist_mean <-
+      gss %>%
+      specify(response = hours) %>%
+      hypothesize(null = "point", mu = 40) %>%
+      generate(reps = 5, type = "bootstrap") %>%
+      calculate(stat = stat_mean)
+
+Note that the same `stat_mean` function is supplied to both
+[`generate()`](https://infer.tidymodels.org/dev/reference/generate.md)d
+and
+non-[`generate()`](https://infer.tidymodels.org/dev/reference/generate.md)d
+infer objects–no need to implement support for grouping by `replicate`
+yourself.
 
 ## Missing levels in small samples
 
