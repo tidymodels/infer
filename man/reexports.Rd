@@ -18,6 +18,6 @@ below to see their documentation.
 \describe{
   \item{generics}{\code{\link[generics]{fit}}}
 
-  \item{ggplot2}{\code{\link[ggplot2]{ggplot_add}}}
+  \item{ggplot2}{\code{\link[ggplot2:update_ggplot]{ggplot_add}}}
 }}
 
