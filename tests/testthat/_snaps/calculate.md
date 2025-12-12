@@ -522,7 +522,7 @@
 # arbitrary test statistic works
 
     Code
-      gss %>% specify(response = hours) %>% calculate(stat = function(x, ...) {
+      calculate(specify(gss, response = hours), stat = function(x, ...) {
         mean(x$hour)
       })
     Condition
@@ -534,7 +534,7 @@
 ---
 
     Code
-      gss %>% specify(response = hours) %>% calculate(stat = function(x, ...) {
+      calculate(specify(gss, response = hours), stat = function(x, ...) {
         mean("hey there")
       })
     Condition
@@ -546,7 +546,7 @@
 ---
 
     Code
-      gss %>% specify(response = hours) %>% calculate(stat = function(x, ...) {
+      calculate(specify(gss, response = hours), stat = function(x, ...) {
         data.frame(woops = mean(x$hours))
       })
     Condition
@@ -557,7 +557,7 @@
 ---
 
     Code
-      gss %>% specify(response = hours) %>% calculate(stat = function(x, ...) {
+      calculate(specify(gss, response = hours), stat = function(x, ...) {
         identity
       })
     Condition
