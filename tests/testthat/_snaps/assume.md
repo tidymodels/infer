@@ -1,8 +1,8 @@
 # assume errors with bad arguments
 
     Code
-      gss %>% specify(age ~ college) %>% hypothesize(null = "independence") %>%
-        assume("boop", nrow(gss) - 1)
+      assume(hypothesize(specify(gss, age ~ college), null = "independence"), "boop",
+      nrow(gss) - 1)
     Condition
       Error in `assume()`:
       ! The distribution argument must be one of "Chisq", "F", "t", or "z".
@@ -10,8 +10,8 @@
 ---
 
     Code
-      gss %>% specify(age ~ college) %>% hypothesize(null = "independence") %>%
-        assume("t", c(nrow(gss) - 1, 2))
+      assume(hypothesize(specify(gss, age ~ college), null = "independence"), "t", c(
+        nrow(gss) - 1, 2))
     Condition
       Error in `assume()`:
       ! A T distribution requires 1 degrees of freedom argument, but 2 were supplied.
@@ -19,8 +19,8 @@
 ---
 
     Code
-      gss %>% specify(age ~ partyid) %>% hypothesize(null = "independence") %>%
-        assume("F", nrow(gss) - 1)
+      assume(hypothesize(specify(gss, age ~ partyid), null = "independence"), "F",
+      nrow(gss) - 1)
     Message
       Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.
     Condition
@@ -30,8 +30,8 @@
 ---
 
     Code
-      gss %>% specify(age ~ partyid) %>% hypothesize(null = "independence") %>%
-        assume("F", "boop")
+      assume(hypothesize(specify(gss, age ~ partyid), null = "independence"), "F",
+      "boop")
     Message
       Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.
     Condition
@@ -41,8 +41,8 @@
 ---
 
     Code
-      gss %>% specify(age ~ partyid) %>% hypothesize(null = "independence") %>%
-        assume("F", nrow(gss) - 1, 1)
+      assume(hypothesize(specify(gss, age ~ partyid), null = "independence"), "F",
+      nrow(gss) - 1, 1)
     Message
       Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.
     Condition
@@ -53,8 +53,8 @@
 ---
 
     Code
-      gss %>% specify(age ~ partyid) %>% hypothesize(null = "independence") %>%
-        assume("F", nrow(gss) - 1, 1, 2)
+      assume(hypothesize(specify(gss, age ~ partyid), null = "independence"), "F",
+      nrow(gss) - 1, 1, 2)
     Message
       Dropping unused factor levels DK from the supplied explanatory variable 'partyid'.
     Condition
@@ -65,8 +65,8 @@
 ---
 
     Code
-      gss %>% specify(age ~ finrela) %>% hypothesize(null = "independence") %>%
-        assume("t", nrow(gss) - 1)
+      assume(hypothesize(specify(gss, age ~ finrela), null = "independence"), "t",
+      nrow(gss) - 1)
     Condition
       Error in `assume()`:
       ! The supplied distribution "t" is not well-defined for a numeric response variable (age) and a multinomial categorical explanatory variable (finrela).
@@ -74,8 +74,8 @@
 ---
 
     Code
-      gss %>% specify(age ~ finrela) %>% hypothesize(null = "independence") %>%
-        assume("z", nrow(gss) - 1)
+      assume(hypothesize(specify(gss, age ~ finrela), null = "independence"), "z",
+      nrow(gss) - 1)
     Condition
       Error in `assume()`:
       ! The supplied distribution "z" is not well-defined for a numeric response variable (age) and a multinomial categorical explanatory variable (finrela).
@@ -83,8 +83,8 @@
 ---
 
     Code
-      gss %>% specify(age ~ NULL) %>% hypothesize(null = "point", mu = 40) %>% assume(
-        "z", nrow(gss) - 1)
+      assume(hypothesize(specify(gss, age ~ NULL), null = "point", mu = 40), "z",
+      nrow(gss) - 1)
     Condition
       Error in `assume()`:
       ! The supplied distribution "z" is not well-defined for a numeric response variable (age) and no explanatory variable.
@@ -92,7 +92,7 @@
 ---
 
     Code
-      gss %>% assume("z", nrow(gss) - 1)
+      assume(gss, "z", nrow(gss) - 1)
     Condition
       Error in `assume()`:
       ! The `x` argument must be the output of a core infer function, likely `specify()` or `hypothesize()`.
@@ -100,7 +100,7 @@
 ---
 
     Code
-      "boop" %>% assume("z", nrow(gss) - 1)
+      assume("boop", "z", nrow(gss) - 1)
     Condition
       Error in `assume()`:
       ! The `x` argument must be the output of a core infer function, likely `specify()` or `hypothesize()`.
@@ -108,8 +108,8 @@
 # assume() handles automatic df gracefully
 
     Code
-      res_ <- gss %>% specify(response = hours) %>% hypothesize(null = "point", mu = 40) %>%
-        assume("t", nrow(gss) - 2)
+      res_ <- assume(hypothesize(specify(gss, response = hours), null = "point", mu = 40),
+      "t", nrow(gss) - 2)
     Message
       Message: The supplied `df` argument does not match its expected value. If this is unexpected, ensure that your calculation for `df` is correct (see `assume()` (`?infer::assume()`) for recognized values) or supply `df = NULL` to `assume()`.
 

@@ -1,7 +1,7 @@
 # t_test works
 
     Code
-      res_ <- gss_tbl %>% t_test(hours ~ sex)
+      res_ <- t_test(gss_tbl, hours ~ sex)
     Condition
       Warning:
       The statistic is based on a difference or ratio; by default, for difference-based statistics, the explanatory variable is subtracted in the order "male" - "female", or divided in the order "male" / "female" for ratio-based statistics. To specify this order yourself, supply `order = c("male", "female")`.
@@ -9,7 +9,7 @@
 ---
 
     Code
-      gss_tbl %>% t_test(response = "hours", explanatory = "sex")
+      t_test(gss_tbl, response = "hours", explanatory = "sex")
     Condition
       Error in `t_test()`:
       ! The response should be a bare variable name (not a string in quotation marks).
@@ -33,7 +33,7 @@
 # _stat functions work
 
     Code
-      res_ <- gss_tbl %>% chisq_stat(college ~ partyid)
+      res_ <- chisq_stat(gss_tbl, college ~ partyid)
     Condition
       Warning:
       `chisq_stat()` was deprecated in infer 1.0.0.
@@ -42,7 +42,7 @@
 ---
 
     Code
-      obs_stat_way <- gss_tbl %>% chisq_stat(college ~ partyid)
+      obs_stat_way <- chisq_stat(gss_tbl, college ~ partyid)
     Condition
       Warning:
       `chisq_stat()` was deprecated in infer 1.0.0.
@@ -51,7 +51,7 @@
 ---
 
     Code
-      obs_stat_way <- gss_tbl %>% chisq_stat(partyid ~ NULL)
+      obs_stat_way <- chisq_stat(gss_tbl, partyid ~ NULL)
     Condition
       Warning:
       `chisq_stat()` was deprecated in infer 1.0.0.
@@ -60,7 +60,7 @@
 ---
 
     Code
-      obs_stat_way_alt <- gss_tbl %>% chisq_stat(response = partyid)
+      obs_stat_way_alt <- chisq_stat(gss_tbl, response = partyid)
     Condition
       Warning:
       `chisq_stat()` was deprecated in infer 1.0.0.
@@ -69,7 +69,7 @@
 ---
 
     Code
-      res_ <- gss_tbl %>% t_stat(hours ~ sex, order = c("male", "female"))
+      res_ <- t_stat(gss_tbl, hours ~ sex, order = c("male", "female"))
     Condition
       Warning:
       `t_stat()` was deprecated in infer 1.0.0.
@@ -78,7 +78,7 @@
 ---
 
     Code
-      obs_stat_way <- gss_tbl %>% t_stat(hours ~ sex, order = c("male", "female"))
+      obs_stat_way <- t_stat(gss_tbl, hours ~ sex, order = c("male", "female"))
     Condition
       Warning:
       `t_stat()` was deprecated in infer 1.0.0.
@@ -87,8 +87,8 @@
 ---
 
     Code
-      obs_stat_way_alt <- gss_tbl %>% t_stat(response = hours, explanatory = sex,
-        order = c("male", "female"))
+      obs_stat_way_alt <- t_stat(gss_tbl, response = hours, explanatory = sex, order = c(
+        "male", "female"))
     Condition
       Warning:
       `t_stat()` was deprecated in infer 1.0.0.
@@ -97,7 +97,7 @@
 ---
 
     Code
-      res_ <- gss_tbl %>% t_stat(hours ~ NULL)
+      res_ <- t_stat(gss_tbl, hours ~ NULL)
     Condition
       Warning:
       `t_stat()` was deprecated in infer 1.0.0.
@@ -106,7 +106,7 @@
 ---
 
     Code
-      obs_stat_way <- gss_tbl %>% t_stat(hours ~ NULL)
+      obs_stat_way <- t_stat(gss_tbl, hours ~ NULL)
     Condition
       Warning:
       `t_stat()` was deprecated in infer 1.0.0.
@@ -115,7 +115,7 @@
 ---
 
     Code
-      obs_stat_way_alt <- gss_tbl %>% t_stat(response = hours)
+      obs_stat_way_alt <- t_stat(gss_tbl, response = hours)
     Condition
       Warning:
       `t_stat()` was deprecated in infer 1.0.0.
@@ -146,7 +146,7 @@
 # conf_int argument works
 
     Code
-      res_ <- gss_tbl %>% t_test(hours ~ sex, order = c("female", "male"), conf_int = TRUE,
+      res_ <- t_test(gss_tbl, hours ~ sex, order = c("female", "male"), conf_int = TRUE,
       conf_level = 1.1)
     Condition
       Error in `t_test()`:
@@ -155,8 +155,7 @@
 ---
 
     Code
-      no_var_equal <- gss_tbl_small %>% t_stat(hours ~ sex, order = c("female",
-        "male"))
+      no_var_equal <- t_stat(gss_tbl_small, hours ~ sex, order = c("female", "male"))
     Condition
       Warning:
       `t_stat()` was deprecated in infer 1.0.0.
@@ -165,7 +164,7 @@
 ---
 
     Code
-      var_equal <- gss_tbl_small %>% t_stat(hours ~ sex, order = c("female", "male"),
+      var_equal <- t_stat(gss_tbl_small, hours ~ sex, order = c("female", "male"),
       var.equal = TRUE)
     Condition
       Warning:
@@ -242,8 +241,8 @@
 # wrappers can handled ordered factors
 
     Code
-      ordered_t_1 <- gss_tbl %>% dplyr::mutate(income = factor(income, ordered = TRUE)) %>%
-        chisq_test(income ~ partyid)
+      ordered_t_1 <- chisq_test(dplyr::mutate(gss_tbl, income = factor(income,
+        ordered = TRUE)), income ~ partyid)
     Condition
       Warning in `stats::chisq.test()`:
       Chi-squared approximation may be incorrect
@@ -251,8 +250,8 @@
 ---
 
     Code
-      ordered_f_1 <- gss_tbl %>% dplyr::mutate(income = factor(income, ordered = FALSE)) %>%
-        chisq_test(income ~ partyid)
+      ordered_f_1 <- chisq_test(dplyr::mutate(gss_tbl, income = factor(income,
+        ordered = FALSE)), income ~ partyid)
     Condition
       Warning in `stats::chisq.test()`:
       Chi-squared approximation may be incorrect
@@ -260,8 +259,8 @@
 ---
 
     Code
-      ordered_t_2 <- gss_tbl %>% dplyr::mutate(income = factor(income, ordered = TRUE)) %>%
-        chisq_test(partyid ~ income)
+      ordered_t_2 <- chisq_test(dplyr::mutate(gss_tbl, income = factor(income,
+        ordered = TRUE)), partyid ~ income)
     Condition
       Warning in `stats::chisq.test()`:
       Chi-squared approximation may be incorrect
@@ -269,8 +268,8 @@
 ---
 
     Code
-      ordered_f_2 <- gss_tbl %>% dplyr::mutate(income = factor(income, ordered = FALSE)) %>%
-        chisq_test(partyid ~ income)
+      ordered_f_2 <- chisq_test(dplyr::mutate(gss_tbl, income = factor(income,
+        ordered = FALSE)), partyid ~ income)
     Condition
       Warning in `stats::chisq.test()`:
       Chi-squared approximation may be incorrect

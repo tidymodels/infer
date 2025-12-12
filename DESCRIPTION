@@ -1,7 +1,7 @@
 Type: Package
 Package: infer
 Title: Tidy Statistical Inference
-Version: 1.0.7.9000
+Version: 1.0.9.9000
 Authors@R: c(
     person("Andrew", "Bray", , "abray@reed.edu", role = "aut"),
     person("Chester", "Ismay", , "chester.ismay@gmail.com", role = "aut",
@@ -33,13 +33,13 @@ License: MIT + file LICENSE
 URL: https://github.com/tidymodels/infer, https://infer.tidymodels.org/
 BugReports: https://github.com/tidymodels/infer/issues
 Depends:
-    R (>= 3.5.0)
+    R (>= 4.1)
 Imports:
     broom,
     cli,
     dplyr (>= 0.7.0),
     generics,
-    ggplot2,
+    ggplot2 (>= 3.5.2),
     glue (>= 1.3.0),
     grDevices,
     lifecycle,
@@ -65,8 +65,9 @@ Suggests:
 VignetteBuilder:
     knitr
 Config/Needs/website: tidyverse/tidytemplate
+Config/testthat/edition: 3
+Config/usethis/last-upkeep: 2025-04-25
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
-Config/testthat/edition: 3
+RoxygenNote: 7.3.2

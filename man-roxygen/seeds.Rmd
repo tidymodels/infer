@@ -9,10 +9,10 @@ library(infer)
 ```{r}
 set.seed(1)
 
-gss %>%
-  specify(age ~ college) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 5, type = "permute") %>%
+gss |>
+  specify(age ~ college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 5, type = "permute") |>
   calculate("diff in means", order = c("degree", "no degree"))
 ```
 
@@ -22,10 +22,10 @@ Setting the seed to the same value again and rerunning the same code will produc
 # set the seed
 set.seed(1)
 
-gss %>%
-  specify(age ~ college) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 5, type = "permute") %>%
+gss |>
+  specify(age ~ college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 5, type = "permute") |>
   calculate("diff in means", order = c("degree", "no degree"))
 ```
 

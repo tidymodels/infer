@@ -54,8 +54,8 @@ library(tidyr)
 
 # t test for number of hours worked per week
 # by college degree status
-gss \%>\%
-   tidyr::drop_na(college) \%>\%
+gss |>
+   tidyr::drop_na(college) |>
    t_test(formula = hours ~ college,
       order = c("degree", "no degree"),
       alternative = "two-sided")

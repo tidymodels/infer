@@ -28,7 +28,11 @@ print.infer <- function(x, ...) {
     header[3] <- glue('Null Hypothesis: {attr(x, "null")}', .null = "NULL")
   }
 
-  cat(glue::glue_collapse(header[header != ""], sep = "\n"))
+  cat(glue::glue_collapse(
+    header[header != ""],
+    width = cli::console_width(),
+    sep = "\n"
+  ))
   cat("\n")
 
   NextMethod()

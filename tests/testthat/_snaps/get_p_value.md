@@ -1,7 +1,7 @@
 # direction is appropriate
 
     Code
-      test_df %>% get_p_value(obs_stat = 0.5, direction = "righ")
+      get_p_value(test_df, obs_stat = 0.5, direction = "righ")
     Condition
       Error in `get_p_value()`:
       ! The provided value for `direction` is not appropriate. Possible values are "less", "greater", "two-sided", "left", "right", "both", "two_sided", "two sided", or "two.sided".
@@ -9,8 +9,8 @@
 # theoretical p-value not supported error
 
     Code
-      gss_tbl %>% specify(hours ~ partyid) %>% hypothesize(null = "independence") %>%
-        calculate(stat = "F") %>% get_p_value(obs_stat = obs_F, direction = "right")
+      get_p_value(calculate(hypothesize(specify(gss_tbl, hours ~ partyid), null = "independence"),
+      stat = "F"), obs_stat = obs_F, direction = "right")
     Condition
       Error in `get_p_value()`:
       ! Theoretical p-values are not yet supported.

@@ -67,16 +67,16 @@ the following code.
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{set.seed(1)
 
-gss \%>\%
-  specify(age ~ college) \%>\%
-  hypothesize(null = "independence") \%>\%
-  generate(reps = 5, type = "permute") \%>\%
+gss |>
+  specify(age ~ college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 5, type = "permute") |>
   calculate("diff in means", order = c("degree", "no degree"))
 }\if{html}{\out{</div>}}
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{## Response: age (numeric)
 ## Explanatory: college (factor)
-## Null Hypothesis: independence
+## Null Hypothesis: indepe...
 ## # A tibble: 5 x 2
 ##   replicate   stat
 ##       <int>  <dbl>
@@ -93,16 +93,16 @@ will produce the same result.
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{# set the seed
 set.seed(1)
 
-gss \%>\%
-  specify(age ~ college) \%>\%
-  hypothesize(null = "independence") \%>\%
-  generate(reps = 5, type = "permute") \%>\%
+gss |>
+  specify(age ~ college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 5, type = "permute") |>
   calculate("diff in means", order = c("degree", "no degree"))
 }\if{html}{\out{</div>}}
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{## Response: age (numeric)
 ## Explanatory: college (factor)
-## Null Hypothesis: independence
+## Null Hypothesis: indepe...
 ## # A tibble: 5 x 2
 ##   replicate   stat
 ##       <int>  <dbl>
@@ -119,24 +119,24 @@ resampling with \code{generate()}.
 
 \examples{
 # generate a null distribution by taking 200 bootstrap samples
-gss \%>\%
- specify(response = hours) \%>\%
- hypothesize(null = "point", mu = 40) \%>\%
+gss |>
+ specify(response = hours) |>
+ hypothesize(null = "point", mu = 40) |>
  generate(reps = 200, type = "bootstrap")
 
 # generate a null distribution for the independence of
 # two variables by permuting their values 200 times
-gss \%>\%
- specify(partyid ~ age) \%>\%
- hypothesize(null = "independence") \%>\%
+gss |>
+ specify(partyid ~ age) |>
+ hypothesize(null = "independence") |>
  generate(reps = 200, type = "permute")
 
 # generate a null distribution via sampling from a
 # binomial distribution 200 times
-gss \%>\%
-specify(response = sex, success = "female") \%>\%
-  hypothesize(null = "point", p = .5) \%>\%
-  generate(reps = 200, type = "draw") \%>\%
+gss |>
+specify(response = sex, success = "female") |>
+  hypothesize(null = "point", p = .5) |>
+  generate(reps = 200, type = "draw") |>
   calculate(stat = "z")
 
 # more in-depth explanation of how to use the infer package

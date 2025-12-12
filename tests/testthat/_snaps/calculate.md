@@ -51,8 +51,8 @@
 # errors informatively with incompatible stat vs hypothesis
 
     Code
-      gss %>% specify(college ~ sex, success = "degree") %>% hypothesise(null = "point",
-        p = 0.4) %>% calculate(stat = "diff in props", order = c("female", "male"))
+      calculate(hypothesise(specify(gss, college ~ sex, success = "degree"), null = "point",
+      p = 0.4), stat = "diff in props", order = c("female", "male"))
     Condition
       Error in `calculate()`:
       ! The supplied statistic `stat = "diff in props"` is incompatible with the supplied hypothesis `null = "point"`.
@@ -60,9 +60,9 @@
 ---
 
     Code
-      gss %>% specify(college ~ sex, success = "degree") %>% hypothesise(null = "point",
-        p = 0.4) %>% generate(reps = 10, type = "draw") %>% calculate(stat = "diff in props",
-        order = c("female", "male"))
+      calculate(generate(hypothesise(specify(gss, college ~ sex, success = "degree"),
+      null = "point", p = 0.4), reps = 10, type = "draw"), stat = "diff in props",
+      order = c("female", "male"))
     Condition
       Error in `calculate()`:
       ! The supplied statistic `stat = "diff in props"` is incompatible with the supplied hypothesis `null = "point"`.
@@ -70,7 +70,7 @@
 # response attribute has been set
 
     Code
-      tibble::as_tibble(gss) %>% calculate(stat = "median")
+      calculate(tibble::as_tibble(gss), stat = "median")
     Condition
       Error in `dplyr::filter()`:
       i In argument: `resp == response_type & exp == explanatory_type`.
@@ -280,8 +280,8 @@
 # chi-square matches chisq.test value
 
     Code
-      dat %>% specify(action ~ sex, success = "promote") %>% calculate(stat = "Chisq",
-        order = c("male", "female"), correct = "boop")
+      calculate(specify(dat, action ~ sex, success = "promote"), stat = "Chisq",
+      order = c("male", "female"), correct = "boop")
     Condition
       Error in `dplyr::summarise()`:
       i In argument: `stat = chisq_indep(data)`.
@@ -292,14 +292,14 @@
 # chi-square works with factors with unused levels
 
     Code
-      out <- test_tbl %>% specify(y ~ x) %>% calculate(stat = "Chisq") %>% pull()
+      out <- pull(calculate(specify(test_tbl, y ~ x), stat = "Chisq"))
     Message
       Dropping unused factor levels d from the supplied explanatory variable 'x'.
 
 ---
 
     Code
-      out <- test_tbl %>% specify(y ~ x) %>% calculate(stat = "Chisq") %>% pull()
+      out <- pull(calculate(specify(test_tbl, y ~ x), stat = "Chisq"))
     Message
       Dropping unused factor levels g from the supplied response variable 'y'.
 
@@ -356,7 +356,7 @@
 # NULL response gives error
 
     Code
-      gss_tbl_improp %>% calculate(stat = "mean")
+      calculate(gss_tbl_improp, stat = "mean")
     Condition
       Error in `dplyr::filter()`:
       i In argument: `resp == response_type & exp == explanatory_type`.
@@ -371,18 +371,18 @@
       Warning:
       Statistic is not based on a difference or ratio; the `order` argument will be ignored. Check `calculate()` (`?infer::calculate()`) for details.
 
-# specify() %>% calculate() works
+# specify() |> calculate() works
 
     Code
-      res_ <- gss_tbl %>% specify(hours ~ NULL) %>% hypothesize(null = "point", mu = 4) %>%
-        calculate(stat = "mean")
+      res_ <- calculate(hypothesize(specify(gss_tbl, hours ~ NULL), null = "point",
+      mu = 4), stat = "mean")
     Message
       Message: The point null hypothesis `mu = 4` does not inform calculation of the observed statistic (a mean) and will be ignored.
 
 ---
 
     Code
-      res_ <- gss_tbl %>% specify(partyid ~ NULL) %>% calculate(stat = "Chisq")
+      res_ <- calculate(specify(gss_tbl, partyid ~ NULL), stat = "Chisq")
     Condition
       Warning:
       A chi-square statistic requires a null hypothesis to calculate the observed statistic.
@@ -391,15 +391,15 @@
 # One sample t hypothesis test is working
 
     Code
-      res_ <- gss_tbl %>% specify(hours ~ NULL) %>% hypothesize(null = "point", mu = 1) %>%
-        generate(reps = 10) %>% calculate(stat = "t")
+      res_ <- calculate(generate(hypothesize(specify(gss_tbl, hours ~ NULL), null = "point",
+      mu = 1), reps = 10), stat = "t")
     Message
       Setting `type = "bootstrap"` in `generate()`.
 
 ---
 
     Code
-      res_ <- gss_tbl %>% specify(response = hours) %>% calculate(stat = "t")
+      res_ <- calculate(specify(gss_tbl, response = hours), stat = "t")
     Condition
       Warning:
       A t statistic requires a null hypothesis to calculate the observed statistic.
@@ -447,8 +447,8 @@
 # One sample t bootstrap is working
 
     Code
-      res_ <- gss_tbl %>% specify(hours ~ NULL) %>% generate(reps = 10, type = "bootstrap") %>%
-        calculate(stat = "t")
+      res_ <- calculate(generate(specify(gss_tbl, hours ~ NULL), reps = 10, type = "bootstrap"),
+      stat = "t")
     Condition
       Warning:
       A t statistic requires a null hypothesis to calculate the observed statistic.
@@ -457,7 +457,7 @@
 # calculate warns informatively with insufficient null
 
     Code
-      res_ <- gss %>% specify(response = sex, success = "female") %>% calculate(stat = "z")
+      res_ <- calculate(specify(gss, response = sex, success = "female"), stat = "z")
     Condition
       Warning:
       A z statistic requires a null hypothesis to calculate the observed statistic.
@@ -466,7 +466,7 @@
 ---
 
     Code
-      res_ <- gss %>% specify(hours ~ NULL) %>% calculate(stat = "t")
+      res_ <- calculate(specify(gss, hours ~ NULL), stat = "t")
     Condition
       Warning:
       A t statistic requires a null hypothesis to calculate the observed statistic.
@@ -475,7 +475,7 @@
 ---
 
     Code
-      res_ <- gss %>% specify(response = partyid) %>% calculate(stat = "Chisq")
+      res_ <- calculate(specify(gss, response = partyid), stat = "Chisq")
     Message
       Dropping unused factor levels DK from the supplied response variable 'partyid'.
     Condition
@@ -486,32 +486,32 @@
 # calculate messages informatively with excessive null
 
     Code
-      res_ <- gss %>% specify(hours ~ NULL) %>% hypothesize(null = "point", mu = 40) %>%
-        calculate(stat = "mean")
+      res_ <- calculate(hypothesize(specify(gss, hours ~ NULL), null = "point", mu = 40),
+      stat = "mean")
     Message
       Message: The point null hypothesis `mu = 40` does not inform calculation of the observed statistic (a mean) and will be ignored.
 
 ---
 
     Code
-      res_ <- gss %>% specify(hours ~ NULL) %>% hypothesize(null = "point", sigma = 10) %>%
-        calculate(stat = "sd")
+      res_ <- calculate(hypothesize(specify(gss, hours ~ NULL), null = "point",
+      sigma = 10), stat = "sd")
     Message
       Message: The point null hypothesis `sigma = 10` does not inform calculation of the observed statistic (a standard deviation) and will be ignored.
 
 ---
 
     Code
-      res_ <- gss %>% specify(hours ~ college) %>% hypothesize(null = "independence") %>%
-        calculate("diff in means", order = c("no degree", "degree"))
+      res_ <- calculate(hypothesize(specify(gss, hours ~ college), null = "independence"),
+      "diff in means", order = c("no degree", "degree"))
     Message
       Message: The independence null hypothesis does not inform calculation of the observed statistic (a difference in means) and will be ignored.
 
 # calculate errors out with multiple explanatory variables
 
     Code
-      gss %>% specify(hours ~ age + college) %>% hypothesize(null = "independence") %>%
-        calculate(stat = "t")
+      calculate(hypothesize(specify(gss, hours ~ age + college), null = "independence"),
+      stat = "t")
     Condition
       Error in `calculate()`:
       ! Multiple explanatory variables are not supported in `calculate()`.
@@ -520,8 +520,8 @@
 ---
 
     Code
-      gss %>% specify(hours ~ age + college) %>% hypothesize(null = "independence") %>%
-        generate(reps = 3, type = "permute") %>% calculate(stat = "t")
+      calculate(generate(hypothesize(specify(gss, hours ~ age + college), null = "independence"),
+      reps = 3, type = "permute"), stat = "t")
     Condition
       Error in `calculate()`:
       ! Multiple explanatory variables are not supported in `calculate()`.

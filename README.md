@@ -2,20 +2,22 @@
 # infer R Package <img src="man/figures/logo.png" alt="A hexagonal logo. A silhouette of a fir tree sits atop green text, reading 'infer'. The logo has a white background and green border." align="right" width=280 />
 
 <!--figs/infer.svg-->
+
 <!--http://www.r-pkg.org/badges/version/infer-->
+
 <!--figs/main.svg-->
+
 <!--https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg-->
 
-[![R-CMD-check](https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml)
+[![R-CMD-check](https://github.com/tidymodels/infer/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tidymodels/infer/actions/workflows/R-CMD-check.yaml)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)
-[![Coverage
-Status](https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg)](https://app.codecov.io/github/tidymodels/infer/?branch=main)
+[![Codecov test
+coverage](https://codecov.io/gh/tidymodels/infer/graph/badge.svg)](https://app.codecov.io/gh/tidymodels/infer)
 
 The objective of this package is to perform statistical inference using
-an expressive statistical grammar that coheres with the `tidyverse`
-design framework. The package is centered around 4 main verbs,
-supplemented with many utilities to visualize and extract value from
-their outputs.
+an expressive statistical grammar that coheres with the tidyverse design
+framework. The package is centered around 4 main verbs, supplemented
+with many utilities to visualize and extract value from their outputs.
 
 - `specify()` allows you to specify the variable, or relationship
   between variables, that you’re interested in.
@@ -32,6 +34,7 @@ To learn more about the principles underlying the package design, see
 
 <img src="https://raw.githubusercontent.com/tidymodels/infer/main/figs/ht-diagram.png" alt="A diagram showing four steps to carry out randomization-based inference: specify hypothesis, generate data, calculate statistic, and visualize. From left to right, each step is connected by an arrow, while the diagram indicates that generating data and calculating statistics can happen iteratively."  />
 <p class="caption">
+
 </p>
 
 </div>
@@ -39,7 +42,7 @@ To learn more about the principles underlying the package design, see
 If you’re interested in learning more about randomization-based
 statistical inference generally, including applied examples of this
 package, we recommend checking out [Statistical Inference Via Data
-Science: A ModernDive Into R and the Tidyverse](https://moderndive.com/)
+Science: A ModernDive Into R and the Tidyverse](https://moderndive.com/v2/)
 and [Introduction to Modern
 Statistics](https://openintro-ims.netlify.app/).
 
@@ -47,14 +50,14 @@ Statistics](https://openintro-ims.netlify.app/).
 
 ------------------------------------------------------------------------
 
-To install the current stable version of `infer` from CRAN:
+To install the current stable version of infer from CRAN:
 
 ``` r
 install.packages("infer")
 ```
 
-To install the developmental stable version of `infer`, make sure to
-install `remotes` first. The `pkgdown` website for this version is at
+To install the developmental stable version of infer, make sure to
+install remotes first. The pkgdown website for this version is at
 [infer.tidymodels.org](https://infer.tidymodels.org/).
 
 ``` r
@@ -124,18 +127,18 @@ political party affiliation.
 Calculating the observed statistic,
 
 ``` r
-F_hat <- gss %>% 
-  specify(age ~ partyid) %>%
+F_hat <- gss |> 
+  specify(age ~ partyid) |>
   calculate(stat = "F")
 ```
 
 Then, generating the null distribution,
 
 ``` r
-null_dist <- gss %>%
-   specify(age ~ partyid) %>%
-   hypothesize(null = "independence") %>%
-   generate(reps = 1000, type = "permute") %>%
+null_dist <- gss |>
+   specify(age ~ partyid) |>
+   hypothesize(null = "independence") |>
+   generate(reps = 1000, type = "permute") |>
    calculate(stat = "F")
 ```
 
@@ -150,6 +153,7 @@ visualize(null_dist) +
 
 <img src="https://raw.githubusercontent.com/tidymodels/infer/main/README_files/figure-gfm/viz-1.png" alt="A histogram showing a distribution of F statistics, right-tailed and centered around one. The x axis ranges from zero to five. The region of the histogram to the right of the observed statistic, just above two, is shaded red to represent the p-value."  />
 <p class="caption">
+
 </p>
 
 </div>
@@ -158,16 +162,16 @@ Calculating the p-value from the null distribution and observed
 statistic,
 
 ``` r
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
     ## # A tibble: 1 × 1
     ##   p_value
     ##     <dbl>
-    ## 1    0.06
+    ## 1   0.059
 
-Note that the formula and non-formula interfaces (i.e. `age ~ partyid`
+Note that the formula and non-formula interfaces (i.e., `age ~ partyid`
 vs. `response = age, explanatory =  partyid`) work for all implemented
 inference procedures in `infer`. Use whatever is more natural for you.
 If you will be doing modeling using functions like `lm()` and `glm()`,

@@ -134,22 +134,22 @@ by \code{replicate} yourself.
 
 \examples{
 # calculating the observed mean number of hours worked per week
-gss \%>\%
+gss |>
   observe(hours ~ NULL, stat = "mean")
 
 # equivalently, calculating the same statistic with the core verbs
-gss \%>\%
-  specify(response = hours) \%>\%
+gss |>
+  specify(response = hours) |>
   calculate(stat = "mean")
 
 # calculating a t statistic for hypothesized mu = 40 hours worked/week
-gss \%>\%
+gss |>
   observe(hours ~ NULL, stat = "t", null = "point", mu = 40)
 
 # equivalently, calculating the same statistic with the core verbs
-gss \%>\%
-  specify(response = hours) \%>\%
-  hypothesize(null = "point", mu = 40) \%>\%
+gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
   calculate(stat = "t")
 
 # similarly for a difference in means in age based on whether
@@ -162,8 +162,8 @@ observe(
 )
 
 # equivalently, calculating the same statistic with the core verbs
-gss \%>\%
-  specify(age ~ college) \%>\%
+gss |>
+  specify(age ~ college) |>
   calculate("diff in means", order = c("degree", "no degree"))
 
 # for a more in-depth explanation of how to use the infer package

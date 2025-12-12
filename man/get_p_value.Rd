@@ -77,33 +77,33 @@ raised to caution the user against reporting a p-value exactly equal to 0.
 # using a simulation-based null distribution ------------------------------
 
 # find the point estimate---mean number of hours worked per week
-point_estimate <- gss \%>\%
-  specify(response = hours) \%>\%
+point_estimate <- gss |>
+  specify(response = hours) |>
   calculate(stat = "mean")
 
 # starting with the gss dataset
-gss \%>\%
+gss |>
   # ...we're interested in the number of hours worked per week
-  specify(response = hours) \%>\%
+  specify(response = hours) |>
   # hypothesizing that the mean is 40
-  hypothesize(null = "point", mu = 40) \%>\%
+  hypothesize(null = "point", mu = 40) |>
   # generating data points for a null distribution
-  generate(reps = 1000, type = "bootstrap") \%>\%
+  generate(reps = 1000, type = "bootstrap") |>
   # finding the null distribution
-  calculate(stat = "mean") \%>\%
+  calculate(stat = "mean") |>
   get_p_value(obs_stat = point_estimate, direction = "two-sided")
 
 # using a theoretical null distribution -----------------------------------
 
 # calculate the observed statistic
-obs_stat <- gss \%>\%
-  specify(response = hours) \%>\%
-  hypothesize(null = "point", mu = 40) \%>\%
+obs_stat <- gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
   calculate(stat = "t")
 
 # define a null distribution
-null_dist <- gss \%>\%
-  specify(response = hours) \%>\%
+null_dist <- gss |>
+  specify(response = hours) |>
   assume("t")
 
 # calculate a p-value
@@ -113,8 +113,8 @@ get_p_value(null_dist, obs_stat, direction = "both")
 
 # fit a linear model predicting number of hours worked per
 # week using respondent age and degree status.
-observed_fit <- gss \%>\%
-  specify(hours ~ age + college) \%>\%
+observed_fit <- gss |>
+  specify(hours ~ age + college) |>
   fit()
 
 observed_fit
@@ -122,10 +122,10 @@ observed_fit
 # fit 100 models to resamples of the gss dataset, where the response
 # `hours` is permuted in each. note that this code is the same as
 # the above except for the addition of the `generate` step.
-null_fits <- gss \%>\%
-  specify(hours ~ age + college) \%>\%
-  hypothesize(null = "independence") \%>\%
-  generate(reps = 100, type = "permute") \%>\%
+null_fits <- gss |>
+  specify(hours ~ age + college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 100, type = "permute") |>
   fit()
 
 null_fits

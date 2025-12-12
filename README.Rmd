@@ -12,9 +12,9 @@ output: github_document
 <!--figs/main.svg-->
 <!--https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg-->
 
-[![R-CMD-check](https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/tidymodels/infer/actions/workflows/check-standard.yaml)
+[![R-CMD-check](https://github.com/tidymodels/infer/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tidymodels/infer/actions/workflows/R-CMD-check.yaml)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/infer)](https://cran.r-project.org/package=infer)
-[![Coverage Status](https://img.shields.io/codecov/c/github/tidymodels/infer/main.svg)](https://app.codecov.io/github/tidymodels/infer/?branch=main)
+[![Codecov test coverage](https://codecov.io/gh/tidymodels/infer/graph/badge.svg)](https://app.codecov.io/gh/tidymodels/infer)
 
 The objective of this package is to perform statistical inference using an expressive statistical grammar that coheres with the tidyverse design framework. The package is centered around 4 main verbs, supplemented with many utilities to visualize and extract value from their outputs.
 
@@ -33,7 +33,7 @@ library(infer)
 knitr::include_graphics("https://raw.githubusercontent.com/tidymodels/infer/main/figs/ht-diagram.png")
 ```
 
-If you're interested in learning more about randomization-based statistical inference generally, including applied examples of this package, we recommend checking out [Statistical Inference Via Data Science: A ModernDive Into R and the Tidyverse](https://moderndive.com/) and [Introduction to Modern Statistics](https://openintro-ims.netlify.app/).
+If you're interested in learning more about randomization-based statistical inference generally, including applied examples of this package, we recommend checking out [Statistical Inference Via Data Science: A ModernDive Into R and the Tidyverse](https://moderndive.com/v2/) and [Introduction to Modern Statistics](https://openintro-ims.netlify.app/).
 
 ### Installation
 
@@ -79,18 +79,18 @@ As an example, we'll run an analysis of variance on `age` and `partyid`, testing
 Calculating the observed statistic,
 
 ```{r, message = FALSE, warning = FALSE}
-F_hat <- gss %>% 
-  specify(age ~ partyid) %>%
+F_hat <- gss |> 
+  specify(age ~ partyid) |>
   calculate(stat = "F")
 ```
 
 Then, generating the null distribution,
 
 ```{r, message = FALSE, warning = FALSE}
-null_dist <- gss %>%
-   specify(age ~ partyid) %>%
-   hypothesize(null = "independence") %>%
-   generate(reps = 1000, type = "permute") %>%
+null_dist <- gss |>
+   specify(age ~ partyid) |>
+   hypothesize(null = "independence") |>
+   generate(reps = 1000, type = "permute") |>
    calculate(stat = "F")
 ```
 
@@ -108,7 +108,7 @@ knitr::include_graphics("https://raw.githubusercontent.com/tidymodels/infer/main
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r, message = FALSE, warning = FALSE}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = F_hat, direction = "greater")
 ```
 

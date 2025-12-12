@@ -57,34 +57,34 @@
 #' # using a simulation-based null distribution ------------------------------
 #'
 #' # find the point estimate---mean number of hours worked per week
-#' point_estimate <- gss %>%
-#'   specify(response = hours) %>%
+#' point_estimate <- gss |>
+#'   specify(response = hours) |>
 #'   calculate(stat = "mean")
 #'
 #' # starting with the gss dataset
-#' gss %>%
+#' gss |>
 #'   # ...we're interested in the number of hours worked per week
-#'   specify(response = hours) %>%
+#'   specify(response = hours) |>
 #'   # hypothesizing that the mean is 40
-#'   hypothesize(null = "point", mu = 40) %>%
+#'   hypothesize(null = "point", mu = 40) |>
 #'   # generating data points for a null distribution
-#'   generate(reps = 1000, type = "bootstrap") %>%
+#'   generate(reps = 1000, type = "bootstrap") |>
 #'   # finding the null distribution
-#'   calculate(stat = "mean") %>%
+#'   calculate(stat = "mean") |>
 #    # calculate the p-value for the point estimate
 #'   get_p_value(obs_stat = point_estimate, direction = "two-sided")
 #'
 #' # using a theoretical null distribution -----------------------------------
 #'
 #' # calculate the observed statistic
-#' obs_stat <- gss %>%
-#'   specify(response = hours) %>%
-#'   hypothesize(null = "point", mu = 40) %>%
+#' obs_stat <- gss |>
+#'   specify(response = hours) |>
+#'   hypothesize(null = "point", mu = 40) |>
 #'   calculate(stat = "t")
 #'
 #' # define a null distribution
-#' null_dist <- gss %>%
-#'   specify(response = hours) %>%
+#' null_dist <- gss |>
+#'   specify(response = hours) |>
 #'   assume("t")
 #'
 #' # calculate a p-value
@@ -94,8 +94,8 @@
 #'
 #' # fit a linear model predicting number of hours worked per
 #' # week using respondent age and degree status.
-#' observed_fit <- gss %>%
-#'   specify(hours ~ age + college) %>%
+#' observed_fit <- gss |>
+#'   specify(hours ~ age + college) |>
 #'   fit()
 #'
 #' observed_fit
@@ -103,10 +103,10 @@
 #' # fit 100 models to resamples of the gss dataset, where the response
 #' # `hours` is permuted in each. note that this code is the same as
 #' # the above except for the addition of the `generate` step.
-#' null_fits <- gss %>%
-#'   specify(hours ~ age + college) %>%
-#'   hypothesize(null = "independence") %>%
-#'   generate(reps = 100, type = "permute") %>%
+#' null_fits <- gss |>
+#'   specify(hours ~ age + college) |>
+#'   hypothesize(null = "independence") |>
+#'   generate(reps = 100, type = "permute") |>
 #'   fit()
 #'
 #' null_fits
@@ -131,7 +131,7 @@ get_p_value <- function(x, obs_stat, direction) {
 get_p_value.default <- function(x, obs_stat, direction) {
   check_type(x, is.data.frame)
   if (!is_generated(x) & is_hypothesized(x)) {
-     cli_abort(c(
+    cli_abort(c(
       "Theoretical p-values are not yet supported. ",
       i = "`x` should be the result of calling {.fun generate}."
     ))
@@ -149,15 +149,15 @@ get_p_value.default <- function(x, obs_stat, direction) {
     )
 
     # split up x and obs_stat by term
-    term_data <- x %>%
-      dplyr::ungroup() %>%
-      dplyr::group_by(term) %>%
-      dplyr::group_split() %>%
+    term_data <- x |>
+      dplyr::ungroup() |>
+      dplyr::group_by(term) |>
+      dplyr::group_split() |>
       purrr::map(copy_attrs, x)
 
-    term_obs_stats <- obs_stat %>%
-      dplyr::ungroup() %>%
-      dplyr::group_by(term) %>%
+    term_obs_stats <- obs_stat |>
+      dplyr::ungroup() |>
+      dplyr::group_by(term) |>
       dplyr::group_split()
 
     # calculate the p value for each term and then add the term column back in
@@ -166,7 +166,7 @@ get_p_value.default <- function(x, obs_stat, direction) {
       purrr::map(term_obs_stats, purrr::pluck, "estimate"),
       simulation_based_p_value,
       direction = direction
-    ) %>%
+    ) |>
       dplyr::mutate(
         term = purrr::map_chr(term_obs_stats, purrr::pluck, "term"),
         .before = dplyr::everything()
@@ -203,8 +203,10 @@ get_p_value.infer_dist <- function(x, obs_stat, direction) {
   # supply everything to the base R distribution function
   res <- do.call(
     dist_fn,
-    c(list(q = as.numeric(obs_stat), lower.tail = lower_tail),
-      process_df(attr(x, "df")))
+    c(
+      list(q = as.numeric(obs_stat), lower.tail = lower_tail),
+      process_df(attr(x, "df"))
+    )
   )
 
   if (dir == "both") {
@@ -214,7 +216,12 @@ get_p_value.infer_dist <- function(x, obs_stat, direction) {
   tibble::tibble(p_value = res)
 }
 
-simulation_based_p_value <- function(x, obs_stat, direction, call = caller_env()) {
+simulation_based_p_value <- function(
+  x,
+  obs_stat,
+  direction,
+  call = caller_env()
+) {
   check_x_vs_obs_stat(x, obs_stat, call = call)
   obs_stat <- check_obs_stat(obs_stat)
 
@@ -228,7 +235,7 @@ simulation_based_p_value <- function(x, obs_stat, direction, call = caller_env()
   }
 
   if (abs(pval) < 1e-16) {
-     cli_warn(c(
+    cli_warn(c(
       "Please be cautious in reporting a p-value of 0. This result is an \\
        approximation based on the number of `reps` chosen in the {.fun generate} step.",
       i = "See {.help [{.fun get_p_value}](infer::get_p_value)} for more information."
@@ -255,28 +262,35 @@ two_sided_p_value <- function(vec, obs_stat) {
 }
 
 check_hypotheses_align <- function(x, obs_stat) {
-  if (is_hypothesized(x) &&
+  if (
+    is_hypothesized(x) &&
       is_hypothesized(obs_stat) &&
-      any(attr(x, "params") != attr(obs_stat, "params"))) {
-     cli_warn(
-       "`x` and `obs_stat` were generated using different null hypotheses. \\
+      any(attr(x, "params") != attr(obs_stat, "params"))
+  ) {
+    cli_warn(
+      "`x` and `obs_stat` were generated using different null hypotheses. \\
         This workflow is untested and results may not mean what you think \\
         they mean."
-     )
+    )
   }
 }
 
 check_x_vs_obs_stat <- function(x, obs_stat, call = caller_env()) {
   # check if x and obs_stat might have been mistakenly supplied
   # in the reverse order
-  if (is_generated(obs_stat) &&
-      !is_generated(x)) {
-     cli_abort(c(
-      "It seems like the `obs_stat` argument has been passed to `get_p_value()` \\
+  if (
+    is_generated(obs_stat) &&
+      !is_generated(x)
+  ) {
+    cli_abort(
+      c(
+        "It seems like the `obs_stat` argument has been passed to `get_p_value()` \\
        as the first argument when `get_p_value()` expects `x`, a distribution \\
        of statistics or coefficient estimates, as the first argument. ",
-      i = "Have you mistakenly switched the order of `obs_stat` and `x`?"
-    ), call = call)
+        i = "Have you mistakenly switched the order of `obs_stat` and `x`?"
+      ),
+      call = call
+    )
   }
 
   invisible(TRUE)

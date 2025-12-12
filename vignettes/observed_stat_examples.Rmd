@@ -13,7 +13,8 @@ vignette: |
 
 #### Introduction
 
-```{r include=FALSE}
+```{r}
+#| include: false
 knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5, 
                       message = FALSE, warning = FALSE) 
 options(digits = 4)
@@ -23,12 +24,15 @@ This vignette is intended to provide a set of examples that nearly exhaustively 
 
 Throughout this vignette, we'll make use of the `gss` dataset supplied by infer, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
-```{r load-packages, echo = FALSE}
+```{r}
+#| label: load-packages
+#| echo: false
 library(dplyr)
 library(infer)
 ```
 
-```{r load-gss}
+```{r}
+#| label: load-gss
 # load in the dataset
 data(gss)
 
@@ -43,25 +47,25 @@ dplyr::glimpse(gss)
 Calculating the observed statistic,
 
 ```{r}
-x_bar <- gss %>%
-  specify(response = hours) %>%
+x_bar <- gss |>
+  specify(response = hours) |>
   calculate(stat = "mean")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-x_bar <- gss %>%
+x_bar <- gss |>
   observe(response = hours, stat = "mean")
 ```
 
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-  specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
-  generate(reps = 1000) %>%
+null_dist <- gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
+  generate(reps = 1000) |>
   calculate(stat = "mean")
 ```
 
@@ -75,7 +79,7 @@ visualize(null_dist) +
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = x_bar, direction = "two-sided")
 ```
 
@@ -84,34 +88,34 @@ null_dist %>%
 Calculating the observed statistic,
 
 ```{r}
-t_bar <- gss %>%
-  specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
+t_bar <- gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
   calculate(stat = "t")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-t_bar <- gss %>%
+t_bar <- gss |>
   observe(response = hours, null = "point", mu = 40, stat = "t")
 ```
 
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-  specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
-  generate(reps = 1000) %>%
+null_dist <- gss |>
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
+  generate(reps = 1000) |>
   calculate(stat = "t")
 ```
 
 Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
-null_dist_theory <- gss %>%
-  specify(response = hours)  %>%
+null_dist_theory <- gss |>
+  specify(response = hours)  |>
   assume("t")
 ```
 
@@ -141,14 +145,14 @@ Note that the above code makes use of the randomization-based null distribution.
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = t_bar, direction = "two-sided")
 ```
 
 Alternatively, using the `t_test()` wrapper:
 
 ```{r}
-gss %>%
+gss |>
   t_test(response = hours, mu = 40)
 ```
 
@@ -159,25 +163,25 @@ gss %>%
 Calculating the observed statistic,
 
 ```{r}
-x_tilde <- gss %>%
-  specify(response = age) %>%
+x_tilde <- gss |>
+  specify(response = age) |>
   calculate(stat = "median")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-x_tilde <- gss %>%
+x_tilde <- gss |>
   observe(response = age, stat = "median")
 ```
 
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-  specify(response = age) %>%
-  hypothesize(null = "point", med = 40) %>% 
-  generate(reps = 1000) %>% 
+null_dist <- gss |>
+  specify(response = age) |>
+  hypothesize(null = "point", med = 40) |> 
+  generate(reps = 1000) |> 
   calculate(stat = "median")
 ```
 
@@ -191,7 +195,7 @@ visualize(null_dist) +
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = x_tilde, direction = "two-sided")
 ```
 
@@ -204,13 +208,13 @@ Suppose that each of these survey respondents had provided the number of `hours`
 ```{r}
 set.seed(1)
 
-gss_paired <- gss %>%
+gss_paired <- gss |>
    mutate(
-      hours_previous = hours + 5 - rpois(nrow(.), 4.8),
+      hours_previous = hours + 5 - rpois(nrow(gss), 4.8),
       diff = hours - hours_previous
    )
 
-gss_paired %>%
+gss_paired |>
    select(hours, hours_previous, diff)
 ```
 
@@ -221,25 +225,25 @@ infer supports paired hypothesis testing via the `null = "paired independence"` 
 Calculating the observed statistic,
 
 ```{r}
-x_tilde <- gss_paired %>%
-  specify(response = diff) %>%
+x_tilde <- gss_paired |>
+  specify(response = diff) |>
   calculate(stat = "mean")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-x_tilde <- gss_paired %>%
+x_tilde <- gss_paired |>
   observe(response = diff, stat = "mean")
 ```
 
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss_paired %>%
-  specify(response = diff) %>%
-  hypothesize(null = "paired independence") %>% 
-  generate(reps = 1000, type = "permute") %>% 
+null_dist <- gss_paired |>
+  specify(response = diff) |>
+  hypothesize(null = "paired independence") |> 
+  generate(reps = 1000, type = "permute") |> 
   calculate(stat = "mean")
 ```
 
@@ -255,7 +259,7 @@ visualize(null_dist) +
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = x_tilde, direction = "two-sided")
 ```
 
@@ -264,25 +268,25 @@ null_dist %>%
 Calculating the observed statistic,
 
 ```{r}
-p_hat <- gss %>%
-  specify(response = sex, success = "female") %>%
+p_hat <- gss |>
+  specify(response = sex, success = "female") |>
   calculate(stat = "prop")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-p_hat <- gss %>%
+p_hat <- gss |>
   observe(response = sex, success = "female", stat = "prop")
 ```
 
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-  specify(response = sex, success = "female") %>%
-  hypothesize(null = "point", p = .5) %>%
-  generate(reps = 1000) %>%
+null_dist <- gss |>
+  specify(response = sex, success = "female") |>
+  hypothesize(null = "point", p = .5) |>
+  generate(reps = 1000) |>
   calculate(stat = "prop")
 ```
 
@@ -296,18 +300,18 @@ visualize(null_dist) +
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = p_hat, direction = "two-sided")
 ```
 
 Note that logical variables will be coerced to factors:
 
 ```{r}
-null_dist <- gss %>%
-  dplyr::mutate(is_female = (sex == "female")) %>%
-  specify(response = is_female, success = "TRUE") %>%
-  hypothesize(null = "point", p = .5) %>%
-  generate(reps = 1000) %>%
+null_dist <- gss |>
+  dplyr::mutate(is_female = (sex == "female")) |>
+  specify(response = is_female, success = "TRUE") |>
+  hypothesize(null = "point", p = .5) |>
+  generate(reps = 1000) |>
   calculate(stat = "prop")
 ```
 
@@ -316,26 +320,26 @@ null_dist <- gss %>%
 Calculating the observed statistic,
 
 ```{r}
-p_hat <- gss %>%
-  specify(response = sex, success = "female") %>%
-  hypothesize(null = "point", p = .5) %>%
+p_hat <- gss |>
+  specify(response = sex, success = "female") |>
+  hypothesize(null = "point", p = .5) |>
   calculate(stat = "z")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-p_hat <- gss %>%
+p_hat <- gss |>
   observe(response = sex, success = "female", null = "point", p = .5, stat = "z")
 ```
 
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-  specify(response = sex, success = "female") %>%
-  hypothesize(null = "point", p = .5) %>%
-  generate(reps = 1000, type = "draw") %>%
+null_dist <- gss |>
+  specify(response = sex, success = "female") |>
+  hypothesize(null = "point", p = .5) |>
+  generate(reps = 1000, type = "draw") |>
   calculate(stat = "z")
 ```
 
@@ -349,13 +353,14 @@ visualize(null_dist) +
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = p_hat, direction = "two-sided")
 ```
 
 The package also supplies a wrapper around `prop.test()` for tests of a single proportion on tidy data.
 
-```{r prop_test_1_grp}
+```{r}
+#| label: prop_test_1_grp
 prop_test(gss,
           college ~ NULL,
           p = .2)
@@ -370,15 +375,15 @@ The `infer` package provides several statistics to work with data of this type. 
 Calculating the observed statistic,
 
 ```{r}
-d_hat <- gss %>% 
-  specify(college ~ sex, success = "no degree") %>%
+d_hat <- gss |> 
+  specify(college ~ sex, success = "no degree") |>
   calculate(stat = "diff in props", order = c("female", "male"))
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-d_hat <- gss %>%
+d_hat <- gss |>
   observe(
     college ~ sex,
     success = "no degree",
@@ -389,10 +394,10 @@ d_hat <- gss %>%
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-  specify(college ~ sex, success = "no degree") %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000) %>%
+null_dist <- gss |>
+  specify(college ~ sex, success = "no degree") |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000) |>
   calculate(stat = "diff in props", order = c("female", "male"))
 ```
 
@@ -406,7 +411,7 @@ visualize(null_dist) +
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = d_hat, direction = "two-sided")
 ```
 
@@ -415,15 +420,15 @@ infer also provides functionality to calculate ratios of proportions. The workfl
 Calculating the observed statistic,
 
 ```{r}
-r_hat <- gss %>% 
-  specify(college ~ sex, success = "no degree") %>%
+r_hat <- gss |> 
+  specify(college ~ sex, success = "no degree") |>
   calculate(stat = "ratio of props", order = c("female", "male"))
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-r_hat <- gss %>% 
+r_hat <- gss |> 
   observe(college ~ sex, success = "no degree",
           stat = "ratio of props", order = c("female", "male"))
 ```
@@ -431,10 +436,10 @@ r_hat <- gss %>%
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-  specify(college ~ sex, success = "no degree") %>%
-  hypothesize(null = "independence") %>% 
-  generate(reps = 1000) %>% 
+null_dist <- gss |>
+  specify(college ~ sex, success = "no degree") |>
+  hypothesize(null = "independence") |> 
+  generate(reps = 1000) |> 
   calculate(stat = "ratio of props", order = c("female", "male"))
 ```
 
@@ -448,7 +453,7 @@ visualize(null_dist) +
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = r_hat, direction = "two-sided")
 ```
 
@@ -457,18 +462,18 @@ In addition, the package provides functionality to calculate odds ratios. The wo
 Calculating the observed statistic,
 
 ```{r}
-or_hat <- gss %>% 
-  specify(college ~ sex, success = "no degree") %>%
+or_hat <- gss |> 
+  specify(college ~ sex, success = "no degree") |>
   calculate(stat = "odds ratio", order = c("female", "male"))
 ```
 
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-  specify(college ~ sex, success = "no degree") %>%
-  hypothesize(null = "independence") %>% 
-  generate(reps = 1000) %>% 
+null_dist <- gss |>
+  specify(college ~ sex, success = "no degree") |>
+  hypothesize(null = "independence") |> 
+  generate(reps = 1000) |> 
   calculate(stat = "odds ratio", order = c("female", "male"))
 ```
 
@@ -482,7 +487,7 @@ visualize(null_dist) +
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = or_hat, direction = "two-sided")
 ```
 
@@ -491,16 +496,16 @@ null_dist %>%
 Finding the standardized observed statistic,
 
 ```{r}
-z_hat <- gss %>% 
-  specify(college ~ sex, success = "no degree") %>%
-  hypothesize(null = "independence") %>%
+z_hat <- gss |> 
+  specify(college ~ sex, success = "no degree") |>
+  hypothesize(null = "independence") |>
   calculate(stat = "z", order = c("female", "male"))
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-z_hat <- gss %>% 
+z_hat <- gss |> 
   observe(college ~ sex, success = "no degree",
           stat = "z", order = c("female", "male"))
 ```
@@ -508,18 +513,18 @@ z_hat <- gss %>%
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-  specify(college ~ sex, success = "no degree") %>%
-  hypothesize(null = "independence") %>% 
-  generate(reps = 1000) %>% 
+null_dist <- gss |>
+  specify(college ~ sex, success = "no degree") |>
+  hypothesize(null = "independence") |> 
+  generate(reps = 1000) |> 
   calculate(stat = "z", order = c("female", "male"))
 ```
 
 Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
-null_dist_theory <- gss %>%
-  specify(college ~ sex, success = "no degree") %>%
+null_dist_theory <- gss |>
+  specify(college ~ sex, success = "no degree") |>
   assume("z")
 ```
 
@@ -549,7 +554,7 @@ Note that the above code makes use of the randomization-based null distribution.
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = z_hat, direction = "two-sided")
 ```
 
@@ -557,7 +562,8 @@ Note the similarities in this plot and the previous one.
 
 The package also supplies a wrapper around `prop.test` to allow for tests of equality of proportions on tidy data.
 
-```{r prop_test_2_grp}
+```{r}
+#| label: prop_test_2_grp
 prop_test(gss, 
           college ~ sex,  
           order = c("female", "male"))
@@ -570,8 +576,8 @@ Calculating the observed statistic,
 Note the need to add in the hypothesized values here to compute the observed statistic.
 
 ```{r}
-Chisq_hat <- gss %>%
-  specify(response = finrela) %>%
+Chisq_hat <- gss |>
+  specify(response = finrela) |>
   hypothesize(
     null = "point",
     p = c(
@@ -582,14 +588,14 @@ Chisq_hat <- gss %>%
       "far above average" = 1 / 6,
       "DK" = 1 / 6
     )
-  ) %>%
+  ) |>
   calculate(stat = "Chisq")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-Chisq_hat <- gss %>%
+Chisq_hat <- gss |>
   observe(
     response = finrela,
     null = "point",
@@ -608,8 +614,8 @@ Chisq_hat <- gss %>%
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-  specify(response = finrela) %>%
+null_dist <- gss |>
+  specify(response = finrela) |>
   hypothesize(
     null = "point",
     p = c(
@@ -620,16 +626,16 @@ null_dist <- gss %>%
       "far above average" = 1 / 6,
       "DK" = 1 / 6
     )
-  ) %>%
-  generate(reps = 1000, type = "draw") %>%
+  ) |>
+  generate(reps = 1000, type = "draw") |>
   calculate(stat = "Chisq")
 ```
 
 Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
-null_dist_theory <- gss %>%
-  specify(response = finrela) %>%
+null_dist_theory <- gss |>
+  specify(response = finrela) |>
   assume("Chisq")
 ```
 
@@ -659,7 +665,7 @@ Note that the above code makes use of the randomization-based null distribution.
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
@@ -685,34 +691,34 @@ chisq_test(
 Calculating the observed statistic,
 
 ```{r}
-Chisq_hat <- gss %>%
-  specify(formula = finrela ~ sex) %>% 
-  hypothesize(null = "independence") %>%
+Chisq_hat <- gss |>
+  specify(formula = finrela ~ sex) |> 
+  hypothesize(null = "independence") |>
   calculate(stat = "Chisq")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-Chisq_hat <- gss %>%
+Chisq_hat <- gss |>
   observe(formula = finrela ~ sex, stat = "Chisq")
 ```
 
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-  specify(finrela ~ sex) %>%
-  hypothesize(null = "independence") %>% 
-  generate(reps = 1000, type = "permute") %>% 
+null_dist <- gss |>
+  specify(finrela ~ sex) |>
+  hypothesize(null = "independence") |> 
+  generate(reps = 1000, type = "permute") |> 
   calculate(stat = "Chisq")
 ```
 
 Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
-null_dist_theory <- gss %>%
-  specify(finrela ~ sex) %>%
+null_dist_theory <- gss |>
+  specify(finrela ~ sex) |>
   assume(distribution = "Chisq")
 ```
 
@@ -742,14 +748,14 @@ Note that the above code makes use of the randomization-based null distribution.
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = Chisq_hat, direction = "greater")
 ```
 
 Alternatively, using the wrapper to carry out the test,
 
 ```{r}
-gss %>%
+gss |>
   chisq_test(formula = finrela ~ sex)
 ```
 
@@ -758,15 +764,15 @@ gss %>%
 Calculating the observed statistic,
 
 ```{r}
-d_hat <- gss %>% 
-  specify(age ~ college) %>% 
+d_hat <- gss |> 
+  specify(age ~ college) |> 
   calculate(stat = "diff in means", order = c("degree", "no degree"))
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-d_hat <- gss %>% 
+d_hat <- gss |> 
   observe(age ~ college,
           stat = "diff in means", order = c("degree", "no degree"))
 ```
@@ -774,10 +780,10 @@ d_hat <- gss %>%
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-  specify(age ~ college) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+null_dist <- gss |>
+  specify(age ~ college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
   calculate(stat = "diff in means", order = c("degree", "no degree"))
 ```
 
@@ -791,7 +797,7 @@ visualize(null_dist) +
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = d_hat, direction = "two-sided")
 ```
 
@@ -800,16 +806,16 @@ null_dist %>%
 Finding the standardized observed statistic,
 
 ```{r}
-t_hat <- gss %>% 
-  specify(age ~ college) %>% 
-  hypothesize(null = "independence") %>%
+t_hat <- gss |> 
+  specify(age ~ college) |> 
+  hypothesize(null = "independence") |>
   calculate(stat = "t", order = c("degree", "no degree"))
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-t_hat <- gss %>% 
+t_hat <- gss |> 
   observe(age ~ college,
           stat = "t", order = c("degree", "no degree"))
 ```
@@ -817,18 +823,18 @@ t_hat <- gss %>%
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-  specify(age ~ college) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+null_dist <- gss |>
+  specify(age ~ college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
   calculate(stat = "t", order = c("degree", "no degree"))
 ```
 
 Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
-null_dist_theory <- gss %>%
-  specify(age ~ college) %>%
+null_dist_theory <- gss |>
+  specify(age ~ college) |>
   assume("t")
 ```
 
@@ -858,7 +864,7 @@ Note that the above code makes use of the randomization-based null distribution.
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = t_hat, direction = "two-sided")
 ```
 
@@ -869,15 +875,15 @@ Note the similarities in this plot and the previous one.
 Calculating the observed statistic,
 
 ```{r}
-d_hat <- gss %>% 
-  specify(age ~ college) %>% 
+d_hat <- gss |> 
+  specify(age ~ college) |> 
   calculate(stat = "diff in medians", order = c("degree", "no degree"))
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-d_hat <- gss %>% 
+d_hat <- gss |> 
   observe(age ~ college,
           stat = "diff in medians", order = c("degree", "no degree"))
 ```
@@ -885,10 +891,10 @@ d_hat <- gss %>%
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-  specify(age ~ college) %>% # alt: response = age, explanatory = season
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+null_dist <- gss |>
+  specify(age ~ college) |> # alt: response = age, explanatory = season
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
   calculate(stat = "diff in medians", order = c("degree", "no degree"))
 ```
 
@@ -902,7 +908,7 @@ visualize(null_dist) +
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = d_hat, direction = "two-sided")
 ```
 
@@ -911,34 +917,34 @@ null_dist %>%
 Calculating the observed statistic,
 
 ```{r}
-F_hat <- gss %>% 
-  specify(age ~ partyid) %>%
+F_hat <- gss |> 
+  specify(age ~ partyid) |>
   calculate(stat = "F")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-F_hat <- gss %>% 
+F_hat <- gss |> 
   observe(age ~ partyid, stat = "F")
 ```
 
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-   specify(age ~ partyid) %>%
-   hypothesize(null = "independence") %>%
-   generate(reps = 1000, type = "permute") %>%
+null_dist <- gss |>
+   specify(age ~ partyid) |>
+   hypothesize(null = "independence") |>
+   generate(reps = 1000, type = "permute") |>
    calculate(stat = "F")
 ```
 
 Alternatively, finding the null distribution using theoretical methods using the `assume()` verb,
 
 ```{r}
-null_dist_theory <- gss %>%
-   specify(age ~ partyid) %>%
-   hypothesize(null = "independence") %>%
+null_dist_theory <- gss |>
+   specify(age ~ partyid) |>
+   hypothesize(null = "independence") |>
    assume(distribution = "F")
 ```
 
@@ -968,7 +974,7 @@ Note that the above code makes use of the randomization-based null distribution.
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = F_hat, direction = "greater")
 ```
 
@@ -977,25 +983,25 @@ null_dist %>%
 Calculating the observed statistic,
 
 ```{r}
-slope_hat <- gss %>% 
-  specify(hours ~ age) %>% 
+slope_hat <- gss |> 
+  specify(hours ~ age) |> 
   calculate(stat = "slope")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-slope_hat <- gss %>% 
+slope_hat <- gss |> 
   observe(hours ~ age, stat = "slope")
 ```
 
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-   specify(hours ~ age) %>% 
-   hypothesize(null = "independence") %>%
-   generate(reps = 1000, type = "permute") %>%
+null_dist <- gss |>
+   specify(hours ~ age) |> 
+   hypothesize(null = "independence") |>
+   generate(reps = 1000, type = "permute") |>
    calculate(stat = "slope")
 ```
 
@@ -1009,7 +1015,7 @@ visualize(null_dist) +
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = slope_hat, direction = "two-sided")
 ```
 
@@ -1018,25 +1024,25 @@ null_dist %>%
 Calculating the observed statistic,
 
 ```{r}
-correlation_hat <- gss %>% 
-  specify(hours ~ age) %>% 
+correlation_hat <- gss |> 
+  specify(hours ~ age) |> 
   calculate(stat = "correlation")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-correlation_hat <- gss %>% 
+correlation_hat <- gss |> 
   observe(hours ~ age, stat = "correlation")
 ```
 
 Then, generating the null distribution,
 
 ```{r}
-null_dist <- gss %>%
-   specify(hours ~ age) %>% 
-   hypothesize(null = "independence") %>%
-   generate(reps = 1000, type = "permute") %>%
+null_dist <- gss |>
+   specify(hours ~ age) |> 
+   hypothesize(null = "independence") |>
+   generate(reps = 1000, type = "permute") |>
    calculate(stat = "correlation")
 ```
 
@@ -1050,7 +1056,7 @@ visualize(null_dist) +
 Calculating the p-value from the null distribution and observed statistic,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = correlation_hat, direction = "two-sided")
 ```
 
@@ -1063,28 +1069,28 @@ Not currently implemented since $t$ could refer to standardized slope or standar
 Calculating the observed fit,
 
 ```{r}
-obs_fit <- gss %>%
-  specify(hours ~ age + college) %>%
+obs_fit <- gss |>
+  specify(hours ~ age + college) |>
   fit()
 ```
 
 Generating a distribution of fits with the response variable permuted,
 
 ```{r}
-null_dist <- gss %>%
-  specify(hours ~ age + college) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute") %>%
+null_dist <- gss |>
+  specify(hours ~ age + college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute") |>
   fit()
 ```
 
 Generating a distribution of fits where each explanatory variable is permuted independently,
 
 ```{r}
-null_dist2 <- gss %>%
-  specify(hours ~ age + college) %>%
-  hypothesize(null = "independence") %>%
-  generate(reps = 1000, type = "permute", variables = c(age, college)) %>%
+null_dist2 <- gss |>
+  specify(hours ~ age + college) |>
+  hypothesize(null = "independence") |>
+  generate(reps = 1000, type = "permute", variables = c(age, college)) |>
   fit()
 ```
 
@@ -1098,7 +1104,7 @@ visualize(null_dist) +
 Calculating p-values from the null distribution and observed fit,
 
 ```{r}
-null_dist %>%
+null_dist |>
   get_p_value(obs_stat = obs_fit, direction = "two-sided")
 ```
 
@@ -1111,24 +1117,24 @@ Note that this `fit()`-based workflow can be applied to use cases with differing
 Finding the observed statistic,
 
 ```{r}
-x_bar <- gss %>% 
-  specify(response = hours) %>%
+x_bar <- gss |> 
+  specify(response = hours) |>
   calculate(stat = "mean")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-x_bar <- gss %>% 
+x_bar <- gss |> 
   observe(response = hours, stat = "mean")
 ```
 
 Then, generating a bootstrap distribution,
 
 ```{r}
-boot_dist <- gss %>%
-   specify(response = hours) %>%
-   generate(reps = 1000, type = "bootstrap") %>%
+boot_dist <- gss |>
+   specify(response = hours) |>
+   generate(reps = 1000, type = "bootstrap") |>
    calculate(stat = "mean")
 ```
 
@@ -1157,8 +1163,8 @@ visualize(boot_dist) +
 Instead of a simulation-based bootstrap distribution, we can also define a theory-based sampling distribution,
 
 ```{r}
-sampling_dist <- gss %>%
-   specify(response = hours) %>%
+sampling_dist <- gss |>
+   specify(response = hours) |>
    assume(distribution = "t")
 ```
 
@@ -1180,16 +1186,16 @@ Note that the `t` distribution is recentered and rescaled to lie on the scale of
 Finding the observed statistic,
 
 ```{r}
-t_hat <- gss %>% 
-  specify(response = hours) %>%
-  hypothesize(null = "point", mu = 40) %>%
+t_hat <- gss |> 
+  specify(response = hours) |>
+  hypothesize(null = "point", mu = 40) |>
   calculate(stat = "t")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-t_hat <- gss %>% 
+t_hat <- gss |> 
   observe(response = hours,
           null = "point", mu = 40,
           stat = "t")
@@ -1198,9 +1204,9 @@ t_hat <- gss %>%
 Then, generating the bootstrap distribution,
 
 ```{r}
-boot_dist <- gss %>%
-   specify(response = hours) %>%
-   generate(reps = 1000, type = "bootstrap") %>%
+boot_dist <- gss |>
+   specify(response = hours) |>
+   generate(reps = 1000, type = "bootstrap") |>
    calculate(stat = "t")
 ```
 
@@ -1220,7 +1226,7 @@ visualize(boot_dist) +
 Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
-standard_error_ci <- boot_dist %>%
+standard_error_ci <- boot_dist |>
   get_ci(type = "se", point_estimate = t_hat)
 
 visualize(boot_dist) +
@@ -1234,24 +1240,24 @@ See the above subsection (one mean) for a theory-based approach. Note that infer
 Finding the observed statistic,
 
 ```{r}
-p_hat <- gss %>% 
-   specify(response = sex, success = "female") %>%
+p_hat <- gss |> 
+   specify(response = sex, success = "female") |>
    calculate(stat = "prop")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-p_hat <- gss %>% 
+p_hat <- gss |> 
    observe(response = sex, success = "female", stat = "prop")
 ```
 
 Then, generating a bootstrap distribution,
 
 ```{r}
-boot_dist <- gss %>%
- specify(response = sex, success = "female") %>%
- generate(reps = 1000, type = "bootstrap") %>%
+boot_dist <- gss |>
+ specify(response = sex, success = "female") |>
+ generate(reps = 1000, type = "bootstrap") |>
  calculate(stat = "prop")
 ```
 
@@ -1271,7 +1277,7 @@ visualize(boot_dist) +
 Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
-standard_error_ci <- boot_dist %>%
+standard_error_ci <- boot_dist |>
   get_ci(type = "se", point_estimate = p_hat)
 
 visualize(boot_dist) +
@@ -1281,8 +1287,8 @@ visualize(boot_dist) +
 Instead of a simulation-based bootstrap distribution, we can also define a theory-based sampling distribution,
 
 ```{r}
-sampling_dist <- gss %>%
-   specify(response = sex, success = "female") %>%
+sampling_dist <- gss |>
+   specify(response = sex, success = "female") |>
    assume(distribution = "z")
 ```
 
@@ -1308,15 +1314,15 @@ See the above subsection (one proportion) for a theory-based approach.
 Finding the observed statistic,
 
 ```{r}
-d_hat <- gss %>%
-  specify(hours ~ college) %>%
+d_hat <- gss |>
+  specify(hours ~ college) |>
   calculate(stat = "diff in means", order = c("degree", "no degree"))
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-d_hat <- gss %>%
+d_hat <- gss |>
   observe(hours ~ college,
           stat = "diff in means", order = c("degree", "no degree"))
 ```
@@ -1324,9 +1330,9 @@ d_hat <- gss %>%
 Then, generating a bootstrap distribution,
 
 ```{r}
-boot_dist <- gss %>%
-   specify(hours ~ college) %>%
-   generate(reps = 1000, type = "bootstrap") %>%
+boot_dist <- gss |>
+   specify(hours ~ college) |>
+   generate(reps = 1000, type = "bootstrap") |>
    calculate(stat = "diff in means", order = c("degree", "no degree"))
 ```
 
@@ -1346,7 +1352,7 @@ visualize(boot_dist) +
 Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
-standard_error_ci <- boot_dist %>%
+standard_error_ci <- boot_dist |>
   get_ci(type = "se", point_estimate = d_hat)
 
 visualize(boot_dist) +
@@ -1356,8 +1362,8 @@ visualize(boot_dist) +
 Instead of a simulation-based bootstrap distribution, we can also define a theory-based sampling distribution,
 
 ```{r}
-sampling_dist <- gss %>%
-   specify(hours ~ college) %>%
+sampling_dist <- gss |>
+   specify(hours ~ college) |>
    assume(distribution = "t")
 ```
 
@@ -1379,15 +1385,15 @@ Note that the `t` distribution is recentered and rescaled to lie on the scale of
 Finding the observed statistic,
 
 ```{r}
-d_hat <- gss %>%
-  specify(hours ~ college) %>%
+d_hat <- gss |>
+  specify(hours ~ college) |>
   calculate(stat = "ratio of means", order = c("degree", "no degree"))
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-d_hat <- gss %>%
+d_hat <- gss |>
   observe(hours ~ college,
           stat = "ratio of means", order = c("degree", "no degree"))
 ```
@@ -1395,9 +1401,9 @@ d_hat <- gss %>%
 Then, generating a bootstrap distribution,
 
 ```{r}
-boot_dist <- gss %>%
-   specify(hours ~ college) %>%
-   generate(reps = 1000, type = "bootstrap") %>%
+boot_dist <- gss |>
+   specify(hours ~ college) |>
+   generate(reps = 1000, type = "bootstrap") |>
    calculate(stat = "ratio of means", order = c("degree", "no degree"))
 ```
 
@@ -1417,7 +1423,7 @@ visualize(boot_dist) +
 Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
-standard_error_ci <- boot_dist %>%
+standard_error_ci <- boot_dist |>
   get_ci(type = "se", point_estimate = d_hat)
 
 visualize(boot_dist) +
@@ -1429,15 +1435,15 @@ visualize(boot_dist) +
 Finding the standardized point estimate,
 
 ```{r}
-t_hat <- gss %>%
-  specify(hours ~ college) %>%
+t_hat <- gss |>
+  specify(hours ~ college) |>
   calculate(stat = "t", order = c("degree", "no degree"))
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-t_hat <- gss %>%
+t_hat <- gss |>
   observe(hours ~ college,
           stat = "t", order = c("degree", "no degree"))
 ```
@@ -1445,9 +1451,9 @@ t_hat <- gss %>%
 Then, generating a bootstrap distribution,
 
 ```{r}
-boot_dist <- gss %>%
-   specify(hours ~ college) %>%
-   generate(reps = 1000, type = "bootstrap") %>%
+boot_dist <- gss |>
+   specify(hours ~ college) |>
+   generate(reps = 1000, type = "bootstrap") |>
    calculate(stat = "t", order = c("degree", "no degree"))
 ```
 
@@ -1467,7 +1473,7 @@ visualize(boot_dist) +
 Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
-standard_error_ci <- boot_dist %>%
+standard_error_ci <- boot_dist |>
   get_ci(type = "se", point_estimate = t_hat)
 
 visualize(boot_dist) +
@@ -1481,15 +1487,15 @@ See the above subsection (diff in means) for a theory-based approach. `infer` do
 Finding the observed statistic,
 
 ```{r}
-d_hat <- gss %>% 
-  specify(college ~ sex, success = "degree") %>%
+d_hat <- gss |> 
+  specify(college ~ sex, success = "degree") |>
   calculate(stat = "diff in props", order = c("female", "male"))
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-d_hat <- gss %>% 
+d_hat <- gss |> 
   observe(college ~ sex, success = "degree",
           stat = "diff in props", order = c("female", "male"))
 ```
@@ -1497,9 +1503,9 @@ d_hat <- gss %>%
 Then, generating a bootstrap distribution,
 
 ```{r}
-boot_dist <- gss %>%
-  specify(college ~ sex, success = "degree") %>%
-  generate(reps = 1000, type = "bootstrap") %>% 
+boot_dist <- gss |>
+  specify(college ~ sex, success = "degree") |>
+  generate(reps = 1000, type = "bootstrap") |> 
   calculate(stat = "diff in props", order = c("female", "male"))
 ```
 
@@ -1519,7 +1525,7 @@ visualize(boot_dist) +
 Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
-standard_error_ci <- boot_dist %>%
+standard_error_ci <- boot_dist |>
   get_ci(type = "se", point_estimate = d_hat)
 
 visualize(boot_dist) +
@@ -1529,8 +1535,8 @@ visualize(boot_dist) +
 Instead of a simulation-based bootstrap distribution, we can also define a theory-based sampling distribution,
 
 ```{r}
-sampling_dist <- gss %>% 
-  specify(college ~ sex, success = "degree") %>%
+sampling_dist <- gss |> 
+  specify(college ~ sex, success = "degree") |>
    assume(distribution = "z")
 ```
 
@@ -1552,15 +1558,15 @@ Note that the `z` distribution is recentered and rescaled to lie on the scale of
 Finding the standardized point estimate,
 
 ```{r}
-z_hat <- gss %>% 
-  specify(college ~ sex, success = "degree") %>%
+z_hat <- gss |> 
+  specify(college ~ sex, success = "degree") |>
   calculate(stat = "z", order = c("female", "male"))
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-z_hat <- gss %>% 
+z_hat <- gss |> 
   observe(college ~ sex, success = "degree",
           stat = "z", order = c("female", "male"))
 ```
@@ -1568,9 +1574,9 @@ z_hat <- gss %>%
 Then, generating a bootstrap distribution,
 
 ```{r}
-boot_dist <- gss %>%
-  specify(college ~ sex, success = "degree") %>%
-  generate(reps = 1000, type = "bootstrap") %>% 
+boot_dist <- gss |>
+  specify(college ~ sex, success = "degree") |>
+  generate(reps = 1000, type = "bootstrap") |> 
   calculate(stat = "z", order = c("female", "male"))
 ```
 
@@ -1590,7 +1596,7 @@ visualize(boot_dist) +
 Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
-standard_error_ci <- boot_dist %>%
+standard_error_ci <- boot_dist |>
   get_ci(type = "se", point_estimate = z_hat)
 
 visualize(boot_dist) +
@@ -1604,24 +1610,24 @@ See the above subsection (diff in props) for a theory-based approach.
 Finding the observed statistic,
 
 ```{r}
-slope_hat <- gss %>% 
-  specify(hours ~ age) %>%
+slope_hat <- gss |> 
+  specify(hours ~ age) |>
   calculate(stat = "slope")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-slope_hat <- gss %>% 
+slope_hat <- gss |> 
   observe(hours ~ age, stat = "slope")
 ```
 
 Then, generating a bootstrap distribution,
 
 ```{r}
-boot_dist <- gss %>%
-   specify(hours ~ age) %>% 
-   generate(reps = 1000, type = "bootstrap") %>%
+boot_dist <- gss |>
+   specify(hours ~ age) |> 
+   generate(reps = 1000, type = "bootstrap") |>
    calculate(stat = "slope")
 ```
 
@@ -1641,7 +1647,7 @@ visualize(boot_dist) +
 Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
-standard_error_ci <- boot_dist %>%
+standard_error_ci <- boot_dist |>
   get_ci(type = "se", point_estimate = slope_hat)
 
 visualize(boot_dist) +
@@ -1653,24 +1659,24 @@ visualize(boot_dist) +
 Finding the observed statistic,
 
 ```{r}
-correlation_hat <- gss %>% 
-  specify(hours ~ age) %>%
+correlation_hat <- gss |> 
+  specify(hours ~ age) |>
   calculate(stat = "correlation")
 ```
 
 Alternatively, using the `observe()` wrapper to calculate the observed statistic,
 
 ```{r}
-correlation_hat <- gss %>% 
+correlation_hat <- gss |> 
   observe(hours ~ age, stat = "correlation")
 ```
 
 Then, generating a bootstrap distribution,
 
 ```{r}
-boot_dist <- gss %>%
-   specify(hours ~ age) %>% 
-   generate(reps = 1000, type = "bootstrap") %>%
+boot_dist <- gss |>
+   specify(hours ~ age) |> 
+   generate(reps = 1000, type = "bootstrap") |>
    calculate(stat = "correlation")
 ```
 
@@ -1690,7 +1696,7 @@ visualize(boot_dist) +
 Alternatively, use the bootstrap distribution to find a confidence interval using the standard error,
 
 ```{r}
-standard_error_ci <- boot_dist %>%
+standard_error_ci <- boot_dist |>
   get_ci(type = "se", point_estimate = correlation_hat)
 
 visualize(boot_dist) +
@@ -1706,17 +1712,17 @@ Not currently implemented since $t$ could refer to standardized slope or standar
 Calculating the observed fit,
 
 ```{r}
-obs_fit <- gss %>%
-  specify(hours ~ age + college) %>%
+obs_fit <- gss |>
+  specify(hours ~ age + college) |>
   fit()
 ```
 
 Then, generating a bootstrap distribution,
 
 ```{r}
-boot_dist <- gss %>%
-  specify(hours ~ age + college) %>%
-  generate(reps = 1000, type = "bootstrap") %>%
+boot_dist <- gss |>
+  specify(hours ~ age + college) |>
+  generate(reps = 1000, type = "bootstrap") |>
   fit()
 ```
 

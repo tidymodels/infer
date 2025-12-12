@@ -1,6 +1,6 @@
 #' Pipe
 #'
-#' Like \{dplyr\}, \{infer\} also uses the pipe (\code{%>%}) function
+#' Like \{dplyr\}, \{infer\} also uses the pipe (\code{|>}) function
 #' from \code{magrittr} to turn function composition into a series of
 #' iterative statements.
 #'

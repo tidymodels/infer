@@ -46,21 +46,21 @@ Learn more in \code{vignette("infer")}.
 }
 \examples{
 # find the point estimate---mean number of hours worked per week
-point_estimate <- gss \%>\%
-  specify(response = hours) \%>\%
+point_estimate <- gss |>
+  specify(response = hours) |>
   calculate(stat = "mean")
 
 # ...and a bootstrap distribution
-boot_dist <- gss \%>\%
+boot_dist <- gss |>
   # ...we're interested in the number of hours worked per week
-  specify(response = hours) \%>\%
+  specify(response = hours) |>
   # generating data points
-  generate(reps = 1000, type = "bootstrap") \%>\%
+  generate(reps = 1000, type = "bootstrap") |>
   # finding the distribution from the generated data
   calculate(stat = "mean")
 
 # find a confidence interval around the point estimate
-ci <- boot_dist \%>\%
+ci <- boot_dist |>
   get_confidence_interval(point_estimate = point_estimate,
                           # at the 95\% confidence level
                           level = .95,
@@ -69,12 +69,12 @@ ci <- boot_dist \%>\%
 
 
 # and plot it!
-boot_dist \%>\%
+boot_dist |>
   visualize() +
   shade_confidence_interval(ci)
 
 # or just plot the bounds
-boot_dist \%>\%
+boot_dist |>
   visualize() +
   shade_confidence_interval(ci, fill = NULL)
 
@@ -82,8 +82,8 @@ boot_dist \%>\%
 # theoretical distributions, too---the theoretical
 # distribution will be recentered and rescaled to
 # align with the confidence interval
-sampling_dist <- gss \%>\%
-  specify(response = hours) \%>\%
+sampling_dist <- gss |>
+  specify(response = hours) |>
   assume(distribution = "t")
 
 visualize(sampling_dist) +
@@ -94,17 +94,17 @@ visualize(sampling_dist) +
 # explanatory variables, use a `fit()`-based workflow
 
 # fit 1000 linear models with the `hours` variable permuted
-null_fits <- gss \%>\%
- specify(hours ~ age + college) \%>\%
- hypothesize(null = "independence") \%>\%
- generate(reps = 1000, type = "permute") \%>\%
+null_fits <- gss |>
+ specify(hours ~ age + college) |>
+ hypothesize(null = "independence") |>
+ generate(reps = 1000, type = "permute") |>
  fit()
 
 null_fits
 
 # fit a linear model to the observed data
-obs_fit <- gss \%>\%
-  specify(hours ~ age + college) \%>\%
+obs_fit <- gss |>
+  specify(hours ~ age + college) |>
   fit()
 
 obs_fit

@@ -25,15 +25,15 @@
 #'
 #' @examples
 #' # specifying for a point estimate on one variable
-#' gss %>%
+#' gss |>
 #'    specify(response = age)
 #'
 #' # specify a relationship between variables as a formula...
-#' gss %>%
+#' gss |>
 #'   specify(age ~ partyid)
 #'
 #' # ...or with named arguments!
-#' gss %>%
+#' gss |>
 #'   specify(response = age, explanatory = partyid)
 #'
 #' # more in-depth explanation of how to use the infer package
@@ -46,8 +46,13 @@
 #' @importFrom methods hasArg
 #' @family core functions
 #' @export
-specify <- function(x, formula, response = NULL,
-                    explanatory = NULL, success = NULL) {
+specify <- function(
+  x,
+  formula,
+  response = NULL,
+  explanatory = NULL,
+  success = NULL
+) {
   check_type(x, is.data.frame)
 
   # Standardize variable types
@@ -69,7 +74,7 @@ specify <- function(x, formula, response = NULL,
   check_success_arg(x, success)
 
   # Select variables
-  x <- x %>%
+  x <- x |>
     select(any_of(c(response_name(x), explanatory_name(x))))
 
   is_complete <- stats::complete.cases(x)
@@ -82,47 +87,55 @@ specify <- function(x, formula, response = NULL,
   append_infer_class(x)
 }
 
-parse_variables <- function(x, formula, response, explanatory, call = caller_env()) {
+parse_variables <- function(
+  x,
+  formula,
+  response,
+  explanatory,
+  call = caller_env()
+) {
   if (methods::hasArg(formula)) {
     tryCatch(
       rlang::is_formula(formula),
       error = function(e) {
-         cli_abort(
-           c("The argument you passed in for the formula does not exist.",
-             i = "Were you trying to pass in an unquoted column name?",
-             i = "Did you forget to name one or more arguments?"),
-           call = call
-         )
+        cli_abort(
+          c(
+            "The argument you passed in for the formula does not exist.",
+            i = "Were you trying to pass in an unquoted column name?",
+            i = "Did you forget to name one or more arguments?"
+          ),
+          call = call
+        )
       }
     )
     if (!rlang::is_formula(formula)) {
       cli_abort(
-         c(
-           "The first unnamed argument must be a formula.",
-            i = "You passed in '{get_type(formula)}'.",
-            x = "Did you forget to name one or more arguments?"
-         ),
-         call = call
+        c(
+          "The first unnamed argument must be a formula.",
+          i = "You passed in '{get_type(formula)}'.",
+          x = "Did you forget to name one or more arguments?"
+        ),
+        call = call
       )
     }
   }
 
-  attr(x, "response")    <- get_expr(response)
+  attr(x, "response") <- get_expr(response)
   attr(x, "explanatory") <- get_expr(explanatory)
   attr(x, "formula") <- NULL
 
   if (methods::hasArg(formula)) {
-    attr(x, "response")    <- f_lhs(formula)
+    attr(x, "response") <- f_lhs(formula)
     attr(x, "explanatory") <- f_rhs(formula)
     attr(x, "formula") <- formula
   }
 
   # Check response and explanatory variables to be appropriate for later use
   if (!has_response(x)) {
-     cli_abort(
-       "Please supply a response variable that is not `NULL`.",
-       call = call
-     )
+    cli_abort(
+      "Please supply a response variable that is not `NULL`.",
+      call = call
+    )
   }
 
   check_var_correct(x, "response", call = call)
@@ -158,42 +171,43 @@ check_success_arg <- function(x, success, call = caller_env()) {
 
   if (!is.null(success)) {
     if (!is.character(success)) {
-       cli_abort("`success` must be a string.", call = call)
+      cli_abort("`success` must be a string.", call = call)
     }
     if (!is.factor(response_col)) {
-       cli_abort(
+      cli_abort(
         "`success` should only be specified if the response is a categorical \\
          variable.",
         call = call
-       )
+      )
     }
     if (!(success %in% levels(response_col))) {
-       cli_abort(
-         '{success} is not a valid level of {response_name(x)}.',
-         call = call
-       )
+      cli_abort(
+        '{success} is not a valid level of {response_name(x)}.',
+        call = call
+      )
     }
     if (sum(table(response_col) > 0) > 2) {
-       cli_abort(
+      cli_abort(
         "`success` can only be used if the response has two levels. \\
          `filter()` can reduce a variable to two levels.",
         call = call
-       )
+      )
     }
   }
 
-  if ((attr(x, "response_type") == "factor" &&
+  if (
+    (attr(x, "response_type") == "factor" &&
       is.null(success) &&
       length(levels(response_variable(x))) == 2) &&
-     ((!has_attr(x, "explanatory_type") ||
-       length(levels(explanatory_variable(x))) == 2))) {
-     cli_abort(
-       'A level of the response variable `{response_name(x)}` needs to be \\
+      ((!has_attr(x, "explanatory_type") ||
+        length(levels(explanatory_variable(x))) == 2))
+  ) {
+    cli_abort(
+      'A level of the response variable `{response_name(x)}` needs to be \\
         specified for the `success` argument in `specify()`.',
-       call = call
-     )
-    }
-
+      call = call
+    )
+  }
 }
 
 check_var_correct <- function(x, var_name, call = caller_env()) {
@@ -202,18 +216,18 @@ check_var_correct <- function(x, var_name, call = caller_env()) {
   # Variable (if present) should be a symbolic column name
   if (!is.null(var)) {
     if (!rlang::is_symbolic(var)) {
-       cli_abort(
+      cli_abort(
         "The {var_name} should be a bare variable name (not a string in \\
          quotation marks).",
         call = call
-       )
+      )
     }
 
     if (any(!(all.vars(var) %in% names(x)))) {
-       cli_abort(
+      cli_abort(
         'The {var_name} variable `{var}` cannot be found in this dataframe.',
         call = call
-       )
+      )
     }
   }
 
@@ -223,11 +237,11 @@ check_var_correct <- function(x, var_name, call = caller_env()) {
 check_vars_different <- function(x, call = caller_env()) {
   if (has_response(x) && has_explanatory(x)) {
     if (identical(response_name(x), explanatory_name(x))) {
-       cli_abort(
+      cli_abort(
         "The response and explanatory variables must be different from one \\
          another.",
         call = call
-       )
+      )
     }
   }
 

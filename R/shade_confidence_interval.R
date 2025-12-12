@@ -28,21 +28,21 @@
 #'
 #' @examples
 #' # find the point estimate---mean number of hours worked per week
-#' point_estimate <- gss %>%
-#'   specify(response = hours) %>%
+#' point_estimate <- gss |>
+#'   specify(response = hours) |>
 #'   calculate(stat = "mean")
 #'
 #' # ...and a bootstrap distribution
-#' boot_dist <- gss %>%
+#' boot_dist <- gss |>
 #'   # ...we're interested in the number of hours worked per week
-#'   specify(response = hours) %>%
+#'   specify(response = hours) |>
 #'   # generating data points
-#'   generate(reps = 1000, type = "bootstrap") %>%
+#'   generate(reps = 1000, type = "bootstrap") |>
 #'   # finding the distribution from the generated data
 #'   calculate(stat = "mean")
 #'
 #' # find a confidence interval around the point estimate
-#' ci <- boot_dist %>%
+#' ci <- boot_dist |>
 #'   get_confidence_interval(point_estimate = point_estimate,
 #'                           # at the 95% confidence level
 #'                           level = .95,
@@ -51,12 +51,12 @@
 #'
 #'
 #' # and plot it!
-#' boot_dist %>%
+#' boot_dist |>
 #'   visualize() +
 #'   shade_confidence_interval(ci)
 #'
 #' # or just plot the bounds
-#' boot_dist %>%
+#' boot_dist |>
 #'   visualize() +
 #'   shade_confidence_interval(ci, fill = NULL)
 #'
@@ -64,8 +64,8 @@
 #' # theoretical distributions, too---the theoretical
 #' # distribution will be recentered and rescaled to
 #' # align with the confidence interval
-#' sampling_dist <- gss %>%
-#'   specify(response = hours) %>%
+#' sampling_dist <- gss |>
+#'   specify(response = hours) |>
 #'   assume(distribution = "t")
 #'
 #' visualize(sampling_dist) +
@@ -76,17 +76,17 @@
 #' # explanatory variables, use a `fit()`-based workflow
 #'
 #' # fit 1000 linear models with the `hours` variable permuted
-#' null_fits <- gss %>%
-#'  specify(hours ~ age + college) %>%
-#'  hypothesize(null = "independence") %>%
-#'  generate(reps = 1000, type = "permute") %>%
+#' null_fits <- gss |>
+#'  specify(hours ~ age + college) |>
+#'  hypothesize(null = "independence") |>
+#'  generate(reps = 1000, type = "permute") |>
 #'  fit()
 #'
 #' null_fits
 #'
 #' # fit a linear model to the observed data
-#' obs_fit <- gss %>%
-#'   specify(hours ~ age + college) %>%
+#' obs_fit <- gss |>
+#'   specify(hours ~ age + college) |>
 #'   fit()
 #'
 #' obs_fit
@@ -120,8 +120,12 @@ NULL
 #' @rdname shade_confidence_interval
 #' @family visualization functions
 #' @export
-shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
-                                      fill = "turquoise", ...) {
+shade_confidence_interval <- function(
+  endpoints,
+  color = "mediumaquamarine",
+  fill = "turquoise",
+  ...
+) {
   # since most of the logic for shading is in shade_confidence_interval_term, which
   # is only called by `+.gg`, we need to check for mistakenly piped inputs here
   check_for_piped_visualize(endpoints, color, fill)
@@ -131,17 +135,25 @@ shade_confidence_interval <- function(endpoints, color = "mediumaquamarine",
     "A confidence interval shading layer.",
     class = "infer_layer",
     fn = "shade_confidence_interval",
-    endpoints = if (is.null(endpoints)) {NA} else {endpoints},
+    endpoints = if (is.null(endpoints)) {
+      NA
+    } else {
+      endpoints
+    },
     color = color,
     fill = list(fill),
     dots = list(...)
   )
 }
 
-shade_confidence_interval_term <- function(plot, endpoints,
-                                           color = "mediumaquamarine",
-                                           fill = "turquoise", dots,
-                                           call = rlang::call2("shade_confidence_interval")) {
+shade_confidence_interval_term <- function(
+  plot,
+  endpoints,
+  color = "mediumaquamarine",
+  fill = "turquoise",
+  dots,
+  call = rlang::call2("shade_confidence_interval")
+) {
   if (all(is.na(endpoints))) {
     endpoints <- NULL
   }
@@ -163,7 +175,10 @@ shade_confidence_interval_term <- function(plot, endpoints,
       list(
         data = data.frame(endpoints[1]),
         mapping = aes(
-          xmin = endpoints[1], xmax = endpoints[2], ymin = 0, ymax = Inf
+          xmin = endpoints[1],
+          xmax = endpoints[2],
+          ymin = 0,
+          ymax = Inf
         ),
         fill = fill,
         inherit.aes = FALSE

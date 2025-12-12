@@ -64,15 +64,15 @@
 #'
 #' @examples
 #'
-#' boot_dist <- gss %>%
+#' boot_dist <- gss |>
 #'   # We're interested in the number of hours worked per week
-#'   specify(response = hours) %>%
+#'   specify(response = hours) |>
 #'   # Generate bootstrap samples
-#'   generate(reps = 1000, type = "bootstrap") %>%
+#'   generate(reps = 1000, type = "bootstrap") |>
 #'   # Calculate mean of each bootstrap sample
 #'   calculate(stat = "mean")
 #'
-#' boot_dist %>%
+#' boot_dist |>
 #'   # Calculate the confidence interval around the point estimate
 #'   get_confidence_interval(
 #'     # At the 95% confidence level; percentile method
@@ -80,11 +80,11 @@
 #'   )
 #'
 #' # for type = "se" or type = "bias-corrected" we need a point estimate
-#' sample_mean <- gss %>%
-#'   specify(response = hours) %>%
+#' sample_mean <- gss |>
+#'   specify(response = hours) |>
 #'   calculate(stat = "mean")
 #'
-#' boot_dist %>%
+#' boot_dist |>
 #'   get_confidence_interval(
 #'     point_estimate = sample_mean,
 #'     # At the 95% confidence level
@@ -96,8 +96,8 @@
 #' # using a theoretical distribution -----------------------------------
 #'
 #' # define a sampling distribution
-#' sampling_dist <- gss %>%
-#'   specify(response = hours) %>%
+#' sampling_dist <- gss |>
+#'   specify(response = hours) |>
 #'   assume("t")
 #'
 #' # get the confidence interval---note that the
@@ -112,8 +112,8 @@
 #'
 #' # fit a linear model predicting number of hours worked per
 #' # week using respondent age and degree status.
-#' observed_fit <- gss %>%
-#'   specify(hours ~ age + college) %>%
+#' observed_fit <- gss |>
+#'   specify(hours ~ age + college) |>
 #'   fit()
 #'
 #' observed_fit
@@ -121,10 +121,10 @@
 #' # fit 100 models to resamples of the gss dataset, where the response
 #' # `hours` is permuted in each. note that this code is the same as
 #' # the above except for the addition of the `generate` step.
-#' null_fits <- gss %>%
-#'   specify(hours ~ age + college) %>%
-#'   hypothesize(null = "independence") %>%
-#'   generate(reps = 100, type = "permute") %>%
+#' null_fits <- gss |>
+#'   specify(hours ~ age + college) |>
+#'   hypothesize(null = "independence") |>
+#'   generate(reps = 100, type = "permute") |>
 #'   fit()
 #'
 #' null_fits
@@ -143,11 +143,15 @@
 #' @name get_confidence_interval
 #' @family auxillary functions
 #' @export
-get_confidence_interval <- function(x, level = 0.95, type = NULL,
-                                    point_estimate = NULL) {
+get_confidence_interval <- function(
+  x,
+  level = 0.95,
+  type = NULL,
+  point_estimate = NULL
+) {
   # Inform if no `level` was explicitly supplied
   if (!("level" %in% rlang::call_args_names(match.call()))) {
-     cli_inform("Using `level = {level}` to compute confidence interval.")
+    cli_inform("Using `level = {level}` to compute confidence interval.")
   }
 
   if (is.null(type)) {
@@ -168,15 +172,15 @@ get_confidence_interval <- function(x, level = 0.95, type = NULL,
     )
 
     # split up x and point estimate by term
-    term_data <- x %>%
-      dplyr::ungroup() %>%
-      dplyr::group_by(term) %>%
-      dplyr::group_split() %>%
+    term_data <- x |>
+      dplyr::ungroup() |>
+      dplyr::group_by(term) |>
+      dplyr::group_split() |>
       purrr::map(copy_attrs, x)
 
-    term_estimates <- point_estimate %>%
-      dplyr::ungroup() %>%
-      dplyr::group_by(term) %>%
+    term_estimates <- point_estimate |>
+      dplyr::ungroup() |>
+      dplyr::group_by(term) |>
       dplyr::group_split()
 
     # check arguments for each term
@@ -195,11 +199,11 @@ get_confidence_interval <- function(x, level = 0.95, type = NULL,
       switch_ci,
       level = level,
       type = type
-    ) %>%
+    ) |>
       dplyr::mutate(
         term = purrr::map_chr(term_estimates, purrr::pluck, "term"),
         .before = dplyr::everything()
-      ) %>%
+      ) |>
       copy_attrs(x)
   } else {
     check_ci_args(x, level, type, point_estimate)
@@ -210,11 +214,12 @@ get_confidence_interval <- function(x, level = 0.95, type = NULL,
 
 #' @rdname get_confidence_interval
 #' @export
-get_ci <- function(x, level = 0.95, type = NULL,
-                   point_estimate = NULL) {
+get_ci <- function(x, level = 0.95, type = NULL, point_estimate = NULL) {
   get_confidence_interval(
     x,
-    level = level, type = type, point_estimate = point_estimate
+    level = level,
+    type = type,
+    point_estimate = point_estimate
   )
 }
 
@@ -232,8 +237,10 @@ remove_missing_estimates <- function(estimates) {
   na_estimates_n <- sum(na_estimates)
 
   if (na_estimates_n > 0) {
-     cli_warn("{na_estimates_n} estimates were missing and were removed when \\
-               calculating the confidence interval.")
+    cli_warn(
+      "{na_estimates_n} estimates were missing and were removed when \\
+               calculating the confidence interval."
+    )
   }
 
   estimates[!na_estimates]
@@ -312,66 +319,72 @@ check_ci_args <- function(x, level, type, point_estimate, call = caller_env()) {
   check_type(level, is.numeric, call = call)
 
   if ((level <= 0) || (level >= 1)) {
-     cli_abort(
-       "The value of {.arg level} must be between 0 and 1, non-inclusive.",
-       call = call
-     )
+    cli_abort(
+      "The value of {.arg level} must be between 0 and 1, non-inclusive.",
+      call = call
+    )
   }
 
   if (inherits(x, "infer_dist") && !is.null(type) && type != "se") {
-     cli_abort(
+    cli_abort(
       'The only {.arg type} option for theory-based confidence intervals \\
        is `type = "se"`.',
-       call = call
-     )
+      call = call
+    )
   }
 
   if (!(type %in% c("percentile", "se", "bias-corrected"))) {
-     cli_abort(
+    cli_abort(
       'The options for `type` are "percentile", "se", or "bias-corrected".',
       call = call
-     )
+    )
   }
 
   if ((type %in% c("se", "bias-corrected")) && is.null(point_estimate)) {
-     cli_abort(
+    cli_abort(
       'A numeric value needs to be given for {.arg point_estimate} \\
        for `type` "se" or "bias-corrected".',
       call = call
-     )
+    )
   }
 
   if (inherits(x, "infer_dist")) {
     # theoretical CIs require the full point estimate infer object as they
     # contain the necessary standard error
     if (!inherits(point_estimate, "infer")) {
-       cli_abort(
+      cli_abort(
         'For theoretical confidence intervals, the `point_estimate` argument \\
          must be an `infer` object. Have you made sure to supply the output of \\
-         {.fun calculate} as the `point_estimate` argument?', call = call)
+         {.fun calculate} as the `point_estimate` argument?',
+        call = call
+      )
     }
 
-    if (!attr(point_estimate, "stat") %in%
-        c("mean", "prop", "diff in means", "diff in props")) {
-       cli_abort(
+    if (
+      !attr(point_estimate, "stat") %in%
+        c("mean", "prop", "diff in means", "diff in props")
+    ) {
+      cli_abort(
         'The only allowable statistics for theoretical confidence intervals \\
          are "mean", "prop", "diff in means", and "diff in props". See \\
          the "Details" section of \\
          {.help [{.fun get_confidence_interval}](infer::get_confidence_interval)} \\
          for more details.',
         call = call
-       )
+      )
     }
 
-    if ((attr(x, "distribution") == "t" &&
-         !attr(point_estimate, "stat") %in% c("mean", "diff in means")) ||
+    if (
+      (attr(x, "distribution") == "t" &&
+        !attr(point_estimate, "stat") %in% c("mean", "diff in means")) ||
         (attr(x, "distribution") == "norm" &&
-         !attr(point_estimate, "stat") %in% c("prop", "diff in props"))) {
-       cli_abort(
+          !attr(point_estimate, "stat") %in% c("prop", "diff in props"))
+    ) {
+      cli_abort(
         'Confidence intervals using a `{attr(x, "dist_")}` distribution for \\
          `stat = {attr(point_estimate, "stat")}` are not implemented.',
         call = call
-       )
+      )
     }
   }
 }

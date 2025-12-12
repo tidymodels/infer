@@ -8,7 +8,7 @@
 # get_confidence_interval checks input
 
     Code
-      test_df %>% get_confidence_interval(type = "other")
+      get_confidence_interval(test_df, type = "other")
     Message
       Using `level = 0.95` to compute confidence interval.
     Condition
@@ -18,7 +18,7 @@
 ---
 
     Code
-      test_df %>% get_confidence_interval(level = 1.2)
+      get_confidence_interval(test_df, level = 1.2)
     Condition
       Error in `get_confidence_interval()`:
       ! The value of `level` must be between 0 and 1, non-inclusive.
@@ -26,7 +26,7 @@
 ---
 
     Code
-      test_df %>% get_confidence_interval(point_estimate = "a")
+      get_confidence_interval(test_df, point_estimate = "a")
     Message
       Using `level = 0.95` to compute confidence interval.
     Condition
@@ -36,7 +36,7 @@
 ---
 
     Code
-      test_df %>% get_confidence_interval(type = "se", point_estimate = "a")
+      get_confidence_interval(test_df, type = "se", point_estimate = "a")
     Message
       Using `level = 0.95` to compute confidence interval.
     Condition
@@ -46,7 +46,7 @@
 ---
 
     Code
-      test_df %>% get_confidence_interval(type = "se", point_estimate = data.frame(p = "a"))
+      get_confidence_interval(test_df, type = "se", point_estimate = data.frame(p = "a"))
     Message
       Using `level = 0.95` to compute confidence interval.
     Condition
@@ -56,7 +56,7 @@
 ---
 
     Code
-      test_df %>% get_confidence_interval(type = "se")
+      get_confidence_interval(test_df, type = "se")
     Message
       Using `level = 0.95` to compute confidence interval.
     Condition
@@ -66,7 +66,7 @@
 ---
 
     Code
-      test_df %>% get_confidence_interval(type = "bias-corrected")
+      get_confidence_interval(test_df, type = "bias-corrected")
     Message
       Using `level = 0.95` to compute confidence interval.
     Condition

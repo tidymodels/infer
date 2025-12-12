@@ -8,12 +8,18 @@ vignette: |
   \usepackage[utf8]{inputenc}
 ---
 
-```{r settings, include=FALSE}
+```{r}
+#| label: settings
+#| include: false
 knitr::opts_chunk$set(fig.width = 6, fig.height = 4.5) 
 options(digits = 4)
 ```
 
-```{r load-packages, echo = FALSE, message = FALSE, warning = FALSE}
+```{r}
+#| label: load-packages
+#| echo: false
+#| message: false
+#| warning: false
 library(ggplot2)
 library(dplyr)
 library(infer)
@@ -25,7 +31,10 @@ In this vignette, we'll walk through conducting a randomization-based paired tes
 
 Throughout this vignette, we'll make use of the `gss` dataset supplied by infer, which contains a sample of data from the General Social Survey. See `?gss` for more information on the variables included and their source. Note that this data (and our examples on it) are for demonstration purposes only, and will not necessarily provide accurate estimates unless weighted properly. For these examples, let's suppose that this dataset is a representative sample of a population we want to learn about: American adults. The data looks like this:
 
-```{r glimpse-gss-actual, warning = FALSE, message = FALSE}
+```{r}
+#| label: glimpse-gss-actual
+#| warning: false
+#| message: false
 dplyr::glimpse(gss)
 ```
 
@@ -34,13 +43,13 @@ Two sets of observations are paired if each observation in one column has a spec
 ```{r}
 set.seed(1)
 
-gss_paired <- gss %>%
+gss_paired <- gss |>
    mutate(
-      hours_previous = hours + 5 - rpois(nrow(.), 4.8),
+      hours_previous = hours + 5 - rpois(nrow(gss), 4.8),
       diff = hours - hours_previous
    )
 
-gss_paired %>%
+gss_paired |>
    select(hours, hours_previous, diff)
 ```
 
@@ -50,9 +59,11 @@ To carry out inference on paired data with infer, we pre-compute the difference 
 
 Here, we pre-compute the difference between paired observations as `diff`. The distribution of `diff` in the observed data looks like this:
 
-```{r plot-diff, echo = FALSE}
+```{r}
+#| label: plot-diff
+#| echo: false
 unique_diff <- unique(gss_paired$diff)
-gss_paired %>%
+gss_paired |>
   ggplot2::ggplot() +
   ggplot2::aes(x = diff) +
   ggplot2::geom_histogram(bins = diff(range(unique_diff))) +
@@ -67,11 +78,12 @@ From the looks of the distribution, most respondents worked a similar number of 
 
 We calculate the observed statistic in the paired setting in the same way that we would outside of the paired setting. Using `specify()` and `calculate()`:
 
-```{r calc-obs-mean}
+```{r}
+#| label: calc-obs-mean
 # calculate the observed statistic
 observed_statistic <- 
-   gss_paired %>% 
-   specify(response = diff) %>% 
+   gss_paired |> 
+   specify(response = diff) |> 
    calculate(stat = "mean")
 ```
 
@@ -79,13 +91,14 @@ The observed statistic is `r observed_statistic`. Now, we want to compare this s
 
 Tests for paired data are carried out via the `null = "paired independence"` argument to `hypothesize()`.
 
-```{r generate-null}
+```{r}
+#| label: generate-null
 # generate the null distribution
 null_dist <- 
-   gss_paired %>% 
-   specify(response = diff) %>% 
-   hypothesize(null = "paired independence") %>%
-   generate(reps = 1000, type = "permute") %>%
+   gss_paired |> 
+   specify(response = diff) |> 
+   hypothesize(null = "paired independence") |>
+   generate(reps = 1000, type = "permute") |>
    calculate(stat = "mean")
    
 null_dist
@@ -98,9 +111,10 @@ For each replicate, `generate()` carries out `type = "permute"` with `null = "pa
 
 To get a sense for what this distribution looks like, and where our observed statistic falls, we can use `visualize()`:
 
-```{r visualize}
+```{r}
+#| label: visualize
 # visualize the null distribution and test statistic
-null_dist %>%
+null_dist |>
   visualize() + 
   shade_p_value(observed_statistic,
                 direction = "two-sided")
@@ -110,9 +124,10 @@ It looks like our observed mean of `r observed_statistic` would be relatively un
 
 More exactly, we can calculate the p-value:
 
-```{r p-value}
+```{r}
+#| label: p-value
 # calculate the p value from the test statistic and null distribution
-p_value <- null_dist %>%
+p_value <- null_dist |>
   get_p_value(obs_stat = observed_statistic,
               direction = "two-sided")
 
@@ -123,13 +138,14 @@ Thus, if the change in mean number of hours worked per week over this time perio
 
 We can also generate a bootstrap confidence interval for the mean paired difference using `type = "bootstrap"` in `generate()`. As before, we use the pre-computed differences when generating bootstrap resamples:
 
-```{r generate-boot}
+```{r}
+#| label: generate-boot
 # generate a bootstrap distribution
 boot_dist <- 
-   gss_paired %>% 
-   specify(response = diff) %>% 
-   hypothesize(null = "paired independence") %>%
-   generate(reps = 1000, type = "bootstrap") %>%
+   gss_paired |> 
+   specify(response = diff) |> 
+   hypothesize(null = "paired independence") |>
+   generate(reps = 1000, type = "bootstrap") |>
    calculate(stat = "mean")
    
 visualize(boot_dist)
@@ -139,9 +155,10 @@ Note that, unlike the null distribution of test statistics generated earlier wit
 
 Calculating a confidence interval:
 
-```{r confidence-interval}
+```{r}
+#| label: confidence-interval
 # calculate the confidence from the bootstrap distribution
-confidence_interval <- boot_dist %>%
+confidence_interval <- boot_dist |>
   get_confidence_interval(level = .95)
 
 confidence_interval
@@ -150,7 +167,7 @@ confidence_interval
 By default, `get_confidence_interval()` constructs the lower and upper bounds by taking the observations at the $(1 - .95) / 2$ and $1 - ((1-.95) / 2)$th percentiles. To instead build the confidence interval using the standard error of the bootstrap distribution, we can write:
 
 ```{r}
-boot_dist %>%
+boot_dist |>
   get_confidence_interval(type = "se",
                           point_estimate = observed_statistic,
                           level = .95)
