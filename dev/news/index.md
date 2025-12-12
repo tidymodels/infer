@@ -6,7 +6,8 @@
   [`calculate()`](https://infer.tidymodels.org/dev/reference/calculate.md).
   In addition to the pre-implemented `calculate(stat)` options, taken as
   strings, users can now supply a function defining any scalar-valued
-  test statistic. See `?calculate()` to learn more.
+  test statistic. See `?calculate()` to learn more
+  ([\#542](https://github.com/tidymodels/infer/issues/542)).
 
 ## infer 1.0.9
 
