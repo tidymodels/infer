@@ -28,3 +28,4 @@ README_files/
 ^man-roxygen$
 ^[\.]?air\.toml$
 ^\.vscode$
+inst/hex/

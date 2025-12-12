@@ -1,5 +1,5 @@
 
-# infer R Package <img src="man/figures/logo.png" alt="A hexagonal logo. A silhouette of a fir tree sits atop green text, reading 'infer'. The logo has a white background and green border." align="right" width=280 />
+# infer R Package <img src="man/figures/logo.png" alt="A hexagonal logo. A green silhouette of a fir tree sits atop black text, reading 'infer'. The logo has a background in two shades of blue, resembling the Oregon license plate." align="right" width=280 />
 
 <!--figs/infer.svg-->
 
@@ -42,8 +42,8 @@ To learn more about the principles underlying the package design, see
 If you’re interested in learning more about randomization-based
 statistical inference generally, including applied examples of this
 package, we recommend checking out [Statistical Inference Via Data
-Science: A ModernDive Into R and the Tidyverse](https://moderndive.com/v2/)
-and [Introduction to Modern
+Science: A ModernDive Into R and the
+Tidyverse](https://moderndive.com/v2/) and [Introduction to Modern
 Statistics](https://openintro-ims.netlify.app/).
 
 ### Installation
@@ -169,7 +169,7 @@ null_dist |>
     ## # A tibble: 1 × 1
     ##   p_value
     ##     <dbl>
-    ## 1   0.059
+    ## 1   0.053
 
 Note that the formula and non-formula interfaces (i.e., `age ~ partyid`
 vs. `response = age, explanatory =  partyid`) work for all implemented

@@ -2,7 +2,7 @@
 output: github_document
 ---
 
-# infer R Package <img src="man/figures/logo.png" alt="A hexagonal logo. A silhouette of a fir tree sits atop green text, reading 'infer'. The logo has a white background and green border." align="right" width=280 />
+# infer R Package <img src="man/figures/logo.png" alt="A hexagonal logo. A green silhouette of a fir tree sits atop black text, reading 'infer'. The logo has a background in two shades of blue, resembling the Oregon license plate." align="right" width=280 />
 
 
 
