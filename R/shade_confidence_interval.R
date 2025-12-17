@@ -162,10 +162,11 @@ shade_confidence_interval_term <- function(
   endpoints <- impute_endpoints(endpoints, plot, call = call)
   check_shade_confidence_interval_args(color, fill)
 
-  res <- list()
   if (is.null(endpoints)) {
-    return(res)
+    return(plot)
   }
+
+  res <- list()
 
   if (!is.null(fill)) {
     # Making extra step of precomputing arguments in order to have default value

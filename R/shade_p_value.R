@@ -168,10 +168,11 @@ shade_p_value_term <- function(
 
   term <- x_axis_label(plot)
 
-  res <- list()
   if (is.null(obs_stat)) {
-    return(res)
+    return(plot)
   }
+
+  res <- list()
 
   # Add shading
   if (!is.null(direction) && !is.null(fill)) {
