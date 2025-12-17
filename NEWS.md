@@ -1,4 +1,4 @@
-# infer (development version)
+# infer 1.1.0
 
 * Fixed bug where adding `shade_confidence_interval(NULL)` or `shade_p_value(NULL)` 
   to plots resulted in `list()` rather than the unmodified plot (#566).
