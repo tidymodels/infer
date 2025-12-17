@@ -2,6 +2,12 @@
 
 ## infer (development version)
 
+- Fixed bug where adding `shade_confidence_interval(NULL)` or
+  `shade_p_value(NULL)` to plots resulted in
+  [`list()`](https://rdrr.io/r/base/list.html) rather than the
+  unmodified plot
+  ([\#566](https://github.com/tidymodels/infer/issues/566)).
+
 - Introduced support for arbitrary test statistics in
   [`calculate()`](https://infer.tidymodels.org/dev/reference/calculate.md).
   In addition to the pre-implemented `calculate(stat)` options, taken as
