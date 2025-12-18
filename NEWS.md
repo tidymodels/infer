@@ -1,3 +1,5 @@
+# infer (development version)
+
 # infer 1.1.0
 
 * Fixed bug where adding `shade_confidence_interval(NULL)` or `shade_p_value(NULL)` 
