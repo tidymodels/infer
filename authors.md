@@ -39,7 +39,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/tidymodels/infer/blob/main/inst/CITATION)
+[`inst/CITATION`](https://github.com/tidymodels/infer/blob/v1.1.0/inst/CITATION)
 
 Couch et al., (2021). infer: An R package for tidyverse-friendly
 statistical inference. Journal of Open Source Software, 6(65), 3661,
