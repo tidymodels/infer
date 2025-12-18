@@ -2,6 +2,10 @@
 
 ## infer (development version)
 
+## infer 1.1.0
+
+CRAN release: 2025-12-18
+
 - Fixed bug where adding `shade_confidence_interval(NULL)` or
   `shade_p_value(NULL)` to plots resulted in
   [`list()`](https://rdrr.io/r/base/list.html) rather than the
