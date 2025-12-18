@@ -21,7 +21,7 @@
 <meta name="description" content="An introduction to the infer R package.">
 <meta property="og:description" content="An introduction to the infer R package.">
 <meta property="og:image" content="https://infer.tidymodels.org/logo.png">
-<script defer data-domain="infer.tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/posit-dev/supported-by-posit/js/badge.min.js" data-max-height="43" data-light-bg="#666f76" data-light-fg="#f9f9f9"></script><script defer data-domain="infer.tidymodels.org,all.tidymodels.org" src="https://plausible.io/js/plausible.js"></script>
 </head>
 <body>
     <a href="#container" class="visually-hidden-focusable">Skip to content</a>
@@ -31,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">infer</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.9</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -500,14 +500,14 @@ population really isn’t 40.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">null_dist</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="infer_files/figure-html/visualize-1.png" width="576"></p>
+<p><img src="infer_files/figure-html/visualize-1.png" class="r-plt" width="576"></p>
 <p>Where does our sample’s observed statistic lie on this distribution?
 We can use the <code>obs_stat</code> argument to specify this.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">null_dist</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">obs_mean</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="infer_files/figure-html/visualize2-1.png" width="576"></p>
+<p><img src="infer_files/figure-html/visualize2-1.png" class="r-plt" width="576"></p>
 <p>Notice that infer has also shaded the regions of the null
 distribution that are as (or more) extreme than our observed statistic.
 (Also, note that we now use the <code>+</code> operator to apply the
@@ -575,7 +575,7 @@ To see this interval represented visually, we can use the
 <code class="sourceCode R"><span><span class="va">boot_dist</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="infer_files/figure-html/visualize-ci-1.png" width="576"></p>
+<p><img src="infer_files/figure-html/visualize-ci-1.png" class="r-plt" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="theoretical-methods">Theoretical Methods<a class="anchor" aria-label="anchor" href="#theoretical-methods"></a>
@@ -610,7 +610,7 @@ with p-values:</p>
 <code class="sourceCode R"><span><span class="co"># visualize the theoretical null distribution</span></span>
 <span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">t_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">obs_t</span>, direction <span class="op">=</span> <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="infer_files/figure-html/unnamed-chunk-4-1.png" width="576"></p>
+<p><img src="infer_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" width="576"></p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># more exactly, calculate the p-value</span></span>
 <span><span class="fu"><a href="../reference/get_p_value.html">get_p_value</a></span><span class="op">(</span><span class="va">t_dist</span>, <span class="va">obs_t</span>, <span class="st">"greater"</span><span class="op">)</span></span></code></pre></div>
@@ -644,7 +644,7 @@ the observed data.</p>
 <code class="sourceCode R"><span><span class="co"># visualize the theoretical sampling distribution</span></span>
 <span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">t_dist</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="../reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span><span class="va">theor_ci</span><span class="op">)</span></span></code></pre></div>
-<p><img src="infer_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
+<p><img src="infer_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="multiple-regression">Multiple regression<a class="anchor" aria-label="anchor" href="#multiple-regression"></a>
@@ -719,7 +719,7 @@ coefficients from the observed data.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">null_fits</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="../reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span><span class="va">observed_fit</span>, direction <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="infer_files/figure-html/unnamed-chunk-10-1.png" width="576"></p>
+<p><img src="infer_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
@@ -741,7 +741,7 @@ functions and vignettes.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
   </div></footer>
