@@ -132,16 +132,16 @@ null_fits
 #> # Groups:   replicate [1,000]
 #>    replicate term          estimate
 #>        <int> <chr>            <dbl>
-#>  1         1 intercept      38.6   
-#>  2         1 age             0.0735
-#>  3         1 collegedegree  -0.435 
-#>  4         2 intercept      43.5   
-#>  5         2 age            -0.0433
-#>  6         2 collegedegree  -1.19  
-#>  7         3 intercept      42.1   
-#>  8         3 age            -0.0171
-#>  9         3 collegedegree  -0.182 
-#> 10         4 intercept      39.6   
+#>  1         1 intercept      40.8   
+#>  2         1 age             0.0153
+#>  3         1 collegedegree  -0.0626
+#>  4         2 intercept      40.3   
+#>  5         2 age             0.0278
+#>  6         2 collegedegree  -0.0655
+#>  7         3 intercept      42.8   
+#>  8         3 age            -0.0348
+#>  9         3 collegedegree   0.0726
+#> 10         4 intercept      40.7   
 #> # ℹ 2,990 more rows
 
 # fit a linear model to the observed data

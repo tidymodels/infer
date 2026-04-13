@@ -192,16 +192,16 @@ null_fits
 #> # Groups:   replicate [100]
 #>    replicate term          estimate
 #>        <int> <chr>            <dbl>
-#>  1         1 intercept      39.8   
-#>  2         1 age             0.0479
-#>  3         1 collegedegree  -1.01  
-#>  4         2 intercept      42.6   
-#>  5         2 age            -0.0276
-#>  6         2 collegedegree  -0.304 
-#>  7         3 intercept      39.6   
-#>  8         3 age             0.0552
-#>  9         3 collegedegree  -1.17  
-#> 10         4 intercept      43.1   
+#>  1         1 intercept     43.4    
+#>  2         1 age           -0.0457 
+#>  3         1 collegedegree -0.481  
+#>  4         2 intercept     41.2    
+#>  5         2 age            0.00565
+#>  6         2 collegedegree -0.212  
+#>  7         3 intercept     40.3    
+#>  8         3 age            0.0314 
+#>  9         3 collegedegree -0.510  
+#> 10         4 intercept     40.5    
 #> # ℹ 290 more rows
 
 # for logistic regression, just supply a binary response variable!

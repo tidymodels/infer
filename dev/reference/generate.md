@@ -150,16 +150,16 @@ gss |>
 #> # Groups:   replicate [200]
 #>    replicate hours
 #>        <int> <dbl>
-#>  1         1 38.6 
-#>  2         1  8.62
+#>  1         1 48.6 
+#>  2         1 38.6 
 #>  3         1 38.6 
-#>  4         1 38.6 
-#>  5         1 18.6 
+#>  4         1  8.62
+#>  5         1 38.6 
 #>  6         1 38.6 
-#>  7         1 38.6 
-#>  8         1 58.6 
-#>  9         1 14.6 
-#> 10         1 38.6 
+#>  7         1 18.6 
+#>  8         1 38.6 
+#>  9         1 38.6 
+#> 10         1 58.6 
 #> # ℹ 99,990 more rows
 
 # generate a null distribution for the independence of
@@ -177,16 +177,16 @@ gss |>
 #> # Groups:   replicate [200]
 #>    partyid   age replicate
 #>    <fct>   <dbl>     <int>
-#>  1 dem        36         1
-#>  2 dem        34         1
-#>  3 ind        24         1
+#>  1 rep        36         1
+#>  2 ind        34         1
+#>  3 dem        24         1
 #>  4 dem        42         1
 #>  5 ind        31         1
-#>  6 rep        32         1
+#>  6 dem        32         1
 #>  7 ind        48         1
-#>  8 ind        36         1
+#>  8 rep        36         1
 #>  9 ind        30         1
-#> 10 rep        33         1
+#> 10 ind        33         1
 #> # ℹ 99,990 more rows
 
 # generate a null distribution via sampling from a

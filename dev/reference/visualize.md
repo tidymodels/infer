@@ -209,16 +209,16 @@ null_fits
 #> # Groups:   replicate [1,000]
 #>    replicate term          estimate
 #>        <int> <chr>            <dbl>
-#>  1         1 intercept     44.5    
-#>  2         1 age           -0.0477 
-#>  3         1 collegedegree -3.37   
-#>  4         2 intercept     41.7    
-#>  5         2 age            0.00356
-#>  6         2 collegedegree -1.29   
-#>  7         3 intercept     41.3    
-#>  8         3 age            0.00920
-#>  9         3 collegedegree -0.833  
-#> 10         4 intercept     42.7    
+#>  1         1 intercept      39.5   
+#>  2         1 age             0.0515
+#>  3         1 collegedegree  -0.687 
+#>  4         2 intercept      40.5   
+#>  5         2 age             0.0209
+#>  6         2 collegedegree  -0.0149
+#>  7         3 intercept      39.8   
+#>  8         3 age             0.0305
+#>  9         3 collegedegree   1.16  
+#> 10         4 intercept      39.9   
 #> # ℹ 2,990 more rows
 
 # visualize distributions of resulting coefficients

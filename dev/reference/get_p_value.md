@@ -170,27 +170,27 @@ null_fits <- gss |>
 null_fits
 #> # A tibble: 300 × 3
 #> # Groups:   replicate [100]
-#>    replicate term          estimate
-#>        <int> <chr>            <dbl>
-#>  1         1 intercept      43.8   
-#>  2         1 age            -0.0588
-#>  3         1 collegedegree  -0.178 
-#>  4         2 intercept      39.8   
-#>  5         2 age             0.0345
-#>  6         2 collegedegree   0.554 
-#>  7         3 intercept      42.7   
-#>  8         3 age            -0.0426
-#>  9         3 collegedegree   1.23  
-#> 10         4 intercept      42.6   
+#>    replicate term           estimate
+#>        <int> <chr>             <dbl>
+#>  1         1 intercept     40.7     
+#>  2         1 age           -0.00753 
+#>  3         1 collegedegree  2.78    
+#>  4         2 intercept     41.8     
+#>  5         2 age           -0.000256
+#>  6         2 collegedegree -1.08    
+#>  7         3 intercept     42.7     
+#>  8         3 age           -0.0426  
+#>  9         3 collegedegree  1.23    
+#> 10         4 intercept     42.6     
 #> # ℹ 290 more rows
 
 get_p_value(null_fits, obs_stat = observed_fit, direction = "two-sided")
 #> # A tibble: 3 × 2
 #>   term          p_value
 #>   <chr>           <dbl>
-#> 1 age              0.94
-#> 2 collegedegree    0.24
-#> 3 intercept        0.7 
+#> 1 age              0.92
+#> 2 collegedegree    0.26
+#> 3 intercept        0.68
 
 # more in-depth explanation of how to use the infer package
 if (FALSE) { # \dontrun{

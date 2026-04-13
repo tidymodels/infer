@@ -204,9 +204,9 @@ null_fits
 #> # Groups:   replicate [100]
 #>    replicate term           estimate
 #>        <int> <chr>             <dbl>
-#>  1         1 intercept     42.0     
-#>  2         1 age           -0.00835 
-#>  3         1 collegedegree -0.790   
+#>  1         1 intercept     44.2     
+#>  2         1 age           -0.0765  
+#>  3         1 collegedegree  0.676   
 #>  4         2 intercept     41.5     
 #>  5         2 age           -0.000968
 #>  6         2 collegedegree -0.329   

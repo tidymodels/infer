@@ -97,16 +97,16 @@ slices
 #> # Groups:   replicate [1,000]
 #>    replicate  year   age sex    college   partyid hompop hours income  
 #>        <int> <dbl> <dbl> <fct>  <fct>     <fct>    <dbl> <dbl> <ord>   
-#>  1         1  1994    49 female no degree ind          4    40 $25000 …
-#>  2         1  1985    51 female no degree dem          4    28 $25000 …
-#>  3         1  2010    51 female degree    rep          4    60 $25000 …
-#>  4         1  2016    58 female no degree rep          3    22 $25000 …
-#>  5         1  2010    60 male   degree    ind          2    45 $25000 …
-#>  6         1  2004    48 male   no degree rep          4    89 $25000 …
-#>  7         1  2000    68 male   no degree dem          2    60 $25000 …
-#>  8         1  1998    58 female no degree ind          4    24 $10000 …
-#>  9         1  1996    49 female degree    dem          3    60 $25000 …
-#> 10         1  1989    29 female degree    dem          4    30 $25000 …
+#>  1         1  1994    34 female no degree rep          4    31 $20000 …
+#>  2         1  1976    21 female no degree ind          2    40 $7000 t…
+#>  3         1  1989    18 male   no degree rep          2    21 $20000 …
+#>  4         1  1996    32 female no degree rep          4    53 $25000 …
+#>  5         1  1991    39 female no degree dem          4    40 $25000 …
+#>  6         1  2010    57 male   degree    rep          3    60 $25000 …
+#>  7         1  2004    51 male   degree    rep          2    50 $25000 …
+#>  8         1  1998    35 male   no degree ind          6    45 $25000 …
+#>  9         1  1994    49 female no degree ind          4    40 $25000 …
+#> 10         1  1985    51 female no degree dem          4    28 $25000 …
 #> # ℹ 49,990 more rows
 #> # ℹ 3 more variables: class <fct>, finrela <fct>, weight <dbl>
 
@@ -137,16 +137,16 @@ rep_slice_sample(df, n = 2, reps = 5, weight_by = c(.5, .4, .3, .2, .1))
 #> # Groups:   replicate [5]
 #>    replicate    id letter
 #>        <int> <int> <fct> 
-#>  1         1     5 e     
-#>  2         1     2 b     
-#>  3         2     1 a     
-#>  4         2     5 e     
+#>  1         1     3 c     
+#>  2         1     5 e     
+#>  3         2     5 e     
+#>  4         2     3 c     
 #>  5         3     1 a     
 #>  6         3     3 c     
 #>  7         4     1 a     
-#>  8         4     3 c     
+#>  8         4     2 b     
 #>  9         5     1 a     
-#> 10         5     2 b     
+#> 10         5     4 d     
 
 # alternatively, pass an unquoted column name in `.data` as `weight_by`
 df <- df |> mutate(wts = c(.5, .4, .3, .2, .1))
@@ -156,14 +156,14 @@ rep_slice_sample(df, n = 2, reps = 5, weight_by = wts)
 #> # Groups:   replicate [5]
 #>    replicate    id letter   wts
 #>        <int> <int> <fct>  <dbl>
-#>  1         1     2 b        0.4
-#>  2         1     5 e        0.1
-#>  3         2     4 d        0.2
-#>  4         2     2 b        0.4
-#>  5         3     3 c        0.3
-#>  6         3     5 e        0.1
+#>  1         1     3 c        0.3
+#>  2         1     1 a        0.5
+#>  3         2     2 b        0.4
+#>  4         2     1 a        0.5
+#>  5         3     5 e        0.1
+#>  6         3     3 c        0.3
 #>  7         4     3 c        0.3
 #>  8         4     1 a        0.5
-#>  9         5     5 e        0.1
-#> 10         5     3 c        0.3
+#>  9         5     3 c        0.3
+#> 10         5     4 d        0.2
 ```
